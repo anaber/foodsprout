@@ -4,10 +4,9 @@ class Restaurant extends Controller {
 	
 	function index()
 	{
-		$data['main_content'] = 'company/company_list';
-		$this->load->view('templates/list_template', $data);
+		$data['main_content'] = 'admincp/restaurant';
+		$this->load->view('admincp/template', $data);
 	}
-	
 }
 
 /* End of file restaurant.php */

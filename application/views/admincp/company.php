@@ -1,0 +1,1 @@
+List companies from the database.

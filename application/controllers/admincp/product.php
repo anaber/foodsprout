@@ -4,8 +4,8 @@ class Product extends Controller {
 	
 	function index()
 	{
-		$data['main_content'] = 'product/product_list';
-		$this->load->view('templates/list_template', $data);
+		$data['main_content'] = 'admincp/product';
+		$this->load->view('admincp/template', $data);
 	}
 	
 }

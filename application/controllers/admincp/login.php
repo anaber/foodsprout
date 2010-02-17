@@ -4,8 +4,8 @@ class Login extends Controller {
 	
 	function index()
 	{
-		$data['main_content'] = 'admincp/login';
-		$this->load->view('admincp/template', $data);
+		$data['main_content'] = '';
+		$this->load->view('admincp/login', $data);
 	}
 	
 	// Check to see that the user is valid
@@ -46,3 +46,5 @@ class Login extends Controller {
 }
 
 /* End of file login.php */
+
+?>

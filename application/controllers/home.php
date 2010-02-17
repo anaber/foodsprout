@@ -11,3 +11,5 @@ class Home extends Controller {
 }
 
 /* End of file home.php */
+
+?>

@@ -10,4 +10,6 @@ class Vegetable extends Controller {
 	
 }
 
-/* End of file product.php */
+/* End of file vegetable.php */
+
+?>

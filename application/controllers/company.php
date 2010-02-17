@@ -10,4 +10,6 @@ class Company extends Controller {
 	
 }
 
-/* End of file product.php */
+/* End of file company.php */
+
+?>

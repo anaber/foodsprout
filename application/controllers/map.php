@@ -10,4 +10,6 @@ class Map extends Controller {
 	
 }
 
-/* End of file home.php */
+/* End of file map.php */
+
+?>
