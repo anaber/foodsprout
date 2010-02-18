@@ -11,7 +11,8 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://localhost:8888/";
+global $BASE_URL;
+$config['base_url']	= $BASE_URL;
 
 /*
 |--------------------------------------------------------------------------

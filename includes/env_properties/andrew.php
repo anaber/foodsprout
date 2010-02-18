@@ -19,7 +19,7 @@ $DB_USER  = "root";
 $DB_PASSWORD  = "";
 $DATABSE  = "food";
 
-$BASE_URL = "http://food.local/";
+$BASE_URL = "http://localhost:8888/";
 
 $GOOGLE_MAP_KEY = '';
 
