@@ -10,6 +10,12 @@
 |
 */
 	error_reporting(E_ALL);
+	
+$defines_file = '../includes/properties.php';
+if (file_exists($defines_file))
+{
+	require_once($defines_file);
+} 
 
 /*
 |---------------------------------------------------------------
@@ -23,7 +29,8 @@
 | NO TRAILING SLASH!
 |
 */
-	$system_folder = "../system";
+	global $SYSTEM_FOLDER;
+	$system_folder = $SYSTEM_FOLDER;
 
 /*
 |---------------------------------------------------------------
@@ -40,7 +47,8 @@
 | NO TRAILING SLASH!
 |
 */
-	$application_folder = "../application";
+	global $APPLICATION_FOLDER;
+	$application_folder = $APPLICATION_FOLDER;
 
 /*
 |===============================================================

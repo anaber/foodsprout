@@ -36,11 +36,11 @@
 
 $active_group = "default";
 $active_record = TRUE;
-
-$db['default']['hostname'] = "localhost";
-$db['default']['username'] = "";
-$db['default']['password'] = "";
-$db['default']['database'] = "";
+global $DB_HOST, $DB_USER, $DB_PASSWORD, $DATABSE; 
+$db['default']['hostname'] = $DB_HOST;
+$db['default']['username'] = $DB_USER;
+$db['default']['password'] = $DB_PASSWORD;
+$db['default']['database'] = $DATABSE;
 $db['default']['dbdriver'] = "mysql";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;
