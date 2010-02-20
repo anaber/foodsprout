@@ -2,6 +2,7 @@
 
 <head>
 	<title></title>
+	<link type="text/css" rel="stylesheet" media="all" href="/css/admincp.css" />
 	
 </head>
 

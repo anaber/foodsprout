@@ -16,8 +16,8 @@
  */
 $DB_HOST  = "localhost";
 $DB_USER  = "root";
-$DB_PASSWORD  = "";
-$DATABSE  = "food";
+$DB_PASSWORD  = "root";
+$DATABSE  = "468258_foodtest";
 
 $BASE_URL = "http://localhost:8888/";
 
@@ -36,7 +36,7 @@ $GOOGLE_MAP_KEY = '';
  */
 $SITE_TITLE  = "Food";
 
-$SYSTEM_FOLDER = "C:/Projects/food/system";
-$APPLICATION_FOLDER = "C:/Projects/food/application";
+$SYSTEM_FOLDER = "/Users/anaber/Sites/food/web/system";
+$APPLICATION_FOLDER = "/Users/anaber/Sites/food/web/application";
 
 ?>
