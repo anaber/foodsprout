@@ -21,7 +21,8 @@
 	<? echo anchor('admincp/item', 'Item'); ?> | 
 	<? echo anchor('admincp/product', 'Products'); ?> ----- 
 	<? echo anchor('admincp/country', 'Country'); ?> | 
-	<? echo anchor('admincp/state', 'State'); ?>
+	<? echo anchor('admincp/state', 'State'); ?> -----
+	<? echo anchor('admincp/user', 'Users'); ?>
 
 </div>
 
