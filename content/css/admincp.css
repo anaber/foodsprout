@@ -1,0 +1,23 @@
+#tbllist{
+	font-size: 13px;
+	border-spacing:1px;
+	padding:3px;
+}
+
+#tbllist th{
+	background-color: #666;
+	color: #fff;
+	text-align:center;
+}
+
+#tbllist a{
+	color: #22229C;
+	text-decoration:none;	
+}
+
+tr.d0 td {
+	background-color: #FFFFFF; color: black;
+}
+tr.d1 td {
+	background-color: #E9E9E9; color: black;
+}
