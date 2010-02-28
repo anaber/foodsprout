@@ -12,33 +12,18 @@ class Login extends Controller {
 	function validate()
 	{
 		
-		$this->load->model('user_model');
-		$query = $this->user_model->validate();
+		$this->load->model('login_model', '', TRUE);
+		$authenticated = $this->login_model->validateAdmin();
 		
-		if($query)  // if the user is validated..
-		{
-			$query = $this->db->query("SELECT userid,firstname FROM user WHERE email='".$this->input->post('email')."'");
-
-			if ($query->num_rows() > 0)
-			{
-			   $row = $query->row();
-			   $userid = $row->userid;
-			   $name = $row->firstname;
-			}		
+		if ($authenticated ==  false) {
 			
-			$data = array(
-				'email' => $this->input->post('email'),
-				'userid' => $userid,
-				'name' => $name,
-				'is_logged_in' => true
-			);
-				
-			$this->session->set_userdata($data);
-			
-		}
-		else
-		{
-			 redirect('admincp/login');
+			if($this->session->userdata('accessBlocked') == 'yes') {
+				echo 'blocked';
+			} else {
+				echo 'no';
+			}
+		} else {
+			echo 'yes';
 		}
 		
 	}

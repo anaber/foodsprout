@@ -2,19 +2,6 @@
 
 class User_model extends Model{
 	
-	function validate()
-	{
-		
-		$this->db->where('email', $this->input->post('email'));
-		$this->db->where('password', md5($this->input->post('password')));
-		$query = $this->db->get('user');
-		
-		if($query->num_rows == 1)
-		{
-			return true;
-		}
-		
-	}
 	
 	// Used to validate password before updating password in user settings
 	function validate_pass()

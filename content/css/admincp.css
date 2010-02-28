@@ -21,3 +21,35 @@ tr.d0 td {
 tr.d1 td {
 	background-color: #E9E9E9; color: black;
 }
+
+.messagebox{
+	position:absolute;
+	margin-left:75px;
+	width:auto;
+	border:1px solid #c93;
+	background:#ffc;
+	padding:3px;
+	font-family:calibri;
+}
+.messageboxok{
+	position:absolute;
+	margin-left:75px;
+	width:auto;
+	border:1px solid #349534;
+	background:#C9FFCA;
+	padding:3px;
+	font-weight:bold;
+	color:#008000;
+	font-family:calibri;
+}
+.messageboxerror{
+	position:absolute;
+	margin-left:75px;
+	width:auto;
+	border:1px solid #CC0000;
+	background:#F7CBCA;
+	padding:3px;
+	font-weight:bold;
+	color:#CC0000;
+	font-family:calibri;
+}
