@@ -1,6 +1,6 @@
 <?php
 
-class Processing extends Controller {
+class User extends Controller {
 	
 	function __construct()
 	{
@@ -13,11 +13,19 @@ class Processing extends Controller {
 	
 	function index()
 	{
-		$data['main_content'] = 'admincp/processing';
-		$this->load->view('admincp/template', $data);
+		$data['main_content'] = 'admincp/user';
+		$this->load->view('admincp/template', $data);		
 	}
+	
+	// Search for a user
+	function find_user()
+	{
+		
+		
+		
+	}	
 }
 
-/* End of file state.php */
+
 
 ?>

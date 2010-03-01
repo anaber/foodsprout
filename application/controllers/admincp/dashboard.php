@@ -7,6 +7,15 @@
 
 class Dashboard extends Controller {
 	
+	function __construct()
+	{
+		parent::Controller();
+		if ($this->session->userdata('isAuthenticated') != 1 )
+		{
+			redirect('admincp/login');
+		}
+	}
+	
 	function index()
 	{
 		$data['main_content'] = 'admincp/dashboard';
@@ -14,6 +23,6 @@ class Dashboard extends Controller {
 	}
 }
 
-/* End of file company.php */
+/* End of file dashboard.php */
 
 ?>

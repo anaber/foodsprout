@@ -5,8 +5,10 @@ class Animal extends Controller {
 	function __construct()
 	{
 		parent::Controller();
-		// To do, add something to make sure the user is an admin and can view this class
-		//$this->is_logged_in();	
+		if ($this->session->userdata('isAuthenticated') != 1 )
+		{
+			redirect('admincp/login');
+		}
 	}
 	
 	function index()

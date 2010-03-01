@@ -28,11 +28,13 @@ class User_model extends Model{
 		$query = $this->db->update('user', $data);
 	}
 	
+	// Add a new user to the database
 	function create_user()
 	{
 		$new_user_insert_data = array(
-			'firstname' => $this->input->post('firstname'),
+			'first_name' => $this->input->post('firstname'),
 			'email' => $this->input->post('email'),
+			'zipcode' => $this->input->post('zipcode'),
 			'password' => md5($this->input->post('password')),
 			'register_ipaddress' => $_SERVER['REMOTE_ADDR']
 		);
@@ -41,6 +43,7 @@ class User_model extends Model{
 		return $insert;
 	}
 	
+	// Get all the users of the database
 	function get_user()
 	{
 		
@@ -55,6 +58,7 @@ class User_model extends Model{
 		}
 	}
 	
+	// Get the data from the current user that is logged into a session
 	function get_current_user()
 	{
 		$this->db->from('user');

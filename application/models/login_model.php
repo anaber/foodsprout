@@ -29,7 +29,8 @@ class Login_model extends Model{
 				$this->user->email = $row->email;
 				$this->user->zipcode = $row->zipcode;
 				$this->user->firstName = $row->first_name;
-				$this->user->lastName = $row->last_name;
+				//Currently we do not require lastname
+				//$this->user->lastName = $row->last_name;
 				$this->user->isActive = $row->isActive;
 				$this->user->screenName = $row->screen_name;
 				$this->user->isAuthenticated = 1;

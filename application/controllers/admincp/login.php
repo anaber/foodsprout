@@ -15,14 +15,19 @@ class Login extends Controller {
 		$this->load->model('login_model', '', TRUE);
 		$authenticated = $this->login_model->validateAdmin();
 		
-		if ($authenticated ==  false) {
-			
-			if($this->session->userdata('accessBlocked') == 'yes') {
+		if ($authenticated ==  false)
+		{	
+			if($this->session->userdata('accessBlocked') == 'yes')
+			{
 				echo 'blocked';
-			} else {
+			}
+			else
+			{
 				echo 'no';
 			}
-		} else {
+		}
+		else
+		{
 			echo 'yes';
 		}
 		
