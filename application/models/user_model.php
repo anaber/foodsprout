@@ -36,11 +36,29 @@ class User_model extends Model{
 			'email' => $this->input->post('email'),
 			'zipcode' => $this->input->post('zipcode'),
 			'password' => md5($this->input->post('password')),
-			'register_ipaddress' => $_SERVER['REMOTE_ADDR']
+			'register_ipaddress' => $_SERVER['REMOTE_ADDR'],
+			'isActive' => 1
 		);
 		
 		$insert = $this->db->insert('user', $new_user_insert_data);
-		return $insert;
+		
+		$return = false;
+		
+		if($insert)
+		{
+			//$this->load->library('user');
+			
+			$return = true;
+		}
+		else
+		{
+			$return = false;
+		}
+		
+		//$return = true;
+		
+		return $return;
+		
 	}
 	
 	// Get all the users of the database

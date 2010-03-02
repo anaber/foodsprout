@@ -1,14 +1,10 @@
-<script>
-    
-<? // add jquery info here ?>
-
-</script>
-
+<br>
+<div id="main-content">
 
 <strong>Don't have an account?  Sign-up for free.</strong><br>
 <fieldset>
 	<legend>Account Information</legend>
-	<table width="300" cellpadding="2" id="login">
+	<table width="300" cellpadding="2">
 	
 	<?php
 
@@ -31,3 +27,5 @@
 	<?php echo validation_errors('<p>'); ?>
 
 </fieldset>
+
+</div>

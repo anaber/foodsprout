@@ -1,7 +1,6 @@
-
 <br>
 <div id="main-content">
-<h1>Products</h1>
+<h1>Farms</h1>
 <table border="1">
 	<tr>
 		<td width="160">
@@ -9,9 +8,10 @@
 		</td>
 	
 		<td>
-			Listing of products, similar to a Google/Yelp listing
+			Listing of farms, similar to a Google/Yelp listing
 		</td>
 	
 	</tr>
 </table>
+
 </div>

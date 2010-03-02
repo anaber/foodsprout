@@ -8,6 +8,7 @@ class User extends Controller {
 		$this->load->view('templates/basic_template', $data);		
 	}
 	
+	// Create and add a new user to the database
 	function create_user()
 	{
 		
@@ -27,12 +28,12 @@ class User extends Controller {
 		else
 		{
 			$this->load->model('user_model');
-			if($query = $this->user_model->create_user())
+			$create_user = $this->user_model->create_user();
+			
+			if($create_user == true)
 			{
-										
-				// let's go ahead and set their session now
-				$this->load->model('login_model');
-				$query = $this->user_model->validate();
+				// Send the user to the dashboard						
+				$this->dashboard();
 				
 				// Now send them a welcome email
 				$this->load->library('email');
@@ -45,8 +46,6 @@ class User extends Controller {
 
 				$this->email->send();
 
-				// Uncomment below to view message
-				// echo $this->email->print_debugger();
 			}
 			else
 			{
@@ -54,6 +53,14 @@ class User extends Controller {
 			}
 		}
 	}	
+
+	// The default page after login, the users dashboard
+	function dashboard()
+	{
+		$data['main_content'] = 'user/dashboard';
+		$this->load->view('templates/basic_template', $data);
+	}
+	
 }
 
 

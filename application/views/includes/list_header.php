@@ -11,26 +11,53 @@
 	<link type="text/css" rel="stylesheet" media="all" href="/css/main.css" />
 </head>
 <body>
-<div align="center"><br>
-<div align="left" style="width:974px;">
-	<div id="rbox">
-	<a href="/"><img src="/images/logo-left.gif" border="0" align="left" style="padding-right:10px;"></a>Search For (i.e. BigMac, salmon, potato chips)<br>
-		<?
-		
-			echo form_open('search/results');
-			$data = array(
-			              'name'        => 'search',
-			              'id'          => 'search',
-			              'value'       => '',
-			              'maxlength'   => '100',
-			              'size'        => '60'
-			            );
+<div id="main-container" align="center">
+	<div class="header-wide">
+		<div id="header">
+			<div id="logo">
+				<a href="/"><img src="/images/food-logo.gif" border="0"></a>
+			</div>
+			<div id="account">
+				<?
+					if ($this->session->userdata('isAuthenticated') == 1 )
+					{
+						$this->load->view('includes/menu_logout');
+					}
+					else
+					{
+						$this->load->view('includes/menu_login');
+					}
+				?>
+			</div>
+			<div id="search">
+				<span class="greentxt">Search For</span> <span style="font-size: 11px; color: #666;">(i.e. BigMac, salmon, potato chips)<br>
+				<?
+				
+					echo form_open('search/results');
+					$data = array(
+					              'name'        => 'search_query',
+					              'id'          => 'search_query',
+					              'value'       => 'Search',
+					              'maxlength'   => '100',
+					              'size'        => '50',
+					              'style'       => 'width:86%',
+					            );
 
-			echo form_input($data);
-			echo form_submit('submit', 'Search');
-			echo '</form>';
-		
-		?><br>
-		<? echo anchor('product', 'Products'); ?> | <? echo anchor('company', 'Companies'); ?> | <? echo anchor('farm', 'Farms'); ?> | <? echo anchor('meat', 'Meats'); ?> | <? echo anchor('vegetable', 'Vegetables'); ?> | <? echo anchor('processing', 'Processing Facilities'); ?>
+					echo form_input($data);
+					echo ' '.form_submit('submit', 'Search');
+					echo '</form>';
+				
+				?>
+			</div>
+		</div>
 	</div>
-</div>
+	<div class="nav-wide"><br>
+		<div id="main-nav">
+			<ul id="navlist"><li><? echo anchor('product', 'Products'); ?></li>
+			<li><? echo anchor('company', 'Companies & Brands'); ?></li>
+			<li><? echo anchor('farm', 'Farms'); ?></li>
+			<li><? echo anchor('processing', 'Processing Facilities'); ?></li>
+			<li><? echo anchor('distribution', 'Distribution Centers'); ?></li>
+			</ul>
+		</div>
+	</div>

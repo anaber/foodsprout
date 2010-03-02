@@ -1,0 +1,1 @@
+Dashboard | Settings | <? echo anchor('login/signout', 'Sign Out'); ?>

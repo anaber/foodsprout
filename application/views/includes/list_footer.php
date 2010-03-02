@@ -1,5 +1,8 @@
-<br><br><br><hr size="1">
-About | Contact
+<div id="footer">
+	About | Contact
+</div>
+
+
 </div>
 
 </body>

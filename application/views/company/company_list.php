@@ -1,6 +1,7 @@
 <br>
+<div id="main-content">
 <h1>Companies</h1>
-<table width="984" border="1">
+<table border="1">
 	<tr>
 		<td width="160">
 			Vertical menu with filter options
@@ -12,3 +13,5 @@
 	
 	</tr>
 </table>
+
+</div>
