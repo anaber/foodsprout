@@ -17,7 +17,7 @@ Listing of all the States in the database<br><br>
 <hr size="1">
 <b>Add State</b><br>
 
-<?
+<?php
 	echo '<table cellpadding="2" style="-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	background: #EEEEEE;

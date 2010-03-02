@@ -12,7 +12,7 @@
 
 	?>
 	
-	<?
+	<?php
 	echo '<tr><td align="right">First Name:</td><td>'. form_input('firstname', set_value('firstname', '')) .'</td></tr>';
 	echo '<tr><td align="right">Email:</td><td>'. form_input('email', set_value('email', '')) .'</td></tr>';
 	echo '<tr><td align="right">Zip Code:</td><td>'. form_input('zipcode', set_value('zipcode', '')) .'</td></tr>';

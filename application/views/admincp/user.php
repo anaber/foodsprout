@@ -1,6 +1,6 @@
 Search for user:
 
-<?
+<?php
 
 echo form_open('user/create_user');
 

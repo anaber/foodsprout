@@ -18,7 +18,7 @@
 				<a href="/"><img src="/images/food-logo.gif" border="0"></a>
 			</div>
 			<div id="account">
-				<?
+				<?php
 					if ($this->session->userdata('isAuthenticated') == 1 )
 					{
 						$this->load->view('includes/menu_logout');
@@ -31,7 +31,7 @@
 			</div>
 			<div id="search">
 				<span class="greentxt">Search For</span> <span style="font-size: 11px; color: #666;">(i.e. BigMac, salmon, potato chips)<br>
-				<?
+				<?php
 				
 					echo form_open('search/results');
 					$data = array(
@@ -53,11 +53,11 @@
 	</div>
 	<div class="nav-wide"><br>
 		<div id="main-nav">
-			<ul id="navlist"><li><? echo anchor('product', 'Products'); ?></li>
-			<li><? echo anchor('company', 'Companies & Brands'); ?></li>
-			<li><? echo anchor('farm', 'Farms'); ?></li>
-			<li><? echo anchor('processing', 'Processing Facilities'); ?></li>
-			<li><? echo anchor('distribution', 'Distribution Centers'); ?></li>
+			<ul id="navlist"><li><?php echo anchor('product', 'Products'); ?></li>
+			<li><?php echo anchor('company', 'Companies & Brands'); ?></li>
+			<li><?php echo anchor('farm', 'Farms'); ?></li>
+			<li><?php echo anchor('processing', 'Processing Facilities'); ?></li>
+			<li><?php echo anchor('distribution', 'Distribution Centers'); ?></li>
 			</ul>
 		</div>
 	</div>

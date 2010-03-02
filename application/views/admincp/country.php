@@ -17,7 +17,7 @@ Listing of all the Country in the database<br><br>
 <hr size="1">
 <b>Add Country</b><br>
 
-<?
+<?php
 	echo '<table cellpadding="2" style="-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	background: #EEEEEE;

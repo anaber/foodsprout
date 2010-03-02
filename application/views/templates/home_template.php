@@ -8,13 +8,13 @@
 				<span class="greentxt">Browse</span><br>
 				<div style="border: 1px solid #000; min-height:290px; background: #198C24 url(/images/grad.gif) repeat-x; color:#FFF; padding: 5px; font-size:14px;">
 					Our mission is to map the world's food chain.  Start exploring it through one of the topics below:<br>
-					<ul><li><? echo anchor('product', 'Products'); ?></li>
-					<li><? echo anchor('company', 'Companies & Brands'); ?></li>
-					<li><? echo anchor('farm', 'Farms'); ?></li>
-					<li><? echo anchor('processing', 'Processing Facilities'); ?></li>
-					<li><? echo anchor('distribution', 'Distribution Centers'); ?></li>
-					<li><? echo anchor('meat', 'Meats'); ?></li>
-					<li><? echo anchor('vegetable', 'Vegetables'); ?></li>
+					<ul><li><?php echo anchor('product', 'Products'); ?></li>
+					<li><?php echo anchor('company', 'Companies & Brands'); ?></li>
+					<li><?php echo anchor('farm', 'Farms'); ?></li>
+					<li><?php echo anchor('processing', 'Processing Facilities'); ?></li>
+					<li><?php echo anchor('distribution', 'Distribution Centers'); ?></li>
+					<li><?php echo anchor('meat', 'Meats'); ?></li>
+					<li><?php echo anchor('vegetable', 'Vegetables'); ?></li>
 					</ul>
 				</div>
 			</td>
@@ -30,7 +30,7 @@
 		<td width="50%" class="home_td">
 			<img src="/images/rest.jpg" border="0" align="left" style="margin-right: 5px;"><span class="greentxt">Restaurants in Your Area</span><br><span style="font-size:12px;">Learn what Restaurants in your area have joined us in telling <b>YOU</b> where its food comes from!</span><br><br>
 			<div align="center">
-			<?
+			<?php
 			
 				echo form_open('search/restaurant');
 				$data = array(
