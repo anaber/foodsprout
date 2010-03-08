@@ -13,5 +13,5 @@
 	
 	</tr>
 </table>
-
+<a href = '/company/detail/2'>Company Details</a>
 </div>

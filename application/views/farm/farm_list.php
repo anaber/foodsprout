@@ -13,5 +13,5 @@
 	
 	</tr>
 </table>
-
+<a href = '/farm/detail/2'>Farm Details</a>
 </div>
