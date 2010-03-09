@@ -53,7 +53,7 @@
 	</div>
 	<div class="nav-wide"><br>
 		<div id="main-nav">
-			<ul id="navlist"><li><?php echo anchor('product', 'Products'); ?></li>
+			<ul id="navlist"><li id="active"><?php echo anchor('product', 'Products', array('id' => 'current')); ?></li>
 			<li><?php echo anchor('company', 'Companies & Brands'); ?></li>
 			<li><?php echo anchor('farm', 'Farms'); ?></li>
 			<li><?php echo anchor('processing', 'Processing Facilities'); ?></li>

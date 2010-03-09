@@ -18,8 +18,12 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	}
+	else{
+		echo '<br>';
+	}
 ?>
-<table width = "100%" border = "1" cellpadding = "0" cellspacing = "0">
+<div id="main-content">
+<table width = "100%" border = "0" cellpadding = "0" cellspacing = "0">
 	<tr>
 		<td width = "70%" valign = "top">
 		<?php
@@ -55,5 +59,5 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		<td>
 	</tr>
 </table>
-
+</div>
 <?php $this->load->view('includes/list_footer'); ?>

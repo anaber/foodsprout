@@ -66,7 +66,7 @@ class Product extends Controller {
 		// Center -> Map
 		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
 		$data['data']['center']['map']['VIEW_HEADER'] = "Map showing where ingredients, items came from";
-		$data['data']['center']['map']['width'] = '700';
+		$data['data']['center']['map']['width'] = '650';
 		$data['data']['center']['map']['height'] = '200';
 		
 		

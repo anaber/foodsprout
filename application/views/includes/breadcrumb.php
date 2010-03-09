@@ -1,4 +1,4 @@
-<div align = "left">
+<div id="breadcrumb">
 <?php
 $i = 0;
 foreach($BREADCRUMB as $text => $link) {
