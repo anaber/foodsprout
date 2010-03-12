@@ -2,3 +2,8 @@
 
 
 List companies from the database.
+
+<?php
+	//print_r_pre($STATES);
+	//print_r_pre($COUNTRIES);
+?>

@@ -16,18 +16,26 @@ class Country_model extends Model{
 	// List all the country in the database
 	function list_country()
 	{
+		$countries = array();
+		
 		$this->db->order_by("country_name", "asc");
 		$q = $this->db->get('country');
 		
 		if($q->num_rows() > 0) {
 			foreach ($q->result() as $row) {
-				$data[] = $row;
+				$this->load->library('CountryLib');
+				unset($this->CountryLib);
+				
+				$this->CountryLib->countryId = $row->country_id;
+				$this->CountryLib->countryName = $row->country_name;
+				
+				$countries[] = $this->CountryLib;
+				
+				unset($this->CountryLib);
 			}
-			return $data;
 		}
-		else{
-			return FALSE;
-		}
+		
+		return $countries;
 	}
 	
 }

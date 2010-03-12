@@ -1,4 +1,4 @@
-<?php $this->load->view('includes/home_header'); ?>
+<?php $this->load->view('includes/header'); ?>
 <br>
 <div id="main-content">
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="home_table">

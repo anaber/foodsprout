@@ -4,8 +4,17 @@ class Home extends Controller {
 	
 	function index()
 	{
-		$data['main_content'] = 'home';
-		$this->load->view('templates/home_template', $data);
+		global $GOOGLE_MAP_KEY;
+		
+		$data = array();
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'home',
+			);
+		
+		$this->load->view('templates/center_template', $data);
+		
 	}
 	
 }

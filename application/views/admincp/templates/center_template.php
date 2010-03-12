@@ -1,4 +1,4 @@
-<?php $this->load->view('includes/header'); ?>
+<?php $this->load->view('admincp/includes/header'); ?>
 
 <?php
 /* END RESULT - We can remove table if we get divs in place
@@ -9,8 +9,7 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 */
 ?>
 <?php
-	if (isset($BREADCRUMB) ) {
-		
+	if (isset($BREADCRUMB) ) {	
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	}
 ?>
@@ -22,9 +21,8 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 				<?php
 				foreach($CENTER as $key => $view) {
 					if (isset($data['center'][$key]['VIEW_HEADER']) ) {
-						$this->load->view('includes/block_header', array('VIEW_HEADER' => $data['center'][$key]['VIEW_HEADER'] ) );
+						$this->load->view('admincp/includes/block_header', array('VIEW_HEADER' => $data['center'][$key]['VIEW_HEADER'] ) );
 					}
-					
 					if (isset($data['center'][$key]) ) {
 						$this->load->view($view, $data['center'][$key]);
 					} else {
@@ -37,4 +35,4 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 	</table>
 </div>
 
-<?php $this->load->view('includes/list_footer'); ?>
+<?php $this->load->view('admincp/includes/footer'); ?>

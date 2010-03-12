@@ -14,20 +14,27 @@ class State_model extends Model{
 	}
 	
 	// List all the state in the database
-	function list_state()
-	{
+	function list_state() {
+		$states = array();
+		
 		$this->db->order_by("state_name", "asc");
 		$q = $this->db->get('state');
 		
 		if($q->num_rows() > 0) {
 			foreach ($q->result() as $row) {
-				$data[] = $row;
+				$this->load->library('StateLib');
+				unset($this->StateLib);
+				
+				$this->StateLib->stateId = $row->state_id;
+				$this->StateLib->stateName = $row->state_name;
+				
+				$states[] = $this->StateLib;
+				
+				unset($this->StateLib);
 			}
-			return $data;
 		}
-		else{
-			return FALSE;
-		}
+		
+		return $states;
 	}
 	
 }

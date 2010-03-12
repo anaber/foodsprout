@@ -4,8 +4,17 @@ class Login extends Controller {
 	
 	function index()
 	{
-		$data['main_content'] = '';
-		$this->load->view('admincp/login', $data);
+		$data = array();
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/login',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Login";
+		
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// Check to see that the user is valid

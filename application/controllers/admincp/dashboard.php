@@ -18,8 +18,17 @@ class Dashboard extends Controller {
 	
 	function index()
 	{
-		$data['main_content'] = 'admincp/dashboard';
-		$this->load->view('admincp/template', $data);
+		$data = array();
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/dashboard',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Dashbaord";
+		
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 }
 
