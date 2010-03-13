@@ -14,5 +14,4 @@
 
 <?php $this->load->view('admincp/includes/navigation')?>
 
-<hr size="1">
 

@@ -21,8 +21,8 @@ class Login extends Controller {
 	function validate()
 	{
 		
-		$this->load->model('login_model', '', TRUE);
-		$authenticated = $this->login_model->validateAdmin();
+		$this->load->model('LoginModel', '', TRUE);
+		$authenticated = $this->LoginModel->validateAdmin();
 		
 		if ($authenticated ==  false)
 		{	

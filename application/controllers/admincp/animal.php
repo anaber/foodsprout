@@ -19,13 +19,13 @@ class Animal extends Controller {
 	// List all the animal in the database
 	function list_animal()
 	{
-		$this->load->model('animal_model');
+		$this->load->model('AnimalModel');
 		
 		// Get all the animal in the database
-		$query = $this->animal_model->list_animal();
+		$query = $this->AnimalModel->list_animal();
 		if($query)
 		{
-			$data['rows'] = $this->animal_model->list_animal();
+			$data['rows'] = $this->AnimalModel->list_animal();
 
 			$data['main_content'] = 'admincp/animal';
 			$this->load->view('admincp/template', $data);

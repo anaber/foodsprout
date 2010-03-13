@@ -15,11 +15,11 @@ class Company extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('state_model');
-		$states = $this->state_model->list_state();
+		$this->load->model('StateModel');
+		$states = $this->StateModel->list_state();
 		
-		$this->load->model('country_model');
-		$countries = $this->country_model->list_country();
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->list_country();
 		
 		
 		// List of views to be included
@@ -33,19 +33,17 @@ class Company extends Controller {
 		$data['data']['center']['list']['STATES'] = $states;
 		
 		$this->load->view('admincp/templates/center_template', $data);
-		
-		
 	}
 	
 	function add()
 	{
 		$data = array();
 		
-		$this->load->model('state_model');
-		$states = $this->state_model->list_state();
+		$this->load->model('StateModel');
+		$states = $this->StateModel->list_state();
 		
-		$this->load->model('country_model');
-		$countries = $this->country_model->list_country();
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->list_country();
 		
 		
 		// List of views to be included
@@ -59,7 +57,6 @@ class Company extends Controller {
 		$data['data']['center']['list']['STATES'] = $states;
 		
 		$this->load->view('admincp/templates/center_template', $data);
-		
 	}
 	
 	function update()
@@ -67,11 +64,11 @@ class Company extends Controller {
 		$id = $this->input->get('id');
 		echo "Update ID : " . $id . "<br />";
 		
-		$this->load->model('state_model');
-		$states = $this->state_model->list_state();
+		$this->load->model('StateModel');
+		$states = $this->StateModel->list_state();
 		
-		$this->load->model('country_model');
-		$countries = $this->country_model->list_country();
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->list_country();
 		
 		$data['main_content'] = 'admincp/company_form';
 		$data['data'] = array(
@@ -84,7 +81,7 @@ class Company extends Controller {
 	
 	function save_add() {
 		
-		$this->load->model('company_model', '', TRUE);
+		$this->load->model('CompanyModel', '', TRUE);
 		print_r_pre($_REQUEST);
 		/*
 		$GLOBALS = array();
@@ -102,10 +99,10 @@ class Company extends Controller {
 	
 	function save_update() {
 		
-		$this->load->model('company_model', '', TRUE);
+		$this->load->model('CompanyModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->company_model->updateCompany() ) {
+		if ( $this->CompanyModel->updateCompany() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {

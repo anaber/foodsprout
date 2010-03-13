@@ -1,3 +1,6 @@
+<?php
+	if ($this->session->userdata('isAuthenticated') == 1 ) {
+?>
 	<div id="main_menu">
 
 	<?php echo anchor('admincp/dashboard', 'Dashboard'); ?> |
@@ -14,11 +17,11 @@
 	<?php echo anchor('admincp/country', 'Country'); ?> | 
 	<?php echo anchor('admincp/state', 'State'); ?> -----
 	<?php echo anchor('admincp/user', 'Users'); ?> -----
-<?php
-	if ($this->session->userdata('isAuthenticated') == 1 ) {
-?>
+
 	<?php echo anchor('admincp/logout', 'Logout'); ?>
+
+</div>
+<hr size="1">
 <?php
 	}
 ?>
-</div>

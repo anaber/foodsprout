@@ -19,13 +19,13 @@ class State extends Controller {
 	// List all the state in the database
 	function list_state()
 	{
-		$this->load->model('state_model');
+		$this->load->model('StateModel');
 		
 		// Get all the state in the database
-		$query = $this->state_model->list_state();
+		$query = $this->StateModel->list_state();
 		if($query)
 		{
-			$data['rows'] = $this->state_model->list_state();
+			$data['rows'] = $this->StateModel->list_state();
 
 			$data['main_content'] = 'admincp/state';
 			$this->load->view('admincp/template', $data);
@@ -49,8 +49,8 @@ class State extends Controller {
 		}
 		else
 		{
-			$this->load->model('state_model');
-			if($query = $this->state_model->add_state())
+			$this->load->model('StateModel');
+			if($query = $this->StateModel->add_state())
 			{
 				redirect('admincp/state');
 			}

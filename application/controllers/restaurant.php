@@ -8,8 +8,8 @@ class Restaurant extends Controller {
 		$data = array();
 		
 		// Getting information from models
-		$this->load->model('restaurant_model');
-		$restaurants = $this->restaurant_model->list_restaurant();
+		$this->load->model('RestaurantModel');
+		$restaurants = $this->RestaurantModel->list_restaurant();
 		
 		// List of views to be included
 		$data['CENTER'] = array(

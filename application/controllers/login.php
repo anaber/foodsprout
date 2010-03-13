@@ -11,8 +11,8 @@ class Login extends Controller {
 	function validate()
 	{
 		
-		$this->load->model('user_model');
-		$query = $this->user_model->validate();
+		$this->load->model('UserModel');
+		$query = $this->UserModel->validate();
 		
 		if($query)  // if the user is validated..
 		{

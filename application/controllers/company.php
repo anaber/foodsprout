@@ -8,8 +8,8 @@ class Company extends Controller {
 		$data = array();
 		
 		// Getting information from models
-		$this->load->model('company_model');
-		$companies = $this->company_model->list_company();
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->list_company();
 		
 		// List of views to be included
 		$data['CENTER'] = array(

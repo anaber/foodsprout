@@ -19,14 +19,14 @@ class Country extends Controller {
 	// List all the country in the database
 	function list_country()
 	{
-		$this->load->model('country_model');
+		$this->load->model('CountryModel');
 		
 		// Get all the country in the database
-		$query = $this->country_model->list_country();
+		$query = $this->CountryModel->list_country();
 		if($query)
 		{
-			$data['rows'] = $this->country_model->list_country();
-
+			$data['rows'] = $this->CountryModel->list_country();
+			
 			$data['main_content'] = 'admincp/country';
 			$this->load->view('admincp/template', $data);
 		}
@@ -49,8 +49,8 @@ class Country extends Controller {
 		}
 		else
 		{
-			$this->load->model('country_model');
-			if($query = $this->country_model->add_country())
+			$this->load->model('CountryModel');
+			if($query = $this->CountryModel->add_country())
 			{
 				redirect('admincp/country');
 			}

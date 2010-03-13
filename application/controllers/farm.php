@@ -8,8 +8,8 @@ class Farm extends Controller {
 		$data = array();
 		
 		// Getting information from models
-		//$this->load->model('farm_model');
-		//$farms = $this->farm_model->list_farm();
+		//$this->load->model('FarmModel');
+		//$farms = $this->FarmModel->list_farm();
 		$farms = array();
 		
 		// List of views to be included

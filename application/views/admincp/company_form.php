@@ -7,9 +7,9 @@
 ?>
 <script>
 
+formValidated = true;
+
 $(document).ready(function() {
-	
-	formValidated = true;
 	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
 	$("#companyForm").validationEngine({
@@ -62,7 +62,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				alert("Form Submitted");
 				return false;
 				
 				if(data=='yes') {
@@ -98,11 +98,13 @@ $(document).ready(function() {
 						} else if (act == 'update') {
 							$(this).html('Not updated...').addClass('messageboxerror').fadeTo(900,1);
 						}
-						
 					});
 				}	
 			});
 		}
+		
+		return false; //not to post the  form physically
+		
 	});	
 	
 	
@@ -111,7 +113,6 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		document.location='/programs';
-	
 	});
 
 });

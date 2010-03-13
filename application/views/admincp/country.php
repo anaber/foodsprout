@@ -7,7 +7,7 @@ Listing of all the Country in the database<br><br>
 	foreach($rows as $r) :
 		
 		$i++;
-		echo '<tr class="d'.($i & 1).'"><td>'.anchor('admincp/country/edit/'.$r->country_id, $r->country_name).'</td></tr>';
+		echo '<tr class="d'.($i & 1).'"><td>'.anchor('admincp/country/edit/'.$r->countryId, $r->countryName).'</td></tr>';
 
  	endforeach;
 ?>

@@ -19,13 +19,13 @@ class Fish extends Controller {
 	// List all the fish in the database
 	function list_fish()
 	{
-		$this->load->model('fish_model');
+		$this->load->model('FishModel');
 		
 		// Get all the fish in the database
-		$query = $this->fish_model->list_fish();
+		$query = $this->FishModel->list_fish();
 		if($query)
 		{
-			$data['rows'] = $this->fish_model->list_fish();
+			$data['rows'] = $this->FishModel->list_fish();
 
 			$data['main_content'] = 'admincp/fish';
 			$this->load->view('admincp/template', $data);

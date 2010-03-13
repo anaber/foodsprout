@@ -8,8 +8,8 @@ class Product extends Controller {
 		$data = array();
 		
 		// Getting information from models
-		$this->load->model('product_model');
-		$products = $this->product_model->list_product();
+		$this->load->model('ProductModel');
+		$products = $this->ProductModel->list_product();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
