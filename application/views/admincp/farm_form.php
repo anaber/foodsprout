@@ -12,13 +12,13 @@ formValidated = true;
 $(document).ready(function() {
 	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
-	$("#companyForm").validationEngine({
+	$("#farmForm").validationEngine({
 		success :  function() {formValidated = true;},
 		failure : function() {formValidated = false; }
 	});
 	
 	
-	$("#companyForm").submit(function() {
+	$("#farmForm").submit(function() {
 		
 		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
 		
@@ -34,24 +34,24 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
-			if ($('#company_id').val() != '' ) {
-				var formAction = '/admincp/company/save_update';
+			if ($('#farm_id').val() != '' ) {
+				var formAction = '/admincp/farm/save_update';
 				postArray = {
-							  companyName:$('#company_name').val(),
+							  farmName:$('#farm_name').val(),
 							  streetAddress:$('#street_address').val(),
-							  city: $('#city').val(),
+							  customUrl: $('#custom_url').val(),
 							  stateId:$('#state_id').val(),
 							  countryId:$('#country_id').val(),
 							  zipcode:$('#zipcode').val(), 
-							  companyId: $('#company_id').val()
+							  farmId: $('#farm_id').val()
 							};
 				act = 'update';		
 			} else {
-				formAction = '/admincp/company/save_add';
+				formAction = '/admincp/farm/save_add';
 				postArray = { 
-							  companyName:$('#company_name').val(),
+							  farmName:$('#farm_name').val(),
 							  streetAddress:$('#street_address').val(),
-							  city: $('#city').val(),
+							  customUrl: $('#custom_url').val(),
 							  stateId:$('#state_id').val(),
 							  countryId:$('#country_id').val(),
 							  zipcode:$('#zipcode').val()
@@ -73,7 +73,7 @@ $(document).ready(function() {
 						} else if (act == 'update') {
 							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/company';
+								document.location='/admincp/farm';
 							});
 						}
 
@@ -82,7 +82,7 @@ $(document).ready(function() {
 					//start fading the messagebox 
 					$("#msgbox").fadeTo(200,0.1,function() {
 						//add message and change the class of the box and start fading
-						$(this).html('Duplicate Company...').addClass('messageboxerror').fadeTo(900,1);
+						$(this).html('Duplicate Farm...').addClass('messageboxerror').fadeTo(900,1);
 						
 					});
 				} else {
@@ -108,36 +108,29 @@ $(document).ready(function() {
 		//Cancel the link behavior
 		e.preventDefault();
 		
-		document.location='/programs';
+		document.location='/admincp/farm';
 	});
 
 });
-	
 		
 </script>
 
 
-<?php echo anchor('admincp/company', 'List Companies'); ?><br /><br />
+<?php echo anchor('admincp/farm', 'List Farms'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
-<form id="companyForm" method="post" action="">
+<form id="farmForm" method="post" action="">
 <table class="formTable">
 	<tr>
-		<td width = "25%" nowrap>Company Name</td>
+		<td width = "25%">Farm Name</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->companyName : '') ?>" class="validate[required]" type="text" name="company_name" id="company_name"/><br />
+			<input value="<?php echo (isset($FARM) ? $FARM->farmName : '') ?>" class="validate[required]" type="text" name="farm_name" id="farm_name" /><br />
 		</td>
 	<tr>
 	<tr>
-		<td width = "25%">Street Address</td>
+		<td width = "25%" nowrap>Street Address</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->streetAddress : '') ?>" class="validate[required]" type="text" name="street_address" id="street_address"/><br />
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">City</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
+			<input value="<?php echo (isset($FARM) ? $FARM->streetAddress : '') ?>" class="validate[required]" type="text" name="street_address" id="street_address" /><br />
 		</td>
 	<tr>
 	<tr>
@@ -147,7 +140,7 @@ $(document).ready(function() {
 			<option value = ''>--State--</option>
 			<?php
 				foreach($STATES as $key => $value) {
-					echo '<option value="'.$value->stateId.'"' . (  ( isset($COMPANY) && ( $value->stateId == $COMPANY->stateId )  ) ? ' SELECTED' : '' ) . '>'.$value->stateName.'</option>';
+					echo '<option value="'.$value->stateId.'"' . (  ( isset($FARM) && ( $value->stateId == $FARM->stateId )  ) ? ' SELECTED' : '' ) . '>'.$value->stateName.'</option>';
 				}
 			?>
 			</select>
@@ -160,7 +153,7 @@ $(document).ready(function() {
 			<option value = ''>--Country--</option>
 			<?php
 				foreach($COUNTRIES as $key => $value) {
-					echo '<option value="'.$value->countryId.'"' . (  ( isset($COMPANY) && ( $value->countryId == $COMPANY->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>';
+					echo '<option value="'.$value->countryId.'"' . (  ( isset($FARM) && ( $value->countryId == $FARM->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>';
 				}
 			?>
 			</select>
@@ -169,15 +162,20 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Zip</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
+			<input value="<?php echo (isset($FARM) ? $FARM->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%">Custom URL</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->customUrl : '') ?>" class="validate[required]" type="text" name="custom_url" id="custom_url" /><br />
 		</td>
 	<tr>
 	<tr>
 		<td width = "25%" colspan = "2">
-			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($COMPANY)) ? 'Update Company' : 'Add Company' ?>">
-			<input type = "hidden" name = "company_id" id = "company_id" value = "<?php echo (isset($COMPANY) ? $COMPANY->companyId : '') ?>">
+			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FARM)) ? 'Update Farm' : 'Add Farm' ?>">
+			<input type = "hidden" name = "farm_id" id = "farm_id" value = "<?php echo (isset($FARM) ? $FARM->farmId : '') ?>">
 		</td>
 	<tr>
 </table>
 </form>
-

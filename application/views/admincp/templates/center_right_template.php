@@ -1,4 +1,4 @@
-<?php $this->load->view('includes/header'); ?>
+<?php $this->load->view('admincp/includes/header'); ?>
 
 <?php
 /* END RESULT - We can remove table if we get divs in place
@@ -23,13 +23,13 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 	}
 ?>
 <div id="main-content">
-<table width = "100%" border = "0" cellpadding = "0" cellspacing = "0">
+<table width = "100%" border = "1" cellpadding = "0" cellspacing = "0">
 	<tr>
 		<td width = "70%" valign = "top">
 		<?php
 			foreach($CENTER as $key => $view) {
 				if (isset($data['center'][$key]['VIEW_HEADER']) ) {
-					$this->load->view('includes/block_header', array('VIEW_HEADER' => $data['center'][$key]['VIEW_HEADER'] ) );
+					$this->load->view('admincp/includes/block_header', array('VIEW_HEADER' => $data['center'][$key]['VIEW_HEADER'] ) );
 				}
 				
 				if (isset($data['center'][$key]) ) {
@@ -45,7 +45,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		<?php
 			foreach($RIGHT as $key => $view) {
 				if (isset($data['right'][$key]['VIEW_HEADER']) ) {
-					$this->load->view('includes/block_header', array('VIEW_HEADER' => $data['right'][$key]['VIEW_HEADER'] ) );
+					$this->load->view('admincp/includes/block_header', array('VIEW_HEADER' => $data['right'][$key]['VIEW_HEADER'] ) );
 				}
 				
 				if (isset($data['right'][$key]) ) {
@@ -60,4 +60,4 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 	</tr>
 </table>
 </div>
-<?php $this->load->view('includes/list_footer'); ?>
+<?php $this->load->view('admincp/includes/footer'); ?>

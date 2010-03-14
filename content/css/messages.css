@@ -1,6 +1,6 @@
 .messagebox{
 	position:absolute;
-	margin-left:10px;
+	margin-left:5px;
 	width:auto;
 	border:1px solid #c93;
 	background:#ffc;
@@ -9,7 +9,7 @@
 }
 .messageboxok{
 	position:absolute;
-	margin-left:10px;
+	margin-left:5px;
 	width:auto;
 	border:1px solid #349534;
 	background:#C9FFCA;
@@ -20,7 +20,7 @@
 }
 .messageboxerror{
 	position:absolute;
-	margin-left:10px;
+	margin-left:5px;
 	width:auto;
 	border:1px solid #CC0000;
 	background:#F7CBCA;

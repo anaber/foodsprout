@@ -2,32 +2,106 @@
 
 class AnimalModel extends Model{
 	
-	// Add a animal to the database
-	function add_animal()
-	{
-		$insert_new_animal = array(
-			'animal_name' => $this->input->post('animal_name')
-		);
-		
-		$insert = $this->db->insert('animal', $insert_new_animal);
-		return $insert;
-	}
-	
 	// List all the animal in the database
 	function list_animal()
 	{
-		$this->db->order_by("animal_name", "asc");
-		$q = $this->db->get('animal');
+		$query = "SELECT * FROM animal ORDER BY animal_name";
 		
-		if($q->num_rows() > 0) {
-			foreach ($q->result() as $row) {
-				$data[] = $row;
+		log_message('debug', "AnimalModel.list_animal : " . $query);
+		$result = $this->db->query($query);
+		
+		$animals = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('AnimalLib');
+			unset($this->animalLib);
+			
+			$this->animalLib->animalId = $row['animal_id'];
+			$this->animalLib->animalName = $row['animal_name'];
+			
+			$animals[] = $this->animalLib;
+			unset($this->animalLib);
+		}
+		return $animals;
+	}
+	
+	function addAnimal() {
+		$return = true;
+		
+		$query = "SELECT * FROM animal WHERE animal_name = '" . $this->input->post('animalName') . "'";
+		log_message('debug', 'AnimalModel.addAnimal : Try to get duplicate Animal record : ' . $query);
+		
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			
+			$query = "INSERT INTO animal (animal_id, animal_name)" .
+					" values (NULL, '" . $this->input->post('animalName') . "')";
+			log_message('debug', 'AnimalModel.addAnimal : Insert Animal : ' . $query);
+			
+			if ( $this->db->query($query) ) {
+				$return = true;
+			} else {
+				$return = false;
 			}
-			return $data;
+			
+			$return = true;
+		} else {
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
 		}
-		else{
-			return FALSE;
+		
+		return $return;	
+	}
+	
+	function getAnimalFromId($animalId) {
+		
+		$query = "SELECT * FROM animal WHERE animal_id = " . $animalId;
+		log_message('debug', "AnimalModel.getFarmFromId : " . $query);
+		$result = $this->db->query($query);
+		
+		$animal = array();
+		
+		$this->load->library('AnimalLib');
+		
+		$row = $result->row();
+		
+		$this->animalLib->animalId = $row->animal_id;
+		$this->animalLib->animalName = $row->animal_name;
+		
+		return $this->animalLib;
+	}
+	
+	function updateAnimal() {
+		$return = true;
+		
+		$query = "SELECT * FROM animal WHERE animal_name = '" . $this->input->post('animalName') . "' AND animal_id <> " . $this->input->post('animalId');
+		log_message('debug', 'AnimalModel.updateAnimal : Try to get Duplicate record : ' . $query);
+			
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			
+			$data = array(
+						'animal_name' => $this->input->post('animalName'), 
+					);
+			$where = "animal_id = " . $this->input->post('animalId');
+			$query = $this->db->update_string('animal', $data, $where);
+			
+			log_message('debug', 'AnimalModel.updateAnimal : ' . $query);
+			if ( $this->db->query($query) ) {
+				$return = true;
+			} else {
+				$return = false;
+			}
+			
+		} else {
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
 		}
+				
+		return $return;
 	}
 	
 }

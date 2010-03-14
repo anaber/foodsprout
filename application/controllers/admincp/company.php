@@ -15,11 +15,8 @@ class Company extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
-		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->list_company();
 		
 		
 		// List of views to be included
@@ -27,12 +24,17 @@ class Company extends Controller {
 				'list' => 'admincp/company',
 			);
 		
+		$data['RIGHT'] = array(
+				'navigation' => 'admincp/includes/right/navigation',
+			);
+		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Companies";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['COMPANIES'] = $companies;
 		
-		$this->load->view('admincp/templates/center_template', $data);
+		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
+		
+		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
 	function add()
@@ -51,18 +53,26 @@ class Company extends Controller {
 				'list' => 'admincp/company_form',
 			);
 		
+		$data['RIGHT'] = array(
+				'navigation' => 'admincp/includes/right/navigation',
+			);
+			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Companies";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Company";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
 		
-		$this->load->view('admincp/templates/center_template', $data);
+		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
+		
+		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
-	function update()
+	function update($id)
 	{
-		$id = $this->input->get('id');
-		echo "Update ID : " . $id . "<br />";
+		$data = array();
+		
+		$this->load->model('CompanyModel');
+		$company = $this->CompanyModel->getCompanyFromId($id);
 		
 		$this->load->model('StateModel');
 		$states = $this->StateModel->list_state();
@@ -70,22 +80,33 @@ class Company extends Controller {
 		$this->load->model('CountryModel');
 		$countries = $this->CountryModel->list_country();
 		
-		$data['main_content'] = 'admincp/company_form';
-		$data['data'] = array(
-			'STATES' => $states,
-			'COUNTRIES' => $countries,
-		);
 		
-		$this->load->view('admincp/template', $data);
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/company_form',
+			);
+		
+		$data['RIGHT'] = array(
+				'navigation' => 'admincp/includes/right/navigation',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Company";
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['COMPANY'] = $company;
+		
+		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
+		
+		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
 	function save_add() {
 		
 		$this->load->model('CompanyModel', '', TRUE);
-		print_r_pre($_REQUEST);
-		/*
+		
 		$GLOBALS = array();
-		if ( $this->company_model->addCompany() ) {
+		if ( $this->CompanyModel->addCompany() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -94,7 +115,7 @@ class Company extends Controller {
 				echo 'no';
 			}
 		}
-		*/
+		
 	}
 	
 	function save_update() {

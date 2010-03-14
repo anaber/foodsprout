@@ -1,31 +1,31 @@
-Listing of all the Animal in the database<br><br>
+<?php echo anchor('admincp/animal/add', 'Add Animal'); ?><br /><br />
 
-<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
-	<tr><th>Animal Name</td></tr>
 <?php
-	$i = 0;
-	foreach($rows as $r) :
-		
-		$i++;
-		echo '<tr class="d'.($i & 1).'"><td>'.anchor('admincp/animal/edit/'.$r->animal_id, $r->animal_name).'</td></tr>';
+if (count($ANIMALS) > 0 ) {
+?>
+<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
+	<tr>
+		<th>Animal Id</th>
+		<th>Animal Name</th>
+	</tr>
+			
+	
+<?php
 
+	$i = 0;
+	foreach($ANIMALS as $r) :
+		$i++;
+		echo '<tr class="d'.($i & 1).'">';
+		echo '	<td>'.anchor('admincp/animal/update/'.$r->animalId, $r->animalId).'</td>';
+		echo '	<td>'.anchor('admincp/animal/update/'.$r->animalId, $r->animalName).'</td>';
+		echo '</tr>';
  	endforeach;
 ?>
-</table>
-
-<br><br>
-<hr size="1">
-<b>Add Animal</b><br>
 
 <?php
-	echo '<table cellpadding="2" style="-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	background: #EEEEEE;
-	color: #000000;
-	-moz-box-shadow: 0 1px 0 #CCCCCC;
-	-webkit-box-shadow: 0 1px 0 #CCCCCC;padding:10px; width:330px;"><tr><td>';
-	echo form_open('admincp/animal/add_animal');
-	echo 'Animal Name:'. form_input('animal_name', '').'<br><br>';
-	echo form_submit('submit', 'Add Animal');
-	echo '</form></td></tr></table>';
+} else {
+	echo "No animal available";
+}
+
 ?>
+</table>

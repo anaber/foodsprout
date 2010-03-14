@@ -30,10 +30,6 @@ class Country extends Controller {
 			$data['main_content'] = 'admincp/country';
 			$this->load->view('admincp/template', $data);
 		}
-		else
-		{
-			redirect('admincp/home');
-		}
 	}
 	
 	// Add a country to the database

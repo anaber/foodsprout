@@ -1,5 +1,3 @@
-Listing of all the Country in the database<br><br>
-
 <table cellpadding="3" cellspacing="0" border="0" id="tbllist">
 	<tr><th>Country Name</td></tr>
 <?php

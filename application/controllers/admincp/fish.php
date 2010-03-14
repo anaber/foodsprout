@@ -19,44 +19,104 @@ class Fish extends Controller {
 	// List all the fish in the database
 	function list_fish()
 	{
-		$this->load->model('FishModel');
+		$data = array();
+		$fishes = array();
 		
-		// Get all the fish in the database
-		$query = $this->FishModel->list_fish();
-		if($query)
-		{
-			$data['rows'] = $this->FishModel->list_fish();
-
-			$data['main_content'] = 'admincp/fish';
-			$this->load->view('admincp/template', $data);
-		}
-		else
-		{
-			redirect('admincp/home');
+		$this->load->model('FishModel');
+		$fishes = $this->FishModel->list_fish();
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/fish',
+			);
+		
+		$data['RIGHT'] = array(
+				'navigation' => 'admincp/includes/right/navigation',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Fishes";
+		$data['data']['center']['list']['FISHES'] = $fishes;
+		
+		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
+		
+		$this->load->view('admincp/templates/center_right_template', $data);
+	}
+	
+	function add()
+	{
+		$data = array();
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/fish_form',
+			);
+		
+		$data['RIGHT'] = array(
+				'navigation' => 'admincp/includes/right/navigation',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Fish";
+		
+		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
+		
+		$this->load->view('admincp/templates/center_right_template', $data);
+	}
+	
+	function save_add() {
+		
+		$this->load->model('FishModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->FishModel->addFish() ) {
+			echo "yes";
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
 		}
 	}
 	
-	// Add a fish to the database
-	function add_fish()
+	function update($id)
 	{
-		// field name, error message, validation rules
-		$this->load->library('form_validation');
+		$data = array();
 		
-		$this->form_validation->set_rules('fish_name', 'Fish Name', 'trim|required');
-		if($this->form_validation->run() == FALSE)
-		{
-			$this->index();
-		}
-		else
-		{
-			$this->load->model('fish_model');
-			if($query = $this->fish_model->add_fish())
-			{
-				redirect('admincp/fish');
-			}
-			else
-			{
-				$this->index();
+		$this->load->model('FishModel');
+		$fish = $this->FishModel->getFishFromId($id);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/fish_form',
+			);
+		
+		$data['RIGHT'] = array(
+				'navigation' => 'admincp/includes/right/navigation',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Fish";
+		$data['data']['center']['list']['FISH'] = $fish;
+		
+		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
+		
+		$this->load->view('admincp/templates/center_right_template', $data);
+	}
+	
+	function save_update() {
+		
+		$this->load->model('FishModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->FishModel->updateFish() ) {
+			echo "yes";
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
 			}
 		}
 		
