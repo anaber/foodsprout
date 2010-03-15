@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class User {
+class UserLib {
 	
 	var $userId;
 	var $email;
@@ -12,7 +12,7 @@ class User {
 	var $isAuthenticated;
 	var $userGroup;
 		
-	function User() {
+	function UserLib() {
 		$user->userId = "";
 		$user->email = "";
 		$user->zipcode = "";

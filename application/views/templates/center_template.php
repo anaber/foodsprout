@@ -7,6 +7,7 @@ for($i = 0; $i < count($CENTER); $i++ ) {
  	echo "<br /><br />";
 }
 */
+
 ?>
 <?php
 	if (isset($BREADCRUMB) ) {

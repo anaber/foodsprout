@@ -50,25 +50,33 @@ class Login extends Controller {
 		$this->load->library('form_validation');
 		// field name, error message, validation rules
 		
-		$this->form_validation->set_rules('firstname', 'Name', 'trim|required');
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-		$this->form_validation->set_rules('zipcode', 'Zip Code', 'trim|required');
-		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
-		$this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[password]');
+		//$this->form_validation->set_rules('firstname', 'Name', 'trim|required');
+		//$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+		//$this->form_validation->set_rules('zipcode', 'Zip Code', 'trim|required');
+		//$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
+		//$this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[password]');
+		
+		/* CI's validation engine creating issues, may be we are not using this correctly
+		 * We may use this section to validate see if password mathes or not.
+		 */
+		$this->form_validation->set_rules('password', 'Password', 'trim|required');
+		//$this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required');
+		
 		if($this->form_validation->run() == FALSE)
 		{
-			$this->index();
+			echo "passwordNotSame";
 		}
-		
 		else
 		{
+			
 			$this->load->model('UserModel');
 			$create_user = $this->UserModel->create_user();
 			
 			if($create_user == true)
 			{
-				// Send the user to the dashboard						
-				$this->dashboard();
+				// Send the user to the dashboard
+				// no need to send them from here. jquery will take care						
+				//$this->dashboard();
 				
 				// Now send them a welcome email
 				$this->load->library('email');
@@ -80,12 +88,13 @@ class Login extends Controller {
 				$this->email->message('Welcome to foodproject');
 
 				$this->email->send();
-
+				echo 'yes';
 			}
 			else
 			{
 				$this->load->view('user/create_account');
 			}
+			
 		}
 	}
 }

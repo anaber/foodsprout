@@ -48,18 +48,18 @@ class UserModel extends Model{
 		
 		if($insert)
 		{
-			$this->load->library('user');
+			$this->load->library('UserLib');
 			
 			//$this->user->userId = $row->user_id;
-			$this->user->email = $this->input->post('email');
-			$this->user->zipcode = $this->input->post('zipcode');
-			$this->user->firstName = $this->input->post('firstname');
-			$this->user->isActive = 1;
+			$this->userLib->email = $this->input->post('email');
+			$this->userLib->zipcode = $this->input->post('zipcode');
+			$this->userLib->firstName = $this->input->post('firstname');
+			$this->userLib->isActive = 1;
 			//$this->user->screenName = $row->screen_name;
-			$this->user->isAuthenticated = 1;
+			$this->userLib->isAuthenticated = 1;
 			//$this->user->userGroup = $row->user_group;
 			
-			$this->session->set_userdata($this->user );
+			$this->session->set_userdata($this->userLib );
 			
 			$return = true;
 		}

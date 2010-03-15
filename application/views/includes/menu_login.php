@@ -1,1 +1,1 @@
-<?php echo anchor('login', 'Sign In'); ?> | <?php echo anchor('user', 'Create Account'); ?>
+<?php echo anchor('login', 'Sign In'); ?> | <?php echo anchor('/user/create', 'Create Account'); ?>

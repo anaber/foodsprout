@@ -5,11 +5,14 @@ class User extends Controller {
 	function __construct()
 	{
 		// Ensure the user is logged in before allowing access to any of these methods
+		
 		parent::Controller();
+		/*
 		if ($this->session->userdata('isAuthenticated') != 1 )
 		{
 			redirect('login');
 		}
+		*/
 	}
 	
 	// The default for the user is the dashboard
@@ -19,8 +22,8 @@ class User extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'user/dashboard',
 		);
-			
-		$this->load->view('templates/center_template', $data);		
+		
+		$this->load->view('/templates/center_template', $data);
 	}
 	
 	// The default page after login, the users dashboard
@@ -31,7 +34,7 @@ class User extends Controller {
 				'list' => 'user/dashboard',
 		);
 			
-		$this->load->view('templates/center_template', $data);
+		$this->load->view('/templates/center_template', $data);
 	}
 	
 	// The settings for the user
@@ -55,6 +58,17 @@ class User extends Controller {
 			
 		$this->load->view('templates/center_template', $data);
 	}
+	
+	function create()
+	{
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'user/create_account',
+		);
+		
+		$this->load->view('/templates/center_template', $data);
+	}
+	
 	
 }
 
