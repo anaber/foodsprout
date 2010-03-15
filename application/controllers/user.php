@@ -2,63 +2,58 @@
 
 class User extends Controller {
 	
-	function index()
+	function __construct()
 	{
-		$data['main_content'] = 'user/create_account';
-		$this->load->view('templates/basic_template', $data);		
+		// Ensure the user is logged in before allowing access to any of these methods
+		parent::Controller();
+		if ($this->session->userdata('isAuthenticated') != 1 )
+		{
+			redirect('login');
+		}
 	}
 	
-	// Create and add a new user to the database
-	function create_user()
+	// The default for the user is the dashboard
+	function index()
 	{
-		
-		$this->load->library('form_validation');
-		// field name, error message, validation rules
-		
-		$this->form_validation->set_rules('firstname', 'Name', 'trim|required');
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-		$this->form_validation->set_rules('zipcode', 'Zip Code', 'trim|required');
-		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
-		$this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required|matches[password]');
-		if($this->form_validation->run() == FALSE)
-		{
-			$this->index();
-		}
-		
-		else
-		{
-			$this->load->model('user_model');
-			$create_user = $this->user_model->create_user();
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'user/dashboard',
+		);
 			
-			if($create_user == true)
-			{
-				// Send the user to the dashboard						
-				$this->dashboard();
-				
-				// Now send them a welcome email
-				$this->load->library('email');
-
-				$this->email->from('welcom@foodproject', 'foodproject');
-				$this->email->to($this->input->post('email'));
-
-				$this->email->subject('Welcome to foodproject, '.$this->input->post('firstname'));
-				$this->email->message('Welcome to foodproject');
-
-				$this->email->send();
-
-			}
-			else
-			{
-				$this->load->view('user/create_account');
-			}
-		}
-	}	
-
+		$this->load->view('templates/center_template', $data);		
+	}
+	
 	// The default page after login, the users dashboard
 	function dashboard()
 	{
-		$data['main_content'] = 'user/dashboard';
-		$this->load->view('templates/basic_template', $data);
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'user/dashboard',
+		);
+			
+		$this->load->view('templates/center_template', $data);
+	}
+	
+	// The settings for the user
+	function settings()
+	{
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'user/settings',
+		);
+			
+		$this->load->view('templates/center_template', $data);
+	}
+	
+	// Add a product
+	function addProduct()
+	{
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'product/product_add',
+		);
+			
+		$this->load->view('templates/center_template', $data);
 	}
 	
 }

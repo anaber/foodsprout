@@ -1,5 +1,13 @@
 <?php $this->load->view('includes/header'); ?>
-<br>
+<?php
+	if (isset($BREADCRUMB) ) {
+		
+		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
+	}
+	else{
+		echo '<br>';
+	}
+?>
 <div id="main-content">
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="home_table">
 	<tr>
@@ -70,4 +78,4 @@
 	</tr>
 </table>
 </div>
-<?php $this->load->view('includes/home_footer'); ?>
+<?php $this->load->view('includes/footer'); ?>

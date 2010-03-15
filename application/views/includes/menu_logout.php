@@ -1,1 +1,1 @@
-Dashboard | Settings | <?php echo anchor('login/signout', 'Sign Out'); ?>
+<?php echo anchor('user/dashboard', 'Dashboard'); ?> | <?php echo anchor('user/settings', 'Settings'); ?> | <?php echo anchor('login/signout', 'Sign Out'); ?>

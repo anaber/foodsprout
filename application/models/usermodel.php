@@ -40,13 +40,26 @@ class UserModel extends Model{
 			'isActive' => 1
 		);
 		
+		log_message('debug', $new_user_insert_data);
+		
 		$insert = $this->db->insert('user', $new_user_insert_data);
 		
 		$return = false;
 		
 		if($insert)
 		{
-			//$this->load->library('user');
+			$this->load->library('user');
+			
+			//$this->user->userId = $row->user_id;
+			$this->user->email = $this->input->post('email');
+			$this->user->zipcode = $this->input->post('zipcode');
+			$this->user->firstName = $this->input->post('firstname');
+			$this->user->isActive = 1;
+			//$this->user->screenName = $row->screen_name;
+			$this->user->isAuthenticated = 1;
+			//$this->user->userGroup = $row->user_group;
+			
+			$this->session->set_userdata($this->user );
 			
 			$return = true;
 		}
@@ -54,8 +67,6 @@ class UserModel extends Model{
 		{
 			$return = false;
 		}
-		
-		//$return = true;
 		
 		return $return;
 		

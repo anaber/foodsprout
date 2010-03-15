@@ -58,7 +58,8 @@ class LoginModel extends Model{
 		return $return;
 	}
 	
-	function validate()
+	// Validate a user from the regular login screen
+	function validateUser()
 	{
 		$query = 'SELECT user.*, user_group.*, user_group_member.* '.
 				' FROM user, user_group, user_group_member' .
@@ -84,7 +85,6 @@ class LoginModel extends Model{
 				$this->user->email = $row->email;
 				$this->user->zipcode = $row->zipcode;
 				$this->user->firstName = $row->first_name;
-				$this->user->lastName = $row->last_name;
 				$this->user->isActive = $row->isActive;
 				$this->user->screenName = $row->screen_name;
 				$this->user->isAuthenticated = 1;

@@ -60,4 +60,4 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 	</tr>
 </table>
 </div>
-<?php $this->load->view('includes/list_footer'); ?>
+<?php $this->load->view('includes/footer'); ?>

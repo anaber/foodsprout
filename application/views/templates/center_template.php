@@ -13,6 +13,9 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 		
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	}
+	else{
+		echo '<br>';
+	}
 ?>
 <div id="main-content">
 
@@ -37,4 +40,4 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 	</table>
 </div>
 
-<?php $this->load->view('includes/list_footer'); ?>
+<?php $this->load->view('includes/footer'); ?>
