@@ -2,14 +2,12 @@
 
 class CompanyModel extends Model{
 	
-	// List all the products in the database
+	// Generate a simple list of all the companies in the database
 	function list_company()
 	{
-		$query = "SELECT company.*, state.state_name, country.country_name " .
-				" FROM company, state, country " .
-				" WHERE company.state_id = state.state_id" .
-				" AND company.country_id = country.country_id " .
-				" ORDER BY company_name";
+		$query = "SELECT company.* " .
+				 " FROM company " .
+				 " ORDER BY company_name";
 		
 		log_message('debug', "CompanyModel.list_company : " . $query);
 		$result = $this->db->query($query);
@@ -23,12 +21,6 @@ class CompanyModel extends Model{
 			
 			$this->companyLib->companyId = $row['company_id'];
 			$this->companyLib->companyName = $row['company_name'];
-			$this->companyLib->streetAddress = $row['street_address'];
-			$this->companyLib->stateId = $row['state_id'];
-			$this->companyLib->stateName = $row['state_name'];
-			$this->companyLib->countryId = $row['country_id'];
-			$this->companyLib->countryName = $row['country_name'];
-			$this->companyLib->zipcode = $row['zipcode'];
 			$this->companyLib->creationDate = $row['creation_date'];
 			
 			$companies[] = $this->companyLib;
@@ -38,6 +30,13 @@ class CompanyModel extends Model{
 		return $companies;
 	}
 	
+	// Generate a detailed list of all the companies in the database.
+	function listCompanyMore()
+	{
+		
+	}
+	
+	// Add the company data from the controller into the database
 	function addCompany() {
 		$return = true;
 		
@@ -48,11 +47,21 @@ class CompanyModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$query = "INSERT INTO company (company_id, company_name, country_id, state_id, city, street_address, zipcode, creation_date)" .
-					" values (NULL, '" . $this->input->post('companyName') . "', '" . $this->input->post('countryId') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('city') . "', '" . $this->input->post('streetAddress') . "', '" . $this->input->post('zipcode') . "', NOW() )";
+			$query = "INSERT INTO company (company_id, company_name, creation_date)" .
+					" values (NULL, '" . $this->input->post('companyName') . "', NOW() )";
 			log_message('debug', 'CompanyModel.addCompany : Insert Company : ' . $query);
 			
 			if ( $this->db->query($query) ) {
+				
+				$new_company_id = $this->db->insert_id();
+				
+				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, company_id)" .
+						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', $new_company_id )";
+				
+			log_message('debug', 'CompanyModel.addCompany : Insert Company : ' . $query);
+			
+			$result = $this->db->query($query);	
+				
 				$return = true;
 			} else {
 				$return = false;
@@ -67,9 +76,10 @@ class CompanyModel extends Model{
 		return $return;	
 	}
 	
+	// Get all the data for one specific company using company_id
 	function getCompanyFromId($companyId) {
 		
-		$query = "SELECT * FROM company WHERE company_id = " . $companyId;
+		$query = "SELECT company.*, address.* FROM company, address WHERE company.company_id = address.company_id AND company.company_id = " . $companyId;
 		log_message('debug', "CompanyModel.getCompanyFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -81,7 +91,8 @@ class CompanyModel extends Model{
 		
 		$this->companyLib->companyId = $row->company_id;
 		$this->companyLib->companyName = $row->company_name;
-		$this->companyLib->streetAddress = $row->street_address;
+		$this->companyLib->streetNumber = $row->street_number;
+		$this->companyLib->street = $row->street;
 		$this->companyLib->city = $row->city;
 		$this->companyLib->stateId = $row->state_id;
 		$this->companyLib->countryId = $row->country_id;

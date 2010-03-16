@@ -37,6 +37,7 @@ class Farm extends Controller {
 		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
+	// Create the form page to add a farm to the database, does not actually add the data, only builds the form
 	function add()
 	{
 		$data = array();
@@ -101,13 +102,19 @@ class Farm extends Controller {
 		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
+	// Pass the form data to the model to be inserted into the database
 	function save_add() {
 		
 		$this->load->model('FarmModel', '', TRUE);
 		
 		$GLOBALS = array();
 		if ( $this->FarmModel->addFarm() ) {
-			echo "yes";
+			
+			// TO DO: IF THE USER DOES NOT HAVE JAVASCRIPT WE NEED TO USE SERVER SIDE REDIRECT.  BELOW CODE WILL DO THIS, HOWEVER THE echo 'yes' IS REQUIRED TO PASS TO THE JAVASCRIPT.  CONSIDER A BETTER WAY TO NOTIFY THE JQUERY JAVASCRIPT THAT THE EVENT WAS SUCCESSFUL SO AS TO ALLOW THE PROPER REDIRECT FOR NON JAVASCRIPT
+			// Added the new farm successfully, send user to index
+			//$this->index();
+			echo 'yes';
+			
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
 				echo $GLOBALS['error'];

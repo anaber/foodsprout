@@ -3,13 +3,11 @@
 class RestaurantModel extends Model{
 	
 	
-	// List all the products in the database
+	// Generate a simple list of all the restaurants in the database.
 	function list_restaurant()
 	{
-		$query = "SELECT restaurant.*, state.state_name, country.country_name " .
-				" FROM restaurant, state, country " .
-				" WHERE restaurant.state_id = state.state_id" .
-				" AND restaurant.country_id = country.country_id " .
+		$query = "SELECT restaurant.* " .
+				" FROM restaurant " .
 				" ORDER BY restaurant_name";
 		
 		log_message('debug', "RestaurantModel.list_restaurant : " . $query);
@@ -24,12 +22,6 @@ class RestaurantModel extends Model{
 			
 			$this->restaurantLib->restaurantId = $row['restaurant_id'];
 			$this->restaurantLib->restaurantName = $row['restaurant_name'];
-			$this->restaurantLib->streetAddress = $row['street_address'];
-			$this->restaurantLib->stateId = $row['state_id'];
-			$this->restaurantLib->stateName = $row['state_name'];
-			$this->restaurantLib->countryId = $row['country_id'];
-			$this->restaurantLib->countryName = $row['country_name'];
-			$this->restaurantLib->zipcode = $row['zipcode'];
 			$this->restaurantLib->creationDate = $row['creation_date'];
 			
 			$companies[] = $this->restaurantLib;
@@ -39,6 +31,13 @@ class RestaurantModel extends Model{
 		return $companies;
 	}
 	
+	// Generate a detailed list of all the restaurants in the database.
+	function listRestaurantMore()
+	{
+		
+	}
+	
+	// Input the data from the controller
 	function addRestaurant() {
 		$return = true;
 		
@@ -49,11 +48,19 @@ class RestaurantModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$query = "INSERT INTO restaurant (restaurant_id, restaurant_name, country_id, state_id, city, street_address, zipcode, creation_date)" .
-					" values (NULL, '" . $this->input->post('restaurantName') . "', '" . $this->input->post('countryId') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('city') . "', '" . $this->input->post('streetAddress') . "', '" . $this->input->post('zipcode') . "', NOW() )";
+			$query = "INSERT INTO restaurant (restaurant_id, restaurant_name, creation_date)" .
+					" values (NULL, '" . $this->input->post('restaurantName') . "', NOW() )";
 			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 			
 			if ( $this->db->query($query) ) {
+				$new_restaurant_id = $this->db->insert_id();
+				
+				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, restaurant_id)" .
+						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', $new_restaurant_id )";
+				
+			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
+			
+			$result = $this->db->query($query);
 				$return = true;
 			} else {
 				$return = false;
@@ -68,9 +75,10 @@ class RestaurantModel extends Model{
 		return $return;	
 	}
 	
+	// Pulls the data from the database for a specific restaurant
 	function getRestaurantFromId($restaurantId) {
 		
-		$query = "SELECT * FROM restaurant WHERE restaurant_id = " . $restaurantId;
+		$query = "SELECT restaurant.*, address.* FROM restaurant, address WHERE restaurant.restaurant_id = address.restaurant_id AND restaurant.restaurant_id = " . $restaurantId;
 		log_message('debug', "RestaurantModel.getRestaurantFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -82,7 +90,8 @@ class RestaurantModel extends Model{
 		
 		$this->restaurantLib->restaurantId = $row->restaurant_id;
 		$this->restaurantLib->restaurantName = $row->restaurant_name;
-		$this->restaurantLib->streetAddress = $row->street_address;
+		$this->restaurantLib->streetNumber = $row->street_number;
+		$this->restaurantLib->street = $row->street;
 		$this->restaurantLib->city = $row->city;
 		$this->restaurantLib->stateId = $row->state_id;
 		$this->restaurantLib->countryId = $row->country_id;

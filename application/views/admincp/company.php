@@ -4,7 +4,6 @@
 	<tr>
 		<th>Company Id</th>
 		<th>Company Name</th>
-		<th>Address</th>
 		<th>Creation Date</td>
 	</tr>
 			
@@ -16,7 +15,6 @@
 		echo '<tr class="d'.($i & 1).'">';
 		echo '	<td>'.anchor('admincp/company/update/'.$r->companyId, $r->companyId).'</td>';
 		echo '	<td>'.anchor('admincp/company/update/'.$r->companyId, $r->companyName).'</td>';
-		echo '	<td>'.$r->streetAddress . ',<br/>' . $r->stateName . ', ' . $r->countryName . ', - ' . $r->zipcode . '</td>';
 		echo '	<td>'. date('Y-m-d', strtotime($r->creationDate) ) .'</td>';
 		echo '</tr>';
 

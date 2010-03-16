@@ -37,23 +37,25 @@ $(document).ready(function() {
 			if ($('#farm_id').val() != '' ) {
 				var formAction = '/admincp/farm/save_update';
 				postArray = {
-							  farmName:$('#farm_name').val(),
-							  streetAddress:$('#street_address').val(),
-							  customUrl: $('#custom_url').val(),
-							  stateId:$('#state_id').val(),
-							  countryId:$('#country_id').val(),
+							  farmName:$('#farmName').val(),
+							  streetNumber:$('#streetNumber').val(),
+							  street:$('#street').val(),
+							  city: $('#city').val(),
+							  stateId:$('#stateId').val(),
+							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(), 
-							  farmId: $('#farm_id').val()
+							  farmId: $('#farmId').val()
 							};
 				act = 'update';		
 			} else {
 				formAction = '/admincp/farm/save_add';
 				postArray = { 
-							  farmName:$('#farm_name').val(),
-							  streetAddress:$('#street_address').val(),
-							  customUrl: $('#custom_url').val(),
-							  stateId:$('#state_id').val(),
-							  countryId:$('#country_id').val(),
+							  farmName:$('#farmName').val(),
+							  streetNumber:$('#streetNumber').val(),
+							  street:$('#street').val(),
+							  city: $('#city').val(),
+							  stateId:$('#stateId').val(),
+							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val()
 							};
 				act = 'add';
@@ -68,7 +70,7 @@ $(document).ready(function() {
 						if (act == 'add') {
 							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/company';
+								document.location='/admincp/farm';
 							});	
 						} else if (act == 'update') {
 							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
@@ -119,24 +121,37 @@ $(document).ready(function() {
 <?php echo anchor('admincp/farm', 'List Farms'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
-<form id="farmForm" method="post" action="">
+
+<form id="farmForm" method="post" <?php echo (isset($FARM)) ? 'action="/admincp/farm/save_update"' : 'action="/admincp/farm/save_add"' ?>>
 <table class="formTable">
 	<tr>
-		<td width = "25%">Farm Name</td>
+		<td width = "25%" nowrap>Farm Name</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($FARM) ? $FARM->farmName : '') ?>" class="validate[required]" type="text" name="farm_name" id="farm_name" /><br />
+			<input value="<?php echo (isset($FARM) ? $FARM->farmName : '') ?>" class="validate[required]" type="text" name="farmName" id="farmName"/><br />
 		</td>
 	<tr>
 	<tr>
-		<td width = "25%" nowrap>Street Address</td>
+		<td width = "25%">Street Number</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($FARM) ? $FARM->streetAddress : '') ?>" class="validate[required]" type="text" name="street_address" id="street_address" /><br />
+			<input value="<?php echo (isset($FARM) ? $FARM->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%">Street Name</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%">City</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
 		</td>
 	<tr>
 	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
-			<select name="state_id" id="state_id"  class="validate[required]">
+			<select name="stateId" id="stateId"  class="validate[required]">
 			<option value = ''>--State--</option>
 			<?php
 				foreach($STATES as $key => $value) {
@@ -149,7 +164,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
-			<select name="country_id" id="country_id"  class="validate[required]">
+			<select name="countryId" id="countryId"  class="validate[required]">
 			<option value = ''>--Country--</option>
 			<?php
 				foreach($COUNTRIES as $key => $value) {
@@ -166,12 +181,6 @@ $(document).ready(function() {
 		</td>
 	<tr>
 	<tr>
-		<td width = "25%">Custom URL</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($FARM) ? $FARM->customUrl : '') ?>" class="validate[required]" type="text" name="custom_url" id="custom_url" /><br />
-		</td>
-	<tr>
-	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FARM)) ? 'Update Farm' : 'Add Farm' ?>">
 			<input type = "hidden" name = "farm_id" id = "farm_id" value = "<?php echo (isset($FARM) ? $FARM->farmId : '') ?>">
@@ -179,3 +188,4 @@ $(document).ready(function() {
 	<tr>
 </table>
 </form>
+

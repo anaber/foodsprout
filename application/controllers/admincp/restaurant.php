@@ -11,6 +11,7 @@ class Restaurant extends Controller {
 		}
 	}
 	
+	// Default is to list all the restaurants
 	function index()
 	{
 		$data = array();
@@ -30,13 +31,14 @@ class Restaurant extends Controller {
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Restaurants";
-		$data['data']['center']['list']['FARMS'] = $restaurants;
+		$data['data']['center']['list']['RESTAURANTS'] = $restaurants;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
 		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
+	// This function will create the form to add a restaurant but does not save the data to the database
 	function add()
 	{
 		$data = array();
@@ -94,20 +96,25 @@ class Restaurant extends Controller {
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Restaurant";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['FARM'] = $restaurant;
+		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
 		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
+	// This function will save the new restaurant data into the database
 	function save_add() {
 		
 		$this->load->model('RestaurantModel', '', TRUE);
 		
 		$GLOBALS = array();
 		if ( $this->RestaurantModel->addRestaurant() ) {
-			echo "yes";
+			// TO DO: IF THE USER DOES NOT HAVE JAVASCRIPT WE NEED TO USE SERVER SIDE REDIRECT.  BELOW CODE WILL DO THIS, HOWEVER THE echo 'yes' IS REQUIRED TO PASS TO THE JAVASCRIPT.  CONSIDER A BETTER WAY TO NOTIFY THE JQUERY JAVASCRIPT THAT THE EVENT WAS SUCCESSFUL SO AS TO ALLOW THE PROPER REDIRECT FOR NON JAVASCRIPT
+			// Added the new restaurant successfully, send user to index
+			//$this->index();
+			echo 'yes';
+			
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
 				echo $GLOBALS['error'];
@@ -124,7 +131,9 @@ class Restaurant extends Controller {
 		
 		$GLOBALS = array();
 		if ( $this->RestaurantModel->updateRestaurant() ) {
-			echo "yes";
+			
+			// The new restaurant was successfully updated, send user to index
+			$this->index();
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
 				echo $GLOBALS['error'];

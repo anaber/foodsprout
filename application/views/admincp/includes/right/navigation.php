@@ -32,7 +32,7 @@
 	<?php echo anchor('admincp/logout', 'Logout'); ?>
 
 </div>
-<hr size="1">
+
 <?php
 	}
 ?>

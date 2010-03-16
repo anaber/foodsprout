@@ -37,23 +37,25 @@ $(document).ready(function() {
 			if ($('#company_id').val() != '' ) {
 				var formAction = '/admincp/company/save_update';
 				postArray = {
-							  companyName:$('#company_name').val(),
-							  streetAddress:$('#street_address').val(),
+							  companyName:$('#companyName').val(),
+							  streetNumber:$('#streetNumber').val(),
+							  street:$('#street').val(),
 							  city: $('#city').val(),
-							  stateId:$('#state_id').val(),
-							  countryId:$('#country_id').val(),
+							  stateId:$('#stateId').val(),
+							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(), 
-							  companyId: $('#company_id').val()
+							  companyId: $('#companyId').val()
 							};
 				act = 'update';		
 			} else {
 				formAction = '/admincp/company/save_add';
 				postArray = { 
-							  companyName:$('#company_name').val(),
-							  streetAddress:$('#street_address').val(),
+							  companyName:$('#companyName').val(),
+							  streetNumber:$('#streetNumber').val(),
+							  street:$('#street').val(),
 							  city: $('#city').val(),
-							  stateId:$('#state_id').val(),
-							  countryId:$('#country_id').val(),
+							  stateId:$('#stateId').val(),
+							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val()
 							};
 				act = 'add';
@@ -120,18 +122,25 @@ $(document).ready(function() {
 <?php echo anchor('admincp/company', 'List Companies'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
-<form id="companyForm" method="post" action="">
+
+<form id="companyForm" method="post" <?php echo (isset($COMPANY)) ? 'action="/admincp/company/save_update"' : 'action="/admincp/company/save_add"' ?>>
 <table class="formTable">
 	<tr>
 		<td width = "25%" nowrap>Company Name</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->companyName : '') ?>" class="validate[required]" type="text" name="company_name" id="company_name"/><br />
+			<input value="<?php echo (isset($COMPANY) ? $COMPANY->companyName : '') ?>" class="validate[required]" type="text" name="companyName" id="companyName"/><br />
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%">Street Number</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($COMPANY) ? $COMPANY->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
 		</td>
 	<tr>
 	<tr>
 		<td width = "25%">Street Address</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->streetAddress : '') ?>" class="validate[required]" type="text" name="street_address" id="street_address"/><br />
+			<input value="<?php echo (isset($COMPANY) ? $COMPANY->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
 		</td>
 	<tr>
 	<tr>
@@ -143,7 +152,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
-			<select name="state_id" id="state_id"  class="validate[required]">
+			<select name="stateId" id="stateId"  class="validate[required]">
 			<option value = ''>--State--</option>
 			<?php
 				foreach($STATES as $key => $value) {
@@ -156,7 +165,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
-			<select name="country_id" id="country_id"  class="validate[required]">
+			<select name="countryId" id="countryId"  class="validate[required]">
 			<option value = ''>--Country--</option>
 			<?php
 				foreach($COUNTRIES as $key => $value) {

@@ -2,13 +2,11 @@
 
 class FarmModel extends Model{
 	
-	// List all the products in the database
+	// Create a simple list of all the farms
 	function list_farm()
 	{
-		$query = "SELECT farm.*, state.state_name, country.country_name " .
-				" FROM farm, state, country " .
-				" WHERE farm.state_id = state.state_id" .
-				" AND farm.country_id = country.country_id " .
+		$query = "SELECT farm.* " .
+				" FROM farm " .
 				" ORDER BY farm_name";
 		
 		log_message('debug', "FarmModel.list_farm : " . $query);
@@ -23,12 +21,6 @@ class FarmModel extends Model{
 			
 			$this->farmLib->farmId = $row['farm_id'];
 			$this->farmLib->farmName = $row['farm_name'];
-			$this->farmLib->streetAddress = $row['street_address'];
-			$this->farmLib->stateId = $row['state_id'];
-			$this->farmLib->stateName = $row['state_name'];
-			$this->farmLib->countryId = $row['country_id'];
-			$this->farmLib->countryName = $row['country_name'];
-			$this->farmLib->zipcode = $row['zipcode'];
 			$this->farmLib->creationDate = $row['creation_date'];
 			
 			$farms[] = $this->farmLib;
@@ -38,6 +30,7 @@ class FarmModel extends Model{
 		return $farms;
 	}
 	
+	// Insert the new farm data into the database
 	function addFarm() {
 		$return = true;
 		
@@ -48,11 +41,19 @@ class FarmModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$query = "INSERT INTO farm (farm_id, farm_name, country_id, state_id, street_address, zipcode, creation_date, custom_url)" .
-					" values (NULL, '" . $this->input->post('farmName') . "', '" . $this->input->post('countryId') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('streetAddress') . "', '" . $this->input->post('zipcode') . "', NOW(), '" . $this->input->post('customUrl') . "' )";
+			$query = "INSERT INTO farm (farm_id, farm_name, creation_date)" .
+					" values (NULL, '" . $this->input->post('farmName') . "', NOW() )";
 			log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
 			
 			if ( $this->db->query($query) ) {
+				$new_farm_id = $this->db->insert_id();
+				
+				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, farm_id)" .
+						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', $new_farm_id )";
+				
+			log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
+			
+			$result = $this->db->query($query);
 				$return = true;
 			} else {
 				$return = false;
@@ -67,13 +68,14 @@ class FarmModel extends Model{
 		return $return;	
 	}
 	
+	// Get all the information about one specific farm from an ID
 	function getFarmFromId($farmId) {
 		
-		$query = "SELECT * FROM farm WHERE farm_id = " . $farmId;
+		$query = "SELECT farm.*, address.* FROM farm, address WHERE farm.farm_id = address.farm_id AND farm.farm_id = " . $farmId;
 		log_message('debug', "FarmModel.getFarmFromId : " . $query);
 		$result = $this->db->query($query);
 		
-		$company = array();
+		$farm = array();
 		
 		$this->load->library('FarmLib');
 		
@@ -81,7 +83,9 @@ class FarmModel extends Model{
 		
 		$this->farmLib->farmId = $row->farm_id;
 		$this->farmLib->farmName = $row->farm_name;
-		$this->farmLib->streetAddress = $row->street_address;
+		$this->farmLib->streetNumber = $row->street_number;
+		$this->farmLib->street = $row->street;
+		$this->farmLib->city = $row->city;
 		$this->farmLib->stateId = $row->state_id;
 		$this->farmLib->countryId = $row->country_id;
 		$this->farmLib->zipcode = $row->zipcode;

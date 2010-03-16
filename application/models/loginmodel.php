@@ -23,7 +23,7 @@ class LoginModel extends Model{
 			
 			if ($row->isActive == 1) {
 				
-				$this->load->library('user');
+				$this->load->library('UserLib');
 				
 				$this->user->userId = $row->user_id;
 				$this->user->email = $row->email;
@@ -79,7 +79,7 @@ class LoginModel extends Model{
 			
 			if ($row->isActive == 1) {
 				
-				$this->load->library('user');
+				$this->load->library('UserLib');
 				
 				$this->user->userId = $row->user_id;
 				$this->user->email = $row->email;

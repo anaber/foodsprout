@@ -23,9 +23,9 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 	}
 ?>
 <div id="main-content">
-<table width = "100%" border = "1" cellpadding = "0" cellspacing = "0">
+<table width = "980" border = "0" cellpadding = "5" cellspacing = "0">
 	<tr>
-		<td width = "70%" valign = "top">
+		<td width = "820" valign = "top">
 		<?php
 			foreach($CENTER as $key => $view) {
 				if (isset($data['center'][$key]['VIEW_HEADER']) ) {
@@ -41,7 +41,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 			}
 		?>
 		<td>
-		<td width = "30%" valign = "top">
+		<td width = "160" valign = "top">
 		<?php
 			foreach($RIGHT as $key => $view) {
 				if (isset($data['right'][$key]['VIEW_HEADER']) ) {
