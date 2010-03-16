@@ -19,7 +19,7 @@
 	<?php echo anchor('admincp/user', 'Users'); ?><br /><br />
 	
 	<?php echo anchor('admincp/ingredienttype', 'Ingredient Type'); ?><br />
-	<?php echo anchor('admincp/cousine', 'Cousine'); ?><br />
+	<?php echo anchor('admincp/cuisine', 'Cuisine'); ?><br />
 	<?php echo anchor('admincp/fruittype', 'Fruit Type'); ?><br />
 	<?php echo anchor('admincp/insect', 'Insect'); ?><br />
 	<?php echo anchor('admincp/meattype', 'Meat Type'); ?><br />
