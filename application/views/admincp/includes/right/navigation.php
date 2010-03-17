@@ -1,8 +1,10 @@
 <?php
 	if ($this->session->userdata('isAuthenticated') == 1 ) {
 ?>
-	<div id="main_menu">
+	<div id="sec_menu">
 
+	<?php
+	/*
 	<?php echo anchor('admincp/dashboard', 'Dashboard'); ?><br />
 	<?php echo anchor('admincp/company', 'Companies'); ?> <br />
 	<?php echo anchor('admincp/farm', 'Farm'); ?><br />
@@ -17,6 +19,8 @@
 	<?php echo anchor('admincp/country', 'Country'); ?><br />
 	<?php echo anchor('admincp/state', 'State'); ?><br />
 	<?php echo anchor('admincp/user', 'Users'); ?><br /><br />
+	*/
+	?>
 	
 	<?php echo anchor('admincp/ingredienttype', 'Ingredient Type'); ?><br />
 	<?php echo anchor('admincp/cuisine', 'Cuisine'); ?><br />

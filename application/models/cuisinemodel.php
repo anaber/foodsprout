@@ -20,12 +20,13 @@ class CuisineModel extends Model{
 			$this->cuisineLib->cuisineId = $row['cuisine_id'];
 			$this->cuisineLib->cuisineName = $row['cuisine_name'];
 			
-			$cuisinees[] = $this->cuisineLib;
+			$cuisines[] = $this->cuisineLib;
 			unset($this->cuisineLib);
 		}
 		return $cuisines;
 	}
 	
+	// Add the cuisine to the database
 	function addCuisine() {
 		$return = true;
 		
