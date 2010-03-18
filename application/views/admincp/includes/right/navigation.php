@@ -30,7 +30,7 @@
 	<?php echo anchor('admincp/ingredienttype', 'Ingredient Type'); ?><br />
 	<?php echo anchor('admincp/fruittype', 'Fruit Type'); ?><br />
 	<?php echo anchor('admincp/meattype', 'Meat Type'); ?><br />
-	<?php echo anchor('admincp/processingfacilitytype', 'Processing Facility Type'); ?><br />
+	<?php echo anchor('admincp/facilitytype', 'Processing Facility Type'); ?><br />
 	<?php echo anchor('admincp/producttype', 'Product Type'); ?><br />
 	<?php echo anchor('admincp/restauranttype', 'Restaurant Type'); ?><br />
 	<?php echo anchor('admincp/vegetabletype', 'Vegetable Type'); ?><br /><br />
