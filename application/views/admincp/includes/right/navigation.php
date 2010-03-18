@@ -22,12 +22,14 @@
 	*/
 	?>
 	
+	<?php echo anchor('admincp/insect', 'Insects'); ?><br />
+	<?php echo anchor('admincp/cuisine', 'Cuisines'); ?><br />
+	<?php echo anchor('admincp/plant', 'Plants'); ?><br />
+	<br />
+	<strong>Types</strong><br>
 	<?php echo anchor('admincp/ingredienttype', 'Ingredient Type'); ?><br />
-	<?php echo anchor('admincp/cuisine', 'Cuisine'); ?><br />
 	<?php echo anchor('admincp/fruittype', 'Fruit Type'); ?><br />
-	<?php echo anchor('admincp/insect', 'Insect'); ?><br />
 	<?php echo anchor('admincp/meattype', 'Meat Type'); ?><br />
-	<?php echo anchor('admincp/plant', 'Plant'); ?><br />
 	<?php echo anchor('admincp/processingfacilitytype', 'Processing Facility Type'); ?><br />
 	<?php echo anchor('admincp/producttype', 'Product Type'); ?><br />
 	<?php echo anchor('admincp/restauranttype', 'Restaurant Type'); ?><br />
