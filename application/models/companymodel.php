@@ -105,27 +105,50 @@ class CompanyModel extends Model{
 		$return = true;
 		
 		$query = "SELECT * FROM company WHERE company_name = '" . $this->input->post('companyName') . "' AND company_id <> " . $this->input->post('companyId');
+		
 		log_message('debug', 'CompanyModel.updateCompany : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
 			
+			$CI =& get_instance();
+			$CI->load->model('AddressModel','',true);
+			
+			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+			
+			$CI->load->model('GoogleMapModel','',true);
+			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+			
 			$data = array(
 						'company_name' => $this->input->post('companyName'), 
-						'street_address' => $this->input->post('streetAddress'),
-						'city' => $this->input->post('city'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-						 
 					);
 			$where = "company_id = " . $this->input->post('companyId');
 			$query = $this->db->update_string('company', $data, $where);
 			
 			log_message('debug', 'CompanyModel.updateCompany : ' . $query);
 			if ( $this->db->query($query) ) {
-				$return = true;
+				
+				$data = array(
+						'street_number' => $this->input->post('streetNumber'),
+						'city' => $this->input->post('city'),
+						'state_id' => $this->input->post('stateId'),
+						'country_id' => $this->input->post('countryId'),
+						'zipcode' => $this->input->post('zipcode'),
+						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
+						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
+						
+					);
+				$where = "company_id = " . $this->input->post('companyId');
+				$query = $this->db->update_string('address', $data, $where);
+				if ( $this->db->query($query) ) {
+					$return = true;
+				} else {
+					$return = false;
+				}
+				
+				log_message('debug', 'CompanyModel.updateCompany : ' . $query);
+				
 			} else {
 				$return = false;
 			}
@@ -134,7 +157,7 @@ class CompanyModel extends Model{
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-				
+			
 		return $return;
 	}
 	

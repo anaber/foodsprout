@@ -37,6 +37,25 @@ class StateModel extends Model{
 		return $states;
 	}
 	
+	function getStateFromId($stateId) {
+		
+		$query = 'SELECT * FROM state WHERE state_id = '. $stateId;
+		log_message('debug', "StateModel.getStateFromId : " . $query);
+		$result = $this->db->query($query);
+		
+		$state = array();
+		
+		$this->load->library('StateLib');
+		
+		$row = $result->row();
+		
+		$this->stateLib->stateId = $row->state_id;
+		$this->stateLib->stateName = $row->state_name;
+		$this->stateLib->stateCode = $row->state_code;
+		
+		return $this->stateLib;
+	}
+	
 }
 
 

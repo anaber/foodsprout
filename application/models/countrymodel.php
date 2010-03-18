@@ -38,6 +38,24 @@ class CountryModel extends Model{
 		return $countries;
 	}
 	
+	function getCountryFromId($countryId) {
+		
+		$query = 'SELECT * FROM country WHERE country_id = '. $countryId;
+		log_message('debug', "CountryModel.getCountryFromId : " . $query);
+		$result = $this->db->query($query);
+		
+		$state = array();
+		
+		$this->load->library('CountryLib');
+		
+		$row = $result->row();
+		
+		$this->countryLib->countryId = $row->country_id;
+		$this->countryLib->countryName = $row->country_name;
+		
+		return $this->countryLib;
+	}
+	
 }
 
 
