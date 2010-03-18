@@ -38,13 +38,15 @@ $(document).ready(function() {
 				var formAction = '/admincp/insect/save_update';
 				postArray = {
 							  insectName:$('#insect_name').val(),
+							  description:$('#description').val(),
 							  insectId: $('#insect_id').val()
 							};
 				act = 'update';		
 			} else {
 				formAction = '/admincp/insect/save_add';
 				postArray = { 
-							  insectName:$('#insect_name').val()
+							  insectName:$('#insect_name').val(),
+							  description:$('#description').val(),
 							};
 				act = 'add';
 			}
@@ -116,6 +118,12 @@ $(document).ready(function() {
 		<td width = "25%">Insect Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($INSECT) ? $INSECT->insectName : '') ?>" class="validate[required]" type="text" name="insect_name" id="insect_name" /><br />
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%">Description</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($INSECT) ? $INSECT->description : '') ?>" class="validate[optional]" type="text" name="description" id="description" /><br />
 		</td>
 	<tr>
 	

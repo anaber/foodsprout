@@ -98,7 +98,7 @@ class Cuisine extends Controller {
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Cuisine";
-		$data['data']['center']['list']['ANIMAL'] = $cuisine;
+		$data['data']['center']['list']['CUISINE'] = $cuisine;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		

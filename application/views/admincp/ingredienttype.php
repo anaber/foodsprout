@@ -21,11 +21,9 @@ if (count($INGREDIENTTYPES) > 0 ) {
 		echo '</tr>';
  	endforeach;
 ?>
-
+</table>
 <?php
 } else {
 	echo "No cuisine available";
 }
-
 ?>
-</table>

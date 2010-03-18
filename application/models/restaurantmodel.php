@@ -55,8 +55,15 @@ class RestaurantModel extends Model{
 			if ( $this->db->query($query) ) {
 				$new_restaurant_id = $this->db->insert_id();
 				
-				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, restaurant_id)" .
-						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', $new_restaurant_id )";
+				$CI =& get_instance();
+				$CI->load->model('AddressModel','',true);
+				$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+			
+				$CI->load->model('GoogleMapModel','',true);
+				$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+				
+				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, restaurant_id)" .
+						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', $new_restaurant_id )";
 				
 			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 			
@@ -110,14 +117,16 @@ class RestaurantModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
+			$CI =& get_instance();
+			$CI->load->model('AddressModel','',true);
+			
+			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+			
+			$CI->load->model('GoogleMapModel','',true);
+			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+			
 			$data = array(
 						'restaurant_name' => $this->input->post('restaurantName'), 
-						'street_address' => $this->input->post('streetAddress'),
-						'city' => $this->input->post('city'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-						 
 					);
 			$where = "restaurant_id = " . $this->input->post('restaurantId');
 			$query = $this->db->update_string('restaurant', $data, $where);
@@ -125,6 +134,26 @@ class RestaurantModel extends Model{
 			log_message('debug', 'RestaurantModel.updateRestaurant : ' . $query);
 			if ( $this->db->query($query) ) {
 				$return = true;
+				
+				$data = array(
+						'street_number' => $this->input->post('streetNumber'),
+						'street' => $this->input->post('street'),
+						'city' => $this->input->post('city'),
+						'state_id' => $this->input->post('stateId'),
+						'country_id' => $this->input->post('countryId'),
+						'zipcode' => $this->input->post('zipcode'),
+						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
+						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
+						
+					);
+				$where = "restaurant_id = " . $this->input->post('restaurantId');
+				$query = $this->db->update_string('address', $data, $where);
+				if ( $this->db->query($query) ) {
+					$return = true;
+				} else {
+					$return = false;
+				}
+				
 			} else {
 				$return = false;
 			}

@@ -133,7 +133,13 @@ class Restaurant extends Controller {
 		if ( $this->RestaurantModel->updateRestaurant() ) {
 			
 			// The new restaurant was successfully updated, send user to index
-			$this->index();
+			//$this->index();
+			/* TO-DO:
+			 * Method used above to redirect user on home page from server isde is creating issues. 
+			 * It returns the whole HTML content. So when we have got JavaScript enabled, jquery does not work as expected.
+			 * We will need to think about one solution whcih can work in both the cases, jquery and server side (without JS)  
+			 */
+			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
 				echo $GLOBALS['error'];

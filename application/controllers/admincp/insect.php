@@ -86,7 +86,7 @@ class Insect extends Controller {
 		
 		$this->load->model('InsectModel');
 		$insect = $this->InsectModel->getInsectFromId($id);
-		
+				
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'admincp/insect_form',
@@ -98,7 +98,7 @@ class Insect extends Controller {
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Insect";
-		$data['data']['center']['list']['ANIMAL'] = $insect;
+		$data['data']['center']['list']['INSECT'] = $insect;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		

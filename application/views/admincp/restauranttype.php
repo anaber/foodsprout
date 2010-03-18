@@ -7,9 +7,7 @@ if (count($RESTAURANTTYPES) > 0 ) {
 	<tr>
 		<th>Restaurant Type Id</th>
 		<th>Restaurant Type</th>
-	</tr>
-			
-	
+	</tr>	
 <?php
 
 	$i = 0;
@@ -21,11 +19,9 @@ if (count($RESTAURANTTYPES) > 0 ) {
 		echo '</tr>';
  	endforeach;
 ?>
-
+</table>
 <?php
 } else {
 	echo "No cuisine available";
 }
-
 ?>
-</table>

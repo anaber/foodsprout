@@ -44,7 +44,7 @@ $(document).ready(function() {
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(), 
-							  restaurantId: $('#restaurantId').val()
+							  restaurantId: $('#restaurant_id').val()
 							};
 				act = 'update';		
 			} else {
@@ -62,7 +62,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				
+				alert(data);
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -138,7 +138,7 @@ $(document).ready(function() {
 		</td>
 	<tr>
 	<tr>
-		<td width = "25%">Street Address</td>
+		<td width = "25%">Street Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
 		</td>

@@ -55,8 +55,15 @@ class CompanyModel extends Model{
 				
 				$new_company_id = $this->db->insert_id();
 				
-				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, company_id)" .
-						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', $new_company_id )";
+				$CI =& get_instance();
+				$CI->load->model('AddressModel','',true);
+				$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+			
+				$CI->load->model('GoogleMapModel','',true);
+				$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+				
+				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, company_id)" .
+						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', $new_company_id )";
 				
 			log_message('debug', 'CompanyModel.addCompany : Insert Company : ' . $query);
 			
@@ -115,7 +122,7 @@ class CompanyModel extends Model{
 			$CI =& get_instance();
 			$CI->load->model('AddressModel','',true);
 			
-			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
 			
 			$CI->load->model('GoogleMapModel','',true);
 			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
@@ -131,6 +138,7 @@ class CompanyModel extends Model{
 				
 				$data = array(
 						'street_number' => $this->input->post('streetNumber'),
+						'street' => $this->input->post('street'),
 						'city' => $this->input->post('city'),
 						'state_id' => $this->input->post('stateId'),
 						'country_id' => $this->input->post('countryId'),

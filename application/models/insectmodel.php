@@ -19,6 +19,7 @@ class InsectModel extends Model{
 			
 			$this->insectLib->insectId = $row['insect_id'];
 			$this->insectLib->insectName = $row['insect_name'];
+			$this->insectLib->description = $row['description'];
 			
 			$insects[] = $this->insectLib;
 			unset($this->insectLib);
@@ -37,8 +38,8 @@ class InsectModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$query = "INSERT INTO insect (insect_id, insect_name)" .
-					" values (NULL, '" . $this->input->post('insectName') . "')";
+			$query = "INSERT INTO insect (insect_id, insect_name, description)" .
+					" values (NULL, '" . $this->input->post('insectName') . "', '" . $this->input->post('description') . "')";
 			log_message('debug', 'InsectModel.addInsect : Insert Insect : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -70,6 +71,7 @@ class InsectModel extends Model{
 		
 		$this->insectLib->insectId = $row->insect_id;
 		$this->insectLib->insectName = $row->insect_name;
+		$this->insectLib->description = $row->description;
 		
 		return $this->insectLib;
 	}
@@ -85,7 +87,8 @@ class InsectModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'insect_name' => $this->input->post('insectName'), 
+						'insect_name' => $this->input->post('insectName'),
+						'description' => $this->input->post('description'),  
 					);
 			$where = "insect_id = " . $this->input->post('insectId');
 			$query = $this->db->update_string('insect', $data, $where);

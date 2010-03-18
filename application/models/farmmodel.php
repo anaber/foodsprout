@@ -48,8 +48,15 @@ class FarmModel extends Model{
 			if ( $this->db->query($query) ) {
 				$new_farm_id = $this->db->insert_id();
 				
-				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, farm_id)" .
-						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', $new_farm_id )";
+				$CI =& get_instance();
+				$CI->load->model('AddressModel','',true);
+				$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+			
+				$CI->load->model('GoogleMapModel','',true);
+				$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+				
+				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, farm_id)" .
+						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', $new_farm_id )";
 				
 			log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
 			
@@ -104,13 +111,16 @@ class FarmModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
+			$CI =& get_instance();
+			$CI->load->model('AddressModel','',true);
+			
+			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+			
+			$CI->load->model('GoogleMapModel','',true);
+			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+			
 			$data = array(
 						'farm_name' => $this->input->post('farmName'), 
-						'street_address' => $this->input->post('streetAddress'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-						'custom_url' => $this->input->post('customUrl'),
 					);
 			$where = "farm_id = " . $this->input->post('farmId');
 			$query = $this->db->update_string('farm', $data, $where);
@@ -118,6 +128,27 @@ class FarmModel extends Model{
 			log_message('debug', 'FarmModel.updateFarm : ' . $query);
 			if ( $this->db->query($query) ) {
 				$return = true;
+				
+				$data = array(
+						'street_number' => $this->input->post('streetNumber'),
+						'street' => $this->input->post('street'),
+						'city' => $this->input->post('city'),
+						'state_id' => $this->input->post('stateId'),
+						'country_id' => $this->input->post('countryId'),
+						'zipcode' => $this->input->post('zipcode'),
+						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
+						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
+					);
+				$where = "farm_id = " . $this->input->post('farmId');
+				$query = $this->db->update_string('address', $data, $where);
+				if ( $this->db->query($query) ) {
+					$return = true;
+				} else {
+					$return = false;
+				}
+				
+				log_message('debug', 'CompanyModel.updateCompany : ' . $query);
+				
 			} else {
 				$return = false;
 			}

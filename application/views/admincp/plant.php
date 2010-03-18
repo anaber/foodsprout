@@ -21,11 +21,9 @@ if (count($PLANTS) > 0 ) {
 		echo '</tr>';
  	endforeach;
 ?>
-
+</table>
 <?php
 } else {
 	echo "No plant available";
 }
-
 ?>
-</table>

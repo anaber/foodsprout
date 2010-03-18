@@ -21,11 +21,9 @@ if (count($FACILITYTYPES) > 0 ) {
 		echo '</tr>';
  	endforeach;
 ?>
-
+</table>
 <?php
 } else {
 	echo "No facilitytype available";
 }
-
 ?>
-</table>

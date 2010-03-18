@@ -44,7 +44,7 @@ $(document).ready(function() {
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(), 
-							  farmId: $('#farmId').val()
+							  farmId: $('#farm_id').val()
 							};
 				act = 'update';		
 			} else {

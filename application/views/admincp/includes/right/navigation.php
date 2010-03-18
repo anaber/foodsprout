@@ -25,6 +25,7 @@
 	<?php echo anchor('admincp/insect', 'Insects'); ?><br />
 	<?php echo anchor('admincp/cuisine', 'Cuisines'); ?><br />
 	<?php echo anchor('admincp/plant', 'Plants'); ?><br />
+	<?php echo anchor('admincp/plantgroup', 'Plant Groups'); ?><br />
 	<br />
 	<strong>Types</strong><br>
 	<?php echo anchor('admincp/ingredienttype', 'Ingredient Type'); ?><br />

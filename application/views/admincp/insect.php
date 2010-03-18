@@ -21,11 +21,9 @@ if (count($INSECTS) > 0 ) {
 		echo '</tr>';
  	endforeach;
 ?>
-
+</table>
 <?php
 } else {
 	echo "No insect available";
 }
-
 ?>
-</table>

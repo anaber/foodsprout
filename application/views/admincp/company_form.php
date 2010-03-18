@@ -138,7 +138,7 @@ $(document).ready(function() {
 		</td>
 	<tr>
 	<tr>
-		<td width = "25%">Street Address</td>
+		<td width = "25%">Street Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($COMPANY) ? $COMPANY->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
 		</td>

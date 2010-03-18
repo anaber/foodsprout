@@ -4,10 +4,12 @@ class InsectLib {
 	
 	var $insectId;
 	var $insectName;
+	var $description;
 		
 	function InsectLib() {
 		$this->insectId = '';
 		$this->insectName = '';
+		$this->description = '';
 	}
 }
 ?>
