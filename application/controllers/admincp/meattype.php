@@ -35,7 +35,7 @@ class Meattype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Meattypes";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Meat Types";
 		$data['data']['center']['list']['MEATTYPES'] = $meattypes;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
@@ -57,7 +57,7 @@ class Meattype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Meattype";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Meat Type";
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
@@ -98,7 +98,7 @@ class Meattype extends Controller {
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Meattype";
-		$data['data']['center']['list']['ANIMAL'] = $meattype;
+		$data['data']['center']['list']['MEATTYPE'] = $meattype;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		

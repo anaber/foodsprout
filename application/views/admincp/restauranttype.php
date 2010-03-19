@@ -1,4 +1,4 @@
-<?php echo anchor('admincp/cuisine/add', 'Add Cuisine'); ?><br /><br />
+<?php echo anchor('admincp/restauranttype/add', 'Add Restaurant Type'); ?><br /><br />
 
 <?php
 if (count($RESTAURANTTYPES) > 0 ) {
@@ -22,6 +22,6 @@ if (count($RESTAURANTTYPES) > 0 ) {
 </table>
 <?php
 } else {
-	echo "No cuisine available";
+	echo "No restaurant type available";
 }
 ?>

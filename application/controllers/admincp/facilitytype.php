@@ -35,7 +35,7 @@ class Facilitytype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Facilitytypes";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List Processing Facility Types";
 		$data['data']['center']['list']['FACILITYTYPES'] = $facilitytypes;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
@@ -43,6 +43,7 @@ class Facilitytype extends Controller {
 		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
+	// Create the form to add a new facility type
 	function add()
 	{
 		$data = array();
@@ -80,6 +81,7 @@ class Facilitytype extends Controller {
 		}
 	}
 	
+	// Update the facility type
 	function update($id)
 	{
 		$data = array();
@@ -97,8 +99,8 @@ class Facilitytype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Facilitytype";
-		$data['data']['center']['list']['ANIMAL'] = $facilitytype;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Facility Type";
+		$data['data']['center']['list']['FACILITYTYPE'] = $facilitytype;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		

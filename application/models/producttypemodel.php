@@ -30,14 +30,14 @@ class ProducttypeModel extends Model{
 	function addProducttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM producttype WHERE producttype_name = '" . $this->input->post('producttypeName') . "'";
+		$query = "SELECT * FROM product_type WHERE product_type = '" . $this->input->post('producttypeName') . "'";
 		log_message('debug', 'ProducttypeModel.addProducttype : Try to get duplicate Producttype record : ' . $query);
 		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
 			
-			$query = "INSERT INTO producttype (producttype_id, producttype_name)" .
+			$query = "INSERT INTO product_type (product_type_id, product_type)" .
 					" values (NULL, '" . $this->input->post('producttypeName') . "')";
 			log_message('debug', 'ProducttypeModel.addproducttype : Insert Producttype : ' . $query);
 			
@@ -56,9 +56,10 @@ class ProducttypeModel extends Model{
 		return $return;	
 	}
 	
+	// Get a specific product type from the database using its id
 	function getProducttypeFromId($producttypeId) {
 		
-		$query = "SELECT * FROM producttype WHERE producttype_id = " . $producttypeId;
+		$query = "SELECT * FROM product_type WHERE product_type_id = " . $producttypeId;
 		log_message('debug', "ProducttypeModel.getProducttypeFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -68,16 +69,17 @@ class ProducttypeModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->producttypeLib->producttypeId = $row->producttype_id;
-		$this->producttypeLib->producttypeName = $row->producttype_name;
+		$this->producttypeLib->producttypeId = $row->product_type_id;
+		$this->producttypeLib->producttypeName = $row->product_type;
 		
 		return $this->producttypeLib;
 	}
 	
+	// Update a product type in the database
 	function updateProducttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM producttype WHERE producttype_name = '" . $this->input->post('producttypeName') . "' AND producttype_id <> " . $this->input->post('producttypeId');
+		$query = "SELECT * FROM product_type WHERE product_type = '" . $this->input->post('producttypeName') . "' AND product_type_id <> " . $this->input->post('producttypeId');
 		log_message('debug', 'ProducttypeModel.updateProducttype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
@@ -85,10 +87,10 @@ class ProducttypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'producttype_name' => $this->input->post('producttypeName'), 
+						'product_type' => $this->input->post('producttypeName'), 
 					);
-			$where = "producttype_id = " . $this->input->post('producttypeId');
-			$query = $this->db->update_string('producttype', $data, $where);
+			$where = "product_type_id = " . $this->input->post('producttypeId');
+			$query = $this->db->update_string('product_type', $data, $where);
 			
 			log_message('debug', 'ProducttypeModel.updateProducttype : ' . $query);
 			if ( $this->db->query($query) ) {

@@ -16,7 +16,7 @@ class Fruittype extends Controller {
 		$this->list_fruittype();
 	}
 	
-	// List all the fruittype in the database
+	// Create a simple list of all the fruit types in the database
 	function list_fruittype()
 	{
 		$data = array();
@@ -35,7 +35,7 @@ class Fruittype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Fruittypes";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Fruit Types";
 		$data['data']['center']['list']['FRUITTYPES'] = $fruittypes;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
@@ -43,6 +43,7 @@ class Fruittype extends Controller {
 		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
+	// Add a new fruit type, this will only create the web form
 	function add()
 	{
 		$data = array();
@@ -57,13 +58,14 @@ class Fruittype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Fruittype";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Fruit Type";
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
 		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
+	// Take the information from the form and pass it to the model to save it in the database
 	function save_add() {
 		
 		$this->load->model('FruittypeModel', '', TRUE);
@@ -80,6 +82,7 @@ class Fruittype extends Controller {
 		}
 	}
 	
+	// Get the information for specific fruit type and populate a HTML form to update the information
 	function update($id)
 	{
 		$data = array();
@@ -97,14 +100,15 @@ class Fruittype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Fruittype";
-		$data['data']['center']['list']['ANIMAL'] = $fruittype;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Fruit Type";
+		$data['data']['center']['list']['FRUITTYPE'] = $fruittype;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
 		$this->load->view('admincp/templates/center_right_template', $data);
 	}
 	
+	// Take the information from the update form and send it to the model for updating
 	function save_update() {
 		
 		$this->load->model('FruittypeModel', '', TRUE);

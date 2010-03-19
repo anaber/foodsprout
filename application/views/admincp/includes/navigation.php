@@ -9,10 +9,9 @@
 	<?php echo anchor('admincp/distribution', 'Distribution'); ?> |
 	<?php echo anchor('admincp/processing', 'Processing'); ?> | 
 	<?php echo anchor('admincp/restaurant', 'Restaurant'); ?> |
-	<?php echo anchor('admincp/animal', 'Animal'); ?> |
+	<?php echo anchor('admincp/animal', 'Animals'); ?> |
 	<?php echo anchor('admincp/fish', 'Fish'); ?> |
-	<?php echo anchor('admincp/ingredient', 'Ingredient'); ?> | 
-	<?php echo anchor('admincp/item', 'Item'); ?> | 
+	<?php echo anchor('admincp/ingredient', 'Ingredients'); ?> | 
 	<?php echo anchor('admincp/product', 'Products'); ?> ----- 
 	<?php echo anchor('admincp/country', 'Country'); ?> | 
 	<?php echo anchor('admincp/state', 'State'); ?> -----

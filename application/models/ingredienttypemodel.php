@@ -56,6 +56,7 @@ class IngredienttypeModel extends Model{
 		return $return;	
 	}
 	
+	// Get the information from the database for a specific ingredient type by an id
 	function getIngredienttypeFromId($ingredienttypeId) {
 		
 		$query = "SELECT * FROM ingredient_type WHERE ingredient_type_id = " . $ingredienttypeId;
@@ -68,16 +69,17 @@ class IngredienttypeModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->ingredienttypeLib->ingredienttypeId = $row->ingredienttype_id;
-		$this->ingredienttypeLib->ingredienttypeName = $row->ingredienttype_name;
+		$this->ingredienttypeLib->ingredienttypeId = $row->ingredient_type_id;
+		$this->ingredienttypeLib->ingredienttypeName = $row->ingredient_type;
 		
 		return $this->ingredienttypeLib;
 	}
 	
+	// Update the ingredient type information in the database
 	function updateIngredienttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM ingredienttype WHERE ingredienttype_name = '" . $this->input->post('ingredienttypeName') . "' AND ingredienttype_id <> " . $this->input->post('ingredienttypeId');
+		$query = "SELECT * FROM ingredient_type WHERE ingredient_type = '" . $this->input->post('ingredienttypeName') . "' AND ingredient_type_id <> " . $this->input->post('ingredienttypeId');
 		log_message('debug', 'IngredienttypeModel.updateIngredienttype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
@@ -85,10 +87,10 @@ class IngredienttypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'ingredienttype_name' => $this->input->post('ingredienttypeName'), 
+						'ingredient_type' => $this->input->post('ingredienttypeName'), 
 					);
-			$where = "ingredienttype_id = " . $this->input->post('ingredienttypeId');
-			$query = $this->db->update_string('ingredienttype', $data, $where);
+			$where = "ingredient_type_id = " . $this->input->post('ingredienttypeId');
+			$query = $this->db->update_string('ingredient_type', $data, $where);
 			
 			log_message('debug', 'IngredienttypeModel.updateIngredienttype : ' . $query);
 			if ( $this->db->query($query) ) {

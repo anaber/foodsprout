@@ -1,7 +1,7 @@
 <?php echo anchor('admincp/producttype/add', 'Add Product Type'); ?><br /><br />
 
 <?php
-if (count($RESTAURANTTYPES) > 0 ) {
+if (count($PRODUCTTYPES) > 0 ) {
 ?>
 <table cellpadding="3" cellspacing="0" border="0" id="tbllist">
 	<tr>
@@ -13,7 +13,7 @@ if (count($RESTAURANTTYPES) > 0 ) {
 <?php
 
 	$i = 0;
-	foreach($RESTAURANTTYPES as $r) :
+	foreach($PRODUCTTYPES as $r) :
 		$i++;
 		echo '<tr class="d'.($i & 1).'">';
 		echo '	<td>'.anchor('admincp/producttype/update/'.$r->producttypeId, $r->producttypeId).'</td>';
@@ -24,6 +24,6 @@ if (count($RESTAURANTTYPES) > 0 ) {
 </table>
 <?php
 } else {
-	echo "No cuisine available";
+	echo "No product type available";
 }
 ?>

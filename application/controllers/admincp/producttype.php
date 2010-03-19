@@ -35,8 +35,8 @@ class Producttype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Producttypes";
-		$data['data']['center']['list']['RESTAURANTTYPES'] = $producttypes;
+		$data['data']['center']['list']['VIEW_HEADER'] = "List Product Types";
+		$data['data']['center']['list']['PRODUCTTYPES'] = $producttypes;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
@@ -97,8 +97,8 @@ class Producttype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Producttype";
-		$data['data']['center']['list']['ANIMAL'] = $producttype;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Product Type";
+		$data['data']['center']['list']['PRODUCTTYPE'] = $producttype;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		

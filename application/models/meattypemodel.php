@@ -2,7 +2,7 @@
 
 class MeattypeModel extends Model{
 	
-	// List all the meattype in the database
+	// List all the meat types in the database
 	function list_meattype()
 	{
 		$query = "SELECT * FROM meat_type ORDER BY meat_type";
@@ -26,6 +26,7 @@ class MeattypeModel extends Model{
 		return $meattypes;
 	}
 	
+	// Insert the meat type into the database
 	function addMeattype() {
 		$return = true;
 		
@@ -55,9 +56,10 @@ class MeattypeModel extends Model{
 		return $return;	
 	}
 	
+	// Get the meat type information from a specific meat_type_id
 	function getMeattypeFromId($meattypeId) {
 		
-		$query = "SELECT * FROM meattype WHERE meattype_id = " . $meattypeId;
+		$query = "SELECT * FROM meat_type WHERE meat_type_id = " . $meattypeId;
 		log_message('debug', "MeattypeModel.getFarmFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -67,16 +69,17 @@ class MeattypeModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->meattypeLib->meattypeId = $row->meattype_id;
-		$this->meattypeLib->meattypeName = $row->meattype_name;
+		$this->meattypeLib->meattypeId = $row->meat_type_id;
+		$this->meattypeLib->meattypeName = $row->meat_type;
 		
 		return $this->meattypeLib;
 	}
 	
+	// Update meat type information in the database
 	function updateMeattype() {
 		$return = true;
 		
-		$query = "SELECT * FROM meattype WHERE meattype_name = '" . $this->input->post('meattypeName') . "' AND meattype_id <> " . $this->input->post('meattypeId');
+		$query = "SELECT * FROM meat_type WHERE meat_type = '" . $this->input->post('meattypeName') . "' AND meat_type_id <> " . $this->input->post('meattypeId');
 		log_message('debug', 'MeattypeModel.updateMeattype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
@@ -84,9 +87,9 @@ class MeattypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'meattype_name' => $this->input->post('meattypeName'), 
+						'meat_type' => $this->input->post('meattypeName'), 
 					);
-			$where = "meattype_id = " . $this->input->post('meattypeId');
+			$where = "meat_type_id = " . $this->input->post('meattypeId');
 			$query = $this->db->update_string('meattype', $data, $where);
 			
 			log_message('debug', 'MeattypeModel.updateMeattype : ' . $query);

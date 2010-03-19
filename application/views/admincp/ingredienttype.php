@@ -1,12 +1,12 @@
-<?php echo anchor('admincp/cuisine/add', 'Add Cuisine'); ?><br /><br />
+<?php echo anchor('admincp/ingredienttype/add', 'Add Ingredient Type'); ?><br /><br />
 
 <?php
 if (count($INGREDIENTTYPES) > 0 ) {
 ?>
 <table cellpadding="3" cellspacing="0" border="0" id="tbllist">
 	<tr>
-		<th>Restaurant Type Id</th>
-		<th>Restaurant Type</th>
+		<th>Ingredient Type Id</th>
+		<th>Ingredient Type</th>
 	</tr>
 			
 	
@@ -24,6 +24,6 @@ if (count($INGREDIENTTYPES) > 0 ) {
 </table>
 <?php
 } else {
-	echo "No cuisine available";
+	echo "No ingredient type available";
 }
 ?>

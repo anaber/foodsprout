@@ -30,14 +30,14 @@ class RestauranttypeModel extends Model{
 	function addRestauranttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM restauranttype WHERE restauranttype_name = '" . $this->input->post('restauranttypeName') . "'";
+		$query = "SELECT * FROM restaurant_type WHERE restaurant_type = '" . $this->input->post('restauranttypeName') . "'";
 		log_message('debug', 'RestauranttypeModel.addRestauranttype : Try to get duplicate Restauranttype record : ' . $query);
 		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
 			
-			$query = "INSERT INTO restauranttype (restauranttype_id, restauranttype_name)" .
+			$query = "INSERT INTO restaurant_type (restaurant_type_id, restaurant_type)" .
 					" values (NULL, '" . $this->input->post('restauranttypeName') . "')";
 			log_message('debug', 'RestauranttypeModel.addrestauranttype : Insert Restauranttype : ' . $query);
 			
@@ -58,7 +58,7 @@ class RestauranttypeModel extends Model{
 	
 	function getRestauranttypeFromId($restauranttypeId) {
 		
-		$query = "SELECT * FROM restauranttype WHERE restauranttype_id = " . $restauranttypeId;
+		$query = "SELECT * FROM restaurant_type WHERE restaurant_type_id = " . $restauranttypeId;
 		log_message('debug', "RestauranttypeModel.getRestauranttypeFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -68,8 +68,8 @@ class RestauranttypeModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->restauranttypeLib->restauranttypeId = $row->restauranttype_id;
-		$this->restauranttypeLib->restauranttypeName = $row->restauranttype_name;
+		$this->restauranttypeLib->restauranttypeId = $row->restaurant_type_id;
+		$this->restauranttypeLib->restauranttypeName = $row->restaurant_type;
 		
 		return $this->restauranttypeLib;
 	}
@@ -77,7 +77,7 @@ class RestauranttypeModel extends Model{
 	function updateRestauranttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM restauranttype WHERE restauranttype_name = '" . $this->input->post('restauranttypeName') . "' AND restauranttype_id <> " . $this->input->post('restauranttypeId');
+		$query = "SELECT * FROM restaurant_type WHERE restaurant_type = '" . $this->input->post('restauranttypeName') . "' AND restaurant_type_id <> " . $this->input->post('restauranttypeId');
 		log_message('debug', 'RestauranttypeModel.updateRestauranttype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
@@ -85,9 +85,9 @@ class RestauranttypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'restauranttype_name' => $this->input->post('restauranttypeName'), 
+						'restaurant_type' => $this->input->post('restauranttypeName'), 
 					);
-			$where = "restauranttype_id = " . $this->input->post('restauranttypeId');
+			$where = "restaurant_type_id = " . $this->input->post('restauranttypeId');
 			$query = $this->db->update_string('restauranttype', $data, $where);
 			
 			log_message('debug', 'RestauranttypeModel.updateRestauranttype : ' . $query);

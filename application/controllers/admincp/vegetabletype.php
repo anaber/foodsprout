@@ -1,6 +1,6 @@
 <?php
 
-class Restauranttype extends Controller {
+class Vegetabletype extends Controller {
 	
 	function __construct()
 	{
@@ -13,21 +13,21 @@ class Restauranttype extends Controller {
 	
 	function index()
 	{
-		$this->list_restauranttype();
+		$this->list_vegetabletype();
 	}
 	
-	// List all the restauranttype in the database
-	function list_restauranttype()
+	// List all the vegetabletype in the database
+	function list_vegetabletype()
 	{
 		$data = array();
-		$restauranttypes = array();
+		$vegetabletypes = array();
 		
-		$this->load->model('RestauranttypeModel');
-		$restauranttypes = $this->RestauranttypeModel->list_restauranttype();
+		$this->load->model('VegetabletypeModel');
+		$vegetabletypes = $this->VegetabletypeModel->list_vegetabletype();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/restauranttype',
+				'list' => 'admincp/vegetabletype',
 			);
 		
 		$data['RIGHT'] = array(
@@ -35,8 +35,8 @@ class Restauranttype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Restaurant Types";
-		$data['data']['center']['list']['RESTAURANTTYPES'] = $restauranttypes;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Vegetabletypes";
+		$data['data']['center']['list']['VEGETABLETYPES'] = $vegetabletypes;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
@@ -49,7 +49,7 @@ class Restauranttype extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/restauranttype_form',
+				'list' => 'admincp/vegetabletype_form',
 			);
 		
 		$data['RIGHT'] = array(
@@ -57,7 +57,7 @@ class Restauranttype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Restauranttype";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Vegetabletype";
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
@@ -66,10 +66,10 @@ class Restauranttype extends Controller {
 	
 	function save_add() {
 		
-		$this->load->model('RestauranttypeModel', '', TRUE);
+		$this->load->model('VegetabletypeModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->RestauranttypeModel->addRestauranttype() ) {
+		if ( $this->VegetabletypeModel->addVegetabletype() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -84,12 +84,12 @@ class Restauranttype extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('RestauranttypeModel');
-		$restauranttype = $this->RestauranttypeModel->getRestauranttypeFromId($id);
+		$this->load->model('VegetabletypeModel');
+		$vegetabletype = $this->VegetabletypeModel->getVegetabletypeFromId($id);
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/restauranttype_form',
+				'list' => 'admincp/vegetabletype_form',
 			);
 		
 		$data['RIGHT'] = array(
@@ -97,8 +97,8 @@ class Restauranttype extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Restaurant Type";
-		$data['data']['center']['list']['RESTAURANTTYPE'] = $restauranttype;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Vegetabletype";
+		$data['data']['center']['list']['VEGETABLETYPE'] = $vegetabletype;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
@@ -107,10 +107,10 @@ class Restauranttype extends Controller {
 	
 	function save_update() {
 		
-		$this->load->model('RestauranttypeModel', '', TRUE);
+		$this->load->model('VegetabletypeModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->RestauranttypeModel->updateRestauranttype() ) {
+		if ( $this->VegetabletypeModel->updateVegetabletype() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -123,6 +123,6 @@ class Restauranttype extends Controller {
 	}
 }
 
-/* End of file restauranttype.php */
+/* End of file vegetabletype.php */
 
 ?>

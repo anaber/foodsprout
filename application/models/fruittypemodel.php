@@ -37,7 +37,7 @@ class FruittypeModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$query = "INSERT INTO fruittype (fruittype_id, fruittype_name)" .
+			$query = "INSERT INTO fruit_type (fruit_type_id, fruit_type)" .
 					" values (NULL, '" . $this->input->post('fruittypeName') . "')";
 			log_message('debug', 'FruittypeModel.addfruittype : Insert Fruittype : ' . $query);
 			
@@ -56,9 +56,10 @@ class FruittypeModel extends Model{
 		return $return;	
 	}
 	
+	// Get information from the database about a specific fruit type based on a specific id
 	function getFruittypeFromId($fruittypeId) {
 		
-		$query = "SELECT * FROM fruittype WHERE fruittype_id = " . $fruittypeId;
+		$query = "SELECT * FROM fruit_type WHERE fruit_type_id = " . $fruittypeId;
 		log_message('debug', "FruittypeModel.getFruittypeFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -68,16 +69,17 @@ class FruittypeModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->fruittypeLib->fruittypeId = $row->fruittype_id;
-		$this->fruittypeLib->fruittypeName = $row->fruittype_name;
+		$this->fruittypeLib->fruittypeId = $row->fruit_type_id;
+		$this->fruittypeLib->fruittypeName = $row->fruit_type;
 		
 		return $this->fruittypeLib;
 	}
 	
+	// Update the information in the database for a specific fruit type based on an 
 	function updateFruittype() {
 		$return = true;
 		
-		$query = "SELECT * FROM fruittype WHERE fruittype_name = '" . $this->input->post('fruittypeName') . "' AND fruittype_id <> " . $this->input->post('fruittypeId');
+		$query = "SELECT * FROM fruit_type WHERE fruit_type = '" . $this->input->post('fruittypeName') . "' AND fruit_type_id <> " . $this->input->post('fruittypeId');
 		log_message('debug', 'FruittypeModel.updateFruittype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
@@ -85,9 +87,9 @@ class FruittypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'fruittype_name' => $this->input->post('fruittypeName'), 
+						'fruit_type' => $this->input->post('fruittypeName'), 
 					);
-			$where = "fruittype_id = " . $this->input->post('fruittypeId');
+			$where = "fruit_type_id = " . $this->input->post('fruittypeId');
 			$query = $this->db->update_string('fruittype', $data, $where);
 			
 			log_message('debug', 'FruittypeModel.updateFruittype : ' . $query);

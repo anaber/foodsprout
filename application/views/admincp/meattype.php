@@ -1,4 +1,4 @@
-<?php echo anchor('admincp/cuisine/add', 'Add Cuisine'); ?><br /><br />
+<?php echo anchor('admincp/meattype/add', 'Add Meat Type'); ?><br /><br />
 
 <?php
 if (count($MEATTYPES) > 0 ) {

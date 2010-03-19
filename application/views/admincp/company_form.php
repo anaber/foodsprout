@@ -34,7 +34,7 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
-			if ($('#company_id').val() != '' ) {
+			if ($('#companyId').val() != '' ) {
 				var formAction = '/admincp/company/save_update';
 				postArray = {
 							  companyName:$('#companyName').val(),
@@ -44,7 +44,7 @@ $(document).ready(function() {
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(), 
-							  companyId: $('#company_id').val()
+							  companyId: $('#companyId').val()
 							};
 				act = 'update';		
 			} else {
@@ -184,7 +184,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($COMPANY)) ? 'Update Company' : 'Add Company' ?>">
-			<input type = "hidden" name = "company_id" id = "company_id" value = "<?php echo (isset($COMPANY) ? $COMPANY->companyId : '') ?>">
+			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($COMPANY) ? $COMPANY->companyId : '') ?>">
 		</td>
 	<tr>
 </table>

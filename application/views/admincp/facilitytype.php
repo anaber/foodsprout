@@ -1,12 +1,12 @@
-<?php echo anchor('admincp/facilitytype/add', 'Add Facility_type'); ?><br /><br />
+<?php echo anchor('admincp/facilitytype/add', 'Add Processing Facility Type'); ?><br /><br />
 
 <?php
 if (count($FACILITYTYPES) > 0 ) {
 ?>
 <table cellpadding="3" cellspacing="0" border="0" id="tbllist">
 	<tr>
-		<th>Facility_type Id</th>
-		<th>Facility_type Name</th>
+		<th>Facility Type Id</th>
+		<th>Facility Type Name</th>
 	</tr>
 			
 	
@@ -24,6 +24,6 @@ if (count($FACILITYTYPES) > 0 ) {
 </table>
 <?php
 } else {
-	echo "No facilitytype available";
+	echo "No facility type available";
 }
 ?>
