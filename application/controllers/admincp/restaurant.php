@@ -49,6 +49,12 @@ class Restaurant extends Controller {
 		$this->load->model('CountryModel');
 		$countries = $this->CountryModel->list_country();
 		
+		$this->load->model('RestauranttypeModel');
+		$restauranttypes = $this->RestauranttypeModel->list_restauranttype();
+		
+		$this->load->model('CuisineModel');
+		$cuisines = $this->CuisineModel->list_cuisine();
+		
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -63,6 +69,8 @@ class Restaurant extends Controller {
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Restaurant";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['RESTAURANTTYPES'] = $restauranttypes;
+		$data['data']['center']['list']['CUISINES'] = $cuisines;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		

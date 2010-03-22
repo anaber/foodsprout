@@ -2,14 +2,16 @@
 
 class ProductLib {
 	
-	var $id;
+	var $productId;
+	var $companyId;
 	var $productName;
-	var $ingredients;
+	var $upc;
 		
 	function ProductLib() {
-		$user->id = "";
-		$user->productName = "";
-		$user->ingredients = "";
+		$this->productId = '';
+		$this->companyId = '';
+		$this->productName = '';
+		$this->upc = '';
 	}
 }
 ?>

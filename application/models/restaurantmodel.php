@@ -48,8 +48,8 @@ class RestaurantModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$query = "INSERT INTO restaurant (restaurant_id, restaurant_name, creation_date)" .
-					" values (NULL, '" . $this->input->post('restaurantName') . "', NOW() )";
+			$query = "INSERT INTO restaurant (restaurant_id, restaurant_type_id, restaurant_name, creation_date)" .
+					" values (NULL, '" . $this->input->post('restauranttypeId') . "', '" . $this->input->post('restaurantName') . "', NOW() )";
 			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 			
 			if ( $this->db->query($query) ) {

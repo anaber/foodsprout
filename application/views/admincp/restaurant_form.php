@@ -43,7 +43,8 @@ $(document).ready(function() {
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
-							  zipcode:$('#zipcode').val(), 
+							  zipcode:$('#zipcode').val(),
+							  restauranttypeId:$('#restauranttypeId').val(), 
 							  restaurantId: $('#restaurant_id').val()
 							};
 				act = 'update';		
@@ -56,6 +57,7 @@ $(document).ready(function() {
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
+							  restauranttypeId:$('#restauranttypeId').val(), 
 							  zipcode:$('#zipcode').val()
 							};
 				act = 'add';
@@ -130,25 +132,25 @@ $(document).ready(function() {
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantName : '') ?>" class="validate[required]" type="text" name="restaurantName" id="restaurantName"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Street Number</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Street Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">City</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
@@ -161,7 +163,7 @@ $(document).ready(function() {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
@@ -174,19 +176,50 @@ $(document).ready(function() {
 			?>
 			</select>
 		</td>
+	</tr>
+	
 	<tr>
+		<td width = "25%">Type</td>
+		<td width = "75%">
+			<select name="restauranttypeId" id="restauranttypeId"  class="validate[required]">
+			<option value = ''>--Type--</option>
+			<?php
+				foreach($RESTAURANTTYPES as $key => $value) {
+					echo '<option value="'.$value->restauranttypeId.'"' . (  ( isset($RESTAURANT) && ( $value->restauranttypeId == $RESTAURANT->restauranttypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->restauranttypeName.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td width = "25%">Cuisine</td>
+		<td width = "75%">
+			<select name="cuisineId" id="cuisineId"  class="validate[required]">
+			<option value = ''>--Cuisine--</option>
+			<option value = "NULL">--Unknown--</option>
+			<?php
+				foreach($CUISINES as $key => $value) {
+					echo '<option value="'.$value->cuisineId.'"' . (  ( isset($RESTAURANT) && ( $value->restauranttypeId == $RESTAURANT->cuisineId )  ) ? ' SELECTED' : '' ) . '>'.$value->cuisineName.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>	
+		
+		
 	<tr>
 		<td width = "25%">Zip</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($RESTAURANT)) ? 'Update Restaurant' : 'Add Restaurant' ?>">
 			<input type = "hidden" name = "restaurant_id" id = "restaurant_id" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 
