@@ -5,7 +5,7 @@ class ProducttypeLib {
 	var $producttypeId;
 	var $producttypeName;
 		
-	function CuisineLib() {
+	function ProducttypeLib() {
 		$this->producttypeId = '';
 		$this->producttypeName = '';
 	}
