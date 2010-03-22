@@ -37,7 +37,8 @@ $(document).ready(function() {
 			if ($('#restauranttypeId').val() != '' ) {
 				var formAction = '/admincp/restauranttype/save_update';
 				postArray = {
-							  restauranttypeName:$('#restauranttypeName').val()
+							  restauranttypeName:$('#restauranttypeName').val(),
+							  restauranttypeId:$('#restauranttypeId').val()
 							};
 				act = 'update';		
 			} else {
@@ -49,7 +50,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {

@@ -37,7 +37,8 @@ $(document).ready(function() {
 			if ($('#fruittypeId').val() != '' ) {
 				var formAction = '/admincp/fruittype/save_update';
 				postArray = {
-							  fruittypeName:$('#fruittypeName').val()
+							  fruittypeName:$('#fruittypeName').val(),
+							  fruittypeId:$('#fruittypeId').val()
 							};
 				act = 'update';		
 			} else {
@@ -49,7 +50,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -121,7 +122,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FRUITTYPE)) ? 'Update Fruit Type' : 'Add Fruit Type' ?>">
-			<input type = "hidden" name = "fruitId" id = "fruitId" value = "<?php echo (isset($FRUITTYPE) ? $FRUITTYPE->fruittypeId : '') ?>">
+			<input type = "hidden" name = "fruittypeId" id = "fruittypeId" value = "<?php echo (isset($FRUITTYPE) ? $FRUITTYPE->fruittypeId : '') ?>">
 		</td>
 	<tr>
 </table>

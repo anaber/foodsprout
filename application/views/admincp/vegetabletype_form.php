@@ -37,7 +37,8 @@ $(document).ready(function() {
 			if ($('#vegetabletypeId').val() != '' ) {
 				var formAction = '/admincp/vegetabletype/save_update';
 				postArray = {
-							  vegetabletypeName:$('#vegetabletypeName').val()
+							  vegetabletypeName:$('#vegetabletypeName').val(),
+							  vegetabletypeId:$('#vegetabletypeId').val()
 							};
 				act = 'update';		
 			} else {
@@ -49,7 +50,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {

@@ -37,7 +37,8 @@ $(document).ready(function() {
 			if ($('#producttypeId').val() != '' ) {
 				var formAction = '/admincp/producttype/save_update';
 				postArray = {
-							  producttypeName:$('#producttypeName').val()
+							  producttypeName:$('#producttypeName').val(),
+							  producttypeId:$('#producttypeId').val()
 							};
 				act = 'update';		
 			} else {
@@ -49,7 +50,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {

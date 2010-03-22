@@ -37,7 +37,8 @@ $(document).ready(function() {
 			if ($('#meattypeId').val() != '' ) {
 				var formAction = '/admincp/meattype/save_update';
 				postArray = {
-							  meattypeName:$('#meattypeName').val()
+							  meattypeName:$('#meattypeName').val(),
+							  meattypeId:$('#meattypeId').val()
 							};
 				act = 'update';		
 			} else {
@@ -49,7 +50,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -121,7 +122,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MEATTYPE)) ? 'Update Meat Type' : 'Add Meat Type' ?>">
-			<input type = "hidden" name = "meatId" id = "meatId" value = "<?php echo (isset($MEATTYPE) ? $MEATTYPE->meattypeId : '') ?>">
+			<input type = "hidden" name = "meattypeId" id = "meattypeId" value = "<?php echo (isset($MEATTYPE) ? $MEATTYPE->meattypeId : '') ?>">
 		</td>
 	<tr>
 </table>

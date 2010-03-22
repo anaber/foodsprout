@@ -81,7 +81,7 @@ class ProducttypeModel extends Model{
 		
 		$query = "SELECT * FROM product_type WHERE product_type = '" . $this->input->post('producttypeName') . "' AND product_type_id <> " . $this->input->post('producttypeId');
 		log_message('debug', 'ProducttypeModel.updateProducttype : Try to get Duplicate record : ' . $query);
-			
+		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
@@ -103,7 +103,7 @@ class ProducttypeModel extends Model{
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-				
+		
 		return $return;
 	}
 	

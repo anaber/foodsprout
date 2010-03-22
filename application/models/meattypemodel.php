@@ -90,7 +90,7 @@ class MeattypeModel extends Model{
 						'meat_type' => $this->input->post('meattypeName'), 
 					);
 			$where = "meat_type_id = " . $this->input->post('meattypeId');
-			$query = $this->db->update_string('meattype', $data, $where);
+			$query = $this->db->update_string('meat_type', $data, $where);
 			
 			log_message('debug', 'MeattypeModel.updateMeattype : ' . $query);
 			if ( $this->db->query($query) ) {

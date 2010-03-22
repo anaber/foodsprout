@@ -88,7 +88,7 @@ class RestauranttypeModel extends Model{
 						'restaurant_type' => $this->input->post('restauranttypeName'), 
 					);
 			$where = "restaurant_type_id = " . $this->input->post('restauranttypeId');
-			$query = $this->db->update_string('restauranttype', $data, $where);
+			$query = $this->db->update_string('restaurant_type', $data, $where);
 			
 			log_message('debug', 'RestauranttypeModel.updateRestauranttype : ' . $query);
 			if ( $this->db->query($query) ) {

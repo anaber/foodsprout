@@ -85,10 +85,10 @@ class VegetabletypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'vegetabletype_name' => $this->input->post('vegetabletypeName'), 
+						'vegetable_type' => $this->input->post('vegetabletypeName'), 
 					);
-			$where = "vegetabletype_id = " . $this->input->post('vegetabletypeId');
-			$query = $this->db->update_string('vegetabletype', $data, $where);
+			$where = "vegetable_type_id = " . $this->input->post('vegetabletypeId');
+			$query = $this->db->update_string('vegetable_type', $data, $where);
 			
 			log_message('debug', 'VegetabletypeModel.updateVegetabletype : ' . $query);
 			if ( $this->db->query($query) ) {

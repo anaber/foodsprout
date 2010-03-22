@@ -37,7 +37,8 @@ $(document).ready(function() {
 			if ($('#facilitytypeId').val() != '' ) {
 				var formAction = '/admincp/facilitytype/save_update';
 				postArray = {
-							  facilitytypeName:$('#facilitytypeName').val()
+							  facilitytypeName:$('#facilitytypeName').val(),
+							  facilitytypeId:$('#facilitytypeId').val()
 							};
 				act = 'update';		
 			} else {
@@ -49,7 +50,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {

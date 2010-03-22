@@ -123,7 +123,6 @@ class Fruittype extends Controller {
 				echo 'no';
 			}
 		}
-		
 	}
 }
 

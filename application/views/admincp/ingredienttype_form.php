@@ -37,7 +37,8 @@ $(document).ready(function() {
 			if ($('#ingredienttypeId').val() != '' ) {
 				var formAction = '/admincp/ingredienttype/save_update';
 				postArray = {
-							  ingredienttypeName:$('#ingredienttypeName').val()
+							  ingredienttypeName:$('#ingredienttypeName').val(),
+							  ingredienttypeId: $('#ingredienttypeId').val()
 							};
 				act = 'update';		
 			} else {
@@ -49,7 +50,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {

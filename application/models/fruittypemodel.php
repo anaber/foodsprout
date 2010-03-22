@@ -81,7 +81,7 @@ class FruittypeModel extends Model{
 		
 		$query = "SELECT * FROM fruit_type WHERE fruit_type = '" . $this->input->post('fruittypeName') . "' AND fruit_type_id <> " . $this->input->post('fruittypeId');
 		log_message('debug', 'FruittypeModel.updateFruittype : Try to get Duplicate record : ' . $query);
-			
+		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
@@ -90,7 +90,7 @@ class FruittypeModel extends Model{
 						'fruit_type' => $this->input->post('fruittypeName'), 
 					);
 			$where = "fruit_type_id = " . $this->input->post('fruittypeId');
-			$query = $this->db->update_string('fruittype', $data, $where);
+			$query = $this->db->update_string('fruit_type', $data, $where);
 			
 			log_message('debug', 'FruittypeModel.updateFruittype : ' . $query);
 			if ( $this->db->query($query) ) {
@@ -103,7 +103,7 @@ class FruittypeModel extends Model{
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-				
+		
 		return $return;
 	}
 	
