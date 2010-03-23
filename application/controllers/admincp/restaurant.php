@@ -96,8 +96,8 @@ class Restaurant extends Controller {
 				'list' => 'admincp/restaurant_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_restaurant',
 			);
 			
 		// Data to be passed to the views
@@ -106,9 +106,9 @@ class Restaurant extends Controller {
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
+		$data['data']['right']['navigation']['VIEW_HEADER'] = "Options";
 		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
 	// This function will save the new restaurant data into the database
@@ -133,6 +133,7 @@ class Restaurant extends Controller {
 	
 	}
 	
+	// Send the updated information to the model to be updated in the database
 	function save_update() {
 		
 		$this->load->model('RestaurantModel', '', TRUE);
@@ -154,7 +155,58 @@ class Restaurant extends Controller {
 			} else {
 				echo 'no';
 			}
-		}
+		}	
+	}
+	
+	function add_menu_item(){
+		$data = array();
+		
+		$this->load->model('IngredientModel');
+		$ingredients = $this->IngredientModel->list_ingredient();
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/restaurant_menu_form',
+			);
+		
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_restaurant',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Menu Item";
+		$data['data']['center']['list']['INGREDIENTS'] = $ingredients;
+		
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+		
+	}
+	
+	function add_supplier(){
+		$data = array();
+		
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->list_company();
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/restaurant_supplier_form',
+			);
+		
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_restaurant',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Restaurant Supplier";
+		$data['data']['center']['list']['COMPANIES'] = $companies;
+		
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
 		
 	}
 }

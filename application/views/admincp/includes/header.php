@@ -11,7 +11,17 @@
 </head>
 
 <body>
-
-<?php $this->load->view('admincp/includes/navigation')?>
-
-
+<div id="main-container" align="center">
+	<div class="header-wide">
+		<div id="header">
+			<div id="logo">
+				<a href="/admincp/dashboard">Food Project</a>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div align="center">
+		<div style="width:980px;">
+			<?php $this->load->view('admincp/includes/navigation')?>
+		</div>
+	</div>

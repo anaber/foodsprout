@@ -12,9 +12,22 @@ class User extends Controller {
 	}
 	
 	function index()
-	{
-		$data['main_content'] = 'admincp/user';
-		$this->load->view('admincp/template', $data);		
+	{	
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/user',
+			);
+		
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_user',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "User Dashboard";
+		
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "User Options";
+		
+		$this->load->view('admincp/templates/left_center_template', $data);		
 	}
 	
 	// Search for a user

@@ -1,19 +1,35 @@
-Listing of all the States in the database<br><br>
-
-<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
-	<tr><th>State Name</td></tr>
 <?php
-	$i = 0;
-	foreach($rows as $r) :
-		
-		$i++;
-		echo '<tr class="d'.($i & 1).'"><td>'.anchor('admincp/state/edit/'.$r->state_id, $r->state_name).'</td></tr>';
+if (count($STATES) > 0 ) {
+?>
+<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
+	<tr>
+		<th>State Id</th>
+		<th>State Name</th>
+	</tr>
+			
+	
+<?php
 
+	$i = 0;
+	foreach($STATES as $r) :
+		$i++;
+		echo '<tr class="d'.($i & 1).'">';
+		echo '	<td>'.$r->stateId.'</td>';
+		echo '	<td>'.$r->stateName.'</td>';
+		echo '</tr>';
  	endforeach;
+?>
+
+<?php
+} else {
+	echo "No state available";
+}
+
 ?>
 </table>
 
-<br><br>
+
+
 <hr size="1">
 <b>Add State</b><br>
 

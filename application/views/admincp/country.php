@@ -1,17 +1,35 @@
-<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
-	<tr><th>Country Name</td></tr>
 <?php
-	$i = 0;
-	foreach($rows as $r) :
-		
-		$i++;
-		echo '<tr class="d'.($i & 1).'"><td>'.anchor('admincp/country/edit/'.$r->countryId, $r->countryName).'</td></tr>';
+if (count($COUNTRIES) > 0 ) {
+?>
+<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
+	<tr>
+		<th>Country Id</th>
+		<th>Country Name</th>
+	</tr>
+			
+	
+<?php
 
+	$i = 0;
+	foreach($COUNTRIES as $r) :
+		$i++;
+		echo '<tr class="d'.($i & 1).'">';
+		echo '	<td>'.$r->countryId.'</td>';
+		echo '	<td>'.$r->countryName.'</td>';
+		echo '</tr>';
  	endforeach;
+?>
+
+<?php
+} else {
+	echo "No country available";
+}
+
 ?>
 </table>
 
-<br><br>
+
+
 <hr size="1">
 <b>Add Country</b><br>
 

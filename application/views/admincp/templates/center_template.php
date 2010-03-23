@@ -7,17 +7,20 @@ for($i = 0; $i < count($CENTER); $i++ ) {
  	echo "<br /><br />";
 }
 */
-?>
-<?php
-	if (isset($BREADCRUMB) ) {	
+
+	if (isset($BREADCRUMB) ) {
+		
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
+	}
+	else{
+		echo '<br>';
 	}
 ?>
 <div id="main-content">
 
-	<table width = "100%" border = "0" cellpadding = "0" cellspacing = "0">
+	<table width = "980" border = "0" cellpadding = "0" cellspacing = "0">
 		<tr>
-			<td width = "100%" valign = "top">
+			<td valign = "top">
 				<?php
 				foreach($CENTER as $key => $view) {
 					if (isset($data['center'][$key]['VIEW_HEADER']) ) {

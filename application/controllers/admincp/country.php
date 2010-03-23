@@ -5,12 +5,15 @@ class Country extends Controller {
 	function __construct()
 	{
 		parent::Controller();
+		
+		// This ensures that if the user is not logged in they cannot access this class at all
 		if ($this->session->userdata('isAuthenticated') != 1 )
 		{
 			redirect('admincp/login');
 		}
 	}
 	
+	// By default the index loads the list of countries
 	function index()
 	{
 		$this->list_country();
@@ -19,17 +22,23 @@ class Country extends Controller {
 	// List all the country in the database
 	function list_country()
 	{
-		$this->load->model('CountryModel');
+		$data = array();
+		$countries = array();
 		
-		// Get all the country in the database
-		$query = $this->CountryModel->list_country();
-		if($query)
-		{
-			$data['rows'] = $this->CountryModel->list_country();
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->list_country();
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/country',
+			);
 			
-			$data['main_content'] = 'admincp/country';
-			$this->load->view('admincp/template', $data);
-		}
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Countries";
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		
+		$this->load->view('admincp/templates/center_template', $data);
+		
 	}
 	
 	// Add a country to the database

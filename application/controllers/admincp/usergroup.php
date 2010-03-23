@@ -1,6 +1,6 @@
 <?php
 
-class Animal extends Controller {
+class Usergroup extends Controller {
 	
 	function __construct()
 	{
@@ -13,28 +13,34 @@ class Animal extends Controller {
 	
 	function index()
 	{
-		$this->list_animal();
+		$this->list_usergroup();
 	}
 	
-	// List all the animal in the database
-	function list_animal()
+	// List all the usergroup in the database
+	function list_usergroup()
 	{
 		$data = array();
-		$animals = array();
+		$usergroups = array();
 		
-		$this->load->model('AnimalModel');
-		$animals = $this->AnimalModel->list_animal();
+		$this->load->model('UsergroupModel');
+		$usergroups = $this->UsergroupModel->list_usergroup();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/animal',
+				'list' => 'admincp/usergroup',
+			);
+			
+		$data['LEFT'] = array(
+				'list' => 'admincp/includes/left/nav_user',
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Animals";
-		$data['data']['center']['list']['ANIMALS'] = $animals;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Usergroups";
+		$data['data']['center']['list']['USERGROUPS'] = $usergroups;
+	
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "User Options";
 		
-		$this->load->view('admincp/templates/center_template', $data);
+		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
 	function add()
@@ -43,7 +49,7 @@ class Animal extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/animal_form',
+				'list' => 'admincp/usergroup_form',
 			);
 		
 		$data['RIGHT'] = array(
@@ -51,7 +57,7 @@ class Animal extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Animal";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Usergroup";
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
@@ -60,10 +66,10 @@ class Animal extends Controller {
 	
 	function save_add() {
 		
-		$this->load->model('AnimalModel', '', TRUE);
+		$this->load->model('UsergroupModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->AnimalModel->addAnimal() ) {
+		if ( $this->UsergroupModel->addUsergroup() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -78,12 +84,12 @@ class Animal extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('AnimalModel');
-		$animal = $this->AnimalModel->getAnimalFromId($id);
+		$this->load->model('UsergroupModel');
+		$usergroup = $this->UsergroupModel->getUsergroupFromId($id);
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/animal_form',
+				'list' => 'admincp/usergroup_form',
 			);
 		
 		$data['RIGHT'] = array(
@@ -91,8 +97,8 @@ class Animal extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Animal";
-		$data['data']['center']['list']['ANIMAL'] = $animal;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Usergroup";
+		$data['data']['center']['list']['ANIMAL'] = $usergroup;
 		
 		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
 		
@@ -101,10 +107,10 @@ class Animal extends Controller {
 	
 	function save_update() {
 		
-		$this->load->model('AnimalModel', '', TRUE);
+		$this->load->model('UsergroupModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->AnimalModel->updateAnimal() ) {
+		if ( $this->UsergroupModel->updateUsergroup() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -117,6 +123,6 @@ class Animal extends Controller {
 	}
 }
 
-/* End of file animal.php */
+/* End of file usergroup.php */
 
 ?>

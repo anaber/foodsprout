@@ -1,4 +1,4 @@
-Search for user:
+Search for user (email or screen name):
 
 <?php
 
