@@ -89,7 +89,7 @@ class ProcessingModel extends Model{
 		$row = $result->row();
 		
 		$this->processingLib->processingId = $row->processing_facility_id;
-		$this->processingLib->processingName = $row->processing_facility;
+		$this->processingLib->processingName = $row->processing_facility_name;
 		$this->processingLib->streetNumber = $row->street_number;
 		$this->processingLib->street = $row->street;
 		$this->processingLib->city = $row->city;
@@ -103,9 +103,9 @@ class ProcessingModel extends Model{
 	function updateProcessing() {
 		$return = true;
 		
-		$query = "SELECT * FROM processing WHERE processing_name = '" . $this->input->post('processingName') . "' AND processing_id <> " . $this->input->post('processingId');
+		$query = "SELECT * FROM processing_facility WHERE processing_facility_name = '" . $this->input->post('processingName') . "' AND processing_facility_id <> " . $this->input->post('processingId');
 		log_message('debug', 'ProcessingModel.updateProcessing : Try to get Duplicate record : ' . $query);
-			
+		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
@@ -119,10 +119,10 @@ class ProcessingModel extends Model{
 			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
 			
 			$data = array(
-						'processing_name' => $this->input->post('processingName'), 
+						'processing_facility_name' => $this->input->post('processingName'), 
 					);
-			$where = "processing_id = " . $this->input->post('processingId');
-			$query = $this->db->update_string('processing', $data, $where);
+			$where = "processing_facility_id = " . $this->input->post('processingId');
+			$query = $this->db->update_string('processing_facility', $data, $where);
 			
 			log_message('debug', 'ProcessingModel.updateProcessing : ' . $query);
 			if ( $this->db->query($query) ) {
@@ -138,7 +138,7 @@ class ProcessingModel extends Model{
 						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
 						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
 					);
-				$where = "processing_id = " . $this->input->post('processingId');
+				$where = "processing_facility_id = " . $this->input->post('processingId');
 				$query = $this->db->update_string('address', $data, $where);
 				if ( $this->db->query($query) ) {
 					$return = true;
@@ -146,7 +146,7 @@ class ProcessingModel extends Model{
 					$return = false;
 				}
 				
-				log_message('debug', 'CompanyModel.updateCompany : ' . $query);
+				log_message('debug', 'ProcessingModel.updateProcessing : ' . $query);
 				
 			} else {
 				$return = false;
@@ -156,7 +156,7 @@ class ProcessingModel extends Model{
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-				
+			
 		return $return;
 	}
 	

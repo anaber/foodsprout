@@ -56,9 +56,7 @@ class Company extends Controller {
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function update($id)

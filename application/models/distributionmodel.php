@@ -103,9 +103,9 @@ class DistributionModel extends Model{
 	function updateDistribution() {
 		$return = true;
 		
-		$query = "SELECT * FROM distribution WHERE distribution_name = '" . $this->input->post('distributionName') . "' AND distribution_id <> " . $this->input->post('distributionId');
+		$query = "SELECT * FROM distribution_center WHERE distribution_center = '" . $this->input->post('distributionName') . "' AND distribution_center_id <> " . $this->input->post('distributionId');
 		log_message('debug', 'DistributionModel.updateDistribution : Try to get Duplicate record : ' . $query);
-			
+		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
@@ -119,10 +119,10 @@ class DistributionModel extends Model{
 			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
 			
 			$data = array(
-						'distribution_name' => $this->input->post('distributionName'), 
+						'distribution_center' => $this->input->post('distributionName'), 
 					);
-			$where = "distribution_id = " . $this->input->post('distributionId');
-			$query = $this->db->update_string('distribution', $data, $where);
+			$where = "distribution_center_id = " . $this->input->post('distributionId');
+			$query = $this->db->update_string('distribution_center', $data, $where);
 			
 			log_message('debug', 'DistributionModel.updateDistribution : ' . $query);
 			if ( $this->db->query($query) ) {
@@ -138,7 +138,7 @@ class DistributionModel extends Model{
 						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
 						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
 					);
-				$where = "distribution_id = " . $this->input->post('distributionId');
+				$where = "distribution_center_id = " . $this->input->post('distributionId');
 				$query = $this->db->update_string('address', $data, $where);
 				if ( $this->db->query($query) ) {
 					$return = true;
@@ -146,7 +146,7 @@ class DistributionModel extends Model{
 					$return = false;
 				}
 				
-				log_message('debug', 'CompanyModel.updateCompany : ' . $query);
+				log_message('debug', 'DistributionModel.updateDistribution : ' . $query);
 				
 			} else {
 				$return = false;
@@ -156,7 +156,7 @@ class DistributionModel extends Model{
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-				
+		
 		return $return;
 	}
 	

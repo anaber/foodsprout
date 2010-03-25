@@ -25,17 +25,11 @@ class Restaurant extends Controller {
 				'list' => 'admincp/restaurant',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Restaurants";
 		$data['data']['center']['list']['RESTAURANTS'] = $restaurants;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// This function will create the form to add a restaurant but does not save the data to the database
@@ -61,10 +55,6 @@ class Restaurant extends Controller {
 				'list' => 'admincp/restaurant_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Restaurant";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
@@ -72,9 +62,7 @@ class Restaurant extends Controller {
 		$data['data']['center']['list']['RESTAURANTTYPES'] = $restauranttypes;
 		$data['data']['center']['list']['CUISINES'] = $cuisines;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function update($id)

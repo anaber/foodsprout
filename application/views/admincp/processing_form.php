@@ -117,7 +117,6 @@ $(document).ready(function() {
 		
 </script>
 
-
 <?php echo anchor('admincp/processing', 'List Processings'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />

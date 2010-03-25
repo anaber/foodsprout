@@ -24,17 +24,11 @@ class Distribution extends Controller {
 				'list' => 'admincp/distribution',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Distributions";
 		$data['data']['center']['list']['DISTRIBUTIONS'] = $distributions;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// Create the form page to add a distribution to the database, does not actually add the data, only builds the form
@@ -53,19 +47,13 @@ class Distribution extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'admincp/distribution_form',
 			);
-		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Distribution";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function update($id)
@@ -86,10 +74,6 @@ class Distribution extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'admincp/distribution_form',
 			);
-		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Distribution";
@@ -97,9 +81,7 @@ class Distribution extends Controller {
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['DISTRIBUTION'] = $distribution;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// Pass the form data to the model to be inserted into the database
