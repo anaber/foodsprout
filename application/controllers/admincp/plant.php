@@ -30,38 +30,30 @@ class Plant extends Controller {
 				'list' => 'admincp/plant',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Plants";
 		$data['data']['center']['list']['PLANTS'] = $plants;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function add()
 	{
 		$data = array();
 		
+		$this->load->model('PlantGroupModel');
+		$plantGroups = $this->PlantGroupModel->list_plantGroup();
+		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'admincp/plant_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Plant";
+		$data['data']['center']['list']['PLANT_GROUPS'] = $plantGroups;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_add() {
@@ -87,22 +79,20 @@ class Plant extends Controller {
 		$this->load->model('PlantModel');
 		$plant = $this->PlantModel->getPlantFromId($id);
 		
+		$this->load->model('PlantGroupModel');
+		$plantGroups = $this->PlantGroupModel->list_plantGroup();
+		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'admincp/plant_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Plant";
-		$data['data']['center']['list']['ANIMAL'] = $plant;
+		$data['data']['center']['list']['PLANT'] = $plant;
+		$data['data']['center']['list']['PLANT_GROUPS'] = $plantGroups;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_update() {

@@ -52,16 +52,10 @@ class Usergroup extends Controller {
 				'list' => 'admincp/usergroup_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Usergroup";
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_add() {
@@ -92,17 +86,11 @@ class Usergroup extends Controller {
 				'list' => 'admincp/usergroup_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Usergroup";
 		$data['data']['center']['list']['ANIMAL'] = $usergroup;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_update() {

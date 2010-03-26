@@ -30,17 +30,11 @@ class Producttype extends Controller {
 				'list' => 'admincp/producttype',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "List Product Types";
 		$data['data']['center']['list']['PRODUCTTYPES'] = $producttypes;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function add()
@@ -52,16 +46,10 @@ class Producttype extends Controller {
 				'list' => 'admincp/producttype_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Producttype";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Product Type";
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_add() {
@@ -92,17 +80,11 @@ class Producttype extends Controller {
 				'list' => 'admincp/producttype_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Product Type";
 		$data['data']['center']['list']['PRODUCTTYPE'] = $producttype;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_update() {

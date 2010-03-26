@@ -30,17 +30,11 @@ class PlantGroup extends Controller {
 				'list' => 'admincp/plantgroup',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "List of Plant Groups";
 		$data['data']['center']['list']['PLANT_GROUPS'] = $plantGroups;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// Add a new fruit type, this will only create the web form
@@ -53,16 +47,10 @@ class PlantGroup extends Controller {
 				'list' => 'admincp/plantgroup_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Plant Group";
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// Take the information from the form and pass it to the model to save it in the database
@@ -95,17 +83,11 @@ class PlantGroup extends Controller {
 				'list' => 'admincp/plantgroup_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Plant Group";
 		$data['data']['center']['list']['PLANT_GROUP'] = $plantGroup;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// Take the information from the update form and send it to the model for updating

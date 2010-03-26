@@ -24,17 +24,11 @@ class Ingredient extends Controller {
 				'list' => 'admincp/ingredient',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Ingredients";
 		$data['data']['center']['list']['INGREDIENTS'] = $ingredients;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function add()
@@ -61,10 +55,6 @@ class Ingredient extends Controller {
 				'list' => 'admincp/ingredient_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Ingredient";
 		$data['data']['center']['list']['INGREDIENTTYPES'] = $ingredienttypes;
@@ -73,9 +63,7 @@ class Ingredient extends Controller {
 		$data['data']['center']['list']['FRUITTYPES'] = $fruittypes;
 		$data['data']['center']['list']['PLANTS'] = $plants;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function update($id)
@@ -97,19 +85,13 @@ class Ingredient extends Controller {
 				'list' => 'admincp/ingredient_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Ingredient";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['COMPANY'] = $ingredient;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_add() {

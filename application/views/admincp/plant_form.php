@@ -38,13 +38,15 @@ $(document).ready(function() {
 				var formAction = '/admincp/plant/save_update';
 				postArray = {
 							  plantName:$('#plant_name').val(),
+							  plantGroupId:$('#plant_group').val(),
 							  plantId: $('#plant_id').val()
 							};
 				act = 'update';		
 			} else {
 				formAction = '/admincp/plant/save_add';
 				postArray = { 
-							  plantName:$('#plant_name').val()
+							  plantName:$('#plant_name').val(),
+							  plantGroupId:$('#plant_group').val()
 							};
 				act = 'add';
 			}
@@ -113,16 +115,28 @@ $(document).ready(function() {
 <form id="plantForm" method="post" action="">
 <table class="formTable">
 	<tr>
-		<td width = "25%">Plant Name</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($ANIMAL) ? $ANIMAL->plantName : '') ?>" class="validate[required]" type="text" name="plant_name" id="plant_name" /><br />
+		<td nowrap>Plant Name</td>
+		<td>
+			<input value="<?php echo (isset($PLANT) ? $PLANT->plantName : '') ?>" class="validate[required]" type="text" name="plant_name" id="plant_name" /><br />
 		</td>
 	<tr>
-	
+	<tr>
+		<td>State</td>
+		<td>
+			<select name="plant_group" id="plant_group"  class="validate[required]">
+			<option value = ''>--Plant Group--</option>
+			<?php
+				foreach($PLANT_GROUPS as $key => $value) {
+					echo '<option value="'.$value->plantGroupId.'"' . (  ( isset($PLANT) && ( $value->plantGroupId == $PLANT->plantGroupId )  ) ? ' SELECTED' : '' ) . '>'.$value->plantGroupName.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	<tr>
 	<tr>
 		<td width = "25%" colspan = "2">
-			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($ANIMAL)) ? 'Update Plant' : 'Add Plant' ?>">
-			<input type = "hidden" name = "plant_id" id = "plant_id" value = "<?php echo (isset($ANIMAL) ? $ANIMAL->plantId : '') ?>">
+			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PLANT)) ? 'Update Plant' : 'Add Plant' ?>">
+			<input type = "hidden" name = "plant_id" id = "plant_id" value = "<?php echo (isset($PLANT) ? $PLANT->plantId : '') ?>">
 		</td>
 	<tr>
 </table>

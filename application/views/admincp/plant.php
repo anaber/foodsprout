@@ -7,6 +7,7 @@ if (count($PLANTS) > 0 ) {
 	<tr>
 		<th>Plant Id</th>
 		<th>Plant Name</th>
+		<th>Plant Group</th>
 	</tr>
 			
 	
@@ -18,6 +19,7 @@ if (count($PLANTS) > 0 ) {
 		echo '<tr class="d'.($i & 1).'">';
 		echo '	<td>'.anchor('admincp/plant/update/'.$r->plantId, $r->plantId).'</td>';
 		echo '	<td>'.anchor('admincp/plant/update/'.$r->plantId, $r->plantName).'</td>';
+		echo '	<td>'.anchor('admincp/plant/update/'.$r->plantId, $r->plantGroupName).'</td>';
 		echo '</tr>';
  	endforeach;
 ?>

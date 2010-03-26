@@ -29,18 +29,12 @@ class Insect extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'admincp/insect',
 			);
-		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Insects";
 		$data['data']['center']['list']['INSECTS'] = $insects;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function add()
@@ -52,16 +46,10 @@ class Insect extends Controller {
 				'list' => 'admincp/insect_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Insect";
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_add() {
@@ -92,17 +80,11 @@ class Insect extends Controller {
 				'list' => 'admincp/insect_form',
 			);
 		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Insect";
 		$data['data']['center']['list']['INSECT'] = $insect;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_update() {
