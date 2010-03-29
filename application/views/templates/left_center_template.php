@@ -42,7 +42,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		?>
 		<td>
 			
-		<td width = "800" valign = "top">
+		<td width ="790" valign="top" style="padding-left:10px;">
 		<?php
 			foreach($CENTER as $key => $view) {
 				if (isset($data['center'][$key]['VIEW_HEADER']) ) {

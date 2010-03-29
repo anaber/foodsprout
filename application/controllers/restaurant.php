@@ -11,29 +11,42 @@ class Restaurant extends Controller {
 		$this->load->model('RestaurantModel');
 		$restaurants = $this->RestaurantModel->list_restaurant();
 		
+		$this->load->model('RestauranttypeModel');
+		$restauranttypes = $this->RestauranttypeModel->list_restauranttype();
+		
+		$this->load->model('CuisineModel');
+		$cusines = $this->CuisineModel->list_cuisine();
+		
 		// List of views to be included
 		$data['CENTER'] = array(
+				'map' => 'includes/map',
 				'list' => '/restaurant/restaurant_list',
 			);
 		
-		$data['RIGHT'] = array(
-				'map' => 'includes/map',
-				'ad' => 'includes/right/ad',
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/filter',
+				'ad' => 'includes/left/ad',
 			);
 		
 		// Data to be passed to the views
+		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
+		$data['data']['left']['filter']['RESTAURANTTYPES'] = $restauranttypes;
+		$data['data']['left']['filter']['CUISINES'] = $cusines;
+		
+		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
+		$data['data']['center']['map']['VIEW_HEADER'] = "Map";
+		$data['data']['center']['map']['width'] = '790';
+		$data['data']['center']['map']['height'] = '250';
+		
 		$data['data']['center']['list']['LIST'] = $restaurants;
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of resturants";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Resturants";
 		
-		$data['data']['right']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['right']['map']['VIEW_HEADER'] = "Google Map";
-		$data['data']['right']['map']['width'] = '300';
-		$data['data']['right']['map']['height'] = '200';
 		
-		$this->load->view('templates/center_right_template', $data);
+		
+		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	function detail($id) {
+	function view($id) {
 		
 		global $GOOGLE_MAP_KEY;
 		
