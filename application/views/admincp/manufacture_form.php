@@ -12,13 +12,13 @@ formValidated = true;
 $(document).ready(function() {
 	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
-	$("#processingForm").validationEngine({
+	$("#manufactureForm").validationEngine({
 		success :  function() {formValidated = true;},
 		failure : function() {formValidated = false; }
 	});
 	
 	
-	$("#processingForm").submit(function() {
+	$("#manufactureForm").submit(function() {
 		
 		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
 		
@@ -34,23 +34,23 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
-			if ($('#processingId').val() != '' ) {
-				var formAction = '/admincp/processing/save_update';
+			if ($('#manufactureId').val() != '' ) {
+				var formAction = '/admincp/manufacture/save_update';
 				postArray = {
-							  processingName:$('#processingName').val(),
+							  manufactureName:$('#manufactureName').val(),
 							  streetNumber:$('#streetNumber').val(),
 							  street:$('#street').val(),
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(), 
-							  processingId: $('#processingId').val()
+							  manufactureId: $('#manufactureId').val()
 							};
 				act = 'update';		
 			} else {
-				formAction = '/admincp/processing/save_add';
+				formAction = '/admincp/manufacture/save_add';
 				postArray = { 
-							  processingName:$('#processingName').val(),
+							  manufactureName:$('#manufactureName').val(),
 							  streetNumber:$('#streetNumber').val(),
 							  street:$('#street').val(),
 							  city: $('#city').val(),
@@ -70,12 +70,12 @@ $(document).ready(function() {
 						if (act == 'add') {
 							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/processing';
+								document.location='/admincp/manufacture';
 							});	
 						} else if (act == 'update') {
 							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/processing';
+								document.location='/admincp/manufacture';
 							});
 						}
 
@@ -110,41 +110,41 @@ $(document).ready(function() {
 		//Cancel the link behavior
 		e.preventDefault();
 		
-		document.location='/admincp/processing';
+		document.location='/admincp/manufacture';
 	});
 
 });
 		
 </script>
 
-<?php echo anchor('admincp/processing', 'List Processings'); ?><br /><br />
+<?php echo anchor('admincp/manufacture', 'List Manufactures'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
-<form id="processingForm" method="post" <?php echo (isset($PROCESSING)) ? 'action="/admincp/processing/save_update"' : 'action="/admincp/processing/save_add"' ?>>
+<form id="manufactureForm" method="post" <?php echo (isset($MANUFACTURE)) ? 'action="/admincp/manufacture/save_update"' : 'action="/admincp/manufacture/save_add"' ?>>
 <table class="formTable">
 	<tr>
-		<td width = "25%" nowrap>Processing Name</td>
+		<td width = "25%" nowrap>Manufacture Name</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($PROCESSING) ? $PROCESSING->processingName : '') ?>" class="validate[required]" type="text" name="processingName" id="processingName"/><br />
+			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureName : '') ?>" class="validate[required]" type="text" name="manufactureName" id="manufactureName"/><br />
 		</td>
 	<tr>
 	<tr>
 		<td width = "25%">Street Number</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($PROCESSING) ? $PROCESSING->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
+			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
 		</td>
 	<tr>
 	<tr>
 		<td width = "25%">Street Name</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($PROCESSING) ? $PROCESSING->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
+			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
 		</td>
 	<tr>
 	<tr>
 		<td width = "25%">City</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($PROCESSING) ? $PROCESSING->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
+			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
 		</td>
 	<tr>
 	<tr>
@@ -154,7 +154,7 @@ $(document).ready(function() {
 			<option value = ''>--State--</option>
 			<?php
 				foreach($STATES as $key => $value) {
-					echo '<option value="'.$value->stateId.'"' . (  ( isset($PROCESSING) && ( $value->stateId == $PROCESSING->stateId )  ) ? ' SELECTED' : '' ) . '>'.$value->stateName.'</option>';
+					echo '<option value="'.$value->stateId.'"' . (  ( isset($MANUFACTURE) && ( $value->stateId == $MANUFACTURE->stateId )  ) ? ' SELECTED' : '' ) . '>'.$value->stateName.'</option>';
 				}
 			?>
 			</select>
@@ -167,7 +167,7 @@ $(document).ready(function() {
 			<option value = ''>--Country--</option>
 			<?php
 				foreach($COUNTRIES as $key => $value) {
-					echo '<option value="'.$value->countryId.'"' . (  ( isset($PROCESSING) && ( $value->countryId == $PROCESSING->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>';
+					echo '<option value="'.$value->countryId.'"' . (  ( isset($MANUFACTURE) && ( $value->countryId == $MANUFACTURE->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>';
 				}
 			?>
 			</select>
@@ -176,13 +176,13 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Zip</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($PROCESSING) ? $PROCESSING->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
+			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
 		</td>
 	<tr>
 	<tr>
 		<td width = "25%" colspan = "2">
-			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PROCESSING)) ? 'Update Processing' : 'Add Processing' ?>">
-			<input type = "hidden" name = "processingId" id = "processingId" value = "<?php echo (isset($PROCESSING) ? $PROCESSING->processingId : '') ?>">
+			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MANUFACTURE)) ? 'Update Manufacture' : 'Add Manufacture' ?>">
+			<input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureId : '') ?>">
 		</td>
 	<tr>
 </table>

@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class ProcessingLib {
+class ManufactureLib {
 	
-	var $processingId;
-	var $processingName;
+	var $manufactureId;
+	var $manufactureName;
 	var $streetNumber;
 	var $street;
 	var $city;
@@ -14,9 +14,9 @@ class ProcessingLib {
 	var $zipcode;
 	var $creationDate;
 		
-	function FarmLib() {
-		$this->processingId = '';
-		$this->processingName = '';
+	function ManufactureLib() {
+		$this->manufactureId = '';
+		$this->manufactureName = '';
 		$this->streetNumber = '';
 		$this->street = '';
 		$this->city = '';

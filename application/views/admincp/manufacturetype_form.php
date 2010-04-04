@@ -12,13 +12,13 @@ formValidated = true;
 $(document).ready(function() {
 	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
-	$("#facilitytypeForm").validationEngine({
+	$("#manufacturetypeForm").validationEngine({
 		success :  function() {formValidated = true;},
 		failure : function() {formValidated = false; }
 	});
 	
 	
-	$("#facilitytypeForm").submit(function() {
+	$("#manufacturetypeForm").submit(function() {
 		
 		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
 		
@@ -34,17 +34,17 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
-			if ($('#facilitytypeId').val() != '' ) {
-				var formAction = '/admincp/facilitytype/save_update';
+			if ($('#manufacturetypeId').val() != '' ) {
+				var formAction = '/admincp/manufacturetype/save_update';
 				postArray = {
-							  facilitytypeName:$('#facilitytypeName').val(),
-							  facilitytypeId:$('#facilitytypeId').val()
+							  manufactureType:$('#manufactureType').val(),
+							  manufacturetypeId:$('#manufacturetypeId').val()
 							};
 				act = 'update';		
 			} else {
-				formAction = '/admincp/facilitytype/save_add';
+				formAction = '/admincp/manufacturetype/save_add';
 				postArray = { 
-							  facilitytypeName:$('#facilitytypeName').val()
+							  manufactureType:$('#manufactureType').val()
 							};
 				act = 'add';
 			}
@@ -58,12 +58,12 @@ $(document).ready(function() {
 						if (act == 'add') {
 							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/facilitytype';
+								document.location='/admincp/manufacturetype';
 							});	
 						} else if (act == 'update') {
 							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/facilitytype';
+								document.location='/admincp/manufacturetype';
 							});
 						}
 
@@ -72,7 +72,7 @@ $(document).ready(function() {
 					//start fading the messagebox 
 					$("#msgbox").fadeTo(200,0.1,function() {
 						//add message and change the class of the box and start fading
-						$(this).html('Duplicate Facility Type...').addClass('messageboxerror').fadeTo(900,1);
+						$(this).html('Duplicate Manufacture Type...').addClass('messageboxerror').fadeTo(900,1);
 						
 					});
 				} else {
@@ -107,22 +107,22 @@ $(document).ready(function() {
 </script>
 
 
-<?php echo anchor('admincp/facilitytype', 'List Processing Facility Types'); ?><br /><br />
+<?php echo anchor('admincp/manufacturetype', 'List Manufacture Types'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
-<form id="facilitytypeForm" method="post" <?php echo (isset($FACILITYTYPE)) ? 'action="/admincp/facilitytype/save_update"' : 'action="/admincp/facilitytype/save_add"' ?>>
+<form id="manufacturetypeForm" method="post" <?php echo (isset($MANUFACTURETYPE)) ? 'action="/admincp/manufacturetype/save_update"' : 'action="/admincp/manufacturetype/save_add"' ?>>
 <table class="formTable">
 	<tr>
-		<td width = "25%" nowrap>Processing Facility Type</td>
+		<td width = "25%" nowrap>Manufacture Type</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($FACILITYTYPE) ? $FACILITYTYPE->facilitytypeName : '') ?>" class="validate[required]" type="text" name="facilitytypeName" id="facilitytypeName"/><br />
+			<input value="<?php echo (isset($MANUFACTURETYPE) ? $MANUFACTURETYPE->manufactureType : '') ?>" class="validate[required]" type="text" name="manufactureType" id="manufactureType"/><br />
 		</td>
 	<tr>
 	<tr>
 		<td width = "25%" colspan = "2">
-			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FACILITYTYPE)) ? 'Update Processing Facility Type' : 'Add Processing Facility Type' ?>">
-			<input type = "hidden" name = "facilitytypeId" id = "facilitytypeId" value = "<?php echo (isset($FACILITYTYPE) ? $FACILITYTYPE->facilitytypeId : '') ?>">
+			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MANUFACTURETYPE)) ? 'Update Manufacture Type' : 'Add Manufacture Type' ?>">
+			<input type = "hidden" name = "manufacturetypeId" id = "manufacturetypeId" value = "<?php echo (isset($MANUFACTURETYPE) ? $MANUFACTURETYPE->manufacturetypeId : '') ?>">
 		</td>
 	<tr>
 </table>

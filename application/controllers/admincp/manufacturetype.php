@@ -1,6 +1,6 @@
 <?php
 
-class Facilitytype extends Controller {
+class Manufacturetype extends Controller {
 	
 	function __construct()
 	{
@@ -13,26 +13,26 @@ class Facilitytype extends Controller {
 	
 	function index()
 	{
-		$this->list_facility_type();
+		$this->list_manufacture_type();
 	}
 	
 	// List all the facilitytype in the database
-	function list_facility_type()
+	function list_manufacture_type()
 	{
 		$data = array();
-		$facilitytypes = array();
+		$manufactureTypes = array();
 		
-		$this->load->model('FacilitytypeModel');
-		$facilitytypes = $this->FacilitytypeModel->list_facility_type();
+		$this->load->model('ManufacturetypeModel');
+		$manufactureTypes = $this->ManufacturetypeModel->list_manufacture_type();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/facilitytype',
+				'list' => 'admincp/manufacturetype',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "List Processing Facility Types";
-		$data['data']['center']['list']['FACILITYTYPES'] = $facilitytypes;
+		$data['data']['center']['list']['VIEW_HEADER'] = "List Manufacture Types";
+		$data['data']['center']['list']['MANUFACTURETYPES'] = $manufactureTypes;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -44,21 +44,21 @@ class Facilitytype extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/facilitytype_form',
+				'list' => 'admincp/manufacturetype_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Facilitytype";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Manufacture Type";
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_add() {
 		
-		$this->load->model('FacilitytypeModel', '', TRUE);
+		$this->load->model('ManufacturetypeModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->FacilitytypeModel->addFacilitytype() ) {
+		if ( $this->ManufacturetypeModel->addManufacturetype() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -74,27 +74,27 @@ class Facilitytype extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('FacilitytypeModel');
-		$facilitytype = $this->FacilitytypeModel->getFacilitytypeFromId($id);
+		$this->load->model('ManufacturetypeModel');
+		$manufacturetype = $this->ManufacturetypeModel->getManufacturetypeFromId($id);
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/facilitytype_form',
+				'list' => 'admincp/manufacturetype_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Facility Type";
-		$data['data']['center']['list']['FACILITYTYPE'] = $facilitytype;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Manufacture Type";
+		$data['data']['center']['list']['MANUFACTURETYPE'] = $manufacturetype;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_update() {
 		
-		$this->load->model('FacilitytypeModel', '', TRUE);
+		$this->load->model('ManufacturetypeModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->FacilitytypeModel->updateFacilitytype() ) {
+		if ( $this->ManufacturetypeModel->updateManufacturetype() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {

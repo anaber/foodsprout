@@ -1,6 +1,6 @@
 <?php
 
-class Processing extends Controller {
+class Manufacture extends Controller {
 	
 	function __construct()
 	{
@@ -14,24 +14,24 @@ class Processing extends Controller {
 	function index()
 	{
 		$data = array();
-		$processings = array();
+		$manufactures = array();
 		
-		$this->load->model('ProcessingModel');
-		$processings = $this->ProcessingModel->list_processing();
+		$this->load->model('ManufactureModel');
+		$manufactures = $this->ManufactureModel->list_manufacture();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/processing',
+				'list' => 'admincp/manufacture',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Processings";
-		$data['data']['center']['list']['PROCESSINGS'] = $processings;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Manufactures";
+		$data['data']['center']['list']['MANUFACTURES'] = $manufactures;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	// Create the form page to add a processing to the database, does not actually add the data, only builds the form
+	// Create the form page to add a manufacture to the database, does not actually add the data, only builds the form
 	function add()
 	{
 		$data = array();
@@ -45,11 +45,11 @@ class Processing extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/processing_form',
+				'list' => 'admincp/manufacture_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Processing";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Manufacture";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
 		
@@ -61,8 +61,8 @@ class Processing extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('ProcessingModel');
-		$processing = $this->ProcessingModel->getProcessingFromId($id);
+		$this->load->model('ManufactureModel');
+		$manufacture = $this->ManufactureModel->getManufactureFromId($id);
 		
 		$this->load->model('StateModel');
 		$states = $this->StateModel->list_state();
@@ -73,14 +73,14 @@ class Processing extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/processing_form',
+				'list' => 'admincp/manufacture_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Processing";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Manufacture";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['PROCESSING'] = $processing;
+		$data['data']['center']['list']['MANUFACTURE'] = $manufacture;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -88,13 +88,13 @@ class Processing extends Controller {
 	// Pass the form data to the model to be inserted into the database
 	function save_add() {
 		
-		$this->load->model('ProcessingModel', '', TRUE);
+		$this->load->model('ManufactureModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->ProcessingModel->addProcessing() ) {
+		if ( $this->ManufactureModel->addManufacture() ) {
 			
 			// TO DO: IF THE USER DOES NOT HAVE JAVASCRIPT WE NEED TO USE SERVER SIDE REDIRECT.  BELOW CODE WILL DO THIS, HOWEVER THE echo 'yes' IS REQUIRED TO PASS TO THE JAVASCRIPT.  CONSIDER A BETTER WAY TO NOTIFY THE JQUERY JAVASCRIPT THAT THE EVENT WAS SUCCESSFUL SO AS TO ALLOW THE PROPER REDIRECT FOR NON JAVASCRIPT
-			// Added the new processing successfully, send user to index
+			// Added the new manufacture successfully, send user to index
 			//$this->index();
 			echo 'yes';
 			
@@ -110,10 +110,10 @@ class Processing extends Controller {
 	
 	function save_update() {
 		
-		$this->load->model('ProcessingModel', '', TRUE);
+		$this->load->model('ManufactureModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->ProcessingModel->updateProcessing() ) {
+		if ( $this->ManufactureModel->updateManufacture() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {

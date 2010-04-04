@@ -1,5 +1,5 @@
 <div id="homeMain">
-		<strong>Our mission is to map the world's food chain, come it explore it with us</strong><br>
+		<strong class="redtxt">Our mission is to map the world's food chain, start exploring it with us</strong><br><br>
 			<div id="box1">
 				Products
 			</div>
@@ -9,13 +9,14 @@
 			<div id="box3">
 				Food Web
 			</div>
+			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 	
 </div>
 		
 <br>
 
 <div id="homeleftbox">
-			<img src="/images/rest.jpg" border="0" align="left" style="margin-right: 5px;"><span class="greentxt">Restaurants in Your Area</span><br><span style="font-size:12px;">Learn what Restaurants in your area have joined us in telling <b>YOU</b> where its food comes from!</span><br><br>
+			<img src="/images/rest.jpg" border="0" align="left" style="margin-right: 5px;"><span class="redtxt"><b>Restaurants in Your Area</b></span><br><span style="font-size:12px;">Learn what Restaurants in your area have joined us in telling <b>YOU</b> where its food comes from!</span><br><br>
 			<div align="center">
 			<?php
 			
