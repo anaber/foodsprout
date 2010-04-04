@@ -57,10 +57,10 @@ class Ingredient extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Ingredient";
-		$data['data']['center']['list']['INGREDIENTTYPES'] = $ingredienttypes;
-		$data['data']['center']['list']['VEGETABLETYPES'] = $vegetabletypes;
-		$data['data']['center']['list']['MEATTYPES'] = $meattypes;
-		$data['data']['center']['list']['FRUITTYPES'] = $fruittypes;
+		$data['data']['center']['list']['INGREDIENT_TYPES'] = $ingredienttypes;
+		$data['data']['center']['list']['VEGETABLE_TYPES'] = $vegetabletypes;
+		$data['data']['center']['list']['MEAT_TYPES'] = $meattypes;
+		$data['data']['center']['list']['FRUIT_TYPES'] = $fruittypes;
 		$data['data']['center']['list']['PLANTS'] = $plants;
 		
 		$this->load->view('admincp/templates/center_template', $data);
@@ -73,12 +73,20 @@ class Ingredient extends Controller {
 		$this->load->model('IngredientModel');
 		$ingredient = $this->IngredientModel->getIngredientFromId($id);
 		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
+		$this->load->model('IngredienttypeModel');
+		$ingredienttypes = $this->IngredienttypeModel->list_ingredienttype();
 		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$this->load->model('VegetabletypeModel');
+		$vegetabletypes = $this->VegetabletypeModel->list_vegetabletype();
 		
+		$this->load->model('MeattypeModel');
+		$meattypes = $this->MeattypeModel->list_meattype();
+		
+		$this->load->model('FruittypeModel');
+		$fruittypes = $this->FruittypeModel->list_fruittype();
+		
+		$this->load->model('PlantModel');
+		$plants = $this->PlantModel->list_plant();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -87,9 +95,12 @@ class Ingredient extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Ingredient";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['COMPANY'] = $ingredient;
+		$data['data']['center']['list']['INGREDIENT'] = $ingredient;
+		$data['data']['center']['list']['INGREDIENT_TYPES'] = $ingredienttypes;
+		$data['data']['center']['list']['VEGETABLE_TYPES'] = $vegetabletypes;
+		$data['data']['center']['list']['MEAT_TYPES'] = $meattypes;
+		$data['data']['center']['list']['FRUIT_TYPES'] = $fruittypes;
+		$data['data']['center']['list']['PLANTS'] = $plants;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}

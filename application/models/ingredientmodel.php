@@ -21,6 +21,11 @@ class IngredientModel extends Model{
 			
 			$this->ingredientLib->ingredientId = $row['ingredient_id'];
 			$this->ingredientLib->ingredientName = $row['ingredient_name'];
+			$this->ingredientLib->ingredientTypeId = $row['ingredient_type_id'];
+			$this->ingredientLib->vegetableTypeId = $row['vegetable_type_id'];
+			$this->ingredientLib->meatTypeId = $row['meat_type_id'];
+			$this->ingredientLib->fruitTypeId = $row['fruit_type_id'];
+			$this->ingredientLib->plantId = $row['plant_id'];
 			
 			$ingredients[] = $this->ingredientLib;
 			unset($this->ingredientLib);
@@ -47,7 +52,7 @@ class IngredientModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO ingredient (ingredient_id, ingredient_name, ingredient_type_id, vegetable_type_id, meat_type_id, fruit_type_id, plant_id)" .
-					" values (NULL, '" . $this->input->post('ingredientName') . "', '" . $this->input->post('ingredienttypeId') . "', '" . $this->input->post('vegetabletypeId') . "', '" . $this->input->post('meattypeId') . "', '" . $this->input->post('fruittypeId') . "', '" . $this->input->post('plantId') . "' )";
+					" values (NULL, '" . $this->input->post('ingredientName') . "', " . $this->input->post('ingredientTypeId') . ", " . $this->input->post('vegetableTypeId') . ", " . $this->input->post('meatTypeId') . ", " . $this->input->post('fruitTypeId') . ", " . $this->input->post('plantId') . " )";
 			log_message('debug', 'IngredientModel.addIngredient : Insert Ingredient : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -70,11 +75,9 @@ class IngredientModel extends Model{
 	// Get all the data for one specific ingredient using ingredient_id
 	function getIngredientFromId($ingredientId) {
 		
-		$query = "SELECT ingredient.*, address.* FROM ingredient, address WHERE ingredient.ingredient_id = address.ingredient_id AND ingredient.ingredient_id = " . $ingredientId;
+		$query = "SELECT * FROM ingredient WHERE ingredient_id = " . $ingredientId;
 		log_message('debug', "IngredientModel.getIngredientFromId : " . $query);
 		$result = $this->db->query($query);
-		
-		$ingredient = array();
 		
 		$this->load->library('IngredientLib');
 		
@@ -82,12 +85,11 @@ class IngredientModel extends Model{
 		
 		$this->ingredientLib->ingredientId = $row->ingredient_id;
 		$this->ingredientLib->ingredientName = $row->ingredient_name;
-		$this->ingredientLib->streetNumber = $row->street_number;
-		$this->ingredientLib->street = $row->street;
-		$this->ingredientLib->city = $row->city;
-		$this->ingredientLib->stateId = $row->state_id;
-		$this->ingredientLib->countryId = $row->country_id;
-		$this->ingredientLib->zipcode = $row->zipcode;
+		$this->ingredientLib->ingredientTypeId = $row->ingredient_type_id;
+		$this->ingredientLib->vegetableTypeId = $row->vegetable_type_id;
+		$this->ingredientLib->meatTypeId = $row->meat_type_id;
+		$this->ingredientLib->fruitTypeId = $row->fruit_type_id;
+		$this->ingredientLib->plantId = $row->plant_id;
 		
 		return $this->ingredientLib;
 	}
@@ -103,47 +105,32 @@ class IngredientModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$CI =& get_instance();
-			$CI->load->model('AddressModel','',true);
-			
-			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-			
-			$CI->load->model('GoogleMapModel','',true);
-			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+			$ingredientTypeId = $this->input->post('ingredientTypeId');
+			$vegetableTypeId = $this->input->post('vegetableTypeId');
+			$meatTypeId = $this->input->post('meatTypeId');
+			$fruitTypeId = $this->input->post('fruitTypeId');
+			$plantId = $this->input->post('plantId');
 			
 			$data = array(
-						'ingredient_name' => $this->input->post('ingredientName'), 
-					);
+					'ingredient_name' => $this->input->post('ingredientName'),
+					'ingredient_type_id' => ( (empty($ingredientTypeId) || $ingredientTypeId == 'NULL') ? NULL : $ingredientTypeId ),
+					'vegetable_type_id' => ( (empty($vegetableTypeId) || $vegetableTypeId == 'NULL') ? NULL : $vegetableTypeId ),
+					'meat_type_id' => ( (empty($meatTypeId) || $meatTypeId == 'NULL') ? NULL : $meatTypeId ),
+					'fruit_type_id' => ( (empty($fruitTypeId) || $fruitTypeId == 'NULL') ? NULL : $fruitTypeId ),
+					'plant_id' => ( (empty($plantId) || $plantId == 'NULL') ? NULL : $plantId ),
+				);
+			
+			
 			$where = "ingredient_id = " . $this->input->post('ingredientId');
 			$query = $this->db->update_string('ingredient', $data, $where);
 			
-			log_message('debug', 'IngredientModel.updateIngredient : ' . $query);
 			if ( $this->db->query($query) ) {
-				
-				$data = array(
-						'street_number' => $this->input->post('streetNumber'),
-						'street' => $this->input->post('street'),
-						'city' => $this->input->post('city'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
-						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
-						
-					);
-				$where = "ingredient_id = " . $this->input->post('ingredientId');
-				$query = $this->db->update_string('address', $data, $where);
-				if ( $this->db->query($query) ) {
-					$return = true;
-				} else {
-					$return = false;
-				}
-				
-				log_message('debug', 'IngredientModel.updateIngredient : ' . $query);
-				
+				$return = true;
 			} else {
 				$return = false;
 			}
+			
+			log_message('debug', 'IngredientModel.updateIngredient : ' . $query);
 			
 		} else {
 			$GLOBALS['error'] = 'duplicate';

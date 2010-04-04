@@ -38,21 +38,22 @@ $(document).ready(function() {
 				var formAction = '/admincp/ingredient/save_update';
 				postArray = {
 							  ingredientName:$('#ingredientName').val(),
-							  ingredienttypeId:$('#ingredienttypeId').val(),
-							  vegetabletypeId:$('#vegetabletypeId').val(),
-							  meattypeId: $('#meattypeId').val(),
-							  fruittypeId:$('#fruittypeId').val(),
-							  plantId:$('#plantId').val()
+							  ingredientTypeId:$('#ingredientTypeId').val(),
+							  vegetableTypeId:$('#vegetableTypeId').val(),
+							  meatTypeId: $('#meatTypeId').val(),
+							  fruitTypeId:$('#fruitTypeId').val(),
+							  plantId:$('#plantId').val(),
+							  ingredientId:$('#ingredientId').val()
 							};
 				act = 'update';		
 			} else {
 				formAction = '/admincp/ingredient/save_add';
 				postArray = { 
 							  ingredientName:$('#ingredientName').val(),
-							  ingredienttypeId:$('#ingredienttypeId').val(),
-							  vegetabletypeId:$('#vegetabletypeId').val(),
-							  meattypeId: $('#meattypeId').val(),
-							  fruittypeId:$('#fruittypeId').val(),
+							  ingredientTypeId:$('#ingredientTypeId').val(),
+							  vegetableTypeId:$('#vegetableTypeId').val(),
+							  meatTypeId: $('#meatTypeId').val(),
+							  fruitTypeId:$('#fruitTypeId').val(),
 							  plantId:$('#plantId').val()
 							};
 				act = 'add';
@@ -100,14 +101,6 @@ $(document).ready(function() {
 		
 		return false; //not to post the  form physically
 		
-	});	
-	
-	
-	$("#btnCancel").click(function(e) {
-		//Cancel the link behavior
-		e.preventDefault();
-		
-		document.location='/admincp/ingredient';
 	});
 
 });
@@ -132,12 +125,12 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Ingredient Type</td>
 		<td width = "75%">
-			<select name="ingredienttypeId" id="ingredienttypeId" class="validate[required]">
+			<select name="ingredientTypeId" id="ingredientTypeId" class="validate[required]">
 			<option value = ''>--Ingredient Type--</option>
-			<option value = "NULL">--Not Applicable--</option>
+			<option value = "NULL"<?php echo (  ( isset($INGREDIENT) && empty( $INGREDIENT->ingredientTypeId )  ) ? ' SELECTED' : '' ) ?>>--Not Applicable--</option>
 			<?php
-				foreach($INGREDIENTTYPES as $key => $value) {
-					echo '<option value="'.$value->ingredienttypeId.'"' . (  ( isset($INGREDIENT) && ( $value->ingredienttypeId == $INGREDIENTTYPES->ingredienttypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->ingredienttypeName.'</option>';
+				foreach($INGREDIENT_TYPES as $key => $value) {
+					echo '<option value="'.$value->ingredienttypeId.'"' . (  ( isset($INGREDIENT) && ( $value->ingredienttypeId == $INGREDIENT->ingredientTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->ingredienttypeName.'</option>';
 				}
 			?>
 			</select>
@@ -147,12 +140,12 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Vegetable Type</td>
 		<td width = "75%">
-			<select name="vegetabletypeId" id="vegetabletypeId"  class="validate[required]">
+			<select name="vegetableTypeId" id="vegetableTypeId"  class="validate[required]">
 			<option value = ''>--Vegetable Type--</option>
-			<option value = "NULL">--Not Applicable--</option>
+			<option value = "NULL"<?php echo (  ( isset($INGREDIENT) && empty( $INGREDIENT->vegetableTypeId )  ) ? ' SELECTED' : '' ) ?>>--Not Applicable--</option>
 				<?php
-					foreach($VEGETABLETYPES as $key => $value) {
-						echo '<option value="'.$value->vegetabletypeId.'"' . (  ( isset($INGREDIENT) && ( $value->vegetabletypeId == $VEGETABLETYPES->vegetabletypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->vegetabletypeName.'</option>';
+					foreach($VEGETABLE_TYPES as $key => $value) {
+						echo '<option value="'.$value->vegetabletypeId.'"' . (  ( isset($INGREDIENT) && ( $value->vegetabletypeId == $INGREDIENT->vegetableTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->vegetabletypeName.'</option>';
 					}
 				?>
 				</select>
@@ -162,12 +155,12 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Meat Type</td>
 		<td width = "75%">
-			<select name="meattypeId" id="meattypeId"  class="validate[required]">
+			<select name="meatTypeId" id="meatTypeId"  class="validate[required]">
 			<option value = ''>--Meat Type--</option>
-			<option value = "NULL">--Not Applicable--</option>
+			<option value = "NULL"<?php echo (  ( isset($INGREDIENT) && empty( $INGREDIENT->meatTypeId )  ) ? ' SELECTED' : '' ) ?>>--Not Applicable--</option>
 				<?php
-					foreach($MEATTYPES as $key => $value) {
-						echo '<option value="'.$value->meattypeId.'"' . (  ( isset($INGREDIENT) && ( $value->meattypeId == $MEATTYPES->meattypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->meattypeName.'</option>';
+					foreach($MEAT_TYPES as $key => $value) {
+						echo '<option value="'.$value->meattypeId.'"' . (  ( isset($INGREDIENT) && ( $value->meattypeId == $INGREDIENT->meatTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->meattypeName.'</option>';
 					}
 				?>
 				</select>
@@ -177,12 +170,12 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Fruit Type</td>
 		<td width = "75%">
-			<select name="fruittypeId" id="fruittypeId"  class="validate[required]">
+			<select name="fruitTypeId" id="fruitTypeId"  class="validate[required]">
 			<option value = ''>--Fruit Type--</option>
-			<option value = "NULL">--Not Applicable--</option>
+			<option value = "NULL"<?php echo (  ( isset($INGREDIENT) && empty( $INGREDIENT->fruitTypeId )  ) ? ' SELECTED' : '' ) ?>>--Not Applicable--</option>
 				<?php
-					foreach($FRUITTYPES as $key => $value) {
-						echo '<option value="'.$value->fruittypeId.'"' . (  ( isset($INGREDIENT) && ( $value->fruittypeId == $FRUITTYPES->fruittypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->fruittypeName.'</option>';
+					foreach($FRUIT_TYPES as $key => $value) {
+						echo '<option value="'.$value->fruittypeId.'"' . (  ( isset($INGREDIENT) && ( $value->fruittypeId == $INGREDIENT->fruitTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->fruittypeName.'</option>';
 					}
 				?>
 				</select>
@@ -194,10 +187,10 @@ $(document).ready(function() {
 		<td width = "75%">
 			<select name="plantId" id="plantId"  class="validate[required]">
 			<option value = ''>--Plants--</option>
-			<option value = "NULL">--Not Applicable--</option>
+			<option value = "NULL"<?php echo (  ( isset($INGREDIENT) && empty( $INGREDIENT->plantId )  ) ? ' SELECTED' : '' ) ?>>--Not Applicable--</option>
 				<?php
 					foreach($PLANTS as $key => $value) {
-						echo '<option value="'.$value->plantId.'"' . (  ( isset($INGREDIENT) && ( $value->plantId == $PLANTS->plantId )  ) ? ' SELECTED' : '' ) . '>'.$value->plantName.'</option>';
+						echo '<option value="'.$value->plantId.'"' . (  ( isset($INGREDIENT) && ( $value->plantId == $INGREDIENT->plantId )  ) ? ' SELECTED' : '' ) . '>'.$value->plantName.'</option>';
 					}
 				?>
 				</select>

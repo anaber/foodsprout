@@ -64,10 +64,12 @@ document.onclick = jsddm_close;
 				<li><?php echo anchor('admincp/ingredienttype', 'Ingredient Type'); ?></li>
 				<li><?php echo anchor('admincp/fruittype', 'Fruit Type'); ?></li>
 				<li><?php echo anchor('admincp/meattype', 'Meat Type'); ?></li>
-				<li><?php echo anchor('admincp/facilitytype', 'Processing Facility Type'); ?></li>
+				<li><?php echo anchor('admincp/farmtype', 'Farm Type'); ?></li>
+				<li><?php echo anchor('admincp/manufacturetype', 'Manufacture Type'); ?></li>
 				<li><?php echo anchor('admincp/producttype', 'Product Type'); ?></li>
 				<li><?php echo anchor('admincp/restauranttype', 'Restaurant Type'); ?></li>
 				<li><?php echo anchor('admincp/vegetabletype', 'Vegetable Type'); ?></li>
+				
 			</ul>
 		</li>
 		
