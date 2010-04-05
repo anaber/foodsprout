@@ -42,9 +42,9 @@ document.onclick = jsddm_close;
 			<ul>
 				<li><?php echo anchor('admincp/company', 'Company'); ?></li>
 				<li><?php echo anchor('admincp/farm', 'Farm'); ?></li>
-				<li><?php echo anchor('admincp/distribution', 'Distribution'); ?></li>
-				<li><?php echo anchor('admincp/processing', 'Processing'); ?></li>
+				<li><?php echo anchor('admincp/manufacture', 'Manufacture'); ?></li>
 				<li><?php echo anchor('admincp/restaurant', 'Restaurant'); ?></li>
+				<li><?php echo anchor('admincp/distributor', 'Distributor'); ?></li>
 			</ul>
 		</li>
 		<li><a href="#">Food Web</a>
@@ -60,16 +60,16 @@ document.onclick = jsddm_close;
 		<li><?php echo anchor('admincp/product', 'Products'); ?></li>	
 		<li><a href="#">Types</a>
 			<ul>
+				<li><?php echo anchor('admincp/farmtype', 'Farm Type'); ?></li>
+				<li><?php echo anchor('admincp/manufacturetype', 'Manufacture Type'); ?></li>
+				<li><?php echo anchor('admincp/restauranttype', 'Restaurant Type'); ?></li>
 				<li><?php echo anchor('admincp/cuisine', 'Cuisines'); ?></li>
+				<li><a>---------------</a></li>
+				<li><?php echo anchor('admincp/producttype', 'Product Type'); ?></li>
 				<li><?php echo anchor('admincp/ingredienttype', 'Ingredient Type'); ?></li>
 				<li><?php echo anchor('admincp/fruittype', 'Fruit Type'); ?></li>
 				<li><?php echo anchor('admincp/meattype', 'Meat Type'); ?></li>
-				<li><?php echo anchor('admincp/farmtype', 'Farm Type'); ?></li>
-				<li><?php echo anchor('admincp/manufacturetype', 'Manufacture Type'); ?></li>
-				<li><?php echo anchor('admincp/producttype', 'Product Type'); ?></li>
-				<li><?php echo anchor('admincp/restauranttype', 'Restaurant Type'); ?></li>
 				<li><?php echo anchor('admincp/vegetabletype', 'Vegetable Type'); ?></li>
-				
 			</ul>
 		</li>
 		
