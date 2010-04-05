@@ -8,33 +8,42 @@ class Farm extends Controller {
 		$data = array();
 		
 		// Getting information from models
-		//$this->load->model('FarmModel');
-		//$farms = $this->FarmModel->list_farm();
-		$farms = array();
+		$this->load->model('FarmModel');
+		$farms = $this->FarmModel->listFarm();
+		
+		$this->load->model('FarmTypeModel');
+		$farmTypes = $this->FarmTypeModel->listFarmType();
+		
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'farm/farm_list',
+				'map' => 'includes/map',
+				'list' => '/farm/farm_list',
 			);
 		
-		$data['RIGHT'] = array(
-				'map' => 'includes/map',
-				'ad' => 'includes/right/ad',
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/farm_filter',
+				'ad' => 'includes/left/ad',
 			);
 		
 		// Data to be passed to the views
+		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
+		$data['data']['left']['filter']['FARMTYPES'] = $farmTypes;
+		
+		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
+		$data['data']['center']['map']['VIEW_HEADER'] = "Map";
+		$data['data']['center']['map']['width'] = '790';
+		$data['data']['center']['map']['height'] = '250';
+		
 		$data['data']['center']['list']['LIST'] = $farms;
-		$data['data']['center']['list']['VIEW_HEADER'] = "Farm List";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Farms";
 		
-		$data['data']['right']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['right']['map']['VIEW_HEADER'] = "Google Map";
-		$data['data']['right']['map']['width'] = '300';
-		$data['data']['right']['map']['height'] = '200';
 		
-		$this->load->view('templates/center_right_template', $data);
+		
+		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	function detail($id) {
+	function view($id) {
 		
 		global $GOOGLE_MAP_KEY;
 		
@@ -43,15 +52,13 @@ class Farm extends Controller {
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'farm/farm_details',
-				'items' => 'item/item_list',
-				'products' => 'product/product_list',
 			);
 		
 		$data['RIGHT'] = array(
 				'image' => 'includes/right/image',
 				'ad' => 'includes/right/ad',
 				'map' => 'includes/map',
-				'company' => 'includes/right/company_list',
+				'supplies' => 'includes/right/company_list',
 			);
 		
 		// Data to be passed to the views
@@ -70,11 +77,7 @@ class Farm extends Controller {
 		$data['data']['right']['map']['width'] = '300';
 		$data['data']['right']['map']['height'] = '200';
 		
-		
-		
-		$data['data']['right']['info']['VIEW_HEADER'] = "Product Info";
-		
-		$data['data']['right']['nutrition']['VIEW_HEADER'] = "Nutritional Information";
+		$data['data']['right']['supplies']['VIEW_HEADER'] = "Supplies";
 		
 		$this->load->view('templates/center_right_template', $data);
 	}

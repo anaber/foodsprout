@@ -14,7 +14,7 @@ class RestaurantLib {
 	var $zipcode;
 	var $creationDate;
 		
-	function CompanyLib() {
+	function RestaurantLib() {
 		$this->restaurantId = '';
 		$this->restaurantName = '';
 		$this->streetNumber = '';

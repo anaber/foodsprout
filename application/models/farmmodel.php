@@ -3,13 +3,13 @@
 class FarmModel extends Model{
 	
 	// Create a simple list of all the farms
-	function list_farm()
+	function listFarm()
 	{
 		$query = "SELECT farm.* " .
 				" FROM farm " .
 				" ORDER BY farm_name";
 		
-		log_message('debug', "FarmModel.list_farm : " . $query);
+		log_message('debug', "FarmModel.listFarm : " . $query);
 		$result = $this->db->query($query);
 		
 		$farms = array();
@@ -17,14 +17,14 @@ class FarmModel extends Model{
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('FarmLib');
-			unset($this->farmLib);
+			unset($this->FarmLib);
 			
-			$this->farmLib->farmId = $row['farm_id'];
-			$this->farmLib->farmName = $row['farm_name'];
-			$this->farmLib->creationDate = $row['creation_date'];
+			$this->FarmLib->farmId = $row['farm_id'];
+			$this->FarmLib->farmName = $row['farm_name'];
+			$this->FarmLib->creationDate = $row['creation_date'];
 			
-			$farms[] = $this->farmLib;
-			unset($this->farmLib);
+			$farms[] = $this->FarmLib;
+			unset($this->FarmLib);
 		}
 		
 		return $farms;

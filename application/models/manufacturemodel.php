@@ -3,7 +3,7 @@
 class ManufactureModel extends Model{
 	
 	// Create a simple list of all the manufactures
-	function list_manufacture()
+	function listManufacture()
 	{
 		$query = "SELECT manufacture.* " .
 				" FROM manufacture " .

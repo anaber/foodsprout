@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class DistributionLib {
+class DistributorLib {
 	
-	var $distributionId;
-	var $distributionName;
+	var $distributorId;
+	var $distributorName;
 	var $streetNumber;
 	var $street;
 	var $city;
@@ -14,9 +14,9 @@ class DistributionLib {
 	var $zipcode;
 	var $creationDate;
 		
-	function FarmLib() {
-		$this->distributionId = '';
-		$this->distributionName = '';
+	function DistributorLib() {
+		$this->distributorId = '';
+		$this->distributorName = '';
 		$this->streetNumber = '';
 		$this->street = '';
 		$this->city = '';

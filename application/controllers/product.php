@@ -12,24 +12,25 @@ class Product extends Controller {
 		$products = $this->ProductModel->list_product();
 		
 		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'includes/center/list',
+		$data['LEFT'] = array(
+				'ad' => 'includes/left/ad',
 			);
 		
-		$data['RIGHT'] = array(
-				'map' => 'includes/map',
+		$data['CENTER'] = array(
+				'map'  => 'includes/map',
+				'list' => '/product/product_list',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['LIST'] = $products;
+		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
+		$data['data']['center']['map']['VIEW_HEADER'] = "Distributor Map";
+		$data['data']['center']['map']['width'] = '790';
+		$data['data']['center']['map']['height'] = '250';
+		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Product List";
+		$data['data']['center']['list']['LIST'] = $products;
 		
-		$data['data']['right']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['right']['map']['VIEW_HEADER'] = "Google Map";
-		$data['data']['right']['map']['width'] = '300';
-		$data['data']['right']['map']['height'] = '200';
-		
-		$this->load->view('templates/center_right_template', $data);
+		$this->load->view('templates/left_center_template', $data);
 	}
 	
 	function detail($id) {

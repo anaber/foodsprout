@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class RestauranttypeLib {
+class RestaurantTypeLib {
 	
 	var $restauranttypeId;
 	var $restauranttypeName;
 		
-	function CuisineLib() {
+	function RestaurantTypeLib() {
 		$this->restauranttypeId = '';
 		$this->restauranttypeName = '';
 	}

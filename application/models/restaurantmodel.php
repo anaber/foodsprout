@@ -18,14 +18,14 @@ class RestaurantModel extends Model{
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('RestaurantLib');
-			unset($this->restaurantLib);
+			unset($this->RestaurantLib);
 			
-			$this->restaurantLib->restaurantId = $row['restaurant_id'];
-			$this->restaurantLib->restaurantName = $row['restaurant_name'];
-			$this->restaurantLib->creationDate = $row['creation_date'];
+			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
+			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
+			$this->RestaurantLib->creationDate = $row['creation_date'];
 			
-			$companies[] = $this->restaurantLib;
-			unset($this->restaurantLib);
+			$companies[] = $this->RestaurantLib;
+			unset($this->RestaurantLib);
 		}
 		
 		return $companies;

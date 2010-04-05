@@ -37,7 +37,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 				} else {
 					$this->load->view($view);
 				}
-				echo "<hr style = 'color:#0000FF' />";
+
 			}
 		?>
 		<td>
@@ -53,7 +53,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 				} else {
 					$this->load->view($view);
 				}
-				echo "<hr style = 'color:#0000FF' />";
+
 			}
 		?>
 		<td>

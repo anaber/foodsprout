@@ -1,12 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class ManufacturetypeLib {
+class ManufactureTypeLib {
 	
-	var $manufacturetypeId;
+	var $manufactureTypeId;
 	var $manufactureType;
 		
-	function FacilitytypeLib() {
-		$this->manufacturetypeId = '';
+	function ManufactureTypeLib() {
+		$this->manufactureTypeId = '';
 		$this->manufactureType = '';
 	}
 }

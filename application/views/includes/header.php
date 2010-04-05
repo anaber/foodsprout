@@ -46,12 +46,13 @@
 					              'id'          => 'search_query',
 					              'value'       => 'Search',
 					              'maxlength'   => '100',
-					              'size'        => '50',
-					              'style'       => 'width:86%',
+					              'size'        => '30',
+					              'style'       => 'width:300',
+								  'class'       => 'search',
 					            );
 
 					echo form_input($data);
-					echo ' '.form_submit('submit', 'Search');
+					echo ' '.form_submit('submit', 'Search', 'class="search"');
 					echo '</form>';
 				
 				?>

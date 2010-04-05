@@ -1,29 +1,29 @@
 <?php
 
-class ManufacturetypeModel extends Model{
+class ManufactureTypeModel extends Model{
 	
 	// List all the manufacture_type in the database
-	function list_manufacture_type()
+	function listManufactureType()
 	{
 		$query = "SELECT * FROM manufacture_type ORDER BY manufacture_type";
 		
-		log_message('debug', "ManufacturetypeModel.list_manufacture_type : " . $query);
+		log_message('debug', "ManufactureTypeModel.listManufactureType : " . $query);
 		$result = $this->db->query($query);
 		
-		$manufacturetypes = array();
+		$manufactureTypes = array();
 		
 		foreach ($result->result_array() as $row) {
 			
-			$this->load->library('ManufacturetypeLib');
-			unset($this->manufacturetypeLib);
+			$this->load->library('ManufactureTypeLib');
+			unset($this->ManufactureTypeLib);
 			
-			$this->manufacturetypeLib->manufacturetypeId = $row['manufacture_type_id'];
-			$this->manufacturetypeLib->manufactureType = $row['manufacture_type'];
+			$this->ManufactureTypeLib->manufactureTypeId = $row['manufacture_type_id'];
+			$this->ManufactureTypeLib->manufactureType = $row['manufacture_type'];
 			
-			$manufacturetypes[] = $this->manufacturetypeLib;
-			unset($this->manufacturetypeLib);
+			$manufactureTypes[] = $this->ManufactureTypeLib;
+			unset($this->ManufactureTypeLib);
 		}
-		return $manufacturetypes;
+		return $manufactureTypes;
 	}
 	
 	// Insert manufacture data into the database

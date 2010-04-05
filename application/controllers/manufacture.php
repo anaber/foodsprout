@@ -9,10 +9,10 @@ class Manufacture extends Controller {
 		
 		// Getting information from models
 		$this->load->model('ManufactureModel');
-		$manufactures = $this->ManufactureModel->list_manufacture();
+		$manufactures = $this->ManufactureModel->listManufacture();
 		
-		$this->load->model('ManufacturetypeModel');
-		$manufacturetypes = $this->ManufacturetypeModel->list_manufacturetype();
+		$this->load->model('ManufactureTypeModel');
+		$manufacturetypes = $this->ManufactureTypeModel->listManufactureType();
 		
 		
 		// List of views to be included
@@ -22,7 +22,7 @@ class Manufacture extends Controller {
 			);
 		
 		$data['LEFT'] = array(
-				'filter' => 'includes/left/filter',
+				'filter' => 'includes/left/manufacture_filter',
 				'ad' => 'includes/left/ad',
 			);
 		
@@ -51,7 +51,7 @@ class Manufacture extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'menu' => '/manufacture/menu',
+				'menu' => '/manufacture/product',
 			);
 		
 		$data['RIGHT'] = array(

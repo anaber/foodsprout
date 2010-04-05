@@ -24,7 +24,7 @@ class Restaurant extends Controller {
 			);
 		
 		$data['LEFT'] = array(
-				'filter' => 'includes/left/filter',
+				'filter' => 'includes/left/restaurant_filter',
 				'ad' => 'includes/left/ad',
 			);
 		
