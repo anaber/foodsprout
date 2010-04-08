@@ -2,14 +2,43 @@
 
 class CompanyModel extends Model{
 	
+	function addCompany($companyName) {
+		$return = true;
+		
+		$query = "SELECT * FROM company WHERE company_name = '" . $companyName . "'";
+		log_message('debug', 'CompanyModel.addCompany : Try to get duplicate Company record : ' . $query);
+		
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			
+			$query = "INSERT INTO company (company_id, company_name, creation_date)" .
+					" values (NULL, '" . $companyName . "', NOW() )";
+			log_message('debug', 'CompanyModel.addCompany : Insert Company : ' . $query);
+			
+			if ( $this->db->query($query) ) {
+				$new_company_id = $this->db->insert_id();
+
+				$return = $new_company_id;
+			} else {
+				$return = false;
+			}
+		} else {
+			$GLOBALS['error'] = 'duplicate_company';
+			$return = false;
+		}
+		
+		return $return;	
+	}
+	
 	// Generate a simple list of all the companies in the database
-	function list_company()
+	function listCompany()
 	{
 		$query = "SELECT company.* " .
 				 " FROM company " .
 				 " ORDER BY company_name";
 		
-		log_message('debug', "CompanyModel.list_company : " . $query);
+		log_message('debug', "CompanyModel.listCompany : " . $query);
 		$result = $this->db->query($query);
 		
 		$companies = array();
@@ -30,6 +59,24 @@ class CompanyModel extends Model{
 		return $companies;
 	}
 	
+	function getCompanyFromId($companyId) {
+		
+		$query = "SELECT * FROM company WHERE company_id = " . $companyId;
+		log_message('debug', "CompanyModel.getCompanyFromId : " . $query);
+		$result = $this->db->query($query);
+		
+		$company = array();
+		
+		$this->load->library('CompanyLib');
+		
+		$row = $result->row();
+		
+		$this->companyLib->companyId = $row->company_id;
+		$this->companyLib->companyName = $row->company_name;
+		
+		return $this->companyLib;
+	}
+	/*
 	// Generate a detailed list of all the companies in the database.
 	function listCompanyMore()
 	{
@@ -168,7 +215,7 @@ class CompanyModel extends Model{
 			
 		return $return;
 	}
-	
+	*/
 	
 }
 

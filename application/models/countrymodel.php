@@ -3,7 +3,7 @@
 class CountryModel extends Model{
 	
 	// Add a country to the database
-	function add_country()
+	function addCountry()
 	{
 		$insert_new_country = array(
 			'country_name' => $this->input->post('country_name')
@@ -14,7 +14,7 @@ class CountryModel extends Model{
 	}
 	
 	// List all the country in the database
-	function list_country()
+	function listCountry()
 	{
 		$countries = array();
 		

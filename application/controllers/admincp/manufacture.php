@@ -17,7 +17,7 @@ class Manufacture extends Controller {
 		$manufactures = array();
 		
 		$this->load->model('ManufactureModel');
-		$manufactures = $this->ManufactureModel->list_manufacture();
+		$manufactures = $this->ManufactureModel->listManufacture();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -36,12 +36,17 @@ class Manufacture extends Controller {
 	{
 		$data = array();
 		
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->listCompany();
+		
 		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
+		$states = $this->StateModel->listState();
 		
 		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$countries = $this->CountryModel->listCountry();
 		
+		$this->load->model('ManufactureTypeModel');
+		$manufactureTypes = $this->ManufactureTypeModel->listManufactureType();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -52,6 +57,8 @@ class Manufacture extends Controller {
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Manufacture";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['MANUFACTURE_TYPES'] = $manufactureTypes;
+		$data['data']['center']['list']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -65,11 +72,15 @@ class Manufacture extends Controller {
 		$manufacture = $this->ManufactureModel->getManufactureFromId($id);
 		
 		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
+		$states = $this->StateModel->listState();
 		
 		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$countries = $this->CountryModel->listCountry();
 		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_manufacture',
+			);
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -77,12 +88,14 @@ class Manufacture extends Controller {
 			);
 		
 		// Data to be passed to the views
+		$data['data']['left']['nav']['MANUFACTURE_ID'] = $id;
+		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Manufacture";
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['MANUFACTURE'] = $manufacture;
 		
-		$this->load->view('admincp/templates/center_template', $data);
+		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
 	// Pass the form data to the model to be inserted into the database
@@ -124,6 +137,35 @@ class Manufacture extends Controller {
 		}
 		
 	}
+	
+	function add_supplier($id)
+	{
+		global $SUPPLIER_TYPE;
+		$data = array();
+		
+		$this->load->model('ManufactureModel');
+		$manufacture = $this->ManufactureModel->getManufactureFromId($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_manufacture',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/supplier_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['MANUFACTURE_ID'] = $id;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $manufacture->manufactureName;
+		$data['data']['center']['list']['MANUFACTURE'] = $manufacture;
+		$data['data']['center']['list']['SUPPLIER_TYPE'] = $SUPPLIER_TYPE;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
 	
 }
 

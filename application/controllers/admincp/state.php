@@ -26,7 +26,7 @@ class State extends Controller {
 		$states = array();
 		
 		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
+		$states = $this->StateModel->listState();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -55,7 +55,7 @@ class State extends Controller {
 		else
 		{
 			$this->load->model('StateModel');
-			if($query = $this->StateModel->add_state())
+			if($query = $this->StateModel->addState())
 			{
 				redirect('admincp/state');
 			}

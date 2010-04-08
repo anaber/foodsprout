@@ -141,14 +141,26 @@ $(document).ready(function() {
 		
 </script>
 
-<?php echo anchor('admincp/manufacture', 'List Manufactures'); ?><br /><br />
-
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 <?php
-	//print_r_pre($MANUFACTURE);
+	
 ?>
-<form id="manufactureForm" method="post" <?php echo (isset($MANUFACTURE)) ? 'action="/admincp/manufacture/save_update"' : 'action="/admincp/manufacture/save_add"' ?>>
+<form id="supplierForm" method="post" <?php echo (isset($MANUFACTURE)) ? 'action="/admincp/manufacture/save_update"' : 'action="/admincp/manufacture/save_add"' ?>>
 <table class="formTable">
+	<tr>
+		<td width = "25%" nowrap>Supplier Type</td>
+		<td width = "75%">
+			<select name="supplierType" id="supplierType"  class="validate[required]">
+			<option value = ''>--Supplier Type--</option>
+			<?php
+				foreach($SUPPLIER_TYPE as $key => $value) {
+					echo '<option value="'.$key.'"' . (  ( isset($SUPPLIER) && ( $key == $SUPPLIER->supplierType )  ) ? ' SELECTED' : '' ) . '>' . $value . '</option>';
+				}
+			?>
+			</select>
+		</td>
+	<tr>
+	
 	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
@@ -163,111 +175,21 @@ $(document).ready(function() {
 		</td>
 	<tr>
 	<tr>
-		<td width = "25%" nowrap>Manufacture Name</td>
+		<td width = "25%" nowrap>New Supplier</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureName : '') ?>" class="validate[optional]" type="text" name="manufactureName" id="manufactureName"/><br />
+			<input value="" class="validate[optional]" type="text" name="supplierName" id="supplierName"/><br />
 		</td>
 	<tr>
 	<tr>
 		<td colspan = "2" style = "font-size:10px;">
 			<ul>
-				<li>Existing companies selected and name entered, manufacture will be treated as the subsidery of selected company but with overridden name.</li>
-				<li>Existing companies selected and NO name entered, manufacture name will be considered as of company name.</li>
-				<li>No company selected from the list above and name entered, new comapny and manufacture will be added.</li>
+				<li>Select either existing supplier or enter new supplier</li>
+				<li>If you do not want to use any of previous records, add new supplier from here.</li>
+				<li>Based on the type of supplier selected from first dropdown, new manufacture, distributor, farm, restaurant (and company) will be added.</li>
+				<li>Records will be added only if it is unique.</li>
 			</ul>
 		</td>
 	<tr>
-	<tr>
-		<td width = "25%">Manufacture Type</td>
-		<td width = "75%">
-			<select name="manufactureTypeId" id="manufactureTypeId"  class="validate[required]">
-			<option value = ''>--Manufacture Type--</option>
-			<?php
-				foreach($MANUFACTURE_TYPES as $key => $value) {
-					echo '<option value="'.$value->manufactureTypeId.'"' . (  ( isset($MANUFACTURE) && ( $value->manufactureTypeId == $MANUFACTURE->manufactureTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->manufactureType.'</option>';
-				}
-			?>
-			</select>
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%" nowrap>Custom URL</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->customUrl : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%" nowrap>Status</td>
-		<td width = "75%">
-			<select name="status" id="status"  class="validate[required]">
-				<option value="">--Choose Status--</option>
-				<option value="active"<?php echo ((isset($MANUFACTURE) && ($MANUFACTURE->isActive == 1)) ? ' SELECTED' : '')?>>Active</option>
-				<option value="inactive"<?php echo ((isset($MANUFACTURE) && ($MANUFACTURE->isActive == 0)) ? ' SELECTED' : '')?>>In-active</option>
-			</select>
-		</td>
-	<tr>
-<?php
-	if (!isset($MANUFACTURE) ){
-?>
-	<tr>
-		<td colspan = "2">&nbsp;</td>
-	<tr>
-	<tr>
-		<td colspan = "2"><b>Address</b></td>
-	<tr>
-	<tr>
-		<td width = "25%">Street Number</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">Street Name</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">City</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">State</td>
-		<td width = "75%">
-			<select name="stateId" id="stateId"  class="validate[required]">
-			<option value = ''>--State--</option>
-			<?php
-				foreach($STATES as $key => $value) {
-					echo '<option value="'.$value->stateId.'"' . (  ( isset($MANUFACTURE) && ( $value->stateId == $MANUFACTURE->stateId )  ) ? ' SELECTED' : '' ) . '>'.$value->stateName.'</option>';
-				}
-			?>
-			</select>
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">Country</td>
-		<td width = "75%">
-			<select name="countryId" id="countryId"  class="validate[required]">
-			<option value = ''>--Country--</option>
-			<?php
-				foreach($COUNTRIES as $key => $value) {
-					echo '<option value="'.$value->countryId.'"' . (  ( isset($MANUFACTURE) && ( $value->countryId == $MANUFACTURE->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>';
-				}
-			?>
-			</select>
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">Zip</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
-		</td>
-	<tr>
-<?php
-	}
-?>
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MANUFACTURE)) ? 'Update Manufacture' : 'Add Manufacture' ?>">

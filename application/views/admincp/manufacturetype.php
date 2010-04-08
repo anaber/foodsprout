@@ -16,8 +16,8 @@ if (count($MANUFACTURETYPES) > 0 ) {
 	foreach($MANUFACTURETYPES as $r) :
 		$i++;
 		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.anchor('admincp/manufacturetype/update/'.$r->manufacturetypeId, $r->manufacturetypeId).'</td>';
-		echo '	<td>'.anchor('admincp/manufacturetype/update/'.$r->manufacturetypeId, $r->manufactureType).'</td>';
+		echo '	<td>'.anchor('admincp/manufacturetype/update/'.$r->manufactureTypeId, $r->manufactureTypeId).'</td>';
+		echo '	<td>'.anchor('admincp/manufacturetype/update/'.$r->manufactureTypeId, $r->manufactureType).'</td>';
 		echo '</tr>';
  	endforeach;
 ?>

@@ -34,11 +34,11 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
-			if ($('#manufacturetypeId').val() != '' ) {
+			if ($('#manufactureTypeId').val() != '' ) {
 				var formAction = '/admincp/manufacturetype/save_update';
 				postArray = {
 							  manufactureType:$('#manufactureType').val(),
-							  manufacturetypeId:$('#manufacturetypeId').val()
+							  manufacturetypeId:$('#manufactureTypeId').val()
 							};
 				act = 'update';		
 			} else {
@@ -50,7 +50,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				
+				alert(data);
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -122,7 +122,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MANUFACTURETYPE)) ? 'Update Manufacture Type' : 'Add Manufacture Type' ?>">
-			<input type = "hidden" name = "manufacturetypeId" id = "manufacturetypeId" value = "<?php echo (isset($MANUFACTURETYPE) ? $MANUFACTURETYPE->manufacturetypeId : '') ?>">
+			<input type = "hidden" name = "manufactureTypeId" id = "manufactureTypeId" value = "<?php echo (isset($MANUFACTURETYPE) ? $MANUFACTURETYPE->manufactureTypeId : '') ?>">
 		</td>
 	<tr>
 </table>

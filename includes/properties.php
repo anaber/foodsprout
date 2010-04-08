@@ -22,4 +22,22 @@ include($ENV_PROPERTY_FILE);
  */
 $DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
 
+$ACTIVITY_LEVEL = array(
+					0 => "Inactive",
+					1 => "Active", 
+				);
+
+$ACTIVITY_LEVEL_DB = array(
+					'active' => 1,
+					'inactive' => 0, 
+				);
+
+
+$SUPPLIER_TYPE = array(
+					'farm' 			=> 'Farm',
+					'restaurant' 	=> 'Restaurant', 
+					'distributor' 	=> 'Distributor',
+					'manufacture' 	=> 'Manufacture',
+				);
+				
 ?>

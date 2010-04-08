@@ -16,7 +16,7 @@ class Company extends Controller {
 		$data = array();
 		
 		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->list_company();
+		$companies = $this->CompanyModel->listCompany();
 		
 		
 		// List of views to be included

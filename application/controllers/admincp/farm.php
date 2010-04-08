@@ -17,7 +17,7 @@ class Farm extends Controller {
 		$farms = array();
 		
 		$this->load->model('FarmModel');
-		$farms = $this->FarmModel->list_farm();
+		$farms = $this->FarmModel->listFarm();
 		
 		// List of views to be included
 		$data['CENTER'] = array(

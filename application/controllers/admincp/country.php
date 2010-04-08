@@ -26,7 +26,7 @@ class Country extends Controller {
 		$countries = array();
 		
 		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$countries = $this->CountryModel->listCountry();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -55,7 +55,7 @@ class Country extends Controller {
 		else
 		{
 			$this->load->model('CountryModel');
-			if($query = $this->CountryModel->add_country())
+			if($query = $this->CountryModel->addCountry())
 			{
 				redirect('admincp/country');
 			}

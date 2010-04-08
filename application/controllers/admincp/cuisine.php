@@ -79,18 +79,12 @@ class Cuisine extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'admincp/cuisine_form',
 			);
-		
-		$data['RIGHT'] = array(
-				'navigation' => 'admincp/includes/right/navigation',
-			);
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Cuisine";
 		$data['data']['center']['list']['CUISINE'] = $cuisine;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Navigation";
-		
-		$this->load->view('admincp/templates/center_right_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_update() {

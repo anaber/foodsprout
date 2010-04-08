@@ -23,7 +23,7 @@ class Manufacturetype extends Controller {
 		$manufactureTypes = array();
 		
 		$this->load->model('ManufacturetypeModel');
-		$manufactureTypes = $this->ManufacturetypeModel->list_manufacture_type();
+		$manufactureTypes = $this->ManufacturetypeModel->listManufactureType();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -58,7 +58,7 @@ class Manufacturetype extends Controller {
 		$this->load->model('ManufacturetypeModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->ManufacturetypeModel->addManufacturetype() ) {
+		if ( $this->ManufacturetypeModel->addManufactureType() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -75,7 +75,7 @@ class Manufacturetype extends Controller {
 		$data = array();
 		
 		$this->load->model('ManufacturetypeModel');
-		$manufacturetype = $this->ManufacturetypeModel->getManufacturetypeFromId($id);
+		$manufacturetype = $this->ManufacturetypeModel->getManufactureTypeFromId($id);
 		
 		// List of views to be included
 		$data['CENTER'] = array(

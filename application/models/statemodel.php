@@ -3,7 +3,7 @@
 class StateModel extends Model{
 	
 	// Add a state to the database
-	function add_state()
+	function addState()
 	{
 		$insert_new_state = array(
 			'state_name' => $this->input->post('state_name')
@@ -14,7 +14,7 @@ class StateModel extends Model{
 	}
 	
 	// List all the state in the database
-	function list_state() {
+	function listState() {
 		$states = array();
 		
 		$this->db->order_by("state_name", "asc");
