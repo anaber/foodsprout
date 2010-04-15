@@ -13,17 +13,17 @@ class Cuisine extends Controller {
 	
 	function index()
 	{
-		$this->list_cuisine();
+		$this->listCuisine();
 	}
 	
 	// List all the cuisine in the database
-	function list_cuisine()
+	function listCuisine()
 	{
 		$data = array();
 		$cuisines = array();
 		
 		$this->load->model('CuisineModel');
-		$cuisines = $this->CuisineModel->list_cuisine();
+		$cuisines = $this->CuisineModel->listCuisine();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -52,7 +52,7 @@ class Cuisine extends Controller {
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function save_add() {
+	function saveAdd() {
 		
 		$this->load->model('CuisineModel', '', TRUE);
 		
@@ -87,7 +87,7 @@ class Cuisine extends Controller {
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function save_update() {
+	function saveUpdate() {
 		
 		$this->load->model('CuisineModel', '', TRUE);
 		

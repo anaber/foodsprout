@@ -14,8 +14,8 @@ if (count($RESTAURANTTYPES) > 0 ) {
 	foreach($RESTAURANTTYPES as $r) :
 		$i++;
 		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.anchor('admincp/restauranttype/update/'.$r->restauranttypeId, $r->restauranttypeId).'</td>';
-		echo '	<td>'.anchor('admincp/restauranttype/update/'.$r->restauranttypeId, $r->restauranttypeName).'</td>';
+		echo '	<td>'.anchor('admincp/restauranttype/update/'.$r->restaurantTypeId, $r->restaurantTypeId).'</td>';
+		echo '	<td>'.anchor('admincp/restauranttype/update/'.$r->restaurantTypeId, $r->restaurantTypeName).'</td>';
 		echo '</tr>';
  	endforeach;
 ?>

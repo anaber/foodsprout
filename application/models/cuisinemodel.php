@@ -3,11 +3,11 @@
 class CuisineModel extends Model{
 	
 	// List all the cuisine in the database
-	function list_cuisine()
+	function listCuisine()
 	{
 		$query = "SELECT * FROM cuisine ORDER BY cuisine_name";
 		
-		log_message('debug', "CuisineModel.list_cuisine : " . $query);
+		log_message('debug', "CuisineModel.listCuisine : " . $query);
 		$result = $this->db->query($query);
 		
 		$cuisines = array();
@@ -15,13 +15,13 @@ class CuisineModel extends Model{
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('CuisineLib');
-			unset($this->cuisineLib);
+			unset($this->CuisineLib);
 			
-			$this->cuisineLib->cuisineId = $row['cuisine_id'];
-			$this->cuisineLib->cuisineName = $row['cuisine_name'];
+			$this->CuisineLib->cuisineId = $row['cuisine_id'];
+			$this->CuisineLib->cuisineName = $row['cuisine_name'];
 			
-			$cuisines[] = $this->cuisineLib;
-			unset($this->cuisineLib);
+			$cuisines[] = $this->CuisineLib;
+			unset($this->CuisineLib);
 		}
 		return $cuisines;
 	}

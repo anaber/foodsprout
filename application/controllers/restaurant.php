@@ -9,13 +9,13 @@ class Restaurant extends Controller {
 		
 		// Getting information from models
 		$this->load->model('RestaurantModel');
-		$restaurants = $this->RestaurantModel->list_restaurant();
+		$restaurants = $this->RestaurantModel->listRestaurant();
 		
-		$this->load->model('RestauranttypeModel');
-		$restauranttypes = $this->RestauranttypeModel->list_restauranttype();
+		$this->load->model('RestaurantTypeModel');
+		$restaurantTypes = $this->RestaurantTypeModel->listRestaurantType();
 		
 		$this->load->model('CuisineModel');
-		$cusines = $this->CuisineModel->list_cuisine();
+		$cusines = $this->CuisineModel->listCuisine();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -30,7 +30,7 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
-		$data['data']['left']['filter']['RESTAURANTTYPES'] = $restauranttypes;
+		$data['data']['left']['filter']['RESTAURANTTYPES'] = $restaurantTypes;
 		$data['data']['left']['filter']['CUISINES'] = $cusines;
 		
 		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;

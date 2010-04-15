@@ -2,12 +2,12 @@
 
 class RestaurantTypeLib {
 	
-	var $restauranttypeId;
-	var $restauranttypeName;
+	var $restaurantTypeId;
+	var $restaurantType;
 		
-	function RestaurantTypeLib() {
-		$this->restauranttypeId = '';
-		$this->restauranttypeName = '';
+	function restaurantTypeLib() {
+		$this->restaurantTypeId = '';
+		$this->restaurantType = '';
 	}
 }
 ?>

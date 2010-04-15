@@ -5,7 +5,7 @@ class ManufactureTypeLib {
 	var $manufactureTypeId;
 	var $manufactureType;
 		
-	function ManufactureTypeLib() {
+	function manufactureTypeLib() {
 		$this->manufactureTypeId = '';
 		$this->manufactureType = '';
 	}

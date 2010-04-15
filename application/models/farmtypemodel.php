@@ -3,18 +3,18 @@
 class FarmTypeModel extends Model{
 	
 	// List all the facility_type in the database
-	function list_farm_type()
+	function listFarmType()
 	{
 		$query = "SELECT * FROM farm_type ORDER BY farm_type";
 		
-		log_message('debug', "FarmTypeModel.list_farm_type : " . $query);
+		log_message('debug', "FarmTypeModel.listFarmType : " . $query);
 		$result = $this->db->query($query);
 		
 		$farmTypes = array();
 		
 		foreach ($result->result_array() as $row) {
 			
-			$this->load->library('farmTypeLib');
+			$this->load->library('FarmTypeLib');
 			unset($this->farmTypeLib);
 			
 			$this->farmTypeLib->farmTypeId = $row['farm_type_id'];

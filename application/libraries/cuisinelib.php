@@ -5,7 +5,7 @@ class CuisineLib {
 	var $cuisineId;
 	var $cuisineName;
 		
-	function CuisineLib() {
+	function cuisineLib() {
 		$this->cuisineId = '';
 		$this->cuisineName = '';
 	}

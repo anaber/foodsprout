@@ -3,11 +3,11 @@
 class AnimalModel extends Model{
 	
 	// List all the animal in the database
-	function list_animal()
+	function listAnimal()
 	{
 		$query = "SELECT * FROM animal ORDER BY animal_name";
 		
-		log_message('debug', "AnimalModel.list_animal : " . $query);
+		log_message('debug', "AnimalModel.listAnimal : " . $query);
 		$result = $this->db->query($query);
 		
 		$animals = array();
@@ -15,13 +15,13 @@ class AnimalModel extends Model{
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('AnimalLib');
-			unset($this->animalLib);
+			unset($this->animalData);
 			
-			$this->animalLib->animalId = $row['animal_id'];
-			$this->animalLib->animalName = $row['animal_name'];
+			$this->animalData->animalId = $row['animal_id'];
+			$this->animalData->animalName = $row['animal_name'];
 			
-			$animals[] = $this->animalLib;
-			unset($this->animalLib);
+			$animals[] = $this->animalData;
+			unset($this->animalData);
 		}
 		return $animals;
 	}

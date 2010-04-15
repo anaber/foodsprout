@@ -18,7 +18,7 @@ class Restaurant extends Controller {
 		$restaurants = array();
 		
 		$this->load->model('RestaurantModel');
-		$restaurants = $this->RestaurantModel->list_restaurant();
+		$restaurants = $this->RestaurantModel->listRestaurant();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -38,10 +38,10 @@ class Restaurant extends Controller {
 		$data = array();
 		
 		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
+		$states = $this->StateModel->listState();
 		
 		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$countries = $this->CountryModel->listCountry();
 		
 		$this->load->model('RestauranttypeModel');
 		$restauranttypes = $this->RestauranttypeModel->list_restauranttype();
@@ -73,10 +73,10 @@ class Restaurant extends Controller {
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
 		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
+		$states = $this->StateModel->listState();
 		
 		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$countries = $this->CountryModel->listCountry();
 		
 		
 		// List of views to be included
@@ -100,7 +100,7 @@ class Restaurant extends Controller {
 	}
 	
 	// This function will save the new restaurant data into the database
-	function save_add() {
+	function saveAdd() {
 		
 		$this->load->model('RestaurantModel', '', TRUE);
 		

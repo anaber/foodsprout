@@ -4,13 +4,13 @@ class RestaurantModel extends Model{
 	
 	
 	// Generate a simple list of all the restaurants in the database.
-	function list_restaurant()
+	function listRestaurant()
 	{
 		$query = "SELECT restaurant.* " .
 				" FROM restaurant " .
 				" ORDER BY restaurant_name";
 		
-		log_message('debug', "RestaurantModel.list_restaurant : " . $query);
+		log_message('debug', "RestaurantModel.listRestaurant : " . $query);
 		$result = $this->db->query($query);
 		
 		$companies = array();

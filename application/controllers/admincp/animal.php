@@ -13,17 +13,17 @@ class Animal extends Controller {
 	
 	function index()
 	{
-		$this->list_animal();
+		$this->listAnimal();
 	}
 	
 	// List all the animal in the database
-	function list_animal()
+	function listAnimal()
 	{
 		$data = array();
 		$animals = array();
 		
 		$this->load->model('AnimalModel');
-		$animals = $this->AnimalModel->list_animal();
+		$animals = $this->AnimalModel->listAnimal();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -52,7 +52,7 @@ class Animal extends Controller {
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function save_add() {
+	function saveAdd() {
 		
 		$this->load->model('AnimalModel', '', TRUE);
 		
@@ -87,7 +87,7 @@ class Animal extends Controller {
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function save_update() {
+	function saveUpdate() {
 		
 		$this->load->model('AnimalModel', '', TRUE);
 		

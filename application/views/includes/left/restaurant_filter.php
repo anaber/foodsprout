@@ -7,8 +7,8 @@
 	$i = 0;
 	foreach($RESTAURANTTYPES as $r) :
 		$i++;
-		echo '<input type="checkbox" value="'.$r->restauranttypeId.'">';
-		echo $r->restauranttypeName.'<br>';
+		echo '<input type="checkbox" value="'.$r->restaurantTypeId.'">';
+		echo $r->restaurantTypeName.'<br>';
 
 	endforeach;
 	

@@ -5,7 +5,7 @@ class AnimalLib {
 	var $animalId;
 	var $animalName;
 		
-	function AnimalLib() {
+	function animalData() {
 		$this->animalId = '';
 		$this->animalName = '';
 	}

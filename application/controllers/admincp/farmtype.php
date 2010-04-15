@@ -13,17 +13,17 @@ class FarmType extends Controller {
 	
 	function index()
 	{
-		$this->list_farm_type();
+		$this->listFarmType();
 	}
 	
 	// List all the FarmType in the database
-	function list_farm_type()
+	function listFarmType()
 	{
 		$data = array();
 		$farmTypes = array();
 		
 		$this->load->model('FarmTypeModel');
-		$farmTypes = $this->FarmTypeModel->list_farm_type();
+		$farmTypes = $this->FarmTypeModel->listFarmType();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -53,7 +53,7 @@ class FarmType extends Controller {
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function save_add() {
+	function saveAdd() {
 		
 		$this->load->model('FarmTypeModel', '', TRUE);
 		
@@ -89,7 +89,7 @@ class FarmType extends Controller {
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function save_update() {
+	function saveUpdate() {
 		
 		$this->load->model('FarmTypeModel', '', TRUE);
 		

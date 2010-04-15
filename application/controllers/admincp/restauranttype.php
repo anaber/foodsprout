@@ -1,6 +1,6 @@
 <?php
 
-class Restauranttype extends Controller {
+class RestaurantType extends Controller {
 	
 	function __construct()
 	{
@@ -13,17 +13,17 @@ class Restauranttype extends Controller {
 	
 	function index()
 	{
-		$this->list_restauranttype();
+		$this->listRestaurantType();
 	}
 	
 	// List all the restauranttype in the database
-	function list_restauranttype()
+	function listRestaurantType()
 	{
 		$data = array();
-		$restauranttypes = array();
+		$restaurantTypes = array();
 		
-		$this->load->model('RestauranttypeModel');
-		$restauranttypes = $this->RestauranttypeModel->list_restauranttype();
+		$this->load->model('RestaurantTypeModel');
+		$restaurantTypes = $this->RestaurantTypeModel->listRestaurantType();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -32,7 +32,7 @@ class Restauranttype extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "List of Restaurant Types";
-		$data['data']['center']['list']['RESTAURANTTYPES'] = $restauranttypes;
+		$data['data']['center']['list']['RESTAURANTTYPES'] = $restaurantTypes;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -52,12 +52,12 @@ class Restauranttype extends Controller {
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function save_add() {
+	function saveAdd() {
 		
-		$this->load->model('RestauranttypeModel', '', TRUE);
+		$this->load->model('RestaurantTypeModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->RestauranttypeModel->addRestauranttype() ) {
+		if ( $this->RestaurantTypeModel->addRestaurantType() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -72,8 +72,8 @@ class Restauranttype extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('RestauranttypeModel');
-		$restauranttype = $this->RestauranttypeModel->getRestauranttypeFromId($id);
+		$this->load->model('RestaurantTypeModel');
+		$restaurantType = $this->RestaurantTypeModel->getRestaurantTypeFromId($id);
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -82,17 +82,17 @@ class Restauranttype extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Restaurant Type";
-		$data['data']['center']['list']['RESTAURANTTYPE'] = $restauranttype;
+		$data['data']['center']['list']['RESTAURANTTYPE'] = $restaurantType;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function save_update() {
+	function saveUpdate() {
 		
-		$this->load->model('RestauranttypeModel', '', TRUE);
+		$this->load->model('RestaurantTypeModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->RestauranttypeModel->updateRestauranttype() ) {
+		if ( $this->RestaurantTypeModel->updateRestaurantType() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
