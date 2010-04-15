@@ -50,15 +50,15 @@ class Manufacture extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/manufacture_form',
+				'form' => 'admincp/manufacture_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Manufacture";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['MANUFACTURE_TYPES'] = $manufactureTypes;
-		$data['data']['center']['list']['COMPANIES'] = $companies;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Add Manufacture";
+		$data['data']['center']['form']['COUNTRIES'] = $countries;
+		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['MANUFACTURE_TYPES'] = $manufactureTypes;
+		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -68,14 +68,15 @@ class Manufacture extends Controller {
 	{
 		$data = array();
 		
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->listCompany();
+
 		$this->load->model('ManufactureModel');
 		$manufacture = $this->ManufactureModel->getManufactureFromId($id);
 		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->listState();
+		$this->load->model('ManufactureTypeModel');
+		$manufactureTypes = $this->ManufactureTypeModel->listManufactureType();
 		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->listCountry();
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -84,16 +85,16 @@ class Manufacture extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/manufacture_form',
+				'form' => 'admincp/manufacture_form',
 			);
 		
 		// Data to be passed to the views
 		$data['data']['left']['nav']['MANUFACTURE_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Manufacture";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['MANUFACTURE'] = $manufacture;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
+		$data['data']['center']['form']['MANUFACTURE_TYPES'] = $manufactureTypes;
+		$data['data']['center']['form']['MANUFACTURE'] = $manufacture;
+		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
@@ -166,6 +167,109 @@ class Manufacture extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
+	function add_address($id)
+	{
+		$data = array();
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('ManufactureModel');
+		$manufacture = $this->ManufactureModel->getManufactureFromId($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_manufacture',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/address_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['MANUFACTURE_ID'] = $id;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $manufacture->manufactureName;
+		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	function update_address($id)
+	{
+		$data = array();
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('AddressModel');
+		$address = $this->AddressModel->getAddressFromId($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_manufacture',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'from' => 'admincp/address_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['MANUFACTURE_ID'] = $address->manufactureId;
+		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
+		
+		$data['data']['center']['from']['VIEW_HEADER'] = "Update Address - #" . $id;
+		$data['data']['center']['from']['STATES'] = $states;
+		$data['data']['center']['from']['COUNTRIES'] = $countries;
+		$data['data']['center']['from']['ADDRESS'] = $address;
+		$data['data']['center']['from']['MANUFACTURE_ID'] = $address->manufactureId;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+		
+	}
+	
+	function address_save_add() {
+		
+		$this->load->model('AddressModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->AddressModel->addAddressIntermediate() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	
+	}
+	
+	function address_save_update() {
+		
+		$this->load->model('AddressModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->AddressModel->updateAddress() ) {
+			echo "yes";
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+		
+	}
 	
 }
 

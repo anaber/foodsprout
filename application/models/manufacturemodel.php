@@ -13,7 +13,7 @@ class ManufactureModel extends Model{
 		$result = $this->db->query($query);
 		
 		$manufactures = array();
-		
+		$CI =& get_instance();
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('ManufactureLib');
@@ -22,6 +22,11 @@ class ManufactureModel extends Model{
 			$this->manufactureLib->manufactureId = $row['manufacture_id'];
 			$this->manufactureLib->manufactureName = $row['manufacture_name'];
 			$this->manufactureLib->creationDate = $row['creation_date'];
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '' );
+			
+			$this->manufactureLib->addresses = $addresses;
 			
 			$manufactures[] = $this->manufactureLib;
 			unset($this->manufactureLib);
@@ -74,6 +79,9 @@ class ManufactureModel extends Model{
 					$newManufactureId = $this->db->insert_id();
 					
 					$CI->load->model('AddressModel','',true);
+					$address = $CI->AddressModel->addAddress('', '', $newManufactureId, '');
+					/*
+					$CI->load->model('AddressModel','',true);
 					$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
 				
 					$CI->load->model('GoogleMapModel','',true);
@@ -89,7 +97,7 @@ class ManufactureModel extends Model{
 					} else {
 						$return = false;
 					}
-					
+					*/
 				} else {
 					$return = false;
 				}
@@ -106,7 +114,6 @@ class ManufactureModel extends Model{
 	
 	// Get all the information about one specific manufacture from an ID
 	function getManufactureFromId($manufactureId) {
-		global $ACTIVITY_LEVEL;
 		
 		//$query = "SELECT manufacture.*, address.* FROM manufacture, address WHERE manufacture.manufacture_id = address.manufacture_id AND manufacture.manufacture_id = " . $manufactureId;
 		$query = "SELECT * FROM manufacture WHERE manufacture_id = " . $manufactureId;
@@ -123,19 +130,12 @@ class ManufactureModel extends Model{
 		$this->manufactureLib->manufactureName = $row->manufacture_name;
 		$this->manufactureLib->customUrl = $row->custom_url;
 		$this->manufactureLib->isActive = $row->is_active;
-		
-		/*
-		$this->manufactureLib->streetNumber = $row->street_number;
-		$this->manufactureLib->street = $row->street;
-		$this->manufactureLib->city = $row->city;
-		$this->manufactureLib->stateId = $row->state_id;
-		$this->manufactureLib->countryId = $row->country_id;
-		$this->manufactureLib->zipcode = $row->zipcode;
-		*/
+
 		return $this->manufactureLib;
 	}
 	
 	function updateManufacture() {
+		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
 		$query = "SELECT * FROM manufacture WHERE manufacture_name = '" . $this->input->post('manufactureName') . "' AND manufacture_id <> " . $this->input->post('manufactureId');
@@ -145,16 +145,12 @@ class ManufactureModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$CI =& get_instance();
-			$CI->load->model('AddressModel','',true);
-			
-			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-			
-			$CI->load->model('GoogleMapModel','',true);
-			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
-			
 			$data = array(
-						'manufacture_name' => $this->input->post('manufactureName'), 
+						'company_id' => $this->input->post('companyId'), 
+						'manufacture_name' => $this->input->post('manufactureName'),
+						'custom_url' => $this->input->post('customUrl'),
+						'manufacture_type_id' => $this->input->post('manufactureTypeId'),
+						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
 			$where = "manufacture_id = " . $this->input->post('manufactureId');
 			$query = $this->db->update_string('manufacture', $data, $where);
@@ -162,27 +158,6 @@ class ManufactureModel extends Model{
 			log_message('debug', 'ManufactureModel.updateManufacture : ' . $query);
 			if ( $this->db->query($query) ) {
 				$return = true;
-				
-				$data = array(
-						'street_number' => $this->input->post('streetNumber'),
-						'street' => $this->input->post('street'),
-						'city' => $this->input->post('city'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
-						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
-					);
-				$where = "manufacture_id = " . $this->input->post('manufactureId');
-				$query = $this->db->update_string('address', $data, $where);
-				if ( $this->db->query($query) ) {
-					$return = true;
-				} else {
-					$return = false;
-				}
-				
-				log_message('debug', 'ManufactureModel.updateManufacture : ' . $query);
-				
 			} else {
 				$return = false;
 			}

@@ -42,14 +42,7 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  manufactureTypeId:$('#manufactureTypeId').val(),
 							  isActive:$('#status').val(),
-							  /*
-							  streetNumber:$('#streetNumber').val(),
-							  street:$('#street').val(),
-							  city: $('#city').val(),
-							  stateId:$('#stateId').val(),
-							  countryId:$('#countryId').val(),
-							  zipcode:$('#zipcode').val(),
-							  */ 
+							  							 
 							  manufactureId: $('#manufactureId').val()
 							};
 				act = 'update';		
@@ -72,7 +65,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -144,9 +137,7 @@ $(document).ready(function() {
 <?php echo anchor('admincp/manufacture', 'List Manufactures'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
-<?php
-	//print_r_pre($MANUFACTURE);
-?>
+
 <form id="manufactureForm" method="post" <?php echo (isset($MANUFACTURE)) ? 'action="/admincp/manufacture/save_update"' : 'action="/admincp/manufacture/save_add"' ?>>
 <table class="formTable">
 	<tr>
