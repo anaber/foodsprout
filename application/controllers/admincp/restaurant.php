@@ -37,6 +37,9 @@ class Restaurant extends Controller {
 	{
 		$data = array();
 		
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->listCompany();
+		
 		$this->load->model('StateModel');
 		$states = $this->StateModel->listState();
 		
@@ -44,23 +47,24 @@ class Restaurant extends Controller {
 		$countries = $this->CountryModel->listCountry();
 		
 		$this->load->model('RestauranttypeModel');
-		$restauranttypes = $this->RestauranttypeModel->list_restauranttype();
+		$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
 		
 		$this->load->model('CuisineModel');
-		$cuisines = $this->CuisineModel->list_cuisine();
+		$cuisines = $this->CuisineModel->listCuisine();
 		
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/restaurant_form',
+				'form' => 'admincp/restaurant_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Restaurant";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['RESTAURANTTYPES'] = $restauranttypes;
-		$data['data']['center']['list']['CUISINES'] = $cuisines;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Add Restaurant";
+		$data['data']['center']['form']['COUNTRIES'] = $countries;
+		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
+		$data['data']['center']['form']['CUISINES'] = $cuisines;
+		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -100,7 +104,7 @@ class Restaurant extends Controller {
 	}
 	
 	// This function will save the new restaurant data into the database
-	function saveAdd() {
+	function save_add() {
 		
 		$this->load->model('RestaurantModel', '', TRUE);
 		
@@ -172,31 +176,199 @@ class Restaurant extends Controller {
 		
 	}
 	
-	function add_supplier(){
+	function add_supplier($id)
+	{
+		global $SUPPLIER_TYPES;
 		$data = array();
 		
-		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->list_company();
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_restaurant',
+			);
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/restaurant_supplier_form',
+				'list' => 'admincp/supplier_form',
 			);
 		
-		$data['LEFT'] = array(
-				'navigation' => 'admincp/includes/left/nav_restaurant',
-			);
-			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Restaurant Supplier";
-		$data['data']['center']['list']['COMPANIES'] = $companies;
+		$data['data']['left']['nav']['RESTAURANT_ID'] = $id;
 		
-		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $restaurant->restaurantName;
+		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
+		$data['data']['center']['list']['SUPPLIER_TYPES'] = $SUPPLIER_TYPES;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	function update_supplier($id)
+	{
+		global $SUPPLIER_TYPES;
+		$data = array();
+		
+		$this->load->model('SupplierModel');
+		$supplier = $this->SupplierModel->getSupplierFromId($id, 'restaurant');
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_restaurant',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/supplier_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['RESTAURANT_ID'] = $supplier->restaurantId;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id;
+		$data['data']['center']['list']['SUPPLIER'] = $supplier;
+		$data['data']['center']['list']['SUPPLIER_TYPES'] = $SUPPLIER_TYPES;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	/*
+	function supplier_save_add() {
+		
+		$this->load->model('SupplierModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->SupplierModel->addSupplierIntermediate() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	
+	}
+	
+	function supplier_save_update() {
+		
+		$this->load->model('SupplierModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->SupplierModel->updateSupplierIntermediate() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	}
+	*/
+	
+	function add_address($id)
+	{
+		$data = array();
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_restaurant',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/address_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['RESTAURANT_ID'] = $id;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $restaurant->restaurantName;
+		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	function update_address($id)
+	{
+		$data = array();
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('AddressModel');
+		$address = $this->AddressModel->getAddressFromId($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_restaurant',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'from' => 'admincp/address_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['RESTAURANT_ID'] = $address->restaurantId;
+		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
+		
+		$data['data']['center']['from']['VIEW_HEADER'] = "Update Address - #" . $id;
+		$data['data']['center']['from']['STATES'] = $states;
+		$data['data']['center']['from']['COUNTRIES'] = $countries;
+		$data['data']['center']['from']['ADDRESS'] = $address;
+		$data['data']['center']['from']['RESTAURANT_ID'] = $address->restaurantId;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		
 	}
+	/*
+	function address_save_add() {
+		
+		$this->load->model('AddressModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->AddressModel->addAddressIntermediate() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	
+	}
+	
+	function address_save_update() {
+		
+		$this->load->model('AddressModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->AddressModel->updateAddress() ) {
+			echo "yes";
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	}
+	*/
 }
 
 /* End of file restaurant.php */

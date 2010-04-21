@@ -13,7 +13,7 @@ class FarmModel extends Model{
 		$result = $this->db->query($query);
 		
 		$farms = array();
-		
+		$CI =& get_instance();
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('FarmLib');
@@ -22,6 +22,14 @@ class FarmModel extends Model{
 			$this->FarmLib->farmId = $row['farm_id'];
 			$this->FarmLib->farmName = $row['farm_name'];
 			$this->FarmLib->creationDate = $row['creation_date'];
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '' );
+			$this->FarmLib->addresses = $addresses;
+			
+			$CI->load->model('SupplierModel','',true);
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', $row['farm_id'], '', '' );
+			$this->FarmLib->suppliers = $suppliers;
 			
 			$farms[] = $this->FarmLib;
 			unset($this->FarmLib);
@@ -32,95 +40,102 @@ class FarmModel extends Model{
 	
 	// Insert the new farm data into the database
 	function addFarm() {
+		global $ACTIVITY_LEVEL_DB;
+		
 		$return = true;
 		
-		$query = "SELECT * FROM farm WHERE farm_name = '" . $this->input->post('farmName') . "'";
-		log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
+		$companyId = $this->input->post('companyId');
+		$farmName = $this->input->post('farmName');
 		
-		$result = $this->db->query($query);
+		$CI =& get_instance();
 		
-		if ($result->num_rows() == 0) {
+		if (empty($companyId) && empty($farmName) ) {
+			$GLOBALS['error'] = 'no_name';
+			$return = false;
+		} else {
+			if ( empty($companyId) ) {
+				// Enter manufacture into company
+				$CI->load->model('CompanyModel','',true);
+				$companyId = $CI->CompanyModel->addCompany($this->input->post('farmName'));
+			} else {
+				if (empty($farmName) ) {
+					// Consider company name as manufacture name
+					$CI->load->model('CompanyModel','',true);
+					$company = $CI->CompanyModel->getCompanyFromId($companyId);
+					$farmName = $company->companyName;
+				}
+			}
 			
-			$query = "INSERT INTO farm (farm_id, farm_name, creation_date)" .
-					" values (NULL, '" . $this->input->post('farmName') . "', NOW() )";
-			log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
-			
-			if ( $this->db->query($query) ) {
-				$new_farm_id = $this->db->insert_id();
-				
-				$CI =& get_instance();
-				$CI->load->model('AddressModel','',true);
-				$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-			
-				$CI->load->model('GoogleMapModel','',true);
-				$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
-				
-				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, farm_id)" .
-						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', $new_farm_id )";
-				
-			log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
+			$query = "SELECT * FROM farm WHERE farm_name = '" . $farmName . "' ";
+			log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
 			
 			$result = $this->db->query($query);
+			
+			if ($result->num_rows() == 0) {
+				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, is_active)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $farmName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				
+				log_message('debug', 'FarmModel.addManufacture : Insert Farm : ' . $query);
 				$return = true;
+				
+				if ( $this->db->query($query) ) {
+					$newFarmId = $this->db->insert_id();
+					
+					$CI->load->model('AddressModel','',true);
+					$address = $CI->AddressModel->addAddress('', $newFarmId, '', '', $companyId);
+				} else {
+					$return = false;
+				}
+				
 			} else {
+				$GLOBALS['error'] = 'duplicate';
 				$return = false;
 			}
 			
-			$return = true;
-		} else {
-			$GLOBALS['error'] = 'duplicate';
-			$return = false;
 		}
 		
-		return $return;	
+		return $return;
 	}
 	
 	// Get all the information about one specific farm from an ID
 	function getFarmFromId($farmId) {
 		
-		$query = "SELECT farm.*, address.* FROM farm, address WHERE farm.farm_id = address.farm_id AND farm.farm_id = " . $farmId;
+		//$query = "SELECT manufacture.*, address.* FROM manufacture, address WHERE manufacture.manufacture_id = address.manufacture_id AND manufacture.manufacture_id = " . $manufactureId;
+		$query = "SELECT * FROM farm WHERE farm_id = " . $farmId;
 		log_message('debug', "FarmModel.getFarmFromId : " . $query);
 		$result = $this->db->query($query);
-		
-		$farm = array();
 		
 		$this->load->library('FarmLib');
 		
 		$row = $result->row();
 		
-		$this->farmLib->farmId = $row->farm_id;
-		$this->farmLib->farmName = $row->farm_name;
-		$this->farmLib->streetNumber = $row->street_number;
-		$this->farmLib->street = $row->street;
-		$this->farmLib->city = $row->city;
-		$this->farmLib->stateId = $row->state_id;
-		$this->farmLib->countryId = $row->country_id;
-		$this->farmLib->zipcode = $row->zipcode;
-		$this->farmLib->customUrl = $row->custom_url;
-		
-		return $this->farmLib;
+		$this->FarmLib->farmId = $row->farm_id;
+		$this->FarmLib->companyId = $row->company_id;
+		$this->FarmLib->farmTypeId = $row->farm_type_id;
+		$this->FarmLib->farmName = $row->farm_name;
+		$this->FarmLib->customUrl = $row->custom_url;
+		$this->FarmLib->isActive = $row->is_active;
+
+		return $this->FarmLib;
 	}
 	
 	function updateFarm() {
+		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
 		$query = "SELECT * FROM farm WHERE farm_name = '" . $this->input->post('farmName') . "' AND farm_id <> " . $this->input->post('farmId');
 		log_message('debug', 'FarmModel.updateFarm : Try to get Duplicate record : ' . $query);
-			
+		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
 			
-			$CI =& get_instance();
-			$CI->load->model('AddressModel','',true);
-			
-			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-			
-			$CI->load->model('GoogleMapModel','',true);
-			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
-			
 			$data = array(
-						'farm_name' => $this->input->post('farmName'), 
+						'company_id' => $this->input->post('companyId'), 
+						'farm_name' => $this->input->post('farmName'),
+						'custom_url' => $this->input->post('customUrl'),
+						'farm_type_id' => $this->input->post('farmTypeId'),
+						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
 			$where = "farm_id = " . $this->input->post('farmId');
 			$query = $this->db->update_string('farm', $data, $where);
@@ -128,27 +143,6 @@ class FarmModel extends Model{
 			log_message('debug', 'FarmModel.updateFarm : ' . $query);
 			if ( $this->db->query($query) ) {
 				$return = true;
-				
-				$data = array(
-						'street_number' => $this->input->post('streetNumber'),
-						'street' => $this->input->post('street'),
-						'city' => $this->input->post('city'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
-						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
-					);
-				$where = "farm_id = " . $this->input->post('farmId');
-				$query = $this->db->update_string('address', $data, $where);
-				if ( $this->db->query($query) ) {
-					$return = true;
-				} else {
-					$return = false;
-				}
-				
-				log_message('debug', 'CompanyModel.updateCompany : ' . $query);
-				
 			} else {
 				$return = false;
 			}
@@ -157,8 +151,59 @@ class FarmModel extends Model{
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-				
+		
 		return $return;
+	}
+	
+	function addFarmWithNameOnly($farmName) {
+		global $ACTIVITY_LEVEL_DB;
+		
+		$return = true;
+		
+		$companyId = '';
+		
+		$CI =& get_instance();
+		
+		if (empty($companyId) && empty($farmName) ) {
+			$GLOBALS['error'] = 'no_name';
+			$return = false;
+		} else {
+			if ( empty($companyId) ) {
+				$CI->load->model('CompanyModel','',true);
+				$companyId = $CI->CompanyModel->addCompany($farmName);
+			} 
+			
+			if ($companyId) {
+				$query = "SELECT * FROM farm WHERE farm_name = '" . $farmName . "' AND company_id = '" . $companyId . "'";
+				log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
+				
+				$result = $this->db->query($query);
+				
+				if ($result->num_rows() == 0) {
+					$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, is_active)" .
+							" values (NULL, ".$companyId.", NULL, '" . $farmName . "', NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					
+					log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
+					$return = true;
+					
+					if ( $this->db->query($query) ) {
+						$newFarmId = $this->db->insert_id();
+						$return = $newFarmId;
+					} else {
+						$return = false;
+					}
+					
+				} else {
+					$GLOBALS['error'] = 'duplicate';
+					$return = false;
+				}
+			} else {
+				$return = false;
+			}
+			
+		}
+		
+		return $return;	
 	}
 	
 }

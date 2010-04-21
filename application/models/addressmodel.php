@@ -109,7 +109,7 @@ class AddressModel extends Model{
 		if ( !empty($restaurantId) ) {
 			$query .= 'restaurant_id';
 		} else if ( !empty($farmId) ) {
-			$query .= 'manufacture_id';
+			$query .= 'farm_id';
 		} else if ( !empty($manufactureId) ) {
 			$query .= 'manufacture_id';
 		} else if ( !empty($distributorId) ) {
@@ -128,8 +128,8 @@ class AddressModel extends Model{
 		}
 		$query .= ", $companyId )";
 		
-		log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
-	
+		log_message('debug', 'AddressModel.addAddress : Insert Address : ' . $query);
+		
 		if ( $this->db->query($query) ) {
 			$return = true;
 		} else {
@@ -159,8 +159,8 @@ class AddressModel extends Model{
 			
 		} else if ( !empty($farmId) ) {
 			$CI->load->model('FarmModel','',true);
-			$farn = $CI->FarmModel->getFarmFromId($farmId);
-			$companyId = $farn->companyId;
+			$farm = $CI->FarmModel->getFarmFromId($farmId);
+			$companyId = $farm->companyId;
 			
 		} else if ( !empty($manufactureId) ) {
 			$CI->load->model('ManufactureModel','',true);
@@ -210,12 +210,7 @@ class AddressModel extends Model{
 			} else {
 				$return = false;
 			}
-		/*	
-		} else {
-			$GLOBALS['error'] = 'duplicate';
-			$return = false;
-		}
-		*/	
+		
 		return $return;
 	}
 	

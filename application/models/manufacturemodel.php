@@ -25,8 +25,11 @@ class ManufactureModel extends Model{
 			
 			$CI->load->model('AddressModel','',true);
 			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '' );
-			
 			$this->manufactureLib->addresses = $addresses;
+			
+			$CI->load->model('SupplierModel','',true);
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '' );
+			$this->manufactureLib->suppliers = $suppliers;
 			
 			$manufactures[] = $this->manufactureLib;
 			unset($this->manufactureLib);
@@ -80,24 +83,6 @@ class ManufactureModel extends Model{
 					
 					$CI->load->model('AddressModel','',true);
 					$address = $CI->AddressModel->addAddress('', '', $newManufactureId, '');
-					/*
-					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-				
-					$CI->load->model('GoogleMapModel','',true);
-					$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
-					
-					$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, manufacture_id, company_id)" .
-							" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', $newManufactureId, $companyId )";
-					
-					log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
-				
-					if ( $this->db->query($query) ) {
-						$return = true;
-					} else {
-						$return = false;
-					}
-					*/
 				} else {
 					$return = false;
 				}
@@ -168,6 +153,58 @@ class ManufactureModel extends Model{
 		}
 		
 		return $return;
+	}
+	
+	function addManufactureWithNameOnly($manufactureName) {
+		global $ACTIVITY_LEVEL_DB;
+		
+		$return = true;
+		
+		$companyId = '';
+		
+		$CI =& get_instance();
+		
+		if (empty($companyId) && empty($manufactureName) ) {
+			$GLOBALS['error'] = 'no_name';
+			$return = false;
+		} else {
+			if ( empty($companyId) ) {
+				$CI->load->model('CompanyModel','',true);
+				$companyId = $CI->CompanyModel->addCompany($manufactureName);
+			} 
+			
+			if ($companyId) {
+				$query = "SELECT * FROM manufacture WHERE manufacture_name = '" . $manufactureName . "' AND company_id = '" . $companyId . "'";
+				log_message('debug', 'ManufactureModel.addManufacture : Try to get duplicate Manufacture record : ' . $query);
+				
+				$result = $this->db->query($query);
+				
+				if ($result->num_rows() == 0) {
+					$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, is_active)" .
+							" values (NULL, ".$companyId.", NULL, '" . $manufactureName . "', NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					
+					log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
+					$return = true;
+					
+					if ( $this->db->query($query) ) {
+						$newManufactureId = $this->db->insert_id();
+						$return = $newManufactureId;
+					} else {
+						$return = false;
+					}
+					
+				} else {
+					$GLOBALS['error'] = 'duplicate';
+					$return = false;
+				}
+			} else {
+				//echo "DEEPAK IN FALSE";
+				$return = false;
+			}
+			
+		}
+		
+		return $return;	
 	}
 	
 }

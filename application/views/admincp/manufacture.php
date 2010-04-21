@@ -21,9 +21,12 @@
 		echo '	<td>'.anchor('/admincp/manufacture/update/'.$r->manufactureId, $r->manufactureId).'</td>';
 		echo '	<td>'.anchor('/admincp/manufacture/update/'.$r->manufactureId, $r->manufactureName).'</td>';
 		echo '	<td>'. date('Y-m-d', strtotime($r->creationDate) ) .'</td>';
-		echo '	<td>';
-			echo anchor('/admincp/manufacture/add_supplier/' . $r->manufactureId, 'Add Supplier');
+		echo '	<td nowrap>';
 			
+			foreach($r->suppliers as $supplier) :
+				echo '<a href = "/admincp/manufacture/update_supplier/' . $supplier->supplierId . '">' . $supplier->supplierName . ' (' . ucfirst($supplier->supplierType) . ')' . '</a>' . "<br /><br />";
+			endforeach;
+			echo anchor('/admincp/manufacture/add_supplier/' . $r->manufactureId, 'Add Supplier');
 		echo '</td>';
 		echo '	<td>';
 		

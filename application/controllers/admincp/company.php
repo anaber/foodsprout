@@ -132,6 +132,12 @@ class Company extends Controller {
 		
 	}
 	
+	function get_companies_based_on_type() {
+		$this->load->model('CompanyModel', '', TRUE);
+		$companies = $this->CompanyModel->getCompanyBasedOnType( $this->input->post('companyType') );
+		echo json_encode($companies);
+	}
+	
 }
 
 /* End of file company.php */

@@ -76,6 +76,57 @@ class CompanyModel extends Model{
 		
 		return $this->companyLib;
 	}
+	
+	function getCompanyFromName($companyName) {
+		
+		$query = "SELECT * FROM company WHERE company_name = '" . $companyName . "'";
+		log_message('debug', "CompanyModel.getCompanyFromName : " . $query);
+		$result = $this->db->query($query);
+		
+		$company = array();
+		
+		$this->load->library('CompanyLib');
+		
+		$row = $result->row();
+		if ($row) {
+			$this->companyLib->companyId = $row->company_id;
+			$this->companyLib->companyName = $row->company_name;
+			return $this->companyLib;
+		} else {
+			return $company;
+		}
+	}
+	
+	function getCompanyBasedOnType ($companyType) {
+		
+		$query = "SELECT $companyType.* " .
+				 " FROM $companyType " .
+				 " ORDER BY $companyType" . "_name";
+		
+		log_message('debug', "CompanyModel.getCompanyBasedOnType : " . $query);
+		$result = $this->db->query($query);
+		
+		$companies = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('CompanyLib');
+			unset($this->companyLib);
+			
+			$this->companyLib->id = $row[$companyType . '_id'];
+			$this->companyLib->name = $row[$companyType . '_name'];
+			
+			$companies[] = $this->companyLib;
+			unset($this->companyLib);
+		}
+		
+		$arr = array(
+			'results'    => $companies,
+		);
+		
+		return $arr;
+	}
+	
 	/*
 	// Generate a detailed list of all the companies in the database.
 	function listCompanyMore()

@@ -33,7 +33,7 @@ $ACTIVITY_LEVEL_DB = array(
 				);
 
 
-$SUPPLIER_TYPE = array(
+$SUPPLIER_TYPES = array(
 					'farm' 			=> 'Farm',
 					'restaurant' 	=> 'Restaurant', 
 					'distributor' 	=> 'Distributor',

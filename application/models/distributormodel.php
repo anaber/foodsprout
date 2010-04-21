@@ -2,18 +2,18 @@
 
 class DistributorModel extends Model{
 	
-	// Create a simple list of all the distributors
+	// Create a simple list of all the Distributor
 	function listDistributor()
 	{
 		$query = "SELECT distributor.* " .
 				" FROM distributor " .
 				" ORDER BY distributor_name";
 		
-		log_message('debug', "DistributorModel.listDistributor : " . $query);
+		log_message('debug', "DistributorModel.list_distributor : " . $query);
 		$result = $this->db->query($query);
 		
 		$distributors = array();
-		
+		$CI =& get_instance();
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('DistributorLib');
@@ -23,6 +23,14 @@ class DistributorModel extends Model{
 			$this->DistributorLib->distributorName = $row['distributor_name'];
 			$this->DistributorLib->creationDate = $row['creation_date'];
 			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['distributor_id']);
+			$this->DistributorLib->addresses = $addresses;
+			
+			$CI->load->model('SupplierModel','',true);
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', $row['distributor_id']);
+			$this->DistributorLib->suppliers = $suppliers;
+			
 			$distributors[] = $this->DistributorLib;
 			unset($this->DistributorLib);
 		}
@@ -30,124 +38,108 @@ class DistributorModel extends Model{
 		return $distributors;
 	}
 	
-	// Insert the new distributor data into the database
+	// Insert the new Distributor data into the database
 	function addDistributor() {
+		global $ACTIVITY_LEVEL_DB;
+		
 		$return = true;
 		
-		$query = "SELECT * FROM distributor_center WHERE distributor_center = '" . $this->input->post('distributorName') . "'";
-		log_message('debug', 'DistributorModel.addDistributor : Try to get duplicate Distributor record : ' . $query);
+		$companyId = $this->input->post('companyId');
+		$distributorName = $this->input->post('distributorName');
 		
-		$result = $this->db->query($query);
+		$CI =& get_instance();
 		
-		if ($result->num_rows() == 0) {
+		if (empty($companyId) && empty($distributorName) ) {
+			$GLOBALS['error'] = 'no_name';
+			$return = false;
+		} else {
+			if ( empty($companyId) ) {
+				// Enter distributor into company
+				$CI->load->model('CompanyModel','',true);
+				$companyId = $CI->CompanyModel->addCompany($this->input->post('distributorName'));
+			} else {
+				if (empty($distributorName) ) {
+					// Consider company name as distributor name
+					$CI->load->model('CompanyModel','',true);
+					$company = $CI->CompanyModel->getCompanyFromId($companyId);
+					$distributorName = $company->companyName;
+				}
+			}
 			
-			$query = "INSERT INTO distributor_center (distributor_center_id, distributor_center, creation_date)" .
-					" values (NULL, '" . $this->input->post('distributorName') . "', NOW() )";
-			log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
-			
-			if ( $this->db->query($query) ) {
-				$new_distributor_id = $this->db->insert_id();
-				
-				$CI =& get_instance();
-				$CI->load->model('AddressModel','',true);
-				$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-			
-				$CI->load->model('GoogleMapModel','',true);
-				$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
-				
-				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, distributor_center_id)" .
-						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', $new_distributor_id )";
-				
-			log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
+			$query = "SELECT * FROM distributor WHERE distributor_name = '" . $distributorName . "'";
+			log_message('debug', 'DistributorModel.addDistributor : Try to get duplicate Distributor record : ' . $query);
 			
 			$result = $this->db->query($query);
+			
+			if ($result->num_rows() == 0) {
+				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, is_active)" .
+						" values (NULL, ".$companyId.", '" . $distributorName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				
+				log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
 				$return = true;
+				
+				if ( $this->db->query($query) ) {
+					$newDistributorId = $this->db->insert_id();
+					
+					$CI->load->model('AddressModel','',true);
+					$address = $CI->AddressModel->addAddress('', '', '', $newDistributorId, $companyId);
+				} else {
+					$return = false;
+				}
+				
 			} else {
+				$GLOBALS['error'] = 'duplicate';
 				$return = false;
 			}
 			
-			$return = true;
-		} else {
-			$GLOBALS['error'] = 'duplicate';
-			$return = false;
 		}
 		
 		return $return;	
 	}
 	
-	// Get all the information about one specific distributor from an ID
+	// Get all the information about one specific Distributor from an ID
 	function getDistributorFromId($distributorId) {
 		
-		$query = "SELECT distributor_center.*, address.* FROM distributor_center, address WHERE distributor_center.distributor_center_id = address.distributor_center_id AND distributor_center.distributor_center_id = " . $distributorId;
+		$query = "SELECT * FROM distributor WHERE distributor_id = " . $distributorId;
 		log_message('debug', "DistributorModel.getDistributorFromId : " . $query);
 		$result = $this->db->query($query);
-		
-		$distributor = array();
 		
 		$this->load->library('DistributorLib');
 		
 		$row = $result->row();
 		
-		$this->distributorLib->distributorId = $row->distributor_center_id;
-		$this->distributorLib->distributorName = $row->distributor_center;
-		$this->distributorLib->streetNumber = $row->street_number;
-		$this->distributorLib->street = $row->street;
-		$this->distributorLib->city = $row->city;
-		$this->distributorLib->stateId = $row->state_id;
-		$this->distributorLib->countryId = $row->country_id;
-		$this->distributorLib->zipcode = $row->zipcode;
-		
-		return $this->distributorLib;
+		$this->DistributorLib->distributorId = $row->distributor_id;
+		$this->DistributorLib->companyId = $row->company_id;
+		$this->DistributorLib->distributorName = $row->distributor_name;
+		$this->DistributorLib->customUrl = $row->custom_url;
+		$this->DistributorLib->isActive = $row->is_active;
+
+		return $this->DistributorLib;
 	}
 	
 	function updateDistributor() {
+		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
-		$query = "SELECT * FROM distributor_center WHERE distributor_center = '" . $this->input->post('distributorName') . "' AND distributor_center_id <> " . $this->input->post('distributorId');
+		$query = "SELECT * FROM distributor WHERE distributor_name = '" . $this->input->post('distributorName') . "' AND distributor_id <> " . $this->input->post('distributorId');
 		log_message('debug', 'DistributorModel.updateDistributor : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
 			
-			$CI =& get_instance();
-			$CI->load->model('AddressModel','',true);
-			
-			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-			
-			$CI->load->model('GoogleMapModel','',true);
-			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
-			
 			$data = array(
-						'distributor_center' => $this->input->post('distributorName'), 
+						'company_id' => $this->input->post('companyId'), 
+						'distributor_name' => $this->input->post('distributorName'),
+						'custom_url' => $this->input->post('customUrl'),
+						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
-			$where = "distributor_center_id = " . $this->input->post('distributorId');
-			$query = $this->db->update_string('distributor_center', $data, $where);
+			$where = "distributor_id = " . $this->input->post('distributorId');
+			$query = $this->db->update_string('distributor', $data, $where);
 			
 			log_message('debug', 'DistributorModel.updateDistributor : ' . $query);
 			if ( $this->db->query($query) ) {
 				$return = true;
-				
-				$data = array(
-						'street_number' => $this->input->post('streetNumber'),
-						'street' => $this->input->post('street'),
-						'city' => $this->input->post('city'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
-						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
-					);
-				$where = "distributor_center_id = " . $this->input->post('distributorId');
-				$query = $this->db->update_string('address', $data, $where);
-				if ( $this->db->query($query) ) {
-					$return = true;
-				} else {
-					$return = false;
-				}
-				
-				log_message('debug', 'DistributorModel.updateDistributor : ' . $query);
-				
 			} else {
 				$return = false;
 			}
@@ -158,6 +150,58 @@ class DistributorModel extends Model{
 		}
 		
 		return $return;
+	}
+	
+	function addDistributorWithNameOnly($distributorName) {
+		global $ACTIVITY_LEVEL_DB;
+		
+		$return = true;
+		
+		$companyId = '';
+		
+		$CI =& get_instance();
+		
+		if (empty($companyId) && empty($distributorName) ) {
+			$GLOBALS['error'] = 'no_name';
+			$return = false;
+		} else {
+			if ( empty($companyId) ) {
+				$CI->load->model('CompanyModel','',true);
+				$companyId = $CI->CompanyModel->addCompany($distributorName);
+			} 
+			
+			if ($companyId) {
+				$query = "SELECT * FROM distributor WHERE distributor_name = '" . $distributorName . "' AND company_id = '" . $companyId . "'";
+				log_message('debug', 'DistributorModel.addDistributor : Try to get duplicate Distributor record : ' . $query);
+				
+				$result = $this->db->query($query);
+				
+				if ($result->num_rows() == 0) {
+					$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, is_active)" .
+							" values (NULL, ".$companyId.", '" . $distributorName . "', NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					
+					log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
+					$return = true;
+					
+					if ( $this->db->query($query) ) {
+						$newDistributorId = $this->db->insert_id();
+						$return = $newDistributorId;
+					} else {
+						$return = false;
+					}
+					
+				} else {
+					$GLOBALS['error'] = 'duplicate';
+					$return = false;
+				}
+			} else {
+				//echo "DEEPAK IN FALSE";
+				$return = false;
+			}
+			
+		}
+		
+		return $return;	
 	}
 	
 }

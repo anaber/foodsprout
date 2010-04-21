@@ -36,22 +36,29 @@ class Farm extends Controller {
 	{
 		$data = array();
 		
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->listCompany();
+		
 		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
+		$states = $this->StateModel->listState();
 		
 		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$countries = $this->CountryModel->listCountry();
 		
+		$this->load->model('FarmTypeModel');
+		$farmTypes = $this->FarmTypeModel->listFarmType();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/farm_form',
+				'form' => 'admincp/farm_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Farm";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Add Farm";
+		$data['data']['center']['form']['COUNTRIES'] = $countries;
+		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
+		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -60,28 +67,36 @@ class Farm extends Controller {
 	{
 		$data = array();
 		
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->listCompany();
+
 		$this->load->model('FarmModel');
 		$farm = $this->FarmModel->getFarmFromId($id);
 		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
-		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
+		$this->load->model('FarmTypeModel');
+		$farmTypes = $this->FarmTypeModel->listFarmType();
 		
 		
 		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_farm',
+			);
+		
+		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/farm_form',
+				'form' => 'admincp/farm_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Farm";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['FARM'] = $farm;
+		$data['data']['left']['nav']['FARM_ID'] = $id;
 		
-		$this->load->view('admincp/templates/center_template', $data);
+		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
+		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
+		$data['data']['center']['form']['FARM'] = $farm;
+		$data['data']['center']['form']['COMPANIES'] = $companies;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+		
 	}
 	
 	// Pass the form data to the model to be inserted into the database
@@ -93,7 +108,7 @@ class Farm extends Controller {
 		if ( $this->FarmModel->addFarm() ) {
 			
 			// TO DO: IF THE USER DOES NOT HAVE JAVASCRIPT WE NEED TO USE SERVER SIDE REDIRECT.  BELOW CODE WILL DO THIS, HOWEVER THE echo 'yes' IS REQUIRED TO PASS TO THE JAVASCRIPT.  CONSIDER A BETTER WAY TO NOTIFY THE JQUERY JAVASCRIPT THAT THE EVENT WAS SUCCESSFUL SO AS TO ALLOW THE PROPER REDIRECT FOR NON JAVASCRIPT
-			// Added the new farm successfully, send user to index
+			// Added the new manufacture successfully, send user to index
 			//$this->index();
 			echo 'yes';
 			
@@ -104,7 +119,6 @@ class Farm extends Controller {
 				echo 'no';
 			}
 		}
-	
 	}
 	
 	function save_update() {
@@ -121,6 +135,132 @@ class Farm extends Controller {
 				echo 'no';
 			}
 		}
+		
+	}
+	
+	function add_supplier($id)
+	{
+		global $SUPPLIER_TYPES;
+		$data = array();
+		
+		$this->load->model('FarmModel');
+		$farm = $this->FarmModel->getFarmFromId($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_farm',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/supplier_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['FARM_ID'] = $id;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $farm->farmName;
+		$data['data']['center']['list']['FARM'] = $farm;
+		$data['data']['center']['list']['SUPPLIER_TYPES'] = $SUPPLIER_TYPES;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	function update_supplier($id)
+	{
+		global $SUPPLIER_TYPES;
+		$data = array();
+		
+		$this->load->model('SupplierModel');
+		$supplier = $this->SupplierModel->getSupplierFromId($id, 'farm');
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_farm',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/supplier_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['FARM_ID'] = $supplier->farmId;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id;
+		$data['data']['center']['list']['SUPPLIER'] = $supplier;
+		$data['data']['center']['list']['SUPPLIER_TYPES'] = $SUPPLIER_TYPES;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	function add_address($id)
+	{
+		$data = array();
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('FarmModel');
+		$farm = $this->FarmModel->getFarmFromId($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_farm',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/address_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['FARM_ID'] = $id;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $farm->farmName;
+		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	function update_address($id)
+	{
+		$data = array();
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('AddressModel');
+		$address = $this->AddressModel->getAddressFromId($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'nav' => 'admincp/includes/left/nav_farm',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'from' => 'admincp/address_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['nav']['FARM_ID'] = $address->farmId;
+		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
+		
+		$data['data']['center']['from']['VIEW_HEADER'] = "Update Address - #" . $id;
+		$data['data']['center']['from']['STATES'] = $states;
+		$data['data']['center']['from']['COUNTRIES'] = $countries;
+		$data['data']['center']['from']['ADDRESS'] = $address;
+		$data['data']['center']['from']['FARM_ID'] = $address->farmId;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
 		
 	}
 	

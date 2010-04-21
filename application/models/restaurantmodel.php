@@ -13,8 +13,8 @@ class RestaurantModel extends Model{
 		log_message('debug', "RestaurantModel.listRestaurant : " . $query);
 		$result = $this->db->query($query);
 		
-		$companies = array();
-		
+		$restaurants = array();
+		$CI =& get_instance();
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('RestaurantLib');
@@ -24,11 +24,20 @@ class RestaurantModel extends Model{
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			
-			$companies[] = $this->RestaurantLib;
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '' );
+			$this->RestaurantLib->addresses = $addresses;
+			
+			$CI->load->model('SupplierModel','',true);
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '' );
+			$this->RestaurantLib->suppliers = $suppliers;
+			
+			
+			$restaurants[] = $this->RestaurantLib;
 			unset($this->RestaurantLib);
 		}
 		
-		return $companies;
+		return $restaurants;
 	}
 	
 	// Generate a detailed list of all the restaurants in the database.
@@ -39,44 +48,60 @@ class RestaurantModel extends Model{
 	
 	// Input the data from the controller
 	function addRestaurant() {
+		global $ACTIVITY_LEVEL_DB;
+		
+		
 		$return = true;
 		
-		$query = "SELECT * FROM restaurant WHERE restaurant_name = '" . $this->input->post('restaurantName') . "'";
-		log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
+		$companyId = $this->input->post('companyId');
+		$restaurantName = $this->input->post('restaurantName');
 		
-		$result = $this->db->query($query);
+		$CI =& get_instance();
 		
-		if ($result->num_rows() == 0) {
+		
+		if (empty($companyId) && empty($restaurantName) ) {
+			$GLOBALS['error'] = 'no_name';
+			$return = false;
+		} else {
+			if ( empty($companyId) ) {
+				// Enter manufacture into company
+				$CI->load->model('CompanyModel','',true);
+				$companyId = $CI->CompanyModel->addCompany($this->input->post('restaurantName'));
+			} else {
+				if (empty($restaurantName) ) {
+					// Consider company name as manufacture name
+					$CI->load->model('CompanyModel','',true);
+					$company = $CI->CompanyModel->getCompanyFromId($companyId);
+					$restaurantName = $company->companyName;
+				}
+			}
 			
-			$query = "INSERT INTO restaurant (restaurant_id, restaurant_type_id, restaurant_name, creation_date)" .
-					" values (NULL, '" . $this->input->post('restauranttypeId') . "', '" . $this->input->post('restaurantName') . "', NOW() )";
-			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
-			
-			if ( $this->db->query($query) ) {
-				$new_restaurant_id = $this->db->insert_id();
-				
-				$CI =& get_instance();
-				$CI->load->model('AddressModel','',true);
-				$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-			
-				$CI->load->model('GoogleMapModel','',true);
-				$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
-				
-				$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, restaurant_id)" .
-						" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', $new_restaurant_id )";
-				
-			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
+			$query = "SELECT * FROM restaurant WHERE restaurant_name = '" . $restaurantName . "' AND company_id = '" . $companyId . "'";
+			log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
 			
 			$result = $this->db->query($query);
+			
+			if ($result->num_rows() == 0) {
+				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_type_id, cuisine_id, restaurant_name, creation_date, custom_url, is_active)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('restaurantTypeId') . ", " . $this->input->post('cuisineId') . ", '" . $restaurantName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				
+				log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 				$return = true;
+				
+				if ( $this->db->query($query) ) {
+					$newRestaurantId = $this->db->insert_id();
+					
+					$CI->load->model('AddressModel','',true);
+					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', '');
+				} else {
+					$return = false;
+				}
+				
 			} else {
+				$GLOBALS['error'] = 'duplicate';
 				$return = false;
 			}
 			
-			$return = true;
-		} else {
-			$GLOBALS['error'] = 'duplicate';
-			$return = false;
 		}
 		
 		return $return;	
@@ -85,7 +110,8 @@ class RestaurantModel extends Model{
 	// Pulls the data from the database for a specific restaurant
 	function getRestaurantFromId($restaurantId) {
 		
-		$query = "SELECT restaurant.*, address.* FROM restaurant, address WHERE restaurant.restaurant_id = address.restaurant_id AND restaurant.restaurant_id = " . $restaurantId;
+		//$query = "SELECT restaurant.*, address.* FROM restaurant, address WHERE restaurant.restaurant_id = address.restaurant_id AND restaurant.restaurant_id = " . $restaurantId;
+		$query = "SELECT * FROM restaurant WHERE restaurant_id = " . $restaurantId;
 		log_message('debug', "RestaurantModel.getRestaurantFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -96,13 +122,11 @@ class RestaurantModel extends Model{
 		$row = $result->row();
 		
 		$this->restaurantLib->restaurantId = $row->restaurant_id;
+		$this->restaurantLib->companyId = $row->company_id;
+		$this->restaurantLib->restaurantTypeId = $row->restaurant_type_id;
 		$this->restaurantLib->restaurantName = $row->restaurant_name;
-		$this->restaurantLib->streetNumber = $row->street_number;
-		$this->restaurantLib->street = $row->street;
-		$this->restaurantLib->city = $row->city;
-		$this->restaurantLib->stateId = $row->state_id;
-		$this->restaurantLib->countryId = $row->country_id;
-		$this->restaurantLib->zipcode = $row->zipcode;
+		$this->restaurantLib->customUrl = $row->custom_url;
+		$this->restaurantLib->isActive = $row->is_active;
 		
 		return $this->restaurantLib;
 	}
@@ -164,6 +188,57 @@ class RestaurantModel extends Model{
 		}
 				
 		return $return;
+	}
+	
+	function addRestaurantWithNameOnly($restaurantName) {
+		global $ACTIVITY_LEVEL_DB;
+		
+		$return = true;
+		
+		$companyId = '';
+		
+		$CI =& get_instance();
+		
+		if (empty($companyId) && empty($restaurantName) ) {
+			$GLOBALS['error'] = 'no_name';
+			$return = false;
+		} else {
+			if ( empty($companyId) ) {
+				$CI->load->model('CompanyModel','',true);
+				$companyId = $CI->CompanyModel->addCompany($restaurantName);
+			} 
+			
+			if ($companyId) {
+				$query = "SELECT * FROM restaurant WHERE restaurant_name = '" . $restaurantName . "' AND company_id = '" . $companyId . "'";
+				log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
+				
+				$result = $this->db->query($query);
+				
+				if ($result->num_rows() == 0) {
+					$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_type_id, restaurant_name, creation_date, custom_url, is_active)" .
+							" values (NULL, ".$companyId.", NULL, '" . $restaurantName . "', NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					
+					log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
+					$return = true;
+					
+					if ( $this->db->query($query) ) {
+						$newRestaurantId = $this->db->insert_id();
+						$return = $newRestaurantId;
+					} else {
+						$return = false;
+					}
+					
+				} else {
+					$GLOBALS['error'] = 'duplicate';
+					$return = false;
+				}
+			} else {
+				$return = false;
+			}
+			
+		}
+		
+		return $return;	
 	}
 	
 }

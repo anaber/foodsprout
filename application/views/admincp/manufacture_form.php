@@ -175,7 +175,7 @@ $(document).ready(function() {
 			<option value = ''>--Manufacture Type--</option>
 			<?php
 				foreach($MANUFACTURE_TYPES as $key => $value) {
-					echo '<option value="'.$value->manufactureTypeId.'"' . (  ( isset($MANUFACTURE) && ( $value->manufactureTypeId == $MANUFACTURE->manufactureTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->manufactureType.'</option>';
+					echo '<option value="'.$value->manufactureTypeId.'"' . (  ( isset($MANUFACTURE) && ( $value->manufactureTypeId == $MANUFACTURE->manufactureTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->manufactureTypeName.'</option>';
 				}
 			?>
 			</select>
