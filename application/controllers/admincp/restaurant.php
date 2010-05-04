@@ -73,6 +73,9 @@ class Restaurant extends Controller {
 	{
 		$data = array();
 		
+		$this->load->model('CompanyModel');
+		$companies = $this->CompanyModel->listCompany();
+		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
@@ -82,10 +85,15 @@ class Restaurant extends Controller {
 		$this->load->model('CountryModel');
 		$countries = $this->CountryModel->listCountry();
 		
+		$this->load->model('RestauranttypeModel');
+		$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
+		
+		$this->load->model('CuisineModel');
+		$cuisines = $this->CuisineModel->listCuisine();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/restaurant_form',
+				'form' => 'admincp/restaurant_form',
 			);
 		
 		$data['LEFT'] = array(
@@ -93,12 +101,16 @@ class Restaurant extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Restaurant";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Update Restaurant";
+		$data['data']['center']['form']['COUNTRIES'] = $countries;
+		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['RESTAURANT'] = $restaurant;
+		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
+		$data['data']['center']['form']['CUISINES'] = $cuisines;
+		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
-		$data['data']['right']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}

@@ -103,7 +103,9 @@ class AddressModel extends Model{
 		$address = $this->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
 				
 		$CI->load->model('GoogleMapModel','',true);
+		
 		$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+		
 		
 		$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, ";
 		if ( !empty($restaurantId) ) {

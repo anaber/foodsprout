@@ -6,9 +6,10 @@ class RestaurantModel extends Model{
 	// Generate a simple list of all the restaurants in the database.
 	function listRestaurant()
 	{
-		$query = "SELECT restaurant.* " .
-				" FROM restaurant " .
-				" ORDER BY restaurant_name";
+		$query = "SELECT restaurant.* , cuisine.cuisine_name
+					FROM restaurant, cuisine
+					WHERE restaurant.cuisine_id = cuisine.cuisine_id
+					ORDER BY restaurant_name";
 		
 		log_message('debug', "RestaurantModel.listRestaurant : " . $query);
 		$result = $this->db->query($query);
@@ -22,6 +23,9 @@ class RestaurantModel extends Model{
 			
 			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
+			$this->RestaurantLib->cuisineId = $row['cuisine_id'];
+			$this->RestaurantLib->cuisine = $row['cuisine_name'];
+			
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
@@ -39,6 +43,187 @@ class RestaurantModel extends Model{
 		
 		return $restaurants;
 	}
+	
+	
+	function getRestaurantsJson() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		//$q = '98006';
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		//$arr_query = explode(' ', $q);
+		
+		$start = 0;
+	
+		$page = 0;
+		
+		$base_query = 'SELECT restaurant.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
+				' FROM restaurant, cuisine, restaurant_type';
+		
+		$where = ' WHERE restaurant.cuisine_id = cuisine.cuisine_id '
+				. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+		
+		if ( !empty($q) ) {
+			if (!empty($where) ) {
+				$where .= ' AND (';  
+			} else {
+				$where .= ' WHERE (';
+			}
+			
+			$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
+					. ' OR restaurant.restaurant_id like "%' . $q . '%"';
+			
+			
+			$where	.= ' OR ( '
+					. '		SELECT address.address_id' 
+					. '			from address, state, country'
+					. '			WHERE' 
+					. '				address.restaurant_id = restaurant.restaurant_id'
+					. '				AND address.state_id = state.state_id'
+					. '				AND address.country_id = country.country_id'
+					. ' 			AND (' 
+					. '						address.street_number like "%' . $q . '%"'
+					. '						OR address.street like "%' . $q . '%"'
+					. '						OR address.city like "%' . $q . '%"'
+					. '						OR address.zipcode like "%' . $q . '%"'
+					. '						OR state.state_name like "%' . $q . '%"'
+					. '						OR state.state_code like "%' . $q . '%"'
+					. '						OR country.country_name like "%' . $q . '%"'
+					. '				)'
+					. '				LIMIT 0, 1'
+					. '		)'
+			 		
+					;
+			
+			$where .= ')';
+			
+		}
+		
+		$base_query = $base_query . $where;
+		
+		$query = $base_query . " ORDER BY restaurant_name ";
+		
+		$result = $this->db->query($query);
+		$numResults = $result->num_rows();
+		
+		
+		$query = $base_query;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY restaurant_name';
+			$sort = 'restaurant_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		//print_r_pre($_REQUEST);
+		//echo $query;
+		//die;
+		
+		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$restaurants = array();
+		
+		$CI =& get_instance();
+		
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row) {
+			
+			
+			$this->load->library('RestaurantLib');
+			unset($this->RestaurantLib);
+			
+			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
+			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
+			$this->RestaurantLib->cuisineId = $row['cuisine_id'];
+			$this->RestaurantLib->cuisine = $row['cuisine_name'];
+			
+			$this->RestaurantLib->creationDate = $row['creation_date'];
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '' );
+			$this->RestaurantLib->addresses = $addresses;
+			
+			$CI->load->model('SupplierModel','',true);
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '' );
+			$this->RestaurantLib->suppliers = $suppliers;
+		
+			
+			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+				
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+				
+				$arrLatLng['addressLine1'] = $address->streetNumber . ' ' . $address->street;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+				
+				$arrLatLng['restaurantName'] = $this->RestaurantLib->restaurantName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[] = $arrLatLng;
+			}
+			
+		
+			
+			$restaurants[] = $this->RestaurantLib;
+			unset($this->RestaurantLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q);
+		$arr = array(
+			'results'    => $restaurants,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    //print_r_pre($arr);
+	    return $arr;
+		
+	}
+	
 	
 	// Generate a detailed list of all the restaurants in the database.
 	function listRestaurantMore()
@@ -92,7 +277,7 @@ class RestaurantModel extends Model{
 					$newRestaurantId = $this->db->insert_id();
 					
 					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', '');
+					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', $companyId);
 				} else {
 					$return = false;
 				}
@@ -132,6 +317,7 @@ class RestaurantModel extends Model{
 	}
 	
 	function updateRestaurant() {
+		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
 		$query = "SELECT * FROM restaurant WHERE restaurant_name = '" . $this->input->post('restaurantName') . "' AND restaurant_id <> " . $this->input->post('restaurantId');
@@ -141,43 +327,20 @@ class RestaurantModel extends Model{
 		
 		if ($result->num_rows() == 0) {
 			
-			$CI =& get_instance();
-			$CI->load->model('AddressModel','',true);
-			
-			$address = $CI->AddressModel->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-			
-			$CI->load->model('GoogleMapModel','',true);
-			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
-			
 			$data = array(
 						'restaurant_name' => $this->input->post('restaurantName'), 
+						'custom_url' => $this->input->post('customUrl'),
+						'restaurant_type_id' => $this->input->post('restaurantTypeId'),
+						'cuisine_id' => $this->input->post('cuisineId'),
+						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
 			$where = "restaurant_id = " . $this->input->post('restaurantId');
 			$query = $this->db->update_string('restaurant', $data, $where);
 			
+			
 			log_message('debug', 'RestaurantModel.updateRestaurant : ' . $query);
 			if ( $this->db->query($query) ) {
 				$return = true;
-				
-				$data = array(
-						'street_number' => $this->input->post('streetNumber'),
-						'street' => $this->input->post('street'),
-						'city' => $this->input->post('city'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-						'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) ,
-						'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
-						
-					);
-				$where = "restaurant_id = " . $this->input->post('restaurantId');
-				$query = $this->db->update_string('address', $data, $where);
-				if ( $this->db->query($query) ) {
-					$return = true;
-				} else {
-					$return = false;
-				}
-				
 			} else {
 				$return = false;
 			}
@@ -239,6 +402,58 @@ class RestaurantModel extends Model{
 		}
 		
 		return $return;	
+	}
+	
+	function getDistinctUsedRestaurantType()
+	{
+		$query = "SELECT DISTINCT restaurant.restaurant_type_id, restaurant_type.restaurant_type
+					FROM restaurant, restaurant_type
+					WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id";
+		
+		log_message('debug', "RestaurantModel.getDistinctRestaurantType : " . $query);
+		$result = $this->db->query($query);
+		
+		$restaurantTypes = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('RestaurantTypeLib');
+			unset($this->RestaurantTypeLib);
+			
+			$this->RestaurantTypeLib->restaurantTypeId = $row['restaurant_type_id'];
+			$this->RestaurantTypeLib->restaurantType = $row['restaurant_type'];
+			
+			$restaurantTypes[] = $this->RestaurantTypeLib;
+			unset($this->RestaurantTypeLib);
+		}
+		
+		return $restaurantTypes;
+	}
+	
+	function getDistinctUsedCuisine()
+	{
+		$query = "SELECT DISTINCT restaurant.cuisine_id, cuisine.cuisine_name
+					FROM restaurant, cuisine
+					WHERE restaurant.cuisine_id = cuisine.cuisine_id";
+		
+		log_message('debug', "RestaurantModel.getDistinctUsedCuisine : " . $query);
+		$result = $this->db->query($query);
+		
+		$cuisine = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('CuisineLib');
+			unset($this->CuisineLib);
+			
+			$this->CuisineLib->cuisineId = $row['cuisine_id'];
+			$this->CuisineLib->cuisineName = $row['cuisine_name'];
+			
+			$cuisine[] = $this->CuisineLib;
+			unset($this->CuisineLib);
+		}
+		
+		return $cuisine;
 	}
 	
 }

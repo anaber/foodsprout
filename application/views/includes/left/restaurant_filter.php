@@ -1,3 +1,5 @@
+
+
 <div id="rbox">
 <?php
 	
@@ -5,10 +7,10 @@
 
 	echo '<strong>Restaurant Type</strong><br>';
 	$i = 0;
-	foreach($RESTAURANTTYPES as $r) :
+	foreach($RESTAURANT_TYPES as $r) :
 		$i++;
 		echo '<input type="checkbox" value="'.$r->restaurantTypeId.'">';
-		echo $r->restaurantTypeName.'<br>';
+		echo $r->restaurantType.'<br>';
 
 	endforeach;
 	
@@ -22,4 +24,6 @@
 	endforeach;
 
 ?>
+<br />
+<a id = "imgRemoveFilters" href = "#">Remove Filters</a>
 </div>

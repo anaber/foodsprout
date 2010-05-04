@@ -1,6 +1,7 @@
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=<?php echo $GOOGLE_MAP_KEY; ?>" type="text/javascript"></script> 
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=<?php echo $GOOGLE_MAP_KEY; ?>" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/google_map.js" type="text/javascript"></script> 
 <script>
-    
+    /*
      function initializeMap() {
       if (GBrowserIsCompatible()) {
         var map = new GMap2(document.getElementById("map_canvas"));
@@ -12,6 +13,7 @@
 	$(document).ready(function() {
 		initializeMap();
 	});
+	*/
 </script>
 
 <div id="map_canvas" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px"></div> 

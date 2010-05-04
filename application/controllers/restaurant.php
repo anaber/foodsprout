@@ -10,12 +10,12 @@ class Restaurant extends Controller {
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurants = $this->RestaurantModel->listRestaurant();
+
+		$this->load->model('RestaurantModel');
+		$restaurantTypes = $this->RestaurantModel->getDistinctUsedRestaurantType();
 		
-		$this->load->model('RestaurantTypeModel');
-		$restaurantTypes = $this->RestaurantTypeModel->listRestaurantType();
-		
-		$this->load->model('CuisineModel');
-		$cusines = $this->CuisineModel->listCuisine();
+		$this->load->model('RestaurantModel');
+		$cusines = $this->RestaurantModel->getDistinctUsedCuisine();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -30,7 +30,7 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
-		$data['data']['left']['filter']['RESTAURANTTYPES'] = $restaurantTypes;
+		$data['data']['left']['filter']['RESTAURANT_TYPES'] = $restaurantTypes;
 		$data['data']['left']['filter']['CUISINES'] = $cusines;
 		
 		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
@@ -88,6 +88,13 @@ class Restaurant extends Controller {
 		
 		$this->load->view('templates/center_right_template', $data);
 	}
+	
+	function ajaxSearchRestaurants() {
+		$this->load->model('RestaurantModel', '', TRUE);
+		$restaurants = $this->RestaurantModel->getRestaurantsJson();
+		echo json_encode($restaurants);
+	}
+	
 	
 }
 

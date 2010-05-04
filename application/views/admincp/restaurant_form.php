@@ -68,7 +68,6 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
 				
 				if(data=='yes') {
 					//start fading the messagebox
@@ -131,7 +130,9 @@ $(document).ready(function() {
 	
 		
 </script>
-
+<?php
+	
+?>
 
 <?php echo anchor('admincp/restaurant', 'List Restaurants'); ?><br /><br />
 
@@ -146,7 +147,7 @@ $(document).ready(function() {
 			<option value = ''>--Existing Companies--</option>
 			<?php
 				foreach($COMPANIES as $key => $value) {
-					echo '<option value="'.$value->companyId.'"' . (  ( isset($MANUFACTURE) && ( $value->companyId == $MANUFACTURE->companyId )  ) ? ' SELECTED' : '' ) . '>'.$value->companyName.'</option>';
+					echo '<option value="'.$value->companyId.'"' . (  ( isset($RESTAURANT) && ( $value->companyId == $RESTAURANT->companyId )  ) ? ' SELECTED' : '' ) . '>'.$value->companyName.'</option>';
 				}
 			?>
 			</select>
