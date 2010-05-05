@@ -5,7 +5,7 @@ function print_r_pre($ob){
 	echo "</pre>";
 }
 
-function requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q) {
+function requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter) {
 	global $PER_PAGE;
 	
 	$param = array(
@@ -20,6 +20,7 @@ function requestToParams($numResults, $start, $totalPages, $first, $last, $page,
 		'sort'  		=> $sort,
 		'order'  		=> $order,
 		'q'  			=> $q,
+		'filter'		=> $filter,
 	);
 	return $param;
 }

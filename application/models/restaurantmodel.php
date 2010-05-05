@@ -52,9 +52,33 @@ class RestaurantModel extends Model{
 		$pp = $this->input->post('pp'); // Per Page
 		$sort = $this->input->post('sort');
 		$order = $this->input->post('order');
+		$filter = $this->input->post('f');
+		
+		
+		
+		
+		//echo $filter;
+		$arr_filter = explode(',', $filter);
+		
+		$arrRestaurantTypeId = array();
+		$arrCuisineId = array();
+		
+		foreach($arr_filter as $key => $value) {
+			$arr_value = explode('_', $value) ;
+			
+			if ($arr_value[0] == 'r') {
+				$arrRestaurantTypeId[] = $arr_value[1];
+			}
+			
+			if ($arr_value[0] == 'c') {
+				$arrCuisineId[] = $arr_value[1];
+			}
+		}
+		
 		
 		$q = $this->input->post('q');
-		//$q = '98006';
+		//$q = '94107';
+		//$filter = 'c_7';
 		
 		if ($q == '0') {
 			$q = '';
@@ -70,6 +94,14 @@ class RestaurantModel extends Model{
 		
 		$where = ' WHERE restaurant.cuisine_id = cuisine.cuisine_id '
 				. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+		
+		if(count($arrRestaurantTypeId) > 0 ) {
+			$where .= ' AND restaurant.restaurant_type_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
+		}
+		
+		if(count($arrCuisineId) > 0 ) {
+			$where .= ' AND restaurant.cuisine_id IN (' . implode(',', $arrCuisineId) . ')';
+		}
 		
 		if ( !empty($q) ) {
 			if (!empty($where) ) {
@@ -110,6 +142,8 @@ class RestaurantModel extends Model{
 		$base_query = $base_query . $where;
 		
 		$query = $base_query . " ORDER BY restaurant_name ";
+		
+		//echo $query . "<BR/>";
 		
 		$result = $this->db->query($query);
 		$numResults = $result->num_rows();
@@ -213,13 +247,14 @@ class RestaurantModel extends Model{
 		$last = $totalPages - 1;
 		
 		
-		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q);
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter);
 		$arr = array(
 			'results'    => $restaurants,
 			'param'      => $params,
 			'geocode'	 => $geocodeArray,
 	    );
 	    //print_r_pre($arr);
+	    //die;
 	    return $arr;
 		
 	}

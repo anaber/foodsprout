@@ -11,7 +11,7 @@ $(document).ready(function() {
 		"json");
 });
 
-function postAndRedrawContent(page, perPage, s, o, query) {
+function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
 	$('#resultsContainer').hide();
 	$('#messageContainer').show();
@@ -19,7 +19,7 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 	
 	var formAction = '/restaurant/ajaxSearchRestaurants';
 	
-	postArray = { p:page, pp:perPage, sort:s, order:o, q:query };
+	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
 	
 	$.post(formAction, postArray,function(data) {		
 		redrawContent(data);
@@ -29,13 +29,13 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 
 function redrawContent(data) {
 	$('#resultTableContainer').empty();
-	var resultTableHtml = getResultTableHeader();
-	
+	//var resultTableHtml = getResultTableHeader();
+	var resultTableHtml = '';
 	$.each(data.results, function(i, a) {
 		resultTableHtml += addResult(a, i);
 	});	
 
-	resultTableHtml += getResultTableFooter();
+	//resultTableHtml += getResultTableFooter();
 	$('#resultTableContainer').append(resultTableHtml);
 	
 	$('#messageContainer').hide();
@@ -54,7 +54,8 @@ function redrawContent(data) {
 	pagingLinksContent = drawPagingLinks(data.param);
 	$('#pagingLinks').append(pagingLinksContent);
 	
-	$('#table_results tbody tr td a').click(function(e) {
+	//$('#table_results tbody tr td a').click(function(e) {
+	$('#resultTableContainer div div a').click(function(e) {
 		record_id = $(this).attr('id');
 		
 		if (record_id != '') {
@@ -68,6 +69,7 @@ function redrawContent(data) {
 				document.location='/restaurant/view/'+record_id;
 			}
 		}
+		
 	});
 
 	reinitializeMap(data);
@@ -78,9 +80,39 @@ function redrawContent(data) {
 	
 	reinitializeRemoveFilters(data);
 	
-	reinitializeTableHeadingEvent(data);
+	//reinitializeTableHeadingEvent(data);
 	
-	$("#table_results").colorize( { ignoreHeaders:true });
+	reinitializeFilterEvent(data);
+	
+	reinitializeQueryFilterEvent(data);
+		
+	//$("#table_results").colorize( { ignoreHeaders:true });
+}
+
+function reinitializeFilterEvent (data) {
+	
+	$(':checkbox').click(function () {
+		var strRestaurantTypeId = '';
+		j = 0;
+		$.each($("input[@name='restaurantTypeId']:checked"), function() {
+		    if (j == 0 ) {
+	        	strRestaurantTypeId += $(this).val();
+	        } else {
+	        	strRestaurantTypeId += ',' + $(this).val();
+	        }
+	        j++;
+		});
+		
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId);
+	});
+}
+
+function reinitializeQueryFilterEvent (data) {
+	
+	$("#frmFilters").submit(function(e) {
+		e.preventDefault();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
+	});
 }
 
 
@@ -88,7 +120,8 @@ function reinitializeRemoveFilters(data) {
 	
 	$("#imgRemoveFilters").click(function(e) {
 		e.preventDefault();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '');
+		$('#frmFilters')[0].reset();
 	});
 }
 
@@ -97,7 +130,7 @@ function reinitializePagingEvent(data) {
 	
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#imgPrevious").click(function(e) {
@@ -106,7 +139,7 @@ function reinitializePagingEvent(data) {
 		if (previousPage <= 0) {
 			previousPage = data.param.firstPage;
 		}
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q);
+		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#imgNext").click(function(e) {
@@ -115,30 +148,31 @@ function reinitializePagingEvent(data) {
 		if (nextPage >= data.param.totalPages) {
 			nextPage = data.param.lastPage;
 		}
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q);
+		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q);
+		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 }
 
 function reinitializePageCountEvent(data) {
 	$("#recordsPerPageList").change(function(e) {
-		postAndRedrawContent(data.param.firstPage, $("#recordsPerPageList").val(), data.param.sort, data.param.order, data.param.q);
+		postAndRedrawContent(data.param.firstPage, $("#recordsPerPageList").val(), data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 }
 
+/*
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_restaurant").click(function(e) {
 		e.preventDefault();
 		order = getOrder(data, 'restaurant_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'restaurant_name', order, data.param.q);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'restaurant_name', order, data.param.q, data.param.filter);
 	});
 }
-
+*/
 
 
 function getOrder(data, field_name ) {
@@ -188,6 +222,28 @@ function drawNumRecords(params) {
 	return str;
 }
 
+
+function addResult(restaurant, i) {
+	var html =
+	'<div style="overflow:auto; padding:5px;">' +
+	'	<div style="float:left; width:300px;"><a href="#" id = "'+ restaurant.restaurantId +'">'+ restaurant.restaurantName +'</a><br>Cuisine:' + restaurant.cuisine + '</div>' +
+	'	<div style="float:right; width:400px;">Address:<br />';
+	$.each(restaurant.addresses, function(j, address) {
+		if (j == 0) {
+			html += '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
+		} else {
+			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
+		}
+	});
+	html += '</div>';
+	html +=
+	'</div>'
+	;
+	
+	return html;
+}
+
+/*
 function addResult(restaurant, i) {
 	var html =
 	'<tr>' +
@@ -241,3 +297,4 @@ function getResultTableFooter() {
 	'</table>';
 	return html;
 }
+*/
