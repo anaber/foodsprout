@@ -21,7 +21,7 @@ $DATABSE  = "468258_foodtest";
 
 $BASE_URL = "http://www.vemoto.com/";
 
-$GOOGLE_MAP_KEY = '';
+$GOOGLE_MAP_KEY = 'ABQIAAAANHHVmwbFmPA69NdT2eV5nBTTs6hNVB8_1pP2Zl7l6kCVegzTUBRWMGEwwPTjkoLOK3WAbatrXOjvWg';
 
 $PER_PAGE = 10;
 
