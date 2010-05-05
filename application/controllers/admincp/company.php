@@ -66,31 +66,17 @@ class Company extends Controller {
 		$this->load->model('CompanyModel');
 		$company = $this->CompanyModel->getCompanyFromId($id);
 		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
-		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
-		
-		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'admincp/company_form',
 			);
 		
-		$data['LEFT'] = array(
-				'navigation' => 'admincp/includes/left/nav_company',
-			);
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Company";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['COMPANY'] = $company;
 		
-		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		
-		$this->load->view('admincp/templates/left_center_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_add() {

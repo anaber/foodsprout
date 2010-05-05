@@ -22,6 +22,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
 	
 	$.post(formAction, postArray,function(data) {		
+		alert(data);
 		redrawContent(data);
 	},
 	"json");

@@ -127,6 +127,37 @@ class CompanyModel extends Model{
 		return $arr;
 	}
 	
+	function updateCompany() {
+		$return = true;
+		
+		$query = "SELECT * FROM company WHERE company_name = '" . $this->input->post('companyName') . "' AND company_id <> " . $this->input->post('companyId');
+		log_message('debug', 'CompanyModel.updateCompany : Try to get Duplicate record : ' . $query);
+			
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			
+			$data = array(
+						'company_name' => $this->input->post('companyName'), 
+					);
+			$where = "company_id = " . $this->input->post('companyId');
+			$query = $this->db->update_string('company', $data, $where);
+			
+			log_message('debug', 'CompanyModel.updateCompany : ' . $query);
+			if ( $this->db->query($query) ) {
+				$return = true;
+			} else {
+				$return = false;
+			}
+			
+		} else {
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
+		}
+				
+		return $return;
+	}
+	
 	/*
 	// Generate a detailed list of all the companies in the database.
 	function listCompanyMore()

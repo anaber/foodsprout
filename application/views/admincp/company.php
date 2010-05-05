@@ -1,5 +1,10 @@
+<?php
+	/*
+?>
 <?php echo anchor('admincp/company/add', 'Add Company'); ?><br /><br />
-
+<?php
+	*/
+?>
 <table cellpadding="3" cellspacing="0" border="0" id="tbllist">
 	<tr>
 		<th>Company Id</th>

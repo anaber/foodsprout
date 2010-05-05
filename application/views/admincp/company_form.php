@@ -38,25 +38,13 @@ $(document).ready(function() {
 				var formAction = '/admincp/company/save_update';
 				postArray = {
 							  companyName:$('#companyName').val(),
-							  streetNumber:$('#streetNumber').val(),
-							  street:$('#street').val(),
-							  city: $('#city').val(),
-							  stateId:$('#stateId').val(),
-							  countryId:$('#countryId').val(),
-							  zipcode:$('#zipcode').val(), 
 							  companyId: $('#companyId').val()
 							};
 				act = 'update';		
 			} else {
 				formAction = '/admincp/company/save_add';
 				postArray = { 
-							  companyName:$('#companyName').val(),
-							  streetNumber:$('#streetNumber').val(),
-							  street:$('#street').val(),
-							  city: $('#city').val(),
-							  stateId:$('#stateId').val(),
-							  countryId:$('#countryId').val(),
-							  zipcode:$('#zipcode').val()
+							  companyName:$('#companyName').val()
 							};
 				act = 'add';
 			}
@@ -131,56 +119,7 @@ $(document).ready(function() {
 			<input value="<?php echo (isset($COMPANY) ? $COMPANY->companyName : '') ?>" class="validate[required]" type="text" name="companyName" id="companyName"/><br />
 		</td>
 	<tr>
-	<tr>
-		<td width = "25%">Street Number</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">Street Name</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">City</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">State</td>
-		<td width = "75%">
-			<select name="stateId" id="stateId"  class="validate[required]">
-			<option value = ''>--State--</option>
-			<?php
-				foreach($STATES as $key => $value) {
-					echo '<option value="'.$value->stateId.'"' . (  ( isset($COMPANY) && ( $value->stateId == $COMPANY->stateId )  ) ? ' SELECTED' : '' ) . '>'.$value->stateName.'</option>';
-				}
-			?>
-			</select>
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">Country</td>
-		<td width = "75%">
-			<select name="countryId" id="countryId"  class="validate[required]">
-			<option value = ''>--Country--</option>
-			<?php
-				foreach($COUNTRIES as $key => $value) {
-					echo '<option value="'.$value->countryId.'"' . (  ( isset($COMPANY) && ( $value->countryId == $COMPANY->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>';
-				}
-			?>
-			</select>
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">Zip</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($COMPANY) ? $COMPANY->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
-		</td>
-	<tr>
+	
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($COMPANY)) ? 'Update Company' : 'Add Company' ?>">
