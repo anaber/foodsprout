@@ -23,6 +23,8 @@ $BASE_URL = "http://www.vemoto.com/";
 
 $GOOGLE_MAP_KEY = '';
 
+$PER_PAGE = 10;
+
 /*
  * ======================================================
  * Table Names
