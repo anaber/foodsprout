@@ -1,7 +1,12 @@
 <br>
+<span style="font-family: Helvetica, Arial, sans-serif; font-size: 28px;">Food Sprout is a global network powered by people, restaurants, food manufactures, and suppliers coming together to tell you what your food REALLY is.<br><br>
+	Together we are mapping the food supply chain and working to make food better for all.
 
+</span><br>
+<hr size="1">
+<br>
 <h4>Mission</h4>
-Our mission is simple: to map the world's food chain and empower you to know what's in your food.
+Our mission is simple: To map the world's food supply chain.
 <br>
 <br>
 <h4>Goals</h4>
