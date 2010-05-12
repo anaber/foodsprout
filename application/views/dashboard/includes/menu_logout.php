@@ -1,0 +1,2 @@
+<strong>Dashboard</strong> | <?php echo anchor('user/settings', 'Settings'); ?> | <?php echo anchor('login/signout', 'Sign Out'); ?><br><br><br>
+<a href="/"><img src="/images/return_arrow.gif" border="0"></a>&nbsp;&nbsp;<a href="/" style="text-decoration:none;"><span style="font-size:24px;">Exit Dashboard</span></a>

@@ -187,6 +187,18 @@ a, a:visited{
 	padding:10px;
 }
 
+#main-content-fluid{
+	text-align: left;
+	width: 95%;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background: #FFF;
+	color: #000;
+	-moz-box-shadow: 0 0 .5em #CCC;
+	-webkit-box-shadow: 0 0 .5em #CCC;
+	padding:10px;
+}
+
 #footer{
 	position: relative;
 	height: 15px;

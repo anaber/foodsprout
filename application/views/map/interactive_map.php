@@ -1,8 +1,3 @@
-<?php
-	if(isset($VIEW_HEADER) ) {
-		echo '<h4>' . $VIEW_HEADER . '</h4>';	
-	}
-?>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=<?php echo $GOOGLE_MAP_KEY; ?>" type="text/javascript"></script> 
 <script>
     

@@ -33,8 +33,10 @@ class User extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'user/dashboard',
 		);
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "My Dashboard";
 			
-		$this->load->view('/templates/center_template', $data);
+		$this->load->view('/dashboard/templates/center_template', $data);
 	}
 	
 	// The settings for the user

@@ -35,18 +35,18 @@
 <div id="homerightbox">
 	<div style="padding-left:5px;">
 		<span class="greentxt">Food Resources &amp; FAQs</span><br><br>
-		<div style="float:left; width:220px; font-size:12px;">
+		<div style="float:left; width:220px; font-size:12px; line-height:150%;">
 			<a href = "/restaurant" id = "exploreFastFood">Explore Fast Food</a><br>
 			Resources for Moms<br>
-			Where Food REALLY Comes From<br>
-			Explore the Food Web<br>
+			Where Food Comes From<br>
+			<a href="/about">Our Mission</a><br>
+			Sites We Recommend<br>
+			FAQs<br>
 			
 		</div>
 
 		<div style="float:right; width:225px; font-size:12px;">
-			Our Mission<br>
-			Sites We Recommend<br>
-			FAQs<br>
+			
 		</div>			
 	</div>
 </div>
@@ -56,7 +56,7 @@
 </form>
 
 <div id="homeleftbox">
-			<img src="/images/map-home.jpg" border="0" align="left" style="margin-right: 5px;" width="200"><span class="redtxt"><b>Food Sources in Your Area</b></span><br><span style="font-size:12px;">Start using our interactive map to learn where your food comes from AND what's in it....'</span><br><br>
+			<a href="/map"><img src="/images/map-home.jpg" border="0" align="left" style="margin-right: 5px;" width="200"></a><span class="redtxt"><b>Food Sources in Your Area</b></span><br><span style="font-size:12px;">Start using <a href="/map">our interactive map</a> to learn where your food comes from AND what's in it...</span><br><br>
 			
 </div>
 

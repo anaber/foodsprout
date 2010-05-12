@@ -1,4 +1,4 @@
-To contact Food Sprout please use any of the following:
+<br>To contact Food Sprout please use any of the following:
 
 <br>
 <br>
