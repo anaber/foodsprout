@@ -1,9 +1,37 @@
 <script src="<?php echo base_url()?>js/jquery.colorize.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/restaurant_search.js" type="text/javascript"></script>
-
-
-
-
+<script>
+var showMap = true;
+var showFilters = true;
+<?php
+	if ($hide_map == 'yes') {
+?>
+	showMap = false;
+<?php
+	}
+	
+	if ($hide_filters == 'yes') {
+?>
+	showFilters = false;
+<?php
+	}
+?>
+	$(document).ready(function() {
+	
+		$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+		
+		
+		$.post("/restaurant/ajaxSearchRestaurants", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
+			function(data){
+				if (showMap ==  true) { 
+					loadMapOnStartUp(38.41055825094609, -98, 3);
+				}
+				redrawContent(data);
+			},
+			"json");
+	});
+	
+</script>
 
 <div style="overflow:auto; padding:5px;">
 	<div style="float:left; width:200px;" id = 'numRecords'></div>

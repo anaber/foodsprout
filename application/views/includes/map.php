@@ -15,5 +15,7 @@
 	});
 	*/
 </script>
-
-<div id="map_canvas" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px"></div> 
+<div id = "map">
+<div id="map_canvas" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px"></div>
+</div>
+<div align = "right"><div style="float:right; width:400px;" id = "divHideMap"><a href = "#" id = "linkHideMap">Show/Hide Map</a></div></div>

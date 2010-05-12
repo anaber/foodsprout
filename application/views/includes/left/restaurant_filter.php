@@ -4,7 +4,7 @@
 <form id = "frmFilters">
 <?php
 	
-	echo 'Zip Code <input type="text" size="6" maxlength="5" id = "q"><br><br>';
+	echo '<div id = "divZipcode">Zip Code <input type="text" size="6" maxlength="5" id = "q"></div><br>';
 
 	echo '<strong>Restaurant Type</strong><br>';
 	$i = 0;
@@ -27,5 +27,7 @@
 ?>
 </form>
 <br />
-<a id = "imgRemoveFilters" href = "#">Remove Filters</a>
+<div id = "removeFilters">
+	<a id = "imgRemoveFilters" href = "#">Remove Filters</a>
+</div>
 </div>

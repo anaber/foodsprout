@@ -7,6 +7,9 @@ class Restaurant extends Controller {
 		
 		$data = array();
 		
+		$q = $this->input->post('q');
+		$f = $this->input->post('f');
+		
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurants = $this->RestaurantModel->listRestaurant();
@@ -17,30 +20,54 @@ class Restaurant extends Controller {
 		$this->load->model('RestaurantModel');
 		$cusines = $this->RestaurantModel->getDistinctUsedCuisine();
 		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'map' => 'includes/map',
+		if ( !empty($f) ) {
+			$data['CENTER'] = array(
 				'list' => '/restaurant/restaurant_list',
 			);
+		} else {
+			// List of views to be included
+			$data['CENTER'] = array(
+					'map' => 'includes/map',
+					'list' => '/restaurant/restaurant_list',
+				);
+		}
 		
-		$data['LEFT'] = array(
-				'filter' => 'includes/left/restaurant_filter',
-				'ad' => 'includes/left/ad',
-			);
+		if ( !empty($f) ) {
+			$data['LEFT'] = array(
+					'ad' => 'includes/left/ad',
+				);
+		} else {
+			$data['LEFT'] = array(
+					'filter' => 'includes/left/restaurant_filter',
+					'ad' => 'includes/left/ad',
+				);
+		}
 		
 		// Data to be passed to the views
+		if ( empty($f) ) {
 		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
 		$data['data']['left']['filter']['RESTAURANT_TYPES'] = $restaurantTypes;
 		$data['data']['left']['filter']['CUISINES'] = $cusines;
+		}
 		
+		if ( empty($f) ) {
 		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
 		$data['data']['center']['map']['VIEW_HEADER'] = "Map";
 		$data['data']['center']['map']['width'] = '790';
 		$data['data']['center']['map']['height'] = '250';
+		}
 		
 		$data['data']['center']['list']['LIST'] = $restaurants;
 		$data['data']['center']['list']['VIEW_HEADER'] = "List of Resturants";
-		
+		$data['data']['center']['list']['q'] = $q;
+		$data['data']['center']['list']['f'] = $f;
+		if ( !empty($f) ) {
+			$data['data']['center']['list']['hide_map'] = 'yes';
+			$data['data']['center']['list']['hide_filters'] = 'yes';
+		} else {
+			$data['data']['center']['list']['hide_map'] = 'no';
+			$data['data']['center']['list']['hide_filters'] = 'no';
+		}
 		
 		
 		$this->load->view('templates/left_center_template', $data);
@@ -95,6 +122,9 @@ class Restaurant extends Controller {
 		echo json_encode($restaurants);
 	}
 	
+	function map() {
+		$this->load->view('map');
+	}
 	
 }
 

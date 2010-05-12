@@ -1,5 +1,5 @@
 <?php
 	if(isset($VIEW_HEADER) ) {
-		echo '<h4 class="redtxt">' . $VIEW_HEADER . '</h4>';	
+		echo '<div style="float:left;"><h4 class="redtxt">' . $VIEW_HEADER . '</h4></div><br />';	
 	}
 ?>

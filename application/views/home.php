@@ -1,3 +1,13 @@
+<script>
+	
+	$(document).ready(function() {
+		$("#exploreFastFood").click(function(e) {
+			e.preventDefault();
+			document.frmExploreFood.submit();
+		});	
+	});
+	
+</script>
 <div >
 		<strong class="redtxt">Mapping the world's food chain, and what's really in your food, start exploring it with us</strong><br><br>
 			
@@ -10,8 +20,8 @@
 							<br><br>
 
 							<div align="center" style="font-size:24px;">
-								<form action="http://localhost:8888/search/restaurant" method="post">
-									Zip Code: <input type="text" name="restaurant_list" value="" id="restaurant_list" maxlength="5" size="10" syle="font-size: 24px;" />
+								<form action="/restaurant" method="post">
+									Zip Code: <input type="text" name="q" value="" id="q" maxlength="5" size="10" syle="font-size: 24px;" />
 								<input type="submit" name="submit" value="Find" syle="font-size: 24px;" />
 								</form>
 							</div>
@@ -26,6 +36,7 @@
 	<div style="padding-left:5px;">
 		<span class="greentxt">Food Resources &amp; FAQs</span><br><br>
 		<div style="float:left; width:220px; font-size:12px;">
+			<a href = "/restaurant" id = "exploreFastFood">Explore Fast Food</a><br>
 			Resources for Moms<br>
 			Where Food REALLY Comes From<br>
 			Explore the Food Web<br>
@@ -39,6 +50,10 @@
 		</div>			
 	</div>
 </div>
+
+<form name = "frmExploreFood" action = "/restaurant" method = "post">
+	<input type = "hidden" name = "f" id = "f" value = "r_4">
+</form>
 
 <div id="homeleftbox">
 			<img src="/images/map-home.jpg" border="0" align="left" style="margin-right: 5px;" width="200"><span class="redtxt"><b>Food Sources in Your Area</b></span><br><span style="font-size:12px;">Start using our interactive map to learn where your food comes from AND what's in it....'</span><br><br>

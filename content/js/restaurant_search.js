@@ -1,15 +1,5 @@
-$(document).ready(function() {
-	
-	$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
-	
-	
-	$.post("/restaurant/ajaxSearchRestaurants", { a:"", p: "0" },
-		function(data){
-			loadMapOnStartUp(38.41055825094609, -98, 3);
-			redrawContent(data);
-		},
-		"json");
-});
+var isMapVisible = 1;
+
 
 function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
@@ -22,8 +12,9 @@ function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
 	
 	$.post(formAction, postArray,function(data) {		
-		alert(data);
 		redrawContent(data);
+		
+		//reinitializeRemoveFilters(data);
 	},
 	"json");
 }
@@ -55,6 +46,24 @@ function redrawContent(data) {
 	pagingLinksContent = drawPagingLinks(data.param);
 	$('#pagingLinks').append(pagingLinksContent);
 	
+	if (showFilters ==  true) {
+		$('#removeFilters').empty();
+		removeFilterContent = '<a id = "imgRemoveFilters" href = "#">Remove Filters</a>';
+		$('#removeFilters').append(removeFilterContent);
+	}
+	
+	if (showMap ==  true) { 
+		$('#divHideMap').empty();
+		showHideMapContent = '<a href = "#" id = "linkHideMap">Show/Hide Map</a>';
+		$('#divHideMap').append(showHideMapContent);
+	}
+	
+	//$('#divZipcode').empty();
+	//formFilterContent = 'Zip Code <input type="text" size="6" maxlength="5" id = "q">';
+	//$('#divZipcode').append(formFilterContent);
+	
+	$("#q").val(data.param.q);
+	
 	//$('#table_results tbody tr td a').click(function(e) {
 	$('#resultTableContainer div div a').click(function(e) {
 		record_id = $(this).attr('id');
@@ -72,22 +81,46 @@ function redrawContent(data) {
 		}
 		
 	});
-
-	reinitializeMap(data);
+	
+	if (showMap ==  true) { 
+		reinitializeMap(data);
+	}
 	
 	reinitializePagingEvent(data);
 	
 	reinitializePageCountEvent(data);
 	
-	reinitializeRemoveFilters(data);
+	if (showFilters ==  true) {
+		reinitializeRemoveFilters(data);
+	}
 	
 	//reinitializeTableHeadingEvent(data);
 	
 	reinitializeFilterEvent(data);
 	
 	reinitializeQueryFilterEvent(data);
-		
+	
+	reinitializeShowHideMap(data);
+	
 	//$("#table_results").colorize( { ignoreHeaders:true });
+}
+
+
+
+function reinitializeShowHideMap(data) {
+	$("#linkHideMap").click(function(e) {
+		
+		e.preventDefault();
+		
+		var $map = $('#map');
+		if (isMapVisible == 1) {
+			$map.hide(800);
+			isMapVisible = 0;
+		} else {
+			$map.show(800);
+			isMapVisible = 1;
+		}
+	});
 }
 
 function reinitializeFilterEvent (data) {
@@ -112,6 +145,7 @@ function reinitializeQueryFilterEvent (data) {
 	
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
+		//alert("Deepak");
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
 	});
 }
