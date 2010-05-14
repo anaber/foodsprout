@@ -54,8 +54,7 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  manufactureTypeId:$('#manufactureTypeId').val(),
 							  isActive:$('#status').val(),
-							  streetNumber:$('#streetNumber').val(),
-							  street:$('#street').val(),
+							  address:$('#address').val(),
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
@@ -207,15 +206,9 @@ $(document).ready(function() {
 		<td colspan = "2"><b>Address</b></td>
 	<tr>
 	<tr>
-		<td width = "25%">Street Number</td>
+		<td width = "25%">Address</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
-		</td>
-	<tr>
-	<tr>
-		<td width = "25%">Street Name</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
+			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->address : '') ?>" class="validate[required]" type="text" name="address" id="address"/><br />
 		</td>
 	<tr>
 	<tr>

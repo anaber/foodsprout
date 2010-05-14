@@ -4,8 +4,7 @@ class FarmLib {
 	
 	var $farmId;
 	var $farmName;
-	var $streetNumber;
-	var $street;
+	var $address;
 	var $city;
 	var $stateId;
 	var $state;
@@ -17,8 +16,7 @@ class FarmLib {
 	function FarmLib() {
 		$this->farmId = '';
 		$this->farmName = '';
-		$this->streetNumber = '';
-		$this->street = '';
+		$this->address = '';
 		$this->city = '';
 		$this->stateId = '';
 		$this->state = '';

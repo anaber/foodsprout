@@ -122,8 +122,7 @@ class RestaurantModel extends Model{
 					. '				AND address.state_id = state.state_id'
 					. '				AND address.country_id = country.country_id'
 					. ' 			AND (' 
-					. '						address.street_number like "%' . $q . '%"'
-					. '						OR address.street like "%' . $q . '%"'
+					. '						address.address like "%' . $q . '%"'
 					. '						OR address.city like "%' . $q . '%"'
 					. '						OR address.zipcode like "%' . $q . '%"'
 					. '						OR state.state_name like "%' . $q . '%"'
@@ -223,7 +222,7 @@ class RestaurantModel extends Model{
 				$arrLatLng['longitude'] = $address->longitude;
 				$arrLatLng['address'] = $address->completeAddress;
 				
-				$arrLatLng['addressLine1'] = $address->streetNumber . ' ' . $address->street;
+				$arrLatLng['addressLine1'] = $address->address;
 				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
 				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
 				

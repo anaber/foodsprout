@@ -2,7 +2,7 @@
 
 class AddressModel extends Model{
 	
-	function prepareAddress($streetNumber, $street, $city, $state_id, $country_id, $zipcode) {
+	function prepareAddress($address, $city, $state_id, $country_id, $zipcode) {
 		$CI =& get_instance();
 		$CI->load->model('StateModel','',true);
 		$arrState = $CI->StateModel->getStateFromId($state_id);
@@ -10,7 +10,7 @@ class AddressModel extends Model{
 		$CI->load->model('CountryModel','',true);
 		$arrCountry = $CI->CountryModel->getCountryFromId($country_id);
 		
-		$address = $streetNumber . ' ' . $street . ' ' . $city . ' ' . $arrState->stateName . ' ' . $arrCountry->countryName . ' ' . $zipcode;
+		$address = $address . ' ' . $city . ' ' . $arrState->stateName . ' ' . $arrCountry->countryName . ' ' . $zipcode;
 		
 		return $address;
 	}
@@ -44,8 +44,7 @@ class AddressModel extends Model{
 			unset($this->addressLib);
 			
 			$this->addressLib->addressId = $row['address_id'];
-			$this->addressLib->streetNumber = $row['street_number'];
-			$this->addressLib->street = $row['street'];
+			$this->addressLib->address = $row['address'];
 			$this->addressLib->city = $row['city'];
 			$this->addressLib->cityId = $row['city_id'];
 			$this->addressLib->stateId = $row['state_id'];
@@ -57,7 +56,7 @@ class AddressModel extends Model{
 			$this->addressLib->latitude = $row['latitude'];
 			$this->addressLib->longitude = $row['longitude'];
 			
-			$this->addressLib->completeAddress = $this->prepareAddress($row['street_number'], $row['street'], $row['city'], $row['state_id'], $row['country_id'], $row['zipcode']);
+			$this->addressLib->completeAddress = $this->prepareAddress($row['address'], $row['city'], $row['state_id'], $row['country_id'], $row['zipcode']);
 			
 			$addresses[] = $this->addressLib;
 			unset($this->addressLib);
@@ -79,8 +78,7 @@ class AddressModel extends Model{
 		$row = $result->row();
 		
 		$this->addressLib->addressId = $row->address_id;
-		$this->addressLib->streetNumber = $row->street_number;
-		$this->addressLib->street = $row->street;
+		$this->addressLib->address = $row->address;
 		$this->addressLib->city = $row->city;
 		$this->addressLib->stateId = $row->state_id;
 		$this->addressLib->countryId = $row->country_id;
@@ -100,14 +98,14 @@ class AddressModel extends Model{
 		$return = true;
 		$CI =& get_instance();
 		
-		$address = $this->prepareAddress($this->input->post('streetNumber'), $this->input->post('street'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+		$address = $this->prepareAddress($this->input->post('address'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
 				
 		$CI->load->model('GoogleMapModel','',true);
 		
 		$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
 		
 		
-		$query = "INSERT INTO address (address_id, street_number, street, city, state_id, zipcode, country_id, latitude , longitude, ";
+		$query = "INSERT INTO address (address_id, address, city, state_id, zipcode, country_id, latitude , longitude, ";
 		if ( !empty($restaurantId) ) {
 			$query .= 'restaurant_id';
 		} else if ( !empty($farmId) ) {
@@ -118,7 +116,7 @@ class AddressModel extends Model{
 			$query .= 'distributor_id';
 		}
 		$query .= ", company_id)" .
-				" values (NULL, '" . $this->input->post('streetNumber') . "', '" . $this->input->post('street') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', ";
+				" values (NULL, '" . $this->input->post('address') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', ";
 		if ( !empty($restaurantId) ) {
 			$query .= $restaurantId;
 		} else if ( !empty($farmId) ) {
@@ -187,31 +185,33 @@ class AddressModel extends Model{
 	
 	function updateAddress() {
 		$return = true;
-		/*
-		$query = "SELECT * FROM farm_type WHERE farm_type = '" . $this->input->post('farmType') . "' AND farm_type_id <> " . $this->input->post('farmTypeId');
-		log_message('debug', 'FarmTypeModel.updateFarmType : Try to get Duplicate record : ' . $query);
-			
-		$result = $this->db->query($query);
 		
-		if ($result->num_rows() == 0) {
-		*/	
-			$data = array(
-						'street_number' => $this->input->post('streetNumber'), 
-						'street' => $this->input->post('street'),
-						'city' => $this->input->post('city'),
-						'state_id' => $this->input->post('stateId'),
-						'country_id' => $this->input->post('countryId'),
-						'zipcode' => $this->input->post('zipcode'),
-					);
-			$where = "address_id = " . $this->input->post('addressId');
-			$query = $this->db->update_string('address', $data, $where);
+		$CI =& get_instance();
+		
+		$address = $this->prepareAddress($this->input->post('address'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
+				
+		$CI->load->model('GoogleMapModel','',true);
+		
+		$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
 			
-			log_message('debug', 'AddressModel.updateAddress : ' . $query);
-			if ( $this->db->query($query) ) {
-				$return = true;
-			} else {
-				$return = false;
-			}
+		$data = array(
+					'address' => $this->input->post('address'), 
+					'city' => $this->input->post('city'),
+					'state_id' => $this->input->post('stateId'),
+					'country_id' => $this->input->post('countryId'),
+					'zipcode' => $this->input->post('zipcode'),
+					'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ),
+					'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
+				);
+		$where = "address_id = " . $this->input->post('addressId');
+		$query = $this->db->update_string('address', $data, $where);
+		
+		log_message('debug', 'AddressModel.updateAddress : ' . $query);
+		if ( $this->db->query($query) ) {
+			$return = true;
+		} else {
+			$return = false;
+		}
 		
 		return $return;
 	}

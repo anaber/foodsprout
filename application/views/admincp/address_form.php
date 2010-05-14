@@ -56,8 +56,7 @@ $(document).ready(function() {
 			if ($('#addressId').val() != '' ) {
 				var formAction = '/admincp/manufacture/address_save_update';
 				postArray = {
-							  streetNumber:$('#streetNumber').val(),
-							  street:$('#street').val(),
+							  address:$('#address').val(),
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
@@ -69,8 +68,7 @@ $(document).ready(function() {
 			} else {
 				formAction = '/admincp/manufacture/address_save_add';
 				postArray = { 
-							  streetNumber:$('#streetNumber').val(),
-							  street:$('#street').val(),
+							  address:$('#address').val(),
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
@@ -144,17 +142,12 @@ $(document).ready(function() {
 		<td colspan = "2"><b>Address</b></td>
 	<tr>
 	<tr>
-		<td width = "25%">Street Number</td>
+		<td width = "25%">Address</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->streetNumber : '') ?>" class="validate[required]" type="text" name="streetNumber" id="streetNumber"/><br />
+			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->address : '') ?>" class="validate[required]" type="text" name="address" id="address"/><br />
 		</td>
 	<tr>
-	<tr>
-		<td width = "25%">Street Name</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->street : '') ?>" class="validate[required]" type="text" name="street" id="street"/><br />
-		</td>
-	<tr>
+	
 	<tr>
 		<td width = "25%">City</td>
 		<td width = "75%">

@@ -3,8 +3,7 @@
 class AddressLib {
 	
 	var $addressId;
-	var $streetNumber;
-	var $street;
+	var $address;
 	var $city;
 	var $cityId;
 	var $stateId;
@@ -18,8 +17,7 @@ class AddressLib {
 		
 	function AddressLib() {
 		$this->addressId = '';
-		$this->streetNumber = '';
-		$this->street = '';
+		$this->address = '';
 		$this->city = '';
 		$this->cityId = '';
 		$this->stateId = '';

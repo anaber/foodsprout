@@ -4,8 +4,7 @@ class ManufactureLib {
 	
 	var $manufactureId;
 	var $manufactureName;
-	var $streetNumber;
-	var $street;
+	var $address;
 	var $city;
 	var $stateId;
 	var $state;
@@ -17,8 +16,7 @@ class ManufactureLib {
 	function ManufactureLib() {
 		$this->manufactureId = '';
 		$this->manufactureName = '';
-		$this->streetNumber = '';
-		$this->street = '';
+		$this->address = '';
 		$this->city = '';
 		$this->stateId = '';
 		$this->state = '';

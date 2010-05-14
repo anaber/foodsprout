@@ -4,8 +4,7 @@ class CompanyLib {
 	
 	var $companyId;
 	var $companyName;
-	var $streetNumber;
-	var $street;
+	var $address;
 	var $city;
 	var $stateId;
 	var $state;
@@ -17,8 +16,7 @@ class CompanyLib {
 	function CompanyLib() {
 		$this->companyId = '';
 		$this->companyName = '';
-		$this->streetNumber = '';
-		$this->street = '';
+		$this->address = '';
 		$this->city = '';
 		$this->stateId = '';
 		$this->state = '';

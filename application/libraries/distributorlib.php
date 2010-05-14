@@ -4,8 +4,7 @@ class DistributorLib {
 	
 	var $distributorId;
 	var $distributorName;
-	var $streetNumber;
-	var $street;
+	var $address;
 	var $city;
 	var $stateId;
 	var $state;
@@ -17,8 +16,7 @@ class DistributorLib {
 	function DistributorLib() {
 		$this->distributorId = '';
 		$this->distributorName = '';
-		$this->streetNumber = '';
-		$this->street = '';
+		$this->address = '';
 		$this->city = '';
 		$this->stateId = '';
 		$this->state = '';

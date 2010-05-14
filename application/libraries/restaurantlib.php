@@ -4,8 +4,7 @@ class RestaurantLib {
 	
 	var $restaurantId;
 	var $restaurantName;
-	var $streetNumber;
-	var $street;
+	var $address;
 	var $city;
 	var $stateId;
 	var $state;
@@ -17,8 +16,7 @@ class RestaurantLib {
 	function RestaurantLib() {
 		$this->restaurantId = '';
 		$this->restaurantName = '';
-		$this->streetNumber = '';
-		$this->street = '';
+		$this->address = '';
 		$this->city = '';
 		$this->stateId = '';
 		$this->state = '';
