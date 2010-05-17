@@ -11,8 +11,8 @@ class Import extends Controller {
 		$this->load->model('ImportModel');
 		//$this->ImportModel->importRestaurantData($from, $to);
 		
-		//for($i = 1; $i <= 484000; $i+=1000) {
-		for($i = 1; $i <= 10000; $i+=1000) {
+		for($i = 1; $i <= 484000; $i+=1000) {
+		//for($i = 1; $i <= 10000; $i+=1000) {
 			$from = $i;
 			$to = $from + 999;
 			
