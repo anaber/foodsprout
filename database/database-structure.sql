@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `company` ;
 
 CREATE  TABLE IF NOT EXISTS `company` (
   `company_id` INT NOT NULL AUTO_INCREMENT ,
-  `company_name` VARCHAR(45) NOT NULL ,
+  `company_name` VARCHAR(100) NOT NULL ,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`company_id`) )
 ENGINE = InnoDB;
@@ -103,44 +103,6 @@ PACK_KEYS = Default;
 
 
 -- -----------------------------------------------------
--- Table `msa`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `msa` ;
-
-CREATE  TABLE IF NOT EXISTS `msa` (
-  `msa_id` INT NOT NULL AUTO_INCREMENT ,
-  `msa_code` INT NOT NULL ,
-  `msa` VARCHAR(75) NULL ,
-  PRIMARY KEY (`msa_id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `pmsa`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `pmsa` ;
-
-CREATE  TABLE IF NOT EXISTS `pmsa` (
-  `pmsa_id` INT NOT NULL AUTO_INCREMENT ,
-  `pmsa_code` INT NOT NULL ,
-  `pmsa` VARCHAR(75) NULL ,
-  PRIMARY KEY (`pmsa_id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `county`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `county` ;
-
-CREATE  TABLE IF NOT EXISTS `county` (
-  `county_id` INT NOT NULL AUTO_INCREMENT ,
-  `county` VARCHAR(75) NOT NULL ,
-  PRIMARY KEY (`county_id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `restaurant_chain`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `restaurant_chain` ;
@@ -148,6 +110,7 @@ DROP TABLE IF EXISTS `restaurant_chain` ;
 CREATE  TABLE IF NOT EXISTS `restaurant_chain` (
   `restaurant_chain_id` INT NOT NULL AUTO_INCREMENT ,
   `restaurant_chain` VARCHAR(100) NOT NULL ,
+  `match_string` VARCHAR(45) NULL ,
   `restaurant_type_id` INT NOT NULL ,
   PRIMARY KEY (`restaurant_chain_id`) ,
   INDEX `fk_restaurant_chain_restaurant_type1` (`restaurant_type_id` ASC) ,
@@ -170,27 +133,20 @@ CREATE  TABLE IF NOT EXISTS `restaurant` (
   `restaurant_chain_id` INT NULL ,
   `restaurant_type_id` INT NOT NULL ,
   `creation_date` DATE NOT NULL ,
-  `restaurant_name` VARCHAR(45) NOT NULL ,
+  `restaurant_name` VARCHAR(100) NOT NULL ,
   `custom_url` VARCHAR(75) NULL ,
   `city_area_id` INT NULL ,
-  `county_id` INT NULL ,
   `user_id` INT NULL ,
   `phone` VARCHAR(20) NULL ,
   `fax` VARCHAR(20) NULL ,
   `email` VARCHAR(100) NULL ,
   `url` VARCHAR(255) NULL ,
-  `msa_id` INT NULL ,
-  `pmsa_id` INT NULL ,
   `is_active` INT NOT NULL ,
-  `import_biz_id` INT NULL ,
   PRIMARY KEY (`restaurant_id`) ,
   INDEX `fk_restaurant_restaurant_type1` (`restaurant_type_id` ASC) ,
   INDEX `fk_restaurant_city_area1` (`city_area_id` ASC) ,
   INDEX `fk_restaurant_company1` (`company_id` ASC) ,
   INDEX `fk_restaurant_user1` (`user_id` ASC) ,
-  INDEX `fk_restaurant_msa1` (`msa_id` ASC) ,
-  INDEX `fk_restaurant_pmsa1` (`pmsa_id` ASC) ,
-  INDEX `fk_restaurant_county1` (`county_id` ASC) ,
   INDEX `fk_restaurant_restaurant_chain1` (`restaurant_chain_id` ASC) ,
   CONSTRAINT `fk_restaurant_restaurant_type1`
     FOREIGN KEY (`restaurant_type_id` )
@@ -210,21 +166,6 @@ CREATE  TABLE IF NOT EXISTS `restaurant` (
   CONSTRAINT `fk_restaurant_user1`
     FOREIGN KEY (`user_id` )
     REFERENCES `user` (`user_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_restaurant_msa1`
-    FOREIGN KEY (`msa_id` )
-    REFERENCES `msa` (`msa_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_restaurant_pmsa1`
-    FOREIGN KEY (`pmsa_id` )
-    REFERENCES `pmsa` (`pmsa_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_restaurant_county1`
-    FOREIGN KEY (`county_id` )
-    REFERENCES `county` (`county_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_restaurant_restaurant_chain1`
@@ -957,6 +898,7 @@ CREATE  TABLE IF NOT EXISTS `address` (
   `city` VARCHAR(95) NOT NULL ,
   `city_id` INT NULL ,
   `state_id` INT NOT NULL ,
+  `county_id` INT NULL ,
   `zipcode` INT NOT NULL ,
   `country_id` INT NOT NULL ,
   `latitude` VARCHAR(45) NOT NULL ,
@@ -966,6 +908,9 @@ CREATE  TABLE IF NOT EXISTS `address` (
   `manufacture_id` INT NULL ,
   `distributor_id` INT NULL ,
   `restaurant_id` INT NULL ,
+  `msa_id` INT NULL ,
+  `pmsa_id` INT NULL ,
+  `import_biz_id` INT NULL ,
   PRIMARY KEY (`address_id`) ,
   INDEX `fk_address_city_area1` (`city_id` ASC) ,
   INDEX `fk_address_state1` (`state_id` ASC) ,
@@ -977,7 +922,7 @@ CREATE  TABLE IF NOT EXISTS `address` (
   INDEX `fk_address_distribution_center1` (`distributor_id` ASC) ,
   CONSTRAINT `fk_address_city_area1`
     FOREIGN KEY (`city_id` )
-    REFERENCES `city_area` (`city_id` )
+    REFERENCES `city` (`city_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_address_state1`
@@ -1249,6 +1194,44 @@ CREATE  TABLE IF NOT EXISTS `farm_supplier` (
     REFERENCES `restaurant` (`restaurant_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pmsa`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pmsa` ;
+
+CREATE  TABLE IF NOT EXISTS `pmsa` (
+  `pmsa_id` INT NOT NULL AUTO_INCREMENT ,
+  `pmsa_code` INT NOT NULL ,
+  `pmsa` VARCHAR(75) NULL ,
+  PRIMARY KEY (`pmsa_id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `msa`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `msa` ;
+
+CREATE  TABLE IF NOT EXISTS `msa` (
+  `msa_id` INT NOT NULL AUTO_INCREMENT ,
+  `msa_code` INT NOT NULL ,
+  `msa` VARCHAR(75) NULL ,
+  PRIMARY KEY (`msa_id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `county`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `county` ;
+
+CREATE  TABLE IF NOT EXISTS `county` (
+  `county_id` INT NOT NULL AUTO_INCREMENT ,
+  `county` VARCHAR(75) NOT NULL ,
+  PRIMARY KEY (`county_id`) )
 ENGINE = InnoDB;
 
 
