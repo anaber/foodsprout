@@ -6,9 +6,10 @@ class RestaurantModel extends Model{
 	// Generate a simple list of all the restaurants in the database.
 	function listRestaurant()
 	{
-		$query = "SELECT restaurant.* , cuisine.cuisine_name
-					FROM restaurant, cuisine
-					WHERE restaurant.cuisine_id = cuisine.cuisine_id
+		$query = "SELECT restaurant.* , restaurant_cuisine.*, cuisine.cuisine_name
+					FROM restaurant, restaurant_cuisine, cuisine
+					WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id
+					AND cuisine.cuisine_id = restaurant_cuisine.cuisine_id
 					ORDER BY restaurant_name";
 		
 		log_message('debug', "RestaurantModel.listRestaurant : " . $query);
@@ -89,10 +90,11 @@ class RestaurantModel extends Model{
 	
 		$page = 0;
 		
-		$base_query = 'SELECT restaurant.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
-				' FROM restaurant, cuisine, restaurant_type';
+		$base_query = 'SELECT restaurant.*, restaurant_cuisine.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
+				' FROM restaurant, restaurant_cuisine, cuisine, restaurant_type';
 		
-		$where = ' WHERE restaurant.cuisine_id = cuisine.cuisine_id '
+		$where = ' WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id '
+				. ' AND restaurant_cuisine.cuisine_id = cuisine.cuisine_id '
 				. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
 		
 		if(count($arrRestaurantTypeId) > 0 ) {
@@ -466,9 +468,9 @@ class RestaurantModel extends Model{
 	
 	function getDistinctUsedCuisine()
 	{
-		$query = "SELECT DISTINCT restaurant.cuisine_id, cuisine.cuisine_name
-					FROM restaurant, cuisine
-					WHERE restaurant.cuisine_id = cuisine.cuisine_id";
+		$query = "SELECT DISTINCT restaurant_cuisine.cuisine_id, cuisine.cuisine_name
+					FROM restaurant_cuisine, cuisine
+					WHERE restaurant_cuisine.cuisine_id = cuisine.cuisine_id";
 		
 		log_message('debug', "RestaurantModel.getDistinctUsedCuisine : " . $query);
 		$result = $this->db->query($query);
