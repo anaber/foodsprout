@@ -469,7 +469,7 @@ class Import {
 	}
 	
 	function index() {
-		$this->importRestaurantData(1, 50000);
+		$this->importRestaurantData(1, 10);
 		
 		/*
 		//for($i = 93001; $i <= 93200; $i+=100) {
@@ -507,7 +507,9 @@ class Import {
 			$matchFound =  false;
 			
 			foreach ($restaurantChain as $restaurantChainName => $restaurantChainData) {
-				$pattern = "^/$restaurantChainName/i";
+				
+				
+				$pattern = "/^$restaurantChainName/i";
 				
 				if (preg_match($pattern, $masterRestaurantName, $matches, PREG_OFFSET_CAPTURE) ) {
 					
@@ -515,9 +517,8 @@ class Import {
 					$restaurantChainRestaurantTypeId = $restaurantChainData['restaurant_type_id'];
 					$matchFound =  true;
 					break;
-				} 
+				}
 			}
-			
 			
 			echo "\n" . $row['bizID'] . ": ";
 			
