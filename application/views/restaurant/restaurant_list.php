@@ -4,6 +4,7 @@
 var showMap = true;
 var showFilters = true;
 <?php
+	
 	if ($hide_map == 'yes') {
 ?>
 	showMap = false;
@@ -21,6 +22,7 @@ var showFilters = true;
 		$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
 		
 		
+		
 		$.post("/restaurant/ajaxSearchRestaurants", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
 			function(data){
 				if (showMap ==  true) { 
@@ -29,6 +31,7 @@ var showFilters = true;
 				redrawContent(data);
 			},
 			"json");
+
 	});
 	
 </script>

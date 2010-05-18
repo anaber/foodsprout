@@ -90,21 +90,33 @@ class RestaurantModel extends Model{
 	
 		$page = 0;
 		
+		/*
 		$base_query = 'SELECT restaurant.*, restaurant_cuisine.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
 				' FROM restaurant, restaurant_cuisine, cuisine, restaurant_type';
 		
 		$where = ' WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id '
 				. ' AND restaurant_cuisine.cuisine_id = cuisine.cuisine_id '
 				. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+		*/
+		
+		$base_query = 'SELECT restaurant.*, restaurant_type.restaurant_type' .
+				' FROM restaurant, restaurant_type';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM restaurant, restaurant_type';
+		
+		
+		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
 		
 		if(count($arrRestaurantTypeId) > 0 ) {
 			$where .= ' AND restaurant.restaurant_type_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
 		}
 		
+		/*
 		if(count($arrCuisineId) > 0 ) {
 			$where .= ' AND restaurant.cuisine_id IN (' . implode(',', $arrCuisineId) . ')';
 		}
-		
+		*/
 		if ( !empty($q) ) {
 			if (!empty($where) ) {
 				$where .= ' AND (';  
@@ -117,6 +129,7 @@ class RestaurantModel extends Model{
 			
 			
 			$where	.= ' OR ( '
+			//$where	.= ' ( '
 					. '		SELECT address.address_id' 
 					. '			from address, state, country'
 					. '			WHERE' 
@@ -124,12 +137,15 @@ class RestaurantModel extends Model{
 					. '				AND address.state_id = state.state_id'
 					. '				AND address.country_id = country.country_id'
 					. ' 			AND (' 
+					. '						address.zipcode like "%' . $q . '%"'
+					/*
 					. '						address.address like "%' . $q . '%"'
 					. '						OR address.city like "%' . $q . '%"'
 					. '						OR address.zipcode like "%' . $q . '%"'
 					. '						OR state.state_name like "%' . $q . '%"'
 					. '						OR state.state_code like "%' . $q . '%"'
 					. '						OR country.country_name like "%' . $q . '%"'
+					*/
 					. '				)'
 					. '				LIMIT 0, 1'
 					. '		)'
@@ -140,17 +156,15 @@ class RestaurantModel extends Model{
 			
 		}
 		
-		$base_query = $base_query . $where;
+		$base_query_count = $base_query_count . $where;
 		
-		$query = $base_query . " ORDER BY restaurant_name ";
-		
-		//echo $query . "<BR/>";
+		$query = $base_query_count . " ORDER BY restaurant_name ";
 		
 		$result = $this->db->query($query);
-		$numResults = $result->num_rows();
+		$row = $result->row();
+		$numResults = $row->num_records;
 		
-		
-		$query = $base_query;
+		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
 			$sort_query = ' ORDER BY restaurant_name';
@@ -184,8 +198,6 @@ class RestaurantModel extends Model{
 			}
 		}
 		//print_r_pre($_REQUEST);
-		//echo $query;
-		//die;
 		
 		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
 		$result = $this->db->query($query);
@@ -203,8 +215,8 @@ class RestaurantModel extends Model{
 			
 			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
-			$this->RestaurantLib->cuisineId = $row['cuisine_id'];
-			$this->RestaurantLib->cuisine = $row['cuisine_name'];
+			//$this->RestaurantLib->cuisineId = $row['cuisine_id'];
+			//$this->RestaurantLib->cuisine = $row['cuisine_name'];
 			
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			
@@ -233,7 +245,6 @@ class RestaurantModel extends Model{
 				$geocodeArray[] = $arrLatLng;
 			}
 			
-		
 			
 			$restaurants[] = $this->RestaurantLib;
 			unset($this->RestaurantLib);
@@ -254,8 +265,7 @@ class RestaurantModel extends Model{
 			'param'      => $params,
 			'geocode'	 => $geocodeArray,
 	    );
-	    //print_r_pre($arr);
-	    //die;
+	    
 	    return $arr;
 		
 	}

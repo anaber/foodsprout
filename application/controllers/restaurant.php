@@ -12,8 +12,7 @@ class Restaurant extends Controller {
 		
 		// Getting information from models
 		$this->load->model('RestaurantModel');
-		$restaurants = $this->RestaurantModel->listRestaurant();
-
+		
 		$this->load->model('RestaurantModel');
 		$restaurantTypes = $this->RestaurantModel->getDistinctUsedRestaurantType();
 		
@@ -57,7 +56,7 @@ class Restaurant extends Controller {
 		$data['data']['center']['map']['height'] = '250';
 		}
 		
-		$data['data']['center']['list']['LIST'] = $restaurants;
+		//$data['data']['center']['list']['LIST'] = $restaurants;
 		$data['data']['center']['list']['VIEW_HEADER'] = "List of Resturants";
 		$data['data']['center']['list']['q'] = $q;
 		$data['data']['center']['list']['f'] = $f;
