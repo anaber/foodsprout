@@ -26,7 +26,7 @@ class GeoCode {
 	}
 	
 	function index() {
-		$this->processAddresses(1, 5000);
+		$this->processAddresses(4320, 4340);
 	}
 	
 	function processAddresses($from, $to) {
@@ -55,7 +55,7 @@ class GeoCode {
 					echo "FAILED \n";
 				}
 			} else {
-				echo "BAD Address \n";
+				echo "BAD Address : $address \n";
 			}
 			
 		}
