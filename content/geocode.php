@@ -26,7 +26,7 @@ class GeoCode {
 	}
 	
 	function index() {
-		$this->processAddresses(4320, 4340);
+		$this->processAddresses(11, 15000);
 	}
 	
 	function processAddresses($from, $to) {
@@ -66,7 +66,8 @@ class GeoCode {
 		
 		$query = 'UPDATE address SET ' .
 					'latitude = "' . $latitude . '", ' .
-					'longitude = "' . $longitude . '" ' .
+					'longitude = "' . $longitude . '", ' .
+					'geocoded = 1 ' .
 					' WHERE address_id = ' . $address_id;
 		
 		if ( mysql_query($query) ) {
@@ -93,6 +94,7 @@ class GeoCode {
 			$gcsv = @fread($d, 30000);
 			@fclose($d);
 			$tmp = explode(",", $gcsv);
+			
 			if ($tmp[0] != 200) {
 				return false;
 			} else {
