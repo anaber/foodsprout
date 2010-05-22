@@ -50,12 +50,12 @@ class User extends Controller {
 		$this->load->view('templates/center_template', $data);
 	}
 	
-	// Add a product
-	function addProduct()
+	// Display the page for the user to change their password
+	function password()
 	{
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'product/product_add',
+				'list' => 'user/password',
 		);
 			
 		$this->load->view('templates/center_template', $data);

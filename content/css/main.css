@@ -10,6 +10,7 @@ body {
 
 a, a:visited{
 	color:#0000CC;
+	text-decoration: none;
 }
 
 .home_table{
@@ -126,8 +127,22 @@ a, a:visited{
 	border-bottom: #CCC 1px solid;
 }
 
+.nav-wide-db{
+	background: #DFC59B;
+	border-bottom: #CCC 1px solid;
+}
+
 #main-nav{
 	background: #D2E4C9;
+	position: relative;
+	height: 30px;
+	width: 982px;
+	margin: 0;
+	text-align: left;
+}
+
+#main-nav-db{
+	background: #DFC59B;
 	position: relative;
 	height: 30px;
 	width: 982px;
@@ -210,12 +225,12 @@ a, a:visited{
 	padding-left:3px;
 }
 
-input[type=submit], form a {
+input[type=submit].search, form a {
 	border: none;
 	margin-right: 1em;
 	padding: 2px;
 	text-decoration: none;
-	font-size: 24px;
+	font-size: 16px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 	background: #348075;
@@ -224,12 +239,12 @@ input[type=submit], form a {
 	-webkit-box-shadow: 0 1px 0 white;
 }
 
-input[type=submit]:hover, form a:hover {
+input[type=submit].search:hover, form a.search:hover {
 	background: #333333;
 }
 
-input[type=text] {
-	font-size:24px;
+input[type=text].search {
+	font-size:16px;
 }
 
 input[type=submit].search, form a {
@@ -237,7 +252,7 @@ input[type=submit].search, form a {
 	margin-right: 1em;
 	padding: 2px;
 	text-decoration: none;
-	font-size: 18px;
+	font-size: 16px;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 	background: #348075;
@@ -251,7 +266,7 @@ input[type=submit]:hover, form a:hover {
 }
 
 input[type=text].search {
-	font-size:18px;
+	font-size:16px;
 }
 
 /* Text and font colors */
@@ -269,4 +284,8 @@ h1,h2,h3,h4,h5,h6{
 
 .redtxt{
 	color: #90171E;
+}
+
+#settings td{
+	vertical-align: top;
 }
