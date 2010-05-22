@@ -1,7 +1,7 @@
 var isMapVisible = 1;
 
 
-function postAndRedrawContent(page, perPage, s, o, query, filter) {
+function postAndRedrawContent(page, perPage, s, o, query, filter, zoomLevel) {
 	
 	$('#resultsContainer').hide();
 	$('#messageContainer').show();
@@ -12,14 +12,14 @@ function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
 	
 	$.post(formAction, postArray,function(data) {		
-		redrawContent(data);
+		redrawContent(data, zoomLevel);
 		
 		//reinitializeRemoveFilters(data);
 	},
 	"json");
 }
 
-function redrawContent(data) {
+function redrawContent(data, zoomLevel) {
 	$('#resultTableContainer').empty();
 	//var resultTableHtml = getResultTableHeader();
 	var resultTableHtml = '';
@@ -83,7 +83,7 @@ function redrawContent(data) {
 	});
 	
 	if (showMap ==  true) { 
-		reinitializeMap(data);
+		reinitializeMap(data, zoomLevel);
 	}
 	
 	reinitializePagingEvent(data);
@@ -136,8 +136,8 @@ function reinitializeFilterEvent (data) {
 	        }
 	        j++;
 		});
-		
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId);
+		currentZoomLevel = defaultZoomLevel;
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, defaultZoomLevel);
 	});
 }
 
@@ -145,8 +145,8 @@ function reinitializeQueryFilterEvent (data) {
 	
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
-		//alert("Deepak");
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
+		currentZoomLevel = zipSearchZoomLevel;
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, zipSearchZoomLevel);
 	});
 }
 
@@ -155,7 +155,8 @@ function reinitializeRemoveFilters(data) {
 	
 	$("#imgRemoveFilters").click(function(e) {
 		e.preventDefault();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '');
+		currentZoomLevel = defaultZoomLevel;
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', defaultZoomLevel);
 		$('#frmFilters')[0].reset();
 	});
 }
@@ -165,7 +166,7 @@ function reinitializePagingEvent(data) {
 	
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel);
 	});
 	
 	$("#imgPrevious").click(function(e) {
@@ -174,7 +175,7 @@ function reinitializePagingEvent(data) {
 		if (previousPage <= 0) {
 			previousPage = data.param.firstPage;
 		}
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel);
 	});
 	
 	$("#imgNext").click(function(e) {
@@ -183,19 +184,19 @@ function reinitializePagingEvent(data) {
 		if (nextPage >= data.param.totalPages) {
 			nextPage = data.param.lastPage;
 		}
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel);
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel);
 	});
 	
 }
 
 function reinitializePageCountEvent(data) {
 	$("#recordsPerPageList").change(function(e) {
-		postAndRedrawContent(data.param.firstPage, $("#recordsPerPageList").val(), data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, $("#recordsPerPageList").val(), data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel);
 	});
 }
 

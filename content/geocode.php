@@ -26,7 +26,7 @@ class GeoCode {
 	}
 	
 	function index() {
-		$this->processAddresses(11, 15000);
+		$this->processAddresses(59748, 75000);
 	}
 	
 	function processAddresses($from, $to) {
@@ -93,6 +93,7 @@ class GeoCode {
 		if ($d = @fopen($url, "r")) {
 			$gcsv = @fread($d, 30000);
 			@fclose($d);
+			//echo $gcsv; die;
 			$tmp = explode(",", $gcsv);
 			
 			if ($tmp[0] != 200) {

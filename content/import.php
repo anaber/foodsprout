@@ -469,7 +469,7 @@ class Import {
 	}
 	
 	function index() {
-		$this->importRestaurantData(1, 5000);
+		$this->importRestaurantData(20001, 50000);
 		
 		/*
 		//for($i = 93001; $i <= 93200; $i+=100) {

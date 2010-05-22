@@ -21,7 +21,7 @@ function loadMapOnStartUp(lat, lng, zoom) {
 }
 
 
-function reinitializeMap(data) {
+function reinitializeMap(data, zoomLevel) {
 	map.clearOverlays();
 	
 	latitude = '';
@@ -45,7 +45,7 @@ function reinitializeMap(data) {
 		j++;
 	});
 		
-	map.setCenter(new GLatLng(latitude, longitude), 12);
+	map.setCenter(new GLatLng(latitude, longitude), zoomLevel);
 
 }
 
@@ -59,10 +59,10 @@ function createMarker(o, point, html) {
 }
 
 function getMarkerHtml(o) {
-	html = "<b><i>" + o.restaurantName + "</i></b><br />" +
+	html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
 		  o.addressLine1 + "<br />" + 
 		  o.addressLine2 + "<br />" + 
-		  o.addressLine3 + "<br />"
+		  o.addressLine3 + "</font><br />"
 		  ;
 	return html;
 }
