@@ -26,7 +26,7 @@ class GeoCode {
 	}
 	
 	function index() {
-		$this->processAddresses(59748, 75000);
+		$this->processAddresses(1, 30000);
 	}
 	
 	function processAddresses($from, $to) {
@@ -35,6 +35,7 @@ class GeoCode {
 				" WHERE address_id >= $from AND address_id <= $to " .
 				" AND address.state_id = state.state_id" .
 				" AND address.country_id = country.country_id" .
+				" AND geocoded = 0" .
 				" ORDER BY address_id";
 		
 		$result = mysql_query($query);
