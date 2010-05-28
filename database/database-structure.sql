@@ -12,7 +12,8 @@ CREATE  TABLE IF NOT EXISTS `company` (
   `company_id` INT NOT NULL AUTO_INCREMENT ,
   `company_name` VARCHAR(100) NOT NULL ,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  PRIMARY KEY (`company_id`) )
+  PRIMARY KEY (`company_id`) ,
+  INDEX `company_name` (`company_name` ASC) )
 ENGINE = InnoDB;
 
 
@@ -148,6 +149,7 @@ CREATE  TABLE IF NOT EXISTS `restaurant` (
   INDEX `fk_restaurant_company1` (`company_id` ASC) ,
   INDEX `fk_restaurant_user1` (`user_id` ASC) ,
   INDEX `fk_restaurant_restaurant_chain1` (`restaurant_chain_id` ASC) ,
+  INDEX `restaurant_name` (`restaurant_name` ASC) ,
   CONSTRAINT `fk_restaurant_restaurant_type1`
     FOREIGN KEY (`restaurant_type_id` )
     REFERENCES `restaurant_type` (`restaurant_type_id` )
@@ -307,6 +309,7 @@ CREATE  TABLE IF NOT EXISTS `manufacture` (
   `creation_date` DATE NOT NULL ,
   `manufacture_name` VARCHAR(75) NULL ,
   `custom_url` VARCHAR(75) NULL ,
+  `url` VARCHAR(255) NULL ,
   `is_active` TINYINT NOT NULL ,
   PRIMARY KEY (`manufacture_id`) ,
   INDEX `fk_manufacture_manufacture_type1` (`manufacture_type_id` ASC) ,
@@ -481,6 +484,7 @@ CREATE  TABLE IF NOT EXISTS `distributor` (
   `creation_date` DATE NOT NULL ,
   `distributor_name` VARCHAR(75) NOT NULL ,
   `custom_url` VARCHAR(75) NULL ,
+  `url` VARCHAR(255) NULL ,
   `is_active` TINYINT NOT NULL ,
   PRIMARY KEY (`distributor_id`) ,
   INDEX `fk_distributor_company1` (`company_id` ASC) ,
@@ -516,6 +520,7 @@ CREATE  TABLE IF NOT EXISTS `farm` (
   `creation_date` DATE NOT NULL ,
   `farm_name` VARCHAR(75) NOT NULL ,
   `custom_url` VARCHAR(75) NULL ,
+  `url` VARCHAR(255) NULL ,
   `is_active` TINYINT NOT NULL ,
   PRIMARY KEY (`farm_id`) ,
   INDEX `fk_farm_farm_type1` (`farm_type_id` ASC) ,
@@ -911,6 +916,7 @@ CREATE  TABLE IF NOT EXISTS `address` (
   `msa_id` INT NULL ,
   `pmsa_id` INT NULL ,
   `import_biz_id` INT NULL ,
+  `geocoded` INT NULL DEFAULT 0 ,
   PRIMARY KEY (`address_id`) ,
   INDEX `fk_address_city_area1` (`city_id` ASC) ,
   INDEX `fk_address_state1` (`state_id` ASC) ,
