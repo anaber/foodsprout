@@ -78,37 +78,43 @@ class Restaurant extends Controller {
 		
 		$data = array();
 		
+		$restaurantId = $this->uri->segment(3);
+		
+		// Getting information from models
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+		
+		
 		// List of views to be included
 		$data['CENTER'] = array(
+				'info' => '/restaurant/info',
 				'menu' => '/restaurant/menu',
 			);
 		
 		$data['RIGHT'] = array(
 				'image' => 'includes/right/image',
 				'ad' => 'includes/right/ad',
-				'map' => 'includes/map',
-				'supliers' => 'suppliers',
+				'map' => 'includes/right/map',
+				'suppliers' => 'suppliers',
 			);
 		
 		// Data to be passed to the views
-		// Center -> Ingredients		
+		// Center -> Menu
+		$data['data']['center']['info']['RESTAURANT'] = $restaurant;
 		$data['data']['center']['menu']['MENU'] = array('burger', 'pizza', 'meat');
 		
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/products/burger.jpg';
+		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
-		$data['data']['right']['image']['title'] = 'Restaurant Image';
+		$data['data']['right']['image']['title'] = '';
 		
 		// Right -> Map
 		$data['data']['right']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['right']['map']['VIEW_HEADER'] = "Google Map";
 		$data['data']['right']['map']['width'] = '300';
 		$data['data']['right']['map']['height'] = '200';
-		
-		
-		//$data['data']['right']['info']['VIEW_HEADER'] = "Product Info";
+		$data['data']['right']['map']['hide_map'] = 'no';
 		
 		$data['data']['right']['suppliers']['VIEW_HEADER'] = "List of Suppliers";
 		
