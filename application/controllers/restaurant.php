@@ -11,14 +11,13 @@ class Restaurant extends Controller {
 		$f = $this->input->post('f');
 		
 		// Getting information from models
-		$this->load->model('RestaurantModel');
-		
+		/*
 		$this->load->model('RestaurantModel');
 		$restaurantTypes = $this->RestaurantModel->getDistinctUsedRestaurantType();
 		
 		$this->load->model('RestaurantModel');
 		$cusines = $this->RestaurantModel->getDistinctUsedCuisine();
-		
+		*/
 		if ( !empty($f) ) {
 			$data['CENTER'] = array(
 				'list' => '/restaurant/restaurant_list',
@@ -45,8 +44,8 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		if ( empty($f) ) {
 		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
-		$data['data']['left']['filter']['RESTAURANT_TYPES'] = $restaurantTypes;
-		$data['data']['left']['filter']['CUISINES'] = $cusines;
+		//$data['data']['left']['filter']['RESTAURANT_TYPES'] = $restaurantTypes;
+		//$data['data']['left']['filter']['CUISINES'] = $cusines;
 		}
 		
 		if ( empty($f) ) {
@@ -122,9 +121,43 @@ class Restaurant extends Controller {
 	}
 	
 	function ajaxSearchRestaurants() {
+		
+		/*
+		$mtime = microtime(); 
+	    $mtime = explode(" ",$mtime); 
+	    $mtime = $mtime[1] + $mtime[0]; 
+	    $starttime = $mtime; 
+		*/
+		
 		$this->load->model('RestaurantModel', '', TRUE);
 		$restaurants = $this->RestaurantModel->getRestaurantsJson();
 		echo json_encode($restaurants);
+		/*
+	    $mtime = microtime(); 
+	    $mtime = explode(" ",$mtime); 
+	    $mtime = $mtime[1] + $mtime[0]; 
+	    $endtime = $mtime; 
+	    $totaltime = ($endtime - $starttime); 
+	    echo "<br />This page was created in ".$totaltime." seconds";
+	    */ 
+	}
+	
+	function ajaxGetDistinctUsedRestaurantType() {
+		$this->load->model('RestaurantModel');
+		$restaurantTypes = $this->RestaurantModel->getDistinctUsedRestaurantType();
+		echo json_encode($restaurantTypes);
+	}
+	
+	function ajaxGetDistinctUsedCuisine() {
+		$this->load->model('RestaurantModel');
+		$cusines = $this->RestaurantModel->getDistinctUsedCuisine();
+		echo json_encode($cusines);
+	}
+	
+	function ajaxGetAllDistinctUsedCuisine() {
+		$this->load->model('RestaurantModel');
+		$cusines = $this->RestaurantModel->getAllCuisine();
+		echo json_encode($cusines);
 	}
 	
 	function map() {

@@ -15,7 +15,7 @@ class AddressModel extends Model{
 		return $address;
 	}
 	
-	function getAddressForCompany($restaurantId, $farmId, $manufactureId, $distributorId) {
+	function getAddressForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $zipcode, $city) {
 		
 		$addresses = array();
 		
@@ -30,6 +30,13 @@ class AddressModel extends Model{
 			$query .= "manufacture_id = " . $manufactureId;
 		} elseif (!empty($distributorId) ) {
 			$query .= "distributor_id = " . $distributorId;
+		}
+		
+		if (!empty($zipcode) ) {
+			$city = $this->getCityFromZipcode($zipcode);
+			$query .= ' AND address.city_id IN (' . $city . ')';
+		} else if (!empty($city) ) {
+			$query .= ' AND address.city_id IN (' . $city . ')';
 		}
 			$query .= " AND address.state_id = state.state_id" .
 					" AND address.country_id = country.country_id" .
@@ -64,6 +71,19 @@ class AddressModel extends Model{
 		
 		return $addresses;
 		
+	}
+	
+	function getCityFromZipcode($zipcode) {
+		
+		$query = "SELECT distinct city_id FROM address WHERE zipcode = " . $zipcode;
+		log_message('debug', "AddressModel.getCityFromZipcode : " . $query);
+		$result = $this->db->query($query);
+		
+		$this->load->library('AddressLib');
+		
+		$row = $result->row();
+		
+		return $row->city_id;
 	}
 	
 	// Get all the information about one specific manufacture from an ID

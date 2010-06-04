@@ -183,7 +183,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Cuisine</td>
 		<td width = "75%">
-			<select name="cuisineId" id="cuisineId"  class="validate[required]">
+			<select name="cuisineId" id="cuisineId"  class="validate[required]" multiple size = "6">
 			<option value = ''>--Cuisine--</option>
 			<option value = "NULL">--Unknown--</option>
 			<?php

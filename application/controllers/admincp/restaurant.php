@@ -17,9 +17,6 @@ class Restaurant extends Controller {
 		$data = array();
 		$restaurants = array();
 		
-		$this->load->model('RestaurantModel');
-		$restaurants = $this->RestaurantModel->listRestaurant();
-		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'admincp/restaurant',
@@ -27,9 +24,14 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Restaurants";
-		$data['data']['center']['list']['RESTAURANTS'] = $restaurants;
 		
 		$this->load->view('admincp/templates/center_template', $data);
+	}
+	
+	function ajaxSearchRestaurants() {
+		$this->load->model('RestaurantModel', '', TRUE);
+		$restaurants = $this->RestaurantModel->getRestaurantsJson();
+		echo json_encode($restaurants);
 	}
 	
 	// This function will create the form to add a restaurant but does not save the data to the database
@@ -38,7 +40,8 @@ class Restaurant extends Controller {
 		$data = array();
 		
 		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->listCompany();
+		//$companies = $this->CompanyModel->listCompany();
+		$companies = array();
 		
 		$this->load->model('StateModel');
 		$states = $this->StateModel->listState();
@@ -74,7 +77,8 @@ class Restaurant extends Controller {
 		$data = array();
 		
 		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->listCompany();
+		//$companies = $this->CompanyModel->listCompany();
+		$companies = array();
 		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);

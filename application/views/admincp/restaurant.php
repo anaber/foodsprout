@@ -1,39 +1,41 @@
 <?php echo anchor('admincp/restaurant/add', 'Add Restaurant'); ?><br /><br />
 
-<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
-	<tr>
-		<th>Restaurant Id</th>
-		<th>Restaurant Name</th>
-		<th>Creation Date</th>
-		<th>Suppliers</th>
-		<th>Locations</th>
-	</tr>
-			
-	
-<?php
-	$i = 0;
-	foreach($RESTAURANTS as $r) :
-		$i++;
-		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.anchor('admincp/restaurant/update/'.$r->restaurantId, $r->restaurantId).'</td>';
-		echo '	<td>'.anchor('admincp/restaurant/update/'.$r->restaurantId, $r->restaurantName).'</td>';
-		echo '	<td>'. date('Y-m-d', strtotime($r->creationDate) ) .'</td>';
-		echo '	<td nowrap>';
-			
-			foreach($r->suppliers as $supplier) :
-				echo '<a href = "/admincp/restaurant/update_supplier/' . $supplier->supplierId . '">' . $supplier->supplierName . ' (' . ucfirst($supplier->supplierType) . ')' . '</a>' . "<br /><br />";
-			endforeach;
-			echo anchor('/admincp/restaurant/add_supplier/' . $r->restaurantId, 'Add Supplier');
-		echo '</td>';
-		echo '	<td>';
-		
-			foreach($r->addresses as $address) :
-				echo '<a href = "/admincp/restaurant/update_address/' . $address->addressId . '">' . $address->completeAddress . '</a>' . "<br /><br />";
-			endforeach;
-			echo anchor('/admincp/restaurant/add_address/' . $r->restaurantId, 'Add Address');
-		echo '</td>';
-		echo '</tr>';
+<script src="<?php echo base_url()?>js/jquery.colorize.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/restaurant_search_admin.js" type="text/javascript"></script>
 
- 	endforeach;
-?>
-</table>
+<div style="overflow:auto; padding:5px;">
+	
+	<div style="float:left; width:250px; font-size:12px;" id = 'numRecords'>Viewing records 1-50 of 50</div>
+	<div style="float:left; width:120px; font-size:12px;" id = 'recordsPerPage' align = "center">
+		<select id = "recordsPerPageList">
+			<option value = "">--Per Page--</option>
+			<?php
+				for($i = 10; $i <= 100; $i+=10) {
+					echo '<option value = "' . $i . '"';
+					if ($i == 10) {
+						echo ' SELECTED';
+					}
+					echo '>' . $i . '</option>';
+				}
+			?>
+
+		</select>
+	</div>
+	<div style="float:left; width:350px; font-size:12px;" id = 'pagingLinks' align = "center">
+		<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;
+		<a href="#" id = "imgPrevious">Previous</a>
+		&nbsp;&nbsp;&nbsp; Page 1 of 1 &nbsp;&nbsp;&nbsp;
+		<a href="#" id = "imgNext">Next</a> &nbsp;&nbsp;
+		<a href="#" id = "imgLast">Last</a>
+	</div>
+	
+	<div style="float:left; width:225px; font-size:12px;" id = 'searchBox' align = "right"><input type = "text" name = "suggestion_box" id = "suggestion_box" size = "30"></div>
+	
+	<div class="clear"></div>
+</div>
+
+<h2 class="blue_text first" id="messageContainer" align = "center">Your search results are loading, please wait.</h2>
+
+<div id="resultsContainer" style="display:none" class="pd_tp1">
+	<div id="resultTableContainer"></div>
+</div>
