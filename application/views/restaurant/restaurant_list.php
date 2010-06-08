@@ -60,6 +60,12 @@ var restaurantTypes;
 	
 </script>
 
+<div id="resultsContainer" style="display:none" class="pd_tp1">
+	<div id="resultTableContainer"></div>
+</div>
+
+<h2 class="blue_text first" id="messageContainer" align = "center">Your search results are loading, please wait.</h2>
+
 <div style="overflow:auto; padding:5px;">
 	
 	<div style="float:left; width:250px; font-size:12px;" id = 'numRecords'>Viewing records 1-1 of 1</div>
@@ -67,9 +73,9 @@ var restaurantTypes;
 		<select id = "recordsPerPageList">
 			<option value = "">--Per Page--</option>
 			<?php
-				for($i = 10; $i <= 100; $i+=10) {
+				for($i = 10; $i <= 50; $i+=10) {
 					echo '<option value = "' . $i . '"';
-					if ($i == 10) {
+					if ($i == 20) {
 						echo ' SELECTED';
 					}
 					echo '>' . $i . '</option>';
@@ -88,13 +94,6 @@ var restaurantTypes;
 	
 	<div class="clear"></div>
 </div>
-
-<h2 class="blue_text first" id="messageContainer" align = "center">Your search results are loading, please wait.</h2>
-
-<div id="resultsContainer" style="display:none" class="pd_tp1">
-	<div id="resultTableContainer"></div>
-</div>
-
 
 <?php
 /*

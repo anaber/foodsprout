@@ -10,7 +10,7 @@ function loadMapOnStartUp(lat, lng, zoom) {
 		map = new GMap2(document.getElementById("map_canvas"));
     	map.addControl(new GSmallMapControl());
     
-		map.enableScrollWheelZoom();
+		//map.enableScrollWheelZoom();
 		
 		map.setCenter(new GLatLng(lat, lng), zoom);
 

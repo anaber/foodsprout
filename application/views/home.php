@@ -52,7 +52,7 @@
 </div>
 
 <form name = "frmExploreFood" action = "/restaurant" method = "post">
-	<input type = "hidden" name = "f" id = "f" value = "r_4">
+	<input type = "hidden" name = "f" id = "f" value = "r_10">
 </form>
 
 <div id="homeleftbox">

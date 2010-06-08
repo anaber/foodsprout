@@ -210,6 +210,8 @@ function redrawContent(data, zoomLevel, restaurantTypes, cuisines, filter) {
 	$('#messageContainer').hide();
 	$('#resultsContainer').show();
 	
+	// Move scroll to top of window.
+	$('html, body').animate({scrollTop:0}, 'slow');
 	
 	$('#numRecords').empty();
 	numRecordsContent = drawNumRecords(data.param);			
@@ -339,7 +341,7 @@ function reinitializeFilterEvent (data, restaurantTypes, cuisines) {
 		  }
 		);
 		*/
-		alert("From line 294: " + strRestaurantTypeId);
+		//alert("From line 294: " + strRestaurantTypeId);
 		currentZoomLevel = defaultZoomLevel;
 		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, defaultZoomLevel, restaurantTypes, cuisines);
@@ -465,7 +467,7 @@ function drawRecordsPerPage(params) {
 	str = '';
 	str += '<select id = "recordsPerPageList">';
 	str += '<option value = "">--Per Page--</option>';
-	for(i = 10; i <= 100; i+=10) {
+	for(i = 10; i <= 50; i+=10) {
 		str += '<option value = "' + i + '"';
 		if (i == params.perPage) {
 			str += ' SELECTED'
