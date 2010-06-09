@@ -424,6 +424,7 @@ class RestaurantModel extends Model{
 		
 		//$query = "SELECT restaurant.*, address.* FROM restaurant, address WHERE restaurant.restaurant_id = address.restaurant_id AND restaurant.restaurant_id = " . $restaurantId;
 		$query = "SELECT * FROM restaurant WHERE restaurant_id = " . $restaurantId;
+		
 		log_message('debug', "RestaurantModel.getRestaurantFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -437,7 +438,7 @@ class RestaurantModel extends Model{
 		$this->restaurantLib->companyId = $row->company_id;
 		$this->restaurantLib->restaurantTypeId = $row->restaurant_type_id;
 		$this->restaurantLib->restaurantName = $row->restaurant_name;
-		$this->restaurantLib->customUrl = $row->custom_url;
+		$this->restaurantLib->restaurantURL = $row->url;
 		$this->restaurantLib->isActive = $row->is_active;
 		
 		return $this->restaurantLib;

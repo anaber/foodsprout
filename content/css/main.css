@@ -275,15 +275,21 @@ h1,h2,h3,h4,h5,h6{
 	margin:0;
 }
 
+h1{
+	font-size:16px;
+	color: #90171E;
+}
+
 .greentxt{
 	color: #0A7414;
 	font-weight:bold;
-	font-size: 14px;
+	font-size: 16px;
 	margin:0px;
 }
 
 .redtxt{
 	color: #90171E;
+	font-size: 14px;
 }
 
 #settings td{

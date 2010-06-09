@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
 
 <head>
-	<title>Mapping the World's Food Chain</title>
+	<title><?php ?> - Food Sprout</title>
 	<meta name="description" content="Mapping the World's Food Chain" />
 	<meta name="keywords" content="food source, food location" />
 	<meta name="robots" content="index,follow" />

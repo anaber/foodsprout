@@ -1,12 +1,5 @@
 <?php
-
-	$i = 0;
-	foreach($RESTAURANT as $r) :
-		$i++;
-		echo '<h1>'.$r->restaurantName.'</h1>';
-		echo 'Cuisine:<br>';
-		echo 'Address:<br>';
- 	endforeach;
-
+		echo '<h1>'.$RESTAURANT->restaurantName.'</h1>';
 ?>
+		Website: <a href="http://<?php echo $RESTAURANT->restaurantURL; ?>"><?php echo $RESTAURANT->restaurantURL; ?></a>
 <br><br>

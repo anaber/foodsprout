@@ -71,6 +71,28 @@ class Restaurant extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
+	// List only the fast food restaurants from the database
+	function fastFood() {
+		global $GOOGLE_MAP_KEY;
+		
+		$data = array();
+		
+		$q = $this->input->post('q');
+		$f = $this->input->post('f');
+		
+		$data['CENTER'] = array(
+				'list' => '/restaurant/restaurant_list',
+			);
+		
+		$data['RIGHT'] = array(
+				'ad' => 'includes/left/ad',
+			);
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Fast Food Resturants";
+		
+		$this->load->view('templates/center_right_narrow_template', $data);
+	}
+	
 	function view($id) {
 		
 		global $GOOGLE_MAP_KEY;
@@ -81,25 +103,24 @@ class Restaurant extends Controller {
 		
 		// Getting information from models
 		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
-		
+		$restaurantinfo = $this->RestaurantModel->getRestaurantFromId($restaurantId);
 		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'info' => '/restaurant/info',
 				'menu' => '/restaurant/menu',
+				'suppliers' => '/restaurant/suppliers',
 			);
 		
 		$data['RIGHT'] = array(
 				'image' => 'includes/right/image',
 				'ad' => 'includes/right/ad',
 				'map' => 'includes/right/map',
-				'suppliers' => 'suppliers',
 			);
 		
 		// Data to be passed to the views
 		// Center -> Menu
-		$data['data']['center']['info']['RESTAURANT'] = $restaurant;
+		$data['data']['center']['info']['RESTAURANT'] = $restaurantinfo;
 		$data['data']['center']['menu']['MENU'] = array('burger', 'pizza', 'meat');
 		
 		
