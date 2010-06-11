@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="<?php echo base_url()?>css/popup.css" type="text/css" media="all"/>
 	
 	<script src="<?php echo base_url()?>js/jquery.js" type="text/javascript"></script>
+	<script src="<?php echo base_url()?>js/jquery.plugin.js" type="text/javascript"></script>
 	<script src="<?php echo base_url()?>js/jquery.validationEngine.js" type="text/javascript"></script>
 	
 </head>
