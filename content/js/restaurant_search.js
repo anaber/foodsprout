@@ -1,14 +1,11 @@
 var isMapVisible = 1;
 
 
-function postAndRedrawContent(page, perPage, s, o, query, filter, zoomLevel, restaurantTypes, cuisines) {
+function postAndRedrawContent(page, perPage, s, o, query, filter, restaurantTypes, cuisines) {
 	
 	//$('#resultsContainer').hide();
-	$('#messageContainer').show();
-	$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
-	
-	
-	
+	//$('#messageContainer').show();
+	//$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
 	
 	var formAction = '/restaurant/ajaxSearchRestaurants';
 	
@@ -16,7 +13,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, zoomLevel, res
 	
 	$.post(formAction, postArray,function(data) {		
 		
-		redrawContent(data, zoomLevel, restaurantTypes, cuisines, filter);
+		redrawContent(data, restaurantTypes, cuisines, filter);
 		
 		//reinitializeRemoveFilters(data);
 	},
@@ -116,11 +113,13 @@ function reinitializeMoreCuisine(data) {
 		postArray = { };
 		
 		$.post(formAction, postArray,function(cuisines) {		
-			centerPopup();
+			//centerPopup();
+			
 			loadPopup();
 			
-			redrawAllCuisines(data, cuisines);
 			
+			redrawAllCuisines(data, cuisines);
+			$('#popupContact').center();
 		},
 		"json");
 		
@@ -131,17 +130,19 @@ function reinitializeMoreCuisine(data) {
 	$("#popupClose").click(function(){
 		disablePopup();
 	});
+	/*
 	//Click out event!
 	$("#backgroundPopup").click(function(){
 		disablePopup();
 	});
+	
 	//Press Escape event!
 	$(document).keypress(function(e){
 		if(e.keyCode==27 && popupStatus==1){
 			disablePopup();
 		}
 	});
-	
+	*/
 }
 
 
@@ -191,7 +192,7 @@ function redrawZipcodeBox() {
 		
 	
 
-function redrawContent(data, zoomLevel, restaurantTypes, cuisines, filter) {
+function redrawContent(data, restaurantTypes, cuisines, filter) {
 	
 	redrawRestaurantTypes(restaurantTypes, filter);
 	redrawCuisines(data, cuisines, filter);
@@ -200,14 +201,18 @@ function redrawContent(data, zoomLevel, restaurantTypes, cuisines, filter) {
 	//var resultTableHtml = getResultTableHeader();
 	var resultTableHtml = '';
 	
-	$.each(data.results, function(i, a) {
-		resultTableHtml += addResult(a, i);
-	});	
+	if (data.param.numResults == 0) {
+		resultTableHtml += addZeroResult();
+	} else {
+		$.each(data.results, function(i, a) {
+			resultTableHtml += addResult(a, i);
+		});
+	}
 	
 	//resultTableHtml += getResultTableFooter();
 	$('#resultTableContainer').append(resultTableHtml);
 	
-	$('#messageContainer').hide();
+	//$('#messageContainer').hide();
 	$('#resultsContainer').show();
 	
 	// Move scroll to top of window.
@@ -260,7 +265,7 @@ function redrawContent(data, zoomLevel, restaurantTypes, cuisines, filter) {
 	});
 	
 	if (showMap ==  true) { 
-		reinitializeMap(data, zoomLevel);
+		reinitializeMap(data, data.param.zoomLevel);
 	}
 	
 	reinitializePagingEvent(data, restaurantTypes, cuisines);
@@ -282,10 +287,17 @@ function redrawContent(data, zoomLevel, restaurantTypes, cuisines, filter) {
 	
 	
 	//$("#table_results").colorize( { ignoreHeaders:true });
-	
+	disablePopupFadeIn();
 }
 
-
+function addZeroResult() {
+	var html =
+	'<div style="overflow:auto; padding:5px;">' +
+	'	<div style="float:left; width:700px;" align = "center">No results found. Please retry with some other filter options...</div>' + 
+	'</div>'
+	;
+	return html;
+}
 
 function reinitializeShowHideMap(data, restaurantTypes, cuisines) {
 	$("#linkHideMap").click(function(e) {
@@ -342,9 +354,8 @@ function reinitializeFilterEvent (data, restaurantTypes, cuisines) {
 		);
 		*/
 		//alert("From line 294: " + strRestaurantTypeId);
-		currentZoomLevel = defaultZoomLevel;
-		
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, defaultZoomLevel, restaurantTypes, cuisines);
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, restaurantTypes, cuisines);
 	});
 }
 
@@ -368,10 +379,9 @@ function reinitializePopupCuisineEvent (data) {
 		);
 		alert("From line 368: " + strRestaurantTypeId);
 		
-		currentZoomLevel = defaultZoomLevel;
 		disablePopup();
-		//postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, defaultZoomLevel, restaurantTypes, cuisines);
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, defaultZoomLevel, '', '');
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, '', '');
 		
 	});
 	
@@ -384,8 +394,8 @@ function reinitializeQueryFilterEvent (data, restaurantTypes, cuisines) {
 	
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
-		currentZoomLevel = zipSearchZoomLevel;
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, zipSearchZoomLevel, restaurantTypes, cuisines);
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, restaurantTypes, cuisines);
 	});
 }
 
@@ -394,8 +404,8 @@ function reinitializeRemoveFilters(data, restaurantTypes, cuisines) {
 	
 	$("#imgRemoveFilters").click(function(e) {
 		e.preventDefault();
-		currentZoomLevel = defaultZoomLevel;
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', defaultZoomLevel, restaurantTypes, cuisines);
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', restaurantTypes, cuisines);
 		$('#frmFilters')[0].reset();
 	});
 }
@@ -405,7 +415,8 @@ function reinitializePagingEvent(data, restaurantTypes, cuisines) {
 	
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel, restaurantTypes, cuisines);
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
 	});
 	
 	$("#imgPrevious").click(function(e) {
@@ -414,7 +425,8 @@ function reinitializePagingEvent(data, restaurantTypes, cuisines) {
 		if (previousPage <= 0) {
 			previousPage = data.param.firstPage;
 		}
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel, restaurantTypes, cuisines);
+		loadPopupFadeIn();
+		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
 	});
 	
 	$("#imgNext").click(function(e) {
@@ -423,20 +435,48 @@ function reinitializePagingEvent(data, restaurantTypes, cuisines) {
 		if (nextPage >= data.param.totalPages) {
 			nextPage = data.param.lastPage;
 		}
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel, restaurantTypes, cuisines);
+		loadPopupFadeIn();
+		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel, restaurantTypes, cuisines);
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
 	});
 	
 }
 
 function reinitializePageCountEvent(data, restaurantTypes, cuisines) {
-	$("#recordsPerPageList").change(function(e) {
-		postAndRedrawContent(data.param.firstPage, $("#recordsPerPageList").val(), data.param.sort, data.param.order, data.param.q, data.param.filter, currentZoomLevel, restaurantTypes, cuisines);
+	$("#10PerPage").click(function(e) {
+		e.preventDefault();
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
 	});
+	
+	$("#20PerPage").click(function(e) {
+		e.preventDefault();
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+	});
+	
+	$("#40PerPage").click(function(e) {
+		e.preventDefault();
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+	});
+	
+	$("#50PerPage").click(function(e) {
+		e.preventDefault();
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+	});
+	
+	/*
+	$("#recordsPerPageList").change(function(e) {
+		postAndRedrawContent(data.param.firstPage, $("#recordsPerPageList").val(), data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+	});
+	*/
 }
 
 /*
@@ -465,6 +505,33 @@ function getOrder(data, field_name ) {
 
 function drawRecordsPerPage(params) {
 	str = '';
+	str +=  'Items per page: ';
+	
+	if (params.perPage == 10) {
+		str += '<strong>10</strong> | ';
+	} else {
+		str += '<a href="#" id = "10PerPage">10</a> | ';
+	}
+	
+	if (params.perPage == 20) {
+		str += '<strong>20</strong> | ';
+	} else {
+		str += '<a href="#" id = "20PerPage">20</a> | ';
+	}
+	
+	if (params.perPage == 40) {
+		str += '<strong>40</strong> | ';
+	} else {
+		str += '<a href="#" id = "40PerPage">40</a> | ';
+	}
+	
+	if (params.perPage == 50) {
+		str += '<strong>50</strong>';
+	} else {
+		str += '<a href="#" id = "50PerPage">50</a>';
+	}
+	
+	/*
 	str += '<select id = "recordsPerPageList">';
 	str += '<option value = "">--Per Page--</option>';
 	for(i = 10; i <= 50; i+=10) {
@@ -475,8 +542,9 @@ function drawRecordsPerPage(params) {
 		str += '>'+i+'</option>';
 	}
 	str += '</select>';
-
+	*/
 	return str;
+	
 }
 
 function drawPagingLinks(params) {
@@ -491,8 +559,13 @@ function drawPagingLinks(params) {
 }
 
 function drawNumRecords(params) {
+	str = '';
 	
-	str = 'Viewing records ' + params.start + '-' + params.end + ' of ' + params.numResults;
+	if (params.numResults == 0) {
+		str = 'Records 0' + '-' + params.end + ' of ' + params.numResults;
+	} else {
+		str = 'Records ' + params.start + '-' + params.end + ' of ' + params.numResults;
+	}
 	
 	return str;
 }

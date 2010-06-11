@@ -21,4 +21,5 @@
 	<a id="popupClose">x</a> 
 	<div id = "divAllCuisines"></div>
 </div> 
-<div id="backgroundPopup"></div> 
+<div id="backgroundPopup"></div>
+<div id="backgroundWhitePopup"></div>  

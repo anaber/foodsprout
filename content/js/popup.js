@@ -13,11 +13,14 @@ var popupStatus = 0;
 function loadPopup(){
 	//loads popup only if it is disabled
 	if(popupStatus==0){
-		$("#backgroundPopup").css({
+		
+		$("#backgroundWhitePopup").css({
 			"opacity": "0.7"
 		});
-		$("#backgroundPopup").fadeIn("slow");
-		$("#popupContact").fadeIn("slow");
+		//$("#backgroundWhitePopup").fadeIn("slow");
+		$("#backgroundWhitePopup").show();
+		//$("#popupContact").fadeIn("fast");
+		$("#popupContact").show();
 		popupStatus = 1;
 	}
 }
@@ -26,8 +29,10 @@ function loadPopup(){
 function disablePopup(){
 	//disables popup only if it is enabled
 	if(popupStatus==1){
-		$("#backgroundPopup").fadeOut("slow");
-		$("#popupContact").fadeOut("slow");
+		//$("#backgroundWhitePopup").fadeOut("slow");
+		$("#backgroundWhitePopup").hide();
+		//$("#popupContact").fadeOut("slow");
+		$("#popupContact").hide();
 		popupStatus = 0;
 	}
 }
@@ -50,6 +55,34 @@ function centerPopup(){
 	$("#backgroundPopup").css({
 		"height": windowHeight
 	});
-	
 }
 
+function loadPopupFadeIn(){
+	//loads popup only if it is disabled
+	if(popupStatus==0){
+		$('#popupProcessing').center();
+		$("#backgroundPopup").css({
+			"opacity": "0.7"
+		});
+		
+		$("#backgroundPopup").fadeIn("fast");
+		$("#popupProcessing").fadeIn("fast");
+		popupStatus = 1;
+	}
+}
+
+function disablePopupFadeIn(){
+	//disables popup only if it is enabled
+	if(popupStatus==1){
+		$("#backgroundPopup").fadeOut("fast");
+		$("#popupProcessing").fadeOut("fast");
+		popupStatus = 0;
+	}
+}
+
+jQuery.fn.center = function () {
+    this.css("position","absolute");
+    this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
+    this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
+    return this;
+}

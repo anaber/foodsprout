@@ -18,8 +18,8 @@ $(document).ready(function() {
 	});
 	
 	
-	$("#restaurantForm").submit(function() {
-		
+	$("#restaurantForm").submit(function(e) {
+		e.preventDefault();
 		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
 		
 		if (formValidated == false) {

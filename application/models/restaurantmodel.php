@@ -53,7 +53,7 @@ class RestaurantModel extends Model{
 	
 	
 	function getRestaurantsJson() {
-		global $PER_PAGE;
+		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 		
 		$p = $this->input->post('p'); // Page
 		$pp = $this->input->post('pp'); // Per Page
@@ -94,16 +94,21 @@ class RestaurantModel extends Model{
 		$city = '';
 		//$city = '41,6009,13721';
 		
+		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+		
 		if ($q == '') {
 			
 			if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
 				$q = $_COOKIE['seachedZip'];
+				$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
 			} else {
 				// By default display all restaurants of SFO
 				$city = '41,6009,13721';
+				$mapZoomLevel = $CITY_ZOOM_LEVEL;
 			}
 		} else {
 			setcookie('seachedZip', $q, time()+60*60*24*30*365);
+			$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
 		}
 		
 		
@@ -310,8 +315,11 @@ class RestaurantModel extends Model{
 		$first = 0;
 		$last = $totalPages - 1;
 		
+		if ($numResults == 0) {
+			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+		}
 		
-		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter);
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel);
 		$arr = array(
 			'results'    => $restaurants,
 			'param'      => $params,
