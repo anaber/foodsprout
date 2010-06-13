@@ -3,8 +3,8 @@
 <script>
 var showMap = true;
 var showFilters = true;
-var cuisines;
-var restaurantTypes;
+var topCuisines;
+var topRestaurantTypes;
 
 <?php
 	
@@ -35,17 +35,17 @@ var restaurantTypes;
 			//currentZoomLevel = defaultZoomLevel;
 			
 			var formAction = '/restaurant/ajaxGetDistinctUsedRestaurantType';
-			postArray = { };
+			postArray = { c:10 };
 			
 			$.post(formAction, postArray,function(restaurantTypes) {
+				topRestaurantTypes = restaurantTypes;
 				
 				var formAction = '/restaurant/ajaxGetDistinctUsedCuisine';
-				postArray = { };
+				postArray = { c:10 };
 				
 				$.post(formAction, postArray,function(cuisines) {		
-					
-					redrawContent(data, restaurantTypes, cuisines, '');
-										
+					topCuisines = cuisines;
+					redrawContent(data, '');
 				},
 				"json");
 				

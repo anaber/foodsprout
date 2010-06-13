@@ -54,7 +54,11 @@
 	color:#6fa5fd;
 	font-weight:700;
 	display:block;
+	cursor:pointer; 
+	cursor:hand; 
 }
+
+
 
 #button{
 	text-align:center;

@@ -1,7 +1,18 @@
 var isMapVisible = 1;
 
+var selectedTopCuisineId = "";
+var selectedTopRestaurantTypeId = "";
 
-function postAndRedrawContent(page, perPage, s, o, query, filter, restaurantTypes, cuisines) {
+var filters = '';
+
+var selectedCuisineId = "";
+var selectedRestaurantTypeId = "";
+var allCuisines;
+var allRestaurantTypes;
+
+
+
+function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
 	//$('#resultsContainer').hide();
 	//$('#messageContainer').show();
@@ -13,7 +24,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, restaurantType
 	
 	$.post(formAction, postArray,function(data) {		
 		
-		redrawContent(data, restaurantTypes, cuisines, filter);
+		redrawContent(data, filter);
 		
 		//reinitializeRemoveFilters(data);
 	},
@@ -21,8 +32,37 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, restaurantType
 	
 }
 
-function redrawAllCuisines(data, cuisines) {
+function redrawAllCuisines(data, allCuisines) {
 	$('#divAllCuisines').empty();
+	$('#divAllRestaurantTypes').empty();
+		
+	// TO-DO - work here
+	
+	arrSelectedCuisines = new Array();
+	j = 0;
+	/*
+	if (selectedCuisineId != '') {
+		strSelectedCuisineId = selectedCuisineId;
+	}
+	*/
+	var strSelectedCuisineId = '';
+	if (selectedCuisineId != '') {
+		strSelectedCuisineId = selectedCuisineId;
+	} else {
+		strSelectedCuisineId = selectedTopCuisineId
+	}
+	
+	if (strSelectedCuisineId != '') {
+		arrFilter = strSelectedCuisineId.split(',');
+		
+		for(i = 0; i < arrFilter.length; i++ ) {
+			arr = arrFilter[i].split('_');
+			if (arr[0] == 'c') {
+				arrSelectedCuisines[j] = arr[1];
+				j++;
+			}
+		}
+	}
 	
 	var resultHtml = '';
 	resultHtml = '<strong>Cuisines</strong><br>';
@@ -30,12 +70,22 @@ function redrawAllCuisines(data, cuisines) {
 	resultHtml += '<table cellpadding = "2" cellspacing = "0" border = "0" width = "500">';
 	
 	j = 0;
-	$.each(cuisines, function(i, a) {
+	$.each(allCuisines, function(i, a) {
 		if (j == 0) {
 			resultHtml += '<tr>';
 		}
 		
-		resultHtml += '<td width = "133"><input type="checkbox" value="c_'+ a.cuisineId + '" id = "cuisineId" name = "cuisineId">';
+		resultHtml += '<td width = "133"><input type="checkbox" value="c_'+ a.cuisineId + '" id = "cuisineId" name = "cuisineId"';
+		
+		for(i = 0; i < arrSelectedCuisines.length; i++ ) {
+			if ( arrSelectedCuisines[i] ==  a.cuisineId) {
+				resultHtml += ' CHECKED';
+				break;
+			}
+		}
+		
+		resultHtml += '>';
+		
 		resultHtml += a.cuisineName;
 		resultHtml += '</td>';
 		if (j == 2) {
@@ -56,49 +106,79 @@ function redrawAllCuisines(data, cuisines) {
 		}
 		resultHtml += '</tr>';
 	}
-	resultHtml += '<tr><td colspan = "3" align = "right"><input type = "button" id = "btnApplyCuisines" value = "Apply Filters"></td></tr>';
+	resultHtml += '<tr><td colspan = "3" align = "right"><a id = "cancelCuisineFilter" href = "#">Cancel</a> &nbsp;&nbsp;&nbsp; <input type = "button" id = "btnApplyCuisines" value = "Apply Filters"></td></tr>';
 	resultHtml += '</table>';
 	
-		
+	
 	$('#divAllCuisines').html(resultHtml);
 	
 	//reinitializeMoreCuisine();
-	reinitializePopupCuisineEvent(data);
+	reinitializePopupCuisineEvent(data, allCuisines);
 }
 
-function redrawCuisines(data, cuisines, filter) {
+function redrawTopCuisines(data) {
 	$('#divCuisines').empty();
 	
-	arrRestaurantTypes = new Array();
-	j = 0;
-	if (filter != '') {
-		arrFilter = filter.split(',');
+	var resultHtml = '';
+	
+	if (selectedCuisineId != "") {
 		
-		for(i = 0; i < arrFilter.length; i++ ) {
-			arr = arrFilter[i].split('_');
-			if (arr[0] == 'c') {
-				arrRestaurantTypes[j] = arr[1];
-				j++;
+		arrSelectedCuisines = new Array();
+		j = 0;
+		if (filters != '') {
+			arrFilter = selectedCuisineId.split(',');
+			
+			for(i = 0; i < arrFilter.length; i++ ) {
+				arr = arrFilter[i].split('_');
+				if (arr[0] == 'c') {
+					arrSelectedCuisines[j] = arr[1];
+					j++;
+				}
 			}
 		}
+		//resultHtml += '<ul>';
+		$.each(allCuisines, function(i, a) {
+			for(i = 0; i < arrSelectedCuisines.length; i++ ) {
+				if ( arrSelectedCuisines[i] ==  a.cuisineId) {
+					resultHtml += '-' + a.cuisineName + '<br />';
+					break;
+				}
+			}
+		});	
+		//resultHtml += '</ul>';
+		
+	} else {
+		
+		arrTopFilters = new Array();
+		j = 0;
+		if (filters != '') {
+			arrFilter = filters.split(',');
+			
+			for(i = 0; i < arrFilter.length; i++ ) {
+				arr = arrFilter[i].split('_');
+				if (arr[0] == 'c') {
+					arrTopFilters[j] = arr[1];
+					j++;
+				}
+			}
+		}
+		
+		$.each(topCuisines, function(i, a) {
+			resultHtml += '<input type="checkbox" value="c_'+ a.cuisineId + '" id = "cuisineId" name = "cuisineId"';
+			
+			for(i = 0; i < arrTopFilters.length; i++ ) {
+				if ( arrTopFilters[i] ==  a.cuisineId) {
+					resultHtml += ' CHECKED';
+					break;
+				}
+			}
+			resultHtml += '>';
+			
+			resultHtml += a.cuisineName + '<br>';
+		});	
 	}
 	
-	var resultHtml = '';
-	$.each(cuisines, function(i, a) {
-		resultHtml += '<input type="checkbox" value="c_'+ a.cuisineId + '" id = "cuisineId" name = "cuisineId"';
-		
-		for(i = 0; i < arrRestaurantTypes.length; i++ ) {
-			if ( arrRestaurantTypes[i] ==  a.cuisineId) {
-				resultHtml += ' CHECKED';
-				break;
-			}
-		}
-		resultHtml += '>';
-		
-		resultHtml += a.cuisineName + '<br>';
-	});	
-	
-	resultHtml += '<br><a href = "#" id = "chooseMoreCuisine" name = "">Choose More..</a><br>';
+	resultHtml += '<br><a href = "#" id = "chooseMoreCuisine" name = "">Choose More...</a><br>';
 		
 	$('#divCuisines').html(resultHtml);
 	
@@ -109,20 +189,19 @@ function reinitializeMoreCuisine(data) {
 	$("#chooseMoreCuisine").click(function(e){
 		e.preventDefault();
 		
-		var formAction = '/restaurant/ajaxGetAllDistinctUsedCuisine';
+		var formAction = '/restaurant/ajaxGetAllCuisine';
 		postArray = { };
 		
 		$.post(formAction, postArray,function(cuisines) {		
 			//centerPopup();
-			
 			loadPopup();
+			allCuisines = cuisines;
 			
-			
-			redrawAllCuisines(data, cuisines);
+			//redrawAllCuisines(data, allCuisines, topCuisines);
+			redrawAllCuisines(data, allCuisines);
 			$('#popupContact').center();
 		},
 		"json");
-		
 	});
 	
 	//CLOSING POPUP
@@ -130,6 +209,8 @@ function reinitializeMoreCuisine(data) {
 	$("#popupClose").click(function(){
 		disablePopup();
 	});
+	
+	
 	/*
 	//Click out event!
 	$("#backgroundPopup").click(function(){
@@ -147,41 +228,245 @@ function reinitializeMoreCuisine(data) {
 
 
 
+function redrawAllRestaurantTypes(data, allRestaurantTypes) {
+	$('#divAllCuisines').empty();
+	$('#divAllRestaurantTypes').empty();
 	
-function redrawRestaurantTypes(restaurantTypes, filter) {
-	$('#divRestaurantTypes').empty();
+	// TO-DO - work here
 	
-	arrRestaurantTypes = new Array();
+	arrSelectedRestaurantTypes = new Array();
 	j = 0;
-	if (filter != '') {
-		arrFilter = filter.split(',');
+	
+	var strSelectedRestaurantTypeId = '';
+	if (selectedRestaurantTypeId != '') {
+		strSelectedRestaurantTypeId = selectedRestaurantTypeId;
+	} else {
+		strSelectedRestaurantTypeId = selectedTopRestaurantTypeId
+	}
+	
+	if (strSelectedRestaurantTypeId != '') {
+		arrFilter = strSelectedRestaurantTypeId.split(',');
 		
 		for(i = 0; i < arrFilter.length; i++ ) {
 			arr = arrFilter[i].split('_');
 			if (arr[0] == 'r') {
-				arrRestaurantTypes[j] = arr[1];
+				arrSelectedRestaurantTypes[j] = arr[1];
 				j++;
 			}
 		}
 	}
 	
 	var resultHtml = '';
-	$.each(restaurantTypes, function(i, a) {
-		resultHtml += '<input type="checkbox" value="r_'+ a.restaurantTypeId + '" id = "restaurantTypeId" name = "restaurantTypeId"';
+	resultHtml = '<strong>Restaurants Types</strong><br>';
+	
+	resultHtml += '<table cellpadding = "2" cellspacing = "0" border = "0" width = "500">';
+	
+	j = 0;
+	$.each(allRestaurantTypes, function(i, a) {
+		if (j == 0) {
+			resultHtml += '<tr>';
+		}
 		
-		for(i = 0; i < arrRestaurantTypes.length; i++ ) {
-			if ( arrRestaurantTypes[i] ==  a.restaurantTypeId) {
+		resultHtml += '<td width = "133"><input type="checkbox" value="r_'+ a.restaurantTypeId + '" id = "restaurantTypeId" name = "restaurantTypeId"';
+		
+		for(i = 0; i < arrSelectedRestaurantTypes.length; i++ ) {
+			if ( arrSelectedRestaurantTypes[i] ==  a.restaurantTypeId) {
 				resultHtml += ' CHECKED';
 				break;
 			}
 		}
+		
 		resultHtml += '>';
-		resultHtml += a.restaurantType + '<br>';
-	});	
+		
+		resultHtml += a.restaurantTypeName;
+		resultHtml += '</td>';
+		if (j == 2) {
+			resultHtml += '</tr>';
+		}
+		
+		j++;
+		if (j == 3) {
+			j = 0;
+		}
+	});
 	
-	resultHtml += '<br><a href = "#" id = "chooseMoreRestaurantType" name = "">Choose More..</a><br>';
+	if (j < 3 && j > 0) {
+		cellRequired = eval(3-j);
+		
+		for(i = 1; i<= cellRequired; i++) {
+			resultHtml += '<td>&nbsp;</td>';
+		}
+		resultHtml += '</tr>';
+	}
+	resultHtml += '<tr><td colspan = "3" align = "right"><a id = "cancelRestaurantTypeFilter" href = "#">Cancel</a> &nbsp;&nbsp;&nbsp; <input type = "button" id = "btnApplyRestaurantTypes" value = "Apply Filters"></td></tr>';
+	resultHtml += '</table>';
 	
+	$('#divAllRestaurantTypes').html(resultHtml);
+	
+	//reinitializeMoreCuisine();
+	reinitializePopupRestaurantTypeEvent(data, allRestaurantTypes);
+}
+
+function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
+	
+	
+	
+	//$(':checkbox').click(function () {
+	$('#btnApplyRestaurantTypes').click(function () {
+		var strRestaurantTypeId = '';	
+		var strFilters = '';
+		j = 0;
+		
+		$('#divAllRestaurantTypes :checked').each(function() {
+		   if (j == 0 ) {
+	        	strRestaurantTypeId += $(this).val();
+	        } else {
+	        	strRestaurantTypeId += ',' + $(this).val();
+	        }
+	        j++;
+		  }
+		);
+		//alert("From line 3682: " + strRestaurantTypeId);
+		
+		
+		if (selectedTopCuisineId != '') {
+			if (strRestaurantTypeId != '') {
+				strFilters = strRestaurantTypeId + ',' + selectedTopCuisineId;
+			} else {
+				strFilters = selectedTopCuisineId;
+			}
+		} else if (selectedCuisineId != '') {
+			if (strRestaurantTypeId != '') {
+				strFilters = strRestaurantTypeId + ',' + selectedCuisineId;
+			} else {
+				strFilters = selectedCuisineId;
+			}
+		} else {
+			strFilters = strRestaurantTypeId;
+		}
+		
+		selectedRestaurantTypeId = strRestaurantTypeId;
+		selectedTopRestaurantTypeId = "";
+		disablePopup();
+		loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
+	});
+	
+	$("#cancelRestaurantTypeFilter").click(function(e){
+		e.preventDefault();
+		disablePopup();
+	});
+	
+}
+
+function redrawTopRestaurantTypes(data) {
+	$('#divRestaurantTypes').empty();
+	
+	var resultHtml = '';
+	
+	if (selectedRestaurantTypeId != "") {
+		
+		arrSelectedRestaurantTypes = new Array();
+		j = 0;
+		if (filters != '') {
+			arrFilter = selectedRestaurantTypeId.split(',');
+			
+			for(i = 0; i < arrFilter.length; i++ ) {
+				arr = arrFilter[i].split('_');
+				if (arr[0] == 'r') {
+					arrSelectedRestaurantTypes[j] = arr[1];
+					j++;
+				}
+			}
+		}
+		//resultHtml += '<ul>';
+		$.each(allRestaurantTypes, function(i, a) {
+			for(i = 0; i < arrSelectedRestaurantTypes.length; i++ ) {
+				if ( arrSelectedRestaurantTypes[i] ==  a.restaurantTypeId) {
+					resultHtml += '-' + a.restaurantTypeName + '<br />';
+					break;
+				}
+			}
+		});	
+		//resultHtml += '</ul>';
+		
+	} else {
+		
+		arrTopFilters = new Array();
+		j = 0;
+		if (filters != '') {
+			arrFilter = filters.split(',');
+			
+			for(i = 0; i < arrFilter.length; i++ ) {
+				arr = arrFilter[i].split('_');
+				if (arr[0] == 'r') {
+					arrTopFilters[j] = arr[1];
+					j++;
+				}
+			}
+		}
+		
+		$.each(topRestaurantTypes, function(i, a) {
+			resultHtml += '<input type="checkbox" value="r_'+ a.restaurantTypeId + '" id = "restaurantTypeId" name = "restaurantTypeId"';
+			
+			for(i = 0; i < arrTopFilters.length; i++ ) {
+				if ( arrTopFilters[i] ==  a.restaurantTypeId) {
+					resultHtml += ' CHECKED';
+					break;
+				}
+			}
+			resultHtml += '>';
+			
+			resultHtml += a.restaurantType + '<br>';
+		});	
+	}
+	
+	resultHtml += '<br><a href = "#" id = "chooseMoreRestaurantType" name = "">Choose More...</a><br>';
+		
 	$('#divRestaurantTypes').html(resultHtml);
+	
+	reinitializeMoreRestaurantType(data);
+}
+
+function reinitializeMoreRestaurantType(data) {
+	$("#chooseMoreRestaurantType").click(function(e){
+		e.preventDefault();
+		
+		var formAction = '/restaurant/ajaxGetAllRestaurantType';
+		
+		postArray = { };
+
+		$.post(formAction, postArray,function(restaurantTypes) {	
+			//centerPopup();
+			loadPopup();
+			allRestaurantTypes = restaurantTypes;
+			
+			redrawAllRestaurantTypes(data, allRestaurantTypes);
+			$('#popupContact').center();
+		},
+		"json");
+	});
+	
+	//CLOSING POPUP
+	//Click the x event!
+	$("#popupClose").click(function(){
+		disablePopup();
+	});
+	
+	
+	/*
+	//Click out event!
+	$("#backgroundPopup").click(function(){
+		disablePopup();
+	});
+	
+	//Press Escape event!
+	$(document).keypress(function(e){
+		if(e.keyCode==27 && popupStatus==1){
+			disablePopup();
+		}
+	});
+	*/
 }
 		
 function redrawZipcodeBox() {
@@ -192,10 +477,10 @@ function redrawZipcodeBox() {
 		
 	
 
-function redrawContent(data, restaurantTypes, cuisines, filter) {
+function redrawContent(data, filter) {
 	
-	redrawRestaurantTypes(restaurantTypes, filter);
-	redrawCuisines(data, cuisines, filter);
+	redrawTopRestaurantTypes(data);
+	redrawTopCuisines(data);
 	
 	$('#resultTableContainer').empty();
 	//var resultTableHtml = getResultTableHeader();
@@ -268,21 +553,21 @@ function redrawContent(data, restaurantTypes, cuisines, filter) {
 		reinitializeMap(data, data.param.zoomLevel);
 	}
 	
-	reinitializePagingEvent(data, restaurantTypes, cuisines);
+	reinitializePagingEvent(data);
 	
-	reinitializePageCountEvent(data, restaurantTypes, cuisines);
+	reinitializePageCountEvent(data);
 	
 	if (showFilters ==  true) {
-		reinitializeRemoveFilters(data, restaurantTypes, cuisines);
+		reinitializeRemoveFilters(data);
 	}
 	
 	//reinitializeTableHeadingEvent(data);
 	
-	reinitializeFilterEvent(data, restaurantTypes, cuisines);
+	reinitializeFilterEvent(data);
 	
-	reinitializeQueryFilterEvent(data, restaurantTypes, cuisines);
+	reinitializeQueryFilterEvent(data);
 	
-	reinitializeShowHideMap(data, restaurantTypes, cuisines);
+	reinitializeShowHideMap(data);
 	
 	
 	
@@ -299,7 +584,7 @@ function addZeroResult() {
 	return html;
 }
 
-function reinitializeShowHideMap(data, restaurantTypes, cuisines) {
+function reinitializeShowHideMap(data) {
 	$("#linkHideMap").click(function(e) {
 		
 		e.preventDefault();
@@ -315,108 +600,182 @@ function reinitializeShowHideMap(data, restaurantTypes, cuisines) {
 	});
 }
 
-function reinitializeFilterEvent (data, restaurantTypes, cuisines) {
+function reinitializeFilterEvent (data) {
+	
+	var strFilters = '';
+	var strCuisineFilters = '';
+	var strRestaurantTypeFilters = '';
 	
 	$(':checkbox').click(function () {
 		
-		var strRestaurantTypeId = '';
-		var strRestaurantTypeId2 = '';
 		j = 0;
-		
+		i = 0;
 		$('#divRestaurantTypes :checked').each(function() {
 		   if (j == 0 ) {
-	        	strRestaurantTypeId += $(this).val();
+	        	strFilters += $(this).val();
 	        } else {
-	        	strRestaurantTypeId += ',' + $(this).val();
+	        	strFilters += ',' + $(this).val();
 	        }
 	        j++;
+	        
+	        if (i == 0 ) {
+	        	strRestaurantTypeFilters = $(this).val();
+	        } else {
+	        	strRestaurantTypeFilters += ',' + $(this).val();
+	        }
+	        i++;
+	        
 		  }
 		);
+
+		i = 0;
 		$('#divCuisines :checked').each(function() {
 		   if (j == 0 ) {
-	        	strRestaurantTypeId += $(this).val();
+	        	strFilters += $(this).val();
 	        } else {
-	        	strRestaurantTypeId += ',' + $(this).val();
+	        	strFilters += ',' + $(this).val();
 	        }
 	        j++;
+		  
+		  
+			if (i == 0 ) {
+	        	strCuisineFilters = $(this).val();
+	        } else {
+	        	strCuisineFilters += ',' + $(this).val();
+	        }
+	        i++;
 		  }
+		  
 		);
 		
-		/*
-		$('#divAllCuisines :checked').each(function() {
-		   if (j == 0 ) {
-	        	strRestaurantTypeId2 += $(this).val();
-	        } else {
-	        	strRestaurantTypeId2 += ',' + $(this).val();
-	        }
-	        j++;
-		  }
-		);
-		*/
 		//alert("From line 294: " + strRestaurantTypeId);
+		//alert(strFilters);
+		
+		if (strRestaurantTypeFilters != '') {
+			selectedTopRestaurantTypeId = strRestaurantTypeFilters;
+			selectedRestaurantTypeId = '';
+		}
+		
+		if (strCuisineFilters != '') {
+			selectedTopCuisineId = strCuisineFilters;
+			selectedCuisineId = '';
+		}
+		
+		if (selectedCuisineId != '') {
+			if (strFilters != '') {
+				strFilters = strFilters + ',' + selectedCuisineId;
+			} else {
+				strFilters = selectedCuisineId;
+			}
+		} 
+		
+		if (selectedRestaurantTypeId != '') {
+			if (strFilters != '') {
+				strFilters = strFilters + ',' + selectedRestaurantTypeId;
+			} else {
+				strFilters = selectedRestaurantTypeId;
+			}
+		}
+		
+		if (strFilters != '') {
+			filters = strFilters;
+		}
+		
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, restaurantTypes, cuisines);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
 	});
 }
 
-function reinitializePopupCuisineEvent (data) {
+function reinitializePopupCuisineEvent (data, allCuisines) {
 	
-	var strRestaurantTypeId = '';
+	
 	
 	//$(':checkbox').click(function () {
 	$('#btnApplyCuisines').click(function () {
-		
+		var strCuisineId = '';	
+		var strFilters = '';
 		j = 0;
 		
 		$('#divAllCuisines :checked').each(function() {
 		   if (j == 0 ) {
-	        	strRestaurantTypeId += $(this).val();
+	        	strCuisineId += $(this).val();
 	        } else {
-	        	strRestaurantTypeId += ',' + $(this).val();
+	        	strCuisineId += ',' + $(this).val();
 	        }
 	        j++;
 		  }
 		);
-		alert("From line 368: " + strRestaurantTypeId);
+		//alert("From line 368: " + strCuisineId);
 		
+		
+		if (selectedTopRestaurantTypeId != '') {
+			if (strCuisineId != '') {
+				strFilters = strCuisineId + ',' + selectedTopRestaurantTypeId;
+			} else {
+				strFilters = selectedTopRestaurantTypeId;
+			}
+		} else if (selectedRestaurantTypeId != '') {
+			if (strCuisineId != '') {
+				strFilters = strCuisineId + ',' + selectedRestaurantTypeId;
+			} else {
+				strFilters = selectedRestaurantTypeId;
+			}
+		} else {
+			strFilters = strCuisineId;
+		}
+		
+		selectedCuisineId = strCuisineId;
+		selectedTopCuisineId = "";
 		disablePopup();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strRestaurantTypeId, '', '');
-		
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
 	});
 	
+	$("#cancelCuisineFilter").click(function(e){
+		e.preventDefault();
+		disablePopup();
+	});
 	
 }
 
 
 
-function reinitializeQueryFilterEvent (data, restaurantTypes, cuisines) {
+function reinitializeQueryFilterEvent (data) {
 	
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
 	});
 }
 
 
-function reinitializeRemoveFilters(data, restaurantTypes, cuisines) {
+function reinitializeRemoveFilters(data) {
 	
 	$("#imgRemoveFilters").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', restaurantTypes, cuisines);
+		
+		selectedCuisineId = '';
+		selectedRestaurantTypeId = '';
+		
+		selectedTopCuisineId = "";
+		selectedTopRestaurantTypeId = "";
+		
+		filters = '';
+
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '');
 		$('#frmFilters')[0].reset();
 	});
 }
 
 
-function reinitializePagingEvent(data, restaurantTypes, cuisines) {
+function reinitializePagingEvent(data) {
 	
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#imgPrevious").click(function(e) {
@@ -426,7 +785,7 @@ function reinitializePagingEvent(data, restaurantTypes, cuisines) {
 			previousPage = data.param.firstPage;
 		}
 		loadPopupFadeIn();
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#imgNext").click(function(e) {
@@ -436,40 +795,40 @@ function reinitializePagingEvent(data, restaurantTypes, cuisines) {
 			nextPage = data.param.lastPage;
 		}
 		loadPopupFadeIn();
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 }
 
-function reinitializePageCountEvent(data, restaurantTypes, cuisines) {
+function reinitializePageCountEvent(data) {
 	$("#10PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#20PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#40PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#50PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
+		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	/*

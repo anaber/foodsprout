@@ -164,21 +164,29 @@ class Restaurant extends Controller {
 	}
 	
 	function ajaxGetDistinctUsedRestaurantType() {
+		$c = $this->input->post('c');
 		$this->load->model('RestaurantModel');
-		$restaurantTypes = $this->RestaurantModel->getDistinctUsedRestaurantType();
+		$restaurantTypes = $this->RestaurantModel->getDistinctUsedRestaurantType($c);
 		echo json_encode($restaurantTypes);
 	}
 	
 	function ajaxGetDistinctUsedCuisine() {
+		$c = $this->input->post('c');
 		$this->load->model('RestaurantModel');
-		$cusines = $this->RestaurantModel->getDistinctUsedCuisine();
+		$cusines = $this->RestaurantModel->getDistinctUsedCuisine($c);
 		echo json_encode($cusines);
 	}
 	
-	function ajaxGetAllDistinctUsedCuisine() {
-		$this->load->model('RestaurantModel');
-		$cusines = $this->RestaurantModel->getAllCuisine();
+	function ajaxGetAllCuisine() {
+		$this->load->model('CuisineModel');
+		$cusines = $this->CuisineModel->listCuisine();
 		echo json_encode($cusines);
+	}
+	
+	function ajaxGetAllRestaurantType() {
+		$this->load->model('RestaurantTypeModel');
+		$restaurantType = $this->RestaurantTypeModel->listRestaurantType();
+		echo json_encode($restaurantType);
 	}
 	
 	function map() {

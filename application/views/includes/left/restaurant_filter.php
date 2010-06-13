@@ -18,8 +18,9 @@
 </div>
  
 <div id="popupContact"> 
-	<a id="popupClose">x</a> 
+	<a id="popupClose">X</a> 
 	<div id = "divAllCuisines"></div>
+	<div id = "divAllRestaurantTypes"></div>
 </div> 
 <div id="backgroundPopup"></div>
 <div id="backgroundWhitePopup"></div>  

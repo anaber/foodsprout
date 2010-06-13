@@ -61,7 +61,7 @@ class RestaurantModel extends Model{
 		$order = $this->input->post('order');
 		$filter = $this->input->post('f');
 		
-		//$filter = 'c_1,c_2';
+		//$filter = 'r_10,c_6';
 		
 		
 		//echo $filter;
@@ -135,29 +135,49 @@ class RestaurantModel extends Model{
 		
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
 		
-		if(count($arrRestaurantTypeId) > 0 ) {
-			$where .= ' AND restaurant.restaurant_type_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
+		/*
+		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
+				. ' OR restaurant.restaurant_id like "%' . $q . '%"';
+		*/
+		
+		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
+			$where .= ' AND (';
+			
+			if(count($arrRestaurantTypeId) > 0 ) {
+				$where .= ' restaurant.restaurant_type_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
+			}
+			
+			
+			if(count($arrCuisineId) > 0 ) {
+			 		// Cuisine 
+				if(count($arrRestaurantTypeId) > 0 ) {
+					$where	.= ' OR ( ';
+				} else {
+					$where	.= ' ( ';
+				}
+				
+			$where	.= '		SELECT restaurant_cuisine.restaurant_cuisine_id ' 
+					. '			FROM restaurant_cuisine' 
+					. '			WHERE' 
+					. '				restaurant_cuisine.restaurant_id = restaurant.restaurant_id'
+					. ' 			AND restaurant_cuisine.cuisine_id IN (' . implode(',', $arrCuisineId) . ')'
+					. '				LIMIT 0, 1'
+					. '		)';
+			 }
+			
+			$where .= ' )';
 		}
 		
-		/*
-		if(count($arrCuisineId) > 0 ) {
-			$where .= ' AND restaurant.cuisine_id IN (' . implode(',', $arrCuisineId) . ')';
-		}
-		*/
-		if ( !empty($q) || !empty($city) || count($arrCuisineId) > 0 ) {
+		if ( !empty($q) || !empty($city) ) {
 			if (!empty($where) ) {
 				$where .= ' AND (';  
 			} else {
 				$where .= ' WHERE (';
 			}
-			/*
-			$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
-					. ' OR restaurant.restaurant_id like "%' . $q . '%"';
-			*/
 			
+
 			//$where	.= ' OR ( '
-			$where	.= ' ( '
-					. '		SELECT address.address_id' 
+			$where	.= '		SELECT address.address_id' 
 					. '			from address, state, country'
 					. '			WHERE' 
 					. '				address.restaurant_id = restaurant.restaurant_id'
@@ -177,14 +197,50 @@ class RestaurantModel extends Model{
 					. '						OR state.state_code like "%' . $q . '%"'
 					. '						OR country.country_name like "%' . $q . '%"'
 					*/
-					
+
 					
 					
 			$where	.= '				)'
 					. '				LIMIT 0, 1'
 					. '		)';
+			
+		}
+		
+		
+		
+		/*
+		if(count($arrRestaurantTypeId) > 0 ) {
+			$where .= ' AND restaurant.restaurant_type_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
+		}
+		
+		
+		if ( !empty($q) || !empty($city) || count($arrCuisineId) > 0 ) {
+			if (!empty($where) ) {
+				$where .= ' AND (';  
+			} else {
+				$where .= ' WHERE (';
+			}
+			
+			//$where	.= ' OR ( '
+			$where	.= ' ( '
+					. '		SELECT address.address_id' 
+					. '			from address, state, country'
+					. '			WHERE' 
+					. '				address.restaurant_id = restaurant.restaurant_id'
+					. '				AND address.state_id = state.state_id'
+					. '				AND address.country_id = country.country_id'
+					. ' 			AND (';
+				if ( !empty($q) ) {	 
+			$where	.= '					address.zipcode = "' . $q . '"';
+				} else if ( !empty($city) ) {
+			$where	.= '					address.city_id IN (' . $city . ')';
+				}
+				
+			$where	.= '				)'
+					. '				LIMIT 0, 1'
+					. '		)';
 					
-			 	if(count($arrCuisineId) > 0 ) {	
+			 	if(count($arrCuisineId) > 0 ) {
 			 		
 			 		// Cuisine 
 			$where	.= ' AND ( '
@@ -201,6 +257,7 @@ class RestaurantModel extends Model{
 			$where .= ')';
 			
 		}
+		*/
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -540,11 +597,11 @@ class RestaurantModel extends Model{
 		return $return;	
 	}
 	
-	function getDistinctUsedRestaurantType()
+	function getDistinctUsedRestaurantType($c)
 	{
 		$query = "SELECT DISTINCT restaurant.restaurant_type_id, restaurant_type.restaurant_type
 					FROM restaurant, restaurant_type
-					WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id LIMIT 0, 10";
+					WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id LIMIT 0, $c";
 		
 		log_message('debug', "RestaurantModel.getDistinctRestaurantType : " . $query);
 		$result = $this->db->query($query);
@@ -566,44 +623,13 @@ class RestaurantModel extends Model{
 		return $restaurantTypes;
 	}
 	
-	function getDistinctUsedCuisine()
+	function getDistinctUsedCuisine($c)
 	{
 		$query = "SELECT DISTINCT restaurant_cuisine.cuisine_id, cuisine.cuisine_name
 					FROM restaurant_cuisine, cuisine
-					WHERE restaurant_cuisine.cuisine_id = cuisine.cuisine_id LIMIT 0, 10";
+					WHERE restaurant_cuisine.cuisine_id = cuisine.cuisine_id LIMIT 0, $c";
 		
 		log_message('debug', "RestaurantModel.getDistinctUsedCuisine : " . $query);
-		$result = $this->db->query($query);
-		
-		$cuisine = array();
-		
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('CuisineLib');
-			unset($this->CuisineLib);
-			
-			$this->CuisineLib->cuisineId = $row['cuisine_id'];
-			$this->CuisineLib->cuisineName = $row['cuisine_name'];
-			
-			$cuisine[] = $this->CuisineLib;
-			unset($this->CuisineLib);
-		}
-		
-		return $cuisine;
-	}
-	
-	function getAllCuisine()
-	{
-		/*
-		$query = "SELECT DISTINCT restaurant_cuisine.cuisine_id, cuisine.cuisine_name
-					FROM restaurant_cuisine, cuisine
-					WHERE restaurant_cuisine.cuisine_id = cuisine.cuisine_id";
-		*/
-		$query = "SELECT *
-					FROM cuisine
-					ORDER BY cuisine_name";
-		
-		log_message('debug', "RestaurantModel.getAllCuisine : " . $query);
 		$result = $this->db->query($query);
 		
 		$cuisine = array();
