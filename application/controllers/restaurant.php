@@ -7,6 +7,11 @@ class Restaurant extends Controller {
 		
 		$data = array();
 		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_list');
+		$data['SEO'] = $seo;
+		
 		$q = $this->input->post('q');
 		$f = $this->input->post('f');
 		
@@ -104,6 +109,21 @@ class Restaurant extends Controller {
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurantinfo = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_detail');
+		
+		$seo_data_array = array(
+			'restaurant_name' => $restaurantinfo->restaurantName,
+			'restaurant_type' => 'Fast Food',
+			'cuisines' => 'Fast Food, American, Pizza',
+		);
+		
+		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
+		$data['SEO'] = $seo;
+		// SEO ENDS here
+		
 		
 		// List of views to be included
 		$data['CENTER'] = array(

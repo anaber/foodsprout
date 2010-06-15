@@ -3,9 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
 
 <head>
-	<title><?php ?> - Food Sprout</title>
-	<meta name="description" content="Mapping the World's Food Chain" />
-	<meta name="keywords" content="food source, food location" />
+	<title><?php echo (isset($SEO->titleTag)? $SEO->titleTag: 'Food Sprout'); ?></title>
+	<meta name="description" content="<?php echo (isset($SEO->metaDescription)? $SEO->metaDescription: 'Mapping the World\'s Food Chain'); ?>" />
+	<meta name="keywords" content="<?php echo (isset($SEO->metaKeywords)? $SEO->metaKeywords: 'food source, food location'); ?>" />
 	<meta name="robots" content="index,follow" />
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 	<link type="text/css" rel="stylesheet" media="all" href="/css/main.css" />

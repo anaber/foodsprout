@@ -43,8 +43,6 @@ class StateModel extends Model{
 		log_message('debug', "StateModel.getStateFromId : " . $query);
 		$result = $this->db->query($query);
 		
-		$state = array();
-		
 		$this->load->library('StateLib');
 		
 		$row = $result->row();

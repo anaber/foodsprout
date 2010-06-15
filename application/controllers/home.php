@@ -4,9 +4,11 @@ class Home extends Controller {
 	
 	function index()
 	{
-		global $GOOGLE_MAP_KEY;
-		
 		$data = array();
+		
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('index');
+		$data['SEO'] = $seo;
 		
 		// List of views to be included
 		$data['CENTER'] = array(

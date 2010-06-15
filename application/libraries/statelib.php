@@ -7,9 +7,9 @@ class StateLib {
 	var $stateCode;
 		
 	function StateLib() {
-		$user->stateId = "";
-		$user->stateName = "";
-		$user->stateCode = "";
+		$this->stateId = "";
+		$this->stateName = "";
+		$this->stateCode = "";
 	}
 }
 ?>

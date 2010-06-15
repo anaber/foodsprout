@@ -1,4 +1,10 @@
-<?php $this->load->view('includes/header'); ?>
+<?php 
+	if (isset($SEO) ) {
+		$this->load->view('includes/header', array('SEO' => $SEO));
+	} else {
+		$this->load->view('includes/header');
+	}
+?>
 
 <?php
 /* END RESULT - We can remove table if we get divs in place
