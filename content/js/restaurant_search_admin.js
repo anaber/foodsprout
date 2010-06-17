@@ -3,9 +3,10 @@ $(document).ready(function() {
 	
 	$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
 	
-	$.post("/restaurant/ajaxSearchRestaurants", { },
+	$.post("/admincp/restaurant/ajaxSearchRestaurants", { },
 		function(data){
 			$('#suggestion_box').val('');
+			
 			redrawContent(data);
 		},
 		"json");
@@ -17,7 +18,7 @@ $(document).ready(function() {
 		$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
 		var query = $("#suggestion_box").val();
 		
-		$.post("/restaurant/ajaxSearchRestaurants", { q:query },
+		$.post("/admincp/restaurant/ajaxSearchRestaurants", { q:query },
 		function(data){
 			redrawContent(data);
       	},
@@ -33,7 +34,7 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 	$('#messageContainer').show();
 	$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
 	
-	var formAction = '/restaurant/ajaxSearchRestaurants';
+	var formAction = '/admincp/restaurant/ajaxSearchRestaurants';
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query};
 	
@@ -50,7 +51,7 @@ function redrawContent(data) {
 	$.each(data.results, function(i, a) {
 		resultTableHtml += addResult(a, i);
 	});	
-
+	
 	resultTableHtml += getResultTableFooter();
 	$('#resultTableContainer').append(resultTableHtml);
 	
@@ -205,8 +206,11 @@ function addResult(restaurant, i) {
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/restaurant/update/'+ restaurant.restaurantId +'">'+ restaurant.restaurantId +'</a></td>' +
 	'	<td valign="top"><a href="/admincp/restaurant/update/'+ restaurant.restaurantId +'">'+ restaurant.restaurantName +'</a></td>' +
-	'	<td valign="top">'+ restaurant.creationDate +'</td>' +
+	'	<td valign="top">'+ restaurant.creationDate +'</td>';
+	
+	/*
 	'	<td valign="top">';
+	
 	$.each(restaurant.suppliers, function(j, supplier) {
 		html += '<a href = "/admincp/restaurant/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + "</a><br /><br />";
 	});
@@ -220,6 +224,7 @@ function addResult(restaurant, i) {
 	});
 	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantId+'">Add Address</a>' +
 			'</td>';
+	*/
 	
 	html +=
 	'</tr>'
@@ -237,8 +242,8 @@ function getResultTableHeader() {
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Restaurant Id</a></th>' +
 	'		<th id = "heading_restaurant"><a href = "#" style = "color:#FFFFFF">Restaurant Name</a></th>' +
 	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Creation Date</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Locations</a></th>' +
+//	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
+//	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Locations</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';

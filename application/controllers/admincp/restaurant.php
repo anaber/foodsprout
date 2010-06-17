@@ -30,7 +30,7 @@ class Restaurant extends Controller {
 	
 	function ajaxSearchRestaurants() {
 		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantsJson();
+		$restaurants = $this->RestaurantModel->getRestaurantsJsonAdmin();
 		echo json_encode($restaurants);
 	}
 	
