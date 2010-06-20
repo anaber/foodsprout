@@ -59,6 +59,12 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
 							  cuisineId:selectedCuisines,
+							  
+							  phone:$('#phone').val(),
+							  fax:$('#fax').val(),
+							  email:$('#email').val(),
+							  url:$('#website').val(),
+							  
 							  isActive:$('#status').val(),
 							  
 							  restaurantId: $('#restaurantId').val()
@@ -73,6 +79,12 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
 							  cuisineId:selectedCuisines,
+							  
+							  phone:$('#phone').val(),
+							  fax:$('#fax').val(),
+							  email:$('#email').val(),
+							  url:$('#website').val(),
+							  
 							  isActive:$('#status').val(),
 							  address:$('#address').val(),
 							  city: $('#city').val(),
@@ -282,9 +294,35 @@ function findValueRestaurantChain(li) {
 	<tr>
 		<td width = "25%" nowrap>Custom URL</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantURL : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->customURL : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
 		</td>
 	<tr>
+	
+	<tr>
+		<td width = "25%" nowrap>Phone</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->phone : '') ?>" class="validate[optional]" type="text" name="phone" id="phone"/>
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%" nowrap>Fax</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->fax : '') ?>" class="validate[optional]" type="text" name="fax" id="fax"/>
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%" nowrap>E-Mail</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->email : '') ?>" class="validate[optional,custom[email]]" type="text" name="email" id="email"/>
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%" nowrap>Website</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->website : '') ?>" class="validate[optional]" type="text" name="website" id="website"/>
+		</td>
+	<tr>
+	
 	<tr>
 		<td width = "25%" nowrap>Status</td>
 		<td width = "75%">

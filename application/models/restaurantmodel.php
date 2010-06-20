@@ -738,8 +738,8 @@ class RestaurantModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('restaurantChainId') . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, phone, fax, email, url, is_active)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('restaurantChainId') . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 				$return = true;
@@ -804,7 +804,11 @@ class RestaurantModel extends Model{
 		$this->restaurantLib->restaurantChain = $row->restaurant_chain;
 		$this->restaurantLib->restaurantTypeId = $row->restaurant_type_id;
 		$this->restaurantLib->restaurantName = $row->restaurant_name;
-		$this->restaurantLib->restaurantURL = $row->url;
+		$this->restaurantLib->customURL = $row->custom_url;
+		$this->restaurantLib->phone = $row->phone;
+		$this->restaurantLib->fax = $row->fax;
+		$this->restaurantLib->email = $row->email;
+		$this->restaurantLib->website = $row->url;
 		$this->restaurantLib->isActive = $row->is_active;
 		
 		$cuisines = $this->getCuisineIdsForRestaurant( $row->restaurant_id);
@@ -854,6 +858,10 @@ class RestaurantModel extends Model{
 						'company_id' => $this->input->post('companyId'),
 						'restaurant_chain_id' => ( !empty($restaurantChainId) ? $restaurantChainId : NULL ) ,
 						'restaurant_type_id' => $this->input->post('restaurantTypeId'),
+						'phone' => $this->input->post('phone'),
+						'fax' => $this->input->post('fax'),
+						'email' => $this->input->post('email'),
+						'url' => $this->input->post('url'),
 						//'cuisine_id' => $this->input->post('cuisineId'),
 						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
