@@ -5,7 +5,7 @@
 
 <div style="overflow:auto; padding:5px;">
 	
-	<div style="float:left; width:250px; font-size:12px;" id = 'numRecords'>Viewing records 1-50 of 50</div>
+	<div style="float:left; width:250px; font-size:12px;" id = 'numRecords'>Viewing records 0-0 of 0</div>
 	<div style="float:left; width:120px; font-size:12px;" id = 'recordsPerPage' align = "center">
 		<select id = "recordsPerPageList">
 			<option value = "">--Per Page--</option>

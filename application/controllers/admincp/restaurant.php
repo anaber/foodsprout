@@ -39,10 +39,6 @@ class Restaurant extends Controller {
 	{
 		$data = array();
 		
-		//$this->load->model('CompanyModel');
-		//$companies = $this->CompanyModel->listCompany();
-		//$companies = array();
-		
 		$this->load->model('StateModel');
 		$states = $this->StateModel->listState();
 		
@@ -67,7 +63,6 @@ class Restaurant extends Controller {
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
 		$data['data']['center']['form']['CUISINES'] = $cuisines;
-		//$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -75,8 +70,6 @@ class Restaurant extends Controller {
 	function update($id)
 	{
 		$data = array();
-		
-		$this->load->model('CompanyModel');
 		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
@@ -236,40 +229,6 @@ class Restaurant extends Controller {
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
-	/*
-	function supplier_save_add() {
-		
-		$this->load->model('SupplierModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->SupplierModel->addSupplierIntermediate() ) {
-			echo 'yes';
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
-			} else {
-				echo 'no';
-			}
-		}
-	
-	}
-	
-	function supplier_save_update() {
-		
-		$this->load->model('SupplierModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->SupplierModel->updateSupplierIntermediate() ) {
-			echo 'yes';
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
-			} else {
-				echo 'no';
-			}
-		}
-	}
-	*/
 	
 	function add_address($id)
 	{
@@ -340,40 +299,7 @@ class Restaurant extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 		
 	}
-	/*
-	function address_save_add() {
-		
-		$this->load->model('AddressModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->AddressModel->addAddressIntermediate() ) {
-			echo 'yes';
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
-			} else {
-				echo 'no';
-			}
-		}
 	
-	}
-	
-	function address_save_update() {
-		
-		$this->load->model('AddressModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->AddressModel->updateAddress() ) {
-			echo "yes";
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
-			} else {
-				echo 'no';
-			}
-		}
-	}
-	*/
 }
 
 /* End of file restaurant.php */

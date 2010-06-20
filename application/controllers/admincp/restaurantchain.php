@@ -28,9 +28,9 @@ class RestaurantChain extends Controller {
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function ajaxSearchRestaurants() {
-		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantsJsonAdmin();
+	function ajaxSearchRestaurantChains() {
+		$this->load->model('RestaurantChainModel', '', TRUE);
+		$restaurants = $this->RestaurantChainModel->getRestaurantChainsJsonAdmin();
 		echo json_encode($restaurants);
 	}
 	
@@ -39,35 +39,17 @@ class RestaurantChain extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('CompanyModel');
-		//$companies = $this->CompanyModel->listCompany();
-		$companies = array();
-		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->listState();
-		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->listCountry();
-		
 		$this->load->model('RestauranttypeModel');
 		$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
 		
-		$this->load->model('CuisineModel');
-		$cuisines = $this->CuisineModel->listCuisine();
-		
-		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/restaurant_form',
+				'form' => 'admincp/restaurant_chain_form',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['form']['VIEW_HEADER'] = "Add Restaurant";
-		$data['data']['center']['form']['COUNTRIES'] = $countries;
-		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Add Restaurant Chain";
 		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
-		$data['data']['center']['form']['CUISINES'] = $cuisines;
-		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -76,28 +58,15 @@ class RestaurantChain extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('CompanyModel');
-		//$companies = $this->CompanyModel->listCompany();
-		$companies = array();
-		
-		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
-		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->listState();
-		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->listCountry();
+		$this->load->model('RestaurantChainModel');
+		$restaurant = $this->RestaurantChainModel->getRestaurantChainFromId($id);
 		
 		$this->load->model('RestauranttypeModel');
 		$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
 		
-		$this->load->model('CuisineModel');
-		$cuisines = $this->CuisineModel->listCuisine();
-		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/restaurant_form',
+				'form' => 'admincp/restaurant_chain_form',
 			);
 		
 		$data['LEFT'] = array(
@@ -105,13 +74,9 @@ class RestaurantChain extends Controller {
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['form']['VIEW_HEADER'] = "Update Restaurant";
-		$data['data']['center']['form']['COUNTRIES'] = $countries;
-		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Update Restaurant Chain";
 		$data['data']['center']['form']['RESTAURANT'] = $restaurant;
 		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
-		$data['data']['center']['form']['CUISINES'] = $cuisines;
-		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
@@ -122,15 +87,11 @@ class RestaurantChain extends Controller {
 	// This function will save the new restaurant data into the database
 	function save_add() {
 		
-		$this->load->model('RestaurantModel', '', TRUE);
+		$this->load->model('RestaurantChainModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->RestaurantModel->addRestaurant() ) {
-			// TO DO: IF THE USER DOES NOT HAVE JAVASCRIPT WE NEED TO USE SERVER SIDE REDIRECT.  BELOW CODE WILL DO THIS, HOWEVER THE echo 'yes' IS REQUIRED TO PASS TO THE JAVASCRIPT.  CONSIDER A BETTER WAY TO NOTIFY THE JQUERY JAVASCRIPT THAT THE EVENT WAS SUCCESSFUL SO AS TO ALLOW THE PROPER REDIRECT FOR NON JAVASCRIPT
-			// Added the new restaurant successfully, send user to index
-			//$this->index();
+		if ( $this->RestaurantChainModel->addRestaurantChain() ) {
 			echo 'yes';
-			
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
 				echo $GLOBALS['error'];
@@ -144,18 +105,10 @@ class RestaurantChain extends Controller {
 	// Send the updated information to the model to be updated in the database
 	function save_update() {
 		
-		$this->load->model('RestaurantModel', '', TRUE);
+		$this->load->model('RestaurantChainModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->RestaurantModel->updateRestaurant() ) {
-			
-			// The new restaurant was successfully updated, send user to index
-			//$this->index();
-			/* TO-DO:
-			 * Method used above to redirect user on home page from server isde is creating issues. 
-			 * It returns the whole HTML content. So when we have got JavaScript enabled, jquery does not work as expected.
-			 * We will need to think about one solution whcih can work in both the cases, jquery and server side (without JS)  
-			 */
+		if ( $this->RestaurantChainModel->updateRestaurantChain() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {

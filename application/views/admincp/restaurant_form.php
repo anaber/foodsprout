@@ -319,7 +319,7 @@ function findValueRestaurantChain(li) {
 	<tr>
 		<td width = "25%" nowrap>Website</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->website : '') ?>" class="validate[optional]" type="text" name="website" id="website"/>
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantURL : '') ?>" class="validate[optional]" type="text" name="website" id="website"/>
 		</td>
 	<tr>
 	

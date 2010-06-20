@@ -753,11 +753,12 @@ class RestaurantModel extends Model{
 					for($i = 0; $i < count($arrCuisineId); $i++) {
 						$query = "INSERT INTO restaurant_cuisine (restaurant_cuisine_id, restaurant_id, cuisine_id)" .
 						" values (NULL, " . $newRestaurantId . ", " . $arrCuisineId[$i] . " )";
+						
+						if ( mysql_query($query) ) {
+							$restaurantCuisineId = mysql_insert_id();
+						}
 					}
 					
-					if ( mysql_query($query) ) {
-						$restaurantCuisineId = mysql_insert_id();
-					}
 					
 					$CI->load->model('AddressModel','',true);
 					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', $companyId);
@@ -808,7 +809,7 @@ class RestaurantModel extends Model{
 		$this->restaurantLib->phone = $row->phone;
 		$this->restaurantLib->fax = $row->fax;
 		$this->restaurantLib->email = $row->email;
-		$this->restaurantLib->website = $row->url;
+		$this->restaurantLib->restaurantURL = $row->url;
 		$this->restaurantLib->isActive = $row->is_active;
 		
 		$cuisines = $this->getCuisineIdsForRestaurant( $row->restaurant_id);
