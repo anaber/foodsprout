@@ -82,7 +82,7 @@ class ManufactureModel extends Model{
 					$newManufactureId = $this->db->insert_id();
 					
 					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress('', '', $newManufactureId, '');
+					$address = $CI->AddressModel->addAddress('', '', $newManufactureId, '', $companyId);
 				} else {
 					$return = false;
 				}
@@ -101,7 +101,10 @@ class ManufactureModel extends Model{
 	function getManufactureFromId($manufactureId) {
 		
 		//$query = "SELECT manufacture.*, address.* FROM manufacture, address WHERE manufacture.manufacture_id = address.manufacture_id AND manufacture.manufacture_id = " . $manufactureId;
-		$query = "SELECT * FROM manufacture WHERE manufacture_id = " . $manufactureId;
+		$query = "SELECT manufacture.*, company.company_name " .
+				" FROM manufacture, company" .
+				" WHERE manufacture.manufacture_id = " . $manufactureId .
+				" AND manufacture.company_id = company.company_id";
 		log_message('debug', "ManufactureModel.getManufactureFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -111,6 +114,7 @@ class ManufactureModel extends Model{
 		
 		$this->manufactureLib->manufactureId = $row->manufacture_id;
 		$this->manufactureLib->companyId = $row->company_id;
+		$this->manufactureLib->companyName = $row->company_name;
 		$this->manufactureLib->manufactureTypeId = $row->manufacture_type_id;
 		$this->manufactureLib->manufactureName = $row->manufacture_name;
 		$this->manufactureLib->customUrl = $row->custom_url;

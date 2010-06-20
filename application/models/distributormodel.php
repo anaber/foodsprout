@@ -100,7 +100,11 @@ class DistributorModel extends Model{
 	// Get all the information about one specific Distributor from an ID
 	function getDistributorFromId($distributorId) {
 		
-		$query = "SELECT * FROM distributor WHERE distributor_id = " . $distributorId;
+		$query = "SELECT distributor.*, company.company_name " .
+				" FROM distributor, company " .
+				" WHERE distributor.distributor_id = " . $distributorId . 
+				" AND distributor.company_id = company.company_id";
+				
 		log_message('debug', "DistributorModel.getDistributorFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -110,6 +114,7 @@ class DistributorModel extends Model{
 		
 		$this->DistributorLib->distributorId = $row->distributor_id;
 		$this->DistributorLib->companyId = $row->company_id;
+		$this->DistributorLib->companyName = $row->company_name;
 		$this->DistributorLib->distributorName = $row->distributor_name;
 		$this->DistributorLib->customUrl = $row->custom_url;
 		$this->DistributorLib->isActive = $row->is_active;

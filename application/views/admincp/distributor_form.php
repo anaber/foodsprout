@@ -119,9 +119,52 @@ $(document).ready(function() {
 		
 	});
 	
+	
+	$("#companyAjax").autocomplete(
+		"/admincp/company/searchCompanies",
+		{
+			delay:10,
+			minChars:3,
+			matchSubset:1,
+			matchContains:1,
+			cacheLength:10,
+			onItemSelect:selectItem,
+			onFindValue:findValue,
+			formatItem:formatItem,
+			autoFill:false
+		}
+	);
+	
 });
-		
+
+
+function findValue(li) {
+	if( li == null ) return alert("No match!");
+ 
+	// if coming from an AJAX call, let's use the CityId as the value
+	if( !!li.extra ) var sValue = li.extra[0];
+ 
+	// otherwise, let's just display the value in the text box
+	else var sValue = li.selectValue;
+ 
+	//alert("The value you selected was: " + sValue);
+	document.getElementById('companyId').value = sValue;	
+}
+ 
+function selectItem(li) {
+	findValue(li);
+}
+
+function formatItem(row) {
+	//return row[0] + " (id: " + row[1] + ")";
+	return row[0];
+}
+
+	
 </script>
+
+<script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
 
 <?php echo anchor('admincp/distributor', 'List Distributors'); ?><br /><br />
 
@@ -132,14 +175,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
-			<select name="companyId" id="companyId"  class="validate[optional]">
-			<option value = ''>--Existing Companies--</option>
-			<?php
-				foreach($COMPANIES as $key => $value) {
-					echo '<option value="'.$value->companyId.'"' . (  ( isset($DISTRIBUTOR) && ( $value->companyId == $DISTRIBUTOR->companyId )  ) ? ' SELECTED' : '' ) . '>'.$value->companyName.'</option>';
-				}
-			?>
-			</select>
+			<input type="text" id="companyAjax" value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->companyName : '') ?>" style="width: 200px;" />
 		</td>
 	<tr>
 	<tr>
@@ -234,6 +270,7 @@ $(document).ready(function() {
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($DISTRIBUTOR)) ? 'Update Distributor' : 'Add Distributor' ?>">
 			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->distributorId : '') ?>">
+			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->companyId : '') ?>">
 		</td>
 	<tr>
 </table>

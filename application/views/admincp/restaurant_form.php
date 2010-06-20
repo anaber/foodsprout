@@ -214,14 +214,11 @@ function findValueRestaurantChain(li) {
 }
 
 </script>
-<?php
-	
-?>
-
-<?php echo anchor('admincp/restaurant', 'List Restaurants'); ?><br /><br />
 
 <script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" /> 
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
+
+<?php echo anchor('admincp/restaurant', 'List Restaurants'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
@@ -231,7 +228,6 @@ function findValueRestaurantChain(li) {
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->companyName : '') ?>" style="width: 200px;" /> 
-			<!--<input type="button" value="Get Value" onclick="lookupAjax();" /> -->
 		</td>
 	<tr>
 	<tr>

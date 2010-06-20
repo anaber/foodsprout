@@ -101,7 +101,10 @@ class FarmModel extends Model{
 	function getFarmFromId($farmId) {
 		
 		//$query = "SELECT manufacture.*, address.* FROM manufacture, address WHERE manufacture.manufacture_id = address.manufacture_id AND manufacture.manufacture_id = " . $manufactureId;
-		$query = "SELECT * FROM farm WHERE farm_id = " . $farmId;
+		$query = "SELECT farm.*, company.company_name " .
+				" FROM farm, company " .
+				" WHERE farm.farm_id = " . $farmId . 
+				" AND farm.company_id = company.company_id";
 		log_message('debug', "FarmModel.getFarmFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -111,6 +114,7 @@ class FarmModel extends Model{
 		
 		$this->FarmLib->farmId = $row->farm_id;
 		$this->FarmLib->companyId = $row->company_id;
+		$this->FarmLib->companyName = $row->company_name;
 		$this->FarmLib->farmTypeId = $row->farm_type_id;
 		$this->FarmLib->farmName = $row->farm_name;
 		$this->FarmLib->customUrl = $row->custom_url;

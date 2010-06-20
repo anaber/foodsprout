@@ -228,13 +228,13 @@ class SupplierModel extends Model{
 		$idFieldName = $supplierType . '_supplier_id';
 		$fieldName = $supplierType . '_id';
 		
-		//$query = "SELECT * FROM $tableName WHERE $idFieldName = " . $supplierId;
-		
+		$query = "SELECT * FROM $tableName WHERE $idFieldName = " . $supplierId;
+		/*
 		$query = 'SELECT ' . $tableName . '.*, ' . $supplierType.'.'.$supplierType . '_name ' .
 				' FROM '.$tableName .', '. $supplierType .
 				' WHERE ' . $tableName . '.' . $idFieldName . ' = ' . $supplierId . 
 				' AND ' . $tableName . '.' . 'supplier_'.$supplierType.'_id = ' . $supplierType . '.' . $supplierType . '_id';
-		
+		*/
 		
 		log_message('debug', "SupplierModel.getSupplierFromId : " . $query);
 		$result = $this->db->query($query);
@@ -244,8 +244,6 @@ class SupplierModel extends Model{
 		$row = $result->row();
 		
 		$this->supplierLib->supplierId = $row->$idFieldName;
-		$str = $supplierType . '_name';
-		$this->supplierLib->companyName = $row->$str;
 		
 		if ($row->$fieldName) {
 			if ($supplierType == 'manufacture') {
@@ -259,18 +257,39 @@ class SupplierModel extends Model{
 			}
 		}
 		
+		$CI =& get_instance();
+		
 		if ($row->supplier_farm_id ) {
 			$this->supplierLib->companyId = $row->supplier_farm_id;
 			$this->supplierLib->supplierType = 'farm';
+			
+			$CI->load->model('FarmModel','',true);
+			$farm = $CI->FarmModel->getFarmFromId( $row->supplier_farm_id );
+			$this->supplierLib->companyName = $farm->farmName;
+			
 		} else if ($row->supplier_manufacture_id ) {
 			$this->supplierLib->companyId = $row->supplier_manufacture_id;
 			$this->supplierLib->supplierType = 'manufacture';
+			
+			$CI->load->model('ManufactureModel','',true);
+			$farm = $CI->ManufactureModel->getManufactureFromId( $row->supplier_manufacture_id );
+			$this->supplierLib->companyName = $farm->manufactureName;
+			
 		} else if ($row->supplier_distributor_id ) {
 			$this->supplierLib->companyId = $row->supplier_distributor_id;
 			$this->supplierLib->supplierType = 'distributor';
+			
+			$CI->load->model('DistributorModel','',true);
+			$farm = $CI->DistributorModel->getDistributorFromId( $row->supplier_distributor_id );
+			$this->supplierLib->companyName = $farm->distributorName;
+			
 		} else if ($row->supplier_restaurant_id ) {
 			$this->supplierLib->companyId = $row->supplier_restaurant_id;
 			$this->supplierLib->supplierType = 'restaurant';
+			
+			$CI->load->model('RestaurantModel','',true);
+			$farm = $CI->RestaurantModel->getRestaurantFromId( $row->supplier_restaurant_id );
+			$this->supplierLib->companyName = $farm->restaurantName;
 		}
 
 		return $this->supplierLib;

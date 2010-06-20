@@ -36,9 +36,6 @@ class Distributor extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->listCompany();
-		
 		$this->load->model('StateModel');
 		$states = $this->StateModel->listState();
 		
@@ -54,7 +51,6 @@ class Distributor extends Controller {
 		$data['data']['center']['form']['VIEW_HEADER'] = "Add Distributor";
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['STATES'] = $states;
-		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -64,9 +60,6 @@ class Distributor extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->listCompany();
-
 		$this->load->model('DistributorModel');
 		$distributor = $this->DistributorModel->getDistributorFromId($id);
 		
@@ -85,7 +78,6 @@ class Distributor extends Controller {
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Distributor";
 		$data['data']['center']['form']['DISTRIBUTOR'] = $distributor;
-		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}

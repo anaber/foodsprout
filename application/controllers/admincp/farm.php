@@ -36,9 +36,6 @@ class Farm extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->listCompany();
-		
 		$this->load->model('StateModel');
 		$states = $this->StateModel->listState();
 		
@@ -58,7 +55,6 @@ class Farm extends Controller {
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
-		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -67,9 +63,6 @@ class Farm extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->listCompany();
-
 		$this->load->model('FarmModel');
 		$farm = $this->FarmModel->getFarmFromId($id);
 		
@@ -93,7 +86,6 @@ class Farm extends Controller {
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
 		$data['data']['center']['form']['FARM'] = $farm;
-		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		
