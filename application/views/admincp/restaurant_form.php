@@ -230,7 +230,6 @@ function findValueRestaurantChain(li) {
 	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
-		
 			<input type="text" id="companyAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->companyName : '') ?>" style="width: 200px;" /> 
 			<!--<input type="button" value="Get Value" onclick="lookupAjax();" /> -->
 		</td>

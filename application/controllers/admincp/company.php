@@ -118,10 +118,17 @@ class Company extends Controller {
 		
 	}
 	
-	function get_companies_based_on_type() {
+	function get_companies_based_on_type($q) {
 		$this->load->model('CompanyModel', '', TRUE);
-		$companies = $this->CompanyModel->getCompanyBasedOnType( $this->input->post('companyType') );
-		echo json_encode($companies);
+		$arr = explode('___' , $q);
+		$companyType = $arr[0];
+		$q = $arr[1];
+		if ($companyType != '') {
+			$companies = $this->CompanyModel->getCompanyBasedOnType( $companyType, $q );
+		} else {
+			$companies = 'No Match';
+		}
+		echo $companies;
 	}
 	
 	function searchCompanies($q) {

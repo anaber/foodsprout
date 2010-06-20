@@ -32,34 +32,25 @@ $(document).ready(function() {
 	
 	
 	$("#supplierType").change(function () {
-		supplierType = $("#supplierType").val();
-		
-		if (supplierType == '') {
-			$('#companyId')
-			    .find('option')
-			    .remove();
-			$('#companyId').append($("<option></option>").attr("value",'').text('--Existing Companies--'));
-			
-		} else {
-			
-			var formAction = '/admincp/company/get_companies_based_on_type';
-			postArray = { companyType:supplierType };
-
-			$.post(formAction, postArray, function(data) {
-				
-				$('#companyId')
-				    .find('option')
-				    .remove();
-				$('#companyId').append($("<option></option>").attr("value",'').text('--Existing Companies--'));
-				
-				$.each(data.results, function(i, a) {
-					$('#companyId').append($("<option></option>").attr("value",a.id).text(a.name));
-				});
-			},
-			"json");
-		}
-		
+		$("#companyAjax").val('');
+		$("#companyId").val('');
 	});
+	
+	
+	$("#companyAjax").autocomplete(
+		"/admincp/company/get_companies_based_on_type",
+		{
+			delay:10,
+			minChars:3,
+			matchSubset:1,
+			matchContains:1,
+			cacheLength:10,
+			onItemSelect:selectItem,
+			onFindValue:findValue,
+			formatItem:formatItem,
+			autoFill:false
+		}
+	);
 	
 	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
@@ -71,6 +62,17 @@ $(document).ready(function() {
 	$("#supplierForm").submit(function() {
 		
 		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
+		
+		companyId = $("#companyId").val();
+		
+		if (companyId == '') {
+			$("#msgbox").fadeTo(200,0.1,function() {
+				//add message and change the class of the box and start fading
+				$(this).html('Company not selected...').addClass('messageboxerror').fadeTo(900,1);
+			});
+			return false;
+		}
+		
 		
 		if (formValidated == false) {
 			// Don't post the form.
@@ -115,7 +117,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -203,8 +205,35 @@ $(document).ready(function() {
 ?>
 	
 });
-		
+	
+	
+	
+function findValue(li) {
+	if( li == null ) return alert("No match!");
+ 
+	// if coming from an AJAX call, let's use the CityId as the value
+	if( !!li.extra ) var sValue = li.extra[0];
+ 
+	// otherwise, let's just display the value in the text box
+	else var sValue = li.selectValue;
+ 
+	//alert("The value you selected was: " + sValue);
+	document.getElementById('companyId').value = sValue;	
+}
+ 
+function selectItem(li) {
+	findValue(li);
+}
+
+function formatItem(row) {
+	//return row[0] + " (id: " + row[1] + ")";
+	return row[0];
+}
+	
 </script>
+
+<script src="<?php echo base_url()?>js/jquery.autocomplete_supplier.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 <?php
@@ -229,9 +258,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
-			<select name="companyId" id="companyId" class="validate[optional]">
-			<option value = ''>--Existing Companies--</option>
-			</select>
+			<input type="text" id="companyAjax" value="<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyName : '') ?>" style="width: 200px;" />
 		</td>
 	<tr>
 	<tr>
@@ -259,7 +286,8 @@ $(document).ready(function() {
 			<input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE_ID) ? $MANUFACTURE_ID : '') ?>">
 			<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM_ID) ? $FARM_ID : '') ?>">
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
-			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR_ID) ? $DISTRIBUTOR_ID : '') ?>">			
+			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR_ID) ? $DISTRIBUTOR_ID : '') ?>">
+			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyId : '') ?>">			
 		</td>
 	<tr>
 </table>

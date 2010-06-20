@@ -97,34 +97,21 @@ class CompanyModel extends Model{
 		}
 	}
 	
-	function getCompanyBasedOnType ($companyType) {
+	function getCompanyBasedOnType ($companyType, $q) {
 		
-		$query = "SELECT $companyType.* " .
-				 " FROM $companyType " .
-				 " ORDER BY $companyType" . "_name";
+		$query = 'SELECT ' . $companyType . '_id, ' . $companyType . '_name
+					FROM ' . $companyType .'
+					WHERE ' . $companyType.'_name like "'.$q.'%"
+					ORDER BY ' . $companyType.'_name ';
 		
+		$companies = '';
 		log_message('debug', "CompanyModel.getCompanyBasedOnType : " . $query);
 		$result = $this->db->query($query);
-		
-		$companies = array();
-		
 		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('CompanyLib');
-			unset($this->companyLib);
-			
-			$this->companyLib->id = $row[$companyType . '_id'];
-			$this->companyLib->name = $row[$companyType . '_name'];
-			
-			$companies[] = $this->companyLib;
-			unset($this->companyLib);
+			$companies .= $row[$companyType . '_name']."|".$row[$companyType . '_id']."\n";
 		}
 		
-		$arr = array(
-			'results'    => $companies,
-		);
-		
-		return $arr;
+		return $companies;
 	}
 	
 	function updateCompany() {

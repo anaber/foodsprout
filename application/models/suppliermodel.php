@@ -228,7 +228,13 @@ class SupplierModel extends Model{
 		$idFieldName = $supplierType . '_supplier_id';
 		$fieldName = $supplierType . '_id';
 		
-		$query = "SELECT * FROM $tableName WHERE $idFieldName = " . $supplierId;
+		//$query = "SELECT * FROM $tableName WHERE $idFieldName = " . $supplierId;
+		
+		$query = 'SELECT ' . $tableName . '.*, ' . $supplierType.'.'.$supplierType . '_name ' .
+				' FROM '.$tableName .', '. $supplierType .
+				' WHERE ' . $tableName . '.' . $idFieldName . ' = ' . $supplierId . 
+				' AND ' . $tableName . '.' . 'supplier_'.$supplierType.'_id = ' . $supplierType . '.' . $supplierType . '_id';
+		
 		
 		log_message('debug', "SupplierModel.getSupplierFromId : " . $query);
 		$result = $this->db->query($query);
@@ -238,6 +244,8 @@ class SupplierModel extends Model{
 		$row = $result->row();
 		
 		$this->supplierLib->supplierId = $row->$idFieldName;
+		$str = $supplierType . '_name';
+		$this->supplierLib->companyName = $row->$str;
 		
 		if ($row->$fieldName) {
 			if ($supplierType == 'manufacture') {
