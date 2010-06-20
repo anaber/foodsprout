@@ -124,6 +124,12 @@ class Company extends Controller {
 		echo json_encode($companies);
 	}
 	
+	function searchCompanies($q) {
+		$this->load->model('CompanyModel', '', TRUE);
+		$companies = $this->CompanyModel->searchCompanies($q);
+		echo $companies;
+	}
+	
 }
 
 /* End of file company.php */

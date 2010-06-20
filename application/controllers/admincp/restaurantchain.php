@@ -385,6 +385,13 @@ class RestaurantChain extends Controller {
 		}
 	}
 	*/
+	
+	function searchRestaurantChains($q) {
+		$this->load->model('RestaurantChainModel', '', TRUE);
+		$restaurantChains = $this->RestaurantChainModel->searchRestaurantChains($q);
+		echo $restaurantChains;
+	}
+	
 }
 
 /* End of file restaurant.php */

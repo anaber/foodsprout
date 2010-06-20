@@ -683,6 +683,24 @@ class RestaurantModel extends Model{
 		return $cuisines;
 	}
 	
+	function getCuisineIdsForRestaurant($restaurantId) {
+		$cuisines = array();
+		
+		$query = "SELECT restaurant_cuisine.*" .
+				" FROM restaurant_cuisine" .
+				" WHERE " .
+				" restaurant_cuisine.restaurant_id = " . $restaurantId;
+		
+		log_message('debug', "RestaurantModel.getCuisineIdsForRestaurant : " . $query);
+		$result = $this->db->query($query);
+		
+		foreach ($result->result_array() as $row) {
+			$cuisines[] = $row['cuisine_id'];
+		}
+		
+		return $cuisines;
+	}
+	
 	// Input the data from the controller
 	function addRestaurant() {
 		global $ACTIVITY_LEVEL_DB;
@@ -695,6 +713,7 @@ class RestaurantModel extends Model{
 		
 		$CI =& get_instance();
 		
+		//echo "Company Id:" . $companyId . ":Name:" . $restaurantName . ":";
 		
 		if (empty($companyId) && empty($restaurantName) ) {
 			$GLOBALS['error'] = 'no_name';
@@ -713,20 +732,32 @@ class RestaurantModel extends Model{
 				}
 			}
 			
-			$query = "SELECT * FROM restaurant WHERE restaurant_name = '" . $restaurantName . "' AND company_id = '" . $companyId . "'";
+			$query = "SELECT * FROM restaurant WHERE restaurant_name = \"" . $restaurantName . "\" AND company_id = '" . $companyId . "'";
 			log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
 			
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_type_id, cuisine_id, restaurant_name, creation_date, custom_url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('restaurantTypeId') . ", " . $this->input->post('cuisineId') . ", '" . $restaurantName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, is_active)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('restaurantChainId') . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 				$return = true;
 				
 				if ( $this->db->query($query) ) {
 					$newRestaurantId = $this->db->insert_id();
+					
+					$arrCuisineId = explode(',', $this->input->post('cuisineId'));
+					
+					
+					for($i = 0; $i < count($arrCuisineId); $i++) {
+						$query = "INSERT INTO restaurant_cuisine (restaurant_cuisine_id, restaurant_id, cuisine_id)" .
+						" values (NULL, " . $newRestaurantId . ", " . $arrCuisineId[$i] . " )";
+					}
+					
+					if ( mysql_query($query) ) {
+						$restaurantCuisineId = mysql_insert_id();
+					}
 					
 					$CI->load->model('AddressModel','',true);
 					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', $companyId);
@@ -748,7 +779,14 @@ class RestaurantModel extends Model{
 	function getRestaurantFromId($restaurantId) {
 		
 		//$query = "SELECT restaurant.*, address.* FROM restaurant, address WHERE restaurant.restaurant_id = address.restaurant_id AND restaurant.restaurant_id = " . $restaurantId;
-		$query = "SELECT * FROM restaurant WHERE restaurant_id = " . $restaurantId;
+		//$query = "SELECT * FROM restaurant WHERE restaurant_id = " . $restaurantId;
+		$query = "SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name" .
+				" FROM restaurant" .
+				" LEFT JOIN restaurant_chain" .
+				" ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id" .
+				" LEFT JOIN company" .
+				" ON restaurant.company_id = company.company_id" .
+				" WHERE restaurant.restaurant_id = " . $restaurantId;
 		
 		log_message('debug', "RestaurantModel.getRestaurantFromId : " . $query);
 		$result = $this->db->query($query);
@@ -761,10 +799,16 @@ class RestaurantModel extends Model{
 		
 		$this->restaurantLib->restaurantId = $row->restaurant_id;
 		$this->restaurantLib->companyId = $row->company_id;
+		$this->restaurantLib->companyName = $row->company_name;
+		$this->restaurantLib->restaurantChainId = $row->restaurant_chain_id;
+		$this->restaurantLib->restaurantChain = $row->restaurant_chain;
 		$this->restaurantLib->restaurantTypeId = $row->restaurant_type_id;
 		$this->restaurantLib->restaurantName = $row->restaurant_name;
 		$this->restaurantLib->restaurantURL = $row->url;
 		$this->restaurantLib->isActive = $row->is_active;
+		
+		$cuisines = $this->getCuisineIdsForRestaurant( $row->restaurant_id);
+		$this->restaurantLib->cuisines = $cuisines;
 		
 		return $this->restaurantLib;
 	}
@@ -803,12 +847,14 @@ class RestaurantModel extends Model{
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
-			
+			$restaurantChainId = $this->input->post('restaurantChainId');
 			$data = array(
 						'restaurant_name' => $this->input->post('restaurantName'), 
 						'custom_url' => $this->input->post('customUrl'),
+						'company_id' => $this->input->post('companyId'),
+						'restaurant_chain_id' => ( !empty($restaurantChainId) ? $restaurantChainId : NULL ) ,
 						'restaurant_type_id' => $this->input->post('restaurantTypeId'),
-						'cuisine_id' => $this->input->post('cuisineId'),
+						//'cuisine_id' => $this->input->post('cuisineId'),
 						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
 			$where = "restaurant_id = " . $this->input->post('restaurantId');

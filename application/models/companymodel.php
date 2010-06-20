@@ -158,6 +158,21 @@ class CompanyModel extends Model{
 		return $return;
 	}
 	
+	function searchCompanies($q) {
+		$query = "SELECT company_id, company_name
+					FROM company
+					WHERE company_name like '$q%'
+					ORDER BY company_name ";
+		$companies = '';
+		log_message('debug', "CompanyModel.searchCompanies : " . $query);
+		$result = $this->db->query($query);
+		foreach ($result->result_array() as $row) {
+			$companies .= $row['company_name']."|".$row['company_id']."\n";
+		}
+		
+		return $companies;
+	}
+	
 }
 
 

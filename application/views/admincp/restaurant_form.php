@@ -11,6 +11,9 @@ formValidated = true;
 
 $(document).ready(function() {
 	
+	
+	<?php echo (isset($RESTAURANT) ? '' : "$('#companyId').val('');") ?>
+	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
 	$("#restaurantForm").validationEngine({
 		success :  function() {formValidated = true;},
@@ -34,28 +37,42 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
+			//alert($('#companyId').val());
+			
+			var selectedCuisines = '';
+			var j = 0;
+		    $('#cuisineId' + ' :selected').each(function(i, selected){
+			    if (j == 0) {
+			    	selectedCuisines += $(selected).val();
+			    } else {
+			    	selectedCuisines += ',' + $(selected).val();
+			    }
+			    j++;
+			});
+			
 			if ($('#restaurantId').val() != '' ) {
 				var formAction = '/admincp/restaurant/save_update';
 				postArray = {
 							  companyId:$('#companyId').val(),
+							  restaurantChainId:$('#restaurantChainId').val(),
 							  restaurantName:$('#restaurantName').val(),
 							  customUrl:$('#customUrl').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
-							  cuisineId:$('#cuisineId').val(),
+							  cuisineId:selectedCuisines,
 							  isActive:$('#status').val(),
-							  							 
+							  
 							  restaurantId: $('#restaurantId').val()
 							};
 				act = 'update';		
 			} else {
 				formAction = '/admincp/restaurant/save_add';
 				postArray = { 
-							  
 							  companyId:$('#companyId').val(),
+							  restaurantChainId:$('#restaurantChainId').val(),
 							  restaurantName:$('#restaurantName').val(),
 							  customUrl:$('#customUrl').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
-							  cuisineId:$('#cuisineId').val(),
+							  cuisineId:selectedCuisines,
 							  isActive:$('#status').val(),
 							  address:$('#address').val(),
 							  city: $('#city').val(),
@@ -67,7 +84,8 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				
+				//alert(data);
+				//return false;
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -125,15 +143,85 @@ $(document).ready(function() {
 		
 	});	
 
-});
+
+	$("#companyAjax").autocomplete(
+		"/admincp/company/searchCompanies",
+		{
+			delay:10,
+			minChars:3,
+			matchSubset:1,
+			matchContains:1,
+			cacheLength:10,
+			onItemSelect:selectItem,
+			onFindValue:findValue,
+			formatItem:formatItem,
+			autoFill:false
+		}
+	);
 	
-		
+	$("#restaurantChainAjax").autocomplete(
+		"/admincp/restaurantchain/searchRestaurantChains",
+		{
+			delay:10,
+			minChars:3,
+			matchSubset:1,
+			matchContains:1,
+			cacheLength:10,
+			onItemSelect:selectItem,
+			onFindValue:findValueRestaurantChain,
+			formatItem:formatItem,
+			autoFill:false
+		}
+	);
+
+});
+
+
+
+function findValue(li) {
+	if( li == null ) return alert("No match!");
+ 
+	// if coming from an AJAX call, let's use the CityId as the value
+	if( !!li.extra ) var sValue = li.extra[0];
+ 
+	// otherwise, let's just display the value in the text box
+	else var sValue = li.selectValue;
+ 
+	//alert("The value you selected was: " + sValue);
+	document.getElementById('companyId').value = sValue;	
+}
+ 
+function selectItem(li) {
+	findValue(li);
+}
+
+function formatItem(row) {
+	//return row[0] + " (id: " + row[1] + ")";
+	return row[0];
+}
+
+function findValueRestaurantChain(li) {
+	if( li == null ) return alert("No match!");
+ 
+	// if coming from an AJAX call, let's use the CityId as the value
+	if( !!li.extra ) var sValue = li.extra[0];
+ 
+	// otherwise, let's just display the value in the text box
+	else var sValue = li.selectValue;
+ 
+	//alert("The value you selected was: " + sValue);
+	document.getElementById('restaurantChainId').value = sValue;	
+}
+
 </script>
 <?php
 	
 ?>
 
 <?php echo anchor('admincp/restaurant', 'List Restaurants'); ?><br /><br />
+
+<script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" /> 
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
@@ -142,14 +230,9 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
-			<select name="companyId" id="companyId"  class="validate[optional]">
-			<option value = ''>--Existing Companies--</option>
-			<?php
-				foreach($COMPANIES as $key => $value) {
-					echo '<option value="'.$value->companyId.'"' . (  ( isset($RESTAURANT) && ( $value->companyId == $RESTAURANT->companyId )  ) ? ' SELECTED' : '' ) . '>'.$value->companyName.'</option>';
-				}
-			?>
-			</select>
+		
+			<input type="text" id="companyAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->companyName : '') ?>" style="width: 200px;" /> 
+			<!--<input type="button" value="Get Value" onclick="lookupAjax();" /> -->
 		</td>
 	<tr>
 	<tr>
@@ -181,6 +264,12 @@ $(document).ready(function() {
 		</td>
 	<tr>
 	<tr>
+		<td width = "25%" nowrap>Restaurant Chain</td>
+		<td width = "75%">
+			<input type="text" id="restaurantChainAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantChain : '') ?>" style="width: 200px;" /> 
+		</td>
+	<tr>
+	<tr>
 		<td width = "25%">Cuisine</td>
 		<td width = "75%">
 			<select name="cuisineId" id="cuisineId"  class="validate[required]" multiple size = "6">
@@ -188,7 +277,7 @@ $(document).ready(function() {
 			<option value = "NULL">--Unknown--</option>
 			<?php
 				foreach($CUISINES as $key => $value) {
-					echo '<option value="'.$value->cuisineId.'"' . (  ( isset($RESTAURANT) && ( $value->restauranttypeId == $RESTAURANT->cuisineId )  ) ? ' SELECTED' : '' ) . '>'.$value->cuisineName.'</option>';
+					echo '<option value="'.$value->cuisineId.'"' . (  ( isset($RESTAURANT) && in_array($value->cuisineId, $RESTAURANT->cuisines) ) ? ' SELECTED' : '' ) . '>'.$value->cuisineName.'</option>';
 				}
 			?>
 			</select>
@@ -198,7 +287,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" nowrap>Custom URL</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->customUrl : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantURL : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
 		</td>
 	<tr>
 	<tr>
@@ -271,6 +360,8 @@ $(document).ready(function() {
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($RESTAURANT)) ? 'Update Restaurant' : 'Add Restaurant' ?>">
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>">
+			<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantChainId : '') ?>">
+			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->companyId : '') ?>">
 		</td>
 	</tr>
 </table>

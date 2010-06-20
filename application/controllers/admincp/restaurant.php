@@ -39,9 +39,9 @@ class Restaurant extends Controller {
 	{
 		$data = array();
 		
-		$this->load->model('CompanyModel');
+		//$this->load->model('CompanyModel');
 		//$companies = $this->CompanyModel->listCompany();
-		$companies = array();
+		//$companies = array();
 		
 		$this->load->model('StateModel');
 		$states = $this->StateModel->listState();
@@ -67,7 +67,7 @@ class Restaurant extends Controller {
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
 		$data['data']['center']['form']['CUISINES'] = $cuisines;
-		$data['data']['center']['form']['COMPANIES'] = $companies;
+		//$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -77,17 +77,9 @@ class Restaurant extends Controller {
 		$data = array();
 		
 		$this->load->model('CompanyModel');
-		//$companies = $this->CompanyModel->listCompany();
-		$companies = array();
 		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
-		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->listState();
-		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->listCountry();
 		
 		$this->load->model('RestauranttypeModel');
 		$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
@@ -106,12 +98,9 @@ class Restaurant extends Controller {
 			
 		// Data to be passed to the views
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Restaurant";
-		$data['data']['center']['form']['COUNTRIES'] = $countries;
-		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['RESTAURANT'] = $restaurant;
 		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
 		$data['data']['center']['form']['CUISINES'] = $cuisines;
-		$data['data']['center']['form']['COMPANIES'] = $companies;
 		
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
