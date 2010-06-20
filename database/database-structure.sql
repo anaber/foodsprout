@@ -922,10 +922,11 @@ CREATE  TABLE IF NOT EXISTS `address` (
   INDEX `fk_address_state1` (`state_id` ASC) ,
   INDEX `fk_address_restaurant1` (`restaurant_id` ASC) ,
   INDEX `fk_address_farm1` (`farm_id` ASC) ,
-  INDEX `fk_address_processing_facility1` (`manufacture_id` ASC) ,
+  INDEX `fk_address_manufacture1` (`manufacture_id` ASC) ,
   INDEX `fk_address_company1` (`company_id` ASC) ,
   INDEX `fk_address_country1` (`country_id` ASC) ,
-  INDEX `fk_address_distribution_center1` (`distributor_id` ASC) ,
+  INDEX `fk_address_distributor1` (`distributor_id` ASC) ,
+  INDEX `zipcode` (`zipcode` ASC) ,
   CONSTRAINT `fk_address_city_area1`
     FOREIGN KEY (`city_id` )
     REFERENCES `city` (`city_id` )
@@ -946,7 +947,7 @@ CREATE  TABLE IF NOT EXISTS `address` (
     REFERENCES `farm` (`farm_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_address_processing_facility1`
+  CONSTRAINT `fk_address_manufacture1`
     FOREIGN KEY (`manufacture_id` )
     REFERENCES `manufacture` (`manufacture_id` )
     ON DELETE NO ACTION
@@ -961,7 +962,7 @@ CREATE  TABLE IF NOT EXISTS `address` (
     REFERENCES `country` (`country_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_address_distribution_center1`
+  CONSTRAINT `fk_address_distributor1`
     FOREIGN KEY (`distributor_id` )
     REFERENCES `distributor` (`distributor_id` )
     ON DELETE NO ACTION
@@ -1311,6 +1312,62 @@ CREATE  TABLE IF NOT EXISTS `chain_menu_item_ingredients` (
   CONSTRAINT `fk_chain_menu_item_ingredients_chain_menu_item1`
     FOREIGN KEY (`chain_menu_item_id` )
     REFERENCES `chain_menu_item` (`chain_menu_item_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `seo_page`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `seo_page` ;
+
+CREATE  TABLE IF NOT EXISTS `seo_page` (
+  `seo_page_id` INT(4) NOT NULL AUTO_INCREMENT ,
+  `page` VARCHAR(45) NULL ,
+  `title_tag` TEXT NULL ,
+  `meta_description` TEXT NULL ,
+  `meta_keywords` TEXT NULL ,
+  `h1` VARCHAR(255) NULL ,
+  `url` VARCHAR(300) NULL ,
+  PRIMARY KEY (`seo_page_id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `restaurant_chain_supplier`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `restaurant_chain_supplier` ;
+
+CREATE  TABLE IF NOT EXISTS `restaurant_chain_supplier` (
+  `restaurant_chain_supplier_id` INT NOT NULL AUTO_INCREMENT COMMENT '	' ,
+  `restaurant_chain_id` INT NOT NULL ,
+  `supplier_farm_id` INT NULL COMMENT '	' ,
+  `supplier_manufacture_id` INT NULL ,
+  `supplier_distributor_id` INT NULL ,
+  PRIMARY KEY (`restaurant_chain_supplier_id`) ,
+  INDEX `fk_restaurant_chain_supplier_restaurant_chain1` (`restaurant_chain_id` ASC) ,
+  INDEX `fk_restaurant_chain_supplier_farm1` (`supplier_farm_id` ASC) ,
+  INDEX `fk_restaurant_chain_supplier_manufacture1` (`supplier_manufacture_id` ASC) ,
+  INDEX `fk_restaurant_chain_supplier_distributor1` (`supplier_distributor_id` ASC) ,
+  CONSTRAINT `fk_restaurant_chain_supplier_restaurant_chain1`
+    FOREIGN KEY (`restaurant_chain_id` )
+    REFERENCES `restaurant_chain` (`restaurant_chain_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_restaurant_chain_supplier_farm1`
+    FOREIGN KEY (`supplier_farm_id` )
+    REFERENCES `farm` (`farm_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_restaurant_chain_supplier_manufacture1`
+    FOREIGN KEY (`supplier_manufacture_id` )
+    REFERENCES `manufacture` (`manufacture_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_restaurant_chain_supplier_distributor1`
+    FOREIGN KEY (`supplier_distributor_id` )
+    REFERENCES `distributor` (`distributor_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

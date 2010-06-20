@@ -52,6 +52,36 @@ class RestaurantModel extends Model{
 	}
 	
 	
+	// Generate a simple list of all the fast food chain restaurants.
+	function listFastFood()
+	{
+		
+		$query = "SELECT restaurant_chain.*
+					FROM restaurant_chain
+					ORDER BY restaurant_chain limit 0, 100";
+		
+		
+		log_message('debug', "RestaurantModel.listFastFood : " . $query);
+		$result = $this->db->query($query);
+		
+		$restaurants = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('RestaurantChainLib');
+			unset($this->RestaurantChainLib);
+			
+			$this->RestaurantChainLib->restaurantChainId = $row['restaurant_chain_id'];
+			$this->RestaurantChainLib->restaurantChain = $row['restaurant_chain'];
+			
+			$restaurants[] = $this->RestaurantChainLib;
+			unset($this->RestaurantChainLib);
+		}
+		
+		return $restaurants;
+	}
+	
+	
 	function getRestaurantsJson() {
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 		
@@ -739,6 +769,30 @@ class RestaurantModel extends Model{
 		return $this->restaurantLib;
 	}
 	
+	
+	// Pulls the data from the database for a specific restaurant
+	function getRestaurantChainFromId($restaurantChainId) {
+		
+		
+		$query = "SELECT * FROM restaurant_chain WHERE restaurant_chain_id = " . $restaurantChainId;
+		
+		log_message('debug', "RestaurantModel.getRestaurantChainFromId : " . $query);
+		$result = $this->db->query($query);
+		
+		$restaurant = array();
+		
+		$this->load->library('RestaurantChainLib');
+		
+		$row = $result->row();
+		
+		$this->restaurantChainLib->restaurantChainId = $row->restaurant_chain_id;
+		$this->restaurantChainLib->restaurantChain = $row->restaurant_chain;
+		
+		return $this->restaurantChainLib;
+	}
+	
+	
+	// Update the restaurant in the database with new information
 	function updateRestaurant() {
 		global $ACTIVITY_LEVEL_DB;
 		$return = true;

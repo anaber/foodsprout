@@ -38,7 +38,7 @@
 					}
 				?>
 			</div>
-			<div id="search">
+			<!-- div id="search">
 				<span class="greentxt">Search For</span> <span style="font-size: 11px; color: #666;">(i.e. BigMac, salmon, potato chips)<br>
 				<?php
 				
@@ -58,7 +58,7 @@
 					echo '</form>';
 				
 				?>
-			</div>
+			</div -->
 		</div>
 	</div>
 	<?php $this->load->view('includes/navigation') ?>
