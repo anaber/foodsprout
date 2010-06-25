@@ -191,101 +191,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `product`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `product` ;
-
-CREATE  TABLE IF NOT EXISTS `product` (
-  `product_id` INT NOT NULL AUTO_INCREMENT ,
-  `company_id` INT NOT NULL ,
-  `restaurant_id` INT NULL ,
-  `product_type_id` INT NULL ,
-  `product_name` VARCHAR(90) NOT NULL ,
-  `brand` VARCHAR(90) NULL ,
-  `upc` INT NULL ,
-  `status` ENUM('live','queue') NOT NULL ,
-  `user_id` INT NULL ,
-  `creation_date` DATE NOT NULL ,
-  `modify_date` DATE NULL ,
-  PRIMARY KEY (`product_id`) ,
-  INDEX `fk_product_company1` (`company_id` ASC) ,
-  INDEX `fk_product_restaurant1` (`restaurant_id` ASC) ,
-  INDEX `fk_product_product_type1` (`product_type_id` ASC) ,
-  INDEX `fk_product_user1` (`user_id` ASC) ,
-  CONSTRAINT `fk_product_company1`
-    FOREIGN KEY (`company_id` )
-    REFERENCES `company` (`company_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_product_restaurant1`
-    FOREIGN KEY (`restaurant_id` )
-    REFERENCES `restaurant` (`restaurant_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_product_product_type1`
-    FOREIGN KEY (`product_type_id` )
-    REFERENCES `product_type` (`product_type_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_product_user1`
-    FOREIGN KEY (`user_id` )
-    REFERENCES `user` (`user_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `country`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `country` ;
-
-CREATE  TABLE IF NOT EXISTS `country` (
-  `country_id` INT NOT NULL AUTO_INCREMENT ,
-  `country_name` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`country_id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `item`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `item` ;
-
-CREATE  TABLE IF NOT EXISTS `item` (
-  `item_id` INT NOT NULL AUTO_INCREMENT ,
-  `item_name` VARCHAR(45) NOT NULL ,
-  `item_ingredient_labeling` TEXT NULL ,
-  PRIMARY KEY (`item_id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `product_items`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `product_items` ;
-
-CREATE  TABLE IF NOT EXISTS `product_items` (
-  `product_item_id` INT NOT NULL AUTO_INCREMENT ,
-  `product_id` INT NOT NULL ,
-  `item_id` INT NOT NULL ,
-  PRIMARY KEY (`product_item_id`) ,
-  INDEX `fk_product_items_product1` (`product_id` ASC) ,
-  INDEX `fk_product_items_item1` (`item_id` ASC) ,
-  CONSTRAINT `fk_product_items_product1`
-    FOREIGN KEY (`product_id` )
-    REFERENCES `product` (`product_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_product_items_item1`
-    FOREIGN KEY (`item_id` )
-    REFERENCES `item` (`item_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `manufacture_type`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `manufacture_type` ;
@@ -324,6 +229,72 @@ CREATE  TABLE IF NOT EXISTS `manufacture` (
     REFERENCES `company` (`company_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `product`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `product` ;
+
+CREATE  TABLE IF NOT EXISTS `product` (
+  `product_id` INT NOT NULL AUTO_INCREMENT ,
+  `company_id` INT NOT NULL ,
+  `restaurant_id` INT NULL ,
+  `restaurant_chain_id` INT NULL ,
+  `manufacture_id` INT NULL ,
+  `product_type_id` INT NULL ,
+  `product_name` VARCHAR(90) NOT NULL ,
+  `ingredient_text` TEXT NULL ,
+  `brand` VARCHAR(90) NULL ,
+  `upc` INT NULL ,
+  `status` ENUM('live','queue') NOT NULL ,
+  `user_id` INT NULL ,
+  `creation_date` DATE NOT NULL ,
+  `modify_date` DATE NULL ,
+  PRIMARY KEY (`product_id`) ,
+  INDEX `fk_product_company1` (`company_id` ASC) ,
+  INDEX `fk_product_restaurant1` (`restaurant_id` ASC) ,
+  INDEX `fk_product_product_type1` (`product_type_id` ASC) ,
+  INDEX `fk_product_user1` (`user_id` ASC) ,
+  INDEX `fk_product_manufacture1` (`manufacture_id` ASC) ,
+  CONSTRAINT `fk_product_company1`
+    FOREIGN KEY (`company_id` )
+    REFERENCES `company` (`company_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_restaurant1`
+    FOREIGN KEY (`restaurant_id` )
+    REFERENCES `restaurant` (`restaurant_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_product_type1`
+    FOREIGN KEY (`product_type_id` )
+    REFERENCES `product_type` (`product_type_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_user1`
+    FOREIGN KEY (`user_id` )
+    REFERENCES `user` (`user_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_manufacture1`
+    FOREIGN KEY (`manufacture_id` )
+    REFERENCES `manufacture` (`manufacture_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `country`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `country` ;
+
+CREATE  TABLE IF NOT EXISTS `country` (
+  `country_id` INT NOT NULL AUTO_INCREMENT ,
+  `country_name` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`country_id`) )
 ENGINE = InnoDB;
 
 
@@ -434,6 +405,7 @@ DROP TABLE IF EXISTS `ingredient` ;
 CREATE  TABLE IF NOT EXISTS `ingredient` (
   `ingredient_id` INT NOT NULL AUTO_INCREMENT ,
   `ingredient_name` VARCHAR(45) NOT NULL ,
+  `ingredient_description` TEXT NULL ,
   `ingredient_type_id` INT NOT NULL ,
   `vegetable_type_id` INT NULL ,
   `meat_type_id` INT NULL ,
@@ -539,31 +511,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `item_ingredients`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `item_ingredients` ;
-
-CREATE  TABLE IF NOT EXISTS `item_ingredients` (
-  `item_ingredients_id` INT NOT NULL AUTO_INCREMENT ,
-  `item_ingredient_id` INT NOT NULL ,
-  `item_id` INT NOT NULL ,
-  PRIMARY KEY (`item_ingredients_id`) ,
-  INDEX `fk_item_ingredients_item_ingredient1` (`item_ingredient_id` ASC) ,
-  INDEX `fk_item_ingredients_item1` (`item_id` ASC) ,
-  CONSTRAINT `fk_item_ingredients_item_ingredient1`
-    FOREIGN KEY (`item_ingredient_id` )
-    REFERENCES `ingredient` (`ingredient_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_item_ingredients_item1`
-    FOREIGN KEY (`item_id` )
-    REFERENCES `item` (`item_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `product_impact`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `product_impact` ;
@@ -576,84 +523,6 @@ CREATE  TABLE IF NOT EXISTS `product_impact` (
   CONSTRAINT `fk_product_impact_product1`
     FOREIGN KEY (`product_id` )
     REFERENCES `product` (`product_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `chain_menu_item`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `chain_menu_item` ;
-
-CREATE  TABLE IF NOT EXISTS `chain_menu_item` (
-  `chain_menu_item_id` INT NOT NULL AUTO_INCREMENT COMMENT '	' ,
-  `chain_menu_item_name` VARCHAR(95) NOT NULL ,
-  `restaurant_chain_id` INT NOT NULL ,
-  PRIMARY KEY (`chain_menu_item_id`) ,
-  INDEX `fk_chain_menu_item_restaurant_chain1` (`restaurant_chain_id` ASC) ,
-  CONSTRAINT `fk_chain_menu_item_restaurant_chain1`
-    FOREIGN KEY (`restaurant_chain_id` )
-    REFERENCES `restaurant_chain` (`restaurant_chain_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `menu_item`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `menu_item` ;
-
-CREATE  TABLE IF NOT EXISTS `menu_item` (
-  `menu_item_id` INT NOT NULL AUTO_INCREMENT ,
-  `menu_item_name` VARCHAR(95) NOT NULL ,
-  `restaurant_id` INT NOT NULL ,
-  `chain_menu_item_id` INT NULL ,
-  PRIMARY KEY (`menu_item_id`) ,
-  INDEX `fk_menu_item_restaurant1` (`restaurant_id` ASC) ,
-  INDEX `fk_menu_item_chain_menu_item1` (`chain_menu_item_id` ASC) ,
-  CONSTRAINT `fk_menu_item_restaurant1`
-    FOREIGN KEY (`restaurant_id` )
-    REFERENCES `restaurant` (`restaurant_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_menu_item_chain_menu_item1`
-    FOREIGN KEY (`chain_menu_item_id` )
-    REFERENCES `chain_menu_item` (`chain_menu_item_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `photo`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `photo` ;
-
-CREATE  TABLE IF NOT EXISTS `photo` (
-  `photo_id` INT NOT NULL AUTO_INCREMENT ,
-  `product_id` INT NULL ,
-  `restaurant_id` INT NULL ,
-  `menu_item_id` INT NULL ,
-  `photo_data` BLOB NOT NULL ,
-  PRIMARY KEY (`photo_id`) ,
-  INDEX `fk_photo_final_product1` (`product_id` ASC) ,
-  INDEX `fk_photo_restaurant1` (`restaurant_id` ASC) ,
-  INDEX `fk_photo_menu_item1` (`menu_item_id` ASC) ,
-  CONSTRAINT `fk_photo_final_product1`
-    FOREIGN KEY (`product_id` )
-    REFERENCES `product` (`product_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_photo_restaurant1`
-    FOREIGN KEY (`restaurant_id` )
-    REFERENCES `restaurant` (`restaurant_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_photo_menu_item1`
-    FOREIGN KEY (`menu_item_id` )
-    REFERENCES `menu_item` (`menu_item_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -971,31 +840,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `menu_item_ingredients`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `menu_item_ingredients` ;
-
-CREATE  TABLE IF NOT EXISTS `menu_item_ingredients` (
-  `menu_item_ingredients_id` INT NOT NULL AUTO_INCREMENT ,
-  `menu_item_id` INT NOT NULL ,
-  `ingredient_id` INT NOT NULL ,
-  PRIMARY KEY (`menu_item_ingredients_id`) ,
-  INDEX `fk_menu_item_ingredients_ingredient1` (`ingredient_id` ASC) ,
-  INDEX `fk_menu_item_ingredients_menu_item1` (`menu_item_id` ASC) ,
-  CONSTRAINT `fk_menu_item_ingredients_ingredient1`
-    FOREIGN KEY (`ingredient_id` )
-    REFERENCES `ingredient` (`ingredient_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_menu_item_ingredients_menu_item1`
-    FOREIGN KEY (`menu_item_id` )
-    REFERENCES `menu_item` (`menu_item_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `product_ingredients`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `product_ingredients` ;
@@ -1293,31 +1137,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `chain_menu_item_ingredients`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `chain_menu_item_ingredients` ;
-
-CREATE  TABLE IF NOT EXISTS `chain_menu_item_ingredients` (
-  `chain_menu_item_ingredients_id` INT NOT NULL AUTO_INCREMENT COMMENT '	' ,
-  `chain_menu_item_id` INT NOT NULL ,
-  `ingredient_id` INT NOT NULL ,
-  PRIMARY KEY (`chain_menu_item_ingredients_id`) ,
-  INDEX `fk_chain_menu_item_ingredients_ingredient1` (`ingredient_id` ASC) ,
-  INDEX `fk_chain_menu_item_ingredients_chain_menu_item1` (`chain_menu_item_id` ASC) ,
-  CONSTRAINT `fk_chain_menu_item_ingredients_ingredient1`
-    FOREIGN KEY (`ingredient_id` )
-    REFERENCES `ingredient` (`ingredient_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_chain_menu_item_ingredients_chain_menu_item1`
-    FOREIGN KEY (`chain_menu_item_id` )
-    REFERENCES `chain_menu_item` (`chain_menu_item_id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `seo_page`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `seo_page` ;
@@ -1368,6 +1187,29 @@ CREATE  TABLE IF NOT EXISTS `restaurant_chain_supplier` (
   CONSTRAINT `fk_restaurant_chain_supplier_distributor1`
     FOREIGN KEY (`supplier_distributor_id` )
     REFERENCES `distributor` (`distributor_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sub_ingredient`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sub_ingredient` ;
+
+CREATE  TABLE IF NOT EXISTS `sub_ingredient` (
+  `ingredient_id` INT NOT NULL ,
+  `sub_ingredient_id` INT NOT NULL ,
+  INDEX `fk_sub_ingredient_ingredient1` (`ingredient_id` ASC) ,
+  INDEX `fk_sub_ingredient_ingredient2` (`sub_ingredient_id` ASC) ,
+  CONSTRAINT `fk_sub_ingredient_ingredient1`
+    FOREIGN KEY (`ingredient_id` )
+    REFERENCES `ingredient` (`ingredient_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sub_ingredient_ingredient2`
+    FOREIGN KEY (`sub_ingredient_id` )
+    REFERENCES `ingredient` (`ingredient_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
