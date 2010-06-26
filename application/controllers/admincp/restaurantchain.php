@@ -147,15 +147,15 @@ class RestaurantChain extends Controller {
 	
 	function add_supplier($id)
 	{
-		global $SUPPLIER_TYPES;
+		global $SUPPLIER_TYPES_2;
 		$data = array();
 		
-		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
+		$this->load->model('RestaurantChainModel');
+		$restaurantChain = $this->RestaurantChainModel->getRestaurantChainFromId($id);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_restaurant',
+				'nav' => 'admincp/includes/left/nav_restaurantchain',
 			);
 		
 		// List of views to be included
@@ -164,26 +164,27 @@ class RestaurantChain extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['RESTAURANT_ID'] = $id;
+		$data['data']['left']['nav']['RESTAURANT_CHAIN_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $restaurant->restaurantName;
-		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
-		$data['data']['center']['list']['SUPPLIER_TYPES'] = $SUPPLIER_TYPES;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $restaurantChain->restaurantChain . " (Chain)";
+		$data['data']['center']['list']['RESTAURANT_CHAIN'] = $restaurantChain;
+		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['list']['TABLE'] = 'restaurant_chain_supplier';
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
 	function update_supplier($id)
 	{
-		global $SUPPLIER_TYPES;
+		global $SUPPLIER_TYPES_2;
 		$data = array();
 		
 		$this->load->model('SupplierModel');
-		$supplier = $this->SupplierModel->getSupplierFromId($id, 'restaurant');
+		$supplier = $this->SupplierModel->getSupplierFromId($id, 'restaurant_chain');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_restaurant',
+				'nav' => 'admincp/includes/left/nav_restaurantchain',
 			);
 		
 		// List of views to be included
@@ -192,48 +193,15 @@ class RestaurantChain extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['RESTAURANT_ID'] = $supplier->restaurantId;
+		$data['data']['left']['nav']['RESTAURANT_CHAIN_ID'] = $supplier->restaurantChainId;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id;
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
-		$data['data']['center']['list']['SUPPLIER_TYPES'] = $SUPPLIER_TYPES;
+		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['list']['TABLE'] = 'restaurant_chain_supplier';
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
-	/*
-	function supplier_save_add() {
-		
-		$this->load->model('SupplierModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->SupplierModel->addSupplierIntermediate() ) {
-			echo 'yes';
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
-			} else {
-				echo 'no';
-			}
-		}
-	
-	}
-	
-	function supplier_save_update() {
-		
-		$this->load->model('SupplierModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->SupplierModel->updateSupplierIntermediate() ) {
-			echo 'yes';
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
-			} else {
-				echo 'no';
-			}
-		}
-	}
-	*/
 	
 	function add_address($id)
 	{

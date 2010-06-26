@@ -454,9 +454,7 @@ class RestaurantModel extends Model{
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
 		
 		
-		$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"'
-				. ' OR restaurant.restaurant_id like "%' . $q . '%"'
-				. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';
+		
 		
 		
 		/*
@@ -489,13 +487,11 @@ class RestaurantModel extends Model{
 		}
 		*/
 		if ( !empty($q) ) {
-			/*
-			if (!empty($where) ) {
-				$where .= ' AND (';  
-			} else {
-				$where .= ' WHERE (';
-			}
-			*/
+			
+			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"'
+					. ' OR restaurant.restaurant_id like "%' . $q . '%"'
+					. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';
+			
 			$where .= ' OR (';
 			$where	.= '		SELECT address.address_id' 
 					. '			from address, state, country'
@@ -515,13 +511,13 @@ class RestaurantModel extends Model{
 					. '				LIMIT 0, 1'
 					. '		)';
 			
+			$where .= ' )';
 		}
-		$where .= ' )';
+		
 		
 		$base_query_count = $base_query_count . $where;
 		
-		//echo $base_query_count;
-		//die;
+		
 		
 		//$query = $base_query_count . " ORDER BY restaurant_name ";
 		$query = $base_query_count;
@@ -563,7 +559,7 @@ class RestaurantModel extends Model{
 				$query .= " LIMIT 0, " . $PER_PAGE;
 			}
 		}
-		//print_r_pre($_REQUEST);
+		
 		//echo $query . "<br />";
 		//die;
 		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
@@ -576,14 +572,11 @@ class RestaurantModel extends Model{
 		$geocodeArray = array();
 		foreach ($result->result_array() as $row) {
 			
-			
 			$this->load->library('RestaurantLib');
 			unset($this->RestaurantLib);
 			
 			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
-			//$this->RestaurantLib->cuisineId = $row['cuisine_id'];
-			//$this->RestaurantLib->cuisine = $row['cuisine_name'];
 			
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			/*
@@ -613,11 +606,17 @@ class RestaurantModel extends Model{
 			}
 			*/
 			
-			//$CI->load->model('SupplierModel','',true);
-			//$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '' );
-			//$this->RestaurantLib->suppliers = $suppliers;
-			
-			
+			if ( $row['restaurant_chain_id'] ) {
+				$CI->load->model('SupplierModel','',true);
+				$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id'] );
+				$this->RestaurantLib->suppliers = $suppliers;
+				$this->RestaurantLib->suppliersFrom = 'restaurantChain';
+			} else {
+				$CI->load->model('SupplierModel','',true);
+				$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '' );
+				$this->RestaurantLib->suppliers = $suppliers;
+				$this->RestaurantLib->suppliersFrom = 'restaurant';
+			}
 			
 			
 			$restaurants[] = $this->RestaurantLib;

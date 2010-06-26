@@ -206,7 +206,27 @@ function addResult(restaurant, i) {
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/restaurantchain/update/'+ restaurant.restaurantChainId +'">'+ restaurant.restaurantChainId +'</a></td>' +
 	'	<td valign="top"><a href="/admincp/restaurantchain/update/'+ restaurant.restaurantChainId +'">'+ restaurant.restaurantChain +'</a></td>' +
-	'	<td valign="top">'+ restaurant.restaurantType +'</td>';
+	'	<td valign="top">'+ restaurant.restaurantType +'</td>' + 
+	'	<td valign="top">';
+	
+	$.each(restaurant.suppliers, function(j, supplier) {
+		supplierType = supplier.supplierType
+		supplierType = supplierType.substring(0, 1);
+		html += '<a href = "/admincp/restaurantchain/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"</a><br /><br />";
+	});
+	
+	html += '<a href = "/admincp/restaurantchain/add_supplier/'+restaurant.restaurantChainId+'">Add Supplier</a>' +
+			'</td>';
+	
+	/*
+	html +=
+	'	<td valign="top">';
+	$.each(restaurant.addresses, function(j, address) {
+		html += '<a href = "/admincp/restaurant/update_address/'+address.addressId+'">' + address.completeAddress + '</a><br /><br />';
+	});
+	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantChainId+'">Add Address</a>' +
+			'</td>';
+	*/
 	
 	html +=
 	'</tr>'
@@ -217,12 +237,13 @@ function addResult(restaurant, i) {
 
 function getResultTableHeader() {
 	var html =
-	' <table cellpadding="3" cellspacing="0" border="0" id="tbllist">' +
+	' <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "99%">' +
 	'	<thead>' +
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Restaurant Id</a></th>' +
 	'		<th id = "heading_restaurant"><a href = "#" style = "color:#FFFFFF">Restaurant Name</a></th>' +
 	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Restaurant Type</a></th>' +
+	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';

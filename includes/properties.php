@@ -39,5 +39,41 @@ $SUPPLIER_TYPES = array(
 					'distributor' 	=> 'Distributor',
 					'manufacture' 	=> 'Manufacture',
 				);
+
+$SUPPLIER_TYPES_2 = array (
+					'farm_supplier' => 	array(
+									'farm' 			=> 'Farm',
+									'restaurant' 	=> 'Restaurant', 
+									'distributor' 	=> 'Distributor',
+									'manufacture' 	=> 'Manufacture',
+							),
+					'restaurant_supplier' => 	array(
+									'farm' 			=> 'Farm',
+									'restaurant' 	=> 'Restaurant', 
+									'distributor' 	=> 'Distributor',
+									'manufacture' 	=> 'Manufacture',
+							),
+					'distributor_supplier' => 	array(
+									'farm' 			=> 'Farm',
+									'restaurant' 	=> 'Restaurant', 
+									'distributor' 	=> 'Distributor',
+									'manufacture' 	=> 'Manufacture',
+							),
+					'manufacture_supplier' => 	array(
+									'farm' 			=> 'Farm',
+									'restaurant' 	=> 'Restaurant', 
+									'distributor' 	=> 'Distributor',
+									'manufacture' 	=> 'Manufacture',
+							),
+					'restaurant_chain_supplier' => 	array(
+									'farm' 			=> 'Farm',
+									'distributor' 	=> 'Distributor',
+									'manufacture' 	=> 'Manufacture',
+							),
+					
+				);
+
+
+
 				
 ?>

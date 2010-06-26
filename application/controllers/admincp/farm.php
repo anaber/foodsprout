@@ -132,7 +132,7 @@ class Farm extends Controller {
 	
 	function add_supplier($id)
 	{
-		global $SUPPLIER_TYPES;
+		global $SUPPLIER_TYPES_2;
 		$data = array();
 		
 		$this->load->model('FarmModel');
@@ -153,14 +153,15 @@ class Farm extends Controller {
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $farm->farmName;
 		$data['data']['center']['list']['FARM'] = $farm;
-		$data['data']['center']['list']['SUPPLIER_TYPES'] = $SUPPLIER_TYPES;
+		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['list']['TABLE'] = 'farm_supplier';
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
 	function update_supplier($id)
 	{
-		global $SUPPLIER_TYPES;
+		global $SUPPLIER_TYPES_2;
 		$data = array();
 		
 		$this->load->model('SupplierModel');
@@ -181,7 +182,8 @@ class Farm extends Controller {
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id;
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
-		$data['data']['center']['list']['SUPPLIER_TYPES'] = $SUPPLIER_TYPES;
+		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['list']['TABLE'] = 'farm_supplier';
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}

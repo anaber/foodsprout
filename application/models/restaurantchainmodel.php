@@ -109,6 +109,10 @@ class RestaurantChainModel extends Model{
 			$this->RestaurantLib->restaurantTypeId = $row['restaurant_type_id'];
 			$this->RestaurantLib->restaurantType = $row['restaurant_type'];
 			
+			$CI->load->model('SupplierModel','',true);
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id']);
+			$this->RestaurantLib->suppliers = $suppliers;
+			
 			$restaurants[] = $this->RestaurantLib;
 			unset($this->RestaurantLib);
 		}
@@ -128,6 +132,7 @@ class RestaurantChainModel extends Model{
 			'param'      => $params,
 			'geocode'	 => $geocodeArray,
 	    );
+	    
 	    return $arr;
 	}
 	

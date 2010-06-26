@@ -24,7 +24,11 @@ var documentLocation = '';
 ?>
 		documentLocation = '/admincp/distributor';
 <?php
-	} 
+	} else if ( isset($RESTAURANT_CHAIN_ID) ) {
+?>
+		documentLocation = '/admincp/restaurantchain';
+<?php
+	}
 ?>
 formValidated = true;
 
@@ -52,6 +56,11 @@ $(document).ready(function() {
 		}
 	);
 	
+	$("#companyAjax").change(function () {
+		if ($("#companyAjax").val() == "") {
+			document.getElementById('companyId').value = '';
+		}
+	});
 	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
 	$("#supplierForm").validationEngine({
@@ -97,6 +106,7 @@ $(document).ready(function() {
 							  farmId: $('#farmId').val(),
 							  restaurantId: $('#restaurantId').val(),
 							  distributorId: $('#distributorId').val(),
+							  restaurantChainId: $('#restaurantChainId').val(),
 							   
 							  supplierId: $('#supplierId').val()
 							};
@@ -111,7 +121,8 @@ $(document).ready(function() {
 							  manufactureId: $('#manufactureId').val(),
 							  farmId: $('#farmId').val(),
 							  restaurantId: $('#restaurantId').val(),
-							  distributorId: $('#distributorId').val()
+							  distributorId: $('#distributorId').val(),
+							  restaurantChainId: $('#restaurantChainId').val()
 							};
 				act = 'add';
 			}
@@ -152,7 +163,7 @@ $(document).ready(function() {
 					//start fading the messagebox 
 					$("#msgbox").fadeTo(200,0.1,function() {
 						//add message and change the class of the box and start fading
-						$(this).html('Duplicate Address...').addClass('messageboxerror').fadeTo(900,1);
+						$(this).html('Duplicate Supplier...').addClass('messageboxerror').fadeTo(900,1);
 					});
 				} else {
 					//start fading the messagebox 
@@ -209,6 +220,7 @@ $(document).ready(function() {
 	
 	
 function findValue(li) {
+	
 	if( li == null ) return alert("No match!");
  
 	// if coming from an AJAX call, let's use the CityId as the value
@@ -236,9 +248,7 @@ function formatItem(row) {
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
-<?php
-	
-?>
+
 <form id="supplierForm" method="post" <?php echo (isset($MANUFACTURE)) ? 'action="/admincp/manufacture/supplier_save_update"' : 'action="/admincp/manufacture/supplier_save_add"' ?>>
 <table class="formTable">
 	<tr>
@@ -247,7 +257,8 @@ function formatItem(row) {
 			<select name="supplierType" id="supplierType" class="validate[required]">
 			<option value = ''>--Supplier Type--</option>
 			<?php
-				foreach($SUPPLIER_TYPES as $key => $value) {
+				
+				foreach ($SUPPLIER_TYPES_2[$TABLE] as $key => $value) {
 					echo '<option value="'.$key.'"' . (  ( isset($SUPPLIER) && ( $key == $SUPPLIER->supplierType )  ) ? ' SELECTED' : '' ) . '>' . $value . '</option>';
 				}
 			?>
@@ -287,6 +298,7 @@ function formatItem(row) {
 			<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM_ID) ? $FARM_ID : '') ?>">
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
 			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR_ID) ? $DISTRIBUTOR_ID : '') ?>">
+			<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
 			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyId : '') ?>">			
 		</td>
 	<tr>

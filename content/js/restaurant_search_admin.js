@@ -208,13 +208,23 @@ function addResult(restaurant, i) {
 	'	<td valign="top"><a href="/admincp/restaurant/update/'+ restaurant.restaurantId +'">'+ restaurant.restaurantName +'</a></td>' +
 	'	<td valign="top">'+ restaurant.creationDate +'</td>' + 
 	'	<td valign="top">';
-	/*	
+	
+		
 	$.each(restaurant.suppliers, function(j, supplier) {
-		html += '<a href = "/admincp/restaurant/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + "</a><br /><br />";
+		supplierType = supplier.supplierType
+		supplierType = supplierType.substring(0, 1);
+		
+		if (restaurant.suppliersFrom == 'restaurant') {
+			html += '<a href = "/admincp/restaurant/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"</a><br /><br />";
+		} else {
+			html += supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"<br /><br />";
+		}
 	});
-	*/
-	html += '<a href = "/admincp/restaurant/add_supplier/'+restaurant.restaurantId+'">Add Supplier</a>' +
-			'</td>';
+	if (restaurant.suppliersFrom == 'restaurant') {
+		html += '<a href = "/admincp/restaurant/add_supplier/'+restaurant.restaurantId+'">Add Supplier</a>';
+	}
+	
+	html += '</td>';
 	
 	html +=
 	'	<td valign="top">';
@@ -237,7 +247,7 @@ function addResult(restaurant, i) {
 function getResultTableHeader() {
 	var html =
 	//'<table width="790" border="1" cellpadding="5" cellspacing="0" id = "table_results">' +
-	' <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "100%">' +
+	' <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "99%">' +
 	'	<thead>' +
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Restaurant Id</a></th>' +

@@ -2,7 +2,7 @@
 <?php
 	//print_r_pre($MANUFACTURES);
 ?>
-<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
+<table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "99%">
 	<tr>
 		<th>Id</th>
 		<th>Manufacture Name</th>
@@ -24,7 +24,7 @@
 		echo '	<td nowrap>';
 			
 			foreach($r->suppliers as $supplier) :
-				echo '<a href = "/admincp/manufacture/update_supplier/' . $supplier->supplierId . '">' . $supplier->supplierName . ' (' . ucfirst($supplier->supplierType) . ')' . '</a>' . "<br /><br />";
+				echo '<a href = "/admincp/manufacture/update_supplier/' . $supplier->supplierId . '">' . $supplier->supplierName . ' <b>(' . substr ( ucfirst($supplier->supplierType), 0, 1 ) . ')</b>' . '</a>' . "<br /><br />";
 			endforeach;
 			echo anchor('/admincp/manufacture/add_supplier/' . $r->manufactureId, 'Add Supplier');
 		echo '</td>';

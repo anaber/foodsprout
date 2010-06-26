@@ -179,7 +179,7 @@ $(document).ready(function() {
 			matchSubset:1,
 			matchContains:1,
 			cacheLength:10,
-			onItemSelect:selectItem,
+			onItemSelect:selectItemRestaurantChain,
 			onFindValue:findValueRestaurantChain,
 			formatItem:formatItem,
 			autoFill:false
@@ -187,8 +187,6 @@ $(document).ready(function() {
 	);
 
 });
-
-
 
 function findValue(li) {
 	if( li == null ) return alert("No match!");
@@ -198,13 +196,17 @@ function findValue(li) {
  
 	// otherwise, let's just display the value in the text box
 	else var sValue = li.selectValue;
- 
+ 	
 	//alert("The value you selected was: " + sValue);
 	document.getElementById('companyId').value = sValue;	
 }
  
 function selectItem(li) {
 	findValue(li);
+}
+
+function selectItemRestaurantChain(li) {
+	findValueRestaurantChain(li);
 }
 
 function formatItem(row) {
@@ -220,7 +222,7 @@ function findValueRestaurantChain(li) {
  
 	// otherwise, let's just display the value in the text box
 	else var sValue = li.selectValue;
- 
+ 	
 	//alert("The value you selected was: " + sValue);
 	document.getElementById('restaurantChainId').value = sValue;	
 }
