@@ -1,7 +1,5 @@
 <?php echo anchor('admincp/farm/add', 'Add Farm'); ?><br /><br />
-<?php
-	//print_r_pre($MANUFACTURES);
-?>
+
 <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "99%">
 	<tr>
 		<th>Id</th>

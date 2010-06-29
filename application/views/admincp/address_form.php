@@ -134,10 +134,7 @@ $(document).ready(function() {
 ?>
 <form id="addressForm" method="post" <?php echo (isset($ADDRESS)) ? 'action="/admincp/address/address_save_update"' : 'action="/admincp/manufacture/address_save_add"' ?>>
 <table class="formTable">
-	
-<?php
-	
-?>
+
 	<tr>
 		<td colspan = "2"><b>Address</b></td>
 	<tr>
@@ -203,3 +200,21 @@ $(document).ready(function() {
 </table>
 </form>
 
+<table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "50%">
+	<tr>
+		<th>Id</th>
+		<th>Address</th>
+	</tr>
+<?php
+	$controller = $this->uri->segment(2);
+	$i = 0;
+	foreach($ADDRESSES as $address) :
+		$i++;
+		echo '<tr class="d'.($i & 1).'">';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_address/'.$address->addressId, $address->addressId).'</td>';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_address/'.$address->addressId, $address->displayAddress).'</td>';
+		echo '</tr>';
+
+ 	endforeach;
+?>
+</table>

@@ -245,6 +245,9 @@ class Restaurant extends Controller {
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
+		$this->load->model('AddressModel','',true);
+		$addresses = $this->AddressModel->getAddressForCompany( $id, '', '', '', '', '');
+				
 		// List of views to be included
 		$data['LEFT'] = array(
 				'nav' => 'admincp/includes/left/nav_restaurant',
@@ -261,6 +264,7 @@ class Restaurant extends Controller {
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $restaurant->restaurantName;
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		$data['data']['center']['list']['ADDRESSES'] = $addresses;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
@@ -278,6 +282,9 @@ class Restaurant extends Controller {
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
 		
+		$addresses = $this->AddressModel->getAddressForCompany( $address->restaurantId, '', '', '', '', '');
+		
+		
 		// List of views to be included
 		$data['LEFT'] = array(
 				'nav' => 'admincp/includes/left/nav_restaurant',
@@ -285,18 +292,19 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'from' => 'admincp/address_form',
+				'form' => 'admincp/address_form',
 			);
 		
 		// Data to be passed to the views
 		$data['data']['left']['nav']['RESTAURANT_ID'] = $address->restaurantId;
 		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
 		
-		$data['data']['center']['from']['VIEW_HEADER'] = "Update Address - #" . $id;
-		$data['data']['center']['from']['STATES'] = $states;
-		$data['data']['center']['from']['COUNTRIES'] = $countries;
-		$data['data']['center']['from']['ADDRESS'] = $address;
-		$data['data']['center']['from']['RESTAURANT_ID'] = $address->restaurantId;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id;
+		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['COUNTRIES'] = $countries;
+		$data['data']['center']['form']['ADDRESS'] = $address;
+		$data['data']['center']['form']['RESTAURANT_ID'] = $address->restaurantId;
+		$data['data']['center']['form']['ADDRESSES'] = $addresses;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		

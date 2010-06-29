@@ -4,6 +4,7 @@ class AddressModel extends Model{
 	
 	function prepareAddress($address, $city, $state_id, $country_id, $zipcode) {
 		$CI =& get_instance();
+		
 		$CI->load->model('StateModel','',true);
 		$arrState = $CI->StateModel->getStateFromId($state_id);
 		
@@ -11,6 +12,20 @@ class AddressModel extends Model{
 		$arrCountry = $CI->CountryModel->getCountryFromId($country_id);
 		
 		$address = $address . ' ' . $city . ' ' . $arrState->stateName . ' ' . $arrCountry->countryName . ' ' . $zipcode;
+		
+		return $address;
+	}
+	
+	function prepareAddressToDisplay($address, $city, $state_id, $country_id, $zipcode) {
+		$CI =& get_instance();
+		
+		$CI->load->model('StateModel','',true);
+		$arrState = $CI->StateModel->getStateFromId($state_id);
+		
+		$CI->load->model('CountryModel','',true);
+		$arrCountry = $CI->CountryModel->getCountryFromId($country_id);
+		
+		$address = $address . ', ' . $city . '<br />' . $arrState->stateName . ' ' . $zipcode . ', ' . $arrCountry->countryName;
 		
 		return $address;
 	}
@@ -64,6 +79,7 @@ class AddressModel extends Model{
 			$this->addressLib->longitude = $row['longitude'];
 			
 			$this->addressLib->completeAddress = $this->prepareAddress($row['address'], $row['city'], $row['state_id'], $row['country_id'], $row['zipcode']);
+			$this->addressLib->displayAddress = $this->prepareAddressToDisplay($row['address'], $row['city'], $row['state_id'], $row['country_id'], $row['zipcode']);
 			
 			$addresses[] = $this->addressLib;
 			unset($this->addressLib);
