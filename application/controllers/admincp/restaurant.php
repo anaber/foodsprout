@@ -261,7 +261,7 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['nav']['RESTAURANT_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $restaurant->restaurantName;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $restaurant->restaurantName . ' (R)';
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['ADDRESSES'] = $addresses;
@@ -299,7 +299,7 @@ class Restaurant extends Controller {
 		$data['data']['left']['nav']['RESTAURANT_ID'] = $address->restaurantId;
 		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
 		
-		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id;
+		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id . ' (R)';
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['ADDRESS'] = $address;

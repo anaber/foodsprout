@@ -31,7 +31,7 @@
 		echo '	<td>';
 		
 			foreach($r->addresses as $address) :
-				echo '<a href = "/admincp/distributor/update_address/' . $address->addressId . '">' . $address->completeAddress . '</a>' . "<br /><br />";
+				echo '<a href = "/admincp/distributor/update_address/' . $address->addressId . '">' . $address->displayAddress . '</a>' . "<br /><br />";
 			endforeach;
 			echo anchor('/admincp/distributor/add_address/' . $r->distributorId, 'Add Address');
 		echo '</td>';

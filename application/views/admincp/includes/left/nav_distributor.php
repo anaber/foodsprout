@@ -7,11 +7,12 @@
 	}		
 ?><br />
 <?php
-	if (isset($ADDRESS_ID) && !empty($ADDRESS_ID) ) {
-		 echo anchor('admincp/distributor/update_address/' . $ADDRESS_ID, 'Update Address');
-	} else {
-		echo anchor('admincp/distributor/add_address/' . $DISTRIBUTOR_ID, 'Add Address');
-	}		
+	echo anchor('admincp/distributor/add_address/' . $DISTRIBUTOR_ID, 'Add Address');
 ?><br />
+<?php
+	if (isset($ADDRESS_ID) && !empty($ADDRESS_ID) ) {
+		 echo anchor('admincp/distributor/update_address/' . $ADDRESS_ID, 'Update Address') . '<br />';
+	}	
+?>
 <?php echo anchor('admincp/distributor', 'List Distributors'); ?><br />
 </div>

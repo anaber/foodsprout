@@ -7,11 +7,12 @@
 	}		
 ?><br />
 <?php
-	if (isset($ADDRESS_ID) && !empty($ADDRESS_ID) ) {
-		 echo anchor('admincp/farm/update_address/' . $ADDRESS_ID, 'Update Address');
-	} else {
-		echo anchor('admincp/farm/add_address/' . $FARM_ID, 'Add Address');
-	}		
+	echo anchor('admincp/farm/add_address/' . $FARM_ID, 'Add Address');
 ?><br />
+<?php
+	if (isset($ADDRESS_ID) && !empty($ADDRESS_ID) ) {
+		 echo anchor('admincp/farm/update_address/' . $ADDRESS_ID, 'Update Address') . '<br />';
+	}		
+?>
 <?php echo anchor('admincp/farm', 'List Farms'); ?><br />
 </div>
