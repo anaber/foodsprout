@@ -74,6 +74,9 @@ $SUPPLIER_TYPES_2 = array (
 				);
 
 
-
+$FARMER_TYPES = array(
+					'natural' 			=> 'Natural',
+					'organic' 			=> 'Organic',
+				);
 				
 ?>

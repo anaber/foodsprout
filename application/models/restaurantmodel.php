@@ -36,11 +36,11 @@ class RestaurantModel extends Model{
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '' );
+			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '' );
 			$this->RestaurantLib->addresses = $addresses;
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '' );
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '' );
 			$this->RestaurantLib->suppliers = $suppliers;
 			
 			
@@ -384,7 +384,7 @@ class RestaurantModel extends Model{
 			
 			
 			//$CI->load->model('SupplierModel','',true);
-			//$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '' );
+			//$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '' );
 			//$this->RestaurantLib->suppliers = $suppliers;
 			
 			

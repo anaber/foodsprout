@@ -41,6 +41,7 @@ $(document).ready(function() {
 							  farmName:$('#farmName').val(),
 							  customUrl:$('#customUrl').val(),
 							  farmTypeId:$('#farmTypeId').val(),
+							  farmerType:$('#farmerType').val(),
 							  isActive:$('#status').val(),
 							  							 
 							  farmId: $('#farmId').val()
@@ -53,6 +54,7 @@ $(document).ready(function() {
 							  farmName:$('#farmName').val(),
 							  customUrl:$('#customUrl').val(),
 							  farmTypeId:$('#farmTypeId').val(),
+							  farmerType:$('#farmerType').val(),
 							  isActive:$('#status').val(),
 							  address:$('#address').val(),
 							  city: $('#city').val(),
@@ -202,6 +204,19 @@ function formatItem(row) {
 			<?php
 				foreach($FARM_TYPES as $key => $value) {
 					echo '<option value="'.$value->farmTypeId.'"' . (  ( isset($FARM) && ( $value->farmTypeId == $FARM->farmTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->farmType.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%">Farmer Type</td>
+		<td width = "75%">
+			<select name="farmerType" id="farmerType"  class="validate[optional]">
+			<option value = ''>--Farmer Type--</option>
+			<?php
+				foreach($FARMER_TYPES as $key => $value) {
+					echo '<option value="'.$key.'"' . (  ( isset($FARM) && ( $key == $FARM->farmerType )  ) ? ' SELECTED' : '' ) . '>'.$value.'</option>';
 				}
 			?>
 			</select>

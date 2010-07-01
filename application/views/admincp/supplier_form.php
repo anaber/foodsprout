@@ -30,6 +30,9 @@ var documentLocation = '';
 <?php
 	}
 ?>
+
+var originalCompanyId = <?php echo (isset($SUPPLIER) ? $SUPPLIER->companyId : '""') ?>;
+
 formValidated = true;
 
 $(document).ready(function() {
@@ -40,6 +43,13 @@ $(document).ready(function() {
 		$("#companyId").val('');
 	});
 	
+	$("#btnReset").click(function () {
+		//$("#supplierForm").reset();
+		$(":input").not(":button, :submit, :reset, :hidden").each( function() {
+		    this.value = this.defaultValue;
+		});
+		$("#companyId").val(originalCompanyId);
+	});
 	
 	$("#companyAjax").autocomplete(
 		"/admincp/company/get_companies_based_on_type",
@@ -81,7 +91,6 @@ $(document).ready(function() {
 			});
 			return false;
 		}
-		
 		
 		if (formValidated == false) {
 			// Don't post the form.
@@ -128,7 +137,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				
+				alert(data);
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -249,7 +258,7 @@ function formatItem(row) {
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
-<form id="supplierForm" method="post" <?php echo (isset($MANUFACTURE)) ? 'action="/admincp/manufacture/supplier_save_update"' : 'action="/admincp/manufacture/supplier_save_add"' ?>>
+<form id="supplierForm" method="post">
 <table class="formTable">
 	<tr>
 		<td width = "25%" nowrap>Supplier Type</td>
@@ -291,6 +300,7 @@ function formatItem(row) {
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($SUPPLIER)) ? 'Update Supplier' : 'Add Supplier' ?>">
+			<input type = "button" name = "btnReset" id = "btnReset" value = "Reset">
 			
 			<input type = "hidden" name = "supplierId" id = "supplierId" value = "<?php echo (isset($SUPPLIER) ? $SUPPLIER->supplierId : '') ?>">
 			
@@ -305,3 +315,21 @@ function formatItem(row) {
 </table>
 </form>
 
+<table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "50%">
+	<tr>
+		<th>Id</th>
+		<th>Supplier</th>
+	</tr>
+<?php
+	
+	$controller = $this->uri->segment(2);
+	$i = 0;
+	foreach($SUPPLIERS as $supplier) :
+		$i++;
+		echo '<tr class="d'.($i & 1).'">';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId, $supplier->supplierId).'</td>';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId, $supplier->supplierName).'</td>';
+		echo '</tr>';
+ 	endforeach;
+?>
+</table>

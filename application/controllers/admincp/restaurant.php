@@ -182,6 +182,9 @@ class Restaurant extends Controller {
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
+		$this->load->model('SupplierModel','',true);
+		$suppliers = $this->SupplierModel->getSupplierForCompany( $id, '', '', '', '' );
+		
 		// List of views to be included
 		$data['LEFT'] = array(
 				'nav' => 'admincp/includes/left/nav_restaurant',
@@ -194,11 +197,13 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['nav']['RESTAURANT_ID'] = $id;
+		$data['data']['left']['nav']['SUPPLIER_ID'] = $supplier->supplierId;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $restaurant->restaurantName;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $restaurant->restaurantName . ' (R)';
 		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'restaurant_supplier';
+		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
@@ -210,6 +215,8 @@ class Restaurant extends Controller {
 		
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'restaurant');
+		
+		$suppliers = $this->SupplierModel->getSupplierForCompany( $supplier->restaurantId, '', '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -224,10 +231,11 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['nav']['RESTAURANT_ID'] = $supplier->restaurantId;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (R)';
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'restaurant_supplier';
+		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}

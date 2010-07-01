@@ -4,6 +4,7 @@
 	<tr>
 		<th>Id</th>
 		<th>Farm Name</th>
+		<th>Farmer Type</th>
 		<th>Creation Date</th>
 		<th>Suppliers</th>
 		<th>Locations</th>
@@ -17,6 +18,7 @@
 		echo '<tr class="d'.($i & 1).'">';
 		echo '	<td>'.anchor('/admincp/farm/update/'.$r->farmId, $r->farmId).'</td>';
 		echo '	<td>'.anchor('/admincp/farm/update/'.$r->farmId, $r->farmName).'</td>';
+		echo '	<td>' . ( !empty($r->farmerType) ? $FARMER_TYPES[$r->farmerType] : '' ) . '</td>';
 		echo '	<td>'. date('Y-m-d', strtotime($r->creationDate) ) .'</td>';
 		echo '	<td nowrap>';
 			

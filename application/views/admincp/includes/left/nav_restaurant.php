@@ -1,11 +1,12 @@
 <div class="leftmenu">
 <?php
-	if (isset($SUPPLIER_ID) && !empty($SUPPLIER_ID) ) {
-		 echo anchor('admincp/restaurant/update_supplier/' . $SUPPLIER_ID, 'Update Supplier');
-	} else {
-		echo anchor('admincp/restaurant/add_supplier/' . $RESTAURANT_ID, 'Add Supplier');
-	}		
+	echo anchor('admincp/restaurant/add_supplier/' . $RESTAURANT_ID, 'Add Supplier');
 ?><br />
+<?php
+	if (isset($SUPPLIER_ID) && !empty($SUPPLIER_ID) ) {
+		 echo anchor('admincp/restaurant/update_supplier/' . $SUPPLIER_ID, 'Update Supplier') . '<br />';
+	}
+?>
 <?php
 	echo anchor('admincp/restaurant/add_address/' . $RESTAURANT_ID, 'Add Address');
 ?><br />

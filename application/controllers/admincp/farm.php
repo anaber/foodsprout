@@ -13,6 +13,7 @@ class Farm extends Controller {
 	
 	function index()
 	{
+		global $FARMER_TYPES;
 		$data = array();
 		$farms = array();
 		
@@ -27,6 +28,7 @@ class Farm extends Controller {
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Farms";
 		$data['data']['center']['list']['FARMS'] = $farms;
+		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -34,6 +36,7 @@ class Farm extends Controller {
 	// Create the form page to add a farm to the database, does not actually add the data, only builds the form
 	function add()
 	{
+		global $FARMER_TYPES;
 		$data = array();
 		
 		$this->load->model('StateModel');
@@ -55,12 +58,14 @@ class Farm extends Controller {
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
+		$data['data']['center']['form']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function update($id)
 	{
+		global $FARMER_TYPES;
 		$data = array();
 		
 		$this->load->model('FarmModel');
@@ -86,6 +91,7 @@ class Farm extends Controller {
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
 		$data['data']['center']['form']['FARM'] = $farm;
+		$data['data']['center']['form']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		
@@ -138,6 +144,9 @@ class Farm extends Controller {
 		$this->load->model('FarmModel');
 		$farm = $this->FarmModel->getFarmFromId($id);
 		
+		$this->load->model('SupplierModel','',true);
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $id, '', '', '' );
+		
 		// List of views to be included
 		$data['LEFT'] = array(
 				'nav' => 'admincp/includes/left/nav_farm',
@@ -151,10 +160,11 @@ class Farm extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['nav']['FARM_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $farm->farmName;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $farm->farmName . ' (F)';
 		$data['data']['center']['list']['FARM'] = $farm;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'farm_supplier';
+		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
@@ -166,6 +176,8 @@ class Farm extends Controller {
 		
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'farm');
+		
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $supplier->farmId, '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -179,11 +191,13 @@ class Farm extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['nav']['FARM_ID'] = $supplier->farmId;
+		$data['data']['left']['nav']['SUPPLIER_ID'] = $supplier->supplierId;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (F)';
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'farm_supplier';
+		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}

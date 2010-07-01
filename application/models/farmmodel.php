@@ -21,14 +21,15 @@ class FarmModel extends Model{
 			
 			$this->FarmLib->farmId = $row['farm_id'];
 			$this->FarmLib->farmName = $row['farm_name'];
+			$this->FarmLib->farmerType = $row['farmer_type'];
 			$this->FarmLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '' );
+			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '' );
 			$this->FarmLib->addresses = $addresses;
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', $row['farm_id'], '', '' );
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', $row['farm_id'], '', '', '' );
 			$this->FarmLib->suppliers = $suppliers;
 			
 			$farms[] = $this->FarmLib;
@@ -72,8 +73,8 @@ class FarmModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $farmName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, is_active)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'FarmModel.addManufacture : Insert Farm : ' . $query);
 				$return = true;
@@ -116,6 +117,7 @@ class FarmModel extends Model{
 		$this->FarmLib->companyId = $row->company_id;
 		$this->FarmLib->companyName = $row->company_name;
 		$this->FarmLib->farmTypeId = $row->farm_type_id;
+		$this->FarmLib->farmerType = $row->farmer_type;
 		$this->FarmLib->farmName = $row->farm_name;
 		$this->FarmLib->customUrl = $row->custom_url;
 		$this->FarmLib->isActive = $row->is_active;
@@ -139,6 +141,7 @@ class FarmModel extends Model{
 						'farm_name' => $this->input->post('farmName'),
 						'custom_url' => $this->input->post('customUrl'),
 						'farm_type_id' => $this->input->post('farmTypeId'),
+						'farmer_type' => $this->input->post('farmerType'),
 						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
 			$where = "farm_id = " . $this->input->post('farmId');

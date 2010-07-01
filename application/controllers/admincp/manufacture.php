@@ -139,6 +139,9 @@ class Manufacture extends Controller {
 		$this->load->model('ManufactureModel');
 		$manufacture = $this->ManufactureModel->getManufactureFromId($id);
 		
+		$this->load->model('SupplierModel','',true);
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', $id, '', '' );
+		
 		// List of views to be included
 		$data['LEFT'] = array(
 				'nav' => 'admincp/includes/left/nav_manufacture',
@@ -152,10 +155,11 @@ class Manufacture extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['nav']['MANUFACTURE_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $manufacture->manufactureName;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $manufacture->manufactureName . ' (M)';
 		$data['data']['center']['list']['MANUFACTURE'] = $manufacture;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'manufacture_supplier';
+		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
@@ -167,6 +171,8 @@ class Manufacture extends Controller {
 		
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'manufacture');
+		
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $supplier->manufactureId, '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -180,11 +186,13 @@ class Manufacture extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['nav']['MANUFACTURE_ID'] = $supplier->manufactureId;
+		$data['data']['left']['nav']['SUPPLIER_ID'] = $supplier->supplierId;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (M)';
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'manufacture_supplier';
+		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}

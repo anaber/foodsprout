@@ -24,11 +24,11 @@ class ManufactureModel extends Model{
 			$this->manufactureLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '' );
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '' );
 			$this->manufactureLib->addresses = $addresses;
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '' );
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '' );
 			$this->manufactureLib->suppliers = $suppliers;
 			
 			$manufactures[] = $this->manufactureLib;

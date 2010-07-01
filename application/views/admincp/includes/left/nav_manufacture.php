@@ -1,11 +1,12 @@
 <div class="leftmenu">
 <?php
-	if (isset($SUPPLIER_ID) && !empty($SUPPLIER_ID) ) {
-		 echo anchor('admincp/manufacture/update_supplier/' . $SUPPLIER_ID, 'Update Supplier');
-	} else {
-		echo anchor('admincp/manufacture/add_supplier/' . $MANUFACTURE_ID, 'Add Supplier');
-	}		
+	echo anchor('admincp/manufacture/add_supplier/' . $MANUFACTURE_ID, 'Add Supplier');		
 ?><br />
+<?php
+	if (isset($SUPPLIER_ID) && !empty($SUPPLIER_ID) ) {
+		 echo anchor('admincp/manufacture/update_supplier/' . $SUPPLIER_ID, 'Update Supplier') . '<br />';
+	}
+?>
 <?php
 	echo anchor('admincp/manufacture/add_address/' . $MANUFACTURE_ID, 'Add Address');
 ?><br />
