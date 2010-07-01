@@ -137,7 +137,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -328,7 +328,7 @@ function formatItem(row) {
 		$i++;
 		echo '<tr class="d'.($i & 1).'">';
 		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId, $supplier->supplierId).'</td>';
-		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId, $supplier->supplierName).'</td>';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId, $supplier->supplierName) . ' <b>(' . substr ( ucfirst($supplier->supplierType), 0, 1 ) . ')</b>' .'</td>';
 		echo '</tr>';
  	endforeach;
 ?>

@@ -355,6 +355,7 @@ class SupplierModel extends Model{
 		$farmId = $this->input->post('farmId');
 		$manufactureId = $this->input->post('manufactureId');
 		$distributorId = $this->input->post('distributorId');
+		$restaurantChainId = $this->input->post('restaurantChainId');
 		
 		$companyId = $this->input->post('companyId');
 		$companyName = $this->input->post('companyName');
@@ -385,7 +386,12 @@ class SupplierModel extends Model{
 			$idFieldName = 'distributor_supplier_id';
 			$fieldName = 'distributor_id';
 			$fieldValue = $distributorId;
-		}
+		} else if ( !empty($restaurantChainId) ) {
+			$tableName = 'restaurant_chain_supplier';
+			$idFieldName = 'restaurant_chain_supplier_id';
+			$fieldName = 'restaurant_chain_id';
+			$fieldValue = $restaurantChainId;
+		} 
 		
 		if (empty($companyId) && empty($companyName) ) {
 			$GLOBALS['error'] = 'no_name';
