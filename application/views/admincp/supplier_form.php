@@ -300,7 +300,7 @@ function formatItem(row) {
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($SUPPLIER)) ? 'Update Supplier' : 'Add Supplier' ?>">
-			<input type = "button" name = "btnReset" id = "btnReset" value = "Reset">
+			<input type = "button" name = "btnReset" id = "btnReset" value = "Reset" class = "button">
 			
 			<input type = "hidden" name = "supplierId" id = "supplierId" value = "<?php echo (isset($SUPPLIER) ? $SUPPLIER->supplierId : '') ?>">
 			
