@@ -16,5 +16,5 @@
 	}		
 ?>
 <?php echo anchor('admincp/restaurant', 'List Restaurant'); ?><br />
-<?php echo anchor('admincp/restaurant/add_menu_item', 'Add Menu Item'); ?><br />
+<?php echo anchor('admincp/restaurant/add_menu_item/' . $RESTAURANT_ID, 'Add Menu Item'); ?><br />
 </div>

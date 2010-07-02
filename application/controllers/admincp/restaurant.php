@@ -171,7 +171,6 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['nav']['RESTAURANT_ID'] = $id;
-		$data['data']['left']['nav']['SUPPLIER_ID'] = $supplier->supplierId;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $restaurant->restaurantName . ' (R)';
 		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
