@@ -148,33 +148,6 @@ class Restaurant extends Controller {
 		}	
 	}
 	
-	function add_menu_item($id){
-		$data = array();
-		
-		$this->load->model('IngredientModel');
-		$ingredients = $this->IngredientModel->list_ingredient();
-		
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'admincp/restaurant_menu_form',
-			);
-		
-		$data['LEFT'] = array(
-				'navigation' => 'admincp/includes/left/nav_restaurant',
-			);
-			
-		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Menu Item";
-		$data['data']['center']['list']['INGREDIENTS'] = $ingredients;
-		
-		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['RESTAURANT_CHAIN_ID'] = $id;
-		
-		$this->load->view('admincp/templates/left_center_template', $data);
-		
-	}
-	
 	function add_supplier($id)
 	{
 		global $SUPPLIER_TYPES_2;
@@ -318,6 +291,72 @@ class Restaurant extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 		
 	}
+	
+	
+	function add_menu_item($id){
+		$data = array();
+		
+		$this->load->model('ProductTypeModel');
+		$productTypes = $this->ProductTypeModel->listProductType();
+		
+		$this->load->model('ProductModel','',true);
+		$products = $this->ProductModel->getProductForCompany($id, '', '', '');
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'form' => 'admincp/menu_form',
+			);
+		
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_restaurant',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['form']['VIEW_HEADER'] = "Add Menu Item (R)";
+		$data['data']['center']['form']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['form']['PRODUCTS'] = $products;
+		
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	
+	function update_menu_item($id) {
+		$data = array();
+		
+		$this->load->model('ProductTypeModel');
+		$productTypes = $this->ProductTypeModel->listProductType();
+		
+		$this->load->model('ProductModel');
+		$product = $this->ProductModel->getProductFromId($id);
+		
+		$products = $this->ProductModel->getProductForCompany($product->restaurantId, '', '', '');
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_restaurant',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/menu_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $product->restaurantId;
+		$data['data']['left']['navigation']['PRODUCT_ID'] = $product->productId;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Menu Item - " . $id . ' (R)';
+		$data['data']['center']['list']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['list']['PRODUCT'] = $product;
+		$data['data']['center']['list']['PRODUCTS'] = $products;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
 	
 }
 

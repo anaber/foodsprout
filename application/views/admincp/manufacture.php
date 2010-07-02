@@ -9,6 +9,7 @@
 		<th>Creation Date</th>
 		<th>Suppliers</th>
 		<th>Locations</th>
+		<th>Menu</th>
 	</tr>
 			
 	
@@ -34,6 +35,9 @@
 				echo '<a href = "/admincp/manufacture/update_address/' . $address->addressId . '">' . $address->displayAddress . '</a>' . "<br /><br />";
 			endforeach;
 			echo anchor('/admincp/manufacture/add_address/' . $r->manufactureId, 'Add Address');
+		echo '</td>';
+		echo '	<td>';
+			echo anchor('/admincp/manufacture/add_menu_item/' . $r->manufactureId, 'Menu Item');
 		echo '</td>';
 		echo '</tr>';
 

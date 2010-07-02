@@ -16,4 +16,5 @@
 	}		
 ?>
 <?php echo anchor('admincp/manufacture', 'List Manufactures'); ?><br />
+<?php echo anchor('admincp/manufacture/add_menu_item/' . $MANUFACTURE_ID, 'Add Menu Item'); ?><br />
 </div>

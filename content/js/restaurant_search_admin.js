@@ -235,7 +235,10 @@ function addResult(restaurant, i) {
 	*/
 	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantId+'">Add Address</a>' +
 			'</td>';
-	
+	html +=
+	'	<td valign="top">';
+	html += '<a href = "/admincp/restaurant/add_menu_item/'+restaurant.restaurantId+'">Menu Item</a>' +
+			'</td>';
 	
 	html +=
 	'</tr>'
@@ -255,6 +258,7 @@ function getResultTableHeader() {
 	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Creation Date</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Locations</a></th>' +
+	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Menu</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';

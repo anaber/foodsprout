@@ -16,7 +16,12 @@ var documentLocation = '';
 ?>
 		documentLocation = '/admincp/restaurantchain';
 <?php
-	} 
+	} else if ( isset($MANUFACTURE_ID) ) {
+?>
+		documentLocation = '/admincp/manufacture';
+<?php
+	}
+	
 ?>
 formValidated = true;
 

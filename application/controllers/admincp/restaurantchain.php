@@ -182,6 +182,7 @@ class RestaurantChain extends Controller {
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
+	
 	function menu_item_save_add() {
 		
 		$this->load->model('ProductModel', '', TRUE);

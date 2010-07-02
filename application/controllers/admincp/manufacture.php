@@ -341,7 +341,70 @@ class Manufacture extends Controller {
 				echo 'no';
 			}
 		}
+	}
+	
+	function add_menu_item($id){
+		$data = array();
 		
+		$this->load->model('ProductTypeModel');
+		$productTypes = $this->ProductTypeModel->listProductType();
+		
+		$this->load->model('ProductModel','',true);
+		$products = $this->ProductModel->getProductForCompany('', '', $id, '');
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'form' => 'admincp/menu_form',
+			);
+		
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_manufacture',
+			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['form']['VIEW_HEADER'] = "Add Menu Item (M)";
+		$data['data']['center']['form']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['form']['PRODUCTS'] = $products;
+		
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $id;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	
+	function update_menu_item($id) {
+		$data = array();
+		
+		$this->load->model('ProductTypeModel');
+		$productTypes = $this->ProductTypeModel->listProductType();
+		
+		$this->load->model('ProductModel');
+		$product = $this->ProductModel->getProductFromId($id);
+		
+		$products = $this->ProductModel->getProductForCompany('', '', $product->manufactureId, '');
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_manufacture',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/menu_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $product->manufactureId;
+		$data['data']['left']['navigation']['PRODUCT_ID'] = $product->productId;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Menu Item - " . $id . ' (M)';
+		$data['data']['center']['list']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['list']['PRODUCT'] = $product;
+		$data['data']['center']['list']['PRODUCTS'] = $products;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
 }
