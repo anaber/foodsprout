@@ -10,7 +10,7 @@ var documentLocation = '';
 <?php
 	if ( isset($RESTAURANT_ID) ) {
 ?>
-		documentLocation = '/admincp/restaurant';
+		documentLocation = '/admincp/restaurant/add_menu_item/<?php echo $RESTAURANT_ID; ?>';
 <?php
 	} else if ( isset($RESTAURANT_CHAIN_ID) ) {
 ?>

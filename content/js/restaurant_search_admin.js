@@ -206,7 +206,9 @@ function addResult(restaurant, i) {
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/restaurant/update/'+ restaurant.restaurantId +'">'+ restaurant.restaurantId +'</a></td>' +
 	'	<td valign="top"><a href="/admincp/restaurant/update/'+ restaurant.restaurantId +'">'+ restaurant.restaurantName +'</a></td>' +
-	'	<td valign="top">'+ restaurant.creationDate +'</td>' + 
+	'	<td valign="top">'+ (restaurant.restaurantChain ? restaurant.restaurantChain : '' ) +'</td>' + 
+	'	<td valign="top">'+ (restaurant.companyName ? restaurant.companyName : '' ) +'</td>' +
+	//'	<td valign="top">'+ restaurant.creationDate +'</td>' + 
 	'	<td valign="top">';
 	
 		
@@ -221,7 +223,7 @@ function addResult(restaurant, i) {
 		}
 	});
 	if (restaurant.suppliersFrom == 'restaurant') {
-		html += '<a href = "/admincp/restaurant/add_supplier/'+restaurant.restaurantId+'">Add Supplier</a>';
+		html += '<a href = "/admincp/restaurant/add_supplier/'+restaurant.restaurantId+'">Supplier</a>';
 	}
 	
 	html += '</td>';
@@ -233,7 +235,7 @@ function addResult(restaurant, i) {
 		html += '<a href = "/admincp/restaurant/update_address/'+address.addressId+'">' + address.completeAddress + '</a><br /><br />';
 	});
 	*/
-	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantId+'">Add Address</a>' +
+	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantId+'">Address</a>' +
 			'</td>';
 	html +=
 	'	<td valign="top">';
@@ -253,9 +255,11 @@ function getResultTableHeader() {
 	' <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "99%">' +
 	'	<thead>' +
 	'	<tr>' +
-	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Restaurant Id</a></th>' +
+	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 	'		<th id = "heading_restaurant"><a href = "#" style = "color:#FFFFFF">Restaurant Name</a></th>' +
-	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Creation Date</a></th>' +
+	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Chain</a></th>' +
+	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
+	//'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Creation Date</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Locations</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Menu</a></th>' +

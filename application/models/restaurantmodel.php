@@ -443,14 +443,26 @@ class RestaurantModel extends Model{
 		$start = 0;
 	
 		$page = 0;
-		
-		$base_query = 'SELECT restaurant.*, restaurant_type.restaurant_type' .
-				' FROM restaurant, restaurant_type';
-		
+		/*
+		$base_query = 'SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name, restaurant_type.restaurant_type' .
+				' FROM restaurant, restaurant_type' .
+				' LEFT JOIN restaurant_chain' .
+				' ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id' .
+				' LEFT JOIN company' .
+				' ON restaurant.company_id = company.company_id';
+		*/
+		$base_query = 'SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name, restaurant_type.restaurant_type' .
+				' FROM restaurant' .
+				' LEFT JOIN restaurant_chain' .
+				' ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id' .
+				' LEFT JOIN company' .
+				' ON restaurant.company_id = company.company_id' . 
+				' LEFT JOIN restaurant_type' .
+				' ON restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+						
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM restaurant, restaurant_type';
-		
-		
+				
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
 		
 		
@@ -560,7 +572,7 @@ class RestaurantModel extends Model{
 			}
 		}
 		
-		//echo $query . "<br />";
+		//echo $query;
 		//die;
 		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
 		$result = $this->db->query($query);
@@ -577,6 +589,8 @@ class RestaurantModel extends Model{
 			
 			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
+			$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
+			$this->RestaurantLib->companyName = $row['company_name'];
 			
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			/*
