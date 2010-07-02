@@ -8,5 +8,5 @@
 	}
 ?>
 <?php echo anchor('admincp/restaurantchain', 'List Restaurant Chain'); ?><br />
-<?php echo anchor('admincp/restaurantchain/add_menu_item', 'Add Menu Item'); ?><br />
+<?php echo anchor('admincp/restaurantchain/add_menu_item/' . $RESTAURANT_CHAIN_ID, 'Add Menu Item'); ?><br />
 </div>

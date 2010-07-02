@@ -218,15 +218,17 @@ function addResult(restaurant, i) {
 	html += '<a href = "/admincp/restaurantchain/add_supplier/'+restaurant.restaurantChainId+'">Add Supplier</a>' +
 			'</td>';
 	
-	/*
+	
 	html +=
 	'	<td valign="top">';
+	/*
 	$.each(restaurant.addresses, function(j, address) {
 		html += '<a href = "/admincp/restaurant/update_address/'+address.addressId+'">' + address.completeAddress + '</a><br /><br />';
 	});
-	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantChainId+'">Add Address</a>' +
-			'</td>';
 	*/
+	html += '<a href = "/admincp/restaurantchain/add_menu_item/'+restaurant.restaurantChainId+'">Menu Item</a>' +
+			'</td>';
+
 	
 	html +=
 	'</tr>'
@@ -244,6 +246,7 @@ function getResultTableHeader() {
 	'		<th id = "heading_restaurant"><a href = "#" style = "color:#FFFFFF">Restaurant Name</a></th>' +
 	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Restaurant Type</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
+	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Menu</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';

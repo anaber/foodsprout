@@ -1,29 +1,29 @@
 <?php
 
-class ProducttypeModel extends Model{
+class ProductTypeModel extends Model{
 	
 	// List all the producttype in the database
-	function list_producttype()
+	function listProductType()
 	{
 		$query = "SELECT * FROM product_type ORDER BY product_type";
 		
 		log_message('debug', "ProducttypeModel.list_producttype : " . $query);
 		$result = $this->db->query($query);
 		
-		$producttypes = array();
+		$productTypes = array();
 		
 		foreach ($result->result_array() as $row) {
 			
-			$this->load->library('ProducttypeLib');
-			unset($this->producttypeLib);
+			$this->load->library('ProductTypeLib');
+			unset($this->ProductTypeLib);
 			
-			$this->producttypeLib->producttypeId = $row['product_type_id'];
-			$this->producttypeLib->producttypeName = $row['product_type'];
+			$this->ProductTypeLib->productTypeId = $row['product_type_id'];
+			$this->ProductTypeLib->productType = $row['product_type'];
 			
-			$producttypes[] = $this->producttypeLib;
-			unset($this->producttypeLib);
+			$productTypes[] = $this->ProductTypeLib;
+			unset($this->ProductTypeLib);
 		}
-		return $producttypes;
+		return $productTypes;
 	}
 	
 	// Add the producttype to the database

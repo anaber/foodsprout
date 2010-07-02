@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class ProducttypeLib {
+class ProductTypeLib {
 	
-	var $producttypeId;
-	var $producttypeName;
+	var $productTypeId;
+	var $productType;
 		
-	function ProducttypeLib() {
-		$this->producttypeId = '';
-		$this->producttypeName = '';
+	function ProductTypeLib() {
+		$this->productTypeId = '';
+		$this->productType = '';
 	}
 }
 ?>

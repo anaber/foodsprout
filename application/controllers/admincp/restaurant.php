@@ -148,7 +148,7 @@ class Restaurant extends Controller {
 		}	
 	}
 	
-	function add_menu_item(){
+	function add_menu_item($id){
 		$data = array();
 		
 		$this->load->model('IngredientModel');
@@ -169,6 +169,7 @@ class Restaurant extends Controller {
 		$data['data']['center']['list']['INGREDIENTS'] = $ingredients;
 		
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['RESTAURANT_CHAIN_ID'] = $id;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		

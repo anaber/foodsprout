@@ -205,7 +205,7 @@ class AddressModel extends Model{
 			$companyId = $manufature->companyId;
 		} else if ( !empty($distributorId) ) {
 			$CI->load->model('DistributorModel','',true);
-			$distributor = $CI->DistributorModel->getCompanyFromId($distributorId);
+			$distributor = $CI->DistributorModel->getDistributorFromId($distributorId);
 			$companyId = $distributor->companyId;
 		}
 		
