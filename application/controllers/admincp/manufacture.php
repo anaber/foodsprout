@@ -73,7 +73,7 @@ class Manufacture extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_manufacture',
+				'navigation' => 'admincp/includes/left/nav_manufacture',
 			);
 		
 		// List of views to be included
@@ -82,7 +82,8 @@ class Manufacture extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['MANUFACTURE_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $id;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
 		$data['data']['center']['form']['MANUFACTURE_TYPES'] = $manufactureTypes;
@@ -144,7 +145,7 @@ class Manufacture extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_manufacture',
+				'navigation' => 'admincp/includes/left/nav_manufacture',
 			);
 		
 		// List of views to be included
@@ -153,7 +154,8 @@ class Manufacture extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['MANUFACTURE_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $manufacture->manufactureName . ' (M)';
 		$data['data']['center']['list']['MANUFACTURE'] = $manufacture;
@@ -176,7 +178,7 @@ class Manufacture extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_manufacture',
+				'navigation' => 'admincp/includes/left/nav_manufacture',
 			);
 		
 		// List of views to be included
@@ -185,8 +187,8 @@ class Manufacture extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['MANUFACTURE_ID'] = $supplier->manufactureId;
-		$data['data']['left']['nav']['SUPPLIER_ID'] = $supplier->supplierId;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $supplier->manufactureId;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (M)';
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
@@ -251,7 +253,7 @@ class Manufacture extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_manufacture',
+				'navigation' => 'admincp/includes/left/nav_manufacture',
 			);
 		
 		// List of views to be included
@@ -260,7 +262,8 @@ class Manufacture extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['MANUFACTURE_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $manufacture->manufactureName . ' (M)';
 		$data['data']['center']['list']['STATES'] = $states;
@@ -287,7 +290,7 @@ class Manufacture extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_manufacture',
+				'navigation' => 'admincp/includes/left/nav_manufacture',
 			);
 		
 		// List of views to be included
@@ -296,8 +299,8 @@ class Manufacture extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['MANUFACTURE_ID'] = $address->manufactureId;
-		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $address->manufactureId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id . ' (M)';
 		$data['data']['center']['form']['STATES'] = $states;
@@ -397,7 +400,6 @@ class Manufacture extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $product->manufactureId;
-		$data['data']['left']['navigation']['PRODUCT_ID'] = $product->productId;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Menu Item - " . $id . ' (M)';
 		$data['data']['center']['list']['PRODUCT_TYPES'] = $productTypes;

@@ -6,7 +6,6 @@
 	<tr>
 		<th>Id</th>
 		<th>Distributor Name</th>
-		<th>Creation Date</th>
 		<th>Suppliers</th>
 		<th>Locations</th>
 	</tr>
@@ -20,13 +19,13 @@
 		echo '<tr class="d'.($i & 1).'">';
 		echo '	<td>'.anchor('/admincp/distributor/update/'.$r->distributorId, $r->distributorId).'</td>';
 		echo '	<td>'.anchor('/admincp/distributor/update/'.$r->distributorId, $r->distributorName).'</td>';
-		echo '	<td>'. date('Y-m-d', strtotime($r->creationDate) ) .'</td>';
+		//echo '	<td>'. date('Y-m-d', strtotime($r->creationDate) ) .'</td>';
 		echo '	<td nowrap>';
 			
 			foreach($r->suppliers as $supplier) :
 				echo '<a href = "/admincp/distributor/update_supplier/' . $supplier->supplierId . '">' . $supplier->supplierName . ' <b>(' . substr ( ucfirst($supplier->supplierType), 0, 1 ) . ')</b>' . '</a>' . "<br /><br />";
 			endforeach;
-			echo anchor('/admincp/distributor/add_supplier/' . $r->distributorId, 'Add Supplier');
+			echo anchor('/admincp/distributor/add_supplier/' . $r->distributorId, 'Suppliers');
 		echo '</td>';
 		echo '	<td>';
 		

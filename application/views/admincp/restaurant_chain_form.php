@@ -118,8 +118,13 @@ $(document).ready(function() {
 });
 
 </script>
-
-<?php echo anchor('admincp/restaurantchain', 'List Restaurant Chain'); ?><br /><br />
+<?php
+	if (!isset($RESTAURANT)) {
+?>
+<?php echo anchor('admincp/restaurantchain', 'Restaurant Chain'); ?><br /><br />
+<?php
+	}
+?>
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 

@@ -161,7 +161,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_restaurant',
+				'navigation' => 'admincp/includes/left/nav_restaurant',
 			);
 		
 		// List of views to be included
@@ -170,7 +170,8 @@ class Restaurant extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['RESTAURANT_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $restaurant->restaurantName . ' (R)';
 		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
@@ -193,7 +194,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_restaurant',
+				'navigation' => 'admincp/includes/left/nav_restaurant',
 			);
 		
 		// List of views to be included
@@ -202,7 +203,8 @@ class Restaurant extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['RESTAURANT_ID'] = $supplier->restaurantId;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $supplier->restaurantId;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (R)';
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
@@ -231,7 +233,7 @@ class Restaurant extends Controller {
 				
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_restaurant',
+				'navigation' => 'admincp/includes/left/nav_restaurant',
 			);
 		
 		// List of views to be included
@@ -240,7 +242,8 @@ class Restaurant extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['RESTAURANT_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $restaurant->restaurantName . ' (R)';
 		$data['data']['center']['list']['STATES'] = $states;
@@ -268,7 +271,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_restaurant',
+				'navigation' => 'admincp/includes/left/nav_restaurant',
 			);
 		
 		// List of views to be included
@@ -277,8 +280,8 @@ class Restaurant extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['RESTAURANT_ID'] = $address->restaurantId;
-		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $address->restaurantId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id . ' (R)';
 		$data['data']['center']['form']['STATES'] = $states;
@@ -346,7 +349,6 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $product->restaurantId;
-		$data['data']['left']['navigation']['PRODUCT_ID'] = $product->productId;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Menu Item - " . $id . ' (R)';
 		$data['data']['center']['list']['PRODUCT_TYPES'] = $productTypes;

@@ -6,7 +6,6 @@
 	<tr>
 		<th>Id</th>
 		<th>Manufacture Name</th>
-		<th>Creation Date</th>
 		<th>Suppliers</th>
 		<th>Locations</th>
 		<th>Menu</th>
@@ -21,7 +20,7 @@
 		echo '<tr class="d'.($i & 1).'">';
 		echo '	<td>'.anchor('/admincp/manufacture/update/'.$r->manufactureId, $r->manufactureId).'</td>';
 		echo '	<td>'.anchor('/admincp/manufacture/update/'.$r->manufactureId, $r->manufactureName).'</td>';
-		echo '	<td>'. date('Y-m-d', strtotime($r->creationDate) ) .'</td>';
+		//echo '	<td>'. date('Y-m-d', strtotime($r->creationDate) ) .'</td>';
 		echo '	<td nowrap>';
 			
 			foreach($r->suppliers as $supplier) :

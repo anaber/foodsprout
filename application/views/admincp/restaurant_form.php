@@ -231,8 +231,13 @@ function findValueRestaurantChain(li) {
 
 <script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
-
-<?php echo anchor('admincp/restaurant', 'List Restaurants'); ?><br /><br />
+<?php
+	if (!isset($RESTAURANT)) {
+?>
+<?php echo anchor('admincp/restaurant', 'Restaurants'); ?><br /><br />
+<?php
+	}
+?>
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 

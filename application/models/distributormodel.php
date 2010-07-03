@@ -72,8 +72,8 @@ class DistributorModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, is_active)" .
-						" values (NULL, ".$companyId.", '" . $distributorName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, url, is_active)" .
+						" values (NULL, ".$companyId.", '" . $distributorName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
 				$return = true;
@@ -117,6 +117,7 @@ class DistributorModel extends Model{
 		$this->DistributorLib->companyName = $row->company_name;
 		$this->DistributorLib->distributorName = $row->distributor_name;
 		$this->DistributorLib->customUrl = $row->custom_url;
+		$this->DistributorLib->url = $row->url;
 		$this->DistributorLib->isActive = $row->is_active;
 
 		return $this->DistributorLib;
@@ -137,6 +138,7 @@ class DistributorModel extends Model{
 						'company_id' => $this->input->post('companyId'), 
 						'distributor_name' => $this->input->post('distributorName'),
 						'custom_url' => $this->input->post('customUrl'),
+						'url' => $this->input->post('url'),
 						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
 			$where = "distributor_id = " . $this->input->post('distributorId');

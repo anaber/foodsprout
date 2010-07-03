@@ -40,6 +40,7 @@ $(document).ready(function() {
 							  companyId:$('#companyId').val(),
 							  farmName:$('#farmName').val(),
 							  customUrl:$('#customUrl').val(),
+							  url:$('#url').val(),
 							  farmTypeId:$('#farmTypeId').val(),
 							  farmerType:$('#farmerType').val(),
 							  isActive:$('#status').val(),
@@ -53,6 +54,7 @@ $(document).ready(function() {
 							  companyId:$('#companyId').val(),
 							  farmName:$('#farmName').val(),
 							  customUrl:$('#customUrl').val(),
+							  url:$('#url').val(),
 							  farmTypeId:$('#farmTypeId').val(),
 							  farmerType:$('#farmerType').val(),
 							  isActive:$('#status').val(),
@@ -165,11 +167,15 @@ function formatItem(row) {
 
 
 </script>
-
 <script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
-
-<?php echo anchor('admincp/farm', 'List Farms'); ?><br /><br />
+<?php
+	if (!isset($FARM)) {
+?>
+<?php echo anchor('admincp/farm', 'Farms'); ?><br /><br />
+<?php
+	}
+?>
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
@@ -226,6 +232,12 @@ function formatItem(row) {
 		<td width = "25%" nowrap>Custom URL</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($FARM) ? $FARM->customUrl : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%" nowrap>Website</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->url : '') ?>" class="validate[optional]" type="text" name="url" id="url"/>
 		</td>
 	<tr>
 	<tr>

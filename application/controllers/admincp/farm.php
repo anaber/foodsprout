@@ -77,7 +77,7 @@ class Farm extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_farm',
+				'navigation' => 'admincp/includes/left/nav_farm',
 			);
 		
 		// List of views to be included
@@ -86,7 +86,8 @@ class Farm extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['FARM_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['FARM_ID'] = $id;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
@@ -149,7 +150,7 @@ class Farm extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_farm',
+				'navigation' => 'admincp/includes/left/nav_farm',
 			);
 		
 		// List of views to be included
@@ -158,7 +159,8 @@ class Farm extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['FARM_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['FARM_ID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $farm->farmName . ' (F)';
 		$data['data']['center']['list']['FARM'] = $farm;
@@ -181,7 +183,7 @@ class Farm extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_farm',
+				'navigation' => 'admincp/includes/left/nav_farm',
 			);
 		
 		// List of views to be included
@@ -190,8 +192,9 @@ class Farm extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['FARM_ID'] = $supplier->farmId;
-		$data['data']['left']['nav']['SUPPLIER_ID'] = $supplier->supplierId;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['FARM_ID'] = $supplier->farmId;
+		$data['data']['left']['navigation']['SUPPLIER_ID'] = $supplier->supplierId;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (F)';
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
@@ -220,7 +223,7 @@ class Farm extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_farm',
+				'navigation' => 'admincp/includes/left/nav_farm',
 			);
 		
 		// List of views to be included
@@ -229,7 +232,8 @@ class Farm extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['FARM_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['FARM_ID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $farm->farmName . " (F)";
 		$data['data']['center']['list']['STATES'] = $states;
@@ -256,7 +260,7 @@ class Farm extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_farm',
+				'navigation' => 'admincp/includes/left/nav_farm',
 			);
 		
 		// List of views to be included
@@ -265,8 +269,9 @@ class Farm extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['FARM_ID'] = $address->farmId;
-		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['FARM_ID'] = $address->farmId;
+		$data['data']['left']['navigation']['ADDRESS_ID'] = $address->addressId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id . ' (F)';
 		$data['data']['center']['form']['STATES'] = $states;

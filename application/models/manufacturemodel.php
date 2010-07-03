@@ -72,8 +72,8 @@ class ManufactureModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", '" . $manufactureName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, url, is_active)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", '" . $manufactureName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
 				$return = true;
@@ -118,6 +118,7 @@ class ManufactureModel extends Model{
 		$this->manufactureLib->manufactureTypeId = $row->manufacture_type_id;
 		$this->manufactureLib->manufactureName = $row->manufacture_name;
 		$this->manufactureLib->customUrl = $row->custom_url;
+		$this->manufactureLib->url = $row->url;
 		$this->manufactureLib->isActive = $row->is_active;
 
 		return $this->manufactureLib;
@@ -138,6 +139,7 @@ class ManufactureModel extends Model{
 						'company_id' => $this->input->post('companyId'), 
 						'manufacture_name' => $this->input->post('manufactureName'),
 						'custom_url' => $this->input->post('customUrl'),
+						'url' => $this->input->post('url'),
 						'manufacture_type_id' => $this->input->post('manufactureTypeId'),
 						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
 					);
@@ -202,7 +204,6 @@ class ManufactureModel extends Model{
 					$return = false;
 				}
 			} else {
-				//echo "DEEPAK IN FALSE";
 				$return = false;
 			}
 			

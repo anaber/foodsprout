@@ -40,6 +40,7 @@ $(document).ready(function() {
 							  companyId:$('#companyId').val(),
 							  distributorName:$('#distributorName').val(),
 							  customUrl:$('#customUrl').val(),
+							  url:$('#url').val(),
 							  isActive:$('#status').val(),
 							  							 
 							  distributorId: $('#distributorId').val()
@@ -51,6 +52,7 @@ $(document).ready(function() {
 							  companyId:$('#companyId').val(),
 							  distributorName:$('#distributorName').val(),
 							  customUrl:$('#customUrl').val(),
+							  url:$('#url').val(),
 							  isActive:$('#status').val(),
 							  address:$('#address').val(),
 							  city: $('#city').val(),
@@ -165,9 +167,13 @@ function formatItem(row) {
 
 <script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
-
-<?php echo anchor('admincp/distributor', 'List Distributors'); ?><br /><br />
-
+<?php
+	if (!isset($DISTRIBUTOR)) {
+?>
+<?php echo anchor('admincp/distributor', 'Distributors'); ?><br /><br />
+<?php
+	}
+?>
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
 <form id="distributorForm" method="post" <?php echo (isset($DISTRIBUTOR)) ? 'action="/admincp/distributor/save_update"' : 'action="/admincp/distributor/save_add"' ?>>
@@ -198,6 +204,12 @@ function formatItem(row) {
 		<td width = "25%" nowrap>Custom URL</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->customUrl : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
+		</td>
+	<tr>
+	<tr>
+		<td width = "25%" nowrap>Website</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->url : '') ?>" class="validate[optional]" type="text" name="url" id="url"/>
 		</td>
 	<tr>
 	<tr>

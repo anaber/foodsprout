@@ -65,7 +65,7 @@ class Distributor extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_distributor',
+				'navigation' => 'admincp/includes/left/nav_distributor',
 			);
 		
 		// List of views to be included
@@ -74,7 +74,8 @@ class Distributor extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['DISTRIBUTOR_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $id;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Distributor";
 		$data['data']['center']['form']['DISTRIBUTOR'] = $distributor;
@@ -135,7 +136,7 @@ class Distributor extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_distributor',
+				'navigation' => 'admincp/includes/left/nav_distributor',
 			);
 		
 		// List of views to be included
@@ -144,7 +145,8 @@ class Distributor extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['DISTRIBUTOR_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $distributor->distributorName . ' (D)';
 		$data['data']['center']['list']['DISTRIBUTOR'] = $distributor;
@@ -167,7 +169,7 @@ class Distributor extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_distributor',
+				'navigation' => 'admincp/includes/left/nav_distributor',
 			);
 		
 		// List of views to be included
@@ -176,8 +178,8 @@ class Distributor extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['DISTRIBUTOR_ID'] = $supplier->distributorId;
-		$data['data']['left']['nav']['SUPPLIER_ID'] = $supplier->supplierId;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $supplier->distributorId;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (D)';
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
@@ -242,7 +244,7 @@ class Distributor extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_distributor',
+				'navigation' => 'admincp/includes/left/nav_distributor',
 			);
 		
 		// List of views to be included
@@ -251,7 +253,8 @@ class Distributor extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['DISTRIBUTOR_ID'] = $id;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $distributor->distributorName . ' (D)';
 		$data['data']['center']['list']['STATES'] = $states;
@@ -278,7 +281,7 @@ class Distributor extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'nav' => 'admincp/includes/left/nav_distributor',
+				'navigation' => 'admincp/includes/left/nav_distributor',
 			);
 		
 		// List of views to be included
@@ -287,8 +290,8 @@ class Distributor extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['nav']['DISTRIBUTOR_ID'] = $address->distributorId;
-		$data['data']['left']['nav']['ADDRESS_ID'] = $address->addressId;
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $address->distributorId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id . ' (D)';
 		$data['data']['center']['form']['STATES'] = $states;

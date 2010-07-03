@@ -73,8 +73,8 @@ class FarmModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, url, is_active)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'FarmModel.addManufacture : Insert Farm : ' . $query);
 				$return = true;
@@ -120,6 +120,7 @@ class FarmModel extends Model{
 		$this->FarmLib->farmerType = $row->farmer_type;
 		$this->FarmLib->farmName = $row->farm_name;
 		$this->FarmLib->customUrl = $row->custom_url;
+		$this->FarmLib->url = $row->url;
 		$this->FarmLib->isActive = $row->is_active;
 
 		return $this->FarmLib;
@@ -140,6 +141,7 @@ class FarmModel extends Model{
 						'company_id' => $this->input->post('companyId'), 
 						'farm_name' => $this->input->post('farmName'),
 						'custom_url' => $this->input->post('customUrl'),
+						'url' => $this->input->post('url'),
 						'farm_type_id' => $this->input->post('farmTypeId'),
 						'farmer_type' => $this->input->post('farmerType'),
 						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
