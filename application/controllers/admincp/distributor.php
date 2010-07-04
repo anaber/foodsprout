@@ -14,10 +14,6 @@ class Distributor extends Controller {
 	function index()
 	{
 		$data = array();
-		$distributors = array();
-		
-		$this->load->model('DistributorModel');
-		$distributors = $this->DistributorModel->listDistributor();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -26,7 +22,6 @@ class Distributor extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Distributors";
-		$data['data']['center']['list']['DISTRIBUTORS'] = $distributors;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -338,6 +333,11 @@ class Distributor extends Controller {
 		
 	}
 	
+	function ajaxSearchDistributors() {
+		$this->load->model('DistributorModel', '', TRUE);
+		$distributors = $this->DistributorModel->getDistributorsJsonAdmin();
+		echo json_encode($distributors);
+	}
 }
 
 /* End of file company.php */

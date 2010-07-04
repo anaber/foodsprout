@@ -11,13 +11,8 @@ class Manufacture extends Controller {
 		}
 	}
 	
-	function index()
-	{
+	function index() {
 		$data = array();
-		$manufactures = array();
-		
-		$this->load->model('ManufactureModel');
-		$manufactures = $this->ManufactureModel->listManufacture();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -26,7 +21,6 @@ class Manufacture extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Manufactures";
-		$data['data']['center']['list']['MANUFACTURES'] = $manufactures;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -174,7 +168,7 @@ class Manufacture extends Controller {
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'manufacture');
 		
-		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $supplier->manufactureId, '', '', '');
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', $supplier->manufactureId, '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -409,6 +403,11 @@ class Manufacture extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
+	function ajaxSearchManufactures() {
+		$this->load->model('ManufactureModel', '', TRUE);
+		$manufactures = $this->ManufactureModel->getManufactureJsonAdmin();
+		echo json_encode($manufactures);
+	}
 }
 
 /* End of file company.php */

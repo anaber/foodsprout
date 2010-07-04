@@ -11,13 +11,8 @@ class Company extends Controller {
 		}
 	}
 	
-	function index()
-	{
+	function index() {
 		$data = array();
-		
-		$this->load->model('CompanyModel');
-		$companies = $this->CompanyModel->listCompany();
-		
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -26,7 +21,6 @@ class Company extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Companies";
-		$data['data']['center']['list']['COMPANIES'] = $companies;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -34,13 +28,6 @@ class Company extends Controller {
 	function add()
 	{
 		$data = array();
-		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->list_state();
-		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->list_country();
-		
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -53,8 +40,6 @@ class Company extends Controller {
 			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Add Company";
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -137,6 +122,11 @@ class Company extends Controller {
 		echo $companies;
 	}
 	
+	function ajaxSearchCompanies() {
+		$this->load->model('CompanyModel', '', TRUE);
+		$companies = $this->CompanyModel->getCompaniesJsonAdmin();
+		echo json_encode($companies);
+	}
 }
 
 /* End of file company.php */

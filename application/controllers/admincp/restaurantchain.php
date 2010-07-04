@@ -12,10 +12,8 @@ class RestaurantChain extends Controller {
 	}
 	
 	// Default is to list all the restaurants
-	function index()
-	{
+	function index() {
 		$data = array();
-		$restaurants = array();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -35,8 +33,7 @@ class RestaurantChain extends Controller {
 	}
 	
 	// This function will create the form to add a restaurant but does not save the data to the database
-	function add()
-	{
+	function add() {
 		$data = array();
 		
 		$this->load->model('RestauranttypeModel');

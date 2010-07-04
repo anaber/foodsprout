@@ -94,7 +94,7 @@ class RestaurantChainModel extends Model{
 		log_message('debug', "RestaurantChainModel.getRestaurantChainsJsonAdmin : " . $query);
 		$result = $this->db->query($query);
 		
-		$restaurants = array();
+		$restaurantChains = array();
 		
 		$CI =& get_instance();
 		
@@ -113,7 +113,7 @@ class RestaurantChainModel extends Model{
 			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id']);
 			$this->RestaurantLib->suppliers = $suppliers;
 			
-			$restaurants[] = $this->RestaurantLib;
+			$restaurantChains[] = $this->RestaurantLib;
 			unset($this->RestaurantLib);
 		}
 		
@@ -128,7 +128,7 @@ class RestaurantChainModel extends Model{
 		
 		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
 		$arr = array(
-			'results'    => $restaurants,
+			'results'    => $restaurantChains,
 			'param'      => $params,
 			'geocode'	 => $geocodeArray,
 	    );

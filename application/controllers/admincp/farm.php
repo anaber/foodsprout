@@ -11,14 +11,9 @@ class Farm extends Controller {
 		}
 	}
 	
-	function index()
-	{
+	function index() {
 		global $FARMER_TYPES;
 		$data = array();
-		$farms = array();
-		
-		$this->load->model('FarmModel');
-		$farms = $this->FarmModel->listFarm();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -27,7 +22,6 @@ class Farm extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Farms";
-		$data['data']['center']['list']['FARMS'] = $farms;
 		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
@@ -89,7 +83,7 @@ class Farm extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['FARM_ID'] = $id;
 		
-		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
+		$data['data']['center']['form']['VIEW_HEADER'] = "Update Farm";
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
 		$data['data']['center']['form']['FARM'] = $farm;
 		$data['data']['center']['form']['FARMER_TYPES'] = $FARMER_TYPES;
@@ -284,6 +278,11 @@ class Farm extends Controller {
 		
 	}
 	
+	function ajaxSearchFarms() {
+		$this->load->model('FarmModel', '', TRUE);
+		$restaurants = $this->FarmModel->getFarmsJsonAdmin();
+		echo json_encode($restaurants);
+	}
 }
 
 /* End of file company.php */
