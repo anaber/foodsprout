@@ -29,7 +29,7 @@ class FishModel extends Model{
 	function addFish() {
 		$return = true;
 		
-		$query = "SELECT * FROM fish WHERE fish_name = '" . $this->input->post('fishName') . "'";
+		$query = "SELECT * FROM fish WHERE fish_name = \"" . $this->input->post('fishName') . "\"";
 		log_message('debug', 'FishModel.addFish : Try to get duplicate Fish record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -37,7 +37,7 @@ class FishModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO fish (fish_id, fish_name)" .
-					" values (NULL, '" . $this->input->post('fishName') . "')";
+					" values (NULL, \"" . $this->input->post('fishName') . "\")";
 			log_message('debug', 'FishModel.addfish : Insert Fish : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -76,7 +76,7 @@ class FishModel extends Model{
 	function updateFish() {
 		$return = true;
 		
-		$query = "SELECT * FROM fish WHERE fish_name = '" . $this->input->post('fishName') . "' AND fish_id <> " . $this->input->post('fishId');
+		$query = "SELECT * FROM fish WHERE fish_name = \"" . $this->input->post('fishName') . "\" AND fish_id <> " . $this->input->post('fishId');
 		log_message('debug', 'FishModel.updateFish : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

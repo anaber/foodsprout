@@ -30,7 +30,7 @@ class ProductTypeModel extends Model{
 	function addProducttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM product_type WHERE product_type = '" . $this->input->post('producttypeName') . "'";
+		$query = "SELECT * FROM product_type WHERE product_type = \"" . $this->input->post('producttypeName') . "\"";
 		log_message('debug', 'ProducttypeModel.addProducttype : Try to get duplicate Producttype record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -38,7 +38,7 @@ class ProductTypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO product_type (product_type_id, product_type)" .
-					" values (NULL, '" . $this->input->post('producttypeName') . "')";
+					" values (NULL, \"" . $this->input->post('producttypeName') . "\")";
 			log_message('debug', 'ProducttypeModel.addproducttype : Insert Producttype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -79,7 +79,7 @@ class ProductTypeModel extends Model{
 	function updateProducttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM product_type WHERE product_type = '" . $this->input->post('producttypeName') . "' AND product_type_id <> " . $this->input->post('producttypeId');
+		$query = "SELECT * FROM product_type WHERE product_type = \"" . $this->input->post('producttypeName') . "\" AND product_type_id <> " . $this->input->post('producttypeId');
 		log_message('debug', 'ProducttypeModel.updateProducttype : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);

@@ -31,7 +31,7 @@ class PlantGroupModel extends Model{
 	function addPlantGroup() {
 		$return = true;
 		
-		$query = "SELECT * FROM plant_group WHERE plant_group_name = '" . $this->input->post('plantGroupName') . "'";
+		$query = "SELECT * FROM plant_group WHERE plant_group_name = \"" . $this->input->post('plantGroupName') . "\"";
 		log_message('debug', 'PlantGroupModel.addPlantGroup : Try to get duplicate PlantGroup record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -39,7 +39,7 @@ class PlantGroupModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO plant_group (plant_group_id, plant_group_name, plant_group_sci_name)" .
-					" values (NULL, '" . $this->input->post('plantGroupName') . "', '" . $this->input->post('plantGroupSciName') . "')";
+					" values (NULL, \"" . $this->input->post('plantGroupName') . "\", \"" . $this->input->post('plantGroupSciName') . "\")";
 			log_message('debug', 'PlantGroupModel.addPlantGroup : Insert Plant Group : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -81,7 +81,7 @@ class PlantGroupModel extends Model{
 	function updatePlantGroup() {
 		$return = true;
 		
-		$query = "SELECT * FROM plant_group WHERE plant_group_name = '" . $this->input->post('plantGroupName') . "' AND plant_group_id <> " . $this->input->post('plantGroupId');
+		$query = "SELECT * FROM plant_group WHERE plant_group_name = \"" . $this->input->post('plantGroupName') . "\" AND plant_group_id <> " . $this->input->post('plantGroupId');
 		log_message('debug', 'PlantGroupModel.updatePlantGroup : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);

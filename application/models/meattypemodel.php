@@ -30,7 +30,7 @@ class MeattypeModel extends Model{
 	function addMeattype() {
 		$return = true;
 		
-		$query = "SELECT * FROM meat_type WHERE meat_type = '" . $this->input->post('meattypeName') . "'";
+		$query = "SELECT * FROM meat_type WHERE meat_type = \"" . $this->input->post('meattypeName') . "\"";
 		log_message('debug', 'MeattypeModel.addMeattype : Try to get duplicate Meattype record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -38,7 +38,7 @@ class MeattypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO meat_type (meat_type_id, meat_type)" .
-					" values (NULL, '" . $this->input->post('meattypeName') . "')";
+					" values (NULL, \"" . $this->input->post('meattypeName') . "\")";
 			log_message('debug', 'MeattypeModel.addMeattype : Insert Meattype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -79,7 +79,7 @@ class MeattypeModel extends Model{
 	function updateMeattype() {
 		$return = true;
 		
-		$query = "SELECT * FROM meat_type WHERE meat_type = '" . $this->input->post('meattypeName') . "' AND meat_type_id <> " . $this->input->post('meattypeId');
+		$query = "SELECT * FROM meat_type WHERE meat_type = \"" . $this->input->post('meattypeName') . "\" AND meat_type_id <> " . $this->input->post('meattypeId');
 		log_message('debug', 'MeattypeModel.updateMeattype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

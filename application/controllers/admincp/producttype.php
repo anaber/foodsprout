@@ -22,8 +22,8 @@ class Producttype extends Controller {
 		$data = array();
 		$producttypes = array();
 		
-		$this->load->model('ProducttypeModel');
-		$producttypes = $this->ProducttypeModel->list_producttype();
+		$this->load->model('ProductTypeModel');
+		$producttypes = $this->ProductTypeModel->listProductType();
 		
 		// List of views to be included
 		$data['CENTER'] = array(

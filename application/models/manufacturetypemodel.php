@@ -30,7 +30,7 @@ class ManufactureTypeModel extends Model{
 	function addManufactureType() {
 		$return = true;
 		
-		$query = "SELECT * FROM manufacture_type WHERE manufacture_type = '" . $this->input->post('manufactureType') . "'";
+		$query = "SELECT * FROM manufacture_type WHERE manufacture_type = \"" . $this->input->post('manufactureType') . "\"";
 		log_message('debug', 'ManufacturetypeModel.addManufacturetype : Try to get duplicate Manufacturetype record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -38,7 +38,7 @@ class ManufactureTypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO manufacture_type (manufacture_type_id, manufacture_type)" .
-					" values (NULL, '" . $this->input->post('manufactureType') . "')";
+					" values (NULL, \"" . $this->input->post('manufactureType') . "\")";
 			log_message('debug', 'ManufacturetypeModel.addManufacturetype : Insert Manufacturetype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -79,7 +79,7 @@ class ManufactureTypeModel extends Model{
 	function updateManufacturetype() {
 		$return = true;
 		
-		$query = "SELECT * FROM manufacture_type WHERE manufacture_type = '" . $this->input->post('manufactureType') . "' AND manufacture_type_id <> " . $this->input->post('manufacturetypeId');
+		$query = "SELECT * FROM manufacture_type WHERE manufacture_type = \"" . $this->input->post('manufactureType') . "\" AND manufacture_type_id <> " . $this->input->post('manufacturetypeId');
 		log_message('debug', 'ManufacturetypeModel.updateManufacturetype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

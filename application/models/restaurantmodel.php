@@ -859,7 +859,7 @@ class RestaurantModel extends Model{
 		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
-		$query = "SELECT * FROM restaurant WHERE restaurant_name = '" . $this->input->post('restaurantName') . "' AND restaurant_id <> " . $this->input->post('restaurantId');
+		$query = "SELECT * FROM restaurant WHERE restaurant_name = \"" . $this->input->post('restaurantName') . "\" AND restaurant_id <> " . $this->input->post('restaurantId');
 		log_message('debug', 'RestaurantModel.updateRestaurant : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
@@ -917,14 +917,14 @@ class RestaurantModel extends Model{
 			} 
 			
 			if ($companyId) {
-				$query = "SELECT * FROM restaurant WHERE restaurant_name = '" . $restaurantName . "' AND company_id = '" . $companyId . "'";
+				$query = "SELECT * FROM restaurant WHERE restaurant_name = \"" . $restaurantName . "\" AND company_id = '" . $companyId . "'";
 				log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
 				
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
 					$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_type_id, restaurant_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", NULL, '" . $restaurantName . "', NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+							" values (NULL, ".$companyId.", NULL, \"" . $restaurantName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
 					
 					log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 					$return = true;

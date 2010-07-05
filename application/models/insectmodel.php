@@ -31,7 +31,7 @@ class InsectModel extends Model{
 	function addInsect() {
 		$return = true;
 		
-		$query = "SELECT * FROM insect WHERE insect_name = '" . $this->input->post('insectName') . "'";
+		$query = "SELECT * FROM insect WHERE insect_name = \"" . $this->input->post('insectName') . "\"";
 		log_message('debug', 'InsectModel.addInsect : Try to get duplicate Insect record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -39,7 +39,7 @@ class InsectModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO insect (insect_id, insect_name, description)" .
-					" values (NULL, '" . $this->input->post('insectName') . "', '" . $this->input->post('description') . "')";
+					" values (NULL, \"" . $this->input->post('insectName') . "\", \"" . $this->input->post('description') . "\")";
 			log_message('debug', 'InsectModel.addInsect : Insert Insect : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -79,7 +79,7 @@ class InsectModel extends Model{
 	function updateInsect() {
 		$return = true;
 		
-		$query = "SELECT * FROM insect WHERE insect_name = '" . $this->input->post('insectName') . "' AND insect_id <> " . $this->input->post('insectId');
+		$query = "SELECT * FROM insect WHERE insect_name = \"" . $this->input->post('insectName') . "\" AND insect_id <> " . $this->input->post('insectId');
 		log_message('debug', 'InsectModel.updateInsect : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

@@ -5,7 +5,7 @@ class CompanyModel extends Model{
 	function addCompany($companyName) {
 		$return = true;
 		
-		$query = "SELECT * FROM company WHERE company_name = '" . $companyName . "'";
+		$query = "SELECT * FROM company WHERE company_name = \"" . $companyName . "\"";
 		log_message('debug', 'CompanyModel.addCompany : Try to get duplicate Company record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -13,7 +13,7 @@ class CompanyModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO company (company_id, company_name, creation_date)" .
-					" values (NULL, '" . $companyName . "', NOW() )";
+					" values (NULL, \"" . $companyName . "\", NOW() )";
 			log_message('debug', 'CompanyModel.addCompany : Insert Company : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -79,7 +79,7 @@ class CompanyModel extends Model{
 	
 	function getCompanyFromName($companyName) {
 		
-		$query = "SELECT * FROM company WHERE company_name = '" . $companyName . "'";
+		$query = "SELECT * FROM company WHERE company_name = \"" . $companyName . "\"";
 		log_message('debug', "CompanyModel.getCompanyFromName : " . $query);
 		$result = $this->db->query($query);
 		
@@ -117,7 +117,7 @@ class CompanyModel extends Model{
 	function updateCompany() {
 		$return = true;
 		
-		$query = "SELECT * FROM company WHERE company_name = '" . $this->input->post('companyName') . "' AND company_id <> " . $this->input->post('companyId');
+		$query = "SELECT * FROM company WHERE company_name = \"" . $this->input->post('companyName') . "\" AND company_id <> " . $this->input->post('companyId');
 		log_message('debug', 'CompanyModel.updateCompany : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

@@ -30,7 +30,7 @@ class FruittypeModel extends Model{
 	function addFruittype() {
 		$return = true;
 		
-		$query = "SELECT * FROM fruittype WHERE fruittype_name = '" . $this->input->post('fruittypeName') . "'";
+		$query = "SELECT * FROM fruittype WHERE fruittype_name = \"" . $this->input->post('fruittypeName') . "\"";
 		log_message('debug', 'FruittypeModel.addFruittype : Try to get duplicate Fruittype record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -38,7 +38,7 @@ class FruittypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO fruit_type (fruit_type_id, fruit_type)" .
-					" values (NULL, '" . $this->input->post('fruittypeName') . "')";
+					" values (NULL, \"" . $this->input->post('fruittypeName') . "\")";
 			log_message('debug', 'FruittypeModel.addfruittype : Insert Fruittype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -79,7 +79,7 @@ class FruittypeModel extends Model{
 	function updateFruittype() {
 		$return = true;
 		
-		$query = "SELECT * FROM fruit_type WHERE fruit_type = '" . $this->input->post('fruittypeName') . "' AND fruit_type_id <> " . $this->input->post('fruittypeId');
+		$query = "SELECT * FROM fruit_type WHERE fruit_type = \"" . $this->input->post('fruittypeName') . "\" AND fruit_type_id <> " . $this->input->post('fruittypeId');
 		log_message('debug', 'FruittypeModel.updateFruittype : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);

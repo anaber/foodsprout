@@ -30,7 +30,7 @@ class IngredienttypeModel extends Model{
 	function addIngredienttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM ingredient_type WHERE ingredient_type = '" . $this->input->post('ingredienttypeName') . "'";
+		$query = "SELECT * FROM ingredient_type WHERE ingredient_type = \"" . $this->input->post('ingredienttypeName') . "\"";
 		log_message('debug', 'IngredienttypeModel.addIngredienttype : Try to get duplicate Ingredienttype record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -38,7 +38,7 @@ class IngredienttypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO ingredient_type (ingredient_type_id, ingredient_type)" .
-					" values (NULL, '" . $this->input->post('ingredienttypeName') . "')";
+					" values (NULL, \"" . $this->input->post('ingredienttypeName') . "\")";
 			log_message('debug', 'IngredienttypeModel.addingredienttype : Insert Ingredienttype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -79,7 +79,7 @@ class IngredienttypeModel extends Model{
 	function updateIngredienttype() {
 		$return = true;
 		
-		$query = "SELECT * FROM ingredient_type WHERE ingredient_type = '" . $this->input->post('ingredienttypeName') . "' AND ingredient_type_id <> " . $this->input->post('ingredienttypeId');
+		$query = "SELECT * FROM ingredient_type WHERE ingredient_type = \"" . $this->input->post('ingredienttypeName') . "\" AND ingredient_type_id <> " . $this->input->post('ingredienttypeId');
 		log_message('debug', 'IngredienttypeModel.updateIngredienttype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

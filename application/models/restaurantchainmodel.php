@@ -5,7 +5,7 @@ class RestaurantChainModel extends Model{
 	function searchRestaurantChains($q) {
 		$query = "SELECT restaurant_chain_id, restaurant_chain
 					FROM restaurant_chain
-					WHERE restaurant_chain like '$q%'
+					WHERE restaurant_chain like \"$q%\"
 					ORDER BY restaurant_chain ";
 		$restaurantChains = '';
 		log_message('debug', "RestaurantChainModel.searchRestaurantChains : " . $query);

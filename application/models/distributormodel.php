@@ -66,14 +66,14 @@ class DistributorModel extends Model{
 				}
 			}
 			
-			$query = "SELECT * FROM distributor WHERE distributor_name = '" . $distributorName . "'";
+			$query = "SELECT * FROM distributor WHERE distributor_name = \"" . $distributorName . "\"";
 			log_message('debug', 'DistributorModel.addDistributor : Try to get duplicate Distributor record : ' . $query);
 			
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
 				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, url, is_active)" .
-						" values (NULL, ".$companyId.", '" . $distributorName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+						" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
 				$return = true;
@@ -127,7 +127,7 @@ class DistributorModel extends Model{
 		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
-		$query = "SELECT * FROM distributor WHERE distributor_name = '" . $this->input->post('distributorName') . "' AND distributor_id <> " . $this->input->post('distributorId');
+		$query = "SELECT * FROM distributor WHERE distributor_name = \"" . $this->input->post('distributorName') . "\" AND distributor_id <> " . $this->input->post('distributorId');
 		log_message('debug', 'DistributorModel.updateDistributor : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -178,14 +178,14 @@ class DistributorModel extends Model{
 			} 
 			
 			if ($companyId) {
-				$query = "SELECT * FROM distributor WHERE distributor_name = '" . $distributorName . "' AND company_id = '" . $companyId . "'";
+				$query = "SELECT * FROM distributor WHERE distributor_name = \"" . $distributorName . "\" AND company_id = '" . $companyId . "'";
 				log_message('debug', 'DistributorModel.addDistributor : Try to get duplicate Distributor record : ' . $query);
 				
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
 					$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", '" . $distributorName . "', NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+							" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
 					
 					log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
 					$return = true;

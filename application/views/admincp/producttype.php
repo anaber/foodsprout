@@ -16,8 +16,8 @@ if (count($PRODUCTTYPES) > 0 ) {
 	foreach($PRODUCTTYPES as $r) :
 		$i++;
 		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.anchor('admincp/producttype/update/'.$r->producttypeId, $r->producttypeId).'</td>';
-		echo '	<td>'.anchor('admincp/producttype/update/'.$r->producttypeId, $r->producttypeName).'</td>';
+		echo '	<td>'.anchor('admincp/producttype/update/'.$r->productTypeId, $r->productTypeId).'</td>';
+		echo '	<td>'.anchor('admincp/producttype/update/'.$r->productTypeId, $r->productType).'</td>';
 		echo '</tr>';
  	endforeach;
 ?>

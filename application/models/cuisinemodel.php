@@ -30,7 +30,7 @@ class CuisineModel extends Model{
 	function addCuisine() {
 		$return = true;
 		
-		$query = "SELECT * FROM cuisine WHERE cuisine_name = '" . $this->input->post('cuisineName') . "'";
+		$query = "SELECT * FROM cuisine WHERE cuisine_name = \"" . $this->input->post('cuisineName') . "\"";
 		log_message('debug', 'CuisineModel.addCuisine : Try to get duplicate Cuisine record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -38,7 +38,7 @@ class CuisineModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO cuisine (cuisine_id, cuisine_name)" .
-					" values (NULL, '" . $this->input->post('cuisineName') . "')";
+					" values (NULL, \"" . $this->input->post('cuisineName') . "\")";
 			log_message('debug', 'CuisineModel.addcuisine : Insert Cuisine : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -77,7 +77,7 @@ class CuisineModel extends Model{
 	function updateCuisine() {
 		$return = true;
 		
-		$query = "SELECT * FROM cuisine WHERE cuisine_name = '" . $this->input->post('cuisineName') . "' AND cuisine_id <> " . $this->input->post('cuisineId');
+		$query = "SELECT * FROM cuisine WHERE cuisine_name = \"" . $this->input->post('cuisineName') . "\" AND cuisine_id <> " . $this->input->post('cuisineId');
 		log_message('debug', 'CuisineModel.updateCuisine : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

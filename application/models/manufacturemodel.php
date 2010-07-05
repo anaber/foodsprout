@@ -66,14 +66,14 @@ class ManufactureModel extends Model{
 				}
 			}
 			
-			$query = "SELECT * FROM manufacture WHERE manufacture_name = '" . $manufactureName . "' AND company_id = '" . $companyId . "'";
+			$query = "SELECT * FROM manufacture WHERE manufacture_name = \"" . $manufactureName . "\" AND company_id = '" . $companyId . "'";
 			log_message('debug', 'ManufactureModel.addManufacture : Try to get duplicate Manufacture record : ' . $query);
 			
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
 				$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", '" . $manufactureName . "', NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", \"" . $manufactureName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
 				$return = true;
@@ -180,14 +180,14 @@ class ManufactureModel extends Model{
 			} 
 			
 			if ($companyId) {
-				$query = "SELECT * FROM manufacture WHERE manufacture_name = '" . $manufactureName . "' AND company_id = '" . $companyId . "'";
+				$query = "SELECT * FROM manufacture WHERE manufacture_name = \"" . $manufactureName . "\" AND company_id = '" . $companyId . "'";
 				log_message('debug', 'ManufactureModel.addManufacture : Try to get duplicate Manufacture record : ' . $query);
 				
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
 					$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", NULL, '" . $manufactureName . "', NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+							" values (NULL, ".$companyId.", NULL, \"" . $manufactureName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
 					
 					log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
 					$return = true;

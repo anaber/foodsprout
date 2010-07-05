@@ -67,7 +67,7 @@ class FarmModel extends Model{
 				}
 			}
 			
-			$query = "SELECT * FROM farm WHERE farm_name = '" . $farmName . "' ";
+			$query = "SELECT * FROM farm WHERE farm_name = \"" . $farmName . "\"";
 			log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
 			
 			$result = $this->db->query($query);
@@ -130,7 +130,7 @@ class FarmModel extends Model{
 		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
-		$query = "SELECT * FROM farm WHERE farm_name = '" . $this->input->post('farmName') . "' AND farm_id <> " . $this->input->post('farmId');
+		$query = "SELECT * FROM farm WHERE farm_name = \"" . $this->input->post('farmName') . "\" AND farm_id <> " . $this->input->post('farmId');
 		log_message('debug', 'FarmModel.updateFarm : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -183,14 +183,14 @@ class FarmModel extends Model{
 			} 
 			
 			if ($companyId) {
-				$query = "SELECT * FROM farm WHERE farm_name = '" . $farmName . "' AND company_id = '" . $companyId . "'";
+				$query = "SELECT * FROM farm WHERE farm_name = \"" . $farmName . "\" AND company_id = '" . $companyId . "'";
 				log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
 				
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
 					$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", NULL, '" . $farmName . "', NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+							" values (NULL, ".$companyId.", NULL, \"" . $farmName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
 					
 					log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
 					$return = true;

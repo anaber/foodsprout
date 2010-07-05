@@ -32,7 +32,7 @@ class PlantModel extends Model{
 	function addPlant() {
 		$return = true;
 		
-		$query = "SELECT * FROM plant WHERE plant_name = '" . $this->input->post('plantName') . "'";
+		$query = "SELECT * FROM plant WHERE plant_name = \"" . $this->input->post('plantName') . "\"";
 		log_message('debug', 'PlantModel.addPlant : Try to get duplicate Plant record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -40,7 +40,7 @@ class PlantModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO plant (plant_id, plant_name, plant_group_id)" .
-					" values (NULL, '" . $this->input->post('plantName') . "', '" . $this->input->post('plantGroupId') . "')";
+					" values (NULL, \"" . $this->input->post('plantName') . "\", '" . $this->input->post('plantGroupId') . "')";
 			log_message('debug', 'PlantModel.addPlant : Insert Plant : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -81,7 +81,7 @@ class PlantModel extends Model{
 	function updatePlant() {
 		$return = true;
 		
-		$query = "SELECT * FROM plant WHERE plant_name = '" . $this->input->post('plantName') . "' AND plant_id <> " . $this->input->post('plantId');
+		$query = "SELECT * FROM plant WHERE plant_name = \"" . $this->input->post('plantName') . "\" AND plant_id <> " . $this->input->post('plantId');
 		log_message('debug', 'PlantModel.updatePlant : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

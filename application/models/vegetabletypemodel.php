@@ -30,7 +30,7 @@ class VegetabletypeModel extends Model{
 	function addVegetabletype() {
 		$return = true;
 		
-		$query = "SELECT * FROM vegetable_type WHERE vegetable_type = '" . $this->input->post('vegetabletypeName') . "'";
+		$query = "SELECT * FROM vegetable_type WHERE vegetable_type = \"" . $this->input->post('vegetabletypeName') . "\"";
 		log_message('debug', 'VegetabletypeModel.addVegetabletype : Try to get duplicate Vegetabletype record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -38,7 +38,7 @@ class VegetabletypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO vegetable_type (vegetable_type_id, vegetable_type)" .
-					" values (NULL, '" . $this->input->post('vegetabletypeName') . "')";
+					" values (NULL, \"" . $this->input->post('vegetabletypeName') . "\")";
 			log_message('debug', 'VegetabletypeModel.addvegetabletype : Insert Vegetabletype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -77,7 +77,7 @@ class VegetabletypeModel extends Model{
 	function updateVegetabletype() {
 		$return = true;
 		
-		$query = "SELECT * FROM vegetable_type WHERE vegetable_type = '" . $this->input->post('vegetabletypeName') . "' AND vegetable_type_id <> " . $this->input->post('vegetabletypeId');
+		$query = "SELECT * FROM vegetable_type WHERE vegetable_type = \"" . $this->input->post('vegetabletypeName') . "\" AND vegetable_type_id <> " . $this->input->post('vegetabletypeId');
 		log_message('debug', 'VegetabletypeModel.updateVegetabletype : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

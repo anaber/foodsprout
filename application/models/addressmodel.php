@@ -152,7 +152,7 @@ class AddressModel extends Model{
 			$query .= 'distributor_id';
 		}
 		$query .= ", company_id)" .
-				" values (NULL, '" . $this->input->post('address') . "', '" . $this->input->post('city') . "', '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', ";
+				" values (NULL, \"" . $this->input->post('address') . "\", \"" . $this->input->post('city') . "\", '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', ";
 		if ( !empty($restaurantId) ) {
 			$query .= $restaurantId;
 		} else if ( !empty($farmId) ) {

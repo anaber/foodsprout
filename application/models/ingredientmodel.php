@@ -44,7 +44,7 @@ class IngredientModel extends Model{
 	function addIngredient() {
 		$return = true;
 		
-		$query = "SELECT * FROM ingredient WHERE ingredient_name = '" . $this->input->post('ingredientName') . "'";
+		$query = "SELECT * FROM ingredient WHERE ingredient_name = \"" . $this->input->post('ingredientName') . "\"";
 		log_message('debug', 'IngredientModel.addIngredient : Try to get duplicate Ingredient record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -52,7 +52,7 @@ class IngredientModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO ingredient (ingredient_id, ingredient_name, ingredient_type_id, vegetable_type_id, meat_type_id, fruit_type_id, plant_id)" .
-					" values (NULL, '" . $this->input->post('ingredientName') . "', " . $this->input->post('ingredientTypeId') . ", " . $this->input->post('vegetableTypeId') . ", " . $this->input->post('meatTypeId') . ", " . $this->input->post('fruitTypeId') . ", " . $this->input->post('plantId') . " )";
+					" values (NULL, \"" . $this->input->post('ingredientName') . "\", " . $this->input->post('ingredientTypeId') . ", " . $this->input->post('vegetableTypeId') . ", " . $this->input->post('meatTypeId') . ", " . $this->input->post('fruitTypeId') . ", " . $this->input->post('plantId') . " )";
 			log_message('debug', 'IngredientModel.addIngredient : Insert Ingredient : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -97,7 +97,7 @@ class IngredientModel extends Model{
 	function updateIngredient() {
 		$return = true;
 		
-		$query = "SELECT * FROM ingredient WHERE ingredient_name = '" . $this->input->post('ingredientName') . "' AND ingredient_id <> " . $this->input->post('ingredientId');
+		$query = "SELECT * FROM ingredient WHERE ingredient_name = \"" . $this->input->post('ingredientName') . "\" AND ingredient_id <> " . $this->input->post('ingredientId');
 		
 		log_message('debug', 'IngredientModel.updateIngredient : Try to get Duplicate record : ' . $query);
 			

@@ -29,7 +29,7 @@ class AnimalModel extends Model{
 	function addAnimal() {
 		$return = true;
 		
-		$query = "SELECT * FROM animal WHERE animal_name = '" . $this->input->post('animalName') . "'";
+		$query = "SELECT * FROM animal WHERE animal_name = \"" . $this->input->post('animalName') . "\"";
 		log_message('debug', 'AnimalModel.addAnimal : Try to get duplicate Animal record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -37,7 +37,7 @@ class AnimalModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO animal (animal_id, animal_name)" .
-					" values (NULL, '" . $this->input->post('animalName') . "')";
+					" values (NULL, \"" . $this->input->post('animalName') . "\")";
 			log_message('debug', 'AnimalModel.addAnimal : Insert Animal : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -76,7 +76,7 @@ class AnimalModel extends Model{
 	function updateAnimal() {
 		$return = true;
 		
-		$query = "SELECT * FROM animal WHERE animal_name = '" . $this->input->post('animalName') . "' AND animal_id <> " . $this->input->post('animalId');
+		$query = "SELECT * FROM animal WHERE animal_name = \"" . $this->input->post('animalName') . "\" AND animal_id <> " . $this->input->post('animalId');
 		log_message('debug', 'AnimalModel.updateAnimal : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

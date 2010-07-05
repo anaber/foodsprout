@@ -30,7 +30,7 @@ class FarmTypeModel extends Model{
 	function addFarmType() {
 		$return = true;
 		
-		$query = "SELECT * FROM farm_type WHERE farm_type = '" . $this->input->post('farmType') . "'";
+		$query = "SELECT * FROM farm_type WHERE farm_type = \"" . $this->input->post('farmType') . "\"";
 		log_message('debug', 'FarmTypeModel.addFarmType : Try to get duplicate FarmType record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -38,7 +38,7 @@ class FarmTypeModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO farm_type (farm_type_id, farm_type)" .
-					" values (NULL, '" . $this->input->post('farmType') . "')";
+					" values (NULL, \"" . $this->input->post('farmType') . "\")";
 			log_message('debug', 'FarmTypeModel.addFarmType : Insert FarmType : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -77,7 +77,7 @@ class FarmTypeModel extends Model{
 	function updateFarmType() {
 		$return = true;
 		
-		$query = "SELECT * FROM farm_type WHERE farm_type = '" . $this->input->post('farmType') . "' AND farm_type_id <> " . $this->input->post('farmTypeId');
+		$query = "SELECT * FROM farm_type WHERE farm_type = \"" . $this->input->post('farmType') . "\" AND farm_type_id <> " . $this->input->post('farmTypeId');
 		log_message('debug', 'FarmTypeModel.updateFarmType : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);

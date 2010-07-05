@@ -29,7 +29,7 @@ class UsergroupModel extends Model{
 	function addUsergroup() {
 		$return = true;
 		
-		$query = "SELECT * FROM user_group WHERE user_group = '" . $this->input->post('usergroupName') . "'";
+		$query = "SELECT * FROM user_group WHERE user_group = \"" . $this->input->post('usergroupName') . "\"";
 		log_message('debug', 'UsergroupModel.addUsergroup : Try to get duplicate Usergroup record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -37,7 +37,7 @@ class UsergroupModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$query = "INSERT INTO user_group (user_group_id, user_group)" .
-					" values (NULL, '" . $this->input->post('usergroupName') . "')";
+					" values (NULL, \"" . $this->input->post('usergroupName') . "\")";
 			log_message('debug', 'UsergroupModel.addUsergroup : Insert Usergroup : ' . $query);
 			
 			if ( $this->db->query($query) ) {
@@ -76,7 +76,7 @@ class UsergroupModel extends Model{
 	function updateUsergroup() {
 		$return = true;
 		
-		$query = "SELECT * FROM user_group WHERE user_group = '" . $this->input->post('usergroupName') . "' AND user_group_id <> " . $this->input->post('usergroupId');
+		$query = "SELECT * FROM user_group WHERE user_group = \"" . $this->input->post('usergroupName') . "\" AND user_group_id <> " . $this->input->post('usergroupId');
 		log_message('debug', 'UsergroupModel.updateUsergroup : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
