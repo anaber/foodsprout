@@ -4,7 +4,7 @@ var halfRecordCount;
 
 function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
-	var formAction = '/restaurant/ajaxSearchRestaurantChains';
+	var formAction = '/chain/ajaxSearchRestaurantChains';
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
 	

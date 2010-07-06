@@ -6,12 +6,11 @@
 		
 		loadPopupFadeIn();
 		
-		$.post("/restaurant/ajaxSearchRestaurantChains", { },
+		$.post("/chain/ajaxSearchRestaurantChains", { },
 		function(data){
 			redrawContent(data);
 		},
-		"json");
-		
+		"json");	
 	});
 </script>
 

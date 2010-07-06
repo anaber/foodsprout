@@ -3,6 +3,23 @@
 class Distributor extends Controller {
 	
 	function index() {
+		$data = array();
+		
+		// Views to include in the data array
+		$data['CENTER'] = array(
+				'list' => '/restaurant/distributor_list',
+			);
+		
+		$data['RIGHT'] = array(
+				'ad' => 'includes/left/ad',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Fast Food Resturants";
+		
+		$this->load->view('templates/center_right_narrow_template', $data);
+		
+		/*
 		global $GOOGLE_MAP_KEY;
 		
 		$data = array();
@@ -33,6 +50,8 @@ class Distributor extends Controller {
 		$data['data']['center']['list']['VIEW_HEADER'] = "List of Distributor";		
 		
 		$this->load->view('templates/left_center_template', $data);
+		*/
+		
 	}
 	
 	function view($id) {
