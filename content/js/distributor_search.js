@@ -4,7 +4,7 @@ var halfRecordCount;
 
 function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
-	var formAction = '/chain/ajaxSearchRestaurantChains';
+	var formAction = '/distributor/ajaxSearchDistributors';
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
 	
@@ -54,8 +54,6 @@ function redrawContent(data) {
 	disablePopupFadeIn();
 }
 
-
-
 function getResultTableHeader() {
 	html =
 		'<div align = "center">' + 
@@ -70,7 +68,7 @@ function getResultTableFooter() {
 	return html;
 }
 
-function addResult(restaurantChain, count) {
+function addResult(distributor, count) {
 	var html = '';
 	if (count == 0 ) {
 		html =
@@ -78,7 +76,7 @@ function addResult(restaurantChain, count) {
 	}
 	
 	html +=
-		'	<div style="padding:5px;"><a href="/chain/view/' + restaurantChain.restaurantChainId + '" id = "'+ restaurantChain.restaurantChainId +'">'+ restaurantChain.restaurantChain + '</a></div>';
+		'	<div style="padding:5px;"><a href="/distributor/view/' + distributor.distributorId + '" id = "'+ distributor.distributorId +'">'+ distributor.distributorName + '</a></div>';
 	
 	if (count == (halfRecordCount-1) ) {
 		html += 

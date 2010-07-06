@@ -7,7 +7,7 @@ class Distributor extends Controller {
 		
 		// Views to include in the data array
 		$data['CENTER'] = array(
-				'list' => '/restaurant/distributor_list',
+				'list' => '/distributor/distributor_list',
 			);
 		
 		$data['RIGHT'] = array(
@@ -15,49 +15,18 @@ class Distributor extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Fast Food Resturants";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Distributor";
 		
 		$this->load->view('templates/center_right_narrow_template', $data);
-		
-		/*
-		global $GOOGLE_MAP_KEY;
-		
-		$data = array();
-		
-		// Getting information from models
-		$this->load->model('DistributorModel');
-		$distributors = $this->DistributorModel->listDistributor();
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'map' => 'includes/map',
-				'list' => '/distributor/distributor_list',
-			);
-		
-		$data['LEFT'] = array(
-				'ad' => 'includes/left/ad',
-			);
-		
-		// Data to be passed to the views
-		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
-		
-		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['center']['map']['VIEW_HEADER'] = "Map";
-		$data['data']['center']['map']['width'] = '790';
-		$data['data']['center']['map']['height'] = '250';
-		
-		$data['data']['center']['list']['LIST'] = $distributors;
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Distributor";		
-		
-		$this->load->view('templates/left_center_template', $data);
-		*/
-		
+	}
+	
+	function ajaxSearchDistributors() {
+		$this->load->model('DistributorModel', '', TRUE);
+		$restaurants = $this->DistributorModel->getDistributorsJson();
+		echo json_encode($restaurants);
 	}
 	
 	function view($id) {
-		
-		global $GOOGLE_MAP_KEY;
-		
 		$data = array();
 		
 		// List of views to be included
@@ -68,8 +37,8 @@ class Distributor extends Controller {
 		$data['RIGHT'] = array(
 				'image' => 'includes/right/image',
 				'ad' => 'includes/right/ad',
-				'map' => 'includes/map',
-				'supliers' => 'suppliers',
+				'map' => 'includes/right/map',
+				//'supliers' => 'suppliers',
 			);
 		
 		// Data to be passed to the views
@@ -84,7 +53,6 @@ class Distributor extends Controller {
 		$data['data']['right']['image']['title'] = 'Distributor Image';
 		
 		// Right -> Map
-		$data['data']['right']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
 		$data['data']['right']['map']['VIEW_HEADER'] = "Google Map";
 		$data['data']['right']['map']['width'] = '300';
 		$data['data']['right']['map']['height'] = '200';

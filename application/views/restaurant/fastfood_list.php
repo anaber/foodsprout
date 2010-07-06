@@ -10,7 +10,7 @@
 		function(data){
 			redrawContent(data);
 		},
-		"json");	
+		"json");
 	});
 </script>
 
@@ -27,7 +27,7 @@
 	
 	<div style="width:590px; padding:10px; font-size:10px; border-color:#FF0000; border-width:1px; border-style:solid;" id = 'pagingLinks' align = "center">
 		<b>Page</b> &nbsp;&nbsp;
-		<a href="#" id = "imgPage_1">1</a>
+		<a href="#" id = "1">1</a>
 	</div>
 	
 	<div class="clear"></div>
