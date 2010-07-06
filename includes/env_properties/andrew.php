@@ -24,6 +24,7 @@ $BASE_URL = "http://localhost:8888/";
 $GOOGLE_MAP_KEY = '';
 
 $PER_PAGE = 10;
+$PER_PAGE_2 = 60;
 
 $DEFAULT_ZOOM_LEVEL = 3;
 $CITY_ZOOM_LEVEL = 11;

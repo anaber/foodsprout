@@ -25,4 +25,25 @@ function requestToParams($numResults, $start, $totalPages, $first, $last, $page,
 	);
 	return $param;
 }
+
+function requestToParams2($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel) {
+	global $PER_PAGE_2;
+	
+	$param = array(
+		'page'     		=> $page,
+		'totalPages' 	=> $totalPages,
+		'perPage'  		=> $PER_PAGE_2,
+		'start'    		=> $start+1,
+		'end'    		=> ( ($start + $PER_PAGE_2) > $numResults ? $numResults : ($start + $PER_PAGE_2) ) ,
+		'firstPage'		=> $first,
+		'lastPage'		=> $last,
+		'numResults'  	=> $numResults,
+		'sort'  		=> $sort,
+		'order'  		=> $order,
+		'q'  			=> $q,
+		'filter'		=> $filter,
+		'zoomLevel'		=> $mapZoomLevel,
+	);
+	return $param;
+}
 ?>

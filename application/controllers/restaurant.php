@@ -81,10 +81,6 @@ class Restaurant extends Controller {
 		global $GOOGLE_MAP_KEY;
 		
 		$data = array();
-		$fastfood = array();
-		
-		$this->load->model('RestaurantModel');
-		$fastfood = $this->RestaurantModel->listFastFood();
 		
 		// Views to include in the data array
 		$data['CENTER'] = array(
@@ -97,7 +93,6 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "List of Fast Food Resturants";
-		$data['data']['center']['list']['FASTFOOD'] = $fastfood;
 		
 		$this->load->view('templates/center_right_narrow_template', $data);
 	}
@@ -292,6 +287,12 @@ class Restaurant extends Controller {
 	
 	function map() {
 		$this->load->view('map');
+	}
+	
+	function ajaxSearchRestaurantChains() {
+		$this->load->model('RestaurantChainModel', '', TRUE);
+		$restaurants = $this->RestaurantChainModel->getRestaurantChainsJson();
+		echo json_encode($restaurants);
 	}
 	
 }

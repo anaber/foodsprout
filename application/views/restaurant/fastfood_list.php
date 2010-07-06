@@ -1,27 +1,41 @@
-<?php
-if (count($FASTFOOD) > 0 ) {
-?>
+<script src="<?php echo base_url()?>js/jquery.colorize.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/restaurant_chain_search.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
+<script>
+	$(document).ready(function() {
+		
+		loadPopupFadeIn();
+		
+		$.post("/restaurant/ajaxSearchRestaurantChains", { },
+		function(data){
+			redrawContent(data);
+		},
+		"json");
+		
+	});
+</script>
+
 <table cellpadding="3" cellspacing="0" border="0" id="tbllist">
 	<tr>
 		<th>Restaurant Chain</th>
 	</tr>
-			
-	
-<?php
-
-	$i = 0;
-	foreach($FASTFOOD as $r) :
-		$i++;
-		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.anchor('restaurant/viewchain/'.$r->restaurantChainId, $r->restaurantChain).'</td>';
-		echo '</tr>';
- 	endforeach;
-?>
-
-<?php
-} else {
-	echo "No restaurant chains available";
-}
-
-?>
 </table>
+<div id="resultsContainer" style="display:none" class="pd_tp1">
+	<div id="resultTableContainer"></div>
+</div>
+
+<div style="overflow:auto; padding:5px;" align = "center">
+	
+	<div style="width:590px; padding:10px; font-size:10px; border-color:#FF0000; border-width:1px; border-style:solid;" id = 'pagingLinks' align = "center">
+		<b>Page</b> &nbsp;&nbsp;
+		<a href="#" id = "imgPage_1">1</a>
+	</div>
+	
+	<div class="clear"></div>
+</div>
+
+<div id="popupProcessing"> 
+	<img src = "/images/icon_processing.gif">
+</div> 
+
+<div id="backgroundPopup"></div>  
