@@ -2,7 +2,7 @@
 <script src="<?php echo base_url()?>js/google_map_v3.js" type="text/javascript"></script>
 <script>
 	$(document).ready(function() {
-		loadMapOnStartUp(-34.397, 150.644, 8);
+		loadMapOnStartUp(38.41055825094609, -98, 3);
 	});
 </script>
 <div id = "map">
