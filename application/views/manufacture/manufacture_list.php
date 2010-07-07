@@ -1,12 +1,48 @@
-<?php
+<script src="<?php echo base_url()?>js/manufacture_search.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
+<script>
+	$(document).ready(function() {
+		
+		loadPopupFadeIn();
+		
+		$.post("/manufacture/ajaxSearchManufactures", { },
+		function(data){
+			redrawContent(data);
+		},
+		"json");
+	});
+</script>
 
-		$i = 0;
-		foreach($LIST as $r) :
-			$i++;
-			echo '<div style="overflow:auto; padding:5px;">';
-			echo '	<div style="float:left; width:300px;">'.anchor('manufacture/view/'.$r->manufactureId, $r->manufactureName).'<br>Type:</div>';
-			echo '  <div style="float:right; width:400px;">Address:</div>';
-			echo '</div>';
+<div id="resultsContainer" style="display:none" class="pd_tp1">
+	<div id="resultTableContainer"></div>
+</div>
 
-	 	endforeach;
-?>
+<div style="overflow:auto; padding:5px;">
+	
+	<div style="float:left; width:170px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
+	
+	<div style="float:left; width:400px; font-size:10px;" id = 'pagingLinks' align = "center">
+		<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;
+		<a href="#" id = "imgPrevious">Previous</a>
+		&nbsp;&nbsp;&nbsp; Page 1 of 1 &nbsp;&nbsp;&nbsp;
+		<a href="#" id = "imgNext">Next</a> &nbsp;&nbsp;
+		<a href="#" id = "imgLast">Last</a>
+	</div>
+	
+	<div style="float:right; width:210px; font-size:10px;" id = 'recordsPerPage' align = "right">
+		Items per page:
+		<div id = "50PerPage" style="float:right; width:20px;">50</div>
+		<div id = "40PerPage" style="float:right; width:30px;">40 | </div>  
+		<div id = "20PerPage" style="float:right; width:30px;">20 | </div>
+		<div id = "10PerPage" style="float:right; width:30px;">10 | </div>
+	</div>
+	
+	
+	<div class="clear"></div>
+</div>
+
+<div id="popupProcessing"> 
+	<img src = "/images/icon_processing.gif">
+</div> 
+
+<div id="backgroundPopup"></div>  

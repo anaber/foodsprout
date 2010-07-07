@@ -21,7 +21,6 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 ?>
 <?php
 	if (isset($BREADCRUMB) ) {
-		
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	}
 	else{

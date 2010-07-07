@@ -255,7 +255,129 @@ class ManufactureModel extends Model{
 		
 		if ( empty($sort) ) {
 			$sort_query = ' ORDER BY manufacture_name';
-			$sort = 'farm_name';
+			$sort = 'manufacture_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "FarmModel.getFarmsJsonAdmin : " . $query);
+		$result = $this->db->query($query);
+		
+		$manufactures = array();
+		
+		$CI =& get_instance();
+		
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('ManufactureLib');
+			unset($this->ManufactureLib);
+			
+			$this->ManufactureLib->manufactureId = $row['manufacture_id'];
+			$this->ManufactureLib->manufactureName = $row['manufacture_name'];
+			$this->ManufactureLib->manufactureTypeId = $row['manufacture_type_id'];
+			$this->ManufactureLib->manufactureType = $row['manufacture_type'];
+			
+			$CI->load->model('SupplierModel','',true);
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '');
+			$this->ManufactureLib->suppliers = $suppliers;
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '');
+			$this->ManufactureLib->addresses = $addresses;
+			
+			$manufactures[] = $this->ManufactureLib;
+			unset($this->ManufactureLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $manufactures,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    
+	    return $arr;
+	}
+	
+	function getManufactureJson() {
+		global $PER_PAGE, $FARMER_TYPES;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		$base_query = 'SELECT manufacture.*, manufacture_type.manufacture_type' .
+				' FROM manufacture, manufacture_type';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM manufacture, manufacture_type';
+		
+		$where = ' WHERE manufacture.manufacture_type_id = manufacture_type.manufacture_type_id';
+		
+		$where .= ' AND (' 
+				. '	manufacture.manufacture_name like "%' .$q . '%"'
+				. ' OR manufacture.manufacture_id like "%' . $q . '%"'
+				. ' OR manufacture_type.manufacture_type like "%' . $q . '%"';		
+		$where .= ' )';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY manufacture_name';
+			$sort = 'manufacture_name';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}

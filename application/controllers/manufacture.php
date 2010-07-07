@@ -3,44 +3,27 @@
 class Manufacture extends Controller {
 	
 	function index() {
-		global $GOOGLE_MAP_KEY;
-		
 		$data = array();
 		
-		// Getting information from models
-		$this->load->model('ManufactureModel');
-		$manufactures = $this->ManufactureModel->listManufacture();
-		
-		$this->load->model('ManufactureTypeModel');
-		$manufacturetypes = $this->ManufactureTypeModel->listManufactureType();
-		
-		
-		// List of views to be included
+		// Views to include in the data array
 		$data['CENTER'] = array(
-				'map' => 'includes/map',
 				'list' => '/manufacture/manufacture_list',
 			);
 		
-		$data['LEFT'] = array(
-				'filter' => 'includes/left/manufacture_filter',
+		$data['RIGHT'] = array(
 				'ad' => 'includes/left/ad',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
-		$data['data']['left']['filter']['MANUFACTURETYPES'] = $manufacturetypes;
-		
-		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['center']['map']['VIEW_HEADER'] = "Map";
-		$data['data']['center']['map']['width'] = '790';
-		$data['data']['center']['map']['height'] = '250';
-		
-		$data['data']['center']['list']['LIST'] = $manufactures;
 		$data['data']['center']['list']['VIEW_HEADER'] = "List of Manufacture";
 		
-		
-		
-		$this->load->view('templates/left_center_template', $data);
+		$this->load->view('templates/center_right_narrow_template', $data);
+	}
+	
+	function ajaxSearchManufactures() {
+		$this->load->model('ManufactureModel', '', TRUE);
+		$restaurants = $this->ManufactureModel->getManufactureJson();
+		echo json_encode($restaurants);
 	}
 	
 	function view($id) {

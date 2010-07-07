@@ -1,4 +1,3 @@
-<script src="<?php echo base_url()?>js/jquery.colorize.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/distributor_search.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <script>
