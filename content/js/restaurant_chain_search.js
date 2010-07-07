@@ -12,6 +12,8 @@ function postAndRedrawContent(page, perPage, s, o, query, filter) {
 		redrawContent(data, filter);
 	},
 	"json");
+	
+	disablePopupFadeIn();
 }
 
 function redrawContent(data) {
@@ -58,8 +60,8 @@ function redrawContent(data) {
 
 function getResultTableHeader() {
 	html =
-		'<div align = "center">' + 
-		'<div style="overflow:auto; padding:5px; width:620px;" align = "left">';
+		'<div align = "left">' + 
+		'<div style="overflow:auto; padding:5px; width:690px;" align = "left">';
 	return html;
 }
 
@@ -74,7 +76,7 @@ function addResult(restaurantChain, count) {
 	var html = '';
 	if (count == 0 ) {
 		html =
-		'<div style="float:left; width:300px;">';
+		'<div style="float:left; width:340px;">';
 	}
 	
 	html +=
@@ -83,7 +85,7 @@ function addResult(restaurantChain, count) {
 	if (count == (halfRecordCount-1) ) {
 		html += 
 		'   </div>' + 
-		'	<div style="float:right; width:300px;">';
+		'	<div style="float:right; width:340px;">';
 	}
 	
 	if (count == (recordCount - 1) ) {

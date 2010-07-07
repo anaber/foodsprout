@@ -35,16 +35,16 @@
 <div id="homerightbox">
 	<div style="padding-left:5px;">
 		<span class="greentxt">Food Resources &amp; FAQs</span><br><br>
-		<div style="float:left; width:220px; font-size:14px; line-height:150%;">
-			<a href = "/chain/fastfood">Explore Fast Food</a><br>
-			Resources for Moms<br>
-			Where Food Comes From<br>
+		<div style="float:left; width:260px; font-size:18px; line-height:150%;">
+			<a href = "/chain/fastfood">Explore Restaurant Chains</a><br>
+			<!-- Resources for Moms<br>
+			Where Food Comes From<br -->
 			<a href="/about">Our Mission</a><br>
-			FAQs<br>
+			<!-- FAQs<br-->
 			
 		</div>
 
-		<div style="float:right; width:225px; font-size:12px;">
+		<div style="float:right; width:205px; font-size:12px;">
 			
 		</div>			
 	</div>

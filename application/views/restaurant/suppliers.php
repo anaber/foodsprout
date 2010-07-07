@@ -13,14 +13,14 @@ if (count($SUPPLIER) > 0 ) {
 	foreach($SUPPLIER as $r) :
 		$i++;
 		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.$r.'</td>';
+		echo '	<td>'.$r->supplierId.'</td>';
 		echo '</tr>';
  	endforeach;
 ?>
 
 <?php
 } else {
-	echo "No menu items provided at this time";
+	echo "<tr><td>Suppliers not provided by Restaurant</td></tr>";
 }
 
 ?>

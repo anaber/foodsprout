@@ -33,7 +33,7 @@ class Chain extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Fast Food Resturants";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Restaurant Chains";
 		
 		$this->load->view('templates/center_right_narrow_template', $data);
 	}
@@ -48,6 +48,12 @@ class Chain extends Controller {
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurantChainInfo = $this->RestaurantModel->getRestaurantChainFromId($restaurantChainId);
+		
+		$this->load->model('RestaurantChainModel');
+		$menu = $this->RestaurantChainModel->getRestaurantChainMenu($restaurantChainId);
+		
+		$this->load->model('RestaurantChainModel');
+		$suppliers = $this->RestaurantChainModel->getRestaurantChainSuppliers($restaurantChainId);
 		
 		// SEO
 		$this->load->model('SeoModel');
@@ -80,8 +86,8 @@ class Chain extends Controller {
 		// Data to be passed to the views
 		// Center -> Menu
 		$data['data']['center']['info']['RESTAURANT'] = $restaurantChainInfo;
-		$data['data']['center']['menu']['MENU'] = array('burger', 'pizza', 'meat');
-		$data['data']['center']['suppliers']['SUPPLIER'] = array('Lopez Foods', 'Sysco Foods', 'US Food Service');
+		$data['data']['center']['menu']['MENU'] = $menu;
+		$data['data']['center']['suppliers']['SUPPLIER'] = $suppliers;
 		
 		// Right -> Image
 		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
