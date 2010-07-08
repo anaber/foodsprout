@@ -138,9 +138,9 @@ function addResult(manufacture, count) {
 	
 	$.each(manufacture.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.displayAddress + '</em></a>';
+			html += '<em>' + address.displayAddress + '</em>';
 		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.displayAddress + '</em></a>';
+			html += "<br /><br />" + '<em>' + address.displayAddress + '</em>';
 		}
 	});
 	
