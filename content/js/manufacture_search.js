@@ -1,16 +1,24 @@
 function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
-	var formAction = '/manufacture/ajaxSearchManufactures';
+	var formAction = '/state/ajaxSearchStates';
+	postArray = {  };
 	
-	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
+	$.post(formAction, postArray,function(data) {
+		
+		var formAction = '/manufacture/ajaxSearchManufactures';
 	
-	$.post(formAction, postArray,function(data) {		
-		redrawContent(data);
+		postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
+		
+		$.post(formAction, postArray,function(data2) {		
+			dataManufactures = data2;
+			redrawContent(data2, data);
+		},
+		"json");
 	},
 	"json");
 }
 
-function redrawContent(data) {
+function redrawContent(data, states) {
 	
 	$('#resultTableContainer').empty();
 	//var resultTableHtml = getResultTableHeader();
@@ -45,17 +53,87 @@ function redrawContent(data) {
 	pagingLinksContent = drawPagingLinks(data.param);
 	$('#pagingLinks').append(pagingLinksContent);
 	
+	//redrawFilterBox(data, states);
+	
 	reinitializePagingEvent(data);
 	
 	reinitializePageCountEvent(data);
 	
-	disablePopupFadeIn();
+	//reinitializeFilterEvent(data);
+	
+	//disablePopupFadeIn();
+	
+	if (data.param.filter) {
+		$('#stateId').val(data.param.filter);
+	} else  {
+		$('#stateId').val('');
+	}
+	
+	if (data.param.q) {
+		//$('#suggestion_box').val(data.param.q);
+	} else  {
+		$('#suggestion_box').val('');
+	}
+	
 }
+
+function redrawFilterBox(data, states) {
+	
+	$('#divFilters').empty();
+	filterContent = 
+		'State '+
+		'<select name="stateId" id="stateId">'+
+		'<option value = "">--State--</option>'+
+		'</select>';
+	$('#divFilters').html(filterContent);
+	
+	$('#stateId')
+		.find('option')
+	    .remove();
+	$('#stateId').append($("<option></option>").attr("value", '').text('--State--'));
+	$.each(states, function(i, a) {
+		$('#stateId').append($("<option></option>").attr("value",a.stateId).text(a.stateName));
+	});
+
+	$("#suggestion_box").val(data.param.q);
+	
+	if (data.param.filter) {
+		$('#stateId').val(data.param.filter);
+	}
+}
+
+function reinitializeFilterEvent (data) {
+	
+	$("#stateId").change(function () {
+		stateId = $("#stateId").val();
+		
+		if ( stateId != '' ) {
+			//strFilter = 's__' + stateId;
+			//$("#selectedStateId").val(stateId);
+			
+			//loadPopupFadeIn();
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', stateId);
+		}
+	});
+	
+	/*
+	$("#suggestion_box").keyup(function() {
+		q = $("#suggestion_box").val();
+			
+		//loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, q, data.param.filter);
+	});
+	*/
+	
+	
+}
+
+
 
 function addResult(manufacture, count) {
 	var html =
 	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:300px;"><a href="/manufacture/view/' + manufacture.manufactureId + '" id = "'+ manufacture.manufactureId +'">'+ manufacture.manufactureName +'</a><br>Type:'+ manufacture.manufactureType + '</div>' +
+	'	<div style="float:left; width:300px;"><a href="/manufacture/view/' + manufacture.manufactureId + '" id = "'+ manufacture.manufactureId +'">'+ manufacture.manufactureName +'</a><br>Type: '+ manufacture.manufactureType + '</div>' +
 	'	<div style="float:right; width:400px;">Address:<br />';
 	
 	$.each(manufacture.addresses, function(j, address) {
@@ -71,6 +149,15 @@ function addResult(manufacture, count) {
 	'</div>'
 	;
 	
+	return html;
+}
+
+function addZeroResult() {
+	var html =
+	'<div style="overflow:auto; padding:5px;">' +
+	'	<div style="float:left; width:700px;" align = "center">No results found. Please retry with some other filter options...</div>' + 
+	'</div>'
+	;
 	return html;
 }
 
@@ -133,7 +220,7 @@ function reinitializePagingEvent(data) {
 	
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
@@ -143,7 +230,7 @@ function reinitializePagingEvent(data) {
 		if (previousPage <= 0) {
 			previousPage = data.param.firstPage;
 		}
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
@@ -153,13 +240,13 @@ function reinitializePagingEvent(data) {
 		if (nextPage >= data.param.totalPages) {
 			nextPage = data.param.lastPage;
 		}
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
@@ -168,25 +255,25 @@ function reinitializePagingEvent(data) {
 function reinitializePageCountEvent(data) {
 	$("#10PerPage").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#20PerPage").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#40PerPage").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#50PerPage").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 }

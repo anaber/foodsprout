@@ -51,13 +51,13 @@ function redrawContent(data) {
 	
 	reinitializePagingEvent(data);
 	
-	disablePopupFadeIn();
+	//disablePopupFadeIn();
 }
 
 function getResultTableHeader() {
 	html =
-		'<div align = "center">' + 
-		'<div style="overflow:auto; padding:5px; width:620px;" align = "left">';
+		'<div align = "left">' + 
+		'<div style="overflow:auto; padding:5px; width:690px;" align = "left">';
 	return html;
 }
 
@@ -72,7 +72,7 @@ function addResult(distributor, count) {
 	var html = '';
 	if (count == 0 ) {
 		html =
-		'<div style="float:left; width:300px;">';
+		'<div style="float:left; width:340px;">';
 	}
 	
 	html +=
@@ -81,7 +81,7 @@ function addResult(distributor, count) {
 	if (count == (halfRecordCount-1) ) {
 		html += 
 		'   </div>' + 
-		'	<div style="float:right; width:300px;">';
+		'	<div style="float:right; width:340px;">';
 	}
 	
 	if (count == (recordCount - 1) ) {
@@ -121,7 +121,7 @@ function reinitializePagingEvent(data) {
 	$("#pagingLinks a").click(function(e) {
 		selectedPage = this.id;
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(selectedPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 }

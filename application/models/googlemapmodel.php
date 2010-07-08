@@ -9,6 +9,7 @@ class GoogleMapModel extends Model{
 		$a = array();
 		$url = "http://maps.google.com/maps/geo?q=".urlencode($address)."&output=csv&key=".$GOOGLE_MAP_KEY;
 		if ($d = @fopen($url, "r")) {
+			
 			$gcsv = @fread($d, 30000);
 			@fclose($d);
 			$tmp = explode(",", $gcsv);

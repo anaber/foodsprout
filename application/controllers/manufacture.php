@@ -26,6 +26,12 @@ class Manufacture extends Controller {
 		echo json_encode($restaurants);
 	}
 	
+	function searchManufactures($q) {
+		$this->load->model('ManufactureModel', '', TRUE);
+		$companies = $this->ManufactureModel->searchManufactures($q);
+		echo $companies;
+	}
+	
 	// View all the information about a single manufacture
 	function view() {
 		

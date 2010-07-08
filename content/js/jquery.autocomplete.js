@@ -337,12 +337,23 @@ jQuery.autocomplete = function(input, options) {
 			$input.removeClass(options.loadingClass);
 		}
 	};
-
+	/*
 	function makeUrl(q) {
 		//var url = options.url + "?q=" + encodeURI(q);
 		var url = options.url + "/" + encodeURI(q);
 		for (var i in options.extraParams) {
 			url += "&" + i + "=" + encodeURI(options.extraParams[i]);
+		}
+		return url;
+	};
+	*/
+	function makeUrl(q) {
+		//var url = options.url + "?q=" + encodeURI(q);
+		var url = options.url + "/" + encodeURI(q);
+		
+		for (var i in options.extraParams) {
+			//url += "&" + i + "=" + encodeURI(options.extraParams[i]);
+			url += '___' + encodeURI(options.extraParams[i]);
 		}
 		return url;
 	};

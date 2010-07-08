@@ -1,16 +1,14 @@
 <script src="<?php echo base_url()?>js/restaurant_chain_search.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
+<!--<script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>-->
 <script>
 	$(document).ready(function() {
-		
-		disablePopupFadeIn();
+		//loadPopupFadeIn();
 		
 		$.post("/chain/ajaxSearchRestaurantChains", { },
 		function(data){
 			redrawContent(data);
 		},
 		"json");
-		
 	});
 </script>
 
@@ -28,9 +26,10 @@
 	
 	<div class="clear"></div>
 </div>
-
+<!--
 <div id="popupProcessing"> 
 	<img src = "/images/icon_processing.gif">
 </div> 
 
-<div id="backgroundPopup"></div>  
+<div id="backgroundPopup"></div>
+-->  

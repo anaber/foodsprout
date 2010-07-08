@@ -1,18 +1,105 @@
 <script src="<?php echo base_url()?>js/manufacture_search.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
+
+<script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
+
 <script>
+var dataManufactures;
 	$(document).ready(function() {
 		
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		
-		$.post("/manufacture/ajaxSearchManufactures", { },
-		function(data){
-			redrawContent(data);
+		var formAction = '/state/ajaxSearchStates';
+		postArray = {  };
+		
+		$.post(formAction, postArray,function(data) {
+			
+			$.post("/manufacture/ajaxSearchManufactures", { },
+			function(data2){
+				dataManufactures = data2;
+				
+				redrawFilterBox(data2, data);
+				
+				redrawContent(data2, data);
+				
+				reinitializeFilterEvent(dataManufactures);
+				reinitializeAutoSuggestEvent(dataManufactures);
+			},
+			"json");
 		},
 		"json");
+		
+		
+		
 	});
-</script>
+	
 
+function reinitializeAutoSuggestEvent(dataManufactures) {
+	
+	$("#suggestion_box").autocomplete(
+		"/manufacture/searchManufactures",
+		{
+			delay:10,
+			minChars:3,
+			matchSubset:1,
+			matchContains:1,
+			cacheLength:10,
+			onItemSelect:selectItem,
+			onFindValue:findValue,
+			formatItem:formatItem,
+			autoFill:false,
+			/*
+			extraParams: {
+		       //extra: $("#selectedStateId").val()
+		       extra: $("#stateId").val()
+		    }
+		    */
+		}
+	);
+	
+	$("#suggestion_box").change(function () {
+		if ($("#suggestion_box").val() == "") {
+			//loadPopupFadeIn();
+			postAndRedrawContent(dataManufactures.param.firstPage, dataManufactures.param.perPage, dataManufactures.param.sort, dataManufactures.param.order, '', dataManufactures.param.filter);
+		}
+	});
+	
+}
+	
+function findValue(li) {
+	if( li == null ) return alert("No match!");
+ 
+	// if coming from an AJAX call, let's use the CityId as the value
+	if( !!li.extra ) var sValue = li.extra[0];
+ 
+	// otherwise, let's just display the value in the text box
+	else var sValue = li.selectValue;
+ 
+	//alert("The value you selected was: " + sValue);
+	//alert(sValue);
+	//alert(dataManufactures);
+	//strFilter = 'm__' + sValue;
+	
+	//loadPopupFadeIn();
+	postAndRedrawContent(dataManufactures.param.firstPage, dataManufactures.param.perPage, dataManufactures.param.sort, dataManufactures.param.order, sValue, '');
+}
+ 
+function selectItem(li) {
+	findValue(li);
+}
+
+function formatItem(row) {
+	//return row[0] + " (id: " + row[1] + ")";
+	return row[0];
+}
+
+</script>
+<br />
+<?php
+	$this->load->view('includes/left/manufacture_filter');
+?>
+<br />
 <div id="resultsContainer" style="display:none" class="pd_tp1">
 	<div id="resultTableContainer"></div>
 </div>
@@ -41,8 +128,12 @@
 	<div class="clear"></div>
 </div>
 
+<!--
+<input type = "hidden" id = "selectedStateId" value = "">
+
 <div id="popupProcessing"> 
 	<img src = "/images/icon_processing.gif">
 </div> 
 
-<div id="backgroundPopup"></div>  
+<div id="backgroundPopup"></div>
+-->  

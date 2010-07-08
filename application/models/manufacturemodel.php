@@ -38,6 +38,24 @@ class ManufactureModel extends Model{
 		return $manufactures;
 	}
 	
+	function searchManufactures($q) {
+		
+		$arr_q = explode('___', $q);
+		//print_r_pre($arr_q);
+		$query = 'SELECT manufacture_id, manufacture_name
+					FROM manufacture
+					WHERE manufacture_name like "'.$arr_q[0].'%"
+					ORDER BY manufacture_name ';
+		$manufactures = '';
+		log_message('debug', "ManufactureModel.searchManufactures : " . $query);
+		$result = $this->db->query($query);
+		foreach ($result->result_array() as $row) {
+			$manufactures .= $row['manufacture_name']."|".$row['manufacture_id']."\n";
+		}
+		
+		return $manufactures;
+	}
+	
 	// Insert the new manufacture data into the database
 	function addManufacture() {
 		global $ACTIVITY_LEVEL_DB;
@@ -342,12 +360,19 @@ class ManufactureModel extends Model{
 		$pp = $this->input->post('pp'); // Per Page
 		$sort = $this->input->post('sort');
 		$order = $this->input->post('order');
+		$filter = $this->input->post('f');
+		
+		if ($filter == false) {
+			$filter = '';
+		}
 		
 		$q = $this->input->post('q');
 		
 		if ($q == '0') {
 			$q = '';
 		}
+		//$filter = 8;
+		//$q = 1;
 		
 		$start = 0;
 		$page = 0;
@@ -359,12 +384,41 @@ class ManufactureModel extends Model{
 				' FROM manufacture, manufacture_type';
 		
 		$where = ' WHERE manufacture.manufacture_type_id = manufacture_type.manufacture_type_id';
-		
+		/*
 		$where .= ' AND (' 
 				. '	manufacture.manufacture_name like "%' .$q . '%"'
 				. ' OR manufacture.manufacture_id like "%' . $q . '%"'
 				. ' OR manufacture_type.manufacture_type like "%' . $q . '%"';		
 		$where .= ' )';
+		*/
+		if (!empty($q) ) {
+		$where .= ' AND (' 
+				. '	manufacture.manufacture_id = ' . $q
+				. ' )';
+		}
+		
+		if (!empty($filter) ) {
+		//if ( count($arr_filter) > 0 && $arr_filter[0] == 's' ) {
+			if (!empty($where) ) {
+				$where .= ' AND (';  
+			} else {
+				$where .= ' WHERE (';
+			}
+			
+			$where	.= '		SELECT address.address_id' 
+					. '			from address, state'
+					. '			WHERE' 
+					. '				address.manufacture_id = manufacture.manufacture_id'
+					. '				AND address.state_id = state.state_id'
+					. ' 			AND ('
+					. '						address.state_id = "' . $filter . '"' 
+					. '						OR state.state_name like "%' . $filter . '%"'
+					. '						OR state.state_code like "%' . $filter . '%"'
+					. '				)'
+					. '				LIMIT 0, 1';
+			$where .= ' )';
+		}
+		
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -388,6 +442,9 @@ class ManufactureModel extends Model{
 		}
 		
 		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		//echo $query;
+		//die;
 		
 		if (!empty($pp) && $pp != 'all' ) {
 			$PER_PAGE = $pp;
@@ -447,7 +504,7 @@ class ManufactureModel extends Model{
 		$last = $totalPages - 1;
 		
 		
-		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, '');
 		$arr = array(
 			'results'    => $manufactures,
 			'param'      => $params,

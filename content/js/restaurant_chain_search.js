@@ -12,8 +12,6 @@ function postAndRedrawContent(page, perPage, s, o, query, filter) {
 		redrawContent(data, filter);
 	},
 	"json");
-	
-	disablePopupFadeIn();
 }
 
 function redrawContent(data) {
@@ -53,7 +51,7 @@ function redrawContent(data) {
 	
 	reinitializePagingEvent(data);
 	
-	disablePopupFadeIn();
+	//disablePopupFadeIn();
 }
 
 
@@ -125,7 +123,7 @@ function reinitializePagingEvent(data) {
 	$("#pagingLinks a").click(function(e) {
 		selectedPage = this.id;
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(selectedPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 }
