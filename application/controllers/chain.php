@@ -39,7 +39,7 @@ class Chain extends Controller {
 	}
 	
 	// View info about a chain restaurant
-	function view($id) {
+	function view() {
 		
 		$data = array();
 		
@@ -52,8 +52,8 @@ class Chain extends Controller {
 		$this->load->model('RestaurantChainModel');
 		$menu = $this->RestaurantChainModel->getRestaurantChainMenu($restaurantChainId);
 		
-		$this->load->model('RestaurantChainModel');
-		$suppliers = $this->RestaurantChainModel->getRestaurantChainSuppliers($restaurantChainId);
+		$this->load->model('SupplierModel');
+		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurantChainId);
 		
 		// SEO
 		$this->load->model('SeoModel');
@@ -69,14 +69,16 @@ class Chain extends Controller {
 		$data['SEO'] = $seo;
 		// SEO ENDS here
 		
+		// List of views to be included, these are files that are pulled from different views in the view folders
 		
-		// List of views to be included
+		// Load all the views for the center column
 		$data['CENTER'] = array(
 				'info' => '/restaurant/info_chain',
 				'menu' => '/restaurant/menu',
 				'suppliers' => '/restaurant/suppliers',
 			);
 		
+		// Load all the views for the right column
 		$data['RIGHT'] = array(
 				'image' => 'includes/right/image',
 				'ad' => 'includes/right/ad',

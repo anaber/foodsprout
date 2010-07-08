@@ -354,32 +354,6 @@ class RestaurantChainModel extends Model{
 		return $menu;
 	}
 	
-	
-	// Get the Suppliers for a Restaurant Chain
-	function getRestaurantChainSuppliers($restaurantChainId){
-		$query = "SELECT * FROM restaurant_chain_supplier WHERE restaurant_chain_id = " . $restaurantChainId;
-		
-		log_message('debug', "RestaurantChainModel.getRestaurantChainSupplier : " . $query);
-		$result = $this->db->query($query);
-		
-		$supplier = array();
-		
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('supplierLib');
-			unset($this->supplierLib);
-			
-			$this->supplierLib->supplierId = $row['restaurant_chain_supplier_id'];
-			$this->supplierLib->supplierName = $row['restaurant_chain_id'];
-			$this->supplierLib->supplierType = $row['supplier_farm_id'];
-			
-			$supplier[] = $this->supplierLib;
-			unset($this->supplierLib);
-		}
-		return $supplier;
-	}
-	
-	
 }
 
 

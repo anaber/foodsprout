@@ -1001,6 +1001,30 @@ class RestaurantModel extends Model{
 		return $cuisine;
 	}
 	
+	// Pulls all the products owned by a restaurant
+	function getRestaurantMenu($restaurantId) {
+		$query = "SELECT * FROM product WHERE restaurant_id = " . $restaurantId;
+		
+		log_message('debug', "RestaurantModel.getRestaurantMenu : " . $query);
+		$result = $this->db->query($query);
+		
+		$menu = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('ProductLib');
+			unset($this->productLib);
+			
+			$this->productLib->productId = $row['product_id'];
+			$this->productLib->productName = $row['product_name'];
+			$this->productLib->ingredient = $row['ingredient_text'];
+			
+			$menu[] = $this->productLib;
+			unset($this->productLib);
+		}
+		return $menu;
+	}
+	
 }
 
 

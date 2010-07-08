@@ -12,15 +12,7 @@ class Restaurant extends Controller {
 		
 		$q = $this->input->post('q');
 		$f = $this->input->post('f');
-		
-		// Getting information from models
-		/*
-		$this->load->model('RestaurantModel');
-		$restaurantTypes = $this->RestaurantModel->getDistinctUsedRestaurantType();
-		
-		$this->load->model('RestaurantModel');
-		$cusines = $this->RestaurantModel->getDistinctUsedCuisine();
-		*/
+
 		if ( !empty($f) ) {
 			$data['CENTER'] = array(
 				'list' => '/restaurant/restaurant_list',
@@ -74,25 +66,44 @@ class Restaurant extends Controller {
 	}
 	
 	// View the information on a single restaurant
-	function view($id) {
+	function view() {
 		
 		$data = array();
 		
 		$restaurantId = $this->uri->segment(3);
 		
-		// TO DO: first check if the restaurant is part of a chain
-		// SELECT restaurant_chain_id FROM restaurant WHERE restaurant_id = $restaurantId
-		// IF THERE IS A RESULT DO THE FOLLOWING
-		// Get the data from the chain_menu
-		// SELECT * FROM chain_menu WHERE restaurant_chain_id= RESULT FROM ABOVE QUERY
-		//
-		// Get any specific menu edits that this exact location has
-		//
-		// Load the rest of the information as normal (photos, address etc)
-		
-		// Getting information from models
+		// Getting information from models for the views
 		$this->load->model('RestaurantModel');
 		$restaurantinfo = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+		
+			// Check to see if this restaurant is part of a chain
+			$isChain = $restaurantinfo->restaurantChainId;
+			if(isset($isChain))
+			{
+				// Restaurant is part of a chain, get the chain menu and suppliers
+				$this->load->model('RestaurantChainModel');
+				$chain_menu = $this->RestaurantChainModel->getRestaurantChainMenu($restaurantinfo->restaurantChainId);
+
+				$this->load->model('SupplierModel');
+				$chain_suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurantinfo->restaurantChainId);
+			}
+			else
+			{
+				$chain_menu = array();
+				$chain_suppliers = array();
+			}
+		
+		$this->load->model('RestaurantModel');
+		$custom_menu = $this->RestaurantModel->getRestaurantMenu($restaurantId);
+		
+		// Merge the custom menu and chain menu into one array
+		$menu = array_merge($chain_menu, $custom_menu);
+		
+		$this->load->model('SupplierModel');
+		$custom_suppliers = $this->SupplierModel->getSupplierForCompany($restaurantId, '', '', '', '');
+		
+		// Merge the custom suppliers into one array
+		$suppliers = array_merge($chain_suppliers, $custom_suppliers);
 		
 		// SEO
 		$this->load->model('SeoModel');
@@ -125,8 +136,8 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		// Center -> Menu
 		$data['data']['center']['info']['RESTAURANT'] = $restaurantinfo;
-		$data['data']['center']['menu']['MENU'] = array('burger', 'pizza', 'meat');
-		$data['data']['center']['menu']['SUPPLIER'] = array('Lopez Foods', 'Stonybrook Farms', 'Niman Ranch');
+		$data['data']['center']['menu']['MENU'] = $menu;
+		$data['data']['center']['menu']['SUPPLIER'] = $suppliers;
 		
 		
 		// Right -> Image
@@ -144,6 +155,7 @@ class Restaurant extends Controller {
 		
 		$this->load->view('templates/center_right_template', $data);
 	}
+	
 	
 	function ajaxSearchRestaurants() {
 		
