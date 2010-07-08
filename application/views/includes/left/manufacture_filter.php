@@ -11,10 +11,10 @@
 		</div>
 		
 		<br /><br />
-		<!--
+		
 		<div id = "removeFilters">
 			<a id = "imgRemoveFilters" href = "#">Remove Filters</a>
 		</div>
-		-->
+		
 	</div>
 </div>

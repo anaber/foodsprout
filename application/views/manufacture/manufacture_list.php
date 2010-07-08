@@ -25,6 +25,8 @@ var dataManufactures;
 				
 				reinitializeFilterEvent(dataManufactures);
 				reinitializeAutoSuggestEvent(dataManufactures);
+				reinitializeRemoveFilterEvent(dataManufactures);
+				
 			},
 			"json");
 		},
@@ -64,7 +66,12 @@ function reinitializeAutoSuggestEvent(dataManufactures) {
 			postAndRedrawContent(dataManufactures.param.firstPage, dataManufactures.param.perPage, dataManufactures.param.sort, dataManufactures.param.order, '', dataManufactures.param.filter);
 		}
 	});
-	
+}
+
+function reinitializeRemoveFilterEvent(dataManufactures) {	
+	$("#imgRemoveFilters").click(function () {
+		postAndRedrawContent(dataManufactures.param.firstPage, dataManufactures.param.perPage, dataManufactures.param.sort, dataManufactures.param.order, '', '');
+	});
 }
 	
 function findValue(li) {
