@@ -43,9 +43,7 @@ class Farm extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	function view($id) {
-		
-		global $GOOGLE_MAP_KEY;
+	function view() {
 		
 		$data = array();
 		
@@ -57,8 +55,7 @@ class Farm extends Controller {
 		$data['RIGHT'] = array(
 				'image' => 'includes/right/image',
 				'ad' => 'includes/right/ad',
-				'map' => 'includes/map',
-				'supplies' => 'includes/right/company_list',
+				'map' => 'includes/right/map',
 			);
 		
 		// Data to be passed to the views
@@ -66,18 +63,15 @@ class Farm extends Controller {
 		$data['data']['center']['products']['VIEW_HEADER'] = "List of producst from Farm";
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/logo/mcdonalds.jpg';
+		$data['data']['right']['image']['src'] = '/images/standard/farm-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'McDonalds';
 		
 		// Center -> Map
-		$data['data']['right']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
 		$data['data']['right']['map']['VIEW_HEADER'] = "Farm Location";
 		$data['data']['right']['map']['width'] = '300';
 		$data['data']['right']['map']['height'] = '200';
-		
-		$data['data']['right']['supplies']['VIEW_HEADER'] = "Supplies";
 		
 		$this->load->view('templates/center_right_template', $data);
 	}

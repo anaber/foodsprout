@@ -26,11 +26,22 @@ class Distributor extends Controller {
 		echo json_encode($restaurants);
 	}
 	
-	function view($id) {
+	// View the information about a specific distributor
+	function view() {
 		$data = array();
+		
+		$distributorId = $this->uri->segment(3);
+		
+		// -------- Getting information from models for the views ------------------
+		
+		
+		// Get the basic information about the manufacture
+		$this->load->model('DistributorModel');
+		$distributorinfo = $this->DistributorModel->getDistributorFromId($distributorId);
 		
 		// List of views to be included
 		$data['CENTER'] = array(
+				'info' => '/distributor/info',
 				'menu' => '/distributor/distributor_detail',
 			);
 		
@@ -42,25 +53,20 @@ class Distributor extends Controller {
 			);
 		
 		// Data to be passed to the views
-		// Center -> Ingredients		
+		
+		// Center -> Manufactures they carry, businesses they supply
+		$data['data']['center']['info']['DISTRIBUTOR'] =  $distributorinfo;
 		$data['data']['center']['menu']['MENU'] = array('burger', 'pizza', 'meat');
 		
-		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/products/burger.jpg';
+		$data['data']['right']['image']['src'] = '/images/standard/distributor-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'Distributor Image';
 		
 		// Right -> Map
-		$data['data']['right']['map']['VIEW_HEADER'] = "Google Map";
 		$data['data']['right']['map']['width'] = '300';
 		$data['data']['right']['map']['height'] = '200';
-		
-		
-		//$data['data']['right']['info']['VIEW_HEADER'] = "Product Info";
-		
-		$data['data']['right']['suppliers']['VIEW_HEADER'] = "List of Suppliers";
 		
 		$this->load->view('templates/center_right_template', $data);
 	}

@@ -26,45 +26,76 @@ class Manufacture extends Controller {
 		echo json_encode($restaurants);
 	}
 	
-	function view($id) {
-		
-		global $GOOGLE_MAP_KEY;
+	// View all the information about a single manufacture
+	function view() {
 		
 		$data = array();
 		
-		// List of views to be included
+		$manufactureId = $this->uri->segment(3);
+		
+		// -------- Getting information from models for the views ------------------
+		
+		
+		// Get the basic information about the manufacture
+		$this->load->model('ManufactureModel');
+		$manufactureinfo = $this->ManufactureModel->getManufactureFromId($manufactureId);
+		
+		// Get the products the manufacture makes
+		$this->load->model('ManufactureModel');
+		$products = $this->ManufactureModel->getManufactureProducts($manufactureId);
+		
+		// Get the suppliers for this manufacture
+		$this->load->model('SupplierModel');
+		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', $manufactureId, '', '');
+		
+		// SEO information
+		/*
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('manufacture_detail');
+		
+		$seo_data_array = array(
+			'manufacture_name' => $manufactureinfo->manufactureName,
+			'manufacture_type' => 'Manufacture',
+			'cuisines' => 'Fast Food, American, Pizza',
+		);
+		
+		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
+		$data['SEO'] = $seo;
+		*/
+		// SEO ends here
+		
+		// List of views to be included, products, suppliers and distributors
 		$data['CENTER'] = array(
-				'menu' => '/manufacture/product',
+				'info' => '/manufacture/info',
+				'products' => '/manufacture/product',
+				'suppliers' => '/manufacture/suppliers',
+				'distributor' => '/manufacture/distributor',
 			);
 		
 		$data['RIGHT'] = array(
 				'image' => 'includes/right/image',
 				'ad' => 'includes/right/ad',
-				'map' => 'includes/map',
-				'supliers' => 'suppliers',
+				'map' => 'includes/right/map',
 			);
 		
-		// Data to be passed to the views
-		// Center -> Ingredients		
-		$data['data']['center']['menu']['MENU'] = array('burger', 'pizza', 'meat');
 		
+		// Data to be passed to the views ----------------------------------------
+		
+		// Center -> Products, Suppliers, Distributors
+		$data['data']['center']['info']['MANUFACTURE'] = $manufactureinfo;
+		$data['data']['center']['products']['PRODUCT'] = $products;
+		$data['data']['center']['suppliers']['SUPPLIER'] = $suppliers;
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/products/burger.jpg';
+		$data['data']['right']['image']['src'] = '/images/standard/manufacture-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'Manufacture Image';
 		
 		// Right -> Map
-		$data['data']['right']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['right']['map']['VIEW_HEADER'] = "Google Map";
 		$data['data']['right']['map']['width'] = '300';
 		$data['data']['right']['map']['height'] = '200';
-		
-		
-		//$data['data']['right']['info']['VIEW_HEADER'] = "Product Info";
-		
-		$data['data']['right']['suppliers']['VIEW_HEADER'] = "List of Suppliers";
+		$data['data']['right']['map']['hide_map'] = 'no';
 		
 		$this->load->view('templates/center_right_template', $data);
 	}

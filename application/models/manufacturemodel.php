@@ -124,6 +124,7 @@ class ManufactureModel extends Model{
 		return $this->manufactureLib;
 	}
 	
+	// Update the manufactures information in the database
 	function updateManufacture() {
 		global $ACTIVITY_LEVEL_DB;
 		$return = true;
@@ -454,6 +455,30 @@ class ManufactureModel extends Model{
 	    );
 	    
 	    return $arr;
+	}
+	
+	// Get all the manufacture's products from the database
+	function getManufactureProducts($manufactureId) {
+		$query = "SELECT * FROM product WHERE manufacture_id = " . $manufactureId;
+		
+		log_message('debug', "ManufactureModel.getManufactureProducts : " . $query);
+		$result = $this->db->query($query);
+		
+		$products = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('ProductLib');
+			unset($this->productLib);
+			
+			$this->productLib->productId = $row['product_id'];
+			$this->productLib->productName = $row['product_name'];
+			$this->productLib->ingredient = $row['ingredient_text'];
+			
+			$products[] = $this->productLib;
+			unset($this->productLib);
+		}
+		return $products;
 	}
 	
 }

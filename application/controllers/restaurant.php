@@ -151,8 +151,6 @@ class Restaurant extends Controller {
 		$data['data']['right']['map']['height'] = '200';
 		$data['data']['right']['map']['hide_map'] = 'no';
 		
-		$data['data']['right']['suppliers']['VIEW_HEADER'] = "List of Suppliers";
-		
 		$this->load->view('templates/center_right_template', $data);
 	}
 	

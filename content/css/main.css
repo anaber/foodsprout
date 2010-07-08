@@ -280,10 +280,18 @@ h1{
 	color: #90171E;
 }
 
+h2{
+	font-size: 14px;
+}
+
+h3{
+	font-size: 14px;
+}
+
 .greentxt{
 	color: #0A7414;
 	font-weight:bold;
-	font-size: 16px;
+	font-size: 14px;
 	margin:0px;
 }
 
