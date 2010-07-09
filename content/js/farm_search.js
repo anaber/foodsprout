@@ -118,14 +118,14 @@ function reinitializePopupFarmTypeEvent (data, allFarmTypes) {
 		strFilters = strFarmTypeId;
 		selectedFarmTypeId = strFarmTypeId;
 		selectedTopFarmTypeId = "";
-		disablePopup();
-		loadPopupFadeIn();
+		//disablePopup();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
 	});
 	
 	$("#cancelFarmTypeFilter").click(function(e){
 		e.preventDefault();
-		disablePopup();
+		//disablePopup();
 	});
 	
 }
@@ -323,7 +323,7 @@ function redrawContent(data, filter) {
 	
 	reinitializeShowHideMap(data);
 	
-	disablePopupFadeIn();
+	//disablePopupFadeIn();
 }
 
 function addZeroResult() {
@@ -397,7 +397,7 @@ function reinitializeFilterEvent (data) {
 			filters = strFilters;
 		}
 		
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
 	});
 }
@@ -407,7 +407,7 @@ function reinitializeQueryFilterEvent (data) {
 	
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
 	});
 }
@@ -417,7 +417,7 @@ function reinitializeRemoveFilters(data) {
 	
 	$("#imgRemoveFilters").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		
 		selectedCuisineId = '';
 		selectedFarmTypeId = '';
@@ -437,7 +437,7 @@ function reinitializePagingEvent(data) {
 	
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
@@ -447,7 +447,7 @@ function reinitializePagingEvent(data) {
 		if (previousPage <= 0) {
 			previousPage = data.param.firstPage;
 		}
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
@@ -457,13 +457,13 @@ function reinitializePagingEvent(data) {
 		if (nextPage >= data.param.totalPages) {
 			nextPage = data.param.lastPage;
 		}
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
@@ -472,25 +472,25 @@ function reinitializePagingEvent(data) {
 function reinitializePageCountEvent(data) {
 	$("#10PerPage").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#20PerPage").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#40PerPage").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
 	$("#50PerPage").click(function(e) {
 		e.preventDefault();
-		loadPopupFadeIn();
+		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter);
 	});
 	
