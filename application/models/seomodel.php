@@ -12,15 +12,19 @@ class SeoModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->seoLib->seoPageId = $row->seo_page_id;
-		$this->seoLib->page = $row->page;
-		$this->seoLib->titleTag = $row->title_tag;
-		$this->seoLib->metaDescription = $row->meta_description;
-		$this->seoLib->metaKeywords = $row->meta_keywords;
-		$this->seoLib->h1 = $row->h1;
-		$this->seoLib->url = $row->url;
-				
-		return $this->seoLib;
+		if ($row) {
+			$this->seoLib->seoPageId = $row->seo_page_id;
+			$this->seoLib->page = $row->page;
+			$this->seoLib->titleTag = $row->title_tag;
+			$this->seoLib->metaDescription = $row->meta_description;
+			$this->seoLib->metaKeywords = $row->meta_keywords;
+			$this->seoLib->h1 = $row->h1;
+			$this->seoLib->url = $row->url;
+			
+			return $this->seoLib;
+		} else {
+			return;
+		}
 	}
 	
 	function parseSeoData($seo, $seo_data_array) {

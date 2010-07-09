@@ -74,15 +74,6 @@ function createMarker(o, point, html) {
 	return marker;
 }
 
-function getMarkerHtml(o) {
-	html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
-		  o.addressLine1 + "<br />" + 
-		  o.addressLine2 + "<br />" + 
-		  o.addressLine3 + "</font><br />"
-		  ;
-	return html;
-}
-
 function viewMarker(record_id) {
 	clearInfoWindow();
 	

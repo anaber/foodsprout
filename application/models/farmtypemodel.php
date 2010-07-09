@@ -3,9 +3,13 @@
 class FarmTypeModel extends Model{
 	
 	// List all the facility_type in the database
-	function listFarmType()
+	function listFarmType($c)
 	{
-		$query = "SELECT * FROM farm_type ORDER BY farm_type";
+		if (!empty ($c) ) {
+			$query = "SELECT * FROM farm_type ORDER BY farm_type LIMIT 0, $c";
+		} else {
+			$query = "SELECT * FROM farm_type ORDER BY farm_type";
+		}
 		
 		log_message('debug', "FarmTypeModel.listFarmType : " . $query);
 		$result = $this->db->query($query);

@@ -1,4 +1,3 @@
-<script src="<?php echo base_url()?>js/jquery.colorize.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/restaurant_search.js" type="text/javascript"></script>
 <script>
 var showMap = true;
@@ -82,24 +81,6 @@ var topRestaurantTypes;
 		<div id = "40PerPage" style="float:right; width:30px;">40 | </div>  
 		<div id = "20PerPage" style="float:right; width:30px;">20 | </div>
 		<div id = "10PerPage" style="float:right; width:30px;">10 | </div>
-		<?php
-			/*
-		?>
-		<select id = "recordsPerPageList">
-			<option value = "">--Per Page--</option>
-			<?php
-				for($i = 10; $i <= 50; $i+=10) {
-					echo '<option value = "' . $i . '"';
-					if ($i == 20) {
-						echo ' SELECTED';
-					}
-					echo '>' . $i . '</option>';
-				}
-			?>
-		</select>
-		<?php
-			*/
-		?>
 	</div>
 	
 	

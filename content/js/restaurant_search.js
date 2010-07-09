@@ -960,58 +960,11 @@ function addResult(restaurant, i) {
 	return html;
 }
 
-/*
-function addResult(restaurant, i) {
-	var html =
-	'<tr>' +
-	'	<td valign="top"><a href="#" id = "'+ restaurant.restaurantId +'">'+ restaurant.restaurantName +'</a></td>' +
-	'	<td valign="top">';
-	$.each(restaurant.addresses, function(j, address) {
-		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
-		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
-		}
-	});
-	html += '</td>';
-	
-	html +=
-	'	<td valign="top">';
-	$.each(restaurant.suppliers, function(j, supplier) {
-		if (j == 0) {
-			html += supplier.supplierName;
-		} else {
-			html += "<br /><br />" + supplier.supplierName;
-		}
-	});
-	html += '</td>';
-	
-	html +=
-	'</tr>'
-	;
-	
+function getMarkerHtml(o) {
+	html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
+		  o.addressLine1 + "<br />" + 
+		  o.addressLine2 + "<br />" + 
+		  o.addressLine3 + "</font><br />"
+		  ;
 	return html;
 }
-
-function getResultTableHeader() {
-	var html =
-	'<table width="790" border="1" cellpadding="5" cellspacing="0" id = "table_results">' +
-	'	<thead>' +
-	'	<tr>' +
-	'		<th width="250" id = "heading_restaurant"><a href = "#" style = "color:#505050">Restaurant</a></th>' +
-	'		<th width="300" id = ""><a href = "#" style = "color:#505050">Address</a></th>' +
-	'		<th width="240" id = ""><a href = "#" style = "color:#505050">Suppliers</a></th>' +
-	'	</tr>' +
-	'	</thead>' +
-	'	<tbody>';
-
-	return html;
-}
-
-function getResultTableFooter() {
-	var html = 
-	'</tbody>' +
-	'</table>';
-	return html;
-}
-*/
