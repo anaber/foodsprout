@@ -21,6 +21,7 @@ function loadMapOnStartUp(lat, lng, zoom) {
 }
 
 function reinitializeMap(data, zoomLevel) {
+	
 	clearOverlays();
 	
 	latitude = '';
@@ -84,7 +85,6 @@ function viewMarker(record_id) {
     infowindow.open(map, marker);
     
     infowindows[0] = infowindow;
-    $('html, body').animate({scrollTop:0}, 'slow');
 }
 
 function clearOverlays() {

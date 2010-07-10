@@ -530,6 +530,74 @@ class SupplierModel extends Model{
 		return $return;
 	}
 	
+	function getCompaniesForSupplier($restaurantId, $farmId, $manufactureId, $distributorId) {
+		global $SUPPLIER_TYPES_2;
+		$tables = array();
+		
+		if ( !empty($restaurantId) ) {
+			$keyToSearch = 'restaurant';
+			$fieldValue = $restaurantId;
+		} else if ( !empty($farmId) ) {
+			$keyToSearch = 'farm';
+			$fieldValue = $farmId;
+		} else if ( !empty($manufactureId) ) {
+			$keyToSearch = 'manufacture';
+			$fieldValue = $manufactureId;
+		} else if ( !empty($distributorId) ) {
+			$keyToSearch = 'distributor';
+			$fieldValue = $distributorId;
+		}
+		
+		$supplierFieldName = 'supplier_' . $keyToSearch . '_id';
+		
+		foreach ($SUPPLIER_TYPES_2 as $key => $value) {
+			if (array_key_exists($keyToSearch, $value)) {
+				$arr = explode('_', $key);
+				array_pop($arr);
+				$tableName = implode('_', $arr);
+				
+				$tables[$key] = array(
+								'supplierIdField' => $key . '_id',
+								'supplierFieldName' => $supplierFieldName,
+								'joinTable' => $tableName,
+								'joinIdField' => $tableName . '_id',
+								'joinNameField' => ($tableName == 'restaurant_chain' ? $tableName :  $tableName . '_name')
+							);
+			}
+		}
+		
+		$companies = array();
+		
+		foreach ($tables as $supplierTable => $tableParam) {
+			
+			
+			$query = 'SELECT '
+					. $supplierTable . '.' . $tableParam['supplierIdField'] . ', ' . $supplierTable . '.'.$tableParam['joinIdField'].', '.$tableParam['joinTable'].'.'.$tableParam['joinNameField']
+					. ' FROM ' . $supplierTable.', '.$tableParam['joinTable']
+					. ' WHERE '.$supplierTable. '.' . $tableParam['supplierFieldName'] . ' = ' . $fieldValue
+					. ' AND '.$supplierTable.'.'.$tableParam['joinIdField'].' = '.$tableParam['joinTable'].'.' . $tableParam['joinIdField'];
+			
+			//echo $query . "<br /><br />";
+			
+			log_message('debug', "SupplierModel.getCompaniesForSupplier : " . $query);
+			$result = $this->db->query($query);
+			
+			foreach ($result->result_array() as $row) {
+				$this->load->library('CompanyLib');
+				
+				$this->CompanyLib->companyId = $row[ $tableParam['joinIdField'] ];
+				$this->CompanyLib->companyName = $row[ $tableParam['joinNameField'] ];
+				
+				$companies[ $tableParam['joinTable'] ][] = $this->CompanyLib;
+				unset($this->CompanyLib);
+			}
+			
+			
+		}
+		
+		return $companies;
+	}
+	
 }
 
 

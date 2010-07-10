@@ -102,10 +102,11 @@ class FarmModel extends Model{
 	function getFarmFromId($farmId) {
 		
 		//$query = "SELECT manufacture.*, address.* FROM manufacture, address WHERE manufacture.manufacture_id = address.manufacture_id AND manufacture.manufacture_id = " . $manufactureId;
-		$query = "SELECT farm.*, company.company_name " .
-				" FROM farm, company " .
+		$query = "SELECT farm.*, company.company_name, farm_type.farm_type " .
+				" FROM farm, company, farm_type " .
 				" WHERE farm.farm_id = " . $farmId . 
-				" AND farm.company_id = company.company_id";
+				" AND farm.company_id = company.company_id" .
+				" AND farm.farm_type_id = farm_type.farm_type_id ";
 		log_message('debug', "FarmModel.getFarmFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -113,17 +114,49 @@ class FarmModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->FarmLib->farmId = $row->farm_id;
-		$this->FarmLib->companyId = $row->company_id;
-		$this->FarmLib->companyName = $row->company_name;
-		$this->FarmLib->farmTypeId = $row->farm_type_id;
-		$this->FarmLib->farmerType = $row->farmer_type;
-		$this->FarmLib->farmName = $row->farm_name;
-		$this->FarmLib->customUrl = $row->custom_url;
-		$this->FarmLib->url = $row->url;
-		$this->FarmLib->isActive = $row->is_active;
-
-		return $this->FarmLib;
+		$geocodeArray = array();
+		
+		if ($row) {
+			$this->FarmLib->farmId = $row->farm_id;
+			$this->FarmLib->companyId = $row->company_id;
+			$this->FarmLib->companyName = $row->company_name;
+			$this->FarmLib->farmTypeId = $row->farm_type_id;
+			$this->FarmLib->farmType = $row->farm_type;
+			$this->FarmLib->farmerType = $row->farmer_type;
+			$this->FarmLib->farmName = $row->farm_name;
+			$this->FarmLib->customUrl = $row->custom_url;
+			$this->FarmLib->url = $row->url;
+			$this->FarmLib->isActive = $row->is_active;
+			
+			
+			$CI =& get_instance();
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( '', $row->farm_id, '', '', '', '');
+			$this->FarmLib->addresses = $addresses;
+			
+			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+				
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+				
+				$arrLatLng['addressLine1'] = $address->address;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+				
+				$arrLatLng['farmName'] = $this->FarmLib->farmName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[] = $arrLatLng;
+			}
+			$this->FarmLib->param->numResults = 2;
+			$this->FarmLib->geocode = $geocodeArray;
+			
+			return $this->FarmLib;
+		} else {
+			return;
+		}
 	}
 	
 	function updateFarm() {

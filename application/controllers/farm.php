@@ -62,39 +62,6 @@ class Farm extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	function view() {
-		
-		$data = array();
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'farm/farm_details',
-			);
-		
-		$data['RIGHT'] = array(
-				'image' => 'includes/right/image',
-				'ad' => 'includes/right/ad',
-				'map' => 'includes/right/map',
-			);
-		
-		// Data to be passed to the views
-		// Center -> Ingredients		
-		$data['data']['center']['products']['VIEW_HEADER'] = "List of producst from Farm";
-		
-		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/farm-na-icon.jpg';
-		$data['data']['right']['image']['width'] = '300';
-		$data['data']['right']['image']['height'] = '200';
-		$data['data']['right']['image']['title'] = 'McDonalds';
-		
-		// Center -> Map
-		$data['data']['right']['map']['VIEW_HEADER'] = "Farm Location";
-		$data['data']['right']['map']['width'] = '300';
-		$data['data']['right']['map']['height'] = '200';
-		
-		$this->load->view('templates/center_right_template', $data);
-	}
-	
 	function ajaxSearchFarms() {
 		$this->load->model('FarmModel', '', TRUE);
 		$restaurants = $this->FarmModel->getFarmssJson();
@@ -113,6 +80,75 @@ class Farm extends Controller {
 		$this->load->model('FarmTypeModel');
 		$farmTypes = $this->FarmTypeModel->listFarmType($c);
 		echo json_encode($farmTypes);
+	}
+	
+	function ajaxSearchFarmInfo() {
+		$farmId = $this->input->post('farmId');
+		$this->load->model('FarmModel', '', TRUE);
+		$farm = $this->FarmModel->getFarmFromId($farmId);
+		echo json_encode($farm);
+	}
+	
+	// View the information on a single restaurant
+	function view() {
+		
+		$data = array();
+		
+		$farmId = $this->uri->segment(3);
+		
+		$this->load->model('FarmModel');
+		$farm = $this->FarmModel->getFarmFromId($farmId);
+		
+		$this->load->model('SupplierModel');
+		$companies = $this->SupplierModel->getCompaniesForSupplier('', $farmId, '', '');
+		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('farm_detail');
+		
+		$seo_data_array = array(
+			'farm_name' => $farm->farmName,
+			'restaurant_type' => 'Fast Food',
+			'cuisines' => 'Fast Food, American, Pizza',
+		);
+		
+		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
+		$data['SEO'] = $seo;
+		// SEO ENDS here
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'info' => '/farm/info',
+				'companies' => '/farm/companies',
+			);
+		
+		$data['RIGHT'] = array(
+				'image' => 'includes/right/image',
+				'ad' => 'includes/right/ad',
+				'map' => 'includes/right/map',
+			);
+		
+		
+		 
+		// Data to be passed to the views
+		// Center -> Menu
+		$data['data']['center']['info']['FARM'] = $farm;
+		$data['data']['center']['companies']['COMPANIES'] = $companies;
+		
+		
+		// Right -> Image
+		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
+		$data['data']['right']['image']['width'] = '300';
+		$data['data']['right']['image']['height'] = '200';
+		$data['data']['right']['image']['title'] = '';
+		
+		// Right -> Map
+		$data['data']['right']['map']['width'] = '300';
+		$data['data']['right']['map']['height'] = '200';
+		$data['data']['right']['map']['hide_map'] = 'no';
+		
+		$this->load->view('templates/center_right_template', $data);
+		
 	}
 }
 

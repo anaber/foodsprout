@@ -298,6 +298,7 @@ function redrawContent(data, filter) {
 				record_id = arr[1];
 				
 				viewMarker(record_id);
+				$('html, body').animate({scrollTop:0}, 'slow');
 			} else {
 				document.location='/farm/view/'+record_id;
 			}
