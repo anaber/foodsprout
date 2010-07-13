@@ -5,7 +5,7 @@ class FarmTypeModel extends Model{
 	// List all the facility_type in the database
 	function listFarmType($c)
 	{
-		if (!empty ($c) ) {
+		if ( isset($c) && !empty ($c) ) {
 			$query = "SELECT * FROM farm_type ORDER BY farm_type LIMIT 0, $c";
 		} else {
 			$query = "SELECT * FROM farm_type ORDER BY farm_type";

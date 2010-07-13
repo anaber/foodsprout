@@ -40,7 +40,7 @@ class Farm extends Controller {
 		$countries = $this->CountryModel->listCountry();
 		
 		$this->load->model('FarmTypeModel');
-		$farmTypes = $this->FarmTypeModel->listFarmType();
+		$farmTypes = $this->FarmTypeModel->listFarmType('');
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -66,7 +66,7 @@ class Farm extends Controller {
 		$farm = $this->FarmModel->getFarmFromId($id);
 		
 		$this->load->model('FarmTypeModel');
-		$farmTypes = $this->FarmTypeModel->listFarmType();
+		$farmTypes = $this->FarmTypeModel->listFarmType('');
 		
 		
 		// List of views to be included
