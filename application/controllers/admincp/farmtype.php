@@ -23,7 +23,7 @@ class FarmType extends Controller {
 		$farmTypes = array();
 		
 		$this->load->model('FarmTypeModel');
-		$farmTypes = $this->FarmTypeModel->listFarmType();
+		$farmTypes = $this->FarmTypeModel->listFarmType('');
 		
 		// List of views to be included
 		$data['CENTER'] = array(
