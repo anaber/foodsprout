@@ -1,7 +1,6 @@
 <div class="nav-wide-db"><br>
 		<div id="main-nav-db">
-			<ul id="navlist">		
-				<li id="active"><?php echo anchor('unknown', 'Stuff?'); ?></li>
+			<ul id="navlist">
 				<li><?php echo anchor('contribute', 'Contribute'); ?></li>
 				<li><?php echo anchor('restaurants', 'My Restaurants'); ?></li>
 				<li><?php echo anchor('products', 'My Products'); ?></li>

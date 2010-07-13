@@ -31,7 +31,7 @@
 							//add message and change the class of the box and start fading
 							$(this).html('Logging in.....').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='user/dashboard';
+								document.location='/';
 							});
 			  
 						});

@@ -61,6 +61,40 @@ class About extends Controller {
 	}
 	
 	
+	function privatebeta()
+	{
+		$data = array();
+		
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('index');
+		$data['SEO'] = $seo;
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'beta/beta1',
+			);
+		
+		$this->load->view('templates/center_template_beta', $data);
+	}
+	
+	
+	function beta()
+	{
+		$data = array();
+		
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('index');
+		$data['SEO'] = $seo;
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'beta/beta2',
+			);
+		
+		$this->load->view('templates/center_template_beta', $data);
+	}
+	
+	
 }
 
 

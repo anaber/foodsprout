@@ -61,14 +61,4 @@
 			</div -->
 		</div>
 	</div>
-
-	<?php
-		if ($this->session->userdata('isAuthenticated') == 1 )
-		{
-			$this->load->view('includes/navigation');
-		}
-		else
-		{
-			$this->load->view('includes/navigation_beta');
-		}
-	?>
+	<?php $this->load->view('includes/navigation_beta') ?>

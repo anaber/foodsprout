@@ -2,6 +2,16 @@
 
 class Home extends Controller {
 	
+	function __construct()
+	{
+		parent::Controller();
+		if ($this->session->userdata('isAuthenticated') != 1 )
+		{
+			redirect('about/privatebeta');
+		}
+	}
+	
+	// Homepage
 	function index()
 	{
 		$data = array();
@@ -18,6 +28,7 @@ class Home extends Controller {
 		$this->load->view('templates/center_template', $data);
 		
 	}
+	
 	
 }
 
