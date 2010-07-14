@@ -85,7 +85,7 @@ class Login extends Controller {
 				$this->email->to($this->input->post('email'));
 
 				$this->email->subject('Welcome to Food Sprout, '.$this->input->post('firstname'));
-				$this->email->message('Welcome '.$this->input->post('firstname').', \r\n \r\n Thank you for joining Food Sprout and taking an interest in learning more about where our food comes from and what is in it.  We hope you will also join us in sharing what information you have so that we may all benefit. \r\n \r\n Food Sprout Team');
+				$this->email->message('Welcome '.$this->input->post('firstname').",\r\n \r\nThank you for joining Food Sprout and taking an interest in learning more about where our food comes from and what is in it.  We hope you will also join us in sharing what information you have so that we may all benefit. \r\n \r\n Food Sprout Team");
 
 				$this->email->send();
 				echo 'yes';
