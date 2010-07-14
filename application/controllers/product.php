@@ -2,6 +2,15 @@
 
 class Product extends Controller {
 	
+	function __construct()
+	{
+		parent::Controller();
+		if ($this->session->userdata('isAuthenticated') != 1 )
+		{
+			redirect('about/privatebeta');
+		}
+	}
+	
 	function index() {
 		global $GOOGLE_MAP_KEY;
 		

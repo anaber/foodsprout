@@ -60,7 +60,13 @@ class About extends Controller {
 		$this->load->view('/templates/left_center_template', $data);
 	}
 	
+	// Feedback page to gather feedback from users
+	function feedback()
+	{
+		
+	}
 	
+	// The first page that loads on the beta
 	function privatebeta()
 	{
 		$data = array();
@@ -77,7 +83,7 @@ class About extends Controller {
 		$this->load->view('templates/center_template_beta', $data);
 	}
 	
-	
+	// The second page for the beta test, AB test this page with Google Site Optimizer
 	function beta()
 	{
 		$data = array();
