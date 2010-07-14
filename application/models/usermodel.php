@@ -49,7 +49,7 @@ class UserModel extends Model{
 		if($insert)
 		{
 			$new_user_group_insert_data = array(
-				'user_id' => mysql_insert_id(),
+				'user_id' => $this->db->insert_id() ,
 				'user_group_id' => 2
 			);
 			
