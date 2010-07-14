@@ -48,6 +48,17 @@ class UserModel extends Model{
 		
 		if($insert)
 		{
+			$new_user_group_insert_data = array(
+				'user_id' => mysql_insert_id(),
+				'user_group_id' => 2
+			);
+			
+			log_message('debug', $new_user_group_insert_data);
+			
+			$insert = $this->db->insert('user_group_member', $new_user_group_insert_data);
+			
+			$return = true;
+			
 			$this->load->library('UserLib');
 			
 			//$this->user->userId = $row->user_id;

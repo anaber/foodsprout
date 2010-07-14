@@ -39,7 +39,7 @@
 
 											$.post("/login/create_user",{ email:$('#email').val(),password:$('#password').val(),firstname:$('#firstname').val(),zipcode:$('#zipcode').val() } ,function(data) {
 												//if correct login detail
-
+												
 												if(data=='yes') {
 													//start fading the messagebox
 													$("#msgbox").fadeTo(200,0.1,function() {
