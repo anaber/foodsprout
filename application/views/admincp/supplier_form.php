@@ -273,20 +273,20 @@ function formatItem(row) {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyName : '') ?>" style="width: 200px;" />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>New Supplier</td>
 		<td width = "75%">
 			<input value="" class="validate[optional]" type="text" name="companyName" id="companyName"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td colspan = "2" style = "font-size:10px;">
 			<ul>
@@ -296,7 +296,7 @@ function formatItem(row) {
 				<li>Records will be added only if it is unique.</li>
 			</ul>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($SUPPLIER)) ? 'Update Supplier' : 'Add Supplier' ?>">
@@ -311,7 +311,7 @@ function formatItem(row) {
 			<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
 			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyId : '') ?>">			
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

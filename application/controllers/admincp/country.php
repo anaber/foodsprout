@@ -5,9 +5,8 @@ class Country extends Controller {
 	function __construct()
 	{
 		parent::Controller();
-		
 		// This ensures that if the user is not logged in they cannot access this class at all
-		if ($this->session->userdata('isAuthenticated') != 1 )
+		if ($this->session->userdata('isAuthenticated') != 1 || $this->session->userdata('userGroup') != 'admin' )
 		{
 			redirect('admincp/login');
 		}

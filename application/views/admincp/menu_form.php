@@ -14,11 +14,11 @@ var documentLocation = '';
 <?php
 	} else if ( isset($RESTAURANT_CHAIN_ID) ) {
 ?>
-		documentLocation = '/admincp/restaurantchain';
+		documentLocation = '/admincp/restaurantchain/add_menu_item/<?php echo $RESTAURANT_CHAIN_ID; ?>';
 <?php
 	} else if ( isset($MANUFACTURE_ID) ) {
 ?>
-		documentLocation = '/admincp/manufacture';
+		documentLocation = '/admincp/manufacture/add_menu_item/<?php echo $MANUFACTURE_ID; ?>';
 <?php
 	}
 	
@@ -139,13 +139,13 @@ $(document).ready(function() {
 
 	<tr>
 		<td colspan = "2"><b>Menu Item</b></td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($PRODUCT) ? $PRODUCT->productName : '') ?>" class="validate[required]" type="text" name="productName" id="productName"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Product Type</td>
 		<td width = "75%">
@@ -158,13 +158,13 @@ $(document).ready(function() {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Brand</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($PRODUCT) ? $PRODUCT->brand : '') ?>"  type="text" name="brand" id="brand"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">UPC</td>
 		<td width = "75%">
@@ -181,13 +181,13 @@ $(document).ready(function() {
 				<option value="queue"<?php echo ((isset($PRODUCT) && ($PRODUCT->status == 'queue')) ? ' SELECTED' : '')?>>Queue</option>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Ingredient</td>
 		<td width = "75%">
 			<textarea name="ingredient" id="ingredient" class="validate[required]" rows = "5" cols = "30"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
 		</td>
-	<tr>
+	</tr>
 	
 	
 <?php
@@ -202,7 +202,7 @@ $(document).ready(function() {
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
 			<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

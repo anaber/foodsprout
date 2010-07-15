@@ -119,20 +119,20 @@ $(document).ready(function() {
 		<td width = "75%">
 			<input value="<?php echo (isset($INSECT) ? $INSECT->insectName : '') ?>" class="validate[required]" type="text" name="insect_name" id="insect_name" /><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Description</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($INSECT) ? $INSECT->description : '') ?>" class="validate[optional]" type="text" name="description" id="description" /><br />
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($INSECT)) ? 'Update Insect' : 'Add Insect' ?>">
 			<input type = "hidden" name = "insect_id" id = "insect_id" value = "<?php echo (isset($INSECT) ? $INSECT->insectId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

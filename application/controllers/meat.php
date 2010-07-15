@@ -2,6 +2,10 @@
 
 class Meat extends Controller {
 	
+	function __construct()
+	{
+		parent::Controller();
+	}
 	function index()
 	{
 		$data['main_content'] = 'meat';

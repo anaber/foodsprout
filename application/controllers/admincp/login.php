@@ -2,9 +2,26 @@
 
 class Login extends Controller {
 	
+	
+	function __construct()
+	{
+		parent::Controller();
+		
+		if ($this->session->userdata('isAuthenticated') == 1 ) {
+			if ($this->session->userdata('userGroup') == 'admin' ) {
+				redirect('/admincp/dashboard');
+			} else {
+				redirect('/');
+			}
+		}
+		
+	}
+	
 	function index()
 	{
 		$data = array();
+		
+		//print_r_pre($this->session->userdata);
 		
 		// List of views to be included
 		$data['CENTER'] = array(

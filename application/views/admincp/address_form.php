@@ -137,20 +137,20 @@ $(document).ready(function() {
 
 	<tr>
 		<td colspan = "2"><b>Address</b></td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Address</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->address : '') ?>" class="validate[required]" type="text" name="address" id="address"/><br />
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%">City</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
@@ -163,7 +163,7 @@ $(document).ready(function() {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
@@ -176,13 +176,13 @@ $(document).ready(function() {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Zip</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
 		</td>
-	<tr>
+	</tr>
 <?php
 	
 ?>
@@ -196,7 +196,7 @@ $(document).ready(function() {
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
 			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR_ID) ? $DISTRIBUTOR_ID : '') ?>">			
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

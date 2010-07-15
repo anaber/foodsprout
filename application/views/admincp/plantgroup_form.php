@@ -120,19 +120,19 @@ $(document).ready(function() {
 		<td width = "75%">
 			<input value="<?php echo (isset($PLANT_GROUP) ? $PLANT_GROUP->plantGroupName : '') ?>" class="validate[required]" type="text" name="plant_group_name" id="plant_group_name"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Sci Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($PLANT_GROUP) ? $PLANT_GROUP->plantGroupSciName : '') ?>" class="validate[required]" type="text" name="plant_group_sci_name" id="plant_group_sci_name"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PLANT_GROUP)) ? 'Update Plant Group' : 'Add Plant Group' ?>">
 			<input type = "hidden" name = "plant_group_id" id = "plant_group_id" value = "<?php echo (isset($PLANT_GROUP) ? $PLANT_GROUP->plantGroupId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

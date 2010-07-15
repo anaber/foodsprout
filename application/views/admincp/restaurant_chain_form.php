@@ -155,7 +155,7 @@ $(document).ready(function() {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" colspan = "2">

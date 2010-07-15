@@ -40,7 +40,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 				
 			}
 		?>
-		<td>
+		</td>
 			
 		<td width ="790" valign="top" style="padding-left:10px;">
 		<?php
@@ -57,7 +57,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 				
 			}
 		?>
-		<td>
+		</td>
 	</tr>
 </table>
 </div>

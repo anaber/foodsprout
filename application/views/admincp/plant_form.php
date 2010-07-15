@@ -119,7 +119,7 @@ $(document).ready(function() {
 		<td>
 			<input value="<?php echo (isset($PLANT) ? $PLANT->plantName : '') ?>" class="validate[required]" type="text" name="plant_name" id="plant_name" /><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td>State</td>
 		<td>
@@ -132,13 +132,13 @@ $(document).ready(function() {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PLANT)) ? 'Update Plant' : 'Add Plant' ?>">
 			<input type = "hidden" name = "plant_id" id = "plant_id" value = "<?php echo (isset($PLANT) ? $PLANT->plantId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

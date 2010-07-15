@@ -2,14 +2,24 @@
 
 class Login extends Controller {
 	
+	function __construct()
+	{
+		parent::Controller();
+	}
+	
 	function index()
 	{
-		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'login',
-		);
-			
-		$this->load->view('templates/center_template', $data);		
+		if ($this->session->userdata('isAuthenticated') == 1 )
+		{
+			redirect('/home');
+		} else {
+			// List of views to be included
+			$data['CENTER'] = array(
+					'list' => 'login',
+			);
+				
+			$this->load->view('templates/center_template', $data);
+		}
 	}
 	
 	// Check the user's data is valid

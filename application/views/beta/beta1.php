@@ -98,7 +98,9 @@
 
 								?>
 								<table width="300" cellpadding="2">
-
+									<tr>
+										<td colspan = "2"></td>
+									</tr>
 								<?php
 								echo '<tr><td align="right">First Name:</td><td>'. '<input type = "text" name = "firstname" id = "firstname" class = "validate[required]">' .'</td></tr>' . "\n";
 								echo '<tr><td align="right">Email:</td><td>'. '<input type = "text" name = "email" id = "email" class = "validate[required,custom[email]]">' .'</td></tr>' . "\n";

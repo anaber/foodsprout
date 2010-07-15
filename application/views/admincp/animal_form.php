@@ -117,14 +117,14 @@ $(document).ready(function() {
 		<td width = "75%">
 			<input value="<?php echo (isset($ANIMAL) ? $ANIMAL->animalName : '') ?>" class="validate[required]" type="text" name="animal_name" id="animal_name" /><br />
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($ANIMAL)) ? 'Update Animal' : 'Add Animal' ?>">
 			<input type = "hidden" name = "animal_id" id = "animal_id" value = "<?php echo (isset($ANIMAL) ? $ANIMAL->animalId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

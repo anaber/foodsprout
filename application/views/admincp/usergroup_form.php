@@ -117,14 +117,14 @@ $(document).ready(function() {
 		<td width = "75%">
 			<input value="<?php echo (isset($USERGROUPS) ? $ANIMAL->usergroupName : '') ?>" class="validate[required]" type="text" name="usergroup_name" id="usergroup_name" /><br />
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($ANIMAL)) ? 'Update Usergroup' : 'Add Usergroup' ?>">
 			<input type = "hidden" name = "usergroup_id" id = "usergroup_id" value = "<?php echo (isset($ANIMAL) ? $ANIMAL->usergroupId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

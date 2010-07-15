@@ -2,6 +2,11 @@
 
 class Search extends Controller {
 	
+	function __construct()
+	{
+		parent::Controller();
+	}
+	
 	function index()
 	{
 		$data['main_content'] = 'product/product_list';

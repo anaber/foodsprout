@@ -248,7 +248,7 @@ function findValueRestaurantChain(li) {
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->companyName : '') ?>" style="width: 200px;" /> 
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Restaurant Name</td>
 		<td width = "75%">
@@ -263,7 +263,7 @@ function findValueRestaurantChain(li) {
 				<li>No company selected from the list above and name entered, new comapny and restaurant will be added.</li>
 			</ul>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Restaurant Type</td>
 		<td width = "75%">
@@ -276,13 +276,13 @@ function findValueRestaurantChain(li) {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Restaurant Chain</td>
 		<td width = "75%">
 			<input type="text" id="restaurantChainAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantChain : '') ?>" style="width: 200px;" /> 
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Cuisine</td>
 		<td width = "75%">
@@ -303,32 +303,32 @@ function findValueRestaurantChain(li) {
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->customURL : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" nowrap>Phone</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->phone : '') ?>" class="validate[optional]" type="text" name="phone" id="phone"/>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Fax</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->fax : '') ?>" class="validate[optional]" type="text" name="fax" id="fax"/>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>E-Mail</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->email : '') ?>" class="validate[optional,custom[email]]" type="text" name="email" id="email"/>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Website</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantURL : '') ?>" class="validate[optional]" type="text" name="website" id="website"/>
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" nowrap>Status</td>
@@ -339,16 +339,16 @@ function findValueRestaurantChain(li) {
 				<option value="inactive"<?php echo ((isset($RESTAURANT) && ($RESTAURANT->isActive == 0)) ? ' SELECTED' : '')?>>In-active</option>
 			</select>
 		</td>
-	<tr>
+	</tr>
 <?php
 	if (!isset($RESTAURANT) ){
 ?>
 	<tr>
 		<td colspan = "2">&nbsp;</td>
-	<tr>
+	</tr>
 	<tr>
 		<td colspan = "2"><b>Address</b></td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Address</td>
 		<td width = "75%">

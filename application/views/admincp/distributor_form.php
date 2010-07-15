@@ -183,13 +183,13 @@ function formatItem(row) {
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->companyName : '') ?>" style="width: 200px;" />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Distributor Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->distributorName : '') ?>" class="validate[optional]" type="text" name="distributorName" id="distributorName"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td colspan = "2" style = "font-size:10px;">
 			<ul>
@@ -198,20 +198,20 @@ function formatItem(row) {
 				<li>No company selected from the list above and name entered, new comapny and distributor will be added.</li>
 			</ul>
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" nowrap>Custom URL</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->customUrl : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Website</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->url : '') ?>" class="validate[optional]" type="text" name="url" id="url"/>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Status</td>
 		<td width = "75%">
@@ -221,28 +221,28 @@ function formatItem(row) {
 				<option value="inactive"<?php echo ((isset($DISTRIBUTOR) && ($DISTRIBUTOR->isActive == 0)) ? ' SELECTED' : '')?>>In-active</option>
 			</select>
 		</td>
-	<tr>
+	</tr>
 <?php
 	if (!isset($DISTRIBUTOR) ){
 ?>
 	<tr>
 		<td colspan = "2">&nbsp;</td>
-	<tr>
+	</tr>
 	<tr>
 		<td colspan = "2"><b>Address</b></td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Address</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->address : '') ?>" class="validate[required]" type="text" name="address" id="address"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">City</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
@@ -255,7 +255,7 @@ function formatItem(row) {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
@@ -268,13 +268,13 @@ function formatItem(row) {
 			?>
 			</select>
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%">Zip</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
 		</td>
-	<tr>
+	</tr>
 <?php
 	}
 ?>
@@ -284,7 +284,7 @@ function formatItem(row) {
 			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->distributorId : '') ?>">
 			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->companyId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

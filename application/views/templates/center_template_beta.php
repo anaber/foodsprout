@@ -42,7 +42,7 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 					}
 				}
 				?>
-			<td>
+			</td>
 		</tr>
 	</table>
 </div>

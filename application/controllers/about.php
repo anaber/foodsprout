@@ -2,6 +2,10 @@
 
 class About extends Controller {
 	
+	function __construct()
+	{
+		parent::Controller();
+	}
 	
 	// The default goes to the about page
 	function index()

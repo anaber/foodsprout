@@ -10,7 +10,7 @@ class Dashboard extends Controller {
 	function __construct()
 	{
 		parent::Controller();
-		if ($this->session->userdata('isAuthenticated') != 1 )
+		if ($this->session->userdata('isAuthenticated') != 1 || $this->session->userdata('userGroup') != 'admin' )
 		{
 			redirect('admincp/login');
 		}

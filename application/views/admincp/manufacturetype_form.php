@@ -118,13 +118,13 @@ $(document).ready(function() {
 		<td width = "75%">
 			<input value="<?php echo (isset($MANUFACTURETYPE) ? $MANUFACTURETYPE->manufactureType : '') ?>" class="validate[required]" type="text" name="manufactureType" id="manufactureType"/><br />
 		</td>
-	<tr>
+	</tr>
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MANUFACTURETYPE)) ? 'Update Manufacture Type' : 'Add Manufacture Type' ?>">
 			<input type = "hidden" name = "manufactureTypeId" id = "manufactureTypeId" value = "<?php echo (isset($MANUFACTURETYPE) ? $MANUFACTURETYPE->manufactureTypeId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 

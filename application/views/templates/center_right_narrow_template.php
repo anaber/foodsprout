@@ -46,7 +46,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 
 			}
 		?>
-		<td>
+		</td>
 		<td width = "170" valign = "top">
 		<?php
 			foreach($RIGHT as $key => $view) {
@@ -62,7 +62,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 
 			}
 		?>
-		<td>
+		</td>
 	</tr>
 </table>
 </div>

@@ -120,14 +120,14 @@ $(document).ready(function() {
 		<td width = "75%">
 			<input value="<?php echo (isset($FISH) ? $FISH->fishName : '') ?>" class="validate[required]" type="text" name="fish_name" id="fish_name" /><br />
 		</td>
-	<tr>
+	</tr>
 	
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FISH)) ? 'Update Fish' : 'Add Fish' ?>">
 			<input type = "hidden" name = "fish_id" id = "fish_id" value = "<?php echo (isset($FISH) ? $FISH->fishId : '') ?>">
 		</td>
-	<tr>
+	</tr>
 </table>
 </form>
 
