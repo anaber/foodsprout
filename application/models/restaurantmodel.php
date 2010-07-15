@@ -93,6 +93,7 @@ class RestaurantModel extends Model{
 		
 		//$filter = 'r_10,c_6';
 		
+		$CI =& get_instance();
 		
 		//echo $filter;
 		$arr_filter = explode(',', $filter);
@@ -132,16 +133,22 @@ class RestaurantModel extends Model{
 				$q = $_COOKIE['seachedZip'];
 				$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
 			} else {
-				// By default display all restaurants of SFO
-				$city = '41,6009,13721';
-				$mapZoomLevel = $CITY_ZOOM_LEVEL;
+				
+				if ($this->session->userdata('isAuthenticated') != 1 ) {
+					// If user is NOT logged in, display restaurants from SFO
+					$city = '41,6009,13721';
+					$mapZoomLevel = $CITY_ZOOM_LEVEL;
+				} else {
+					// If user is LOGGED in, display restaurants near hiz zipcode
+					$q = $this->session->userdata['zipcode'];
+					$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+					setcookie('seachedZip', $q, time()+60*60*24*30*365);
+				}
 			}
 		} else {
 			setcookie('seachedZip', $q, time()+60*60*24*30*365);
 			$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
 		}
-		
-		
 		
 		$start = 0;
 	
@@ -341,8 +348,6 @@ class RestaurantModel extends Model{
 		$result = $this->db->query($query);
 		
 		$restaurants = array();
-		
-		$CI =& get_instance();
 		
 		$geocodeArray = array();
 		foreach ($result->result_array() as $row) {

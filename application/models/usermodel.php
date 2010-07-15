@@ -113,6 +113,36 @@ class UserModel extends Model{
 		}
 	}
 	
+	function getUserFromId($userId) {
+		
+		$query = "SELECT user.*, user_group.user_group " .
+				" FROM user, user_group, user_group_member " .
+				" WHERE user.user_id = " . $userId . 
+				" AND user.user_id = user_group_member.user_id" .
+				" AND user_group.user_group_id = user_group_member.user_group_id ";
+				
+		log_message('debug', "UserModel.getUserFromId : " . $query);
+		$result = $this->db->query($query);
+		
+		$this->load->library('UserLib');
+		
+		$row = $result->row();
+		
+		if ($row) {
+			$this->UserLib->userId = $row->user_id;
+			$this->UserLib->email = $row->email;
+			$this->UserLib->firstName = $row->first_name;
+			$this->UserLib->screenName = $row->screenName;
+			$this->UserLib->userGroup = $row->user_group;
+			$this->UserLib->userGroupId = $row->user_group_id;
+			
+			return $this->UserLib;
+		} else {
+			return;
+		}
+	}
+	
+	
 	
 }
 
