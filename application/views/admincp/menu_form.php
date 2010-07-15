@@ -56,6 +56,7 @@ $(document).ready(function() {
 							  productName:$('#productName').val(),
 							  productTypeId: $('#productTypeId').val(),
 							  brand:$('#brand').val(),
+                                                          upc:$('#upc').val(),
 							  status:$('#status').val(),
 							  ingredient:$('#ingredient').val(),
 							  
@@ -72,6 +73,7 @@ $(document).ready(function() {
 							  productName:$('#productName').val(),
 							  productTypeId: $('#productTypeId').val(),
 							  brand:$('#brand').val(),
+                                                          upc:$('#upc').val(),
 							  status:$('#status').val(),
 							  ingredient:$('#ingredient').val(),
 							  
@@ -160,9 +162,16 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Brand</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($PRODUCT) ? $PRODUCT->brand : '') ?>" class="validate[required]" type="text" name="brand" id="brand"/><br />
+			<input value="<?php echo (isset($PRODUCT) ? $PRODUCT->brand : '') ?>"  type="text" name="brand" id="brand"/><br />
 		</td>
 	<tr>
+	<tr>
+		<td width = "25%">UPC</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($PRODUCT) ? $PRODUCT->upc : '') ?>" class="validate[optional,custom[onlyNumber]]" type="text" name="upc" id="upc"/><br />
+		</td>
+	<tr>
+
 	<tr>
 		<td width = "25%" nowrap>Status</td>
 		<td width = "75%">

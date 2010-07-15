@@ -202,7 +202,7 @@ class ProductModel extends Model{
 			} else if ( !empty($manufactureId) ) {
 				$query .= $manufactureId;
 			}
-			$query .= ',  '.$this->input->post('productTypeId') .', "'.$this->input->post('productName') .'", "'.$this->input->post('ingredient') .'", "' . $this->input->post('brand') .'", NULL, "'.$this->input->post('status') .'", '.$this->session->userdata('userId') .', NOW() )';
+			$query .= ',  '.$this->input->post('productTypeId') .', "'.$this->input->post('productName') .'", "'.$this->input->post('ingredient') .'", "' . $this->input->post('brand') .'", "' . $this->input->post('upc') .'", "'.$this->input->post('status') .'", '.$this->session->userdata('userId') .', NOW() )';
 			
 			log_message('debug', 'ProductModel.addProduct : Insert Product : ' . $query);
 			
@@ -306,7 +306,7 @@ class ProductModel extends Model{
 						'product_name' => $this->input->post('productName'),
 						'ingredient_text' => $this->input->post('ingredient'),
 						'brand' => $this->input->post('brand'),
-						//'upc' => $this->input->post('upc'),
+						 'upc' => $this->input->post('upc'),
 						'status' => $this->input->post('status'),
 						'modify_date' => 'NOW()',
 					);
