@@ -16,7 +16,7 @@ class Product extends Controller {
 		$data = array();
 		
 		$this->load->model('ProductModel');
-		$products = $this->ProductModel->list_product();
+		$products = $this->ProductModel->listproduct();
 		
 		
 		// List of views to be included
@@ -118,6 +118,30 @@ class Product extends Controller {
 		}
 		
 	}
+
+        function listProduct($hasFructose = 0, $currentPage = 1, $dispPerPage = 3)
+        {
+		$data = array();
+
+		$this->load->model('ProductModel');
+		$productCount = $this->ProductModel->getProductCount($hasFructose);
+		$products = $this->ProductModel->listProductDetails($hasFructose, $currentPage, $dispPerPage);
+
+
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list_product' => 'admincp/list_product',
+			);
+
+		// Data to be passed to the views
+		$data['data']['center']['list_product']['DISP_PER_PAGE'] = $dispPerPage;
+		$data['data']['center']['list_product']['TOTAL_RECORD_COUNT'] = $productCount;
+		$data['data']['center']['list_product']['CURRENT_PAGE'] = $currentPage;
+		$data['data']['center']['list_product']['PRODUCTS'] = $products;
+		$data['data']['center']['list_product']['PAGING_CALLBACK'] = "/admincp/product/listProduct/$hasFructose";
+
+		$this->load->view('admincp/templates/center_template', $data);
+        }
 	
 }
 

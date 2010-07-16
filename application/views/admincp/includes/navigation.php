@@ -51,14 +51,24 @@ document.onclick = jsddm_close;
 		<li><a href="#">Food Web</a>
 			<ul>
 				<li><?php echo anchor('admincp/animal', 'Animals'); ?></li>
-			    <li><?php echo anchor('admincp/fish', 'Fish'); ?></li>
+                                <li><?php echo anchor('admincp/fish', 'Fish'); ?></li>
 				<li><?php echo anchor('admincp/insect', 'Insects'); ?></li>
 				<li><?php echo anchor('admincp/plant', 'Plants'); ?></li>
 				<li><?php echo anchor('admincp/plantgroup', 'Plant Groups'); ?></li>
 			</ul>
 		</li>
 		<li><?php echo anchor('admincp/ingredient', 'Ingredients'); ?></li>
-		<li><?php echo anchor('admincp/product', 'Products'); ?></li>	
+
+
+		<li><a href="#">Product</a>
+			<ul>
+				<li><?php echo anchor('admincp/product', 'Manage Products'); ?></li>
+                                <li><?php echo anchor('admincp/product/listProduct', 'All Products'); ?></li>
+                                <li><?php echo anchor('admincp/product/listProduct/1', 'Products With Fructose'); ?></li>
+			</ul>
+		</li>
+
+
 		<li><a href="#">Types</a>
 			<ul>
 				<li><?php echo anchor('admincp/farmtype', 'Farm Type'); ?></li>
