@@ -54,9 +54,8 @@ class Login extends Controller {
 	}
 	
 	// Create and add a new user to the database
-	function create_user()
-	{
-		
+	function create_user() {
+		$GLOBALS = array();
 		$this->load->library('form_validation');
 		// field name, error message, validation rules
 		
@@ -80,7 +79,7 @@ class Login extends Controller {
 		{
 			
 			$this->load->model('UserModel');
-			$create_user = $this->UserModel->create_user();
+			$create_user = $this->UserModel->createUser();
 			
 			if($create_user == true)
 			{
@@ -102,10 +101,16 @@ class Login extends Controller {
 			}
 			else
 			{
-				$this->load->view('user/create_account');
+				//$this->load->view('/user/create_account');
+				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+					echo $GLOBALS['error'];
+				} else {
+					echo 'no';
+				}
 			}
 			
 		}
+		
 	}
 }
 

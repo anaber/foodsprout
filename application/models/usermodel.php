@@ -29,58 +29,68 @@ class UserModel extends Model{
 	}
 	
 	// Add a new user to the database
-	function create_user()
-	{
-		$new_user_insert_data = array(
-			'first_name' => $this->input->post('firstname'),
-			'email' => $this->input->post('email'),
-			'zipcode' => $this->input->post('zipcode'),
-			'password' => md5($this->input->post('password')),
-			'register_ipaddress' => $_SERVER['REMOTE_ADDR'],
-			'isActive' => 1
-		);
+	function createUser() {
+		$return = true;
 		
-		log_message('debug', $new_user_insert_data);
+		$query = "SELECT * FROM user WHERE email = \"" . $this->input->post('email') . "\"";
+		log_message('debug', 'UserModel.createUser : Try to get duplicate User record : ' . $query);
 		
-		$insert = $this->db->insert('user', $new_user_insert_data);
+		$result = $this->db->query($query);
 		
-		$return = false;
-		
-		if($insert)
-		{
-			$new_user_group_insert_data = array(
-				'user_id' => $this->db->insert_id() ,
-				'user_group_id' => 2
+		if ($result->num_rows() == 0) {
+			
+			$new_user_insert_data = array(
+				'first_name' => $this->input->post('firstname'),
+				'email' => $this->input->post('email'),
+				'zipcode' => $this->input->post('zipcode'),
+				'password' => md5($this->input->post('password')),
+				'register_ipaddress' => $_SERVER['REMOTE_ADDR'],
+				'isActive' => 1
 			);
 			
-			log_message('debug', $new_user_group_insert_data);
+			log_message('debug', $new_user_insert_data);
 			
-			$insert = $this->db->insert('user_group_member', $new_user_group_insert_data);
+			$insert = $this->db->insert('user', $new_user_insert_data);
 			
-			$return = true;
+			$return = false;
 			
-			$this->load->library('UserLib');
+			if($insert) {
+				$userId = $this->db->insert_id();
+				$new_user_group_insert_data = array(
+					'user_id' =>  $userId,
+					'user_group_id' => 2
+				);
+				
+				log_message('debug', $new_user_group_insert_data);
+				
+				$insert = $this->db->insert('user_group_member', $new_user_group_insert_data);
+				
+				$return = true;
+				
+				$this->load->library('UserLib');
+				
+				$this->user->userId = $userId;
+				$this->userLib->email = $this->input->post('email');
+				$this->userLib->zipcode = $this->input->post('zipcode');
+				$this->userLib->firstName = $this->input->post('firstname');
+				$this->userLib->isActive = 1;
+				//$this->user->screenName = $row->screen_name;
+				$this->userLib->isAuthenticated = 1;
+				//$this->user->userGroup = $row->user_group;
+				
+				$this->session->set_userdata($this->userLib );
+				
+				$return = true;
+			} else  {
+				$return = false;
+			}
 			
-			//$this->user->userId = $row->user_id;
-			$this->userLib->email = $this->input->post('email');
-			$this->userLib->zipcode = $this->input->post('zipcode');
-			$this->userLib->firstName = $this->input->post('firstname');
-			$this->userLib->isActive = 1;
-			//$this->user->screenName = $row->screen_name;
-			$this->userLib->isAuthenticated = 1;
-			//$this->user->userGroup = $row->user_group;
-			
-			$this->session->set_userdata($this->userLib );
-			
-			$return = true;
-		}
-		else
-		{
+		} else {
+			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
 		
 		return $return;
-		
 	}
 	
 	// Get all the users of the database
@@ -115,7 +125,7 @@ class UserModel extends Model{
 	
 	function getUserFromId($userId) {
 		
-		$query = "SELECT user.*, user_group.user_group " .
+		$query = "SELECT user.*, user_group.user_group, user_group.user_group_id " .
 				" FROM user, user_group, user_group_member " .
 				" WHERE user.user_id = " . $userId . 
 				" AND user.user_id = user_group_member.user_id" .
@@ -132,8 +142,9 @@ class UserModel extends Model{
 			$this->UserLib->userId = $row->user_id;
 			$this->UserLib->email = $row->email;
 			$this->UserLib->firstName = $row->first_name;
-			$this->UserLib->screenName = $row->screenName;
+			$this->UserLib->screenName = $row->screen_name;
 			$this->UserLib->userGroup = $row->user_group;
+			$this->UserLib->zipcode = $row->zipcode;
 			$this->UserLib->userGroupId = $row->user_group_id;
 			
 			return $this->UserLib;
@@ -142,6 +153,71 @@ class UserModel extends Model{
 		}
 	}
 	
+	function updateUserSettings() {
+		$return = true;
+		
+		$query = "SELECT * FROM user WHERE email = \"" . $this->input->post('email') . "\" AND user_id <> " . $this->session->userdata('userId');
+		log_message('debug', 'UserModel.updateUserSettings : Try to get Duplicate record : ' . $query);
+			
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			
+			$data = array(
+						'email' => $this->input->post('email'), 
+						'screen_name' => $this->input->post('screenName'),
+						'first_name' => $this->input->post('firstName'),
+						'zipcode' => $this->input->post('zipcode'),
+					);
+			$where = "user_id = " . $this->session->userdata('userId');
+			$query = $this->db->update_string('user', $data, $where);
+			
+			log_message('debug', 'UserModel.updateUserSettings : ' . $query);
+			if ( $this->db->query($query) ) {
+				$return = true;
+			} else {
+				$return = false;
+			}
+			
+		} else {
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
+		}
+				
+		return $return;
+	}
+	
+	function updatePassword() {
+		$return = true;
+		
+		$query = "SELECT * FROM user WHERE password = \"" . md5($this->input->post('currentPassword')) . "\" AND user_id = " . $this->session->userdata('userId');
+		log_message('debug', 'UserModel.updatePassword : Try to get Duplicate record : ' . $query);
+		
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() > 0) {
+			
+			
+			$data = array(
+						'password' => md5($this->input->post('newPassword')), 
+					);
+			$where = "user_id = " . $this->session->userdata('userId');
+			$query = $this->db->update_string('user', $data, $where);
+			
+			log_message('debug', 'UserModel.updatePassword : ' . $query);
+			if ( $this->db->query($query) ) {
+				$return = true;
+			} else {
+				$return = false;
+			}
+			
+		} else {
+			$GLOBALS['error'] = 'wrong_password';
+			$return = false;
+		}
+		
+		return $return;
+	}
 	
 	
 }

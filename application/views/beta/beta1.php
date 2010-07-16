@@ -36,7 +36,7 @@
 												$(this).html('Form validation failed...').addClass('messageboxerror').fadeTo(900,1);
 											});
 										} else {
-
+											
 											$.post("/login/create_user",{ email:$('#email').val(),password:$('#password').val(),firstname:$('#firstname').val(),zipcode:$('#zipcode').val() } ,function(data) {
 												//if correct login detail
 												
@@ -56,6 +56,12 @@
 														//add message and change the class of the box and start fading
 														$(this).html('Passowrd do not match...').addClass('messageboxerror').fadeTo(900,1);
 													});
+												} else if(data == 'duplicate') {
+													//start fading the messagebox 
+													$("#msgbox").fadeTo(200,0.1,function() {
+														//add message and change the class of the box and start fading
+														$(this).html('Email already registered with us...').addClass('messageboxerror').fadeTo(900,1);
+													});
 												} else {
 													//start fading the messagebox 
 													$("#msgbox").fadeTo(200,0.1,function() {
@@ -72,6 +78,8 @@
 
 									});
 								});
+								
+								
 							</script>
 
 							<br>
@@ -106,7 +114,7 @@
 								echo '<tr><td align="right">Email:</td><td>'. '<input type = "text" name = "email" id = "email" class = "validate[required,custom[email]]">' .'</td></tr>' . "\n";
 								echo '<tr><td align="right">Zip Code:</td><td>'. '<input type = "text" name = "zipcode" id = "zipcode" class = "validate[required]">' .'</td></tr>' . "\n";
 								echo '<tr><td align="right">Password:</td><td>'. '<input type = "password" name = "password" id = "password" class = "validate[required,length[8,30]]">' .'</td></tr>' . "\n";
-								echo '<tr><td align="right">Confirm Password:</td><td>'. '<input type = "password" name = "password2" id = "password2" class = "validate[required,length[8,30]]">' .'</td></tr>' . "\n";
+								echo '<tr><td align="right">Confirm Password:</td><td>'. '<input type = "password" name = "password2" id = "password2" class = "validate[required,length[8,30],confirm[password]]">' .'</td></tr>' . "\n";
 
 								echo '<tr><td align="center" colspan="2">'.form_submit('submit', 'Create Account').'</td></tr>' . "\n";
 								?>
