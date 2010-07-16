@@ -44,10 +44,13 @@ class UserModel extends Model{
 				'email' => $this->input->post('email'),
 				'zipcode' => $this->input->post('zipcode'),
 				'password' => md5($this->input->post('password')),
-				'register_ipaddress' => $_SERVER['REMOTE_ADDR'],
+				'register_ipaddress' => $this->input->ip_address(), //$_SERVER['REMOTE_ADDR'], //Replaced by Nutan/Thakur
 				'isActive' => 1
 			);
-			
+
+
+                        
+
 			log_message('debug', $new_user_insert_data);
 			
 			$insert = $this->db->insert('user', $new_user_insert_data);
