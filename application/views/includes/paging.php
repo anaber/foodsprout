@@ -110,7 +110,7 @@
 </script>
 
 <div style="overflow:auto; padding:5px;margin-top: 20px;">
-	<div style="float:left; width:200px; font-size:12px;" id = 'numRecords'>Viewing records <?php echo "$startRecord-$endRecord of $TOTAL_RECORD_COUNT" ?></div>
+	<div style="float:left; width:230px; font-size:12px;" id = 'numRecords'>Viewing records <?php echo "$startRecord-$endRecord of $TOTAL_RECORD_COUNT" ?></div>
 	<div style="float:left; width:120px; font-size:12px;" id = 'recordsPerPage' align = "center">
 		<select id = "recordsPerPageList">
 			<option value = "">--Per Page--</option>
@@ -125,7 +125,7 @@
 			?>
 		</select>
 	</div>
-	<div style="float:left; width:350px; font-size:12px;" id = 'pagingLinks' align = "center">
+	<div style="float:left; width:330px; font-size:12px;" id = 'pagingLinks' align = "center">
 		<a href="#" id = "imgFirst" onClick="pagingLoad('first');">First</a> &nbsp;&nbsp;
 		<a href="#" id = "imgPrevious"  onClick="pagingLoad('prev');">Previous</a>
                 &nbsp;&nbsp;&nbsp; Page <?php echo $CURRENT_PAGE ?> of <?php echo $lastPageNumber ?>  &nbsp;&nbsp;&nbsp;

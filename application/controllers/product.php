@@ -5,13 +5,13 @@ class Product extends Controller {
 	function __construct()
 	{
 		parent::Controller();
-		if ($this->session->userdata('isAuthenticated') != 1 )
-		{
-			redirect('about/privatebeta');
-		}
 	}
 	
 	function index() {
+		if ($this->session->userdata('isAuthenticated') != 1 ) //moved by Nutan
+		{
+			redirect('about/privatebeta');
+		}
 		global $GOOGLE_MAP_KEY;
 		
 		$data = array();
@@ -43,6 +43,10 @@ class Product extends Controller {
 	}
 	
 	function detail($id) {
+		if ($this->session->userdata('isAuthenticated') != 1 ) //moved by Nutan
+		{
+			redirect('about/privatebeta');
+		}
 		
 		global $GOOGLE_MAP_KEY;
 		
@@ -93,7 +97,7 @@ class Product extends Controller {
 		$this->load->view('templates/center_right_template', $data);
 	}
 
-        function fructose($currentPage = 1, $dispPerPage = 10)
+        function fructose($currentPage = 1, $dispPerPage = 200)
         {
                 $hasFructose = 1;
                 $data = array();
@@ -103,12 +107,12 @@ class Product extends Controller {
 
                 
                 // List of views to be included
-		$data['LEFT'] = array(
-				'ad' => 'includes/left/ad',
+		$data['CENTER'] = array(
+				'list_product' => 'product/product_list',
 			);
 
-		$data['CENTER'] = array(
-				'list_product' => 'list_product',
+		$data['RIGHT'] = array(
+				'ad' => 'includes/left/ad',
 			);
 
 
@@ -121,7 +125,7 @@ class Product extends Controller {
 		$data['data']['center']['list_product']['PRODUCTS'] = $products;
 		$data['data']['center']['list_product']['PAGING_CALLBACK'] = "/product/fructose";
 
-		$this->load->view('templates/left_center_template', $data);
+		$this->load->view('templates/center_right_narrow_template', $data);
         }
 }
 

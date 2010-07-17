@@ -17,7 +17,12 @@
 								accountFormValidated = true;
 
 								$(document).ready(function() {
-
+                                                                        /* TODO: validation to be uncommented
+                                                                         * there seems to be issue -
+                                                                         * when validation is enabled, the form stops posting
+                                                                         * Deepak may look into it
+                                                                         */
+                                                                        /*
 									$("#frmAccount").validationEngine({
 										success : function() {accountFormValidated = true;},
 										failure : function() {accountFormValidated = false;}
@@ -35,48 +40,11 @@
 												//add message and change the class of the box and start fading
 												$(this).html('Form validation failed...').addClass('messageboxerror').fadeTo(900,1);
 											});
-										} else {
-											
-											$.post("/login/create_user",{ email:$('#email').val(),password:$('#password').val(),firstname:$('#firstname').val(),zipcode:$('#zipcode').val() } ,function(data) {
-												//if correct login detail
-												
-												if(data=='yes') {
-													//start fading the messagebox
-													$("#msgbox").fadeTo(200,0.1,function() {
-														//add message and change the class of the box and start fading
-														$(this).html('Logging in.....').addClass('messageboxok').fadeTo(900,1, function(){
-															//redirect to secure page
-															document.location='/';
-														});
-
-													});
-												} else if(data == 'passwordNotSame') {
-													//start fading the messagebox 
-													$("#msgbox").fadeTo(200,0.1,function() {
-														//add message and change the class of the box and start fading
-														$(this).html('Passowrd do not match...').addClass('messageboxerror').fadeTo(900,1);
-													});
-												} else if(data == 'duplicate') {
-													//start fading the messagebox 
-													$("#msgbox").fadeTo(200,0.1,function() {
-														//add message and change the class of the box and start fading
-														$(this).html('Email already registered with us...').addClass('messageboxerror').fadeTo(900,1);
-													});
-												} else {
-													//start fading the messagebox 
-													$("#msgbox").fadeTo(200,0.1,function() {
-														//add message and change the class of the box and start fading
-														$(this).html('Cannot create your account...').addClass('messageboxerror').fadeTo(900,1);
-													});
-												}
-
-											});
-
-										}
-
-										return false; //not to post the form physically
-
+                                                                                        return false;
+										} 
+                                                                                return true;
 									});
+                                                                        */
 								});
 								
 								
@@ -97,24 +65,32 @@
 								<?php
 
 								$attributes = array('name' => 'frmAccount', 'id' => 'frmAccount');
-								echo form_open('login/create_user', $attributes);
-								//echo form_open('login/create_user');
-
-								//$attributes = array('name' => 'frmLogin', 'id' => 'frmLogin');
-								//echo form_open('login/validate', $attributes);
-
-
+								echo form_open('about/create_user_no_ajax', $attributes);
 								?>
 								<table width="300" cellpadding="2">
 									<tr>
 										<td colspan = "2"></td>
 									</tr>
-								<?php
-								echo '<tr><td align="right">First Name:</td><td>'. '<input type = "text" name = "firstname" id = "firstname" class = "validate[required]">' .'</td></tr>' . "\n";
-								echo '<tr><td align="right">Email:</td><td>'. '<input type = "text" name = "email" id = "email" class = "validate[required,custom[email]]">' .'</td></tr>' . "\n";
-								echo '<tr><td align="right">Zip Code:</td><td>'. '<input type = "text" name = "zipcode" id = "zipcode" class = "validate[required]">' .'</td></tr>' . "\n";
-								echo '<tr><td align="right">Password:</td><td>'. '<input type = "password" name = "password" id = "password" class = "validate[required,length[8,30]]">' .'</td></tr>' . "\n";
-								echo '<tr><td align="right">Confirm Password:</td><td>'. '<input type = "password" name = "password2" id = "password2" class = "validate[required,length[8,30],confirm[password]]">' .'</td></tr>' . "\n";
+                                                                <?php
+                                                                if(isset ($USER_DATA))
+                                                                {
+                                                                    if(isset ($USER_DATA['error']))
+                                                                    {
+        								echo '<tr><td align="left" colspan="2" style="color:red;font-weight:bold;">' . $USER_DATA['error'] . '</td></tr>' . "\n";
+        								echo '<tr><td></td></tr>' . "\n";
+                                                                        echo '<tr><td align="right">First Name:</td><td>'. '<input type = "text" name = "firstname" id = "firstname" class = "validate[required]" value="' . $USER_DATA['first_name'] . '">' .'</td></tr>' . "\n";
+                                                                        echo '<tr><td align="right">Email:</td><td>'. '<input type = "text" name = "email" id = "email" class = "validate[required,custom[email]]" value="' . $USER_DATA['email'] . '">' .'</td></tr>' . "\n";
+                                                                        echo '<tr><td align="right">Zip Code:</td><td>'. '<input type = "text" name = "zipcode" id = "zipcode" class = "validate[required]" value="' . $USER_DATA['zipcode'] . '">' .'</td></tr>' . "\n";
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    echo '<tr><td align="right">First Name:</td><td>'. '<input type = "text" name = "firstname" id = "firstname" class = "validate[required]" value="">' .'</td></tr>' . "\n";
+                                                                    echo '<tr><td align="right">Email:</td><td>'. '<input type = "text" name = "email" id = "email" class = "validate[required,custom[email]]" value="">' .'</td></tr>' . "\n";
+                                                                    echo '<tr><td align="right">Zip Code:</td><td>'. '<input type = "text" name = "zipcode" id = "zipcode" class = "validate[required]" value="">' .'</td></tr>' . "\n";
+                                                                }
+                                                                echo '<tr><td align="right">Password:</td><td>'. '<input type = "password" name = "password" id = "password" class = "validate[required,length[8,30]]" >' .'</td></tr>' . "\n";
+                                                                echo '<tr><td align="right">Confirm Password:</td><td>'. '<input type = "password" name = "password2" id = "password2" class = "validate[required,length[8,30],confirm[password]]" >' .'</td></tr>' . "\n";
 
 								echo '<tr><td align="center" colspan="2">'.form_submit('submit', 'Create Account').'</td></tr>' . "\n";
 								?>

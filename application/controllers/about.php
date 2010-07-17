@@ -1,112 +1,189 @@
 <?php
 
 class About extends Controller {
-	
-	function __construct()
-	{
-		parent::Controller();
-	}
-	
-	// The default goes to the about page
-	function index()
-	{
-		// List of views to be included
-		$data['LEFT'] = array(
-				'navigation' => 'about/left_nav',
-			);
-		
-		$data['CENTER'] = array(
-				'content' => 'about/about',
-		);
-		
-		// Data to send to the views
-		$data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
-		$data['data']['center']['content']['VIEW_HEADER'] = "About Food Sprout";
-		
-		$this->load->view('/templates/left_center_template', $data);
-	}
-	
-	// Contact information
-	function contact()
-	{
-		// List of views to be included
-		$data['LEFT'] = array(
-				'navigation' => 'about/left_nav',
-			);
-		
-		$data['CENTER'] = array(
-				'content' => 'about/contact',
-		);
-		
-		// Data to send to the views
-		$data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
-		$data['data']['center']['content']['VIEW_HEADER'] = "Contacting Food Sprout";
-		
-		$this->load->view('/templates/left_center_template', $data);
-	}
-	
-	// Information for business owners
-	function business()
-	{
-		// List of views to be included
-		$data['LEFT'] = array(
-				'navigation' => 'about/left_nav',
-			);
-		
-		$data['CENTER'] = array(
-				'content' => 'about/business',
-		);
-		
-		// Data to send to the views
-		$data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
-		$data['data']['center']['content']['VIEW_HEADER'] = "Information for Restaurant &amp; Businesses";
-		
-		$this->load->view('/templates/left_center_template', $data);
-	}
-	
-	// Feedback page to gather feedback from users
-	function feedback()
-	{
-		
-	}
-	
-	// The first page that loads on the beta
-	function privatebeta()
-	{
-		$data = array();
-		
-		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('index');
-		$data['SEO'] = $seo;
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'beta/beta1',
-			);
-		
-		$this->load->view('templates/center_template_beta', $data);
-	}
-	
-	// The second page for the beta test, AB test this page with Google Site Optimizer
-	function beta()
-	{
-		$data = array();
-		
-		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('index');
-		$data['SEO'] = $seo;
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'beta/beta2',
-			);
-		
-		$this->load->view('templates/center_template_beta', $data);
-	}
-	
-	
+
+    function __construct() {
+        parent::Controller();
+    }
+
+    // The default goes to the about page
+    function index() {
+        // List of views to be included
+        $data['LEFT'] = array(
+            'navigation' => 'about/left_nav',
+        );
+
+        $data['CENTER'] = array(
+            'content' => 'about/about',
+        );
+
+        // Data to send to the views
+        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
+        $data['data']['center']['content']['VIEW_HEADER'] = "About Food Sprout";
+
+        $this->load->view('/templates/left_center_template', $data);
+    }
+
+    // Contact information
+    function contact() {
+        // List of views to be included
+        $data['LEFT'] = array(
+            'navigation' => 'about/left_nav',
+        );
+
+        $data['CENTER'] = array(
+            'content' => 'about/contact',
+        );
+
+        // Data to send to the views
+        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
+        $data['data']['center']['content']['VIEW_HEADER'] = "Contacting Food Sprout";
+
+        $this->load->view('/templates/left_center_template', $data);
+    }
+
+    // Information for business owners
+    function business() {
+        // List of views to be included
+        $data['LEFT'] = array(
+            'navigation' => 'about/left_nav',
+        );
+
+        $data['CENTER'] = array(
+            'content' => 'about/business',
+        );
+
+        // Data to send to the views
+        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
+        $data['data']['center']['content']['VIEW_HEADER'] = "Information for Restaurant &amp; Businesses";
+
+        $this->load->view('/templates/left_center_template', $data);
+    }
+
+    // Feedback page to gather feedback from users
+    function feedback() {
+        
+    }
+
+    // The first page that loads on the beta
+    function privatebeta($userData = null) {
+        $data = array();
+
+        $this->load->model('SeoModel');
+        $seo = $this->SeoModel->getSeoDetailsFromPage('index');
+        $data['SEO'] = $seo;
+        if($userData)
+        {
+            $data['USER_DATA'] = $userData;
+        }
+
+        // List of views to be included
+        $data['CENTER'] = array(
+            'list' => 'beta/beta1',
+        );
+
+        $this->load->view('templates/center_template_beta', $data);
+    }
+
+    // The second page for the beta test, AB test this page with Google Site Optimizer
+    function beta() {
+        $data = array();
+
+        $this->load->model('SeoModel');
+        $seo = $this->SeoModel->getSeoDetailsFromPage('index');
+        $data['SEO'] = $seo;
+
+        // List of views to be included
+        $data['CENTER'] = array(
+            'list' => 'beta/beta2',
+        );
+
+        $this->load->view('templates/center_template_beta', $data);
+    }
+
+    // Create and add a new user to the database
+    function create_user_no_ajax() {
+        $GLOBALS = array();
+        $this->load->library('form_validation');
+
+
+        /* CI's validation engine creating issues, may be we are not using this correctly
+         * We may use this section to validate see if password mathes or not.
+         */
+        $this->form_validation->set_rules('password', 'Password', 'trim|required');
+        //$this->form_validation->set_rules('password2', 'Password Confirmation', 'trim|required');
+
+        $new_user_insert_data = array(
+            'first_name' => $this->input->post('firstname'),
+            'email' => $this->input->post('email'),
+            'zipcode' => $this->input->post('zipcode'),
+            'password' => md5($this->input->post('password')),
+            'register_ipaddress' => $this->input->ip_address(), //$_SERVER['REMOTE_ADDR'], //Replaced by Nutan/Thakur
+            'isActive' => 1
+        );
+
+        
+        if ($this->input->post('password') != $this->input->post('password2')) {
+            $new_user_insert_data['error'] = 'The passwords are not same.';
+            $this->privatebeta($new_user_insert_data);
+            return;
+        }
+
+        if ($this->form_validation->run() == FALSE) {
+            $new_user_insert_data['error'] = 'The input data is not valid.';
+            $this->privatebeta($new_user_insert_data);
+            return;
+        }
+
+        $this->load->model('UserModel');
+        $create_user = $this->UserModel->createUserNoAjax($new_user_insert_data);
+        if ($create_user == true) {
+            // Send the user to the dashboard
+            // no need to send them from here. jquery will take care
+            // $this->dashboard();
+            // Now send them a welcome email
+            $this->load->library('email');
+
+            $this->email->from('contact@foodsprout.com', 'Food Sprout');
+            $this->email->to($this->input->post('email'));
+
+            $this->email->subject('Welcome to Food Sprout, ' . $this->input->post('firstname'));
+            $this->email->message('Welcome ' . $this->input->post('firstname') . ",\r\n \r\nThank you for joining Food Sprout and taking an interest in learning more about where our food comes from and what is in it.  We hope you will also join us in sharing what information you have so that we may all benefit. \r\n \r\n Food Sprout Team");
+
+            $this->email->send();
+
+            //call home page after successful login
+            $this->home();
+            return;
+        }
+
+        //$this->load->view('/user/create_account');
+        if (isset($GLOBALS['error']) && !empty($GLOBALS['error'])) {
+            $new_user_insert_data['error'] = $GLOBALS['error'];
+            $this->privatebeta($new_user_insert_data);
+            return;
+        }
+
+        $new_user_insert_data['error'] = 'Error while creating user.';
+        $this->privatebeta($new_user_insert_data);
+        return;
+    }
+
+    //call home page
+    function home() {
+        $data = array();
+
+        $this->load->model('SeoModel');
+        $seo = $this->SeoModel->getSeoDetailsFromPage('index');
+        $data['SEO'] = $seo;
+
+        // List of views to be included
+        $data['CENTER'] = array(
+            'list' => 'home',
+        );
+
+        $this->load->view('templates/center_template', $data);
+    }
+
 }
-
-
-
 ?>
