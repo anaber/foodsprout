@@ -119,7 +119,7 @@ class Product extends Controller {
 		
 	}
 
-        function listProduct($hasFructose = 0, $currentPage = 1, $dispPerPage = 3)
+        function listProduct($hasFructose = 0, $currentPage = 1, $dispPerPage = 200)
         {
 		$data = array();
 

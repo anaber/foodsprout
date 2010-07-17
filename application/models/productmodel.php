@@ -11,7 +11,7 @@ class ProductModel extends Model {
         }
 
 
-        log_message('debug', "ProductModel.list_product : " . $query);
+        log_message('debug', "ProductModel.listProduct : " . $query);
         $result = $this->db->query($query);
 
         $products = array();

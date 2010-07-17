@@ -184,6 +184,16 @@ tr.d1 td {
 	border-bottom: #CCC 1px solid;
 }
 
+
+#recordsPerPageList {
+    font-size: 12px;
+}
+
+#suggestion_box {
+    height: 18px;
+    font-size: 12px;
+}
+
 /* dropdown menu */
 #jsddm
 {	margin: 0;

@@ -115,7 +115,7 @@
 		<select id = "recordsPerPageList">
 			<option value = "">--Per Page--</option>
 			<?php
-				for($i = 3; $i <= 100; $i+=3) {
+				for($i = 10; $i <= 200; $i+=10) {
 					echo '<option value = "' . $i . '"';
 					if ($i == $DISP_PER_PAGE) {
 						echo ' SELECTED';
