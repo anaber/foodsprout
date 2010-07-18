@@ -890,6 +890,10 @@ class RestaurantModel extends Model{
 			
 			log_message('debug', 'RestaurantModel.updateRestaurant : ' . $query);
 			if ( $this->db->query($query) ) {
+
+                                //update cuisines
+                                $this->updateCuisines($this->input->post('restaurantId'), explode(",", $this->input->post('cuisineId')));
+
 				$return = true;
 			} else {
 				$return = false;
@@ -902,6 +906,30 @@ class RestaurantModel extends Model{
 				
 		return $return;
 	}
+        
+
+        function updateCuisines($restaurantId, $cuisineIds)
+        {
+                $query = "SELECT cuisine_id FROM restaurant_cuisine WHERE restaurant_id = $restaurantId";
+		log_message('debug', 'RestaurantModel.updateCuisines : get existing cuisines : ' . $query);
+
+		$result = $this->db->query($query);
+                $existingCuisineIds = array();
+		foreach ($result->result_array() as $row) {
+                    $existingCuisineIds[] = $row['cuisine_id'];
+                }
+
+
+                foreach($cuisineIds as $cuisineId)
+                {
+                    $cuisineId = trim($cuisineId);
+                    if (!(in_array($cuisineId, $existingCuisineIds) > 0)) {
+                        $query = "INSERT INTO restaurant_cuisine (restaurant_id, cuisine_id) VALUE ( $restaurantId, $cuisineId)";
+                        log_message('debug', 'RestaurantModel.updateRestaurant : insert new cuisine : ' . $query);
+                        $result = $this->db->query($query);
+                    }
+                }
+        }
 	
 	function addRestaurantWithNameOnly($restaurantName) {
 		global $ACTIVITY_LEVEL_DB;
