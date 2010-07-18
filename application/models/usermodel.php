@@ -48,9 +48,6 @@ class UserModel extends Model{
 				'isActive' => 1
 			);
 
-
-                        
-
 			log_message('debug', $new_user_insert_data);
 			
 			$insert = $this->db->insert('user', $new_user_insert_data);
@@ -96,65 +93,6 @@ class UserModel extends Model{
 		return $return;
 	}
 	
-	// Add a new user to the database
-        //added by b thakur
-        //did not overwrite createUser() method as it reads user input data inside the function and
-        //not sure if it results in some other bug
-	function createUserNoAjax($new_user_insert_data) {
-		$return = true;
-
-		$query = "SELECT * FROM user WHERE email = \"" . $new_user_insert_data['email'] . "\"";
-		log_message('debug', 'UserModel.createUser : Try to get duplicate User record : ' . $query);
-
-		$result = $this->db->query($query);
-
-		if ($result->num_rows() == 0) {
-
-			log_message('debug', $new_user_insert_data);
-
-			$insert = $this->db->insert('user', $new_user_insert_data);
-
-			$return = false;
-
-			if($insert) {
-				$userId = $this->db->insert_id();
-				$new_user_group_insert_data = array(
-					'user_id' =>  $userId,
-					'user_group_id' => 2
-				);
-
-				log_message('debug', $new_user_group_insert_data);
-
-				$insert = $this->db->insert('user_group_member', $new_user_group_insert_data);
-
-				$return = true;
-
-				$this->load->library('UserLib');
-
-				$this->user->userId = $userId;
-				$this->userLib->email = $this->input->post('email');
-				$this->userLib->zipcode = $this->input->post('zipcode');
-				$this->userLib->firstName = $this->input->post('firstname');
-				$this->userLib->isActive = 1;
-				//$this->user->screenName = $row->screen_name;
-				$this->userLib->isAuthenticated = 1;
-				//$this->user->userGroup = $row->user_group;
-
-				$this->session->set_userdata($this->userLib );
-
-				$return = true;
-			} else  {
-				$return = false;
-			}
-
-		} else {
-			$GLOBALS['error'] = 'The email had already been signed.';
-			$return = false;
-		}
-
-		return $return;
-	}
-
 	// Get all the users of the database
 	function get_user()
 	{
