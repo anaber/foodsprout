@@ -76,7 +76,7 @@ class Restaurant extends Controller {
 	
 	// View the information on a single restaurant
 	function view() {
-		
+		$this->load->library('functionlib');
 		$data = array();
 		
 		$restaurantId = $this->uri->segment(3);

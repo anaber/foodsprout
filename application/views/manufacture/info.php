@@ -6,10 +6,10 @@
 <?php
 		echo '<h1>'.$MANUFACTURE->manufactureName.'</h1>';
 ?>
-		Website: <? if(isset($MANUFACTURE->manufactureURL)) 
+		Website: <? if(isset($MANUFACTURE->url))
 				{
 			?>
-			<a href="http://<?php echo $MANUFACTURE->manufactureURL; ?>"><?php echo $MANUFACTURE->manufactureURL; ?></a>
+			<a href="http://<?php echo $this->functionlib->removeProtocolFromUrl($MANUFACTURE->url); ?>"><?php echo $MANUFACTURE->url; ?></a>
 			<?php 
 			}
 			else

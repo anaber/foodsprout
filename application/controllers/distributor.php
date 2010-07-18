@@ -37,7 +37,9 @@ class Distributor extends Controller {
 	
 	// View the information about a specific distributor
 	function view() {
-		$data = array();
+		$this->load->library('functionlib');
+
+                $data = array();
 		
 		$distributorId = $this->uri->segment(3);
 		

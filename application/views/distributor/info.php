@@ -6,10 +6,10 @@
 <?php
 		echo '<h1>'.$DISTRIBUTOR->distributorName.'</h1>';
 ?>
-		Website: <? if(isset($DISTRIBUTOR->distributorURL)) 
+		Website: <? if(isset($DISTRIBUTOR->url))
 				{
 			?>
-			<a href="http://<?php echo $DISTRIBUTOR->distributorURL; ?>"><?php echo $DISTRIBUTOR->distributorURL; ?></a>
+			<a href="http://<?php echo $this->functionlib->removeProtocolFromUrl($DISTRIBUTOR->url); ?>"><?php echo $DISTRIBUTOR->url; ?></a>
 			<?php 
 			}
 			else

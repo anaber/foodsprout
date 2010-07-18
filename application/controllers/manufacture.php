@@ -43,6 +43,7 @@ class Manufacture extends Controller {
 	
 	// View all the information about a single manufacture
 	function view() {
+		$this->load->library('functionlib'); 
 		
 		$data = array();
 		

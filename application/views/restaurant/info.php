@@ -9,7 +9,7 @@
 		Website: <? if(isset($RESTAURANT->restaurantURL)) 
 				{
 			?>
-			<a href="http://<?php echo $RESTAURANT->restaurantURL; ?>"><?php echo $RESTAURANT->restaurantURL; ?></a>
+			<a href="http://<?php echo $this->functionlib->removeProtocolFromUrl($RESTAURANT->restaurantURL); ?>"><?php echo $RESTAURANT->restaurantURL; ?></a>
 			<?php 
 			}
 			else
