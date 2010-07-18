@@ -25,25 +25,13 @@ if (isset($RESTAURANT_ID)) {
     formValidated = true;
 
     $(document).ready(function() {
-
-        //update value of has_fructose on checkbox action
-        $("#chkhasfructose").click(function(){
-            if($(this).is(':checked'))
-            {
-                $('#hasfructose').val('1');
-            }else
-            {
-                $('#hasfructose').val('0');
-            }
-        });
-
-	
+		
+		
         // SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() },
         $("#productForm").validationEngine({
             success :  function() {formValidated = true;},
             failure : function() {formValidated = false; }
         });
-	
 
 
         $("#productForm").submit(function() {
@@ -61,7 +49,17 @@ if (isset($RESTAURANT_ID)) {
                 var formAction = '';
                 var postArray = '';
                 var act = '';
-			
+				strHasFructose = '0';
+				
+<?php
+if (isset($MANUFACTURE_ID)) {
+?>
+				if ($('#chkHasFructose').attr('checked')) {
+					strHasFructose = '1';
+				}
+<?php
+}
+?>
                 if ($('#productId').val() != '' ) {
                     var formAction = '/admincp/restaurantchain/menu_item_save_update';
                     postArray = {
@@ -70,9 +68,9 @@ if (isset($RESTAURANT_ID)) {
                         brand:$('#brand').val(),
                         upc:$('#upc').val(),
                         status:$('#status').val(),
-                        hasfructose:$('#hasfructose').val(),
+                        hasFructose:strHasFructose,
                         ingredient:$('#ingredient').val(),
-							  
+					
                         productId: $('#productId').val(),
 							  
                         manufactureId: $('#manufactureId').val(),
@@ -88,7 +86,7 @@ if (isset($RESTAURANT_ID)) {
                         brand:$('#brand').val(),
                         upc:$('#upc').val(),
                         status:$('#status').val(),
-                        hasfructose:$('#hasfructose').val(),
+                        hasFructose:strHasFructose,
                         ingredient:$('#ingredient').val(),
 							  
                         manufactureId: $('#manufactureId').val(),
@@ -195,83 +193,56 @@ if (isset($RESTAURANT_ID)) {
                 </select>
             </td>
         </tr>
-
-        <?php
-                    if (isset($MANUFACTURE_ID)) {
-        ?>
-                        <tr>
-                            <td width = "25%">Has Fructose</td>
-                            <td width = "75%">
-
-                <?php
-                        if (isset($PRODUCT)) {
-                            if ($PRODUCT->hasFructose == true) {
-                ?>
-                                <input type="checkbox" value="1" checked name="chkhasfructose" id="chkhasfructose"/><br />
-                                <input type="hidden" id="hasfructose" value="1">
-                <?php
-                            } else {
-                ?>
-                                <input value="1"   type="checkbox" name="chkhasfructose" id="chkhasfructose"/><br />
-                                <input type="hidden" id="hasfructose" value="0" >
-                <?php
-                            }
-                        }else
-                        {
-                         ?>
-                                <input value="1"   type="checkbox" name="chkhasfructose" id="chkhasfructose"/><br />
-                                <input type="hidden" id="hasfructose" value="0" >
-                          <?php
-                        }
-                ?>
-                    </td>
-                </tr>
-        <?php
-                    } else {
-        ?>
-                        <input value=''  type="hidden" name="hasfructose" id="hasfructose"/>
-        <?php
-                    }
-        ?>
-                    <tr>
-                        <td width = "25%">Ingredient</td>
-                        <td width = "75%">
-                            <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "5" cols = "30"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
-                        </td>
-                    </tr>
+<?php
+	if (isset($MANUFACTURE_ID)) {
+?>
+        <tr>
+            <td width = "25%" nowrap>Has Fructose?</td>
+            <td width = "75%">
+                <input type="checkbox" name="chkHasFructose" id="chkHasFructose"<?php echo ((isset($PRODUCT) && ($PRODUCT->fructose == true)) ? ' CHECKED' : '') ?>/><br />
+            </td>
+        </tr>
+<?php
+	}
+?>
+        <tr>
+            <td width = "25%">Ingredient</td>
+            <td width = "75%">
+                <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "5" cols = "30"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
+            </td>
+        </tr>
 
 
         <?php ?>
-                    <tr>
-                        <td width = "25%" colspan = "2">
-                            <input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PRODUCT)) ? 'Update Menu Item' : 'Add Menu Item' ?>">
-                            <input type = "hidden" name = "productId" id = "productId" value = "<?php echo (isset($PRODUCT) ? $PRODUCT->productId : '') ?>">
+        <tr>
+            <td width = "25%" colspan = "2">
+                <input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PRODUCT)) ? 'Update Menu Item' : 'Add Menu Item' ?>">
+                <input type = "hidden" name = "productId" id = "productId" value = "<?php echo (isset($PRODUCT) ? $PRODUCT->productId : '') ?>">
 
-                            <input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE_ID) ? $MANUFACTURE_ID : '') ?>">
-                            <input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
-                            <input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
-                        </td>
-                    </tr>
-                </table>
-            </form>
+                <input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE_ID) ? $MANUFACTURE_ID : '') ?>">
+                <input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
+                <input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
+            </td>
+        </tr>
+    </table>
+</form>
 
-            <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "90%">
-                <tr>
-                    <th>Id</th>
-                    <th>Menu Item</th>
-                    <th>Ingredients</th>
-                </tr>
-    <?php
-                    $controller = $this->uri->segment(2);
-                    $i = 0;
-                    foreach ($PRODUCTS as $product) :
-                        $i++;
-                        echo '<tr class="d' . ($i & 1) . '">';
-                        echo '	<td>' . anchor('/admincp/' . $controller . '/update_menu_item/' . $product->productId, $product->productId) . '</td>';
-                        echo '	<td>' . anchor('/admincp/' . $controller . '/update_menu_item/' . $product->productId, $product->productName) . '</td>';
-                        echo '	<td>' . $product->ingredient . '</td>';
-                        echo '</tr>';
-
-                    endforeach;
-    ?>
+<table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "90%">
+    <tr>
+        <th>Id</th>
+        <th>Menu Item</th>
+        <th>Ingredients</th>
+    </tr>
+<?php
+    $controller = $this->uri->segment(2);
+    $i = 0;
+    foreach ($PRODUCTS as $product) :
+		$i++;
+		echo '<tr class="d' . ($i & 1) . '">';
+        echo '	<td>' . anchor('/admincp/' . $controller . '/update_menu_item/' . $product->productId, $product->productId) . '</td>';
+        echo '	<td>' . anchor('/admincp/' . $controller . '/update_menu_item/' . $product->productId, $product->productName) . '</td>';
+        echo '	<td>' . $product->ingredient . '</td>';
+        echo '</tr>';
+    endforeach;
+?>
 </table>

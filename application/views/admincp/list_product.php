@@ -1,7 +1,5 @@
 <?php $this->load->view('admincp/includes/paging'); ?>
 
-
-
 <?php
 if (count($PRODUCTS) > 0) {
 ?>
@@ -17,19 +15,17 @@ if (count($PRODUCTS) > 0) {
             <th>UPC</th>
             <!--th>Status</th-->
             <th>Fructose</th>
-
         </tr>
-
 
     <?php
     $i = 0;
     foreach ($PRODUCTS as $r) :
         $i++;
         echo '<tr class="d' . ($i & 1) . '">';
-        echo '<td>' . $r->productId . '</td>';
-        echo '<td>' . $r->productName . '</td>';
-        echo '<td>' . $r->productType . '</td>';
-        echo '<td>' . $r->companyName . '</td>';
+        echo '	<td>' . $r->productId . '</td>';
+        echo '	<td>' . $r->productName . '</td>';
+        echo '	<td>' . $r->productType . '</td>';
+        echo '	<td>' . $r->companyName . '</td>';
         if ($r->restaurantId > 0) {
             echo '<td>' . $r->restaurantName . '</td>';
         }
@@ -40,10 +36,10 @@ if (count($PRODUCTS) > 0) {
             echo '<td>' . $r->manufactureName . '</td>';
         }
         //echo '<td>' . $r->ingredient . '</td>';
-        echo '<td>' . $r->brand . '</td>';
-        echo '<td>' . $r->upc . '</td>';
+        echo '	<td>' . $r->brand . '</td>';
+        echo '	<td>' . $r->upc . '</td>';
         //echo '<td>' . $r->status . '</td>';
-        echo '<td>' . $r->hasFructose . '</td>';
+        echo '	<td>' . ( ($r->fructose ==  1) ? 'Yes' : 'No' ) . '</td>';
         echo '</tr>';
     endforeach;
     ?>
@@ -51,6 +47,6 @@ if (count($PRODUCTS) > 0) {
     <?php
 } else {
     echo "No product available";
-}
-    ?>
+}    
+?>
 </table>
