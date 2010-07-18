@@ -9,7 +9,7 @@
 		Website: <? if(isset($DISTRIBUTOR->url))
 				{
 			?>
-			<a href="http://<?php echo $this->functionlib->removeProtocolFromUrl($DISTRIBUTOR->url); ?>"><?php echo $DISTRIBUTOR->url; ?></a>
+			<a target = '_blank' href="http://<?php echo $this->functionlib->removeProtocolFromUrl($DISTRIBUTOR->url); ?>"><?php echo $DISTRIBUTOR->url; ?></a>
 			<?php 
 			}
 			else

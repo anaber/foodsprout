@@ -38,8 +38,8 @@
 echo '<h1>'.$FARM->farmName.'</h1>';
 ?>
 <div style="overflow:auto; padding:5px;">
-	<div style="float:left; width:100px;">Website:</div> 
-	<div style="float:left; width:400px;"><?php echo ( !empty($FARM->url) ? '<a href="' . $FARM->url . '">'.$FARM->url.'</a>' : '') ?></div>
+	<div style="float:left; width:100px;">Website:</div>
+	<div style="float:left; width:400px;"><?php echo ( !empty($FARM->url) ? '<a target = "_blank" href="' . $this->functionlib->removeProtocolFromUrl($FARM->url) . '">'.$FARM->url.'</a>' : '') ?></div>
 </div>
 <div style="overflow:auto; padding:5px;">
 	<div style="float:left; width:100px;">Type:</div> 
