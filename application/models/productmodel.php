@@ -115,8 +115,7 @@ class ProductModel extends Model {
             $this->productLib->brand = $row->brand;
             $this->productLib->upc = $row->upc;
             $this->productLib->status = $row->status;
-            $this->productLib->hasFructose = $row->has_fructose;
-
+            $this->productLib->fructose = $row->has_fructose;
             $this->productLib->userId = $row->user_id;
             $this->productLib->creationDate = $row->creation_date;
             $this->productLib->modifyDate = $row->modify_date;
@@ -169,8 +168,7 @@ class ProductModel extends Model {
         $this->productLib->brand = $row->brand;
         $this->productLib->upc = $row->upc;
         $this->productLib->status = $row->status;
-        $this->productLib->hasFructose = $row->has_fructose;
-
+        $this->productLib->fructose = $row->has_fructose;
         $this->productLib->userId = $row->user_id;
         $this->productLib->creationDate = $row->creation_date;
         $this->productLib->modifyDate = $row->modify_date;
@@ -290,7 +288,7 @@ class ProductModel extends Model {
             } else if (!empty($manufactureId)) {
                 $query .= $manufactureId;
             }
-            $query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "' . $this->input->post('status') . '","' . $this->input->post('hasfructose') . '", ' . $this->session->userdata('userId') . ', NOW() )';
+            $query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "' . $this->input->post('status') . '", "' . $this->input->post('hasFructose') . '", ' . $this->session->userdata('userId') . ', NOW() )';
 
 
             log_message('debug', 'ProductModel.addProduct : Insert Product : ' . $query);
@@ -346,7 +344,7 @@ class ProductModel extends Model {
             $this->productLib->brand = $row['brand'];
             $this->productLib->upc = $row['upc'];
             $this->productLib->status = $row['status'];
-            $this->productLib->hasFructose = $row['has_fructose'];
+            $this->productLib->fructose = $row['has_fructose'];
             $this->productLib->userId = $row['user_id'];
             $this->productLib->creationDate = $row['creation_date'];
             $this->productLib->modifyDate = $row['modify_date'];
@@ -396,7 +394,7 @@ class ProductModel extends Model {
                 'brand' => $this->input->post('brand'),
                 'upc' => $this->input->post('upc'),
                 'status' => $this->input->post('status'),
-                'has_fructose' => $this->input->post('hasfructose'),
+                'has_fructose' => $this->input->post('hasFructose'),
                 'modify_date' => 'NOW()',
             );
             $where = "product_id = " . $this->input->post('productId');

@@ -119,8 +119,7 @@ class Product extends Controller {
 		
 	}
 
-        function listProduct($hasFructose = 0, $currentPage = 1, $dispPerPage = 200)
-        {
+	function listProduct($hasFructose = 0, $currentPage = 1, $dispPerPage = 200) {
 		$data = array();
 
 		$this->load->model('ProductModel');
@@ -141,7 +140,7 @@ class Product extends Controller {
 		$data['data']['center']['list_product']['PAGING_CALLBACK'] = "/admincp/product/listProduct/$hasFructose";
 
 		$this->load->view('admincp/templates/center_template', $data);
-        }
+	}
 	
 }
 
