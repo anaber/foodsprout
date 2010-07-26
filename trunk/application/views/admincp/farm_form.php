@@ -1,0 +1,318 @@
+<?php
+/*
+ * Created on Mar 1, 2010
+ *
+ * Author: Deepak Kumar
+ */
+?>
+<script>
+
+formValidated = true;
+
+$(document).ready(function() {
+	
+	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
+	$("#farmForm").validationEngine({
+		success :  function() {formValidated = true;},
+		failure : function() {formValidated = false; }
+	});
+	
+	
+	$("#farmForm").submit(function() {
+		
+		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
+		
+		if (formValidated == false) {
+			// Don't post the form.
+			$("#msgbox").fadeTo(200,0.1,function() {
+				//add message and change the class of the box and start fading
+				$(this).html('Form validation failed...').addClass('messageboxerror').fadeTo(900,1);
+			});
+		} else {
+			
+			var formAction = '';
+			var postArray = '';
+			var act = '';
+			
+			if ($('#farmId').val() != '' ) {
+				var formAction = '/admincp/farm/save_update';
+				postArray = {
+							  companyId:$('#companyId').val(),
+							  farmName:$('#farmName').val(),
+							  customUrl:$('#customUrl').val(),
+							  url:$('#url').val(),
+							  farmTypeId:$('#farmTypeId').val(),
+							  farmerType:$('#farmerType').val(),
+							  isActive:$('#status').val(),
+							  							 
+							  farmId: $('#farmId').val()
+							};
+				act = 'update';		
+			} else {
+				formAction = '/admincp/farm/save_add';
+				postArray = { 
+							  companyId:$('#companyId').val(),
+							  farmName:$('#farmName').val(),
+							  customUrl:$('#customUrl').val(),
+							  url:$('#url').val(),
+							  farmTypeId:$('#farmTypeId').val(),
+							  farmerType:$('#farmerType').val(),
+							  isActive:$('#status').val(),
+							  address:$('#address').val(),
+							  city: $('#city').val(),
+							  stateId:$('#stateId').val(),
+							  countryId:$('#countryId').val(),
+							  zipcode:$('#zipcode').val()
+							};
+				act = 'add';
+			}
+			
+			$.post(formAction, postArray,function(data) {
+				if(data=='yes') {
+					//start fading the messagebox
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						if (act == 'add') {
+							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
+								//redirect to secure page
+								document.location='/admincp/farm';
+							});	
+						} else if (act == 'update') {
+							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
+								//redirect to secure page
+								document.location='/admincp/farm';
+							});
+						}
+
+					});
+				} else if(data == 'no_name') {
+					//start fading the messagebox 
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						$(this).html('Either select company or enter farm name...').addClass('messageboxerror').fadeTo(900,1);
+						
+					});
+				} else if(data == 'duplicate_company') {
+					//start fading the messagebox 
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						$(this).html('Duplicate Company...').addClass('messageboxerror').fadeTo(900,1);
+						
+					});
+				} else if(data == 'duplicate') {
+					//start fading the messagebox 
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						$(this).html('Duplicate Farm...').addClass('messageboxerror').fadeTo(900,1);
+						
+					});
+				} else {
+					//start fading the messagebox 
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						if (act == 'add') {
+							$(this).html('Not added...').addClass('messageboxerror').fadeTo(900,1);
+						} else if (act == 'update') {
+							$(this).html('Not updated...').addClass('messageboxerror').fadeTo(900,1);
+						}
+					});
+				}	
+			});
+		}
+		
+		return false; //not to post the  form physically
+		
+	});
+	
+	$("#companyAjax").autocomplete(
+		"/admincp/company/searchCompanies",
+		{
+			delay:10,
+			minChars:3,
+			matchSubset:1,
+			matchContains:1,
+			cacheLength:10,
+			onItemSelect:selectItem,
+			onFindValue:findValue,
+			formatItem:formatItem,
+			autoFill:false
+		}
+	);	
+
+});
+
+
+
+function findValue(li) {
+	if( li == null ) return alert("No match!");
+ 
+	// if coming from an AJAX call, let's use the CityId as the value
+	if( !!li.extra ) var sValue = li.extra[0];
+ 
+	// otherwise, let's just display the value in the text box
+	else var sValue = li.selectValue;
+ 
+	//alert("The value you selected was: " + sValue);
+	document.getElementById('companyId').value = sValue;	
+}
+ 
+function selectItem(li) {
+	findValue(li);
+}
+
+function formatItem(row) {
+	//return row[0] + " (id: " + row[1] + ")";
+	return row[0];
+}
+
+
+</script>
+<script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
+<?php
+	if (!isset($FARM)) {
+?>
+<?php echo anchor('admincp/farm', 'Farms'); ?><br /><br />
+<?php
+	}
+?>
+
+<div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
+
+<form id="farmForm" method="post" <?php echo (isset($FARM)) ? 'action="/admincp/farm/save_update"' : 'action="/admincp/farm/save_add"' ?>>
+<table class="formTable">
+	<tr>
+		<td width = "25%" nowrap>Company</td>
+		<td width = "75%">
+			<input type="text" id="companyAjax" value="<?php echo (isset($FARM) ? $FARM->companyName : '') ?>" style="width: 200px;" /> 
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Farm Name</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->farmName : '') ?>" class="validate[optional]" type="text" name="farmName" id="farmName"/><br />
+		</td>
+	</tr>
+	<tr>
+		<td colspan = "2" style = "font-size:10px;">
+			<ul>
+				<li>Existing companies selected and name entered, farm will be treated as the subsidery of selected company but with overridden name.</li>
+				<li>Existing companies selected and NO name entered, farm name will be considered as of company name.</li>
+				<li>No company selected from the list above and name entered, new comapny and farm will be added.</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%">Farm Type</td>
+		<td width = "75%">
+			<select name="farmTypeId" id="farmTypeId"  class="validate[required]">
+			<option value = ''>--Farm Type--</option>
+			<?php
+				foreach($FARM_TYPES as $key => $value) {
+					echo '<option value="'.$value->farmTypeId.'"' . (  ( isset($FARM) && ( $value->farmTypeId == $FARM->farmTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->farmType.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%">Farmer Type</td>
+		<td width = "75%">
+			<select name="farmerType" id="farmerType"  class="validate[optional]">
+			<option value = ''>--Farmer Type--</option>
+			<?php
+				foreach($FARMER_TYPES as $key => $value) {
+					echo '<option value="'.$key.'"' . (  ( isset($FARM) && ( $key == $FARM->farmerType )  ) ? ' SELECTED' : '' ) . '>'.$value.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Custom URL</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->customUrl : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Website</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->url : '') ?>" class="validate[optional]" type="text" name="url" id="url"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Status</td>
+		<td width = "75%">
+			<select name="status" id="status"  class="validate[required]">
+				<option value="">--Choose Status--</option>
+				<option value="active"<?php echo ((isset($FARM) && ($FARM->isActive == 1)) ? ' SELECTED' : '')?>>Active</option>
+				<option value="inactive"<?php echo ((isset($FARM) && ($FARM->isActive == 0)) ? ' SELECTED' : '')?>>In-active</option>
+			</select>
+		</td>
+	</tr>
+<?php
+	if (!isset($FARM) ){
+?>
+	<tr>
+		<td colspan = "2">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan = "2"><b>Address</b></td>
+	</tr>
+	<tr>
+		<td width = "25%">Address</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->address : '') ?>" class="validate[required]" type="text" name="address" id="address"/><br />
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%">City</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%">State</td>
+		<td width = "75%">
+			<select name="stateId" id="stateId"  class="validate[required]">
+			<option value = ''>--State--</option>
+			<?php
+				foreach($STATES as $key => $value) {
+					echo '<option value="'.$value->stateId.'"' . (  ( isset($FARM) && ( $value->stateId == $FARM->stateId )  ) ? ' SELECTED' : '' ) . '>'.$value->stateName.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%">Country</td>
+		<td width = "75%">
+			<select name="countryId" id="countryId"  class="validate[required]">
+			<option value = ''>--Country--</option>
+			<?php
+				foreach($COUNTRIES as $key => $value) {
+					echo '<option value="'.$value->countryId.'"' . (  ( isset($FARM) && ( $value->countryId == $FARM->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%">Zip</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
+		</td>
+	</tr>
+<?php
+	}
+?>
+	<tr>
+		<td width = "25%" colspan = "2">
+			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FARM)) ? 'Update Farm' : 'Add Farm' ?>">
+			<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM) ? $FARM->farmId : '') ?>">
+			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($FARM) ? $FARM->companyId : '') ?>">
+		</td>
+	</tr>
+</table>
+</form>
+
