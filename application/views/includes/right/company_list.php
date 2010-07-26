@@ -1,1 +1,0 @@
-List of companies to be displayed in the right side of the site.
