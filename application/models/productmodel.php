@@ -413,6 +413,50 @@ class ProductModel extends Model {
 
         return $return;
     }
+    
+    function listFructose($currentPage = 1, $dispPerPage) {
+        $query = "SELECT product.*,
+                  product_type.product_type,
+                  manufacture.manufacture_name
+                FROM product";
+        
+        $query = $query 
+            . " LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id) "
+            . " LEFT JOIN manufacture ON (product.manufacture_id =  manufacture.manufacture_id) ";
+
+        $startRecord = ($currentPage - 1) * $dispPerPage;
+        $query = $query . " WHERE has_fructose = 1 ORDER BY product_ID LIMIT $startRecord, $dispPerPage";
+
+		
+        log_message('debug', "ProductModel.listFructose : " . $query);
+        $result = $this->db->query($query);
+
+        $products = array();
+        foreach ($result->result() as $row) {
+
+            $this->load->library('ProductLib');
+            unset($this->productLib);
+
+            $this->productLib->productId = $row->product_id;
+            $this->productLib->productName = $row->product_name;
+            $this->productLib->manufactureId = $row->manufacture_id;
+            $this->productLib->manufactureName = $row->manufacture_name;
+            $this->productLib->productTypeId = $row->product_type_id;
+            $this->productLib->productType = $row->product_type;
+            $this->productLib->ingredient = $row->ingredient_text;
+            $this->productLib->brand = $row->brand;
+            $this->productLib->upc = $row->upc;
+            $this->productLib->status = $row->status;
+            $this->productLib->fructose = $row->has_fructose;
+            $this->productLib->userId = $row->user_id;
+            $this->productLib->creationDate = $row->creation_date;
+            $this->productLib->modifyDate = $row->modify_date;
+
+            $products[] = $this->productLib;
+            unset($this->productLib);
+        }
+        return $products;
+    }
 
 }
 ?>

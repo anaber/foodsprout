@@ -96,14 +96,13 @@ class Product extends Controller {
 		
 		$this->load->view('templates/center_right_template', $data);
 	}
-
-        function fructose($currentPage = 1, $dispPerPage = 200)
-        {
-                $hasFructose = 1;
-                $data = array();
+		
+	function fructose($currentPage = 1) {
+		global $PER_PAGE;
+		$data = array();
 		$this->load->model('ProductModel');
-		$productCount = $this->ProductModel->getProductCount($hasFructose);
-		$products = $this->ProductModel->listProductDetails($hasFructose, $currentPage, $dispPerPage);
+		$productCount = $this->ProductModel->getProductCount(1);
+		$products = $this->ProductModel->listFructose($currentPage, $PER_PAGE);
 
                 
                 // List of views to be included
@@ -115,18 +114,17 @@ class Product extends Controller {
 				'ad' => 'includes/left/ad',
 			);
 
-
 		$data['data']['center']['list_product']['VIEW_HEADER'] = "List of Products with Fructose";
-
+		
 		// Data to be passed to the views
-		$data['data']['center']['list_product']['DISP_PER_PAGE'] = $dispPerPage;
+		$data['data']['center']['list_product']['DISP_PER_PAGE'] = $PER_PAGE;
 		$data['data']['center']['list_product']['TOTAL_RECORD_COUNT'] = $productCount;
 		$data['data']['center']['list_product']['CURRENT_PAGE'] = $currentPage;
 		$data['data']['center']['list_product']['PRODUCTS'] = $products;
 		$data['data']['center']['list_product']['PAGING_CALLBACK'] = "/product/fructose";
 
 		$this->load->view('templates/center_right_narrow_template', $data);
-        }
+	}
 }
 
 /* End of file product.php */

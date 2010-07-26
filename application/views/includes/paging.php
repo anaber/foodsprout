@@ -1,5 +1,3 @@
-
-
 <script type="text/javascript">
     <?php
         $startRecord = ( $CURRENT_PAGE - 1 )* $DISP_PER_PAGE + 1 ;
@@ -11,17 +9,6 @@
         $lastPageNumber = intval(($TOTAL_RECORD_COUNT + $DISP_PER_PAGE - 1 )/$DISP_PER_PAGE);
     ?>
 
-    function loadSpecifiedPage(e)
-    {
-        var evt=window.event ||e;
-        if(evt.keyCode == '13')
-        {
-            $page = $("#suggestion_box").val();
-            pagingLoad($page);
-        }
-    }
-
-
     function pagingLoad(page)
     {
         currentPage = parseInt(<?php echo $CURRENT_PAGE ?>);
@@ -29,14 +16,15 @@
         endRecord = parseInt(<?php echo $endRecord ?>);
         lastPageNumber = parseInt(<?php echo $lastPageNumber ?>);
         dispPerPage = parseInt(<?php echo $DISP_PER_PAGE ?>);
-        newDispPerPage = parseInt($("#recordsPerPageList").val());
-
+        //newDispPerPage = parseInt($("#recordsPerPageList").val());
+		
+		/*
         if(dispPerPage != newDispPerPage)
         {
             pagingRefreshPage(page, totalRecordCount, newDispPerPage, endRecord);
             return;
         }
-        
+        */
 
         switch(page)
         {
@@ -68,7 +56,8 @@
               
         }
 
-        str = "<?php echo $PAGING_CALLBACK ?>/" + page + "/" + newDispPerPage ;
+        //str = "<?php echo $PAGING_CALLBACK ?>/" + page + "/" + newDispPerPage ;
+        str = "<?php echo $PAGING_CALLBACK ?>/" + page ;
         window.location = str;
     }
     function pagingRefreshPage(page, totalRecordCount, dispPerPage, endRecord)
@@ -111,11 +100,14 @@
 
 <div style="overflow:auto; padding:5px;margin-top: 20px;">
 	<div style="float:left; width:230px; font-size:12px;" id = 'numRecords'>Viewing records <?php echo "$startRecord-$endRecord of $TOTAL_RECORD_COUNT" ?></div>
+	<?php
+		/*
+	?>
 	<div style="float:left; width:120px; font-size:12px;" id = 'recordsPerPage' align = "center">
 		<select id = "recordsPerPageList">
 			<option value = "">--Per Page--</option>
 			<?php
-				for($i = 10; $i <= 200; $i+=10) {
+				for($i = 10; $i <= 100; $i+=10) {
 					echo '<option value = "' . $i . '"';
 					if ($i == $DISP_PER_PAGE) {
 						echo ' SELECTED';
@@ -125,7 +117,10 @@
 			?>
 		</select>
 	</div>
-	<div style="float:left; width:330px; font-size:12px;" id = 'pagingLinks' align = "center">
+	<?php
+		*/
+	?>
+	<div style="float:right; width:330px; font-size:12px;" id = 'pagingLinks' align = "center">
 		<a href="#" id = "imgFirst" onClick="pagingLoad('first');">First</a> &nbsp;&nbsp;
 		<a href="#" id = "imgPrevious"  onClick="pagingLoad('prev');">Previous</a>
                 &nbsp;&nbsp;&nbsp; Page <?php echo $CURRENT_PAGE ?> of <?php echo $lastPageNumber ?>  &nbsp;&nbsp;&nbsp;
@@ -133,7 +128,5 @@
 		<a href="#" id = "imgLast" onClick="pagingLoad('last');">Last</a>
 	</div>
 	
-            <input type = "text" name = "suggestion_box" id = "suggestion_box" size = "14" onkeypress="loadSpecifiedPage(event)"></div>
-	
-	<div class="clear"></div>
+    <div class="clear"></div>
 </div>

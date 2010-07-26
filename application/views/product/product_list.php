@@ -1,7 +1,6 @@
-<?php $this->load->view('includes/paging'); ?>
-
-
-
+<?php
+	$this->load->view('/includes/paging');
+?>
 <?php
 if (count($PRODUCTS) > 0) {
 ?>
@@ -12,8 +11,6 @@ if (count($PRODUCTS) > 0) {
             <th>Manufacturer</th>
             <th>Brand</th>
         </tr>
-
-
     <?php
     $i = 0;
     foreach ($PRODUCTS as $r) :
@@ -26,10 +23,28 @@ if (count($PRODUCTS) > 0) {
         echo '</tr>';
     endforeach;
     ?>
-
-    <?php
+	</table>
+<?php
 } else {
-    echo "No product available";
+?>
+	<table cellpadding="3" cellspacing="0" border="0" id="tbllist" width="98%">
+        <tr>
+    		<td>No product available</td>
+    	</tr>
+    </table>
+<?php
 }
-    ?>
-</table>
+/*
+?>
+<div style="overflow:auto; padding:5px;" align="left">
+	
+	<div style="width:690px; padding:10px; font-size:10px; border-color:#FF0000; border-width:1px; border-style:solid;" id = 'pagingLinks' align = "center">
+		<b>Page</b> &nbsp;&nbsp;
+		<a href="#" id = "1">1</a>
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<?php
+*/
+?>
