@@ -112,15 +112,45 @@ class DistributorModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->DistributorLib->distributorId = $row->distributor_id;
-		$this->DistributorLib->companyId = $row->company_id;
-		$this->DistributorLib->companyName = $row->company_name;
-		$this->DistributorLib->distributorName = $row->distributor_name;
-		$this->DistributorLib->customUrl = $row->custom_url;
-		$this->DistributorLib->url = $row->url;
-		$this->DistributorLib->isActive = $row->is_active;
-
-		return $this->DistributorLib;
+		if ($row) {
+			$geocodeArray = array();
+				
+			$this->DistributorLib->distributorId = $row->distributor_id;
+			$this->DistributorLib->companyId = $row->company_id;
+			$this->DistributorLib->companyName = $row->company_name;
+			$this->DistributorLib->distributorName = $row->distributor_name;
+			$this->DistributorLib->customUrl = $row->custom_url;
+			$this->DistributorLib->url = $row->url;
+			$this->DistributorLib->isActive = $row->is_active;
+			
+			$CI =& get_instance();
+				
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row->distributor_id, '', '');
+			$this->DistributorLib->addresses = $addresses;
+			
+			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+				
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+				
+				$arrLatLng['addressLine1'] = $address->address;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+				
+				$arrLatLng['distributorName'] = $this->DistributorLib->distributorName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[] = $arrLatLng;
+			}
+			$this->DistributorLib->param->numResults = 2;
+			$this->DistributorLib->geocode = $geocodeArray;
+			
+			return $this->DistributorLib;
+		} else {
+			return false;
+		}
 	}
 	
 	function updateDistributor() {

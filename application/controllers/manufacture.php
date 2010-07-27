@@ -41,6 +41,13 @@ class Manufacture extends Controller {
 		echo $companies;
 	}
 	
+	function ajaxSearchManufactureInfo() {
+		$manufactureId = $this->input->post('manufactureId');
+		$this->load->model('ManufactureModel', '', TRUE);
+		$manufacture = $this->ManufactureModel->getManufactureFromId($manufactureId);
+		echo json_encode($manufacture);
+	}
+	
 	// View all the information about a single manufacture
 	function view() {
 		$this->load->library('functionlib'); 

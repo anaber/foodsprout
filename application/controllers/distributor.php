@@ -35,6 +35,13 @@ class Distributor extends Controller {
 		echo json_encode($restaurants);
 	}
 	
+	function ajaxSearchDistributorInfo() {
+		$distributorId = $this->input->post('distributorId');
+		$this->load->model('DistributorModel', '', TRUE);
+		$distributor = $this->DistributorModel->getDistributorFromId($distributorId);
+		echo json_encode($distributor);
+	}
+	
 	// View the information about a specific distributor
 	function view() {
 		$this->load->library('functionlib');
@@ -53,7 +60,7 @@ class Distributor extends Controller {
 		// List of views to be included
 		$data['CENTER'] = array(
 				'info' => '/distributor/info',
-				'menu' => '/distributor/distributor_detail',
+				//'menu' => '/distributor/distributor_detail',
 			);
 		
 		$data['RIGHT'] = array(

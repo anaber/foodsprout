@@ -130,16 +130,47 @@ class ManufactureModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->manufactureLib->manufactureId = $row->manufacture_id;
-		$this->manufactureLib->companyId = $row->company_id;
-		$this->manufactureLib->companyName = $row->company_name;
-		$this->manufactureLib->manufactureTypeId = $row->manufacture_type_id;
-		$this->manufactureLib->manufactureName = $row->manufacture_name;
-		$this->manufactureLib->customUrl = $row->custom_url;
-		$this->manufactureLib->url = $row->url;
-		$this->manufactureLib->isActive = $row->is_active;
-
-		return $this->manufactureLib;
+		if ($row) {
+			$geocodeArray = array();
+			
+			$this->manufactureLib->manufactureId = $row->manufacture_id;
+			$this->manufactureLib->companyId = $row->company_id;
+			$this->manufactureLib->companyName = $row->company_name;
+			$this->manufactureLib->manufactureTypeId = $row->manufacture_type_id;
+			$this->manufactureLib->manufactureName = $row->manufacture_name;
+			$this->manufactureLib->customUrl = $row->custom_url;
+			$this->manufactureLib->url = $row->url;
+			$this->manufactureLib->isActive = $row->is_active;
+			
+			
+			$CI =& get_instance();
+				
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row->manufacture_id, '', '', '');
+			$this->manufactureLib->addresses = $addresses;
+			
+			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+				
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+				
+				$arrLatLng['addressLine1'] = $address->address;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+				
+				$arrLatLng['manufactureName'] = $this->manufactureLib->manufactureName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[] = $arrLatLng;
+			}
+			$this->manufactureLib->param->numResults = 2;
+			$this->manufactureLib->geocode = $geocodeArray;
+			
+			return $this->manufactureLib;
+		} else {
+			return;
+		}
 	}
 	
 	// Update the manufactures information in the database
