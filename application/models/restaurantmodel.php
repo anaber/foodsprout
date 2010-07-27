@@ -816,6 +816,23 @@ class RestaurantModel extends Model{
 		
 		$row = $result->row();
 		
+		
+		$city = '';
+		$q = '';
+		
+		if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
+			$q = $_COOKIE['seachedZip'];
+		} else {
+			if ($this->session->userdata('isAuthenticated') != 1 ) {
+				// If user is NOT logged in, display restaurants from SFO
+				$city = '41,6009,13721';
+			} else {
+				// If user is LOGGED in, display restaurants near hiz zipcode
+				$q = $this->session->userdata['zipcode'];
+				setcookie('seachedZip', $q, time()+60*60*24*30*365);
+			}
+		}
+		
 		if ($row) {
 			$geocodeArray = array();
 		
@@ -839,7 +856,7 @@ class RestaurantModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', $q, $city);
 			$this->restaurantLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
