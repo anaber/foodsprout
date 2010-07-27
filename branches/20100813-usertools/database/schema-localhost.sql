@@ -1,0 +1,2 @@
+DROP SCHEMA IF EXISTS `food-local` ;
+CREATE SCHEMA IF NOT EXISTS `food-local` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
