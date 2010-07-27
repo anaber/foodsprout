@@ -1,10 +1,10 @@
 <script>
 	$(document).ready(function() {
-		loadMapOnStartUp(38.41055825094609, -98, 3);
+		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
 		
 		$.post("/farm/ajaxSearchFarmInfo", { farmId:"<?php echo (isset($FARM) ? $FARM->farmId : '' ) ?>" },
 		function(data){
-			reinitializeMap(data, 8);
+			reinitializeMap(data, 13);
 		},
 		"json");
 		
@@ -24,6 +24,19 @@
 		});
 		
 	});
+	
+	function loadSmallMapOnStartUp(lat, lng, zoom) {
+		var myLatlng = new google.maps.LatLng(lat, lng);
+	    var myOptions = {
+	      zoom: zoom,
+	      center: myLatlng,
+	      disableDefaultUI: true,
+	      navigationControl: false,
+	      scrollwheel: false,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    }
+	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	}
 	
 	function getMarkerHtml(o) {
 		html = "<font size = '2'><b><i>" + o.farmName + "</i></b></font><br /><font size = '1'>" +
