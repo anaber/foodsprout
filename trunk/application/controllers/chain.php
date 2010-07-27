@@ -91,7 +91,7 @@ class Chain extends Controller {
 		$data['RIGHT'] = array(
 				'image' => 'includes/right/image',
 				'ad' => 'includes/right/ad',
-				'map' => 'includes/right/map',
+				//'map' => 'includes/right/map',
 			);
 		
 		// Data to be passed to the views

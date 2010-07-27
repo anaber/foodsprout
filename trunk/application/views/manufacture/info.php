@@ -1,20 +1,53 @@
 <script>
 	$(document).ready(function() {
 		loadMapOnStartUp(38.41055825094609, -98, 3);
+		
+		$.post("/manufacture/ajaxSearchManufactureInfo", { manufactureId:"<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureId : '' ) ?>" },
+		function(data){
+			reinitializeMap(data, 8);
+		},
+		"json");
+		
+		$('#divAddresses a').click(function(e) {
+			record_id = $(this).attr('id');
+			
+			if (record_id != '') {
+				if (isNaN(record_id) ) {
+					e.preventDefault();
+					var arr = record_id.split('_');
+					record_id = arr[1];
+					
+					viewMarker(record_id);
+					$('html, body').animate({scrollTop:2000}, 'slow');
+				}
+			}
+		});
+		
 	});
+	
+	function getMarkerHtml(o) {
+		html = "<font size = '2'><b><i>" + o.manufactureName + "</i></b></font><br /><font size = '1'>" +
+			  o.addressLine1 + ", " + o.addressLine2 + "<br />" + 
+			  o.addressLine3 + "</font><br />"
+			  ;
+		return html;
+	}
 </script>
+
 <?php
-		echo '<h1>'.$MANUFACTURE->manufactureName.'</h1>';
+echo '<h1>'.$MANUFACTURE->manufactureName.'</h1>';
 ?>
-		Website: <? if(isset($MANUFACTURE->url))
-				{
-			?>
-			<a target = '_blank' href="http://<?php echo $this->functionlib->removeProtocolFromUrl($MANUFACTURE->url); ?>"><?php echo $MANUFACTURE->url; ?></a>
-			<?php 
+<div style="overflow:auto; padding:5px;">
+	<div style="float:left; width:100px;">Website:</div>
+	<div style="float:left; width:400px;"><?php echo ( !empty($MANUFACTURE->url) ? '<a target = "_blank" href="' . $this->functionlib->removeProtocolFromUrl($MANUFACTURE->url) . '">'.$MANUFACTURE->url.'</a>' : '') ?></div>
+</div>
+<div style="overflow:auto; padding:5px;">
+	<div style="float:left; width:100px;">Address:</div> 
+	<div style="float:left; width:400px;" id = "divAddresses">
+		<?php
+			foreach($MANUFACTURE->addresses as $key => $address) {
+				echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
 			}
-			else
-			{	
-				// for now do not disply missing text
-			}
-			?>
-<br><br>
+		?>
+	</div>
+</div>

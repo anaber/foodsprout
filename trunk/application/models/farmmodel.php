@@ -114,9 +114,9 @@ class FarmModel extends Model{
 		
 		$row = $result->row();
 		
-		$geocodeArray = array();
-		
 		if ($row) {
+			$geocodeArray = array();
+		
 			$this->FarmLib->farmId = $row->farm_id;
 			$this->FarmLib->companyId = $row->company_id;
 			$this->FarmLib->companyName = $row->company_name;

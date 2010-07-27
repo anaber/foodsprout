@@ -816,24 +816,54 @@ class RestaurantModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->restaurantLib->restaurantId = $row->restaurant_id;
-		$this->restaurantLib->companyId = $row->company_id;
-		$this->restaurantLib->companyName = $row->company_name;
-		$this->restaurantLib->restaurantChainId = $row->restaurant_chain_id;
-		$this->restaurantLib->restaurantChain = $row->restaurant_chain;
-		$this->restaurantLib->restaurantTypeId = $row->restaurant_type_id;
-		$this->restaurantLib->restaurantName = $row->restaurant_name;
-		$this->restaurantLib->customURL = $row->custom_url;
-		$this->restaurantLib->phone = $row->phone;
-		$this->restaurantLib->fax = $row->fax;
-		$this->restaurantLib->email = $row->email;
-		$this->restaurantLib->restaurantURL = $row->url;
-		$this->restaurantLib->isActive = $row->is_active;
+		if ($row) {
+			$geocodeArray = array();
 		
-		$cuisines = $this->getCuisineIdsForRestaurant( $row->restaurant_id);
-		$this->restaurantLib->cuisines = $cuisines;
-		
-		return $this->restaurantLib;
+			$this->restaurantLib->restaurantId = $row->restaurant_id;
+			$this->restaurantLib->companyId = $row->company_id;
+			$this->restaurantLib->companyName = $row->company_name;
+			$this->restaurantLib->restaurantChainId = $row->restaurant_chain_id;
+			$this->restaurantLib->restaurantChain = $row->restaurant_chain;
+			$this->restaurantLib->restaurantTypeId = $row->restaurant_type_id;
+			$this->restaurantLib->restaurantName = $row->restaurant_name;
+			$this->restaurantLib->customURL = $row->custom_url;
+			$this->restaurantLib->phone = $row->phone;
+			$this->restaurantLib->fax = $row->fax;
+			$this->restaurantLib->email = $row->email;
+			$this->restaurantLib->restaurantURL = $row->url;
+			$this->restaurantLib->isActive = $row->is_active;
+			
+			$cuisines = $this->getCuisineIdsForRestaurant( $row->restaurant_id);
+			$this->restaurantLib->cuisines = $cuisines;
+			
+			$CI =& get_instance();
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', '', '');
+			$this->restaurantLib->addresses = $addresses;
+			
+			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+				
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+				
+				$arrLatLng['addressLine1'] = $address->address;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+				
+				$arrLatLng['restaurantName'] = $this->restaurantLib->restaurantName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[] = $arrLatLng;
+			}
+			$this->restaurantLib->param->numResults = 2;
+			$this->restaurantLib->geocode = $geocodeArray;
+			
+			return $this->restaurantLib;
+		} else {
+			return;
+		}
 	}
 	
 	

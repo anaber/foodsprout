@@ -74,6 +74,13 @@ class Restaurant extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
+	function ajaxSearchRestaurantInfo() {
+		$restaurantId = $this->input->post('restaurantId');
+		$this->load->model('RestaurantModel', '', TRUE);
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+		echo json_encode($restaurant);
+	}
+	
 	// View the information on a single restaurant
 	function view() {
 		$this->load->library('functionlib');
