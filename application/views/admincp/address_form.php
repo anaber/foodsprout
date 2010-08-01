@@ -10,19 +10,23 @@ var documentLocation = '';
 <?php
 	if ( isset($MANUFACTURE_ID) ) {
 ?>
-		documentLocation = '/admincp/manufacture';
+		documentLocation = '/admincp/manufacture/add_address/<?php echo $MANUFACTURE_ID; ?>';
 <?php
 	} else if ( isset($FARM_ID) ) {
 ?>
-		documentLocation = '/admincp/farm';
+		documentLocation = '/admincp/farm/add_address/<?php echo $FARM_ID; ?>';
 <?php
 	} else if ( isset($RESTAURANT_ID) ) {
 ?>
-		documentLocation = '/admincp/restaurant';
+		documentLocation = '/admincp/restaurant/add_address/<?php echo $RESTAURANT_ID; ?>';
 <?php
 	} else if ( isset($DISTRIBUTOR_ID) ) {
 ?>
-		documentLocation = '/admincp/distributor';
+		documentLocation = '/admincp/distributor/add_address/<?php echo $DISTRIBUTOR_ID; ?>';
+<?php
+	} else if ( isset($FARMERS_MARKET_ID) ) {
+?>
+		documentLocation = '/admincp/distributor/add_address/<?php echo $FARMERS_MARKET_ID; ?>';
 <?php
 	} 
 ?>
@@ -77,7 +81,8 @@ $(document).ready(function() {
 							  manufactureId: $('#manufactureId').val(),
 							  farmId: $('#farmId').val(),
 							  restaurantId: $('#restaurantId').val(),
-							  distributorId: $('#distributorId').val()
+							  distributorId: $('#distributorId').val(),
+							  farmersMarketId: $('#farmersMarketId').val()
 							};
 				act = 'add';
 			}
@@ -195,6 +200,7 @@ $(document).ready(function() {
 			<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM_ID) ? $FARM_ID : '') ?>">
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
 			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR_ID) ? $DISTRIBUTOR_ID : '') ?>">			
+			<input type = "hidden" name = "farmersMarketId" id = "farmersMarketId" value = "<?php echo (isset($FARMERS_MARKET_ID) ? $FARMERS_MARKET_ID : '') ?>">
 		</td>
 	</tr>
 </table>

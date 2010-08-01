@@ -36,11 +36,11 @@ class RestaurantModel extends Model{
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '' );
+			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', '', '' );
 			$this->RestaurantLib->addresses = $addresses;
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '' );
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '', '' );
 			$this->RestaurantLib->suppliers = $suppliers;
 			
 			
@@ -364,7 +364,7 @@ class RestaurantModel extends Model{
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', $q, $city);
+			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', $q, $city);
 			$this->RestaurantLib->addresses = $addresses;
 			
 			
@@ -389,7 +389,7 @@ class RestaurantModel extends Model{
 			
 			
 			//$CI->load->model('SupplierModel','',true);
-			//$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '' );
+			//$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '', '' );
 			//$this->RestaurantLib->suppliers = $suppliers;
 			
 			
@@ -627,12 +627,12 @@ class RestaurantModel extends Model{
 			
 			if ( $row['restaurant_chain_id'] ) {
 				$CI->load->model('SupplierModel','',true);
-				$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id'] );
+				$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id'], '' );
 				$this->RestaurantLib->suppliers = $suppliers;
 				$this->RestaurantLib->suppliersFrom = 'restaurantChain';
 			} else {
 				$CI->load->model('SupplierModel','',true);
-				$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '' );
+				$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '', '' );
 				$this->RestaurantLib->suppliers = $suppliers;
 				$this->RestaurantLib->suppliersFrom = 'restaurant';
 			}
@@ -779,7 +779,7 @@ class RestaurantModel extends Model{
 					
 					
 					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', $companyId);
+					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', '', $companyId);
 				} else {
 					$return = false;
 				}
@@ -856,7 +856,7 @@ class RestaurantModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', $q, $city);
+			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', '', $q, $city);
 			$this->restaurantLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {

@@ -30,7 +30,7 @@ class AddressModel extends Model{
 		return $address;
 	}
 	
-	function getAddressForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $zipcode, $city) {
+	function getAddressForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $farmersMarketId, $zipcode, $city) {
 		
 		$addresses = array();
 		
@@ -45,6 +45,8 @@ class AddressModel extends Model{
 			$query .= "manufacture_id = " . $manufactureId;
 		} elseif (!empty($distributorId) ) {
 			$query .= "distributor_id = " . $distributorId;
+		} elseif (!empty($farmersMarketId) ) {
+			$query .= "farmers_market_id = " . $farmersMarketId;
 		}
 		
 		if (!empty($zipcode) ) {
@@ -125,12 +127,13 @@ class AddressModel extends Model{
 		$this->addressLib->restaurantId = $row->restaurant_id;
 		$this->addressLib->manufactureId = $row->manufacture_id;
 		$this->addressLib->distributorId = $row->distributor_id;
+		$this->addressLib->farmersMarketId = $row->farmers_market_id;
 		
 		
 		return $this->addressLib;
 	}
 	
-	function addAddress($restaurantId, $farmId, $manufactureId, $distributorId, $companyId) {
+	function addAddress($restaurantId, $farmId, $manufactureId, $distributorId, $farmersMarketId, $companyId) {
 		$return = true;
 		$CI =& get_instance();
 		
@@ -150,6 +153,8 @@ class AddressModel extends Model{
 			$query .= 'manufacture_id';
 		} else if ( !empty($distributorId) ) {
 			$query .= 'distributor_id';
+		} else if ( !empty($farmersMarketId) ) {
+			$query .= 'farmers_market_id';
 		}
 		$query .= ", company_id)" .
 				" values (NULL, \"" . $this->input->post('address') . "\", \"" . $this->input->post('city') . "\", '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', ";
@@ -161,8 +166,10 @@ class AddressModel extends Model{
 			$query .= $manufactureId;
 		} else if ( !empty($distributorId) ) {
 			$query .= $distributorId;
+		} else if ( !empty($farmersMarketId) ) {
+			$query .= $farmersMarketId;
 		}
-		$query .= ", $companyId )";
+		$query .= ", '$companyId' )";
 		
 		log_message('debug', 'AddressModel.addAddress : Insert Address : ' . $query);
 		
@@ -183,6 +190,7 @@ class AddressModel extends Model{
 		$farmId = $this->input->post('farmId');
 		$manufactureId = $this->input->post('manufactureId');
 		$distributorId =$this->input->post('distributorId');
+		$farmersMarketId =$this->input->post('farmersMarketId');
 		
 		$companyId = '';
 		
@@ -207,9 +215,13 @@ class AddressModel extends Model{
 			$CI->load->model('DistributorModel','',true);
 			$distributor = $CI->DistributorModel->getDistributorFromId($distributorId);
 			$companyId = $distributor->companyId;
+		} else if ( !empty($farmersMarketId) ) {
+			//$CI->load->model('FarmersMarketModel','',true);
+			//$farmersMarket = $CI->FarmersMarketModel->getDistributorFromId($distributorId);
+			$companyId = '';
 		}
 		
-		if ($this->addAddress($restaurantId, $farmId, $manufactureId, $distributorId, $companyId) ) {
+		if ($this->addAddress($restaurantId, $farmId, $manufactureId, $distributorId, $farmersMarketId, $companyId) ) {
 			$return = true;
 		} else {
 			$return = false;

@@ -157,7 +157,7 @@ class Restaurant extends Controller {
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
 		$this->load->model('SupplierModel','',true);
-		$suppliers = $this->SupplierModel->getSupplierForCompany( $id, '', '', '', '' );
+		$suppliers = $this->SupplierModel->getSupplierForCompany( $id, '', '', '', '', '' );
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -190,7 +190,7 @@ class Restaurant extends Controller {
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'restaurant');
 		
-		$suppliers = $this->SupplierModel->getSupplierForCompany( $supplier->restaurantId, '', '', '', '');
+		$suppliers = $this->SupplierModel->getSupplierForCompany( $supplier->restaurantId, '', '', '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -229,7 +229,7 @@ class Restaurant extends Controller {
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
 		$this->load->model('AddressModel','',true);
-		$addresses = $this->AddressModel->getAddressForCompany( $id, '', '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( $id, '', '', '', '', '', '');
 				
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -266,7 +266,7 @@ class Restaurant extends Controller {
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
 		
-		$addresses = $this->AddressModel->getAddressForCompany( $address->restaurantId, '', '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( $address->restaurantId, '', '', '', '', '', '');
 		
 		
 		// List of views to be included

@@ -101,7 +101,7 @@ class Restaurant extends Controller {
 				$chain_menu = $this->RestaurantChainModel->getRestaurantChainMenu($restaurantinfo->restaurantChainId);
 
 				$this->load->model('SupplierModel');
-				$chain_suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurantinfo->restaurantChainId);
+				$chain_suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurantinfo->restaurantChainId, '');
 			}
 			else
 			{
@@ -116,7 +116,7 @@ class Restaurant extends Controller {
 		$menu = array_merge($chain_menu, $custom_menu);
 		
 		$this->load->model('SupplierModel');
-		$custom_suppliers = $this->SupplierModel->getSupplierForCompany($restaurantId, '', '', '', '');
+		$custom_suppliers = $this->SupplierModel->getSupplierForCompany($restaurantId, '', '', '', '', '');
 		
 		// Merge the custom suppliers into one array
 		$suppliers = array_merge($chain_suppliers, $custom_suppliers);
