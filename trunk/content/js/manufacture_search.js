@@ -39,7 +39,8 @@ function redrawContent(data, states) {
 	$('#resultsContainer').show();
 	
 	// Move scroll to top of window.
-	$('html, body').animate({scrollTop:0}, 'slow');
+	//$('html, body').animate({scrollTop:0}, 'slow');
+	$('html, body').scrollTop(0);
 	
 	$('#numRecords').empty();
 	numRecordsContent = drawNumRecords(data.param);			

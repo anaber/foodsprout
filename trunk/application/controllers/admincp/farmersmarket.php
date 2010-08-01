@@ -213,7 +213,7 @@ class FarmersMarket extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['FARMERS_MARKET_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $farmersMarket->farmersMarketName . " (F)";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $farmersMarket->farmersMarketName . " (FM)";
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['ADDRESSES'] = $addresses;
@@ -248,14 +248,14 @@ class FarmersMarket extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['FARM_ID'] = $address->farmersMarketId;
+		$data['data']['left']['navigation']['FARMERS_MARKET_ID'] = $address->farmersMarketId;
 		$data['data']['left']['navigation']['ADDRESS_ID'] = $address->addressId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id . ' (FM)';
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['ADDRESS'] = $address;
-		$data['data']['center']['form']['FARM_ID'] = $address->farmersMarketId;
+		$data['data']['center']['form']['FARMERS_MARKET_ID'] = $address->farmersMarketId;
 		$data['data']['center']['form']['ADDRESSES'] = $addresses;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);

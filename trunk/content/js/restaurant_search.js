@@ -501,7 +501,8 @@ function redrawContent(data, filter) {
 	$('#resultsContainer').show();
 	
 	// Move scroll to top of window.
-	$('html, body').animate({scrollTop:0}, 'slow');
+	//$('html, body').animate({scrollTop:0}, 'slow');
+	$('html, body').scrollTop(0);
 	
 	$('#numRecords').empty();
 	numRecordsContent = drawNumRecords(data.param);			
@@ -542,7 +543,8 @@ function redrawContent(data, filter) {
 				record_id = arr[1];
 				
 				viewMarker(record_id);
-				$('html, body').animate({scrollTop:0}, 'slow');
+				//$('html, body').animate({scrollTop:0}, 'slow');
+				$('html, body').scrollTop(0);
 			} else {
 				document.location='/restaurant/view/'+record_id;
 			}

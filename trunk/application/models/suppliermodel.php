@@ -565,7 +565,7 @@ class SupplierModel extends Model{
 		} else if ( !empty($distributorId) ) {
 			$keyToSearch = 'distributor';
 			$fieldValue = $distributorId;
-		}
+		} 
 		
 		$supplierFieldName = 'supplier_' . $keyToSearch . '_id';
 		
@@ -610,8 +610,6 @@ class SupplierModel extends Model{
 				$companies[ $tableParam['joinTable'] ][] = $this->CompanyLib;
 				unset($this->CompanyLib);
 			}
-			
-			
 		}
 		
 		return $companies;

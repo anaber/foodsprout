@@ -1,242 +1,26 @@
 var isMapVisible = 1;
 
-var selectedTopFarmTypeId = "";
-
-var filters = '';
-
-var selectedFarmTypeId = "";
-var allFarmTypes;
-
-
-
 function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
-	var formAction = '/farm/ajaxSearchFarms';
+	var formAction = '/farmersmarket/ajaxSearchFarmersMarket';
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
 	
 	$.post(formAction, postArray,function(data) {		
 		
-		redrawContent(data, filter);
+		redrawContent(data);
 	},
 	"json");
 	
 }
 
-function redrawAllFarmTypes(data, allFarmTypes) {
-	$('#divAllFarmTypes').empty();
-	
-	arrSelectedFarmTypes = new Array();
-	j = 0;
-	
-	var strSelectedFarmTypeId = '';
-	if (selectedFarmTypeId != '') {
-		strSelectedFarmTypeId = selectedFarmTypeId;
-	} else {
-		strSelectedFarmTypeId = selectedTopFarmTypeId
-	}
-	
-	if (strSelectedFarmTypeId != '') {
-		arrFilter = strSelectedFarmTypeId.split(',');
-		
-		for(i = 0; i < arrFilter.length; i++ ) {
-			arr = arrFilter[i].split('_');
-			if (arr[0] == 'f') {
-				arrSelectedFarmTypes[j] = arr[1];
-				j++;
-			}
-		}
-	}
-	
-	var resultHtml = '';
-	resultHtml = '<strong>Farms Types</strong><br>';
-	
-	resultHtml += '<table cellpadding = "2" cellspacing = "0" border = "0" width = "500">';
-	
-	j = 0;
-	$.each(allFarmTypes, function(i, a) {
-		if (j == 0) {
-			resultHtml += '<tr>';
-		}
-		
-		resultHtml += '<td width = "133"><input type="checkbox" value="f_'+ a.farmTypeId + '" id = "farmTypeId" name = "farmTypeId"';
-		
-		for(i = 0; i < arrSelectedFarmTypes.length; i++ ) {
-			if ( arrSelectedFarmTypes[i] ==  a.farmTypeId) {
-				resultHtml += ' CHECKED';
-				break;
-			}
-		}
-		
-		resultHtml += '>';
-		
-		resultHtml += a.farmType;
-		resultHtml += '</td>';
-		if (j == 2) {
-			resultHtml += '</tr>';
-		}
-		
-		j++;
-		if (j == 3) {
-			j = 0;
-		}
-	});
-	
-	if (j < 3 && j > 0) {
-		cellRequired = eval(3-j);
-		
-		for(i = 1; i<= cellRequired; i++) {
-			resultHtml += '<td>&nbsp;</td>';
-		}
-		resultHtml += '</tr>';
-	}
-	resultHtml += '<tr><td colspan = "3" align = "right"><a id = "cancelFarmTypeFilter" href = "#">Cancel</a> &nbsp;&nbsp;&nbsp; <input type = "button" id = "btnApplyFarmTypes" value = "Apply Filters"></td></tr>';
-	resultHtml += '</table>';
-	
-	$('#divAllFarmTypes').html(resultHtml);
-	
-	reinitializePopupFarmTypeEvent(data, allFarmTypes);
-}
-
-function reinitializePopupFarmTypeEvent (data, allFarmTypes) {
-	//$(':checkbox').click(function () {
-	$('#btnApplyFarmTypes').click(function () {
-		var strFarmTypeId = '';	
-		var strFilters = '';
-		j = 0;
-		
-		$('#divAllFarmTypes :checked').each(function() {
-		   if (j == 0 ) {
-	        	strFarmTypeId += $(this).val();
-	        } else {
-	        	strFarmTypeId += ',' + $(this).val();
-	        }
-	        j++;
-		  }
-		);
-		
-		strFilters = strFarmTypeId;
-		selectedFarmTypeId = strFarmTypeId;
-		selectedTopFarmTypeId = "";
-		//disablePopup();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
-	});
-	
-	$("#cancelFarmTypeFilter").click(function(e){
-		e.preventDefault();
-		//disablePopup();
-	});
-	
-}
-
-function redrawTopFarmTypes(data) {
-	$('#divFarmTypes').empty();
-	
-	var resultHtml = '';
-	
-	if (selectedFarmTypeId != "") {
-		
-		arrSelectedFarmTypes = new Array();
-		j = 0;
-		if (filters != '') {
-			arrFilter = selectedFarmTypeId.split(',');
-			
-			for(i = 0; i < arrFilter.length; i++ ) {
-				arr = arrFilter[i].split('_');
-				if (arr[0] == 'f') {
-					arrSelectedFarmTypes[j] = arr[1];
-					j++;
-				}
-			}
-		}
-		//resultHtml += '<ul>';
-		$.each(allFarmTypes, function(i, a) {
-			for(i = 0; i < arrSelectedFarmTypes.length; i++ ) {
-				if ( arrSelectedFarmTypes[i] ==  a.farmTypeId) {
-					resultHtml += '-' + a.farmType + '<br />';
-					break;
-				}
-			}
-		});	
-		//resultHtml += '</ul>';
-		
-	} else {
-		
-		arrTopFilters = new Array();
-		j = 0;
-		if (filters != '') {
-			arrFilter = filters.split(',');
-			
-			for(i = 0; i < arrFilter.length; i++ ) {
-				arr = arrFilter[i].split('_');
-				if (arr[0] == 'f') {
-					arrTopFilters[j] = arr[1];
-					j++;
-				}
-			}
-		}
-		
-		$.each(topFarmTypes, function(i, a) {
-			resultHtml += '<input type="checkbox" value="f_'+ a.farmTypeId + '" id = "farmTypeId" name = "farmTypeId"';
-			
-			for(i = 0; i < arrTopFilters.length; i++ ) {
-				if ( arrTopFilters[i] ==  a.farmTypeId) {
-					resultHtml += ' CHECKED';
-					break;
-				}
-			}
-			resultHtml += '>';
-			
-			resultHtml += a.farmType + '<br>';
-		});	
-	}
-	
-	//resultHtml += '<br><a href = "#" id = "chooseMoreFarmType" name = "">Choose More...</a><br>';
-		
-	$('#divFarmTypes').html(resultHtml);
-	
-	reinitializeMoreFarmType(data);
-}
-
-function reinitializeMoreFarmType(data) {
-	$("#chooseMoreFarmType").click(function(e){
-		e.preventDefault();
-		
-		var formAction = '/farm/ajaxGetAllFarmType';
-		
-		postArray = { };
-
-		$.post(formAction, postArray,function(farmTypes) {
-			//centerPopup();
-			loadPopup();
-			allFarmTypes = farmTypes;
-			
-			redrawAllFarmTypes(data, allFarmTypes);
-			$('#popupContact').center();
-		},
-		"json");
-	});
-	
-	//CLOSING POPUP
-	//Click the x event!
-	$("#popupClose").click(function(){
-		disablePopup();
-	});
-	
-}
-		
 function redrawZipcodeBox() {
 	$('#divZipcode').empty();
 	formFilterContent = '<form id = "frmFilters">Zip Code <input type="text" size="6" maxlength="5" id = "q"></form>';
 	$('#divZipcode').html(formFilterContent);
 }
 		
-	
-
-function redrawContent(data, filter) {
-	
-	redrawTopFarmTypes(data);
+function redrawContent(data) {
 	
 	$('#resultTableContainer').empty();
 	//var resultTableHtml = getResultTableHeader();
@@ -250,6 +34,7 @@ function redrawContent(data, filter) {
 		});
 	}
 	
+	//alert(resultTableHtml);
 	//resultTableHtml += getResultTableFooter();
 	$('#resultTableContainer').append(resultTableHtml);
 	
@@ -259,6 +44,7 @@ function redrawContent(data, filter) {
 	// Move scroll to top of window.
 	//$('html, body').animate({scrollTop:0}, 'slow');
 	$('html, body').scrollTop(0);
+	
 	
 	$('#numRecords').empty();
 	numRecordsContent = drawNumRecords(data.param);			
@@ -271,12 +57,6 @@ function redrawContent(data, filter) {
 	$('#pagingLinks').empty();
 	pagingLinksContent = drawPagingLinks(data.param);
 	$('#pagingLinks').append(pagingLinksContent);
-	
-	if (showFilters ==  true) {
-		$('#removeFilters').empty();
-		removeFilterContent = '<a id = "imgRemoveFilters" href = "#">Remove Filters</a>';
-		$('#removeFilters').append(removeFilterContent);
-	}
 	
 	if (showMap ==  true) { 
 		$('#divHideMap').empty();
@@ -302,7 +82,7 @@ function redrawContent(data, filter) {
 				//$('html, body').animate({scrollTop:0}, 'slow');
 				$('html, body').scrollTop(0);
 			} else {
-				document.location='/farm/view/'+record_id;
+				document.location='/farmersmarket/view/'+record_id;
 			}
 		}
 		
@@ -316,15 +96,10 @@ function redrawContent(data, filter) {
 	
 	reinitializePageCountEvent(data);
 	
-	if (showFilters ==  true) {
-		reinitializeRemoveFilters(data);
-	}
-	
-	reinitializeFilterEvent(data);
-	
 	reinitializeQueryFilterEvent(data);
 	
 	reinitializeShowHideMap(data);
+	
 	
 	//disablePopupFadeIn();
 }
@@ -354,57 +129,6 @@ function reinitializeShowHideMap(data) {
 	});
 }
 
-function reinitializeFilterEvent (data) {
-	
-	var strFilters = '';
-	var strCuisineFilters = '';
-	var strFarmTypeFilters = '';
-	
-	$(':checkbox').click(function () {
-		
-		j = 0;
-		i = 0;
-		$('#divFarmTypes :checked').each(function() {
-		   if (j == 0 ) {
-	        	strFilters += $(this).val();
-	        } else {
-	        	strFilters += ',' + $(this).val();
-	        }
-	        j++;
-	        
-	        if (i == 0 ) {
-	        	strFarmTypeFilters = $(this).val();
-	        } else {
-	        	strFarmTypeFilters += ',' + $(this).val();
-	        }
-	        i++;
-	        
-		  }
-		);
-		
-		if (strFarmTypeFilters != '') {
-			selectedTopFarmTypeId = strFarmTypeFilters;
-			selectedFarmTypeId = '';
-		}
-		
-		
-		if (selectedFarmTypeId != '') {
-			if (strFilters != '') {
-				strFilters = strFilters + ',' + selectedFarmTypeId;
-			} else {
-				strFilters = selectedFarmTypeId;
-			}
-		}
-		
-		if (strFilters != '') {
-			filters = strFilters;
-		}
-		
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
-	});
-}
-
 
 function reinitializeQueryFilterEvent (data) {
 	
@@ -412,26 +136,6 @@ function reinitializeQueryFilterEvent (data) {
 		e.preventDefault();
 		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
-	});
-}
-
-
-function reinitializeRemoveFilters(data) {
-	
-	$("#imgRemoveFilters").click(function(e) {
-		e.preventDefault();
-		//loadPopupFadeIn();
-		
-		selectedCuisineId = '';
-		selectedFarmTypeId = '';
-		
-		selectedTopCuisineId = "";
-		selectedTopFarmTypeId = "";
-		
-		filters = '';
-
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '');
-		$('#frmFilters')[0].reset();
 	});
 }
 
@@ -568,20 +272,21 @@ function drawNumRecords(params) {
 }
 
 
-function addResult(farm, i) {
+function addResult(farmersMarket, i) {
 	var html =
 	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:300px;"><a href="/farm/view/' + farm.farmId + '" id = "'+ farm.farmId +'">'+ farm.farmName +'</a><br>Type:' + farm.farmType;
+	'	<div style="float:left; width:300px;"><a href="/farmersmarket/view/' + farmersMarket.farmersMarketId + '" id = "'+ farmersMarket.farmersMarketId +'">'+ farmersMarket.farmersMarketName +'</a>';
 	
 	html += '</div>' + 
 	'	<div style="float:right; width:400px;">Address:<br />';
-	$.each(farm.addresses, function(j, address) {
+	$.each(farmersMarket.addresses, function(j, address) {
 		if (j == 0) {
 			html += '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
 		} else {
 			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
 		}
 	});
+	
 	html += '</div>';
 	html +=
 	'</div>'
@@ -591,7 +296,7 @@ function addResult(farm, i) {
 }
 
 function getMarkerHtml(o) {
-	html = "<font size = '2'><b><i>" + o.farmName + "</i></b></font><br /><font size = '1'>" +
+	html = "<font size = '2'><b><i>" + o.farmersMarketName + "</i></b></font><br /><font size = '1'>" +
 		  o.addressLine1 + "<br />" + 
 		  o.addressLine2 + "<br />" + 
 		  o.addressLine3 + "</font><br />"

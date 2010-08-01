@@ -43,7 +43,8 @@ function redrawContent(data) {
 	$('#resultsContainer').show();
 	
 	// Move scroll to top of window.
-	$('html, body').animate({scrollTop:0}, 'slow');
+	//$('html, body').animate({scrollTop:0}, 'slow');
+	$('html, body').scrollTop(0);
 	
 	$('#pagingLinks').empty();
 	pagingLinksContent = drawPagingLinks(data.param);
