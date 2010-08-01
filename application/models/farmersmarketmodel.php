@@ -98,7 +98,7 @@ class FarmersMarketModel extends Model{
 			$this->FarmersMarketLib->url = $row->url;
 			$this->FarmersMarketLib->status = $row->status;
 			
-			/*
+			
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
@@ -122,7 +122,7 @@ class FarmersMarketModel extends Model{
 			}
 			$this->FarmersMarketLib->param->numResults = 2;
 			$this->FarmersMarketLib->geocode = $geocodeArray;
-			*/
+			
 			return $this->FarmersMarketLib;
 		} else {
 			return;
@@ -334,7 +334,7 @@ class FarmersMarketModel extends Model{
 	    return $arr;
 	}
 	
-	function getFarmsJson() {
+	function getFarmersMarketJson() {
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 		
 		$p = $this->input->post('p'); // Page
@@ -404,57 +404,19 @@ class FarmersMarketModel extends Model{
 	
 		$page = 0;
 		
-		/*
-		$base_query = 'SELECT restaurant.*, restaurant_cuisine.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
-				' FROM restaurant, restaurant_cuisine, cuisine, restaurant_type';
-		
-		$where = ' WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id '
-				. ' AND restaurant_cuisine.cuisine_id = cuisine.cuisine_id '
-				. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
-		*/
-		
-		$base_query = 'SELECT farm.*, farm_type.farm_type' .
-				' FROM farm, farm_type';
+		$base_query = 'SELECT farmers_market.*' .
+				' FROM farmers_market';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM farm, farm_type';
+				' FROM farmers_market';
 		
 		
-		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id';
+		$where = '';
 		
 		/*
 		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
 				. ' OR restaurant.restaurant_id like "%' . $q . '%"';
 		*/
-		
-		//if ( count($arrFarmTypeId) > 0  || count($arrCuisineId) > 0 ) {
-		if ( count($arrFarmTypeId) > 0 ) {
-			$where .= ' AND (';
-			
-			if(count($arrFarmTypeId) > 0 ) {
-				$where .= ' farm.farm_type_id IN (' . implode(',', $arrFarmTypeId) . ')';
-			}
-			
-			/*
-			if(count($arrCuisineId) > 0 ) {
-			 		// Cuisine 
-				if(count($arrRestaurantTypeId) > 0 ) {
-					$where	.= ' OR ( ';
-				} else {
-					$where	.= ' ( ';
-				}
-				
-			$where	.= '		SELECT restaurant_cuisine.restaurant_cuisine_id ' 
-					. '			FROM restaurant_cuisine' 
-					. '			WHERE' 
-					. '				restaurant_cuisine.restaurant_id = restaurant.restaurant_id'
-					. ' 			AND restaurant_cuisine.cuisine_id IN (' . implode(',', $arrCuisineId) . ')'
-					. '				LIMIT 0, 1'
-					. '		)';
-			 }
-			*/
-			$where .= ' )';
-		}
 		
 		if ( !empty($q) || !empty($city) ) {
 			if (!empty($where) ) {
@@ -468,7 +430,7 @@ class FarmersMarketModel extends Model{
 			$where	.= '		SELECT address.address_id' 
 					. '			from address, state, country'
 					. '			WHERE' 
-					. '				address.farm_id = farm.farm_id'
+					. '				address.farmers_market_id = farmers_market.farmers_market_id'
 					. '				AND address.state_id = state.state_id'
 					. '				AND address.country_id = country.country_id'
 					. ' 			AND (';
@@ -498,8 +460,8 @@ class FarmersMarketModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY farm_name';
-			$sort = 'farm_name';
+			$sort_query = ' ORDER BY farmers_market_name';
+			$sort = 'farmers_market_name';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -530,7 +492,7 @@ class FarmersMarketModel extends Model{
 		}
 		//print_r_pre($_REQUEST);
 		
-		log_message('debug', "FarmModel.getFarmsJson : " . $query);
+		log_message('debug', "FarmersMarketModel.getFarmersMarketJson : " . $query);
 		$result = $this->db->query($query);
 		
 		$farms = array();
@@ -541,23 +503,17 @@ class FarmersMarketModel extends Model{
 		foreach ($result->result_array() as $row) {
 			
 			
-			$this->load->library('FarmLib');
-			unset($this->FarmLib);
+			$this->load->library('FarmersMarketLib');
+			unset($this->FarmersMarketLib);
 			
-			$this->FarmLib->farmId = $row['farm_id'];
-			$this->FarmLib->farmName = $row['farm_name'];
-			$this->FarmLib->farmType = $row['farm_type'];
+			$this->FarmersMarketLib->farmersMarketId = $row['farmers_market_id'];
+			$this->FarmersMarketLib->farmersMarketName = $row['farmers_market_name'];
 			
-			$this->FarmLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
 			//$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', $q, $city);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '');
-			$this->FarmLib->dresses = $addresses;
-			
-			
-			//$cuisines = $this->getCuisinesForRestaurant( $row['restaurant_id']);
-			//$this->FarmLib->cuisines = $cuisines;
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', '', $row['farmers_market_id'], '', '');
+			$this->FarmersMarketLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
 				$arrLatLng = array();
@@ -570,14 +526,14 @@ class FarmersMarketModel extends Model{
 				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
 				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
 				
-				$arrLatLng['farmName'] = $this->FarmLib->farmName;
+				$arrLatLng['farmersMarketName'] = $this->FarmersMarketLib->farmersMarketName;
 				$arrLatLng['id'] = $address->addressId;
 				$geocodeArray[] = $arrLatLng;
 			}
 			
 			
-			$farms[] = $this->FarmLib;
-			unset($this->FarmLib);
+			$farms[] = $this->FarmersMarketLib;
+			unset($this->FarmersMarketLib);
 		}
 		
 		if (!empty($pp) && $pp == 'all') {

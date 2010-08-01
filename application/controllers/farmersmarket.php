@@ -1,6 +1,6 @@
 <?php
 
-class Farm extends Controller {
+class FarmersMarket extends Controller {
 	
 	function __construct()
 	{
@@ -16,7 +16,7 @@ class Farm extends Controller {
 		
 		// SEO
 		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('farm_list');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('farmers_market_list');
 		$data['SEO'] = $seo;
 		
 		$q = $this->input->post('q');
@@ -24,13 +24,13 @@ class Farm extends Controller {
 
 		if ( !empty($f) ) {
 			$data['CENTER'] = array(
-				'list' => '/farm/farm_list',
+				'list' => '/farmers_market/farmers_market_list',
 			);
 		} else {
 			// List of views to be included
 			$data['CENTER'] = array(
 					'map' => 'includes/map',
-					'list' => '/farm/farm_list',
+					'list' => '/farmers_market/farmers_market_list',
 				);
 		}
 		
@@ -40,7 +40,7 @@ class Farm extends Controller {
 				);
 		} else {
 			$data['LEFT'] = array(
-					'filter' => 'includes/left/farm_filter',
+					'filter' => 'includes/left/farmers_market_filter',
 					'ad' => 'includes/left/ad',
 				);
 		}
@@ -57,7 +57,7 @@ class Farm extends Controller {
 		}
 		
 		//$data['data']['center']['list']['LIST'] = $restaurants;
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Farms";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Farmers Market";
 		$data['data']['center']['list']['q'] = $q;
 		$data['data']['center']['list']['f'] = $f;
 		if ( !empty($f) ) {
@@ -71,31 +71,17 @@ class Farm extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	function ajaxSearchFarms() {
-		$this->load->model('FarmModel', '', TRUE);
-		$restaurants = $this->FarmModel->getFarmsJson();
-		echo json_encode($restaurants);
+	function ajaxSearchFarmersMarket() {
+		$this->load->model('FarmersMarketModel', '', TRUE);
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketJson();
+		echo json_encode($farmersMarket);
 	}
 	
-	function ajaxGetDistinctUsedFarmType() {
-		$c = $this->input->post('c');
-		$this->load->model('FarmModel');
-		$farmTypes = $this->FarmModel->getDistinctUsedFarmType($c);
-		echo json_encode($farmTypes);
-	}
-	
-	function ajaxGetAllFarmType() {
-		$c = $this->input->post('c');
-		$this->load->model('FarmTypeModel');
-		$farmTypes = $this->FarmTypeModel->listFarmType($c);
-		echo json_encode($farmTypes);
-	}
-	
-	function ajaxSearchFarmInfo() {
-		$farmId = $this->input->post('farmId');
-		$this->load->model('FarmModel', '', TRUE);
-		$farm = $this->FarmModel->getFarmFromId($farmId);
-		echo json_encode($farm);
+	function ajaxSearchFarmersMarketInfo() {
+		$farmersMarketId = $this->input->post('farmersMarketId');
+		$this->load->model('FarmersMarketModel', '', TRUE);
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($farmersMarketId);
+		echo json_encode($farmersMarket);
 	}
 	
 	// View the information on a single restaurant
@@ -103,20 +89,21 @@ class Farm extends Controller {
 		$this->load->library('functionlib');
 		$data = array();
 		
-		$farmId = $this->uri->segment(3);
+		$farmersMarketId = $this->uri->segment(3);
 		
-		$this->load->model('FarmModel');
-		$farm = $this->FarmModel->getFarmFromId($farmId);
+		$this->load->model('FarmersMarketModel');
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($farmersMarketId);
 		
 		$this->load->model('SupplierModel');
-		$companies = $this->SupplierModel->getCompaniesForSupplier('', $farmId, '', '');
+		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', '', $farmersMarketId );
+		
 		
 		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('farm_detail');
 		
 		$seo_data_array = array(
-			'farm_name' => $farm->farmName,
+			'farmers_market_name' => $farmersMarket->farmersMarketName,
 			'restaurant_type' => 'Fast Food',
 			'cuisines' => 'Fast Food, American, Pizza',
 		);
@@ -127,8 +114,8 @@ class Farm extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'info' => '/farm/info',
-				'companies' => '/farm/companies',
+				'info' => '/farmers_market/info',
+				'suppliers' => '/farmers_market/suppliers',
 			);
 		
 		$data['RIGHT'] = array(
@@ -141,8 +128,9 @@ class Farm extends Controller {
 		 
 		// Data to be passed to the views
 		// Center -> Menu
-		$data['data']['center']['info']['FARM'] = $farm;
-		$data['data']['center']['companies']['COMPANIES'] = $companies;
+		$data['data']['center']['info']['FARMERS_MARKET'] = $farmersMarket;
+		//$data['data']['center']['companies']['COMPANIES'] = $companies;
+		$data['data']['center']['suppliers']['SUPPLIERS'] = $suppliers;
 		
 		
 		// Right -> Image

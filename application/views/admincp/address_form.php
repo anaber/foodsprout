@@ -26,7 +26,7 @@ var documentLocation = '';
 <?php
 	} else if ( isset($FARMERS_MARKET_ID) ) {
 ?>
-		documentLocation = '/admincp/distributor/add_address/<?php echo $FARMERS_MARKET_ID; ?>';
+		documentLocation = '/admincp/farmersmarket/add_address/<?php echo $FARMERS_MARKET_ID; ?>';
 <?php
 	} 
 ?>

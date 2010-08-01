@@ -2,7 +2,7 @@
 	$(document).ready(function() {
 		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
 		
-		$.post("/restaurant/ajaxSearchRestaurantInfo", { restaurantId:"<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '' ) ?>" },
+		$.post("/farmersmarket/ajaxSearchFarmersMarketInfo", { farmersMarketId:"<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->farmersMarketId : '' ) ?>" },
 		function(data){
 			reinitializeMap(data, 13);
 		},
@@ -26,7 +26,6 @@
 		
 	});
 	
-	
 	function loadSmallMapOnStartUp(lat, lng, zoom) {
 		var myLatlng = new google.maps.LatLng(lat, lng);
 	    var myOptions = {
@@ -41,7 +40,7 @@
 	}
 	
 	function getMarkerHtml(o) {
-		html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
+		html = "<font size = '2'><b><i>" + o.farmName + "</i></b></font><br /><font size = '1'>" +
 			  o.addressLine1 + ", " + o.addressLine2 + "<br />" + 
 			  o.addressLine3 + "</font><br />"
 			  ;
@@ -50,17 +49,17 @@
 </script>
 
 <?php
-echo '<h1>'.$RESTAURANT->restaurantName.'</h1>';
+echo '<h1>'.$FARMERS_MARKET->farmersMarketName.'</h1>';
 ?>
 <div style="overflow:auto; padding:5px;">
 	<div style="float:left; width:100px;">Website:</div>
-	<div style="float:left; width:400px;"><?php echo ( !empty($RESTAURANT->url) ? '<a target = "_blank" href="' . $this->functionlib->removeProtocolFromUrl($MANUFACTURE->url) . '">'.$MANUFACTURE->url.'</a>' : '') ?></div>
+	<div style="float:left; width:400px;"><?php echo ( !empty($FARMERS_MARKET->url) ? '<a target = "_blank" href="' . $this->functionlib->removeProtocolFromUrl($FARMERS_MARKET->url) . '">'.$FARMERS_MARKET->url.'</a>' : '') ?></div>
 </div>
 <div style="overflow:auto; padding:5px;">
 	<div style="float:left; width:100px;">Address:</div> 
 	<div style="float:left; width:400px;" id = "divAddresses">
 		<?php
-			foreach($RESTAURANT->addresses as $key => $address) {
+			foreach($FARMERS_MARKET->addresses as $key => $address) {
 				echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
 			}
 		?>

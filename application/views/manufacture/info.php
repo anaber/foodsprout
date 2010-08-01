@@ -18,7 +18,8 @@
 					record_id = arr[1];
 					
 					viewMarker(record_id);
-					$('html, body').animate({scrollTop:2000}, 'slow');
+					//$('html, body').animate({scrollTop:2000}, 'slow');
+					$('html, body').scrollTop(2000);
 				}
 			}
 		});

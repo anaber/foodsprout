@@ -372,7 +372,7 @@ class FarmModel extends Model{
 	    return $arr;
 	}
 	
-	function getFarmssJson() {
+	function getFarmsJson() {
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 		
 		$p = $this->input->post('p'); // Page
