@@ -13,6 +13,7 @@ class SupplierModel extends Model{
 		$manufactureId = $this->input->post('manufactureId');
 		$distributorId = $this->input->post('distributorId');
 		$restaurantChainId = $this->input->post('restaurantChainId');
+		$farmersMarketId = $this->input->post('farmersMarketId');
 		
 		$companyId = $this->input->post('companyId');
 		$companyName = $this->input->post('companyName');
@@ -48,6 +49,11 @@ class SupplierModel extends Model{
 			$idFieldName = 'restaurant_chain_supplier_id';
 			$fieldName = 'restaurant_chain_id';
 			$fieldValue = $restaurantChainId;
+		} else if ( !empty($farmersMarketId) ) {
+			$tableName = 'farmers_market_supplier';
+			$idFieldName = 'farmers_market_supplier_id';
+			$fieldName = 'farmers_market_id';
+			$fieldValue = $farmersMarketId;
 		} 
 		
 		
@@ -187,7 +193,7 @@ class SupplierModel extends Model{
 		return $return;
 	}
 	
-	function getSupplierForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $restaurantChainId) {
+	function getSupplierForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $restaurantChainId, $farmersMarketId) {
 		global $SUPPLIER_TYPES_2;
 		
 		$fieldName = '';
@@ -218,6 +224,11 @@ class SupplierModel extends Model{
 			$idFieldName = 'restaurant_chain_supplier_id';
 			$fieldName = 'restaurant_chain_id';
 			$fieldValue = $restaurantChainId;
+		} else if ( !empty($farmersMarketId) ) {
+			$tableName = 'farmers_market_supplier';
+			$idFieldName = 'farmers_market_supplier_id';
+			$fieldName = 'farmers_market_id';
+			$fieldValue = $farmersMarketId;
 		} 
 		
 		$suppliers = array();
@@ -302,6 +313,8 @@ class SupplierModel extends Model{
 				$this->supplierLib->distributorId = $row->$fieldName;
 			} else if ($supplierType == 'restaurant_chain') {
 				$this->supplierLib->restaurantChainId = $row->$fieldName;
+			} else if ($supplierType == 'farmers_market') {
+				$this->supplierLib->farmersMarketId = $row->$fieldName;
 			} 
 		}
 		
@@ -356,6 +369,7 @@ class SupplierModel extends Model{
 		$manufactureId = $this->input->post('manufactureId');
 		$distributorId = $this->input->post('distributorId');
 		$restaurantChainId = $this->input->post('restaurantChainId');
+		$farmersMarketId = $this->input->post('farmersMarketId');
 		
 		$companyId = $this->input->post('companyId');
 		$companyName = $this->input->post('companyName');
@@ -391,6 +405,11 @@ class SupplierModel extends Model{
 			$idFieldName = 'restaurant_chain_supplier_id';
 			$fieldName = 'restaurant_chain_id';
 			$fieldValue = $restaurantChainId;
+		} else if ( !empty($farmersMarketId) ) {
+			$tableName = 'farmers_market_supplier';
+			$idFieldName = 'farmers_market_supplier_id';
+			$fieldName = 'farmers_market_id';
+			$fieldValue = $farmersMarketId;
 		} 
 		
 		if (empty($companyId) && empty($companyName) ) {

@@ -10,23 +10,27 @@ var documentLocation = '';
 <?php
 	if ( isset($MANUFACTURE_ID) ) {
 ?>
-		documentLocation = '/admincp/manufacture';
+		documentLocation = '/admincp/manufacture/add_supplier/<?php echo $MANUFACTURE_ID; ?>';
 <?php
 	} else if ( isset($FARM_ID) ) {
 ?>
-		documentLocation = '/admincp/farm';
+		documentLocation = '/admincp/farm/add_supplier/<?php echo $FARM_ID; ?>';
 <?php
 	} else if ( isset($RESTAURANT_ID) ) {
 ?>
-		documentLocation = '/admincp/restaurant';
+		documentLocation = '/admincp/restaurant/add_supplier/<?php echo $RESTAURANT_ID; ?>';
 <?php
 	} else if ( isset($DISTRIBUTOR_ID) ) {
 ?>
-		documentLocation = '/admincp/distributor';
+		documentLocation = '/admincp/distributor/add_supplier/<?php echo $DISTRIBUTOR_ID; ?>';
 <?php
 	} else if ( isset($RESTAURANT_CHAIN_ID) ) {
 ?>
-		documentLocation = '/admincp/restaurantchain';
+		documentLocation = '/admincp/restaurantchain/add_supplier/<?php echo $RESTAURANT_CHAIN_ID; ?>';
+<?php
+	} else if ( isset($FARMERS_MARKET_ID) ) {
+?>
+		documentLocation = '/admincp/farmersmarket/add_supplier/<?php echo $FARMERS_MARKET_ID; ?>';
 <?php
 	}
 ?>
@@ -116,6 +120,7 @@ $(document).ready(function() {
 							  restaurantId: $('#restaurantId').val(),
 							  distributorId: $('#distributorId').val(),
 							  restaurantChainId: $('#restaurantChainId').val(),
+							  farmersMarketId: $('#farmersMarketId').val(),
 							   
 							  supplierId: $('#supplierId').val()
 							};
@@ -131,7 +136,8 @@ $(document).ready(function() {
 							  farmId: $('#farmId').val(),
 							  restaurantId: $('#restaurantId').val(),
 							  distributorId: $('#distributorId').val(),
-							  restaurantChainId: $('#restaurantChainId').val()
+							  restaurantChainId: $('#restaurantChainId').val(),
+							  farmersMarketId: $('#farmersMarketId').val()
 							};
 				act = 'add';
 			}
@@ -309,6 +315,7 @@ function formatItem(row) {
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
 			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR_ID) ? $DISTRIBUTOR_ID : '') ?>">
 			<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
+			<input type = "hidden" name = "farmersMarketId" id = "farmersMarketId" value = "<?php echo (isset($FARMERS_MARKET_ID) ? $FARMERS_MARKET_ID : '') ?>">
 			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyId : '') ?>">			
 		</td>
 	</tr>

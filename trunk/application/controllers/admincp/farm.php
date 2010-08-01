@@ -140,7 +140,7 @@ class Farm extends Controller {
 		$farm = $this->FarmModel->getFarmFromId($id);
 		
 		$this->load->model('SupplierModel','',true);
-		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $id, '', '', '' );
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $id, '', '', '', '' );
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -173,7 +173,7 @@ class Farm extends Controller {
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'farm');
 		
-		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $supplier->farmId, '', '', '');
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $supplier->farmId, '', '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -213,7 +213,7 @@ class Farm extends Controller {
 		$farm = $this->FarmModel->getFarmFromId($id);
 		
 		$this->load->model('AddressModel','',true);
-		$addresses = $this->AddressModel->getAddressForCompany( '', $id, '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', $id, '', '', '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -250,7 +250,7 @@ class Farm extends Controller {
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
 		
-		$addresses = $this->AddressModel->getAddressForCompany( '', $address->farmId, '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', $address->farmId, '', '', '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(

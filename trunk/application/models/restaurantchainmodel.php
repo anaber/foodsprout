@@ -110,7 +110,7 @@ class RestaurantChainModel extends Model{
 			$this->RestaurantLib->restaurantType = $row['restaurant_type'];
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id']);
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id'], '');
 			$this->RestaurantLib->suppliers = $suppliers;
 			
 			$restaurantChains[] = $this->RestaurantLib;

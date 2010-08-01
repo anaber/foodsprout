@@ -70,6 +70,9 @@ $SUPPLIER_TYPES_2 = array (
 									'distributor' 	=> 'Distributor',
 									'manufacture' 	=> 'Manufacture',
 							),
+					'farmers_market_supplier' => 	array(
+									'farm' 			=> 'Farm',
+							),
 					
 				);
 

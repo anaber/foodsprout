@@ -24,11 +24,11 @@ class ManufactureModel extends Model{
 			$this->manufactureLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '' );
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '', '' );
 			$this->manufactureLib->addresses = $addresses;
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '' );
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '', '' );
 			$this->manufactureLib->suppliers = $suppliers;
 			
 			$manufactures[] = $this->manufactureLib;
@@ -100,7 +100,7 @@ class ManufactureModel extends Model{
 					$newManufactureId = $this->db->insert_id();
 					
 					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress('', '', $newManufactureId, '', $companyId);
+					$address = $CI->AddressModel->addAddress('', '', $newManufactureId, '', '', $companyId);
 				} else {
 					$return = false;
 				}
@@ -146,7 +146,7 @@ class ManufactureModel extends Model{
 			$CI =& get_instance();
 				
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row->manufacture_id, '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row->manufacture_id, '', '', '', '');
 			$this->manufactureLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
@@ -354,11 +354,11 @@ class ManufactureModel extends Model{
 			$this->ManufactureLib->manufactureType = $row['manufacture_type'];
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '');
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '', '');
 			$this->ManufactureLib->suppliers = $suppliers;
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '', '');
 			$this->ManufactureLib->addresses = $addresses;
 			
 			$manufactures[] = $this->ManufactureLib;
@@ -515,7 +515,7 @@ class ManufactureModel extends Model{
 			$this->ManufactureLib->manufactureType = $row['manufacture_type'];
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '');
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '', '');
 			$this->ManufactureLib->suppliers = $suppliers;
 			
 			$CI->load->model('AddressModel','',true);

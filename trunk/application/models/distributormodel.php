@@ -24,11 +24,11 @@ class DistributorModel extends Model{
 			$this->DistributorLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['distributor_id'], '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['distributor_id'], '', '', '');
 			$this->DistributorLib->addresses = $addresses;
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', $row['distributor_id'], '');
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', $row['distributor_id'], '', '');
 			$this->DistributorLib->suppliers = $suppliers;
 			
 			$distributors[] = $this->DistributorLib;
@@ -82,7 +82,7 @@ class DistributorModel extends Model{
 					$newDistributorId = $this->db->insert_id();
 					
 					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress('', '', '', $newDistributorId, $companyId);
+					$address = $CI->AddressModel->addAddress('', '', '', $newDistributorId, '', $companyId);
 				} else {
 					$return = false;
 				}
@@ -126,7 +126,7 @@ class DistributorModel extends Model{
 			$CI =& get_instance();
 				
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row->distributor_id, '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row->distributor_id, '', '', '');
 			$this->DistributorLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
@@ -331,11 +331,11 @@ class DistributorModel extends Model{
 			$this->DistributorLib->distributorName = $row['distributor_name'];
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', $row['distributor_id'], '');
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', $row['distributor_id'], '', '');
 			$this->DistributorLib->suppliers = $suppliers;
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['distributor_id'], '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['distributor_id'], '', '', '');
 			$this->DistributorLib->addresses = $addresses;
 			
 			$distributors[] = $this->DistributorLib;

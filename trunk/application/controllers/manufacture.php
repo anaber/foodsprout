@@ -69,7 +69,7 @@ class Manufacture extends Controller {
 		
 		// Get the suppliers for this manufacture
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', $manufactureId, '', '');
+		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', $manufactureId, '', '', '');
 		
 		// SEO information
 		/*

@@ -42,6 +42,7 @@ document.onclick = jsddm_close;
 			<ul>
 				<li><?php echo anchor('admincp/company', 'Company'); ?></li>
 				<li><?php echo anchor('admincp/farm', 'Farm'); ?></li>
+				<li><?php echo anchor('admincp/farmersmarket', 'Farmers Market'); ?></li>
 				<li><?php echo anchor('admincp/manufacture', 'Manufacture'); ?></li>
 				<li><?php echo anchor('admincp/restaurant', 'Restaurant'); ?></li>
 				<li><?php echo anchor('admincp/restaurantchain', 'Restaurant Chain'); ?></li>

@@ -223,7 +223,7 @@ class RestaurantChain extends Controller {
 		$restaurantChain = $this->RestaurantChainModel->getRestaurantChainFromId($id);
 		
 		$this->load->model('SupplierModel','',true);
-		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', '', '', $id );
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', '', '', $id, '' );
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -256,7 +256,7 @@ class RestaurantChain extends Controller {
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'restaurant_chain');
 		
-		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', '', '', $supplier->restaurantChainId);
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', '', '', $supplier->restaurantChainId, '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(

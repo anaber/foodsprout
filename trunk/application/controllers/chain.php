@@ -62,7 +62,7 @@ class Chain extends Controller {
 		$menu = $this->RestaurantChainModel->getRestaurantChainMenu($restaurantChainId);
 		
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurantChainId);
+		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurantChainId, '');
 		
 		// SEO
 		$this->load->model('SeoModel');
