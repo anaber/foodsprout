@@ -52,17 +52,60 @@
 <?php
 echo '<h1>'.$RESTAURANT->restaurantName.'</h1>';
 ?>
-<div style="overflow:auto; padding:5px;">
-	<div style="float:left; width:100px;">Website:</div>
-	<div style="float:left; width:400px;"><?php echo ( !empty($RESTAURANT->url) ? '<a target = "_blank" href="' . $this->functionlib->removeProtocolFromUrl($MANUFACTURE->url) . '">'.$MANUFACTURE->url.'</a>' : '') ?></div>
-</div>
-<div style="overflow:auto; padding:5px;">
-	<div style="float:left; width:100px;">Address:</div> 
-	<div style="float:left; width:400px;" id = "divAddresses">
-		<?php
-			foreach($RESTAURANT->addresses as $key => $address) {
-				echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
-			}
-		?>
+<div id="restaurantname">
+    <div id="logorestaurant"><img src="img/applebeelogo.jpg" width="201" height="35" alt="applebee-logo" /></div> 
+  </div>
+  
+  <!-- left column-->
+  <div id="rest-main-details">	
+    <div id="rest-main-img"><img src="img/applebee-img.jpg" width="211" height="143" alt="apple-img" /></div>
+    
+    <div id="rest-dec">
+      <div id="dec-head"><img src="img/decription-icon.jpg" width="106" height="22" alt="dec-head" /></div>
+      <div id="description-details">Welcome to our neighborhood! Applebee's Neighborhood Grill and Bar is the world's casual dinting leader, with over 2000 restaurants in 49 states</div>
+    </div>
+    
+    <div id="location-icon"><img src="img/location-head-icon.jpg" width="89" height="23" alt="location-head-icon" /></div>
+    
+    <div id="map">
+	<br>
+	<div style="color:#333;">
+	http://www.applebees.com<br>
+	128 King Street<br>
+	San Francisco, CA<br>
+	650-210-3100<br>
 	</div>
-</div>
+    </div>
+  </div>
+  <!-- end left column -->
+  
+  <!-- center tabs -->
+  <div id="tabinfo">
+  
+    <div id="menu-bar"> 
+      <div id="suppliers">  <a href="#">Suppliers</a></div>
+      <div id="menu">    <a href="#">Menu</a></div>
+      <div id="comments">    <a href="#">Comments</a></div>
+      <div id="add-menu"><a href="#">+ Add Menu</a></div>
+    </div>
+    
+  	<div id="menus"> 
+		
+		<?php
+			$this->load->view('restaurant/menu');
+		?>
+	
+	</div>
+	
+  </div>
+  <!-- end center tabs -->
+  
+  <!-- right ads -->
+  <div id="add-designs">
+    <div id="add1">
+      <img src="img/add-design.jpg" width="171" height="171" /></div>
+      
+      <div id="add2">
+      <img src="img/add-design.jpg" width="171" height="171" /></div>
+  </div>
+  <!-- end right ads -->

@@ -167,7 +167,7 @@ class Restaurant extends Controller {
 		$data['data']['right']['map']['height'] = '200';
 		$data['data']['right']['map']['hide_map'] = 'no';
 		
-		$this->load->view('templates/center_right_template', $data);
+		$this->load->view('templates/center_template', $data);
 	}
 	
 	

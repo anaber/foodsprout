@@ -83,21 +83,12 @@ class Chain extends Controller {
 		// Load all the views for the center column
 		$data['CENTER'] = array(
 				'info' => '/restaurant/info_chain',
-				'menu' => '/restaurant/menu',
-				'suppliers' => '/restaurant/suppliers',
-			);
-		
-		// Load all the views for the right column
-		$data['RIGHT'] = array(
-				'image' => 'includes/right/image',
-				'ad' => 'includes/right/ad',
-				//'map' => 'includes/right/map',
 			);
 		
 		// Data to be passed to the views
 		// Center -> Menu
 		$data['data']['center']['info']['RESTAURANT'] = $restaurantChainInfo;
-		$data['data']['center']['menu']['MENU'] = $menu;
+		$data['data']['center']['info']['MENU'] = $menu;
 		$data['data']['center']['suppliers']['SUPPLIER'] = $suppliers;
 		
 		// Right -> Image
@@ -113,7 +104,7 @@ class Chain extends Controller {
 		
 		$data['data']['right']['suppliers']['VIEW_HEADER'] = "List of Suppliers";
 		
-		$this->load->view('templates/center_right_template', $data);
+		$this->load->view('templates/center_template', $data);
 	}
 	
 	function ajaxSearchRestaurantChains() {
