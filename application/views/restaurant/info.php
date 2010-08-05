@@ -49,23 +49,21 @@
 	}
 </script>
 
-<?php
-echo '<h1>'.$RESTAURANT->restaurantName.'</h1>';
-?>
+
 <div id="restaurantname">
-    <div id="logorestaurant"><img src="img/applebeelogo.jpg" width="201" height="35" alt="applebee-logo" /></div> 
+    <div id="logorestaurant"><?php echo '<h1>'.$RESTAURANT->restaurantName.'</h1>';?></div> 
   </div>
   
   <!-- left column-->
   <div id="rest-main-details">	
-    <div id="rest-main-img"><img src="img/applebee-img.jpg" width="211" height="143" alt="apple-img" /></div>
+    <div id="rest-main-img"><img src="/img/applebee-img.jpg" width="211" height="143" alt="apple-img" /></div>
     
     <div id="rest-dec">
-      <div id="dec-head"><img src="img/decription-icon.jpg" width="106" height="22" alt="dec-head" /></div>
+      <div id="dec-head"><img src="/img/decription-icon.jpg" width="106" height="22" alt="dec-head" /></div>
       <div id="description-details">Welcome to our neighborhood! Applebee's Neighborhood Grill and Bar is the world's casual dinting leader, with over 2000 restaurants in 49 states</div>
     </div>
     
-    <div id="location-icon"><img src="img/location-head-icon.jpg" width="89" height="23" alt="location-head-icon" /></div>
+    <div id="location-icon"><img src="/img/location-head-icon.jpg" width="89" height="23" alt="location-head-icon" /></div>
     
     <div id="map">
 	<br>
@@ -102,10 +100,8 @@ echo '<h1>'.$RESTAURANT->restaurantName.'</h1>';
   
   <!-- right ads -->
   <div id="add-designs">
-    <div id="add1">
-      <img src="img/add-design.jpg" width="171" height="171" /></div>
-      
-      <div id="add2">
-      <img src="img/add-design.jpg" width="171" height="171" /></div>
+    	<?php
+			$this->load->view('includes/left/ad');
+		?>
   </div>
   <!-- end right ads -->

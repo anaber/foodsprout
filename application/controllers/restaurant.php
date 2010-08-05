@@ -139,8 +139,6 @@ class Restaurant extends Controller {
 		// List of views to be included
 		$data['CENTER'] = array(
 				'info' => '/restaurant/info',
-				'menu' => '/restaurant/menu',
-				'suppliers' => '/restaurant/suppliers',
 			);
 		
 		$data['RIGHT'] = array(
@@ -152,8 +150,8 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		// Center -> Menu
 		$data['data']['center']['info']['RESTAURANT'] = $restaurantinfo;
-		$data['data']['center']['menu']['MENU'] = $menu;
-		$data['data']['center']['menu']['SUPPLIER'] = $suppliers;
+		$data['data']['center']['info']['MENU'] = $menu;
+		$data['data']['center']['info']['SUPPLIER'] = $suppliers;
 		
 		
 		// Right -> Image

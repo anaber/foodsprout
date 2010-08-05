@@ -5,7 +5,7 @@
 #leafimg #mainimg #restaurantname #logorestaurant {
 	float: left;
 	height: 35px;
-	width: 201px;
+	width: 500px;
 	padding-left: 15px;
 	padding-top: 22px;
 }
@@ -177,7 +177,7 @@
 }
 #leafimg #mainimg #add-designs {
 	float: right;
-	height: 390px;
+	height: 600px;
 	width: 200px;
 	padding-right: 4px;
 }

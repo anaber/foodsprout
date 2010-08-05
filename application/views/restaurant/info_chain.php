@@ -54,10 +54,8 @@
   
   <!-- right ads -->
   <div id="add-designs">
-    <div id="add1">
-      <img src="/img/add-design.jpg" width="171" height="171" /></div>
-      
-      <div id="add2">
-      <img src="/img/add-design.jpg" width="171" height="171" /></div>
+      	<?php
+			$this->load->view('includes/left/ad');
+		?>
   </div>
   <!-- end right ads -->

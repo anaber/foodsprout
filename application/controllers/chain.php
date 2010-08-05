@@ -89,7 +89,7 @@ class Chain extends Controller {
 		// Center -> Menu
 		$data['data']['center']['info']['RESTAURANT'] = $restaurantChainInfo;
 		$data['data']['center']['info']['MENU'] = $menu;
-		$data['data']['center']['suppliers']['SUPPLIER'] = $suppliers;
+		$data['data']['center']['info']['SUPPLIER'] = $suppliers;
 		
 		// Right -> Image
 		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';

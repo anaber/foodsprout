@@ -8,6 +8,7 @@
 <div id="footerbg">
   <div id="footertext"><?php echo anchor('about', 'About'); ?> | <?php echo anchor('about/contact', 'Contact'); ?> | <?php echo anchor('about/business', 'Businesses'); ?></div>
 </div>
+<br /><br />
 <!-- end footer -->
 </body>
 </html>
