@@ -3,6 +3,10 @@ body {
 	padding: 0px;
 	background:#E5E5E5;
 	color:#000;
+	font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;
+}
+a, a:visited{
+	color:#1111B5;
 }
 #header {
 	height: 80px;
@@ -24,11 +28,10 @@ body {
 #header #headeritms #signup {
 	float: right;
 	height: 29px;
-	width: 336px;
 	text-align:right;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	background:#fff;
+	background:#E5E5E5;
 	padding-top:0px;
 	margin-top:8px;
 }
@@ -40,6 +43,7 @@ body {
 	padding-left: 10px;
 	color: #3F5A25;
 	text-align:right;
+	padding-right: 10px;
 }
 .underlinebuttons {
 	color: #00A2DB;
@@ -47,7 +51,7 @@ body {
 }
 #header #headeritms #navigation {
 	height: 35px;
-	width: 460px;
+	width: 470px;
 	float: left;
 	padding-left: 120px;
 	padding-top: 2px;
@@ -59,7 +63,7 @@ body {
 	padding-right: 10px;
 	padding-left: 10px;
 	float: left;
-	width: 110px;
+	width: 120px;
 	margin-top: 3px;
 	font-family: Helvetica,Arial,"Myriad Pro";
 	font-size: 16px;
@@ -74,9 +78,15 @@ body {
 	-moz-box-shadow: 0px -3px 3px #666;
 	-webkit-box-shadow: 0px -3px 3px #666;
 }
-#header #headeritms #navigation #tabon a, a:visited {
+#header #headeritms #navigation .tabon a, .tabon a:visited, .tabon a:hover {
 	background-color:#fff;
 	border:0;
+	height:32px;
+}
+#header #headeritms #navigation .tabon a:hover{
+	background-color:#fff;
+	border:0;
+	height:32px;
 }
 #header #headeritms #navigation a {
 	display: block;

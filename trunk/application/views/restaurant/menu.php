@@ -9,7 +9,14 @@ if (count($MENU) > 0 ) {
 	$i = 0;
 	foreach($MENU as $r) :
 		$i++;	
-		echo '<div><strong>'.$r->productName.'</strong></div><div style="font-size:9px; padding-right:20px;">Ingredients: '.$r->ingredient.'</div><br>';
+		echo '<div class="menuitem"> 
+	      	<div class="menuitemimg"><img src="/img/img1.jpg" width="132" height="107" alt="receipe" /></div> 
+	        <div class="menuitemname">'.$r->productName.'</div> 
+	         <div class="menuitemdetails">
+	         	'.$r->ingredient.'
+	         </div>
+			
+	    </div>';
  	endforeach;
 ?>
 
