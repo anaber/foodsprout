@@ -121,10 +121,27 @@ class Company extends Controller {
 		$data['data']['right']['map']['width'] = '300';
 		$data['data']['right']['map']['height'] = '200';
 		
-		
-		
-		
 		$this->load->view('templates/center_right_template', $data);
+	}
+	
+	//function get_companies_based_on_type($q) {
+	function get_companies_based_on_type() {
+		$this->load->model('CompanyModel', '', TRUE);
+		$q = $this->input->post('q');
+		/*
+		$arr = explode('___' , $q);
+		$companyType = $arr[0];
+		$q = $arr[1];
+		*/
+		
+		$companyType = 'farm';
+		if ($companyType != '') {
+			$companies = $this->CompanyModel->getCompanyBasedOnTypeFrontEnd( $companyType, $q );
+		} else {
+			$companies = 'No Match';
+		}
+		
+		echo $companies;
 	}
 	
 }

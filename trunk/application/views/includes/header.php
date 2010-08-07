@@ -11,7 +11,7 @@
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
 <link href="/css/mainstyle.css" rel="stylesheet" type="text/css" />
-<link href="/css/rest1.css" rel="stylesheet" type="text/css" />
+
 <link rel="stylesheet" href="<?php echo base_url()?>css/messages.css" type="text/css" media="all" />
 <link rel="stylesheet" href="<?php echo base_url()?>css/validationEngine.jquery.css" type="text/css" media="screen" title="no title" charset="utf-8" />
 <link rel="stylesheet" href="<?php echo base_url()?>css/popup.css" type="text/css" media="all"/>
@@ -42,14 +42,14 @@ body {
 </head>
 
 <body>
+
 <!-- header -->
 <div id="header">
   <div id="headeritms">
     <div id="logo"><a href="/"><img src="/img/foodsprout-logo.gif" width="144" height="44" alt="Food Sprout" border="0" /></a></div>
-  
     <!-- login -->
     <?php
-		if ($this->session->userdata('isAuthenticated') == 1 )
+    	if ($this->session->userdata('isAuthenticated') == 1 )
 		{
 			$this->load->view('includes/menu_logout');
 		}
@@ -74,6 +74,7 @@ body {
   </div>
 </div>
 <!-- end header -->
+
 
 <!-- leaf bg -->
 <div id="leafimg">

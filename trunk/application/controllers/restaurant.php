@@ -90,18 +90,18 @@ class Restaurant extends Controller {
 		
 		// Getting information from models for the views
 		$this->load->model('RestaurantModel');
-		$restaurantinfo = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
 		
 			// Check to see if this restaurant is part of a chain
-			$isChain = $restaurantinfo->restaurantChainId;
+			$isChain = $restaurant->restaurantChainId;
 			if(isset($isChain))
 			{
 				// Restaurant is part of a chain, get the chain menu and suppliers
 				$this->load->model('RestaurantChainModel');
-				$chain_menu = $this->RestaurantChainModel->getRestaurantChainMenu($restaurantinfo->restaurantChainId);
+				$chain_menu = $this->RestaurantChainModel->getRestaurantChainMenu($restaurant->restaurantChainId);
 
 				$this->load->model('SupplierModel');
-				$chain_suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurantinfo->restaurantChainId, '');
+				$chain_suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurant->restaurantChainId, '');
 			}
 			else
 			{
@@ -126,7 +126,7 @@ class Restaurant extends Controller {
 		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_detail');
 		
 		$seo_data_array = array(
-			'restaurant_name' => $restaurantinfo->restaurantName,
+			'restaurant_name' => $restaurant->restaurantName,
 			'restaurant_type' => 'Fast Food',
 			'cuisines' => 'Fast Food, American, Pizza',
 		);
@@ -149,9 +149,10 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		// Center -> Menu
-		$data['data']['center']['info']['RESTAURANT'] = $restaurantinfo;
-		$data['data']['center']['info']['MENU'] = $menu;
-		$data['data']['center']['info']['SUPPLIER'] = $suppliers;
+		$data['data']['center']['info']['RESTAURANT'] = $restaurant;
+		$data['data']['center']['menu']['MENU'] = $menu;
+		$data['data']['center']['suppliers']['SUPPLIERS'] = $suppliers;
+		$data['data']['center']['suppliers']['RESTAURANT_ID'] = $restaurant->restaurantId;
 		
 		
 		// Right -> Image
@@ -219,6 +220,65 @@ class Restaurant extends Controller {
 	
 	function map() {
 		$this->load->view('map');
+	}
+	
+	function add_supplier($id) {
+		global $SUPPLIER_TYPES_2;
+		$data = array();
+		
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
+		
+		$this->load->model('SupplierModel','',true);
+		$suppliers = $this->SupplierModel->getSupplierForCompany( $id, '', '', '', '', '' );
+		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_detail');
+		
+		$seo_data_array = array(
+			'restaurant_name' => $restaurant->restaurantName,
+			'restaurant_type' => 'Fast Food',
+			'cuisines' => 'Fast Food, American, Pizza',
+		);
+		
+		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
+		$data['SEO'] = $seo;
+		// SEO ENDS here
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'info' => '/restaurant/info',
+				'list' => '/includes/supplier_form',
+			);
+		
+		$data['RIGHT'] = array(
+				'image' => 'includes/right/image',
+				'ad' => 'includes/right/ad',
+				'map' => 'includes/right/map',
+			);
+		
+		// Data to be passed to the views
+		// Center -> Menu
+		$data['data']['center']['info']['RESTAURANT'] = $restaurant;
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier";
+		//$data['data']['center']['list']['RESTAURANT'] = $restaurant;
+		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['list']['TABLE'] = 'restaurant_supplier';
+		
+		// Right -> Image
+		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
+		$data['data']['right']['image']['width'] = '300';
+		$data['data']['right']['image']['height'] = '200';
+		$data['data']['right']['image']['title'] = '';
+		
+		// Right -> Map
+		$data['data']['right']['map']['width'] = '300';
+		$data['data']['right']['map']['height'] = '200';
+		$data['data']['right']['map']['hide_map'] = 'no';
+		
+		$this->load->view('templates/center_right_template', $data);
 	}
 }
 

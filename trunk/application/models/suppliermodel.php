@@ -615,6 +615,171 @@ class SupplierModel extends Model{
 		return $companies;
 	}
 	
+	
+	function getSupplierForCompanyJson($restaurantId, $farmId, $manufactureId, $distributorId, $restaurantChainId, $farmersMarketId) {
+		global $SUPPLIER_TYPES_2, $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$fieldName = '';
+		$fieldValue = '';
+		
+		if ( !empty($restaurantId) ) {
+			$tableName = 'restaurant_supplier';
+			$idFieldName = 'restaurant_supplier_id';
+			$fieldName = 'restaurant_id';
+			$fieldValue = $restaurantId;
+		} else if ( !empty($farmId) ) {
+			$tableName = 'farm_supplier';
+			$idFieldName = 'farm_supplier_id';
+			$fieldName = 'farm_id';
+			$fieldValue = $farmId;
+		} else if ( !empty($manufactureId) ) {
+			$tableName = 'manufacture_supplier';
+			$idFieldName = 'manufacture_supplier_id';
+			$fieldName = 'manufacture_id';
+			$fieldValue = $manufactureId;
+		} else if ( !empty($distributorId) ) {
+			$tableName = 'distributor_supplier';
+			$idFieldName = 'distributor_supplier_id';
+			$fieldName = 'distributor_id';
+			$fieldValue = $distributorId;
+		} else if ( !empty($restaurantChainId) ) {
+			$tableName = 'restaurant_chain_supplier';
+			$idFieldName = 'restaurant_chain_supplier_id';
+			$fieldName = 'restaurant_chain_id';
+			$fieldValue = $restaurantChainId;
+		} else if ( !empty($farmersMarketId) ) {
+			$tableName = 'farmers_market_supplier';
+			$idFieldName = 'farmers_market_supplier_id';
+			$fieldName = 'farmers_market_id';
+			$fieldValue = $farmersMarketId;
+		} 
+		
+		$start = 0;
+		$page = 0;
+		
+		/** $base_query*/
+		$base_query = 'SELECT ' . $tableName . '.*';
+			foreach ($SUPPLIER_TYPES_2[$tableName] as $key => $value) {
+				$base_query .= ', '. $key .'.'.$key.'_name';
+			}
+			
+			$base_query .= ' FROM '.$tableName;
+						
+			foreach ($SUPPLIER_TYPES_2[$tableName] as $key => $value) {
+				$base_query .= ' LEFT JOIN ' . $key .
+				' ON ' . $tableName . '.supplier_' . $key . '_id = ' . $key . '.' . $key . '_id';
+			}
+		/** $base_query */
+		
+		/** $base_query_count */
+		$base_query_count = 'SELECT count(*) AS num_records';
+			
+			$base_query_count .= ' FROM '.$tableName;
+						
+			foreach ($SUPPLIER_TYPES_2[$tableName] as $key => $value) {
+				$base_query_count .= ' LEFT JOIN ' . $key .
+				' ON ' . $tableName . '.supplier_' . $key . '_id = ' . $key . '.' . $key . '_id';
+			}
+		/** $base_query_count */
+		
+		
+		$where = 
+				' WHERE '.$tableName . '.' .$fieldName . ' = ' . $fieldValue;
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY restaurant_chain_supplier_id';
+			$sort = 'restaurant_chain_supplier_id';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "RestaurantChainModel.getRestaurantChainMenusJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$suppliers = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('SupplierLib');
+			unset($this->supplierLib);
+			
+			$this->supplierLib->supplierId = $row[$idFieldName];
+			if (isset( $row['restaurant_name']) ) {
+				$this->supplierLib->supplierType = 'restaurant';
+				$this->supplierLib->supplierName = $row['restaurant_name'];
+			} else if ( isset($row['farm_name']) ) {
+				$this->supplierLib->supplierType = 'farm';
+				$this->supplierLib->supplierName = $row['farm_name'];
+			} else if ( isset($row['manufacture_name']) ) {
+				$this->supplierLib->supplierType = 'manufacture';
+				$this->supplierLib->supplierName = $row['manufacture_name'];
+			} else if ( isset($row['distributor_name']) ) {
+				$this->supplierLib->supplierType = 'distributor';
+				$this->supplierLib->supplierName = $row['distributor_name'];
+			}
+			
+			$suppliers[] = $this->supplierLib;
+			unset($this->supplierLib);
+		}
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $fieldValue, '', '');
+		$arr = array(
+			'results'    => $suppliers,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
 }
 
 

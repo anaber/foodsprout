@@ -2,6 +2,7 @@
 
 class Farm extends Controller {
 	
+	var $css;
 	function __construct()
 	{
 		parent::Controller();
@@ -9,6 +10,9 @@ class Farm extends Controller {
 		{
 			redirect('about/privatebeta');
 		}
+		$this->css = array(
+			'farm',
+		);
 	}
 	
 	function index() {
@@ -66,6 +70,11 @@ class Farm extends Controller {
 		} else {
 			$data['data']['center']['list']['hide_map'] = 'no';
 			$data['data']['center']['list']['hide_filters'] = 'no';
+		}
+		
+		// Custom CSS
+		if (!empty ($this->css) ) {
+			$data['CSS'] = $this->css;
 		}
 		
 		$this->load->view('templates/left_center_template', $data);
