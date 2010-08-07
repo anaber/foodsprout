@@ -24,16 +24,19 @@ function reinitializeTabs() {
 	data = jsonData;
 	$("#suppliers").click(function(e) {
 		e.preventDefault();
+		$('#bottomPaging').hide();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'supplier');
 	});
 	
 	$("#menu").click(function(e) {
 		e.preventDefault();
+		$('#bottomPaging').hide();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'menu');
 	});
 	
 	$("#comments").click(function(e) {
 		e.preventDefault();
+		$('#bottomPaging').hide();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
 	});
 }
@@ -97,10 +100,28 @@ function redrawContent(data, type) {
 	addItemContent = drawAddItem();
 	$('#addItem').append(addItemContent);
 	
-	
 	reinitializePagingEvent(data);
 	
 	reinitializePageCountEvent(data);
+	
+	if (data.param.numResults > 0) {
+		$('#numRecords2').empty();
+		$('#numRecords2').append(numRecordsContent);
+	
+		$('#recordsPerPage2').empty();
+		recordsPerPageContent = drawRecordsPerPage2(data.param);
+		$('#recordsPerPage2').append(recordsPerPageContent);
+	
+		$('#pagingLinks2').empty();
+		pagingLinksContent = drawPagingLinks2(data.param);
+		$('#pagingLinks2').append(pagingLinksContent);
+		
+		$('#bottomPaging').show();
+		
+		reinitializePagingEvent2(data);
+	
+		reinitializePageCountEvent2(data);
+	}
 	
 	//disablePopupFadeIn();
 }
@@ -135,6 +156,7 @@ function changeSelectedTab() {
 }
 
 function addSupplierResult(supplier, count) {
+	/*
 	var html = '';
 	html +=	'<div class="menuitem">';
 	
@@ -143,6 +165,26 @@ function addSupplierResult(supplier, count) {
 
 	html +=	'	<div class="menuitemname">' + supplier.supplierName + ' (' + supplierType.toUpperCase() + ')' + '</div>';
 	html +=	'</div>';
+	
+	*/
+	
+	var html =
+	'<div style="overflow:auto; padding:5px;">' +
+	'	<div style="float:left; width:220px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '">'+ supplier.supplierName +'</a><br>Type: '+ supplier.supplierType + '</div>' +
+	'	<div style="float:right; width:300px;">Address:<br />';
+	
+	$.each(supplier.addresses, function(j, address) {
+		if (j == 0) {
+			html += '<em>' + address.displayAddress + '</em>';
+		} else {
+			html += "<br /><br />" + '<em>' + address.displayAddress + '</em>';
+		}
+	});
+	
+	html += '</div>';
+	html +=
+	'</div>'
+	;
 	
 	return html;
 }
@@ -198,6 +240,37 @@ function drawRecordsPerPage(params) {
 	
 }
 
+function drawRecordsPerPage2(params) {
+	str = '';
+	str +=  'Items per page: ';
+	
+	if (params.perPage == 10) {
+		str += '<strong>10</strong> | ';
+	} else {
+		str += '<a href="#" id = "10PerPage2">10</a> | ';
+	}
+	
+	if (params.perPage == 20) {
+		str += '<strong>20</strong> | ';
+	} else {
+		str += '<a href="#" id = "20PerPage2">20</a> | ';
+	}
+	
+	if (params.perPage == 40) {
+		str += '<strong>40</strong> | ';
+	} else {
+		str += '<a href="#" id = "40PerPage2">40</a> | ';
+	}
+	
+	if (params.perPage == 50) {
+		str += '<strong>50</strong>';
+	} else {
+		str += '<a href="#" id = "50PerPage2">50</a>';
+	}
+	
+	return str;
+}
+
 function drawPagingLinks(params) {
 	str = '';
 	str += '<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;';
@@ -205,6 +278,17 @@ function drawPagingLinks(params) {
 	str += '&nbsp;&nbsp;&nbsp; Page ' + (parseInt(params.page)+1) + ' of ' + params.totalPages + '&nbsp;&nbsp;&nbsp;';
 	str += '<a href="#" id = "imgNext">Next</a> &nbsp;&nbsp;';
 	str += '<a href="#" id = "imgLast">Last</a>';
+	
+	return str;
+}
+
+function drawPagingLinks2(params) {
+	str = '';
+	str += '<a href="#" id = "imgFirst2">First</a> &nbsp;&nbsp;';
+	str += '<a href="#" id = "imgPrevious2">Previous</a> ';
+	str += '&nbsp;&nbsp;&nbsp; Page ' + (parseInt(params.page)+1) + ' of ' + params.totalPages + '&nbsp;&nbsp;&nbsp;';
+	str += '<a href="#" id = "imgNext2">Next</a> &nbsp;&nbsp;';
+	str += '<a href="#" id = "imgLast2">Last</a>';
 	
 	return str;
 }
@@ -275,6 +359,66 @@ function reinitializePageCountEvent(data) {
 	});
 	
 	$("#50PerPage").click(function(e) {
+		e.preventDefault();
+		//loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+	});
+}
+
+function reinitializePagingEvent2(data) {
+	$("#imgFirst2").click(function(e) {
+		e.preventDefault();
+		//loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+	});
+	
+	$("#imgPrevious2").click(function(e) {
+		e.preventDefault();
+		previousPage = parseInt(data.param.page)-1;
+		if (previousPage <= 0) {
+			previousPage = data.param.firstPage;
+		}
+		//loadPopupFadeIn();
+		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+	});
+	
+	$("#imgNext2").click(function(e) {
+		e.preventDefault();
+		nextPage = parseInt(data.param.page)+1;
+		if (nextPage >= data.param.totalPages) {
+			nextPage = data.param.lastPage;
+		}
+		//loadPopupFadeIn();
+		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+	});
+	
+	$("#imgLast2").click(function(e) {
+		e.preventDefault();
+		//loadPopupFadeIn();
+		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+	});
+}
+
+function reinitializePageCountEvent2(data) {
+	$("#10PerPage2").click(function(e) {
+		e.preventDefault();
+		//loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+	});
+	
+	$("#20PerPage2").click(function(e) {
+		e.preventDefault();
+		//loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+	});
+	
+	$("#40PerPage2").click(function(e) {
+		e.preventDefault();
+		//loadPopupFadeIn();
+		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+	});
+	
+	$("#50PerPage2").click(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);

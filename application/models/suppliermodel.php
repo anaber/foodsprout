@@ -733,29 +733,52 @@ class SupplierModel extends Model{
 			}
 		}
 		
-		log_message('debug', "RestaurantChainModel.getRestaurantChainMenusJson : " . $query);
+		log_message('debug', "SupplierModel.getSupplierForCompanyJson : " . $query);
 		$result = $this->db->query($query);
 		
 		$suppliers = array();
+		$CI =& get_instance();
 		
 		foreach ($result->result_array() as $row) {
 			
 			$this->load->library('SupplierLib');
 			unset($this->supplierLib);
 			
+			$CI->load->model('AddressModel','',true);
+			
 			$this->supplierLib->supplierId = $row[$idFieldName];
 			if (isset( $row['restaurant_name']) ) {
 				$this->supplierLib->supplierType = 'restaurant';
 				$this->supplierLib->supplierName = $row['restaurant_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_restaurant_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( $row['supplier_restaurant_id'], '', '', '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
 			} else if ( isset($row['farm_name']) ) {
 				$this->supplierLib->supplierType = 'farm';
 				$this->supplierLib->supplierName = $row['farm_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_farm_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['supplier_farm_id'], '', '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
 			} else if ( isset($row['manufacture_name']) ) {
 				$this->supplierLib->supplierType = 'manufacture';
 				$this->supplierLib->supplierName = $row['manufacture_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_manufacture_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['supplier_manufacture_id'], '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
 			} else if ( isset($row['distributor_name']) ) {
 				$this->supplierLib->supplierType = 'distributor';
 				$this->supplierLib->supplierName = $row['distributor_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_distributor_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['supplier_distributor_id'], '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
 			}
 			
 			$suppliers[] = $this->supplierLib;

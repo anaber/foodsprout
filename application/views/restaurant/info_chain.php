@@ -6,6 +6,7 @@
 	var currentContent;
 	
 	$(document).ready(function() {
+		$('#bottomPaging').hide();
 		
 		$.post("/chain/ajaxSearchRestaurantChainSuppliers", { q: restaurantChainId },
 		function(data){
@@ -15,6 +16,7 @@
 			reinitializeTabs();
 		},
 		"json");
+		
 	});
 	
 </script>
@@ -25,8 +27,9 @@
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
 			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
 			<?php /*?><div id="comments" class = "non-selected"><a href="#">Comments</a></div><?php */ ?>
-			<div id="addItem" class = "add-item-selected"><a href="/chain/add_supplier/<?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>">+ Add Supplier</a></div>
+			<div id="addItem" class = "add-item"><a href="/chain/add_supplier/<?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>">+ Add Supplier</a></div>
 		</div>
+		
 		
 		<div style="overflow:auto; padding:5px;">
 			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
@@ -51,6 +54,13 @@
 		</div>
 		
 		<div id="resultTableContainer" class="menus"></div>
+		
+		<div style="overflow:auto; padding:5px;" id = "bottomPaging">
+			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords2'></div>
+			<div style="float:left; width:225px; font-size:10px;" id = 'pagingLinks2' align = "center"></div>
+			<div style="float:right; width:185px; font-size:10px;" id = 'recordsPerPage2' align = "right"></div>
+			<div class="clear"></div>
+		</div>
 		
 	</div>
 <!-- end center tabs -->
