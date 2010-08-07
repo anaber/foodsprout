@@ -519,7 +519,7 @@ class ManufactureModel extends Model{
 			$this->ManufactureLib->suppliers = $suppliers;
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '', '');
 			$this->ManufactureLib->addresses = $addresses;
 			
 			$manufactures[] = $this->ManufactureLib;
