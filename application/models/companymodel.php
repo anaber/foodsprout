@@ -114,6 +114,29 @@ class CompanyModel extends Model{
 		return $companies;
 	}
 	
+	function getCompanyBasedOnTypeFrontEnd ($companyType, $q) {
+		
+		$query = 'SELECT ' . $companyType . '_id, ' . $companyType . '_name
+					FROM ' . $companyType .'
+					WHERE ' . $companyType.'_name like "'.$q.'%"
+					ORDER BY ' . $companyType.'_name ';
+		
+		$companies = '';
+		
+		log_message('debug', "CompanyModel.getCompanyBasedOnType : " . $query);
+		$result = $this->db->query($query);
+		
+		if ( $result->num_rows() > 0) {
+			foreach ($result->result_array() as $row) {
+				$companies .= $row[$companyType . '_name']."|".$row[$companyType . '_id']."\n";
+			}
+		} else {
+			$companies .= 'Create "'.$q.'"|' . $q;
+		}
+		
+		return $companies;
+	}
+	
 	function updateCompany() {
 		$return = true;
 		

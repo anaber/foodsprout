@@ -1,4 +1,3 @@
-<br>
 <div align="center">
 <script type="text/javascript"><!--
 google_ad_client = "pub-5358554883766443";

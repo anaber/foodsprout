@@ -68,7 +68,7 @@ jQuery.autocomplete = function(input, options) {
 			// add to the cache
 			addToCache(k, stMatchSets[k]);
 		}
-	}
+	} 
 
 	$input
 	.keydown(function(e) {
@@ -272,6 +272,22 @@ jQuery.autocomplete = function(input, options) {
 	};
 
 	function parseData(data) {
+		/*
+		var parsed = [];
+		if (!data) {
+			parsed[0] = 'Deepak here';
+		} else {
+			var rows = data.split(options.lineSeparator);
+			for (var i=0; i < rows.length; i++) {
+				var row = $.trim(rows[i]);
+				if (row) {
+					parsed[parsed.length] = row.split(options.cellSeparator);
+				}
+			}
+		}
+		return parsed;
+		*/
+		
 		if (!data) return null;
 		var parsed = [];
 		var rows = data.split(options.lineSeparator);

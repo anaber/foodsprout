@@ -1,61 +1,56 @@
+<script src="<?php echo base_url()?>js/restaurant_chain_info.js" type="text/javascript"></script>
 <script>
-	/*
+	
+	var restaurantChainId = <?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>;
+	var jsonData;
+	var currentContent;
+	
 	$(document).ready(function() {
-		loadMapOnStartUp(38.41055825094609, -98, 3);
+		
+		$.post("/chain/ajaxSearchRestaurantChainSuppliers", { q: restaurantChainId },
+		function(data){
+			currentContent = 'supplier';
+			jsonData = data;
+			redrawContent(data, 'supplier');
+			reinitializeTabs();
+		},
+		"json");
 	});
-	*/
+	
 </script>
 
+<!-- center tabs -->
+	<div id="resultsContainer">
+		<div id="menu-bar"> 
+			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
+			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
+			<?php /*?><div id="comments" class = "non-selected"><a href="#">Comments</a></div><?php */ ?>
+			<div id="addItem" class = "add-item-selected"><a href="/chain/add_supplier/<?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>">+ Add Supplier</a></div>
+		</div>
 		
-<div id="restaurantname">
-    <div id="logorestaurant"><?php echo '<h1>'.$RESTAURANT->restaurantChain.'</h1>';?></div> 
-  </div>
-  
-  <!-- left column-->
-  <div id="rest-main-details">	
-    <div id="rest-main-img"><img src="/img/applebee-img.jpg" width="211" height="143" alt="apple-img" /></div>
-    
-    <div id="rest-dec">
-      <div id="dec-head"><img src="/img/decription-icon.jpg" width="106" height="22" alt="dec-head" /></div>
-      <div id="description-details">Welcome to our neighborhood! Applebee's Neighborhood Grill and Bar is the world's casual dinting leader, with over 2000 restaurants in 49 states</div>
-    </div>
-    
-    <div id="location-icon"><img src="/img/location-head-icon.jpg" width="89" height="23" alt="location-head-icon" /></div>
-    
-    <div id="map"><iframe width="210" height="100" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Restaurants+near+Applebee,+Wright+City,+MO,+United+States&amp;sll=42.550596,-99.730534&amp;sspn=46.743437,96.328125&amp;ie=UTF8&amp;hq=Restaurants&amp;hnear=Applebee,+Wright+City,+Warren,+Missouri+63390&amp;ll=38.820785,-91.126785&amp;spn=0.006687,0.017939&amp;z=14&amp;output=embed"></iframe>
-	<br>
-	<div style="color:#333;">
-	<?php echo '<h1>'.$RESTAURANT->restaurantURL.'</h1>';?><br>
-	</div>
-    </div>
-  </div>
-  <!-- end left column -->
-  
-  <!-- center tabs -->
-  <div id="tabinfo">
-  
-    <div id="menu-bar"> 
-      <div id="suppliers">  <a href="#">Suppliers</a></div>
-      <div id="menu">    <a href="#">Menu</a></div>
-      <div id="comments">    <a href="#">Comments</a></div>
-      <div id="add-menu"><a href="#">+ Add Menu</a></div>
-    </div>
-    
-  	<div id="menus"> 
+		<div style="overflow:auto; padding:5px;">
+			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
+			
+			<div style="float:left; width:225px; font-size:10px;" id = 'pagingLinks' align = "center">
+				<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;
+				<a href="#" id = "imgPrevious">Previous</a>
+				&nbsp;&nbsp;&nbsp; Page 1 of 1 &nbsp;&nbsp;&nbsp;
+				<a href="#" id = "imgNext">Next</a> &nbsp;&nbsp;
+				<a href="#" id = "imgLast">Last</a>
+			</div>
+			
+			<div style="float:right; width:185px; font-size:10px;" id = 'recordsPerPage' align = "right">
+				Items per page:
+				<div id = "50PerPage" style="float:right; width:20px;">50</div>
+				<div id = "40PerPage" style="float:right; width:30px;">40 | </div>  
+				<div id = "20PerPage" style="float:right; width:30px;">20 | </div>
+				<div id = "10PerPage" style="float:right; width:30px;">10 | </div>
+			</div>
+			
+			<div class="clear"></div>
+		</div>
 		
-		<?php
-			$this->load->view('restaurant/menu');
-		?>
-	
+		<div id="resultTableContainer" class="menus"></div>
+		
 	</div>
-	
-  </div>
-  <!-- end center tabs -->
-  
-  <!-- right ads -->
-  <div id="add-designs">
-      	<?php
-			$this->load->view('includes/left/ad');
-		?>
-  </div>
-  <!-- end right ads -->
+<!-- end center tabs -->

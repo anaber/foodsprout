@@ -1,5 +1,3 @@
-<h2 class="greentxt">Menu</h2>
-
 <?php
 if (count($MENU) > 0 ) {
 ?>			
@@ -15,8 +13,8 @@ if (count($MENU) > 0 ) {
 	         <div class="menuitemdetails">
 	         	'.$r->ingredient.'
 	         </div>
-			
 	    </div>';
+	    
  	endforeach;
 ?>
 
@@ -24,5 +22,4 @@ if (count($MENU) > 0 ) {
 } else {
 	echo "<div>No menu items provided at this time.</div>";
 }
-
 ?>

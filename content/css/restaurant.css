@@ -58,29 +58,32 @@
 	padding-top: 8px;
 	padding-left: 12px;
 }
-#leafimg #mainimg #tabinfo #menu-bar #suppliers a {
+
+#leafimg #mainimg #resultsContainer #menu-bar .non-selected a {
 	color: #FFF;
 	text-decoration: none;
 }
-#leafimg #mainimg #tabinfo #menu-bar #menu a {
+#leafimg #mainimg #resultsContainer #menu-bar .selected a {
 	color: #90171E;
 	text-decoration: none;
 }
-#leafimg #mainimg #tabinfo #menu-bar #comments a {
+
+#leafimg #mainimg #resultsContainer #menu-bar .add-item a {
 	color: #FFF;
 	text-decoration: none;
 }
-#leafimg #mainimg #tabinfo #menu-bar #add-menu a {
-	color: #FFF;
+
+#leafimg #mainimg #resultsContainer #menu-bar .add-item-selected a {
+	color: #90171E;
 	text-decoration: none;
 }
-#leafimg #mainimg #tabinfo {
+
+#leafimg #mainimg #resultsContainer {
 	float: left;
 	width: 538px;
 	padding-left: 28px;
-	
 }
-#leafimg #mainimg #tabinfo #menu-bar {
+#leafimg #mainimg #resultsContainer #menu-bar {
 	height: 25px;
 	width: 520px;
 	background-color: #90171E;
@@ -88,7 +91,8 @@
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
-#leafimg #mainimg #tabinfo #menu-bar #suppliers {
+
+#leafimg #mainimg #resultsContainer #menu-bar .non-selected {
 	padding-right: 9px;
 	padding-left: 9px;
 	float: left;
@@ -100,7 +104,7 @@
 	text-align: center;
 }
 
-#leafimg #mainimg #tabinfo #menu-bar #menu {
+#leafimg #mainimg #resultsContainer #menu-bar .selected {
 	padding-right: 9px;
 	padding-left: 9px;
 	float: left;
@@ -114,7 +118,23 @@
 	color: #90171E;
 	line-height: 19px;
 }
-#leafimg #mainimg #tabinfo #menu-bar #add-menu {
+
+#leafimg #mainimg #resultsContainer #menu-bar .add-item-selected {
+	float: right;
+	padding-right: 9px;
+	padding-left: 9px;
+	height: 22px;
+	margin-top: 3px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+	background-color: #FFF;
+	color: #90171E;
+	line-height: 19px;
+}
+
+#leafimg #mainimg #resultsContainer #menu-bar .add-item {
 	float: right;
 	padding-right: 10px;
 	padding-left: 10px;
@@ -124,39 +144,29 @@
 	color: #FFF;
 	line-height: 25px;
 }
-#leafimg #mainimg #tabinfo #menu-bar #comments {
-	padding-right: 9px;
-	padding-left: 9px;
-	float: left;
-	height: 20px;
-	margin-top: 5px;
-	font-family: Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	font-size: 14px;
-	text-align: center;
-}
-#leafimg #mainimg #tabinfo #menus {
+
+#leafimg #mainimg #resultsContainer .menus {
 	width: 538px;
 	float: left;
 	padding-left: 0px;
 }
-#leafimg #mainimg #tabinfo #menus .menuitem {
+#leafimg #mainimg #resultsContainer .menus .menuitem {
 	float: left;
-	height: 112px;
+	/*height: 112px;*/
 	width: 538px;
 	margin-top: 8px;
 	border: 1px solid #CCC;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 }
-#leafimg #mainimg #tabinfo #menus .menuitem .menuitemimg {
+#leafimg #mainimg #resultsContainer .menus .menuitem .menuitemimg {
 		height: 107px;
 	width: 135px;
 	float: right;
 	padding-top: 2px;
 	padding-right: 0px;
 }
-#leafimg #mainimg #tabinfo #menus .menuitem .menuitemname {
+#leafimg #mainimg #resultsContainer .menus .menuitem .menuitemname {
 	float: left;
 	padding-top: 15px;
 	padding-left: 10px;
@@ -165,7 +175,7 @@
 	font-size: 16px;
 	font-weight: bold;
 }
-#leafimg #mainimg #tabinfo #menus .menuitem .menuitemdetails {
+#leafimg #mainimg #resultsContainer .menus .menuitem .menuitemdetails {
 	float: left;
 	width: 350px;
 	color: #333;

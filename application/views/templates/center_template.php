@@ -24,6 +24,9 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 		echo '<br>';
 	}
 ?>
+
+
+
 <div id="main-content">
 
 	<table width = "100%" border = "0" cellpadding = "0" cellspacing = "0">
@@ -46,5 +49,10 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 		</tr>
 	</table>
 </div>
+
+
+
+
+
 
 <?php $this->load->view('includes/footer'); ?>
