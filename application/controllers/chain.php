@@ -53,6 +53,7 @@ class Chain extends Controller {
 	
 	// View info about a chain restaurant
 	function view() {
+		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
 		
@@ -95,10 +96,10 @@ class Chain extends Controller {
 			);
 		
 		// Data to be passed to the views
-		// Center -> Menu
+		// Center -> Info
 		$data['data']['center']['info']['RESTAURANT_CHAIN'] = $restaurantChain;
-		
-		//$data['data']['right']['suppliers']['VIEW_HEADER'] = "List of Suppliers";
+		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['info']['TABLE'] = 'restaurant_chain_supplier';
 		
 		// Custom CSS
 		if (!empty ($this->css) ) {

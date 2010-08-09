@@ -118,7 +118,7 @@ class CompanyModel extends Model{
 		
 		$query = 'SELECT ' . $companyType . '_id, ' . $companyType . '_name
 					FROM ' . $companyType .'
-					WHERE ' . $companyType.'_name like "'.$q.'%"
+					WHERE ' . $companyType.'_name like "%'.$q.'%"
 					ORDER BY ' . $companyType.'_name ';
 		
 		$companies = '';

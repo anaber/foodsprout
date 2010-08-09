@@ -125,16 +125,12 @@ class Company extends Controller {
 	}
 	
 	//function get_companies_based_on_type($q) {
-	function get_companies_based_on_type() {
-		$this->load->model('CompanyModel', '', TRUE);
-		$q = $this->input->post('q');
-		/*
-		$arr = explode('___' , $q);
-		$companyType = $arr[0];
-		$q = $arr[1];
-		*/
+	function get_companies_based_on_type() {		
+		$q = strtolower($_REQUEST['q']);
+		$companyType = $_REQUEST['supplierType'];
 		
-		$companyType = 'farm';
+		$this->load->model('CompanyModel', '', TRUE);
+		
 		if ($companyType != '') {
 			$companies = $this->CompanyModel->getCompanyBasedOnTypeFrontEnd( $companyType, $q );
 		} else {
@@ -142,6 +138,7 @@ class Company extends Controller {
 		}
 		
 		echo $companies;
+		
 	}
 	
 }
