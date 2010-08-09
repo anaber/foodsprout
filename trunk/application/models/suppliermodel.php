@@ -23,6 +23,8 @@ class SupplierModel extends Model{
 		$supplierManufactureId = '';
 		$supplierDistributorId = '';
 		
+		print_r_pre($_REQUEST);
+		die;
 		
 		if ( !empty($restaurantId) ) {
 			$tableName = 'restaurant_supplier';

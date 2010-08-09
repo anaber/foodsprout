@@ -6,26 +6,28 @@
  */
 ?>
 <script type="text/javascript">
-$().ready(function() {
 
-	function findValueCallback(event, data, formatted) {
-		$("<li>").html( !data ? "No match!" : "Selected: " + formatted).appendTo("#result");
+
+$(document).ready(function() {
+	
+	var formValidated = true;
+	 
+ 	function findValueCallback(event, data, formatted) {
+		document.getElementById('companyId').value = data[1];
 	}
 	
-	function formatItem(row) {
-		return row[0] + " (<strong>id: " + row[1] + "</strong>)";
-	}
-	function formatResult(row) {
-		return row[0].replace(/(<.+?>)/gi, '');
-	}
-	
+	$(":text, textarea").result(findValueCallback).next().click(function() {
+		$(this).prev().search();
+	});
 	
 	$("#companyAjax").autocomplete("/company/get_companies_based_on_type", {
 		width: 260,
 		selectFirst: false,
-		autoFill: true
+		cacheLength:0,
+		extraParams: {
+	       supplierType: function() { return $("#supplierType").val(); }
+	   	}
 	});
-	
 	
 	
 	$("#companyAjax").result(function(event, data, formatted) {
@@ -34,41 +36,147 @@ $().ready(function() {
 	});
 	
 	
-	
-	
 	$("#clear").click(function() {
 		$(":input").unautocomplete();
 	});
+	
+	
+	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
+	
+	$("#supplierForm").validationEngine({
+		scroll:false,
+		unbindEngine:false,
+		success :  function() {formValidated = true;},
+		failure : function() {formValidated = false; }
+	});
+	
+	$("#supplierForm").submit(function() {
+		
+		if (formValidated == false) {
+			// Don't post the form.
+			//displayFailedMessage($alert, "Form validation failed...");
+			//hideMessage($alert, '', '');
+		} else {
+			
+			var $alert = $('#alert');
+			displayProcessingMessage($alert, "Processing...");
+			
+			displayFailedMessage($alert, "Form validation works...");
+			hideMessage($alert, '', '');
+			
+			var formAction = '';
+			var postArray = '';
+			var act = '';
+			
+			var companyId = $('#companyId').val();
+			var companyName;
+			
+			if (isNaN( companyId ) ) {
+				companyName = companyId;
+				companyId = '';
+			}
+			
+			if ($('#supplierId').val() != '' ) {
+				var formAction = '/manufacture/supplier_save_update';
+				postArray = {
+							  supplierType:$('#supplierType').val(),
+							  companyId:companyId,
+							  companyName:companyName,
+							  
+							  manufactureId: $('#manufactureId').val(),
+							  farmId: $('#farmId').val(),
+							  restaurantId: $('#restaurantId').val(),
+							  distributorId: $('#distributorId').val(),
+							  restaurantChainId: $('#restaurantChainId').val(),
+							  farmersMarketId: $('#farmersMarketId').val(),
+							   
+							  supplierId: $('#supplierId').val()
+							};
+				act = 'update';		
+			} else {
+				formAction = '/manufacture/supplier_save_add';
+				postArray = { 
+							  supplierType:$('#supplierType').val(),
+							  companyId:companyId,
+							  companyName:companyName,
+							  
+							  manufactureId: $('#manufactureId').val(),
+							  farmId: $('#farmId').val(),
+							  restaurantId: $('#restaurantId').val(),
+							  distributorId: $('#distributorId').val(),
+							  restaurantChainId: $('#restaurantChainId').val(),
+							  farmersMarketId: $('#farmersMarketId').val()
+							};
+				act = 'add';
+			}
+			
+			$.post(formAction, postArray,function(data) {
+				alert(data);
+				return false;
+				/*
+				if(data=='yes') {
+					//start fading the messagebox
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						if (act == 'add') {
+							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
+								//redirect to secure page
+								document.location = documentLocation;
+							});	
+						} else if (act == 'update') {
+							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
+								//redirect to secure page
+								document.location = documentLocation;
+							});
+						}
+					});
+				} else if(data == 'no_name') {
+					//start fading the messagebox 
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						$(this).html('Either select existing company or enter new supplier name...').addClass('messageboxerror').fadeTo(900,1);
+						
+					});
+				} else if(data == 'duplicate_company') {
+					//start fading the messagebox 
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						$(this).html('Duplicate Company...').addClass('messageboxerror').fadeTo(900,1);
+						
+					});
+				} else if(data == 'duplicate') {
+					//start fading the messagebox 
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						$(this).html('Duplicate Supplier...').addClass('messageboxerror').fadeTo(900,1);
+					});
+				} else {
+					//start fading the messagebox 
+					$("#msgbox").fadeTo(200,0.1,function() {
+						//add message and change the class of the box and start fading
+						if (act == 'add') {
+							$(this).html('Not added...').addClass('messageboxerror').fadeTo(900,1);
+						} else if (act == 'update') {
+							$(this).html('Not updated...').addClass('messageboxerror').fadeTo(900,1);
+						}
+					});
+				}
+				*/
+			});
+			
+			
+		}
+		
+		return false; //not to post the  form physically
+		
+	});
+	
 });
-
-function changeOptions(){
-	var max = parseInt(window.prompt('Please type number of items to display:', jQuery.Autocompleter.defaults.max));
-	if (max > 0) {
-		$("#suggest1").setOptions({
-			max: max
-		});
-	}
-}
-
-function changeScrollHeight() {
-    var h = parseInt(window.prompt('Please type new scroll height (number in pixels):', jQuery.Autocompleter.defaults.scrollHeight));
-    if(h > 0) {
-        $("#suggest1").setOptions({
-			scrollHeight: h
-		});
-    }
-}
-
 
 </script>
 
-
-
-
 <script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
-
-<div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
 <form id="supplierForm" method="post">
 <table class="formTable">
@@ -78,7 +186,6 @@ function changeScrollHeight() {
 			<select name="supplierType" id="supplierType" class="validate[required]">
 			<option value = ''>--Supplier Type--</option>
 			<?php
-				
 				foreach ($SUPPLIER_TYPES_2[$TABLE] as $key => $value) {
 					echo '<option value="'.$key.'"' . (  ( isset($SUPPLIER) && ( $key == $SUPPLIER->supplierType )  ) ? ' SELECTED' : '' ) . '>' . $value . '</option>';
 				}
@@ -90,7 +197,7 @@ function changeScrollHeight() {
 	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
-			<input type="text" id="companyAjax" value="<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyName : '') ?>" style="width: 200px;" />
+			<input type="text" id="companyAjax" value="<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyName : '') ?>" style="width: 200px;"  class="validate[required]" />
 		</td>
 	</tr>
 	<tr>

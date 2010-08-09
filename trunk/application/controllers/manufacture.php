@@ -123,6 +123,36 @@ class Manufacture extends Controller {
 		$this->load->view('templates/center_right_template', $data);
 	}
 	
+	function supplier_save_add() {
+		$this->load->model('SupplierModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->SupplierModel->addSupplierIntermediate() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	}
+	
+	function supplier_save_update() {
+		$this->load->model('SupplierModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->SupplierModel->updateSupplierIntermediate() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	}
+	
 }
 
 /* End of file manufacture.php */

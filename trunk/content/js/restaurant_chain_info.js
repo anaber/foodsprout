@@ -24,21 +24,62 @@ function reinitializeTabs() {
 	data = jsonData;
 	$("#suppliers").click(function(e) {
 		e.preventDefault();
+		$.validationEngine.closePrompt('.formError',true);
+		$("#divAddMenu").hide( { duration: toggleDuration } );
+		isMenuFormVisible = false;
+		$("#divAddComment").hide( { duration: toggleDuration } );
+		isCommentFormVisible = false;
+		
 		$('#bottomPaging').hide();
+		
+		if (isSupplierFormVisible || isMenuFormVisible || isCommentFormVisible) {
+			$("#addItem").removeClass().addClass('add-item-selected');
+		} else {
+			$("#addItem").removeClass().addClass('add-item');
+		}
+		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'supplier');
 	});
 	
 	$("#menu").click(function(e) {
 		e.preventDefault();
+		$.validationEngine.closePrompt('.formError',true);
+		$("#divAddSupplier").hide( { duration: toggleDuration } );
+		isSupplierFormVisible = false;
+		$("#divAddComment").hide( { duration: toggleDuration } );
+		isCommentFormVisible = false;
+		
 		$('#bottomPaging').hide();
+		
+		if (isSupplierFormVisible || isMenuFormVisible || isCommentFormVisible) {
+			$("#addItem").removeClass().addClass('add-item-selected');
+		} else {
+			$("#addItem").removeClass().addClass('add-item');
+		}
+		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'menu');
 	});
 	
+	
 	$("#comments").click(function(e) {
 		e.preventDefault();
+		$.validationEngine.closePrompt('.formError',true);
+		$("#divAddSupplier").hide( { duration: toggleDuration } );
+		isSupplierFormVisible = false;
+		$("#divAddMenu").hide( { duration: toggleDuration } );
+		isMenuFormVisible = false;
+		
 		$('#bottomPaging').hide();
+		
+		if (isSupplierFormVisible || isMenuFormVisible || isCommentFormVisible) {
+			$("#addItem").removeClass().addClass('add-item-selected');
+		} else {
+			$("#addItem").removeClass().addClass('add-item');
+		}
+		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
 	});
+	
 }
 
 function addZeroResult() {
@@ -123,19 +164,82 @@ function redrawContent(data, type) {
 		reinitializePageCountEvent2(data);
 	}
 	
+	reinitializeAddItemEvent(data);
+	
 	//disablePopupFadeIn();
 }
 
 function drawAddItem() {
 	html = "";
 	if (currentContent == 'supplier') {
-		html += '<a href="/chain/add_supplier/' + restaurantChainId + '">+ Add Supplier</a>';
+		html += '<a href="#"><div id = "addSupplier">+ Add Supplier</div></a>';
 	} else if (currentContent == 'menu') {
-		html += '<a href="/chain/add_menu/' + restaurantChainId + '">+ Add Menu</a>';
+		html += '<a href="#"><div id = "addMenu">+ Add Menu</div></a>';
 	} else if (currentContent == 'comment') {
-		html += '<a href="/chain/add_comment/' + restaurantChainId + '">+ Add Comment</a>';
+		html += '<a href="#"><div id = "addComment">+ Add Comment</div></a>';
 	}
 	return html;
+}
+
+function reinitializeAddItemEvent(data) {
+	
+	$("#addSupplier").click(function(e) {
+		e.preventDefault();
+		
+		if (isSupplierFormVisible == true) {
+			$.validationEngine.closePrompt('.formError',true);
+			$("#divAddSupplier").hide( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item');	
+			} );
+			isSupplierFormVisible = false;
+			
+		} else if (isSupplierFormVisible == false) {
+			
+			$("#divAddSupplier").show( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item-selected');
+			});
+			isSupplierFormVisible = true;
+		}
+	});	
+	
+	$("#addMenu").click(function(e) {
+		e.preventDefault();
+		if (isMenuFormVisible == true) {
+			$.validationEngine.closePrompt('.formError',true);
+			$("#divAddMenu").hide( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item');
+			} );
+			isMenuFormVisible = false;
+			
+		} else if (isMenuFormVisible == false) {
+			
+			$("#divAddMenu").show( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item-selected');
+			} );
+			isMenuFormVisible = true;
+		}
+	});	
+	
+	
+	$("#addComment").click(function(e) {
+		e.preventDefault();
+		//$("#divAddComment").animate({"height": "toggle"}, { duration: toggleDuration });
+		if (isCommentFormVisible == true) {
+			$.validationEngine.closePrompt('.formError',true);
+			$("#divAddComment").hide( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item');
+			} );
+			isCommentFormVisible = false;
+			
+		} else if (isCommentFormVisible == false) {
+			
+			$("#divAddComment").show( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item-selected');
+			} );
+			isCommentFormVisible = true;
+		}
+	});
+	
 }
 
 function changeSelectedTab() {

@@ -1,9 +1,16 @@
 <script src="<?php echo base_url()?>js/restaurant_chain_info.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/floating_messages.css" />
+<script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <script>
 	
 	var restaurantChainId = <?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>;
 	var jsonData;
 	var currentContent;
+	
+	var toggleDuration = 1000;
+	var isSupplierFormVisible = false;
+	var isMenuFormVisible = false;
+	var isCommentFormVisible = false;
 	
 	$(document).ready(function() {
 		$('#bottomPaging').hide();
@@ -20,16 +27,30 @@
 	});
 	
 </script>
-
+<div id="alert"></div>
 <!-- center tabs -->
 	<div id="resultsContainer">
 		<div id="menu-bar"> 
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
 			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
-			<?php /*?><div id="comments" class = "non-selected"><a href="#">Comments</a></div><?php */ ?>
+			<div id="comments" class = "non-selected"  style = "display:none;"><a href="#">Comments</a></div>
 			<div id="addItem" class = "add-item"><a href="/chain/add_supplier/<?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>">+ Add Supplier</a></div>
 		</div>
 		
+		<div id="divAddSupplier" style = "display:none;"> 
+			<?php
+				$data = array(
+						'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
+						'TABLE' => $TABLE,
+						'RESTAURANT_CHAIN_ID' => $RESTAURANT_CHAIN->restaurantChainId
+						);
+				$this->load->view('includes/supplier_form', $data );
+			?>
+		</div>
+		
+		<div id="divAddMenu" style = "display:none;">Menu form will come here</div>
+		
+		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
 		
 		<div style="overflow:auto; padding:5px;">
 			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
