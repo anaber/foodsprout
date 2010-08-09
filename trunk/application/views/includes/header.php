@@ -34,6 +34,19 @@
   })();
 
 </script>
+<script type='text/javascript' src='http://partner.googleadservices.com/gampad/google_service.js'>
+</script>
+<script type='text/javascript'>
+GS_googleAddAdSenseService("ca-pub-5358554883766443");
+GS_googleEnableAllServices();
+</script>
+<script type='text/javascript'>
+GA_googleAddSlot("ca-pub-5358554883766443", "FoodSprout-ROS-MediumRec");
+GA_googleAddSlot("ca-pub-5358554883766443", "FoodSprout-ROS-Sky");
+</script>
+<script type='text/javascript'>
+GA_googleFetchAds();
+</script>
 <style type="text/css">
 body {
 	background: #E5E5E5;
@@ -79,6 +92,6 @@ body {
 
 <!-- leaf bg -->
 <div id="leafimg">
-	
+
 <!-- main active tab area -->
 <div id="mainimg">
