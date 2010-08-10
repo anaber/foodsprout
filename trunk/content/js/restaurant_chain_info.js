@@ -27,8 +27,11 @@ function reinitializeTabs() {
 		$.validationEngine.closePrompt('.formError',true);
 		$("#divAddMenu").hide( { duration: toggleDuration } );
 		isMenuFormVisible = false;
+		resetMenuForm();
+		
 		$("#divAddComment").hide( { duration: toggleDuration } );
 		isCommentFormVisible = false;
+		//resetCommentForm();
 		
 		$('#bottomPaging').hide();
 		
@@ -46,8 +49,12 @@ function reinitializeTabs() {
 		$.validationEngine.closePrompt('.formError',true);
 		$("#divAddSupplier").hide( { duration: toggleDuration } );
 		isSupplierFormVisible = false;
+		resetSupplierForm();
+		
 		$("#divAddComment").hide( { duration: toggleDuration } );
 		isCommentFormVisible = false;
+		//resetCommentForm();
+		
 		
 		$('#bottomPaging').hide();
 		
@@ -66,8 +73,11 @@ function reinitializeTabs() {
 		$.validationEngine.closePrompt('.formError',true);
 		$("#divAddSupplier").hide( { duration: toggleDuration } );
 		isSupplierFormVisible = false;
+		resetSupplierForm();
+		
 		$("#divAddMenu").hide( { duration: toggleDuration } );
 		isMenuFormVisible = false;
+		resetMenuForm();
 		
 		$('#bottomPaging').hide();
 		

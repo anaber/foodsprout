@@ -7,8 +7,15 @@
 ?>
 <script type="text/javascript">
 
-
+function resetSupplierForm() {
+	$('#companyId').val('');
+	$('#companyName').val('');
+	$('#companyAjax').val('');
+	$('#supplierType').val('');
+}
+	
 $(document).ready(function() {
+	
 	
 	var formValidated = true;
 	 
@@ -61,9 +68,6 @@ $(document).ready(function() {
 			var $alert = $('#alert');
 			displayProcessingMessage($alert, "Processing...");
 			
-			displayFailedMessage($alert, "Form validation works...");
-			hideMessage($alert, '', '');
-			
 			var formAction = '';
 			var postArray = '';
 			var act = '';
@@ -111,57 +115,35 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
-				return false;
-				/*
+				
 				if(data=='yes') {
-					//start fading the messagebox
-					$("#msgbox").fadeTo(200,0.1,function() {
-						//add message and change the class of the box and start fading
-						if (act == 'add') {
-							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
-								//redirect to secure page
-								document.location = documentLocation;
-							});	
-						} else if (act == 'update') {
-							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
-								//redirect to secure page
-								document.location = documentLocation;
-							});
-						}
-					});
-				} else if(data == 'no_name') {
-					//start fading the messagebox 
-					$("#msgbox").fadeTo(200,0.1,function() {
-						//add message and change the class of the box and start fading
-						$(this).html('Either select existing company or enter new supplier name...').addClass('messageboxerror').fadeTo(900,1);
-						
-					});
+					if (act == 'add') {
+						displayFailedMessage($alert, "Supplier added...");
+					} else if (act == 'update') {
+						displayFailedMessage($alert, "Supplier updated...");
+					}
+					hideMessage($alert, '', '');
+					$.validationEngine.closePrompt('.formError',true);
+					$("#divAddSupplier").hide( toggleDuration, function() {
+						$("#addItem").removeClass().addClass('add-item');	
+					} );
+					isSupplierFormVisible = false;
+					resetSupplierForm();
+					
 				} else if(data == 'duplicate_company') {
-					//start fading the messagebox 
-					$("#msgbox").fadeTo(200,0.1,function() {
-						//add message and change the class of the box and start fading
-						$(this).html('Duplicate Company...').addClass('messageboxerror').fadeTo(900,1);
-						
-					});
+					displayFailedMessage($alert, "Duplicate Company...");
+					hideMessage($alert, '', '');
 				} else if(data == 'duplicate') {
-					//start fading the messagebox 
-					$("#msgbox").fadeTo(200,0.1,function() {
-						//add message and change the class of the box and start fading
-						$(this).html('Duplicate Supplier...').addClass('messageboxerror').fadeTo(900,1);
-					});
+					displayFailedMessage($alert, "Duplicate Supplier...");
+					hideMessage($alert, '', '');
 				} else {
-					//start fading the messagebox 
-					$("#msgbox").fadeTo(200,0.1,function() {
-						//add message and change the class of the box and start fading
-						if (act == 'add') {
-							$(this).html('Not added...').addClass('messageboxerror').fadeTo(900,1);
-						} else if (act == 'update') {
-							$(this).html('Not updated...').addClass('messageboxerror').fadeTo(900,1);
-						}
-					});
+					if (act == 'add') {
+						displayFailedMessage($alert, "Not added...");
+					} else if (act == 'update') {
+						displayFailedMessage($alert, "Not updated...");
+					}
+					hideMessage($alert, '', '');
 				}
-				*/
 			});
 			
 			

@@ -267,9 +267,11 @@ class ProductModel extends Model {
             $query .= $manufactureId;
         }
         log_message('debug', 'ProductModel.addProduct : Try to get duplicate product record : ' . $query);
-        $result = $this->db->query($query);
-
+        $result = $this->db->query($query);	
+			
         if ($result->num_rows() == 0) {
+            
+		
             $query = 'INSERT INTO product (product_id, company_id, ';
             if (!empty($restaurantId)) {
                 $query .= 'restaurant_id';
@@ -278,6 +280,7 @@ class ProductModel extends Model {
             } else if (!empty($manufactureId)) {
                 $query .= 'manufacture_id';
             }
+            
             $query .= ', product_type_id, product_name, ingredient_text, brand, upc, status, has_fructose, user_id, creation_date)' .
                     ' values (NULL, ' . (!empty($companyId) ? $companyId : 'NULL' ) . ', ';
 
@@ -288,8 +291,14 @@ class ProductModel extends Model {
             } else if (!empty($manufactureId)) {
                 $query .= $manufactureId;
             }
-            $query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "' . $this->input->post('status') . '", "' . $this->input->post('hasFructose') . '", ' . $this->session->userdata('userId') . ', NOW() )';
-
+            
+            $userGroup = $this->session->userdata['userGroup'];
+            
+            if ( $userGroup != 'admin') {
+            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", NULL, "queue", 0, ' . $this->session->userdata('userId') . ', NOW() )';
+            } else {
+            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", NULL, "queue", 0, ' . $this->session->userdata('userId') . ', NOW() )';
+            }
 
             log_message('debug', 'ProductModel.addProduct : Insert Product : ' . $query);
 
@@ -302,7 +311,7 @@ class ProductModel extends Model {
             $GLOBALS['error'] = 'duplicate';
             $return = false;
         }
-
+		
         return $return;
     }
 

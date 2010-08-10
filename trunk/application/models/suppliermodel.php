@@ -23,8 +23,6 @@ class SupplierModel extends Model{
 		$supplierManufactureId = '';
 		$supplierDistributorId = '';
 		
-		print_r_pre($_REQUEST);
-		die;
 		
 		if ( !empty($restaurantId) ) {
 			$tableName = 'restaurant_supplier';
@@ -165,7 +163,14 @@ class SupplierModel extends Model{
 				$query .= 'supplier_manufacture_id';
 			} else if ( !empty($supplierDistributorId) ) {
 				$query .= 'supplier_distributor_id';
-			}		
+			}
+			
+			$userGroup = $this->session->userdata['userGroup'];
+			if ( $userGroup != 'admin') {
+				$query .= ', user_id';
+			}
+			$query .= ', status';
+			
 			$query .= ")" .
 					" values (NULL, '" . $fieldValue . "', ";
 			if ( !empty($supplierRestaurantId) ) {
@@ -176,6 +181,15 @@ class SupplierModel extends Model{
 				$query .= $supplierManufactureId;
 			} else if ( !empty($supplierDistributorId) ) {
 				$query .= $supplierDistributorId;
+			}
+			if ( $userGroup != 'admin') {
+				$query .= ', ' . $this->session->userdata['userId'];
+			}
+			
+			if ( $userGroup != 'admin') {
+				$query .= ', \'queue\'';
+			} else {
+				$query .= ', \'live\'';
 			}
 			$query .= " )";
 			
@@ -691,7 +705,8 @@ class SupplierModel extends Model{
 		
 		
 		$where = 
-				' WHERE '.$tableName . '.' .$fieldName . ' = ' . $fieldValue;
+				' WHERE '.$tableName . '.' .$fieldName . ' = ' . $fieldValue . 
+				' AND '.$tableName.'.status = \'live\'';
 		
 		$base_query_count = $base_query_count . $where;
 		
