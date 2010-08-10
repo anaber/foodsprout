@@ -16,9 +16,10 @@
 }
 #leafimg #mainimg #rest-main-details #rest-main-img {
 	float: left;
-	height: 143px;
-	width: 211px;
-	padding-left: 13px;
+	height: 133px;
+	width: 201px;
+	margin-left: 13px;
+	border: solid 10px #e5e5e5;
 }
 #leafimg #mainimg #rest-main-details #rest-dec {
 	float: right;

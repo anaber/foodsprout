@@ -1,4 +1,3 @@
-<h2 class="greentxt">Where food goes?</h2>
 <?php
 foreach ($COMPANIES as $companyType => $companies) {
 ?>

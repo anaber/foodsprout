@@ -4,12 +4,6 @@
 	} else {
 		$this->load->view('includes/header');
 	}
-
-	if (isset ($CSS) ) {
-		foreach ($CSS as $key => $css_file) {
-			echo '<link href="' . base_url() . 'css/'.$css_file.'.css" rel="stylesheet" type="text/css" />';
-		}
-	}
 ?>
 <?php
 	if (isset($BREADCRUMB) ) {
@@ -24,7 +18,7 @@
 
 
 	<div id="restaurantname">
-		<div id="logorestaurant"><h1><?php echo $RESTAURANT_CHAIN->restaurantName; ?></h1></div>
+		<div id="logorestaurant"><h1><?php echo $RESTAURANT_CHAIN->restaurantChain; ?></h1></div>
 	</div>
 
 	<!-- left column-->

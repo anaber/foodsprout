@@ -25,7 +25,7 @@ class AddressModel extends Model{
 		$CI->load->model('CountryModel','',true);
 		$arrCountry = $CI->CountryModel->getCountryFromId($country_id);
 		
-		$address = $address . ', ' . $city . '<br />' . $arrState->stateName . ' ' . $zipcode . ', ' . $arrCountry->countryName;
+		$address = $address . '<br>' . $city . ', ' . $arrState->stateName . ' ' . $zipcode; // $arrCountry->countryName;
 		
 		return $address;
 	}

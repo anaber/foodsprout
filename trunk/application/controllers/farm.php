@@ -145,14 +145,11 @@ class Farm extends Controller {
 				'ad' => 'includes/right/ad',
 				'map' => 'includes/right/map',
 			);
-		
-		
 		 
 		// Data to be passed to the views
 		// Center -> Menu
 		$data['data']['center']['info']['FARM'] = $farm;
 		$data['data']['center']['companies']['COMPANIES'] = $companies;
-		
 		
 		// Right -> Image
 		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
@@ -165,8 +162,12 @@ class Farm extends Controller {
 		$data['data']['right']['map']['height'] = '200';
 		$data['data']['right']['map']['hide_map'] = 'no';
 		
-		$this->load->view('templates/center_right_template', $data);
+		// Custom CSS
+		if (!empty ($this->css) ) {
+			$data['CSS'] = $this->css;
+		}
 		
+		$this->load->view('templates/center_template', $data);
 	}
 }
 

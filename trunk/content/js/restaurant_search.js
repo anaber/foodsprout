@@ -936,7 +936,7 @@ function drawNumRecords(params) {
 function addResult(restaurant, i) {
 	var html =
 	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:300px;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'">'+ restaurant.restaurantName +'</a><br>Cuisine:';
+	'	<div style="float:left; clear:both; padding:3px; width:760px; background:#e5e5e5; font-weight:bold;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div><div style="float:left; width:200px; clear:left;">Cuisine:';
 	
 	$.each(restaurant.cuisines, function(j, cuisine) {
 		if (j == 0) {
@@ -950,9 +950,9 @@ function addResult(restaurant, i) {
 	'	<div style="float:right; width:400px;">Address:<br />';
 	$.each(restaurant.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
+			html += '<a href="#" id = "map_'+ address.addressId +'">' + address.displayAddress + '</a>';
 		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
+			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'">' + address.displayAddress + '</a>';
 		}
 	});
 	html += '</div>';
