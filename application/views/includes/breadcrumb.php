@@ -1,4 +1,4 @@
-<div id="breadcrumb">
+<div id="restaurantname"><div id="logorestaurant"><h1>
 <?php
 $i = 0;
 foreach($BREADCRUMB as $text => $link) {
@@ -16,7 +16,8 @@ foreach($BREADCRUMB as $text => $link) {
 			echo $text;
 		}
 	}
+	
 	$i++;
 }
 ?>
-</div>
+</h1></div></div>

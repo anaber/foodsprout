@@ -7,19 +7,11 @@
 ?>
 <?php
 	if (isset($BREADCRUMB) ) {
-
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	}
 	else{
 	}
 ?>
-
-
-
-
-	<div id="restaurantname">
-		<div id="logorestaurant"><h1><?php echo $RESTAURANT_CHAIN->restaurantChain; ?></h1></div>
-	</div>
 
 	<!-- left column-->
 	<div id="rest-main-details">

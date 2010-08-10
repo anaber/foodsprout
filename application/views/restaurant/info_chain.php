@@ -47,7 +47,16 @@
 			?>
 		</div>
 		
-		<div id="divAddMenu" style = "display:none;">Menu form will come here</div>
+		<div id="divAddMenu" style = "display:none;">
+			<?php
+				$data = array(
+						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
+						'TABLE' => $TABLE,
+						'RESTAURANT_CHAIN_ID' => $RESTAURANT_CHAIN->restaurantChainId
+						);
+				$this->load->view('includes/menu_form', $data );
+			?>
+		</div>
 		
 		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
 		
@@ -63,11 +72,11 @@
 			</div>
 			
 			<div style="float:right; width:185px; font-size:10px;" id = 'recordsPerPage' align = "right">
-				Items per page:
-				<div id = "50PerPage" style="float:right; width:20px;">50</div>
-				<div id = "40PerPage" style="float:right; width:30px;">40 | </div>  
-				<div id = "20PerPage" style="float:right; width:30px;">20 | </div>
-				<div id = "10PerPage" style="float:right; width:30px;">10 | </div>
+				Items per page:&nbsp;
+				<a href="#" id = "10PerPage">10</a> | 
+				<a href="#" id = "20PerPage">20</a> |  
+				<a href="#" id = "40PerPage">40</a> |  
+				<a href="#" id = "50PerPage">50</a> 
 			</div>
 			
 			<div class="clear"></div>

@@ -124,6 +124,7 @@ class Manufacture extends Controller {
 	}
 	
 	function supplier_save_add() {
+		
 		$this->load->model('SupplierModel', '', TRUE);
 		
 		$GLOBALS = array();

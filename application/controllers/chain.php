@@ -54,7 +54,7 @@ class Chain extends Controller {
 	// View info about a chain restaurant
 	function view() {
 		global $SUPPLIER_TYPES_2;
-
+		
 		$data = array();
 
 		$restaurantChainId = $this->uri->segment(3);
@@ -62,6 +62,9 @@ class Chain extends Controller {
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($restaurantChainId);
+
+		$this->load->model('ProductTypeModel');
+		$productTypes = $this->ProductTypeModel->listProductType();
 
 		// SEO
 		$this->load->model('SeoModel');
@@ -97,15 +100,21 @@ class Chain extends Controller {
 
 		// Data to be passed to the views
 		// Center -> Info
-		$data['data']['center']['info']['RESTAURANT_CHAIN'] = $restaurantChain;
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_chain_supplier';
-
+		
+		$data['RESTAURANT_CHAIN'] = $restaurantChain;
+		
+		$data['BREADCRUMB'] = array(
+							$restaurantChain->restaurantChain => '',
+							);
+		
 		// Custom CSS
 		if (!empty ($this->css) ) {
 			$data['CSS'] = $this->css;
 		}
-
+		
 		$this->load->view('templates/left_center_right_template', $data);
 	}
 
@@ -127,6 +136,37 @@ class Chain extends Controller {
 		$suppliers = $this->SupplierModel->getSupplierForCompanyJson('', '', '', '', $q, '');
 
 		echo json_encode($suppliers);
+	}
+	
+	function menu_item_save_add() {
+		
+		$this->load->model('ProductModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->ProductModel->addProductIntermediate() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	}
+	
+	function menu_item_save_update() {
+		$this->load->model('ProductModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->ProductModel->updateProduct() ) {
+			echo "yes";
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
 	}
 }
 

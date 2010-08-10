@@ -377,7 +377,8 @@ class RestaurantChainModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM product';
 		
-		$where = ' WHERE restaurant_chain_id  = ' . $q;
+		$where = ' WHERE restaurant_chain_id  = ' . $q . 
+				 ' AND product.status = \'live\'';
 		
 		$base_query_count = $base_query_count . $where;
 		
