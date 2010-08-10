@@ -12,19 +12,7 @@
 	}
 ?>
 
-<?php
-/* END RESULT - We can remove table if we get divs in place
-for($i = 0; $i < count($CENTER); $i++ ) {
- 	$this->load->view($CENTER[$i]);
- 	echo "<br /><br />";
-}
 
-for($i = 0; $i < count($RIGHT); $i++ ) {
- 	$this->load->view($RIGHT[$i]);
- 	echo "<br /><br />";
-}
-*/
-?>
 <?php
 	if (isset($BREADCRUMB) ) {
 		
@@ -34,10 +22,10 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		echo '<br>';
 	}
 ?>
-<div id="main-content">
-<table width = "970" border = "0" cellpadding = "0" cellspacing = "0">
+<div align="center">
+<table width = "980" border = "0" cellpadding = "0" cellspacing = "0">
 	<tr>
-		<td width = "170" valign = "top">
+		<td width="180" valign="top">
 		<?php
 			foreach($LEFT as $key => $view) {
 				if (isset($data['left'][$key]['VIEW_HEADER']) ) {
@@ -54,7 +42,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		?>
 		</td>
 			
-		<td width ="790" valign="top" style="padding-left:10px;">
+		<td width ="795" valign="top" style="padding-left:5px;">
 		<?php
 			foreach($CENTER as $key => $view) {
 				if (isset($data['center'][$key]['VIEW_HEADER']) ) {

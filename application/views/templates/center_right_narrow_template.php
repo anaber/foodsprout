@@ -28,7 +28,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		echo '<br>';
 	}
 ?>
-<div id="main-content">
+<div align="center">
 <table width = "970" border = "0" cellpadding = "0" cellspacing = "0">
 	<tr>
 		<td width = "800" valign = "top">

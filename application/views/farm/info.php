@@ -48,24 +48,56 @@
 	}
 </script>
 
-<?php
-echo '<h1>'.$FARM->farmName.'</h1>';
-?>
-<div style="overflow:auto; padding:5px;">
-	<div style="float:left; width:100px;">Website:</div>
-	<div style="float:left; width:400px;"><?php echo ( !empty($FARM->url) ? '<a target = "_blank" href="' . $this->functionlib->removeProtocolFromUrl($FARM->url) . '">'.$FARM->url.'</a>' : '') ?></div>
-</div>
-<div style="overflow:auto; padding:5px;">
-	<div style="float:left; width:100px;">Type:</div> 
-	<div style="float:left; width:400px;"><?php echo ( !empty($FARM->farmType) ? $FARM->farmType : '') ?></div>
-</div>
-<div style="overflow:auto; padding:5px;">
-	<div style="float:left; width:100px;">Address:</div> 
-	<div style="float:left; width:400px;" id = "divAddresses">
-		<?php
-			foreach($FARM->addresses as $key => $address) {
-				echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
-			}
-		?>
+<div id="restaurantname">
+    <div id="logorestaurant"><?php echo '<h1>'.$FARM->farmName.'</h1>';?></div> 
+  </div>
+  
+  <!-- left column-->
+  <div id="rest-main-details">	
+    <div id="rest-main-img"><img src="/img/applebee-img.jpg" width="201" height="133" alt="apple-img" /></div>
+    
+    <div id="rest-dec">
+      <div id="dec-head"><img src="/img/decription-icon.jpg" width="106" height="22" alt="dec-head" /></div>
+      <div id="description-details">welcome</div>
+    </div>
+    
+    <div id="location-icon"><img src="/img/location-head-icon.jpg" width="89" height="23" alt="location-head-icon" /></div>
+    
+    <div id="map">
+	<br>
+	<div style="color:#333;">
+	http://www.applebees.com<br>
+	128 King Street<br>
+	San Francisco, CA<br>
+	650-210-3100<br>
 	</div>
-</div>
+    </div>
+  </div>
+  <!-- end left column -->
+  
+  <!-- center tabs -->
+  <div id="resultsContainer">
+  
+    <div id="menu-bar"> 
+      <div id="suppliers" class="selected"><a href="#">Supply To</a></div>
+      <div id="menu" class="non-selected"><a href="#">Farmers Markets</a></div>
+      <div id="comments" class="non-selected"><a href="#">Comments</a></div>
+      <div id="add-menu" class="add-item"><a href="#">+ Add</a></div>
+    </div>
+    
+  	<div id="menus"> 
+		
+	
+	
+	</div>
+	
+  </div>
+  <!-- end center tabs -->
+  
+  <!-- right ads -->
+  <div id="add-designs">
+    	<?php
+			$this->load->view('includes/banners/sky');
+		?>
+  </div>
+  <!-- end right ads -->

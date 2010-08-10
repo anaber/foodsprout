@@ -1,4 +1,3 @@
-<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>css/floating_messages.css" />
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <div id="alert"></div>
 

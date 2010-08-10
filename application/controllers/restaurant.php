@@ -35,31 +35,24 @@ class Restaurant extends Controller {
 		}
 		
 		if ( !empty($f) ) {
-			$data['LEFT'] = array(
-					'ad' => 'includes/left/ad',
-				);
+			// do nothing
 		} else {
 			$data['LEFT'] = array(
 					'filter' => 'includes/left/restaurant_filter',
-					'ad' => 'includes/left/ad',
 				);
 		}
 		
 		// Data to be passed to the views
 		if ( empty($f) ) {
-		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
-		//$data['data']['left']['filter']['RESTAURANT_TYPES'] = $restaurantTypes;
-		//$data['data']['left']['filter']['CUISINES'] = $cusines;
+		// load nothing
 		}
 		
 		if ( empty($f) ) {
-		$data['data']['center']['map']['VIEW_HEADER'] = "Map";
-		$data['data']['center']['map']['width'] = '790';
+		$data['data']['center']['map']['width'] = '795';
 		$data['data']['center']['map']['height'] = '250';
 		}
 		
-		//$data['data']['center']['list']['LIST'] = $restaurants;
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Resturants";
+		$data['data']['center']['list']['VIEW_HEADER'] = "List of Restaurants";
 		$data['data']['center']['list']['q'] = $q;
 		$data['data']['center']['list']['f'] = $f;
 		if ( !empty($f) ) {
