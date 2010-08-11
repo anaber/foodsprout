@@ -56,8 +56,13 @@ var topRestaurantTypes;
 	});
 	
 </script>
-
+<div style="float:right; width:170px;">
+	<?php
+		$this->load->view('includes/banners/sky');
+	?>
+</div>
 <div id="resultsContainer" style="display:none" class="pd_tp1">
+	<div style="float:left;width:300px;"><h1>List of Restaurants</h1></div><div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:20px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
 	<div id="resultTableContainer"></div>
 </div>
 
