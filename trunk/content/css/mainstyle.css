@@ -22,7 +22,7 @@ text-align:right;-moz-border-radius:5px;-webkit-border-radius:5px;background:#E5
 font-size:13px;color:#466ABA;background-color:#fff;font-family:"Myriad Pro";line-height:27px;padding-left:15px;padding-right:15px;-moz-border-radius:6px;-webkit-border-radius:6px;}
 /* Text and font colors */
 h1,h2,h3,h4,h5,h6{margin:0;}
-h1{font-size:16px;color:#90171E;}
+h1{font-family:Helvetica,Arial;font-size:18px;color:#F05A25;font-weight:normal;}
 h2{font-size:14px;}
 h3{font-size:14px;}
 .greentxt{color:#0A7414;font-weight:bold;font-size:14px;margin:0px;}
