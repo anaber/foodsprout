@@ -719,8 +719,8 @@ class SupplierModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY restaurant_chain_supplier_id';
-			$sort = 'restaurant_chain_supplier_id';
+			$sort_query = ' ORDER BY ' . $idFieldName;
+			$sort = $idFieldName;
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -812,6 +812,206 @@ class SupplierModel extends Model{
 		$last = $totalPages - 1;		
 		
 		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $fieldValue, '', '');
+		$arr = array(
+			'results'    => $suppliers,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
+	
+	/* This is a SPECIAL case
+	 * If restaurant belongs to a chain, we need to get suppliers of that chain as well
+	 * So, need to merge records from two table, restaurant_supplier and restaurant_chain_supplier
+	 */
+	function getSupplierForRestaurantAndChainJson($restaurantId, $restaurantChainId) {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		
+		$query_count = 'SELECT (
+							SELECT count(*)
+							FROM restaurant_supplier 
+							LEFT JOIN farm 
+								ON restaurant_supplier.supplier_farm_id = farm.farm_id 
+							LEFT JOIN distributor 
+								ON restaurant_supplier.supplier_distributor_id = distributor.distributor_id 
+							LEFT JOIN manufacture 
+								ON restaurant_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+							WHERE 
+								restaurant_supplier.restaurant_id = '.$restaurantId.' 
+								AND restaurant_supplier.status = \'live\')  
+							
+							+
+							
+							(SELECT 
+								count(*)
+							FROM restaurant_chain_supplier 
+							LEFT JOIN farm 
+								ON restaurant_chain_supplier.supplier_farm_id = farm.farm_id 
+							LEFT JOIN distributor 
+								ON restaurant_chain_supplier.supplier_distributor_id = distributor.distributor_id 
+							LEFT JOIN manufacture 
+								ON restaurant_chain_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+							WHERE 
+								restaurant_chain_supplier.restaurant_chain_id = '.$restaurantChainId.' 
+								AND restaurant_chain_supplier.status = \'live\')  
+							
+							AS num_records
+							';
+		$result = $this->db->query($query_count);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		
+		/*
+		 * this query may look weird, but there is no other option.
+		 * Using CONCAT to know if record belongs to rstaurant or restaurant_chain
+		 */
+		$query = '(SELECT 
+						restaurant_supplier.restaurant_supplier_id as supplier_id , restaurant_supplier.restaurant_id, CONCAT(\'restaurant\') AS type,
+						restaurant_supplier.supplier_farm_id, restaurant_supplier.supplier_manufacture_id, restaurant_supplier.supplier_distributor_id, 
+						farm.farm_name, distributor.distributor_name, manufacture.manufacture_name 
+					FROM restaurant_supplier 
+					LEFT JOIN farm 
+						ON restaurant_supplier.supplier_farm_id = farm.farm_id 
+					LEFT JOIN distributor 
+						ON restaurant_supplier.supplier_distributor_id = distributor.distributor_id 
+					LEFT JOIN manufacture 
+						ON restaurant_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+					WHERE 
+						restaurant_supplier.restaurant_id = '.$restaurantId.' 
+						AND restaurant_supplier.status = \'live\')  
+					
+					UNION
+					
+					(SELECT 
+						restaurant_chain_supplier.restaurant_chain_supplier_id as supplier_id , restaurant_chain_supplier.restaurant_chain_id, CONCAT(\'restaurant_chain\') AS type,
+						restaurant_chain_supplier.supplier_farm_id, restaurant_chain_supplier.supplier_manufacture_id, restaurant_chain_supplier.supplier_distributor_id, 
+						farm.farm_name, distributor.distributor_name, manufacture.manufacture_name 
+					FROM restaurant_chain_supplier 
+					LEFT JOIN farm 
+						ON restaurant_chain_supplier.supplier_farm_id = farm.farm_id 
+					LEFT JOIN distributor 
+						ON restaurant_chain_supplier.supplier_distributor_id = distributor.distributor_id 
+					LEFT JOIN manufacture 
+						ON restaurant_chain_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+					WHERE 
+						restaurant_chain_supplier.restaurant_chain_id = '.$restaurantChainId.' 
+						AND restaurant_chain_supplier.status = \'live\')  
+					';
+		
+		$start = 0;
+		$page = 0;
+		
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY supplier_id';
+			$sort = 'supplier_id';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "SupplierModel.getSupplierForRestaurantAndChainJson : " . $query);
+		$result = $this->db->query($query);
+		
+		
+		$suppliers = array();
+		$CI =& get_instance();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('SupplierLib');
+			unset($this->supplierLib);
+			
+			$CI->load->model('AddressModel','',true);
+			
+			$this->supplierLib->supplierId = $row['restaurant_id'];
+			if (isset( $row['restaurant_name']) ) {
+				$this->supplierLib->supplierType = 'restaurant';
+				$this->supplierLib->supplierName = $row['restaurant_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_restaurant_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( $row['supplier_restaurant_id'], '', '', '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
+			} else if ( isset($row['farm_name']) ) {
+				$this->supplierLib->supplierType = 'farm';
+				$this->supplierLib->supplierName = $row['farm_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_farm_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['supplier_farm_id'], '', '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
+			} else if ( isset($row['manufacture_name']) ) {
+				$this->supplierLib->supplierType = 'manufacture';
+				$this->supplierLib->supplierName = $row['manufacture_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_manufacture_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['supplier_manufacture_id'], '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
+			} else if ( isset($row['distributor_name']) ) {
+				$this->supplierLib->supplierType = 'distributor';
+				$this->supplierLib->supplierName = $row['distributor_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_distributor_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['supplier_distributor_id'], '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
+			}
+			
+			$suppliers[] = $this->supplierLib;
+			unset($this->supplierLib);
+		}
+		
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
 		$arr = array(
 			'results'    => $suppliers,
 			'param'      => $params,

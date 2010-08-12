@@ -33,7 +33,7 @@
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
 			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
 			<div id="comments" class = "non-selected"  style = "display:none;"><a href="#">Comments</a></div>
-			<div id="addItem" class = "add-item"><a href="/chain/add_supplier/<?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>">+ Add Supplier</a></div>
+			<div id="addItem" class = "add-item"><a href="#">+ Add Supplier</a></div>
 		</div>
 		
 		<div id="divAddSupplier" style = "display:none;"> 
@@ -51,7 +51,6 @@
 			<?php
 				$data = array(
 						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
-						'TABLE' => $TABLE,
 						'RESTAURANT_CHAIN_ID' => $RESTAURANT_CHAIN->restaurantChainId
 						);
 				$this->load->view('includes/menu_form', $data );
