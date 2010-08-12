@@ -212,6 +212,7 @@ class Restaurant extends Controller {
 		// Load all the views for the center column
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
+				'map' => 'includes/right/map',
 			);
 
 
@@ -230,6 +231,12 @@ class Restaurant extends Controller {
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
+		
+		// Left -> Map
+		$data['data']['left']['map']['width'] = '225';
+		$data['data']['left']['map']['height'] = '225';
+		$data['data']['left']['map']['hide_map'] = 'no';
+		
 		
 		$data['RESTAURANT'] = $restaurant;
 		
