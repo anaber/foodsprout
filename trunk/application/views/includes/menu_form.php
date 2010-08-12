@@ -9,8 +9,8 @@
 
 function resetMenuForm() {
 	$('#productName').val('');
-	$('#productTypeId').val('');
-	$('#brand').val('');
+	//$('#productTypeId').val('');
+	//$('#brand').val('');
 	$('#ingredient').val('');
 }
 
@@ -64,8 +64,8 @@ $(document).ready(function() {
                 formAction = '/chain/menu_item_save_add';
                 postArray = {
                     productName:$('#productName').val(),
-                    productTypeId: $('#productTypeId').val(),
-                    brand:$('#brand').val(),
+                    productTypeId: 1, //$('#productTypeId').val(),
+                    brand: '', //$('#brand').val(),
                     ingredient:$('#ingredient').val(),
 						  
                     manufactureId: $('#manufactureId').val(),
@@ -123,6 +123,9 @@ $(document).ready(function() {
                 <input value="<?php echo (isset($PRODUCT) ? $PRODUCT->productName : '') ?>" class="validate[required]" type="text" name="productName" id="productName"/><br />
             </td>
         </tr>
+        <?php
+        	/*
+        ?>
         <tr>
             <td width = "25%">Product Type</td>
             <td width = "75%">
@@ -136,16 +139,20 @@ $(document).ready(function() {
                 </select>
             </td>
         </tr>
+        
         <tr>
             <td width = "25%">Brand</td>
             <td width = "75%">
                 <input value="<?php echo (isset($PRODUCT) ? $PRODUCT->brand : '') ?>"  type="text" name="brand" id="brand"/><br />
             </td>
         </tr>
+        <?php
+        	*/
+        ?>
         <tr>
             <td width = "25%">Ingredient</td>
             <td width = "75%">
-                <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "5" cols = "30"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
+                <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "3" cols = "30"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
             </td>
         </tr>
         <tr>

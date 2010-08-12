@@ -9,6 +9,9 @@ class Restaurant extends Controller {
 		{
 			redirect('about/privatebeta');
 		}
+		$this->css = array(
+			'restaurant',
+		);
 	}
 	
 	function index() {
@@ -78,6 +81,8 @@ class Restaurant extends Controller {
 	
 	// View the information on a single restaurant
 	function view() {
+		
+		/*
 		$this->load->library('functionlib');
 		$data = array();
 		
@@ -162,6 +167,82 @@ class Restaurant extends Controller {
 		$data['data']['right']['map']['hide_map'] = 'no';
 		
 		$this->load->view('templates/center_template', $data);
+		*/
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		global $SUPPLIER_TYPES_2;
+		
+		$data = array();
+
+		$restaurantId = $this->uri->segment(3);
+
+		// Getting information from models
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+
+		$this->load->model('ProductTypeModel');
+		$productTypes = $this->ProductTypeModel->listProductType();
+
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_detail');
+
+		$seo_data_array = array(
+			'restaurant_name' => $restaurant->restaurantName,
+			'restaurant_type' => 'Fast Food',
+			'cuisines' => 'Fast Food, American, Pizza',
+		);
+
+		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
+		$data['SEO'] = $seo;
+		// SEO ENDS here
+
+		// List of views to be included, these are files that are pulled from different views in the view folders
+
+		// Load all the views for the center column
+		$data['LEFT'] = array(
+				'img' => '/includes/left/images',
+			);
+
+
+		// Load all the views for the center column
+		$data['CENTER'] = array(
+				'info' => '/restaurant/info',
+			);
+
+		// Load all the views for the right column
+		$data['RIGHT'] = array(
+				'ad' => 'includes/banners/sky',
+			);
+
+		// Data to be passed to the views
+		// Center -> Info
+		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
+		
+		$data['RESTAURANT'] = $restaurant;
+		
+		$data['BREADCRUMB'] = array(
+							$restaurant->restaurantName => '',
+							);
+		
+		// Custom CSS
+		if (!empty ($this->css) ) {
+			$data['CSS'] = $this->css;
+		}
+		
+		$this->load->view('templates/left_center_right_template', $data);
 	}
 	
 	
@@ -274,6 +355,30 @@ class Restaurant extends Controller {
 		$data['data']['right']['map']['hide_map'] = 'no';
 		
 		$this->load->view('templates/center_right_template', $data);
+	}
+	
+	function ajaxSearchRestaurantSuppliers() {
+		$q = $this->input->post('q');
+		
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($q);
+		$restaurantChainId = $restaurant->restaurantChainId;
+		
+		if( !empty($restaurantChainId) ){
+			$this->load->model('SupplierModel');
+			$suppliers = $this->SupplierModel->getSupplierForRestaurantAndChainJson($q, $restaurantChainId);
+		} else {		
+			$this->load->model('SupplierModel');
+			$suppliers = $this->SupplierModel->getSupplierForCompanyJson($q, '', '', '', '', '');
+		}
+
+		echo json_encode($suppliers);
+	}
+	
+	function ajaxSearchRestaurantMenus() {
+		$this->load->model('RestaurantModel', '', TRUE);
+		$restaurants = $this->RestaurantModel->getRestaurantMenusJson();
+		echo json_encode($restaurants);
 	}
 }
 

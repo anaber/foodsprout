@@ -1105,6 +1105,125 @@ class RestaurantModel extends Model{
 		return $menu;
 	}
 	
+	function getRestaurantMenusJson() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$CI =& get_instance();
+		
+		$CI->load->model('RestaurantModel');
+		$restaurant = $CI->RestaurantModel->getRestaurantFromId($q);
+		$restaurantChainId = $restaurant->restaurantChainId;
+		
+		$start = 0;
+		$page = 0;
+		
+		$base_query = 'SELECT *' .
+				' FROM product';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM product';
+		
+		
+		$where = '';
+		if( !empty($restaurantChainId) ){
+			$where = ' WHERE (restaurant_id  = ' . $q . ' OR restaurant_chain_id = ' . $q . ') ';
+		} else {
+			$where = ' WHERE restaurant_id  = ' . $q;
+		}
+		
+		$where .= ' AND product.status = \'live\'';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY product_name';
+			$sort = 'product_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "RestaurantModel.getRestaurantMenusJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$menu = array();
+		
+		
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('ProductLib');
+			unset($this->productLib);
+			
+			$this->productLib->productId = $row['product_id'];
+			$this->productLib->productName = $row['product_name'];
+			$this->productLib->ingredient = $row['ingredient_text'];
+			$this->productLib->image = '';
+			
+			$menu[] = $this->productLib;
+			unset($this->productLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $menu,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
 }
 
 
