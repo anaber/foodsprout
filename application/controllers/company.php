@@ -70,7 +70,7 @@ class Company extends Controller {
 		$data['data']['center']['ingredients']['INGREDIENTS'] = array('cheese', 'meat', 'pepper');
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/logo/mcdonalds.jpg';
+		$data['data']['right']['image']['src'] = '/img/logo/mcdonalds.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'McDonalds';
@@ -110,7 +110,7 @@ class Company extends Controller {
 		// Data to be passed to the views
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/logo/mcdonalds.jpg';
+		$data['data']['right']['image']['src'] = '/img/logo/mcdonalds.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'McDonalds';

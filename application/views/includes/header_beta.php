@@ -38,7 +38,7 @@
 	<div class="header-wide">
 		<div id="header">
 			<div id="logo">
-				<a href="/"><img src="/images/food-logo.gif" border="0"></a>
+				<a href="/"><img src="/img/food-logo.gif" border="0"></a>
 			</div>
 			<div id="account">
 				<?php

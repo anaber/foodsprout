@@ -110,7 +110,7 @@ class Manufacture extends Controller {
 		$data['data']['center']['suppliers']['SUPPLIER'] = $suppliers;
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/manufacture-na-icon.jpg';
+		$data['data']['right']['image']['src'] = '/img/standard/manufacture-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'Manufacture Image';

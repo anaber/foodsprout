@@ -16,7 +16,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
 	//$('#resultsContainer').hide();
 	//$('#messageContainer').show();
-	//$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+	//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
 	var formAction = '/restaurant/ajaxSearchRestaurants';
 	

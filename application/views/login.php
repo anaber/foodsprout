@@ -7,7 +7,7 @@
 <strong class="redtxt">Mapping the world's food chain, and what's really in your food, start exploring it with us</strong><br><br>
 	
 	<div style="padding:10px;overflow:auto;">
-		<img src="/images/Connecting-Dots.gif" border="0" align="left" style="margin-right: 10px; margin-left:0px;">
+		<img src="/img/Connecting-Dots.gif" border="0" align="left" style="margin-right: 10px; margin-left:0px;">
 		<br><br><span class="redtxt"><b>Private Beta</b></span>
 		<br>
 
