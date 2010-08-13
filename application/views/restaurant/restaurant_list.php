@@ -22,7 +22,7 @@ var topRestaurantTypes;
 	
 	$(document).ready(function() {
 		
-		//$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+		//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		loadPopupFadeIn();
 		
 		$.post("/restaurant/ajaxSearchRestaurants", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
@@ -56,18 +56,18 @@ var topRestaurantTypes;
 	});
 	
 </script>
-<div style="float:right; width:170px;">
+<div style="float:right; width:160px;">
 	<?php
 		$this->load->view('includes/banners/sky');
 	?>
 </div>
 <div id="resultsContainer" style="display:none" class="pd_tp1">
-	<div style="float:left;width:300px;"><h1>List of Restaurants</h1></div><div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:20px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
+	<div style="float:left;width:300px;"><h1>List of Restaurants</h1></div><div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:30px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
 	<div id="resultTableContainer"></div>
 </div>
 
 <!--<h2 class="blue_text first" id="messageContainer" align = "center">Your search results are loading, please wait.</h2>-->
-
+<br/><br/>
 <div style="overflow:auto; padding:5px;">
 	
 	<div style="float:left; width:170px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
@@ -93,5 +93,5 @@ var topRestaurantTypes;
 </div>
 
 <div id="popupProcessing"> 
-	<img src = "/images/icon_processing.gif">
+	<img src = "/img/icon_processing.gif">
 </div> 

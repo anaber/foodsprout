@@ -12,7 +12,7 @@
 		<strong class="redtxt">Mapping the world's food chain, and what's really in your food, start exploring it with us</strong><br><br>
 			
 			<div style="-moz-border-radius: 4px; -webkit-border-radius: 4px; background: #D2E4C9; color: #000; -moz-box-shadow: 0 1px 0 #CCCCCC;-webkit-box-shadow: 0 1px 0 #CCCCCC; padding:30px;overflow:auto;min-height:400px;">
-				<img src="/images/home-menu.jpg" border="0" align="right" style="margin-right: 0px; margin-left:10px;">
+				<img src="/img/home-menu.jpg" border="0" align="right" style="margin-right: 0px; margin-left:10px;">
 					<span class="redtxt"><br><br><br><br><br><b>Restaurants in Your Area</b></span>
 					<br>
 
@@ -55,6 +55,6 @@
 </form>
 
 <div id="homeleftbox">
-	<a href="/map"><img src="/images/map-home.jpg" border="0" align="left" style="margin-right: 5px;" width="200"></a><span class="redtxt"><b>Food Sources in Your Area</b></span><br><br><span style="font-size:14px;">Start using <a href="/map">our interactive map</a> to learn where your food comes from AND what's in it...</span><br><br>		
+	<a href="/map"><img src="/img/map-home.jpg" border="0" align="left" style="margin-right: 5px;" width="200"></a><span class="redtxt"><b>Food Sources in Your Area</b></span><br><br><span style="font-size:14px;">Start using <a href="/map">our interactive map</a> to learn where your food comes from AND what's in it...</span><br><br>		
 </div>
 

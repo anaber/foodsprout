@@ -133,15 +133,15 @@ function reinitializeFilterEvent (data) {
 
 function addResult(manufacture, count) {
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:300px;"><a href="/manufacture/view/' + manufacture.manufactureId + '" id = "'+ manufacture.manufactureId +'">'+ manufacture.manufactureName +'</a><br>Type: '+ manufacture.manufactureType + '</div>' +
-	'	<div style="float:right; width:400px;">Address:<br />';
+	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/manufacture/view/' + manufacture.manufactureId + '" id = "'+ manufacture.manufactureId +'" style="text-decoration:none;">'+ manufacture.manufactureName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;">Type : '+ manufacture.manufactureType + '</div>' +
+	'	<div style="float:left; width:295px; font-size:12px;">Address:<br />';
 	
 	$.each(manufacture.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<em>' + address.displayAddress + '</em>';
+			html += '' + address.displayAddress + '';
 		} else {
-			html += "<br /><br />" + '<em>' + address.displayAddress + '</em>';
+			html += "<br /><br />" + '' + address.displayAddress + '';
 		}
 	});
 	

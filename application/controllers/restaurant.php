@@ -68,7 +68,6 @@ class Restaurant extends Controller {
 		// this is not working???
 		//$data['CSS'] = "listing";
 		
-		
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
@@ -156,7 +155,7 @@ class Restaurant extends Controller {
 		
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
+		$data['data']['right']['image']['src'] = '/img/standard/restaurant-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = '';
@@ -211,7 +210,7 @@ class Restaurant extends Controller {
 
 		// Load all the views for the center column
 		$data['LEFT'] = array(
-				'img' => '/includes/left/images',
+				'img' => '/includes/left/img',
 				'map' => 'includes/right/map',
 			);
 
@@ -351,7 +350,7 @@ class Restaurant extends Controller {
 		$data['data']['center']['list']['TABLE'] = 'restaurant_supplier';
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
+		$data['data']['right']['image']['src'] = '/img/standard/restaurant-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = '';

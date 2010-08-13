@@ -17,7 +17,7 @@
 $DB_HOST  = "localhost";
 $DB_USER  = "root";
 $DB_PASSWORD  = "root";
-$DATABSE  = "food2";
+$DATABSE  = "468258_food3";
 
 $BASE_URL = "http://localhost:8888/";
 
@@ -37,7 +37,7 @@ $ZIPCODE_ZOOM_LEVEL = 13;
  */
 $SITE_TITLE  = "Food";
 
-$SYSTEM_FOLDER = "/Users/anaber/Sites/food/web/system";
-$APPLICATION_FOLDER = "/Users/anaber/Sites/food/web/application";
+$SYSTEM_FOLDER = "/Users/anaber/Sites/food/web/trunk/system";
+$APPLICATION_FOLDER = "/Users/anaber/Sites/food/web/trunk/application";
 
 ?>

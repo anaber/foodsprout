@@ -40,7 +40,7 @@ body{background: #E5E5E5;}
 <!-- header -->
 <div id="header">
   <div id="headeritms">
-    <div id="logo"><a href="/"><img src="/img/foodsprout-logo.gif" width="144" height="44" alt="Food Sprout" border="0" /></a></div>
+    <div id="logo"><a href="/"><img src="/img/foodsprout-logo.gif" width="198" height="50" alt="Food Sprout" border="0" /></a></div>
     <!-- login -->
     <?php
     	if ($this->session->userdata('isAuthenticated') == 1 )

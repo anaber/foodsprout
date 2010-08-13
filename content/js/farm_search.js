@@ -570,16 +570,16 @@ function drawNumRecords(params) {
 
 function addResult(farm, i) {
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:300px;"><a href="/farm/view/' + farm.farmId + '" id = "'+ farm.farmId +'">'+ farm.farmName +'</a><br>Type:' + farm.farmType;
+	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/farm/view/' + farm.farmId + '" id = "'+ farm.farmId +'" style="text-decoration:none;">'+ farm.farmName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;">Type: ' + farm.farmType;
 	
 	html += '</div>' + 
-	'	<div style="float:right; width:400px;">Address:<br />';
+	'	<div style="float:left; width:295px;">Address:<br />';
 	$.each(farm.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
+			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
 		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
+			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
 		}
 	});
 	html += '</div>';

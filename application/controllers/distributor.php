@@ -20,7 +20,7 @@ class Distributor extends Controller {
 			);
 		
 		$data['RIGHT'] = array(
-				'ad' => 'includes/left/ad',
+				'ad' => 'includes/banners/sky',
 			);
 		
 		// Data to be passed to the views
@@ -77,7 +77,7 @@ class Distributor extends Controller {
 		$data['data']['center']['menu']['MENU'] = array('burger', 'pizza', 'meat');
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/distributor-na-icon.jpg';
+		$data['data']['right']['image']['src'] = '/img/standard/distributor-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'Distributor Image';

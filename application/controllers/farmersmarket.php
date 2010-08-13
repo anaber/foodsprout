@@ -36,28 +36,27 @@ class FarmersMarket extends Controller {
 		
 		if ( !empty($f) ) {
 			$data['LEFT'] = array(
-					'ad' => 'includes/left/ad',
+					
 				);
 		} else {
 			$data['LEFT'] = array(
 					'filter' => 'includes/left/farmers_market_filter',
-					'ad' => 'includes/left/ad',
+					
 				);
 		}
 		
 		// Data to be passed to the views
 		if ( empty($f) ) {
-		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
+		//$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
 		}
 		
 		if ( empty($f) ) {
-		$data['data']['center']['map']['VIEW_HEADER'] = "Map";
-		$data['data']['center']['map']['width'] = '790';
+		//$data['data']['center']['map']['VIEW_HEADER'] = "Map";
+		$data['data']['center']['map']['width'] = '795';
 		$data['data']['center']['map']['height'] = '250';
 		}
 		
-		//$data['data']['center']['list']['LIST'] = $restaurants;
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Farmers Market";
+		//$data['data']['center']['list']['VIEW_HEADER'] = "Farmers Market";
 		$data['data']['center']['list']['q'] = $q;
 		$data['data']['center']['list']['f'] = $f;
 		if ( !empty($f) ) {
@@ -134,7 +133,7 @@ class FarmersMarket extends Controller {
 		
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
+		$data['data']['right']['image']['src'] = '/img/standard/restaurant-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = '';

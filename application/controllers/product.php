@@ -22,7 +22,7 @@ class Product extends Controller {
 		
 		// List of views to be included
 		$data['LEFT'] = array(
-				'ad' => 'includes/left/ad',
+				'ad' => 'includes/banners/sky',
 			);
 		
 		$data['CENTER'] = array(
@@ -85,7 +85,7 @@ class Product extends Controller {
 		
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/products/burger.jpg';
+		$data['data']['right']['image']['src'] = '/img/products/burger.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'Burger Image';
@@ -111,7 +111,7 @@ class Product extends Controller {
 			);
 
 		$data['RIGHT'] = array(
-				'ad' => 'includes/left/ad',
+				'ad' => 'includes/banners/sky',
 			);
 
 		$data['data']['center']['list_product']['VIEW_HEADER'] = "List of Products with Fructose";
