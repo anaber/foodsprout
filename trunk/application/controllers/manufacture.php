@@ -19,14 +19,14 @@ class Manufacture extends Controller {
 				'list' => '/manufacture/manufacture_list',
 			);
 		
-		$data['RIGHT'] = array(
-				'ad' => 'includes/left/ad',
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/manufacture_filter',
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Manufacture";
+		//$data['data']['center']['list']['VIEW_HEADER'] = "Products &amp; Food Companies";
 		
-		$this->load->view('templates/center_right_narrow_template', $data);
+		$this->load->view('templates/left_center_template', $data);
 	}
 	
 	function ajaxSearchManufactures() {
@@ -110,7 +110,7 @@ class Manufacture extends Controller {
 		$data['data']['center']['suppliers']['SUPPLIER'] = $suppliers;
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/manufacture-na-icon.jpg';
+		$data['data']['right']['image']['src'] = '/img/standard/manufacture-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'Manufacture Image';

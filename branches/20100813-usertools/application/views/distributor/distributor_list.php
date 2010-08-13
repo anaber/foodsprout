@@ -31,7 +31,7 @@
 </div>
 <!--
 <div id="popupProcessing"> 
-	<img src = "/images/icon_processing.gif">
+	<img src = "/img/icon_processing.gif">
 </div> 
 
 <div id="backgroundPopup"></div>

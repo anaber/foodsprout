@@ -11,25 +11,26 @@
 		"json");
 	});
 </script>
+<h1>Restaurant Chains</h1>
+<div style="float:right; width:160px;">
+	<?php
+		$this->load->view('includes/banners/sky');
+	?>
+</div>
 
-
-<div id="resultsContainer" style="display:none;" class="pd_tp1">
+<div id="resultsContainer" style="display:none" class="pd_tp1">
 	<div id="resultTableContainer"></div>
 </div>
 
-<div style="overflow:auto; padding:5px;" align="left">
+<div style="overflow:auto; padding:5px;">
 	
-	<div style="width:690px; padding:10px; font-size:10px; border-color:#FF0000; border-width:1px; border-style:solid;" id = 'pagingLinks' align = "center">
-		<b>Page</b> &nbsp;&nbsp;
-		<a href="#" id = "1">1</a>
+	<div style="float:left; width:400px; font-size:10px;" id = 'pagingLinks' align = "center">
+		<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;
+		<a href="#" id = "imgPrevious">Previous</a>
+		&nbsp;&nbsp;&nbsp; Page 1 of 1 &nbsp;&nbsp;&nbsp;
+		<a href="#" id = "imgNext">Next</a> &nbsp;&nbsp;
+		<a href="#" id = "imgLast">Last</a>
 	</div>
-	
+
 	<div class="clear"></div>
 </div>
-<!--
-<div id="popupProcessing"> 
-	<img src = "/images/icon_processing.gif">
-</div> 
-
-<div id="backgroundPopup"></div>
--->  

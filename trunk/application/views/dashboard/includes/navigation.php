@@ -1,12 +1,34 @@
-<div class="nav-wide-db"><br>
-		<div id="main-nav-db">
-			<ul id="navlist">
-				<li><?php echo anchor('contribute', 'Contribute'); ?></li>
-				<li><?php echo anchor('restaurants', 'My Restaurants'); ?></li>
-				<li><?php echo anchor('products', 'My Products'); ?></li>
-				<li><?php echo anchor('suppliers', 'Suppliers'); ?></li>
-				<li><?php echo anchor('tools', 'Tools'); ?></li>
-				
-			</ul>
-		</div>
+<?php
+$tab = $this->uri->segment(1);
+?>
+
+<div id="navigation">
+	<?php
+	 	$restclass=NULL;
+		if($tab == "chain" || $tab == "restaurant") { 
+			$restclass = 'class="tabon"'; 
+		} 
+		echo anchor('restaurant', 'Restaurants', $restclass);
+	?>
+	<?php
+	 	$manuclass=NULL;
+		if($tab == "manufacture") { 
+			$manuclass = 'class="tabon"';
+		}
+		echo anchor('manufacture', 'Products', $manuclass);
+	?>
+	<?php
+		$farmclass=NULL;
+		if($tab == "farm") { 
+			$farmclass = 'class="tabon"';
+		}
+		echo anchor('farm', 'Farms', $farmclass);
+	?>
+	<?php
+		$marketclass=NULL;
+		if($tab == "farmersmarket") { 
+			$marketclass = 'class="tabon"';
+		}
+		echo anchor('farmersmarket', 'Farmers Market', $marketclass);
+	?>
 </div>

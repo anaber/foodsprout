@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
 	
-	$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+	$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
 	$.post("/admincp/restaurant/ajaxSearchRestaurants", { },
 		function(data){
@@ -15,7 +15,7 @@ $(document).ready(function() {
 		
 		$('#resultsContainer').hide();
 		$('#messageContainer').show();
-		$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+		$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		var query = $("#suggestion_box").val();
 		
 		$.post("/admincp/restaurant/ajaxSearchRestaurants", { q:query },
@@ -32,7 +32,7 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 	
 	$('#resultsContainer').hide();
 	$('#messageContainer').show();
-	$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+	$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
 	var formAction = '/admincp/restaurant/ajaxSearchRestaurants';
 	

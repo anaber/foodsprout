@@ -101,7 +101,7 @@ class Chain extends Controller {
 		$data['data']['center']['suppliers']['SUPPLIER'] = $suppliers;
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
+		$data['data']['right']['image']['src'] = '/img/standard/restaurant-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = '';

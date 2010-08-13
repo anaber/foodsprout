@@ -85,7 +85,7 @@ class Product extends Controller {
 		
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/products/burger.jpg';
+		$data['data']['right']['image']['src'] = '/img/products/burger.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = 'Burger Image';

@@ -1,2 +1,2 @@
 <?php /* ?><div id="rest-main-img"><img src="/img/applebee-img.jpg" width="211" height="143" alt="apple-img" /></div><?php */?>
-<div id="rest-main-img"><img src="/images/standard/restaurant-na-icon.jpg" width="201" height="133" alt="apple-img" /></div>
+<div id="rest-main-img"><img src="/img/standard/restaurant-na-icon.jpg" width="201" height="133" alt="apple-img" /></div>

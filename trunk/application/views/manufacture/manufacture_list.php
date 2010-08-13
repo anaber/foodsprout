@@ -102,12 +102,19 @@ function formatItem(row) {
 }
 
 </script>
-<br />
-<?php
-	$this->load->view('includes/left/manufacture_filter');
-?>
-<br />
+
+<div style = "float:left; width:600px; -moz-border-radius:7px;-webkit-border-radius:7px;background: #F05A25; color:#fff; padding:5px;">
+	Search &nbsp;<input type="text" size="35" id = "suggestion_box">
+</div>
+
+<div style="float:right; width:160px;">
+	<?php
+		$this->load->view('includes/banners/sky');
+	?>
+</div>
+
 <div id="resultsContainer" style="display:none" class="pd_tp1">
+	<div style="float:left;width:300px;"><br /><h1>Products &amp; Companies</h1></div>
 	<div id="resultTableContainer"></div>
 </div>
 
@@ -139,7 +146,7 @@ function formatItem(row) {
 <input type = "hidden" id = "selectedStateId" value = "">
 
 <div id="popupProcessing"> 
-	<img src = "/images/icon_processing.gif">
+	<img src = "/img/icon_processing.gif">
 </div> 
 
 <div id="backgroundPopup"></div>

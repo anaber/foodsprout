@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+	$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
 	$.post("/admincp/company/ajaxSearchCompanies", { },
 		function(data){
@@ -14,7 +14,7 @@ $(document).ready(function() {
 		
 		$('#resultsContainer').hide();
 		$('#messageContainer').show();
-		$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+		$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		var query = $("#suggestion_box").val();
 		
 		$.post("/admincp/company/ajaxSearchCompanies", { q:query },
@@ -30,7 +30,7 @@ $(document).ready(function() {
 function postAndRedrawContent(page, perPage, s, o, query) {
 	$('#resultsContainer').hide();
 	$('#messageContainer').show();
-	$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+	$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
 	var formAction = '/admincp/company/ajaxSearchCompanies';
 	

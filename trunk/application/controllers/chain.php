@@ -23,14 +23,14 @@ class Chain extends Controller {
 				'list' => '/restaurant/fastfood_list',
 			);
 
-		$data['RIGHT'] = array(
-				'ad' => 'includes/left/ad',
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/chain_filter',
 			);
 
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Fast Food Resturants";
+		//$data['data']['center']['list']['VIEW_HEADER'] = "List of Fast Food Resturants";
 
-		$this->load->view('templates/center_right_narrow_template', $data);
+		$this->load->view('templates/left_center_template', $data);
 	}
 
 	function fastfood() {
@@ -41,14 +41,14 @@ class Chain extends Controller {
 				'list' => '/restaurant/fastfood_list',
 			);
 
-		$data['RIGHT'] = array(
-				'ad' => 'includes/left/ad',
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/chain_filter',
 			);
 
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Restaurant Chains";
+		// $data['data']['center']['list']['VIEW_HEADER'] = "List of Restaurant Chains";
 
-		$this->load->view('templates/center_right_narrow_template', $data);
+		$this->load->view('templates/left_center_template', $data);
 	}
 
 	// View info about a chain restaurant

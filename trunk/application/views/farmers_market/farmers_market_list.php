@@ -29,9 +29,18 @@ var showMap = true;
 	
 </script>
 
+<div style="float:right; width:160px;">
+	<?php
+		$this->load->view('includes/banners/sky');
+	?>
+</div>
 <div id="resultsContainer" style="display:none" class="pd_tp1">
+	<div style="float:left;width:300px;"><h1>Farmers Markets</h1></div><div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:30px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
 	<div id="resultTableContainer"></div>
 </div>
+
+<!--<h2 class="blue_text first" id="messageContainer" align = "center">Your search results are loading, please wait.</h2>-->
+<br/><br/>
 
 <div style="overflow:auto; padding:5px;">
 	

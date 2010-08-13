@@ -22,7 +22,7 @@ var topRestaurantTypes;
 	
 	$(document).ready(function() {
 		
-		//$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+		//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		loadPopupFadeIn();
 		
 		$.post("/restaurant/ajaxSearchRestaurants", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
@@ -88,5 +88,5 @@ var topRestaurantTypes;
 </div>
 
 <div id="popupProcessing"> 
-	<img src = "/images/icon_processing.gif">
+	<img src = "/img/icon_processing.gif">
 </div> 

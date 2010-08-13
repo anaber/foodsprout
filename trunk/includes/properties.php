@@ -11,7 +11,7 @@
  * ======================================================
  */
 
-$ENV_PROPERTY_FILE = "env_properties/test_server.php";
+$ENV_PROPERTY_FILE = "env_properties/andrew.php";
 
 include($ENV_PROPERTY_FILE);
 

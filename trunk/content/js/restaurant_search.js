@@ -16,7 +16,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
 	//$('#resultsContainer').hide();
 	//$('#messageContainer').show();
-	//$('#messageContainer').addClass('center').html('<img src="/images/loading_pink_bar.gif" />');
+	//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
 	var formAction = '/restaurant/ajaxSearchRestaurants';
 	
@@ -935,8 +935,8 @@ function drawNumRecords(params) {
 
 function addResult(restaurant, i) {
 	var html =
-	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div><div style="float:left; width:300px; clear:left;">Cuisine:';
+	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;">Cuisine: ';
 	
 	$.each(restaurant.cuisines, function(j, cuisine) {
 		if (j == 0) {
@@ -950,9 +950,9 @@ function addResult(restaurant, i) {
 	'	<div style="float:left; width:295px;">Address:<br />';
 	$.each(restaurant.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'">' + address.displayAddress + '</a>';
+			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
 		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'">' + address.displayAddress + '</a>';
+			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
 		}
 	});
 	html += '</div>';

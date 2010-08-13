@@ -139,7 +139,7 @@ function formatItem(row) {
 <input type = "hidden" id = "selectedStateId" value = "">
 
 <div id="popupProcessing"> 
-	<img src = "/images/icon_processing.gif">
+	<img src = "/img/icon_processing.gif">
 </div> 
 
 <div id="backgroundPopup"></div>

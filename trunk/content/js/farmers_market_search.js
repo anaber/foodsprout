@@ -274,16 +274,16 @@ function drawNumRecords(params) {
 
 function addResult(farmersMarket, i) {
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:300px;"><a href="/farmersmarket/view/' + farmersMarket.farmersMarketId + '" id = "'+ farmersMarket.farmersMarketId +'">'+ farmersMarket.farmersMarketName +'</a>';
+	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/farmersmarket/view/' + farmersMarket.farmersMarketId + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
 	
 	html += '</div>' + 
-	'	<div style="float:right; width:400px;">Address:<br />';
+	'	<div style="float:left; width:400px;">Address:<br />';
 	$.each(farmersMarket.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
+			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
 		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'"><em>' + address.completeAddress + '</em></a>';
+			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
 		}
 	});
 	

@@ -40,28 +40,27 @@ class Farm extends Controller {
 		
 		if ( !empty($f) ) {
 			$data['LEFT'] = array(
-					'ad' => 'includes/left/ad',
+					//'ad' => 'includes/banners/sky',
 				);
 		} else {
 			$data['LEFT'] = array(
-					'filter' => 'includes/left/farm_filter',
-					'ad' => 'includes/left/ad',
+					'filter' => 'includes/left/farm_filter'
 				);
 		}
 		
 		// Data to be passed to the views
 		if ( empty($f) ) {
-		$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
+		//$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
 		}
 		
 		if ( empty($f) ) {
-		$data['data']['center']['map']['VIEW_HEADER'] = "Map";
-		$data['data']['center']['map']['width'] = '790';
+		//$data['data']['center']['map']['VIEW_HEADER'] = "Map";
+		$data['data']['center']['map']['width'] = '795';
 		$data['data']['center']['map']['height'] = '250';
 		}
 		
 		//$data['data']['center']['list']['LIST'] = $restaurants;
-		$data['data']['center']['list']['VIEW_HEADER'] = "List of Farms";
+		//$data['data']['center']['list']['VIEW_HEADER'] = "List of Farms";
 		$data['data']['center']['list']['q'] = $q;
 		$data['data']['center']['list']['f'] = $f;
 		if ( !empty($f) ) {
@@ -73,9 +72,9 @@ class Farm extends Controller {
 		}
 		
 		// Custom CSS
-		if (!empty ($this->css) ) {
-			$data['CSS'] = $this->css;
-		}
+		//if (!empty ($this->css) ) {
+		//	$data['CSS'] = $this->css;
+		//}
 		
 		$this->load->view('templates/left_center_template', $data);
 	}
@@ -152,7 +151,7 @@ class Farm extends Controller {
 		$data['data']['center']['companies']['COMPANIES'] = $companies;
 		
 		// Right -> Image
-		$data['data']['right']['image']['src'] = '/images/standard/restaurant-na-icon.jpg';
+		$data['data']['right']['image']['src'] = '/img/standard/restaurant-na-icon.jpg';
 		$data['data']['right']['image']['width'] = '300';
 		$data['data']['right']['image']['height'] = '200';
 		$data['data']['right']['image']['title'] = '';

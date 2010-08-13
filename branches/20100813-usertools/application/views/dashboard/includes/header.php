@@ -22,7 +22,7 @@
 	<div class="header-wide">
 		<div id="header">
 			<div id="logo">
-				<a href="/user/dashboard"><img src="/images/food-logo-dashboard.gif" border="0"></a>
+				<a href="/user/dashboard"><img src="/img/food-logo-dashboard.gif" border="0"></a>
 			</div>
 			<div id="account">
 				<?php

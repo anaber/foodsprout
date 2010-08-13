@@ -60,7 +60,7 @@ function redrawContent(data) {
 function getResultTableHeader() {
 	html =
 		'<div align = "left">' + 
-		'<div style="overflow:auto; padding:5px; width:690px;" align = "left">';
+		'<div style="overflow:auto; padding:0px; width:600px;" align = "left">';
 	return html;
 }
 
@@ -75,16 +75,16 @@ function addResult(restaurantChain, count) {
 	var html = '';
 	if (count == 0 ) {
 		html =
-		'<div style="float:left; width:340px;">';
+		'<div style="float:left; width:300px;">';
 	}
 	
 	html +=
-		'	<div style="padding:5px;"><a href="/chain/view/' + restaurantChain.restaurantChainId + '" id = "'+ restaurantChain.restaurantChainId +'">'+ restaurantChain.restaurantChain + '</a></div>';
+		'	<div style="padding-bottom:8px;"><a href="/chain/view/' + restaurantChain.restaurantChainId + '" id = "'+ restaurantChain.restaurantChainId +'">'+ restaurantChain.restaurantChain + '</a></div>';
 	
 	if (count == (halfRecordCount-1) ) {
 		html += 
 		'   </div>' + 
-		'	<div style="float:right; width:340px;">';
+		'	<div style="float:left; width:300px;">';
 	}
 	
 	if (count == (recordCount - 1) ) {

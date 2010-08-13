@@ -65,6 +65,42 @@ class About extends Controller {
         
     }
 
+	// The terms and conditions
+    function terms() {
+        // List of views to be included
+        $data['LEFT'] = array(
+            'navigation' => 'about/left_nav',
+        );
+
+        $data['CENTER'] = array(
+            'content' => 'about/terms',
+        );
+
+        // Data to send to the views
+        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
+        $data['data']['center']['content']['VIEW_HEADER'] = "Terms & Conditions";
+
+        $this->load->view('/templates/left_center_template', $data);
+    }
+
+	// The privacy policy
+    function privacy() {
+        // List of views to be included
+        $data['LEFT'] = array(
+            'navigation' => 'about/left_nav',
+        );
+
+        $data['CENTER'] = array(
+            'content' => 'about/privacy',
+        );
+
+        // Data to send to the views
+        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
+        $data['data']['center']['content']['VIEW_HEADER'] = "Food Sprout's Privacy Policy";
+
+        $this->load->view('/templates/left_center_template', $data);
+    }
+
     // The first page that loads on the beta
     function privatebeta($userData = null) {
         $data = array();
@@ -78,14 +114,14 @@ class About extends Controller {
         }
 
         // List of views to be included
-        $data['CENTER'] = array(
-            'list' => 'beta/beta1',
-        );
+        //$data['CENTER'] = array(
+        //    'list' => 'beta/beta1',
+        //);
 
-        $this->load->view('templates/center_template_beta', $data);
+        $this->load->view('beta/beta1', $data);
     }
 
-    // The second page for the beta test, AB test this page with Google Site Optimizer
+    // The second page for the beta test, AB test this page with Google Site Optimizer vs the page above (if we have time)
     function beta() {
         $data = array();
 
