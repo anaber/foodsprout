@@ -80,105 +80,6 @@ class Restaurant extends Controller {
 	
 	// View the information on a single restaurant
 	function view() {
-		
-		/*
-		$this->load->library('functionlib');
-		$data = array();
-		
-		$restaurantId = $this->uri->segment(3);
-		
-		// Getting information from models for the views
-		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
-		
-			// Check to see if this restaurant is part of a chain
-			$isChain = $restaurant->restaurantChainId;
-			if(isset($isChain))
-			{
-				// Restaurant is part of a chain, get the chain menu and suppliers
-				$this->load->model('RestaurantChainModel');
-				$chain_menu = $this->RestaurantChainModel->getRestaurantChainMenu($restaurant->restaurantChainId);
-
-				$this->load->model('SupplierModel');
-				$chain_suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', $restaurant->restaurantChainId, '');
-			}
-			else
-			{
-				$chain_menu = array();
-				$chain_suppliers = array();
-			}
-		
-		$this->load->model('RestaurantModel');
-		$custom_menu = $this->RestaurantModel->getRestaurantMenu($restaurantId);
-		
-		// Merge the custom menu and chain menu into one array
-		$menu = array_merge($chain_menu, $custom_menu);
-		
-		$this->load->model('SupplierModel');
-		$custom_suppliers = $this->SupplierModel->getSupplierForCompany($restaurantId, '', '', '', '', '');
-		
-		// Merge the custom suppliers into one array
-		$suppliers = array_merge($chain_suppliers, $custom_suppliers);
-		
-		// SEO
-		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_detail');
-		
-		$seo_data_array = array(
-			'restaurant_name' => $restaurant->restaurantName,
-			'restaurant_type' => 'Fast Food',
-			'cuisines' => 'Fast Food, American, Pizza',
-		);
-		
-		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
-		$data['SEO'] = $seo;
-		// SEO ENDS here
-		
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'info' => '/restaurant/info',
-			);
-		
-		$data['RIGHT'] = array(
-				'image' => 'includes/right/image',
-				'ad' => 'includes/right/ad',
-				'map' => 'includes/right/map',
-			);
-		
-		// Data to be passed to the views
-		// Center -> Menu
-		$data['data']['center']['info']['RESTAURANT'] = $restaurant;
-		$data['data']['center']['menu']['MENU'] = $menu;
-		$data['data']['center']['suppliers']['SUPPLIERS'] = $suppliers;
-		$data['data']['center']['suppliers']['RESTAURANT_ID'] = $restaurant->restaurantId;
-		
-		
-		// Right -> Image
-		$data['data']['right']['image']['src'] = '/img/standard/restaurant-na-icon.jpg';
-		$data['data']['right']['image']['width'] = '300';
-		$data['data']['right']['image']['height'] = '200';
-		$data['data']['right']['image']['title'] = '';
-		
-		// Right -> Map
-		$data['data']['right']['map']['width'] = '300';
-		$data['data']['right']['map']['height'] = '200';
-		$data['data']['right']['map']['hide_map'] = 'no';
-		
-		$this->load->view('templates/center_template', $data);
-		*/
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
@@ -213,7 +114,6 @@ class Restaurant extends Controller {
 				'img' => '/includes/left/images',
 				'map' => 'includes/right/map',
 			);
-
 
 		// Load all the views for the center column
 		$data['CENTER'] = array(
