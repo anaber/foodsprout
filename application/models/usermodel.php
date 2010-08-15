@@ -32,61 +32,69 @@ class UserModel extends Model{
 	function createUser() {
 		$return = true;
 		
-		$query = "SELECT * FROM user WHERE email = \"" . $this->input->post('email') . "\"";
-		log_message('debug', 'UserModel.createUser : Try to get duplicate User record : ' . $query);
+		$email = $this->input->post('email');
 		
-		$result = $this->db->query($query);
+		if (!empty($email) ) {
 		
-		if ($result->num_rows() == 0) {
+			$query = "SELECT * FROM user WHERE email = \"" . $email . "\"";
+			log_message('debug', 'UserModel.createUser : Try to get duplicate User record : ' . $query);
 			
-			$new_user_insert_data = array(
-				'first_name' => $this->input->post('firstname'),
-				'email' => $this->input->post('email'),
-				'zipcode' => $this->input->post('zipcode'),
-				'password' => md5($this->input->post('password')),
-				'register_ipaddress' => $this->input->ip_address(), //$_SERVER['REMOTE_ADDR'], //Replaced by Nutan/Thakur
-				'isActive' => 1
-			);
-
-			log_message('debug', $new_user_insert_data);
+			$result = $this->db->query($query);
 			
-			$insert = $this->db->insert('user', $new_user_insert_data);
-			
-			$return = false;
-			
-			if($insert) {
-				$userId = $this->db->insert_id();
-				$new_user_group_insert_data = array(
-					'user_id' =>  $userId,
-					'user_group_id' => 2
+			if ($result->num_rows() == 0) {
+				
+				$new_user_insert_data = array(
+					'first_name' => $this->input->post('firstname'),
+					'email' => $email,
+					'zipcode' => $this->input->post('zipcode'),
+					'password' => md5($this->input->post('password')),
+					'register_ipaddress' => $this->input->ip_address(), //$_SERVER['REMOTE_ADDR'], //Replaced by Nutan/Thakur
+					'isActive' => 1
 				);
+	
+				log_message('debug', $new_user_insert_data);
 				
-				log_message('debug', $new_user_group_insert_data);
+				$insert = $this->db->insert('user', $new_user_insert_data);
 				
-				$insert = $this->db->insert('user_group_member', $new_user_group_insert_data);
+				$return = false;
 				
-				$return = true;
+				if($insert) {
+					$userId = $this->db->insert_id();
+					$new_user_group_insert_data = array(
+						'user_id' =>  $userId,
+						'user_group_id' => 2
+					);
+					
+					log_message('debug', $new_user_group_insert_data);
+					
+					$insert = $this->db->insert('user_group_member', $new_user_group_insert_data);
+					
+					$return = true;
+					
+					$this->load->library('UserLib');
+					
+					$this->user->userId = $userId;
+					$this->userLib->email = $this->input->post('email');
+					$this->userLib->zipcode = $this->input->post('zipcode');
+					$this->userLib->firstName = $this->input->post('firstname');
+					$this->userLib->isActive = 1;
+					//$this->user->screenName = $row->screen_name;
+					$this->userLib->isAuthenticated = 1;
+					//$this->user->userGroup = $row->user_group;
+					
+					$this->session->set_userdata($this->userLib );
+					
+					$return = true;
+				} else  {
+					$return = false;
+				}
 				
-				$this->load->library('UserLib');
+			} else {
 				
-				$this->user->userId = $userId;
-				$this->userLib->email = $this->input->post('email');
-				$this->userLib->zipcode = $this->input->post('zipcode');
-				$this->userLib->firstName = $this->input->post('firstname');
-				$this->userLib->isActive = 1;
-				//$this->user->screenName = $row->screen_name;
-				$this->userLib->isAuthenticated = 1;
-				//$this->user->userGroup = $row->user_group;
-				
-				$this->session->set_userdata($this->userLib );
-				
-				$return = true;
-			} else  {
+				$GLOBALS['error'] = 'duplicate';
 				$return = false;
 			}
-			
 		} else {
-			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
 		

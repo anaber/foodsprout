@@ -57,6 +57,7 @@ function reinitializeMap(data, zoomLevel) {
 }
 
 function createMarker(o, point, html) {
+	
 	var marker = new google.maps.Marker({
         position: point, 
         map: map
@@ -64,8 +65,9 @@ function createMarker(o, point, html) {
 	
 	var infowindow = new google.maps.InfoWindow({ 
   		content: html
-    });
-    
+  		//maxWidth: 50
+  	});
+     
 	google.maps.event.addListener(marker, 'click', function() {
 	    clearInfoWindow();
 	    infowindow.open(map, marker);
@@ -81,6 +83,7 @@ function viewMarker(record_id) {
 	var marker = gmarkers[record_id];
 	var infowindow = new google.maps.InfoWindow({ 
   		content: htmls[record_id]
+  		//maxWidth: 50
     });
     infowindow.open(map, marker);
     

@@ -106,7 +106,7 @@ class Chain extends Controller {
 		
 		$data['RESTAURANT_CHAIN'] = $restaurantChain;
 		
-		$data['BREADCRUMB'] = array(
+		$data['NAME'] = array(
 							$restaurantChain->restaurantChain => '',
 							);
 		

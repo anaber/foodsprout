@@ -19,12 +19,10 @@ class Manufacture extends Controller {
 				'list' => '/manufacture/manufacture_list',
 			);
 		
+		
 		$data['LEFT'] = array(
 				'filter' => 'includes/left/manufacture_filter',
 			);
-		
-		// Data to be passed to the views
-		//$data['data']['center']['list']['VIEW_HEADER'] = "Products &amp; Food Companies";
 		
 		$this->load->view('templates/left_center_template', $data);
 	}

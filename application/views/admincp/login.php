@@ -6,9 +6,9 @@
 	<link rel="stylesheet" href="<?php echo base_url()?>css/messages.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="<?php echo base_url()?>css/validationEngine.jquery.css" type="text/css" media="screen" title="no title" charset="utf-8" />
 	
-	
 	<script src="<?php echo base_url()?>js/jquery.js" type="text/javascript"></script>
 	<script src="<?php echo base_url()?>js/jquery.validationEngine.js" type="text/javascript"></script>
+	<script src="<?php echo base_url()?>js/jquery.validationEngine-en.js" type="text/javascript"></script>
 	
 </head>
 
@@ -21,6 +21,7 @@
 	$(document).ready(function() {
 		
 		$("#frmLogin").validationEngine({
+			unbindEngine:false,
 			success : function() {loginFormValidated = true;},
 			failure : function() {loginFormValidated = false;}
 		})

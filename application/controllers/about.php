@@ -17,9 +17,11 @@ class About extends Controller {
             'content' => 'about/about',
         );
 
-        // Data to send to the views
-        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
-        $data['data']['center']['content']['VIEW_HEADER'] = "About Food Sprout";
+		// Data to send to the views
+		$data['BREADCRUMB'] = array(
+							'Food Sprout' => '/',
+							'About Food Sprout' => '/about',
+						);
 
         $this->load->view('/templates/left_center_template', $data);
     }
@@ -36,9 +38,11 @@ class About extends Controller {
         );
 
         // Data to send to the views
-        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
-        $data['data']['center']['content']['VIEW_HEADER'] = "Contacting Food Sprout";
-
+        $data['BREADCRUMB'] = array(
+							'Food Sprout' => '/',
+							'Contacting Food Sprout' => '/about/contact',
+						);
+        
         $this->load->view('/templates/left_center_template', $data);
     }
 
@@ -54,9 +58,11 @@ class About extends Controller {
         );
 
         // Data to send to the views
-        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
-        $data['data']['center']['content']['VIEW_HEADER'] = "Information for Restaurant &amp; Businesses";
-
+        $data['BREADCRUMB'] = array(
+							'Food Sprout' => '/',
+							'Information for Restaurant &amp; Businesses' => '/about/business',
+						);
+        
         $this->load->view('/templates/left_center_template', $data);
     }
 
@@ -77,9 +83,11 @@ class About extends Controller {
         );
 
         // Data to send to the views
-        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
-        $data['data']['center']['content']['VIEW_HEADER'] = "Terms & Conditions";
-
+        $data['BREADCRUMB'] = array(
+							'Food Sprout' => '/',
+							'Terms & Conditions' => '/about/terms',
+						);
+						
         $this->load->view('/templates/left_center_template', $data);
     }
 
@@ -95,9 +103,11 @@ class About extends Controller {
         );
 
         // Data to send to the views
-        $data['data']['left']['navigation']['VIEW_HEADER'] = "Food Sprout >";
-        $data['data']['center']['content']['VIEW_HEADER'] = "Food Sprout's Privacy Policy";
-
+        $data['BREADCRUMB'] = array(
+							'Food Sprout' => '/',
+							'Food Sprout\'s Privacy Policy' => '/about/privacy',
+						);
+        
         $this->load->view('/templates/left_center_template', $data);
     }
 

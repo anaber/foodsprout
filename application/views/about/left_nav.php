@@ -1,8 +1,8 @@
-<br>
-About<br>
-Contact<br>
-Team<br>
-Businesses<br>
+<br />
+<a href = "/about">About</a><br>
+<a href = "/about/contact">Contact</a><br>
+<a href = "/about">Team</a><br>
+<a href = "/about/business">Businesses</a><br>
 
 <br/><br/><br/>
 Follow on Twitter:<br>

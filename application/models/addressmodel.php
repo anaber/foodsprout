@@ -169,7 +169,13 @@ class AddressModel extends Model{
 		} else if ( !empty($farmersMarketId) ) {
 			$query .= $farmersMarketId;
 		}
-		$query .= ", '$companyId' )";
+		
+		if (!empty ($companyId) ) {
+			$query .= ", '$companyId'";
+		} else {
+			$query .= ", NULL ";
+		}
+		$query .= ")";
 		
 		log_message('debug', 'AddressModel.addAddress : Insert Address : ' . $query);
 		

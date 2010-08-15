@@ -1,17 +1,17 @@
-<div id="restaurantname">
+<div id="restaurantname"><div id="logorestaurant"><h1>
 <?php
 $i = 0;
 foreach($BREADCRUMB as $text => $link) {
 	
 	if ($i > 0) {
 		if ( !empty( $link) ) {
-			echo ' >> ' . '<a href = "' . $link . '" class="redtxt">' . $text . '</a>';
+			echo ' >> ' . '<a href = "' . $link . '">' . $text . '</a>';
 		} else {
 			echo ' >> ' . $text;
 		}
 	} else {
 		if ( !empty( $link) ) {
-			echo '&nbsp;&nbsp;&nbsp;<a href = "' . $link . '" class="redtxt">' . $text . '</a>';
+			echo '<a href = "' . $link . '">' . $text . '</a>';
 		} else {
 			echo $text;
 		}
@@ -20,4 +20,4 @@ foreach($BREADCRUMB as $text => $link) {
 	$i++;
 }
 ?>
-</div>
+</h1></div></div>

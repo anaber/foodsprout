@@ -66,9 +66,9 @@ var topFarmTypes;
 
 <div style="overflow:auto; padding:5px;">
 	
-	<div style="float:left; width:170px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
+	<div style="float:left; width:150px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
 	
-	<div style="float:left; width:400px; font-size:10px;" id = 'pagingLinks' align = "center">
+	<div style="float:left; width:250px; font-size:10px;" id = 'pagingLinks' align = "center">
 		<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;
 		<a href="#" id = "imgPrevious">Previous</a>
 		&nbsp;&nbsp;&nbsp; Page 1 of 1 &nbsp;&nbsp;&nbsp;
@@ -76,7 +76,7 @@ var topFarmTypes;
 		<a href="#" id = "imgLast">Last</a>
 	</div>
 	
-	<div style="float:right; width:210px; font-size:10px;" id = 'recordsPerPage' align = "right">
+	<div style="float:left; width:195px; font-size:10px;" id = 'recordsPerPage' align = "right">
 		Items per page:
 		<div id = "50PerPage" style="float:right; width:20px;">50</div>
 		<div id = "40PerPage" style="float:right; width:30px;">40 | </div>  

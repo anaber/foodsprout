@@ -59,12 +59,12 @@ class LoginModel extends Model{
 	}
 	
 	// Validate a user from the regular login screen
-	function validateUser()
-	{
+	function validateUser() {
+		
 		$query = 'SELECT user.*, user_group.*, user_group_member.* '.
 				' FROM user, user_group, user_group_member' .
-				' WHERE user.email = \'' . trim($this->input->post('email')) . '\'' .
-				' AND user.password = \'' . md5( trim($this->input->post('password')) ) . '\'' .
+				' WHERE user.email = \'' . trim($this->input->post('login_email')) . '\'' .
+				' AND user.password = \'' . md5( trim($this->input->post('login_password')) ) . '\'' .
 				' AND user.user_id = user_group_member.user_id' .
 				' AND user_group_member.user_group_id = user_group.user_group_id';
 		
@@ -102,6 +102,7 @@ class LoginModel extends Model{
 			}
 			
 		} else {
+			
 			$userArray = array(
 				'accessBlocked' => '',
 				);

@@ -122,8 +122,6 @@ class FarmersMarket extends Controller {
 				'ad' => 'includes/right/ad',
 				'map' => 'includes/right/map',
 			);
-		
-		
 		 
 		// Data to be passed to the views
 		// Center -> Menu
@@ -144,7 +142,6 @@ class FarmersMarket extends Controller {
 		$data['data']['right']['map']['hide_map'] = 'no';
 		
 		$this->load->view('templates/center_right_template', $data);
-		
 	}
 }
 

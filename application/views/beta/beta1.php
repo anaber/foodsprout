@@ -4,13 +4,16 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Food Sprout</title>
 	
-	<link href="/css/beta.css" rel="stylesheet" type="text/css" />
+	<link href="<?php echo base_url()?>css/beta.css" rel="stylesheet" type="text/css" />
+	<link href="<?php echo base_url()?>css/jquery.validationEngine.css" rel="stylesheet" type="text/css" />
+	<link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
+	
+	<script src="<?php echo base_url()?>js/jquery.js" type="text/javascript"></script>
 	<script src="<?php echo base_url()?>js/jquery.plugin.js" type="text/javascript"></script>
-	<script type="text/javascript" charset="utf-8" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="<?php echo base_url()?>js/beta.js"></script>
 	<script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
-	
-	<script src="<?php echo base_url()?>js/jquery.validationEngine_old.js" type="text/javascript"></script>
+	<script src="<?php echo base_url()?>js/jquery.validationEngine.js" type="text/javascript"></script>
+	<script src="<?php echo base_url()?>js/jquery.validationEngine-en.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
 
@@ -69,17 +72,29 @@
 	</div><!-- #wrapper --> 
 </div><!-- #header --> 
 <script>
-	loginFormValidated = true;
-	
 	$(document).ready(function() {
-		$("#frmLogin").validationEngine();
+		$("#frmLogin").validationEngine({
+			scroll:false,
+			unbindEngine:false
+		});
+		
+		$("#frmAccount").validationEngine({
+			scroll:false,
+			unbindEngine:false
+		});
+		
+		
 <?php
 	if (isset($ERROR) ) {
-
+		
 		if ($ERROR == 'blocked') {
 			$message = 'Your access is blocked';
 		} else if ($ERROR == 'login_failed') {
 			$message = 'Wrong Email and password combination.';
+		} else if ($ERROR == 'registration_failed') {
+			$message = 'Cannot create your account.';
+		} else if ($ERROR == 'duplicate') {
+			$message = 'Email already registered with us.';
 		}
 ?>
 		var $alert = $('#alert');
@@ -89,6 +104,7 @@
 		hideMessage($alert, '', '');
 <?php
 	}
+	
 ?>
 	});
 </script> 
@@ -136,8 +152,8 @@
 							<div id="login-form">
 								<form action="/login/validate" method="post" name="frmLogin" id="frmLogin">
 									<h2>Log In</h2>								
-									<input type="text" name="email" id="login_email" class="validate[required]" value="Email" onkeypress="if(this.value=='Email')this.value='';" onblur="if(this.value=='')this.value='Email';" />
-									<input type="password" name="password" id="login_password" class="validate[required]" value="Password" onkeypress="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
+									<input type="text" name="login_email" id="login_email" class="validate[required,custom[email]]" value="Email" onfocus="if(this.value == 'Email')this.value='';" onblur="if(this.value=='')this.value='Email';" />
+									<input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
 									<!--label for="remember_me" class="checkbox-wrapper">
 										<input type="checkbox" name="remember_me" value="remember_me" id="remember_me" />
 										<span>Remember me</span>
@@ -150,10 +166,10 @@
 							<h2 id="signup-title">Private Beta</h2>
 							<h3>We just launched in July, 2010. Join today for the <b>private beta</b>.</h3>
 							<form action="/login/create_user" method="post" name="frmAccount" id="frmAccount">								
-								<input type="text" name="firstname" id="firstname" class="validate[required]" value="Full Name" onkeypress="if(this.value=='Full Name')this.value='';" onblur="if(this.value=='')this.value='Full Name';">
-								<input type="text" name="email" id="email" class="validate[required,custom[email]]" value="Email" oonkeypress="if(this.value=='Email')this.value='';" onblur="if(this.value=='')this.value='Email';">
-								<input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="Password" onkeypress="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';">
-								<input type="text" name="zipcode" id="zipcode" class="validate[required]" value="Zip Code" onkeypress="if(this.value=='Zip Code')this.value='';" onblur="if(this.value=='')this.value='Zip Code';">
+								<input type="text" name="firstname" id="firstname" class="validate[required]" value="<?php echo (isset($FIRST_NAME) ? $FIRST_NAME: 'Full Name' ); ?>" onfocus="if(this.value=='Full Name')this.value='';" onblur="if(this.value=='')this.value='Full Name';">
+								<input type="text" name="email" id="email" class="validate[required,custom[email]]" value="<?php echo (isset($EMAIL) ? $EMAIL : 'Email' ); ?>" onfocus="if(this.value=='Email')this.value='';" onblur="if(this.value=='')this.value='Email';">
+								<input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="<?php echo (isset($PASSWORD) ? $PASSWORD : 'Password' ); ?>" <?php echo (isset($PASSWORD) ? 'onfocus="if(this.value==\'Password\')this.value=\'\';" onblur="if(this.value==\'\')this.value=\'Password\';"' : '' ); ?>>
+								<input type="text" name="zipcode" id="zipcode" class="validate[required]" value="<?php echo (isset($ZIPCODE) ? $ZIPCODE : 'Zip Code' ); ?>" onfocus="if(this.value=='Zip Code')this.value='';" onblur="if(this.value=='')this.value='Zip Code';">
 								<input type="submit" name="submit" value="Create Account">
 							</form>
 						</div>
