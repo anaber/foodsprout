@@ -11,8 +11,8 @@
 <div >
 		<strong class="redtxt">Mapping the world's food chain, and what's really in your food, start exploring it with us</strong><br><br>
 			
-			<div style="-moz-border-radius: 4px; -webkit-border-radius: 4px; background: #D2E4C9; color: #000; -moz-box-shadow: 0 1px 0 #CCCCCC;-webkit-box-shadow: 0 1px 0 #CCCCCC; padding:30px;overflow:auto;min-height:400px;">
-				<img src="/img/home-menu.jpg" border="0" align="right" style="margin-right: 0px; margin-left:10px;">
+			<div style="-moz-border-radius: 4px; -webkit-border-radius: 4px; background: #D2E4C9; color: #000; -moz-box-shadow: 0 1px 0 #CCCCCC;-webkit-box-shadow: 0 1px 0 #CCCCCC; padding:30px;overflow:auto;min-height:300px;">
+				<img src="/img/home-menu.jpg" border="0" align="right" height = "300" style="margin-right: 0px; margin-left:10px;">
 					<span class="redtxt"><br><br><br><br><br><b>Restaurants in Your Area</b></span>
 					<br>
 

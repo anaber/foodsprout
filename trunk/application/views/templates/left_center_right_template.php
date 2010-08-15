@@ -6,11 +6,18 @@
 	}
 ?>
 <?php
+	if (isset($NAME) ) {
+		$this->load->view('includes/name', array('BREADCRUMB' => $NAME ) );
+	}
+	else{
+	}
+	
 	if (isset($BREADCRUMB) ) {
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	}
 	else{
 	}
+	
 ?>
 
 	<!-- left column-->

@@ -13,12 +13,13 @@ class Login extends Controller {
 		{
 			redirect('/home');
 		} else {
-			// List of views to be included
-			$data['CENTER'] = array(
-					'list' => 'login',
-			);
-				
-			$this->load->view('templates/center_template', $data);
+			$data = array();
+
+	        $this->load->model('SeoModel');
+	        $seo = $this->SeoModel->getSeoDetailsFromPage('index');
+	        $data['SEO'] = $seo;
+	        
+	        $this->load->view('login', $data);
 		}
 	}
 	
@@ -31,9 +32,9 @@ class Login extends Controller {
 		if ($authenticated ==  false) {
 			$data = array();
 			if($this->session->userdata('accessBlocked') == 'yes') {
-				$data['data']['center']['list']['ERROR'] = 'blocked';
+				$data['ERROR'] = 'blocked';
 			} else {
-				$data['data']['center']['list']['ERROR'] = 'login_failed';
+				$data['ERROR'] = 'login_failed';
 			}
 			
 			$this->load->view('beta/beta1', $data);
@@ -77,16 +78,17 @@ class Login extends Controller {
 			);
 			
 			if ( isset ($GLOBALS['error']) && $GLOBALS['error']) {
-				$data['data']['center']['list']['ERROR'] = $GLOBALS['error'];
+				$data['ERROR'] = $GLOBALS['error'];
 			} else {
-				$data['data']['center']['list']['ERROR'] = 'registration_failed';
+				$data['ERROR'] = 'registration_failed';
 			}
 			
-			$data['data']['center']['list']['FIRST_NAME'] = $this->input->post('firstname'); 
-			$data['data']['center']['list']['EMAIL'] = $this->input->post('email');
-			$data['data']['center']['list']['ZIPCODE'] = $this->input->post('zipcode');
+			$data['FIRST_NAME'] = $this->input->post('firstname'); 
+			$data['EMAIL'] = $this->input->post('email');
+			$data['PASSWORD'] = '';
+			$data['ZIPCODE'] = $this->input->post('zipcode');
 			
-			$this->load->view('templates/center_template', $data);
+			$this->load->view('beta/beta1', $data);
 			
 		}
 		

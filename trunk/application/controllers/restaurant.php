@@ -210,7 +210,7 @@ class Restaurant extends Controller {
 
 		// Load all the views for the center column
 		$data['LEFT'] = array(
-				'img' => '/includes/left/img',
+				'img' => '/includes/left/images',
 				'map' => 'includes/right/map',
 			);
 
@@ -239,7 +239,7 @@ class Restaurant extends Controller {
 		
 		$data['RESTAURANT'] = $restaurant;
 		
-		$data['BREADCRUMB'] = array(
+		$data['NAME'] = array(
 							$restaurant->restaurantName => '',
 							);
 		

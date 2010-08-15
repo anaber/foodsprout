@@ -12,13 +12,10 @@
 	}
 ?>
 
-
 <?php
 	if (isset($BREADCRUMB) ) {
-		
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
-	}
-	else{
+	} else {
 		echo '<br>';
 	}
 ?>
