@@ -36,10 +36,7 @@ class Login extends Controller {
 				$data['data']['center']['list']['ERROR'] = 'login_failed';
 			}
 			
-			$data['CENTER'] = array(
-					'list' => 'login',
-			);
-			$this->load->view('templates/center_template', $data);
+			$this->load->view('beta/beta1', $data);
 		} else {
 			redirect('/');
 		}

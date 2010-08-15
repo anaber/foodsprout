@@ -1,4 +1,11 @@
-
+/*
+Site Name:Foodsprout.com
+Theme URI:http://foodsprout.com/
+Description:Author:Andy Burkovetsky
+Version:1.0
+Tags:*/
+/* Reset default browser CSS. Based on work by Eric Meyer:http://meyerweb.com/eric/tools/css/reset/index.html
+-------------------------------------------------------------- */
 *{margin:0;padding:0;border:0;vertical-align:baseline;background:transparent;}
 body{line-height:1;text-align:justify;}
 h1,h2,h3,h4,h5,h6{font-weight:normal;clear:both;}
@@ -6,24 +13,37 @@ ol,ul{list-style:none;}
 blockquote{quotes:none;}
 blockquote:before,blockquote:after{content:'';content:none;}
 del{text-decoration:line-through;}
+/* tables still need 'cellspacing="0"' in the markup */
 table{border-collapse:collapse;border-spacing:0;}
 a img{border:none;}
+/*
+MAIN STYLE
+*/
 #container{overflow:hidden;}
 #footer{clear:both;width:100%;}
+/* =Fonts
+-------------------------------------------------------------- */
 body,
 input,
 textarea{font-family:Helvetica,'Trebuchet MS',Arial,sans-serif;}
 pre{font-family:"Courier 10 Pitch",Courier,monospace;}
 code{font-family:Monaco,Consolas,"Andale Mono","DejaVu Sans Mono",monospace;}
+/* =Structure
+-------------------------------------------------------------- */
+/* The main theme structure */
 .wrapper{margin:0 auto;width:940px;}
 #branding{position:relative;}
 .wrapper{padding:0 20px;position:relative;zoom:1 ;}
+/* =Global Elements
+-------------------------------------------------------------- */
+/* Main global 'theme' and typographic styles */
 body{background:#DFDFDF;}
 body.home{background:#4D4D4D;}
 body,
 input,
 textarea{color:#666666;font-size:12px;line-height:18px;}
 hr{background-color:#E7E7E7;border:0;height:1px;margin-bottom:18px;clear:both;}
+/* Text elements */
 p{margin-bottom:18px;}
 ul{list-style:square;margin:0 0 18px 1.5em;}
 ol{list-style:decimal;margin:0 0 18px 1.5em;}
@@ -66,25 +86,39 @@ a:link{color:#3487DD;}
 a:visited{color:#3487DD;}
 a:active,
 a:hover{text-decoration:underline;}
+/* Text meant only for screen readers */
 .screen-reader-text{position:absolute;left:-9000px;}
+/* =Header
+-------------------------------------------------------------- */
 #header{background:#2B1B0C;height:40px;overflow:hidden;}
 #header ul{margin:0;}
-#header .site-title{float:left;padding:0;width:150px;background:url(../img/logo.png) no-repeat;margin:0;position:relative;top:10px;}
+#header .site-title{float:left;padding:0;width:150px;background:url(/img/logo.png) no-repeat;margin:0;position:relative;top:10px;}
 #header .site-title{background:url(/img/beta-title.png) no-repeat;}
-#content .site-title{float:left;padding:0;width:420px;height:100px;background:url(/img/logo-big.png) no-repeat;margin:0;position:relative;top:10px;text-indent:-9999px;left:60px;}
+#content .site-title{float:left;padding:0;width:420px;height:100px;background:url(/img/logo-big.png) no-repeat;margin:0;position:relative;top:10px;text-indent:-9999px;left:40px;}
 #header .site-title a{color:#f0f0f0;display:block;font-weight:bold;overflow:hidden;text-decoration:none;text-indent:-9000px;height:40px;}
-#access{background:#413225;overflow:hidden;float:right;position:relative;top:10px;padding:6px 5px 4px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
-#access ul li{display:inline-block;float:left;border-right:1px solid #E3CAB0;padding:0 4px;line-height:11px;}
-#access ul li:last-child,#access ul li.last-child{border-right:none;}
-#access ul li a{color:#E3CAB0;font-size:11px;line-height:11px;padding:0 5px;}
-#access ul li a:hover{color:white;}
+/* =Menu
+-------------------------------------------------------------- */
+#footer-navigation{background:#413225;overflow:hidden;padding-top:7px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;width:360px;margin-top:0px;}
+#footer-navigation ul li{display:inline-block;float:left;border-right:1px solid #E3CAB0;padding:0 4px;line-height:11px;}
+#footer-navigation ul li:last-child,#access ul li.last-child{border-right:none;}
+#footer-navigation ul li a{color:#E3CAB0;font-size:11px;line-height:11px;padding:0 5px;}
+#footer-navigation ul li a:hover{color:white;}
+/* =banner
+-------------------------------------------------------------- */
 #content #main-banner{width:500px;}
 #content #main-banner *{color:white;text-align:center;}
-#content #main-banner h3{font-size:24px;margin:0 0 -50px 40px;z-index:2;}
-#content #main-banner h2{font-size:36px;margin:-40px 0 0;}
+#content #main-banner h3{font-size:24px;margin:0;z-index:2;}
+#content #main-banner .site-description{margin:0 0 -50px 0;padding:5px 0 0;}
+#content #main-banner h2{font-size:36px;margin:0;}
 .home #content #main-content{width:426px;}
+#home-banner img{margin-left:-40px;}
+#site-goal{margin:-20px 0 0;}
+#content #site-goal h3{line-height:30px;text-align:left;}
+#content #site-goal h2{line-height:30px;text-align:right;}
+/* =signup
+-------------------------------------------------------------- */
 #signup-box{border:1px solid #1A1A1A;background:#EBEBEB;padding:2px;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
-#signup-box-wrapper{background:#ACACAC;width:420px;height:470px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;}
+#signup-box-wrapper{background:#ACACAC;width:420px;height:400px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;}
 #login-wrapper{position:relative;right:20px;text-align:right;top:10px;}
 #login-form{width:260px;height:200px;background:#F0F0F0;border:1px solid #aaa;position:absolute;right:0;z-index:101;text-align:left;display:none;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;-moz-box-shadow:0 4px 10px #444;-webkit-box-shadow:0 4px 10px #444;box-shadow:0 4px 10px #444;}
 #content #login-form h2{margin:0 0 5px 0;}
@@ -96,11 +130,22 @@ a:hover{text-decoration:underline;}
 .checkbox-wrapper *{display:inline;}
 #login-form .checkbox-wrapper input,
 .checkbox-wrapper input{width:20px;margin:0 10px 0 0;}
-#show-login-button{color:#666;background:#9F9D9C url(/img/slidedown-trigger.png) 90% 2px no-repeat;padding:5px 30px 5px 5px;margin-right:1px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+#show-login-button{margin-left:10px;color:#666;background:#9F9D9C url(/img/slidedown-trigger.png) 90% 2px no-repeat;padding:5px 30px 5px 5px;margin-right:1px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
 #show-login-button:hover{text-decoration:none;background-color:#CCC;}
 #show-login-button.active{color:#1A1A1A;background-color:#F0F0F0;background-position:90% -37px;position:relative;z-index:102;-moz-border-radius:5px 5px 0 0;-webkit-border-radius:5px;-webkit-border-bottom-left-radius:0;-webkit-border-bottom-right-radius:0;border-radius:5px 5px 0 0;}
 #show-login-button.active:hover{color:#888;}
 .signup-box-shadow{background:url(/img/signup-box-shadow.png) 0 -14px no-repeat;width:420px;height:20px;overflow:hidden;}
+#signup-form{margin-top:10px;padding:0 10px;}
+#signup-form #signup-title{background:url(/img/signup-title.png) no-repeat;height:50px;text-indent:-9999px;width:220px;margin:0;}
+#signup-form input[type='text'],
+#signup-form input[type='password']{background:none repeat scroll 0 0 #EAEAEA;border:1px solid #666666;color:#666666;font-size:19px;margin:0 0 15px;padding:10px 5px 5px;width:387px;}
+#signup-form input[type='text']:hover,
+#signup-form input[type='password']:hover{background:#ddd;}
+#signup-form input[type='text']:focus,
+#signup-form input[type='password']:focus{background:#fafafa;}
+#signup-form input[type='submit']{font-size:28px;height:60px;width:399px;}
+/* =main
+-------------------------------------------------------------- */
 #content #news{background:#2B1B0C;background:rgba(43,27,12,.8);color:#9E7C52;font-size:12px;}
 #content #news-title{background:#2B1B0C url(/img/leaf-small.png) 10px 12px no-repeat;color:#9E7C52;height:20px;padding:10px 10px 10px 32px;}
 #content #news h2{color:#27AC00;font-size:12px;margin:0 0 3px;}
@@ -121,6 +166,8 @@ a:hover{text-decoration:underline;}
 #social-icons a#fs-twitter:hover{background-position:-70px -39px;}
 .news-item .from-twitter{background:url(/img/news-twitter-bird.png) no-repeat;display:block;float:left;height:20px;width:20px;}
 #content #news a{color:#BE946D;}
+/* =Content
+-------------------------------------------------------------- */
 #main{overflow:hidden;padding:10px 0 0 0;}
 #content,
 #content input,
@@ -153,6 +200,11 @@ a:hover{text-decoration:underline;}
 #content thead th{color:#666;font-size:12px;font-weight:bold;line-height:18px;padding:9px 24px;}
 #content tr td{border-top:1px solid #e7e7e7;padding:6px 24px;}
 #content tr.odd td{background:#F2F7FC;}
+#content #access{background:none repeat scroll 0 0 #413225;overflow:hidden;padding:8px 5px 5px 80px;position:relative;top:10px;float:none;}
+#content #access a{color:#E3CAB0;}
+#content #access a:hover{color:white;}
+/* Images
+-------------------------------------------------------------- */
 #content.twocolumn img{margin:0;max-width:640px;}
 * html #content img{width:640px;}
 * html #content .attachment img{width:900px;}
@@ -165,12 +217,20 @@ a:hover{text-decoration:underline;}
 #content img.alignleft,
 #content img.alignright,
 #content img.aligncenter{margin-bottom:12px;}
+/* =Navigation
+-------------------------------------------------------------- */
+/* =Footer
+-------------------------------------------------------------- */
 #footer{margin:35px 0 20px;color:#CCCCCC;font-size:x-small;}
+/* Mobile Safari ( iPad,iPhone and iPod Touch )
+-------------------------------------------------------------- */
 pre{-webkit-text-size-adjust:140%;}
 code{-webkit-text-size-adjust:160%;}
 #access,
 .navigation{-webkit-text-size-adjust:120%;}
 .site-description{-webkit-text-size-adjust:none;}
+/* =Print Style
+-------------------------------------------------------------- */
 @media print{body{background:none !important;}
 .wrapper{float:none !important;clear:both !important;display:block !important;position:relative !important;}
 #header{border-bottom:2pt solid #000;padding-bottom:18pt;}
@@ -182,6 +242,7 @@ code{-webkit-text-size-adjust:160%;}
 #footer{width:100%;margin:0;}
 #main{display:inline;}
 }
+/* styles */
 .clearfix:after,.clearfloat:after{content:".";display:block;font-size:0;height:0;clear:both;visibility:hidden;}
 .clearfix{display:block;}
 .floatbox{overflow:hidden;}
