@@ -59,8 +59,6 @@ class Farm extends Controller {
 		$data['data']['center']['map']['height'] = '250';
 		}
 		
-		//$data['data']['center']['list']['LIST'] = $restaurants;
-		//$data['data']['center']['list']['VIEW_HEADER'] = "List of Farms";
 		$data['data']['center']['list']['q'] = $q;
 		$data['data']['center']['list']['f'] = $f;
 		if ( !empty($f) ) {
@@ -71,10 +69,10 @@ class Farm extends Controller {
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
 		
-		// Custom CSS
-		//if (!empty ($this->css) ) {
-		//	$data['CSS'] = $this->css;
-		//}
+		$data['CSS'] = array(
+						'listing',
+						$this->css,
+					);
 		
 		$this->load->view('templates/left_center_template', $data);
 	}

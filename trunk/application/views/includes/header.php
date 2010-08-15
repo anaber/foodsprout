@@ -11,7 +11,7 @@
 <?php 
 if (isset ($CSS) ) {
 	foreach ($CSS as $key => $css_file) {
-		echo '<link href="/css/'.$css_file.'.css" rel="stylesheet" type="text/css" />';
+		echo '<link href="' . base_url() . 'css/'.$css_file.'.css" rel="stylesheet" type="text/css" />';
 	}
 }
 ?>

@@ -4,19 +4,13 @@
 	} else {
 		$this->load->view('includes/header');
 	}
-	
-	if (isset ($CSS) ) {
-		foreach ($CSS as $key => $css_file) {
-			echo '<link href="' . base_url() . 'css/'.$css_file.'.css" rel="stylesheet" type="text/css" />';
-		}
-	}
 ?>
 
 <?php
 	if (isset($BREADCRUMB) ) {
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	} else {
-		
+		echo '<br>';
 	}
 ?>
 <div align="center">
@@ -51,7 +45,6 @@
 				} else {
 					$this->load->view($view);
 				}
-				
 			}
 		?>
 		</td>

@@ -53,6 +53,7 @@ var topRestaurantTypes;
 			
 		},
 		"json");
+		
 	});
 	
 </script>
@@ -62,7 +63,8 @@ var topRestaurantTypes;
 	?>
 </div>
 <div id="resultsContainer" style="display:none" class="pd_tp1">
-	<div style="float:left;width:300px;"><h1>List of Restaurants</h1></div><div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:30px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
+	<div style="float:left;width:300px;"><h1>List of Restaurants</h1></div>
+	<div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:30px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
 	<div id="resultTableContainer"></div>
 </div>
 
@@ -85,7 +87,6 @@ var topRestaurantTypes;
 		<div id = "20PerPage" style="float:right; width:30px;">20 | </div>
 		<div id = "10PerPage" style="float:right; width:30px;">10 | </div>
 	</div>
-	
 	
 	<div class="clear"></div>
 </div>
