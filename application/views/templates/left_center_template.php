@@ -16,7 +16,7 @@
 	if (isset($BREADCRUMB) ) {
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	} else {
-		echo '<br>';
+		
 	}
 ?>
 <div align="center">

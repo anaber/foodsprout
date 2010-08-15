@@ -1,10 +1,36 @@
+<script src="<?php echo base_url()?>js/farm_info.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <script>
+	
+	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
+	var jsonData;
+	var currentContent;
+	
+	var toggleDuration = 1000;
+	var isSupplierFormVisible = false;
+	var isMenuFormVisible = false;
+	var isCommentFormVisible = false;
+	
 	$(document).ready(function() {
+		$('#bottomPaging').hide();
+		
+		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId },
+		function(data){
+			currentContent = 'supplier';
+			jsonData = data;
+			redrawContent(data, 'supplier');
+			reinitializeTabs();
+		},
+		"json");
+		
+		
 		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
 		
-		$.post("/farm/ajaxSearchFarmInfo", { farmId:"<?php echo (isset($FARM) ? $FARM->farmId : '' ) ?>" },
+		$.post("/restaurant/ajaxSearchRestaurantInfo", { restaurantId:"<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '' ) ?>" },
 		function(data){
-			reinitializeMap(data, 13);
+			if (data.geocode != '') {
+				reinitializeMap(data, 13);
+			}
 		},
 		"json");
 		
@@ -24,8 +50,9 @@
 			}
 		});
 		
+		
 	});
-	
+		
 	function loadSmallMapOnStartUp(lat, lng, zoom) {
 		var myLatlng = new google.maps.LatLng(lat, lng);
 	    var myOptions = {
@@ -40,7 +67,7 @@
 	}
 	
 	function getMarkerHtml(o) {
-		html = "<font size = '2'><b><i>" + o.farmName + "</i></b></font><br /><font size = '1'>" +
+		html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
 			  o.addressLine1 + ", " + o.addressLine2 + "<br />" + 
 			  o.addressLine3 + "</font><br />"
 			  ;
@@ -48,56 +75,71 @@
 	}
 </script>
 
-<div id="restaurantname">
-    <div id="logorestaurant"><?php echo '<h1>'.$FARM->farmName.'</h1>';?></div> 
-  </div>
-  
-  <!-- left column-->
-  <div id="rest-main-details">	
-    <div id="rest-main-img"><img src="/img/applebee-img.jpg" width="201" height="133" alt="apple-img" /></div>
-    
-    <div id="rest-dec">
-      <div id="dec-head"><img src="/img/decription-icon.jpg" width="106" height="22" alt="dec-head" /></div>
-      <div id="description-details">welcome</div>
-    </div>
-    
-    <div id="location-icon"><img src="/img/location-head-icon.jpg" width="89" height="23" alt="location-head-icon" /></div>
-    
-    <div id="map">
-	<br>
-	<div style="color:#333;">
-	http://www.applebees.com<br>
-	128 King Street<br>
-	San Francisco, CA<br>
-	650-210-3100<br>
-	</div>
-    </div>
-  </div>
-  <!-- end left column -->
-  
-  <!-- center tabs -->
-  <div id="resultsContainer">
-  
-    <div id="menu-bar"> 
-      <div id="suppliers" class="selected"><a href="#">Supply To</a></div>
-      <div id="menu" class="non-selected"><a href="#">Farmers Markets</a></div>
-      <div id="comments" class="non-selected"><a href="#">Comments</a></div>
-      <div id="add-menu" class="add-item"><a href="#">+ Add</a></div>
-    </div>
-    
-  	<div id="menus"> 
+
+
+<div id="alert"></div>
+<!-- center tabs -->
+	<div id="resultsContainer">
+		<div id="menu-bar"> 
+			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
+			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
+			<div id="comments" class = "non-selected"  style = "display:none;"><a href="#">Comments</a></div>
+			<div id="addItem" class = "add-item"><a href="#">+ Add Supplier</a></div>
+		</div>
 		
-	
-	
+		<div id="divAddSupplier" style = "display:none;"> 
+			<?php
+				$data = array(
+						'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
+						'TABLE' => $TABLE,
+						'RESTAURANT_ID' => $RESTAURANT->restaurantId
+						);
+				$this->load->view('includes/supplier_form', $data );
+			?>
+		</div>
+		
+		<div id="divAddMenu" style = "display:none;">
+			<?php
+				$data = array(
+						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
+						'RESTAURANT_ID' => $RESTAURANT->restaurantId
+						);
+				$this->load->view('includes/menu_form', $data );
+			?>
+		</div>
+		
+		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
+		
+		<div style="overflow:auto; padding:5px;">
+			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
+			
+			<div style="float:left; width:225px; font-size:10px;" id = 'pagingLinks' align = "center">
+				<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;
+				<a href="#" id = "imgPrevious">Previous</a>
+				&nbsp;&nbsp;&nbsp; Page 1 of 1 &nbsp;&nbsp;&nbsp;
+				<a href="#" id = "imgNext">Next</a> &nbsp;&nbsp;
+				<a href="#" id = "imgLast">Last</a>
+			</div>
+			
+			<div style="float:right; width:185px; font-size:10px;" id = 'recordsPerPage' align = "right">
+				Items per page:&nbsp;
+				<a href="#" id = "10PerPage">10</a> | 
+				<a href="#" id = "20PerPage">20</a> |  
+				<a href="#" id = "40PerPage">40</a> |  
+				<a href="#" id = "50PerPage">50</a> 
+			</div>
+			
+			<div class="clear"></div>
+		</div>
+		
+		<div id="resultTableContainer" class="menus"></div>
+		
+		<div style="overflow:auto; padding:5px;" id = "bottomPaging">
+			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords2'></div>
+			<div style="float:left; width:225px; font-size:10px;" id = 'pagingLinks2' align = "center"></div>
+			<div style="float:right; width:185px; font-size:10px;" id = 'recordsPerPage2' align = "right"></div>
+			<div class="clear"></div>
+		</div>
+		
 	</div>
-	
-  </div>
-  <!-- end center tabs -->
-  
-  <!-- right ads -->
-  <div id="add-designs">
-    	<?php
-			$this->load->view('includes/banners/sky');
-		?>
-  </div>
-  <!-- end right ads -->
+<!-- end center tabs -->
