@@ -55,7 +55,6 @@ class Restaurant extends Controller {
 		$data['data']['center']['map']['height'] = '250';
 		}
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "";
 		$data['data']['center']['list']['q'] = $q;
 		$data['data']['center']['list']['f'] = $f;
 		if ( !empty($f) ) {
@@ -65,8 +64,10 @@ class Restaurant extends Controller {
 			$data['data']['center']['list']['hide_map'] = 'no';
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
-		// this is not working???
-		//$data['CSS'] = "listing";
+		
+		$data['CSS'] = array(
+						'listing'
+					);
 		
 		$this->load->view('templates/left_center_template', $data);
 	}

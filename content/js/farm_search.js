@@ -196,7 +196,7 @@ function redrawTopFarmTypes(data) {
 		
 	$('#divFarmTypes').html(resultHtml);
 	
-	reinitializeMoreFarmType(data);
+	//reinitializeMoreFarmType(data);
 }
 
 function reinitializeMoreFarmType(data) {
@@ -332,7 +332,7 @@ function redrawContent(data, filter) {
 function addZeroResult() {
 	var html =
 	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:700px;" align = "center">No results found. Please retry with some other filter options...</div>' + 
+	'	<div style="float:left; width:600px;" align = "center">No results found. Please retry with some other filter options...</div>' + 
 	'</div>'
 	;
 	return html;
@@ -365,6 +365,7 @@ function reinitializeFilterEvent (data) {
 		j = 0;
 		i = 0;
 		$('#divFarmTypes :checked').each(function() {
+		   
 		   if (j == 0 ) {
 	        	strFilters += $(this).val();
 	        } else {
@@ -395,6 +396,7 @@ function reinitializeFilterEvent (data) {
 				strFilters = selectedFarmTypeId;
 			}
 		}
+		alert(strFilters );
 		
 		if (strFilters != '') {
 			filters = strFilters;
