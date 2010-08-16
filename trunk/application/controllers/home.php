@@ -24,9 +24,13 @@ class Home extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'home',
 			);
+			
+		// Custom CSS
+		$data['CSS'] = array(
+				'home'
+			);
 		
 		$this->load->view('templates/center_template', $data);
-		
 	}
 	
 	
