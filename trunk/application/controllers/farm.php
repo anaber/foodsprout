@@ -172,21 +172,21 @@ class Farm extends Controller {
 		
 		$data = array();
 
-		$restaurantId = $this->uri->segment(3);
+		$farmId = $this->uri->segment(3);
 
 		// Getting information from models
-		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+		$this->load->model('FarmModel');
+		$farm = $this->FarmModel->getFarmFromId($farmId);
 
 		$this->load->model('ProductTypeModel');
 		$productTypes = $this->ProductTypeModel->listProductType();
 
 		// SEO
 		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_detail');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('farm_detail');
 
 		$seo_data_array = array(
-			'restaurant_name' => $restaurant->restaurantName,
+			'farm_name' => $farm->farmName,
 			'restaurant_type' => 'Fast Food',
 			'cuisines' => 'Fast Food, American, Pizza',
 		);
@@ -205,7 +205,7 @@ class Farm extends Controller {
 
 		// Load all the views for the center column
 		$data['CENTER'] = array(
-				'info' => '/restaurant/info',
+				'info' => '/farm/info',
 			);
 
 		// Load all the views for the right column
@@ -217,7 +217,7 @@ class Farm extends Controller {
 		// Center -> Info
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
-		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
+		$data['data']['center']['info']['TABLE'] = 'farm_supplier';
 		
 		// Left -> Map
 		$data['data']['left']['map']['width'] = '225';
@@ -225,20 +225,31 @@ class Farm extends Controller {
 		$data['data']['left']['map']['hide_map'] = 'no';
 		
 		
-		$data['RESTAURANT'] = $restaurant;
+		$data['FARM'] = $farm;
 		
 		$data['NAME'] = array(
-							$restaurant->restaurantName => '',
+							$farm->farmName => '',
 							);
 		
 		// Custom CSS
 		if (!empty ($this->css) ) {
-			$data['CSS'] = $this->css;
+			$data['CSS'] = array(
+							'restaurant'
+						);
 		}
 		
 		$this->load->view('templates/left_center_right_template', $data);
-		
 	}
+	
+	function ajaxSearchFarmCompanies() {
+		$q = $this->input->post('q');
+		$q = 281;
+		$this->load->model('SupplierModel');
+		$companies = $this->SupplierModel->getCompaniesForSupplierJson('', $q, '', '');
+			
+		echo json_encode($companies);
+	}
+	
 }
 
 /* End of file farm.php */
