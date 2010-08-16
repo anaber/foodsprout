@@ -2,7 +2,7 @@
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <script>
 	
-	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
+	var farmId = <?php echo $FARM->farmId; ?>;
 	var jsonData;
 	var currentContent;
 	
@@ -14,7 +14,7 @@
 	$(document).ready(function() {
 		$('#bottomPaging').hide();
 		
-		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId },
+		$.post("/farm/ajaxSearchFarmCompanies", { q: farmId },
 		function(data){
 			currentContent = 'supplier';
 			jsonData = data;
@@ -26,7 +26,7 @@
 		
 		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
 		
-		$.post("/restaurant/ajaxSearchRestaurantInfo", { restaurantId:"<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '' ) ?>" },
+		$.post("/farm/ajaxSearchFarmInfo", { farmId:"<?php echo (isset($FARM) ? $FARM->farmId : '' ) ?>" },
 		function(data){
 			if (data.geocode != '') {
 				reinitializeMap(data, 13);
@@ -67,7 +67,7 @@
 	}
 	
 	function getMarkerHtml(o) {
-		html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
+		html = "<font size = '2'><b><i>" + o.farmName + "</i></b></font><br /><font size = '1'>" +
 			  o.addressLine1 + ", " + o.addressLine2 + "<br />" + 
 			  o.addressLine3 + "</font><br />"
 			  ;
@@ -82,8 +82,8 @@
 	<div id="resultsContainer">
 		<div id="menu-bar"> 
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
-			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
-			<div id="comments" class = "non-selected"  style = "display:none;"><a href="#">Comments</a></div>
+			<div id="menu" class = "non-selected" style = "display:none;"><a href="#">Menu</a></div>
+			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">Comments</a></div>
 			<div id="addItem" class = "add-item"><a href="#">+ Add Supplier</a></div>
 		</div>
 		
@@ -92,22 +92,26 @@
 				$data = array(
 						'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
 						'TABLE' => $TABLE,
-						'RESTAURANT_ID' => $RESTAURANT->restaurantId
+						'FARM_ID' => $FARM->farmId
 						);
 				$this->load->view('includes/supplier_form', $data );
 			?>
 		</div>
-		
+		<?php
+			/*
+		?>
 		<div id="divAddMenu" style = "display:none;">
 			<?php
 				$data = array(
 						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
-						'RESTAURANT_ID' => $RESTAURANT->restaurantId
+						'FARM_ID' => $FARM->farmId
 						);
 				$this->load->view('includes/menu_form', $data );
 			?>
 		</div>
-		
+		<?php
+			*/
+		?>
 		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
 		
 		<div style="overflow:auto; padding:5px;">

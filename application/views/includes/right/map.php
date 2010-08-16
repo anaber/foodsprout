@@ -5,10 +5,16 @@
 	<div id="map_canvas" style="width: <?php echo $width;?>px; height: <?php echo $height;?>px"></div>
 	<div style="padding:5px;">
 		<div style="float:left; width:100px;">Address:</div> 
-		<div style="float:left; width:400px;" id = "divAddresses">
+		<div style="float:left; width:220px;" id = "divAddresses">
 			<?php
-				foreach($RESTAURANT->addresses as $key => $address) {
-					echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
+				if (isset ($RESTAURANT)) {
+					foreach($RESTAURANT->addresses as $key => $address) {
+						echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
+					}
+				} else if (isset ($FARM)) {
+					foreach($FARM->addresses as $key => $address) {
+						echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
+					}
 				}
 			?>
 		</div>

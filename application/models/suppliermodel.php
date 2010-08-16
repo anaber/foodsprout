@@ -1020,6 +1020,224 @@ class SupplierModel extends Model{
 	    return $arr;
 	}
 	
+	function getCompaniesForSupplierJson($restaurantId, $farmId, $manufactureId, $distributorId) {
+		global $SUPPLIER_TYPES_2, $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$tables = array();
+		
+		if ( !empty($restaurantId) ) {
+			$keyToSearch = 'restaurant';
+			$fieldValue = $restaurantId;
+		} else if ( !empty($farmId) ) {
+			$keyToSearch = 'farm';
+			$fieldValue = $farmId;
+		} else if ( !empty($manufactureId) ) {
+			$keyToSearch = 'manufacture';
+			$fieldValue = $manufactureId;
+		} else if ( !empty($distributorId) ) {
+			$keyToSearch = 'distributor';
+			$fieldValue = $distributorId;
+		} 
+		
+		$supplierFieldName = 'supplier_' . $keyToSearch . '_id';
+		
+		foreach ($SUPPLIER_TYPES_2 as $key => $value) {
+			if (array_key_exists($keyToSearch, $value)) {
+				$arr = explode('_', $key);
+				array_pop($arr);
+				$tableName = implode('_', $arr);
+				
+				$tables[$key] = array(
+								'supplierIdField' => $key . '_id',
+								'supplierFieldName' => $supplierFieldName,
+								'joinTable' => $tableName,
+								'joinIdField' => $tableName . '_id',
+								'joinNameField' => ($tableName == 'restaurant_chain' ? $tableName :  $tableName . '_name')
+							);
+			}
+		}
+		
+		$companies = array();
+		
+		$arrQueryCount = array();
+		$arrQuery = array();
+		
+		foreach ($tables as $supplierTable => $tableParam) {
+			
+			$query_count = 'SELECT count(*) '
+					. ' FROM ' . $supplierTable.', '.$tableParam['joinTable']
+					. ' WHERE '.$supplierTable. '.' . $tableParam['supplierFieldName'] . ' = ' . $fieldValue
+					. ' AND '.$supplierTable.'.'.$tableParam['joinIdField'].' = '.$tableParam['joinTable'].'.' . $tableParam['joinIdField'];
+			
+			//echo $query_count . "<br /><br />";
+			$arrQueryCount[] = $query_count;
+			
+			$query = 'SELECT '
+					//. $supplierTable . '.' . $tableParam['supplierIdField'] . ', ' . $supplierTable . '.'.$tableParam['joinIdField'].', '.$tableParam['joinTable'].'.'.$tableParam['joinNameField']
+					. $supplierTable . '.' . $tableParam['supplierIdField'] . ' as id, ' . $supplierTable . '.'.$tableParam['joinIdField'].' as company_id, '.$tableParam['joinTable'].'.'.$tableParam['joinNameField'] . ' as company_name, CONCAT(\''.$tableParam['joinTable'].'\') AS type'
+					. ' FROM ' . $supplierTable.', '.$tableParam['joinTable']
+					. ' WHERE '.$supplierTable. '.' . $tableParam['supplierFieldName'] . ' = ' . $fieldValue
+					. ' AND '.$supplierTable.'.'.$tableParam['joinIdField'].' = '.$tableParam['joinTable'].'.' . $tableParam['joinIdField'];
+			
+			//echo $query . "<br /><br />";
+			$arrQuery[] = $query;
+		}
+		
+		
+		$query_count = 'SELECT';
+		$i = 0;
+		foreach ($arrQueryCount as $query) {
+			if ($i != 0) {
+				$query_count .= ' + (' . $query . ') ';
+			} else {
+				$query_count .= ' (' . $query . ') ';
+			}
+			
+			$i++;
+		}
+							
+		$query_count .= ' AS num_records';
+		
+		$result = $this->db->query($query_count);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		/*
+		 * this query may look weird, but there is no other option.
+		 * Using CONCAT to know if record belongs to rstaurant or restaurant_chain
+		 */
+		 
+		$query = '';
+		$i = 0;
+		foreach ($arrQuery as $qr) {
+			if ($i != 0) {
+				$query .= ' UNION (' . $qr . ') ';
+			} else {
+				$query .= ' (' . $qr . ') ';
+			}
+			$i++;
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY company_name';
+			$sort = 'company_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "SupplierModel.getCompaniesForSupplierJson : " . $query);
+		$result = $this->db->query($query);
+		
+		
+		$companies = array();
+		$CI =& get_instance();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('CompanyLib');
+			unset($this->companyLib);
+			
+			$CI->load->model('AddressModel','',true);
+			
+			$this->companyLib->companyId = $row['company_id'];
+			$this->companyLib->companyName = $row['company_name'];
+			if ( $row['type'] == 'restaurant' ) {
+				$this->companyLib->type = 'restaurant';
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( $row['company_id'], '', '', '', '', '', '');
+				$this->companyLib->addresses = $addresses;
+				
+			} else if ( $row['type'] == 'farm' ) {
+				$this->companyLib->type = 'farm';
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['company_id'], '', '', '', '', '');
+				$this->companyLib->addresses = $addresses;
+				
+			} else if ( $row['type'] == 'manufacture' ) {
+				$this->companyLib->type = 'manufacture';
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['company_id'], '', '', '', '');
+				$this->companyLib->addresses = $addresses;
+				
+			} else if ( $row['type'] == 'distributor' ) {
+				$this->companyLib->type = 'distributor';
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['company_id'], '', '', '');
+				$this->companyLib->addresses = $addresses;
+				
+			} else if ( $row['type'] == 'farmers_market' ) {
+				$this->companyLib->type = 'farmersmarket';
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', '', $row['company_id'], '', '');
+				$this->companyLib->addresses = $addresses;
+				
+			} else if ( $row['type'] == 'restaurant_chain' ) {
+				$this->companyLib->type = 'chain';
+				$this->companyLib->addresses = '';
+			} 
+			
+			$companies[] = $this->companyLib;
+			unset($this->companyLib);
+		}
+		
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $companies,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
 }
 
 
