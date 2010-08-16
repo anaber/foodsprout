@@ -1,5 +1,5 @@
 body{margin:0px;padding:0px;background:#E5E5E5;color:#000;font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;}
-a,a:visited{color:#1111B5;}
+a,a:visited{color:#2076B9;}
 #header{height:80px;background:#2C190F;}
 #header #headeritms{height:80px;width:1000px;margin-right:auto;margin-left:auto;}
 #header #headeritms #logo{height:44px;width:200px;float:left;padding-top:5px;}
@@ -50,4 +50,3 @@ h3{font-size:14px;}
 .messageboxleft105{position:absolute;margin-left:105px;width:auto;border:1px solid #c93;background:#ffc;padding:3px;font-family:calibri;}
 .messageboxokleft105{position:absolute;margin-left:105px;width:auto;border:1px solid #349534;background:#C9FFCA;padding:3px;font-weight:bold;color:#008000;font-family:calibri;}
 .messageboxerrorleft105{position:absolute;margin-left:105px;width:auto;border:1px solid #CC0000;background:#F7CBCA;padding:3px;font-weight:bold;color:#CC0000;font-family:calibri;}
-

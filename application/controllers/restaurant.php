@@ -9,9 +9,6 @@ class Restaurant extends Controller {
 		{
 			redirect('about/privatebeta');
 		}
-		$this->css = array(
-			'restaurant',
-		);
 	}
 	
 	function index() {
@@ -145,9 +142,9 @@ class Restaurant extends Controller {
 							);
 		
 		// Custom CSS
-		if (!empty ($this->css) ) {
-			$data['CSS'] = $this->css;
-		}
+		$data['CSS'] = array(
+						'restaurant'
+					);
 		
 		$this->load->view('templates/left_center_right_template', $data);
 	}

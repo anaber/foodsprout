@@ -1,0 +1,51 @@
+#tabs #homevtabs{
+	float:left; width:180px;
+}
+#tabs #homevtabs ul{
+	list-style-type: none;
+	margin:0;
+	text-align:right;
+}
+
+.ui-tabs-nav{
+	padding:0px;
+	margin:0px;
+}
+
+.ui-tabs-panel{
+	-moz-border-radius:6px;-webkit-border-radius:6px;
+	padding: 20px;
+	min-height: 400px;
+	background:#E5E5E5;
+}
+
+.ui-tabs .ui-tabs-hide {
+     display: none;
+}
+
+.ui-tabs-selected{
+	background: #E5E5E5;
+	text-decoration:none;
+	color:#2076B9;
+	padding:5px;
+	
+}
+
+.ui-state-default{
+	text-decoration:none;
+	color:#2076B9;
+	padding:5px;
+}
+
+.ui-state-default a{
+	text-decoration:none;
+	color:#2076B9;
+	padding:5px;
+}
+
+.ui-state-active a{
+	background: #E5E5E5;
+	text-decoration:none;
+	color:#2076B9;
+	padding:5px;
+}
