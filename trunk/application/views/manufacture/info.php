@@ -83,7 +83,7 @@
 	<div id="resultsContainer">
 		<div id="menu-bar"> 
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
-			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
+			<div id="menu" class = "non-selected"><a href="#">Products</a></div>
 			<div id="comments" class = "non-selected"  style = "display:none;"><a href="#">Comments</a></div>
 			<div id="addItem" class = "add-item"><a href="#">+ Add Supplier</a></div>
 		</div>
