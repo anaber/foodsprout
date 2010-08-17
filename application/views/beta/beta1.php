@@ -170,6 +170,7 @@
 								<input type="text" name="email" id="email" class="validate[required,custom[email]]" value="<?php echo (isset($EMAIL) ? $EMAIL : 'Email' ); ?>" onfocus="if(this.value=='Email')this.value='';" onblur="if(this.value=='')this.value='Email';">
 								<input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="<?php echo (isset($PASSWORD) ? $PASSWORD : 'Password' ); ?>" <?php echo (isset($PASSWORD) ? 'onfocus="if(this.value==\'Password\')this.value=\'\';" onblur="if(this.value==\'\')this.value=\'Password\';"' : '' ); ?>>
 								<input type="text" name="zipcode" id="zipcode" class="validate[required]" value="<?php echo (isset($ZIPCODE) ? $ZIPCODE : 'Zip Code' ); ?>" onfocus="if(this.value=='Zip Code')this.value='';" onblur="if(this.value=='')this.value='Zip Code';">
+								<input type="hidden" name="ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
 								<input type="submit" name="submit" value="Create Account">
 							</form>
 						</div>
@@ -188,19 +189,16 @@
 					</div>
 					<div id="newsbody">
 						<div class="news-item">
-							<h2><span class="from-twitter"></span><span class="news-date">August 3, 2010</span></h2>
-							<p>FoodSprout  We launched a beta version of Food Sprout.
-							Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+							<h2><span class="from-twitter"></span><span class="news-date">August 17, 2010</span></h2>
+							<p>We just released our final design and launched several tools to allow you to add data like Wikipedia.</p>
+						</div>
+						<div class="news-item">
+							<h2><span class="news-date">July 16, 2010</span></h2>
+							<p>Why we launched Food Sprout.  We want to empower you to know what is in your food, how it was processed, where it is from and what its ultimate impact is on both your health, and the environment around you so you can make decisions on what you want to buy.<a href="http://blog.foodsprout.com/2010/07/why-we-started-food-sprout/">Read more</a>.</p>
 						</div>
 						<div class="news-item">
 							<h2><span class="news-date">July 14, 2010</span></h2>
-							<p>FoodSprout  We launched a beta version of Food Sprout.
-							Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
-						</div>
-						<div class="news-item">
-							<h2><span class="news-date">July 4, 2010</span></h2>
-							<p>FoodSprout  We launched a beta version of Food Sprout.
-							Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+							<p>Just launched in mid-July to become your resource for your food's impact.  <a href="http://blog.foodsprout.com/2010/07/food-sprout-launched/">Read more</a>.</p>
 						</div>
 					</div>
 				</div>

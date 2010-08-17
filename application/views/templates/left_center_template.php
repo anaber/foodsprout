@@ -13,7 +13,6 @@
 		echo '<br>';
 	}
 ?>
-<div align="center">
 <table width = "980" border = "0" cellpadding = "0" cellspacing = "0">
 	<tr>
 		<td width="180" valign="top">
@@ -50,5 +49,4 @@
 		</td>
 	</tr>
 </table>
-</div>
 <?php $this->load->view('includes/footer'); ?>
