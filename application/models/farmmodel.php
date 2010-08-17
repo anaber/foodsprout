@@ -39,6 +39,33 @@ class FarmModel extends Model{
 		return $farms;
 	}
 	
+	// list new farms
+	function listNewFarms()
+	{
+		$query = "SELECT farm.* " .
+				" FROM farm " .
+				" ORDER BY farm_id DESC LIMIT 5";
+		
+		log_message('debug', "FarmModel.listNewFarms : " . $query);
+		$result = $this->db->query($query);
+		
+		$farms = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('FarmLib');
+			unset($this->FarmLib);
+			
+			$this->FarmLib->farmId = $row['farm_id'];
+			$this->FarmLib->farmName = $row['farm_name'];
+			
+			$farms[] = $this->FarmLib;
+			unset($this->FarmLib);
+		}
+		
+		return $farms;
+	}
+	
 	// Insert the new farm data into the database
 	function addFarm() {
 		global $ACTIVITY_LEVEL_DB;

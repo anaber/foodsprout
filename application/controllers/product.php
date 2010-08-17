@@ -42,6 +42,36 @@ class Product extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
+	function newProducts() {
+		
+		$data = array();
+		
+		// Getting information from models
+		$this->load->model('ProductModel');
+		$products = $this->ProductModel->listNewProducts();
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'ad' => 'includes/banners/sky',
+			);
+		
+		$data['CENTER'] = array(
+				'map'  => 'includes/map',
+				'list' => '/product/product_list',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
+		$data['data']['center']['map']['VIEW_HEADER'] = "Distributor Map";
+		$data['data']['center']['map']['width'] = '790';
+		$data['data']['center']['map']['height'] = '250';
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Product List";
+		$data['data']['center']['list']['LIST'] = $products;
+		
+		$this->load->view('templates/left_center_template', $data);
+	}
+	
 	function detail($id) {
 		if ($this->session->userdata('isAuthenticated') != 1 ) //moved by Nutan
 		{
@@ -96,7 +126,8 @@ class Product extends Controller {
 		
 		$this->load->view('templates/center_right_template', $data);
 	}
-		
+	
+	// list of products with fructose
 	function fructose($currentPage = 1) {
 		global $PER_PAGE;
 		$data = array();
