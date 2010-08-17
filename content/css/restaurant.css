@@ -121,7 +121,8 @@
 }
 
 #leafimg #mainimg #resultsContainer #menu-bar .add-item-selected {
-	float: right;
+	float:right;
+	margin-right:5px;
 	padding-right: 9px;
 	padding-left: 9px;
 	height: 22px;
@@ -130,15 +131,16 @@
 	font-weight: bold;
 	font-size: 14px;
 	text-align: center;
-	background-color: #FFF;
+	background-color: #e5e5e5;
 	color: #90171E;
 	line-height: 19px;
 }
 
 #leafimg #mainimg #resultsContainer #menu-bar .add-item {
-	float: right;
-	padding-right: 10px;
-	padding-left: 10px;
+	float:right;
+	padding-right: 9px;
+	padding-left: 9px;
+	margin-right: 5px;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	font-weight: bold;
@@ -186,22 +188,14 @@
 	padding-top: 10px;
 	text-align: justify;
 }
-#leafimg #mainimg #add-designs {
-	float: right;
-	height: 600px;
-	width: 200px;
-	padding-right: 4px;
-}
-#leafimg #mainimg #add-designs #add1 {
-	height: 171px;
-	width: 171px;
-	float: left;
-	padding-left: 15px;
-}
-#leafimg #mainimg #add-designs #add2 {
-	height: 171px;
-	width: 171px;
-	float: left;
-	margin-top: 5px;
-	padding-left: 15px;
+
+.addform{
+	width:538px;
+	background: #e5e5e5;
+	margin-bottom:10px;
+	padding-bottom:5px;
+	border-left:1px solid #999;
+	border-right:1px solid #999;
+	border-bottom:1px solid #999;
+	
 }
