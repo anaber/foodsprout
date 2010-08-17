@@ -442,7 +442,7 @@ class FarmersMarketModel extends Model{
 					
 			$where	.= '				)'
 					. '				LIMIT 0, 1'
-					. '		)';
+					. '		) ';
 			
 		}
 		$base_query_count = $base_query_count . $where;

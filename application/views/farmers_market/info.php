@@ -25,7 +25,7 @@
 		
 		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
 		
-		$.post("/farmersmarket/ajaxSearchFarmersMarketInfo", { farmersMarketId:"<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '' ) ?>" },
+		$.post("/farmersmarket/ajaxSearchFarmersMarketInfo", { farmersMarketId:"<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->farmersMarketId : '' ) ?>" },
 		function(data){
 			if (data.geocode != '') {
 				reinitializeMap(data, 13);
