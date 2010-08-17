@@ -2,7 +2,7 @@
 	At Food Sprout we are striving to reach deep into the your food supply chain.  Here you can start to learn more about the products you buy at the grocery.<br><br>
 	<a href="/product/fructose">Products with High-Fructose</a><br/><br/>
 	
-	<div style="-moz-border-radius: 4px; -webkit-border-radius: 4px; background: #e5e5e5; color: #000; -moz-box-shadow: 0 1px 0 #CCCCCC;-webkit-box-shadow: 0 1px 0 #CCCCCC; padding:10px;overflow:auto;">
+	<div class="graybox">
 		<span class="redtxt"><b>Quick Search by Brand</b></span>
 			<br>
 			<span style="font-size:14px;">Quickly find info about a specific product.<br><span style="font-size:11px;" class="redtxt">(e.g. Odwalla, Kelloggs).</span>
