@@ -30,6 +30,31 @@ class ProductModel extends Model {
         return $products;
     }
 
+
+	// List the recent products
+    function listNewProducts() {
+        
+        $query = "SELECT * FROM product WHERE product_type_id <> 1 ORDER BY product_id DESC LIMIT 5";
+
+        log_message('debug', "ProductModel.listNewProducts : " . $query);
+        $result = $this->db->query($query);
+
+        $products = array();
+
+        foreach ($result->result_array() as $row) {
+
+            $this->load->library('ProductLib');
+            unset($this->productLib);
+
+            $this->productLib->productId = $row['product_id'];
+            $this->productLib->productName = $row['product_name'];
+
+            $products[] = $this->productLib;
+            unset($this->productLib);
+        }
+        return $products;
+    }
+
     // Insert the product into the database
     /*
       function addProduct() {

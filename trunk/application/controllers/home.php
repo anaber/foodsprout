@@ -25,6 +25,43 @@ class Home extends Controller {
 				'list' => 'home',
 			);
 			
+		// Get recent restaurants
+		$this->load->model('RestaurantModel');
+		$newrestaurants = $this->RestaurantModel->listNewRestaurants();
+		
+		$data['NEWREST'] = $newrestaurants;
+		
+		// Get recent products
+		$this->load->model('ProductModel');
+		$newProducts = $this->ProductModel->listNewProducts();
+		
+		$data['NEWPRODUCTS'] = $newProducts;
+		
+		// Get new farms
+		$this->load->model('FarmModel');
+		$newFarms = $this->FarmModel->listNewFarms();
+		
+		$data['NEWFARMS'] = $newFarms;
+			
+		// Load the rssparse
+		// Get the latest blog posts
+		$this->load->library('RSSParser', array('url' => 'http://twitter.com/statuses/user_timeline/124974783.rss', 'life' => 0));
+	  	
+		$twitterdata = array();
+		//Get 1 items from the feed
+	  	$twitterdata = $this->rssparser->getFeed(2);
+	
+		$data['TWITTERDATA'] = $twitterdata;
+			
+		// Get the latest blog posts
+		$this->load->library('RSSParser', array('url' => 'http://blog.foodsprout.com/feed/', 'life' => 0));
+		  	
+		$blogdata = array();
+		//Get 1 items from the feed
+		$blogdata = $this->rssparser->getFeed(1);
+		
+		$data['BLOGDATA'] = $blogdata;
+			
 		// Custom CSS
 		$data['CSS'] = array(
 				'home'

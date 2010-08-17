@@ -52,6 +52,35 @@ class RestaurantModel extends Model{
 	}
 	
 	
+	// Generate a simple list of the recent restaurants added to the db
+	function listNewRestaurants()
+	{
+		$query = "SELECT restaurant.*
+					FROM restaurant
+					ORDER BY restaurant_id DESC limit 5";
+		
+		log_message('debug', "RestaurantModel.listRestaurant : " . $query);
+		$result = $this->db->query($query);
+		
+		$restaurants = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('RestaurantLib');
+			unset($this->RestaurantLib);
+			
+			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
+			$this->RestaurantLib->restaurantName = $row['restaurant_name'];			
+			$this->RestaurantLib->creationDate = $row['creation_date'];
+			
+			$restaurants[] = $this->RestaurantLib;
+			unset($this->RestaurantLib);
+		}
+		
+		return $restaurants;
+	}
+	
+	
 	// Generate a simple list of all the fast food chain restaurants.
 	function listFastFood()
 	{
