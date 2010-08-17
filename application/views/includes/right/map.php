@@ -15,6 +15,10 @@
 					foreach($FARM->addresses as $key => $address) {
 						echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
 					}
+				} else if (isset ($MANUFACTURE)) {
+					foreach($MANUFACTURE->addresses as $key => $address) {
+						echo '<a href = "#" id = "map_'.$address->addressId.'">'.$address->displayAddress.'</a><br /><br />';
+					}
 				}
 			?>
 		</div>

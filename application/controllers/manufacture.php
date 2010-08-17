@@ -48,77 +48,76 @@ class Manufacture extends Controller {
 	
 	// View all the information about a single manufacture
 	function view() {
-		$this->load->library('functionlib'); 
+		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
-		
+
 		$manufactureId = $this->uri->segment(3);
-		
-		// -------- Getting information from models for the views ------------------
-		
-		
-		// Get the basic information about the manufacture
+
+		// Getting information from models
 		$this->load->model('ManufactureModel');
-		$manufactureinfo = $this->ManufactureModel->getManufactureFromId($manufactureId);
-		
-		// Get the products the manufacture makes
-		$this->load->model('ManufactureModel');
-		$products = $this->ManufactureModel->getManufactureProducts($manufactureId);
-		
-		// Get the suppliers for this manufacture
-		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', $manufactureId, '', '', '');
-		
-		// SEO information
-		/*
+		$manufacture = $this->ManufactureModel->getManufactureFromId($manufactureId);
+
+		$this->load->model('ProductTypeModel');
+		$productTypes = $this->ProductTypeModel->listProductType();
+
+		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('manufacture_detail');
-		
+
 		$seo_data_array = array(
-			'manufacture_name' => $manufactureinfo->manufactureName,
-			'manufacture_type' => 'Manufacture',
+			'manufacture_name' => $manufacture->manufactureName,
+			'manufacture_type' => 'Fast Food',
 			'cuisines' => 'Fast Food, American, Pizza',
 		);
-		
+
 		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
 		$data['SEO'] = $seo;
-		*/
-		// SEO ends here
-		
-		// List of views to be included, products, suppliers and distributors
-		$data['CENTER'] = array(
-				'info' => '/manufacture/info',
-				'products' => '/manufacture/product',
-				'suppliers' => '/manufacture/suppliers',
-				'distributor' => '/manufacture/distributor',
-			);
-		
-		$data['RIGHT'] = array(
-				'image' => 'includes/right/image',
-				'ad' => 'includes/right/ad',
+		// SEO ENDS here
+
+		// List of views to be included, these are files that are pulled from different views in the view folders
+
+		// Load all the views for the center column
+		$data['LEFT'] = array(
+				'img' => '/includes/left/images',
 				'map' => 'includes/right/map',
 			);
+
+		// Load all the views for the center column
+		$data['CENTER'] = array(
+				'info' => '/manufacture/info',
+			);
+
+		// Load all the views for the right column
+		$data['RIGHT'] = array(
+				'ad' => 'includes/banners/sky',
+			);
+
+		// Data to be passed to the views
+		// Center -> Info
+		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['info']['TABLE'] = 'manufacture_supplier';
+		
+		// Left -> Map
+		$data['data']['left']['map']['width'] = '225';
+		$data['data']['left']['map']['height'] = '225';
+		$data['data']['left']['map']['hide_map'] = 'no';
 		
 		
-		// Data to be passed to the views ----------------------------------------
+		$data['MANUFACTURE'] = $manufacture;
 		
-		// Center -> Products, Suppliers, Distributors
-		$data['data']['center']['info']['MANUFACTURE'] = $manufactureinfo;
-		$data['data']['center']['products']['PRODUCT'] = $products;
-		$data['data']['center']['suppliers']['SUPPLIER'] = $suppliers;
+		$data['NAME'] = array(
+							$manufacture->manufactureName => '',
+							);
 		
-		// Right -> Image
-		$data['data']['right']['image']['src'] = '/img/standard/manufacture-na-icon.jpg';
-		$data['data']['right']['image']['width'] = '300';
-		$data['data']['right']['image']['height'] = '200';
-		$data['data']['right']['image']['title'] = 'Manufacture Image';
+		// Custom CSS
+		$data['CSS'] = array(
+						'restaurant'
+					);
 		
-		// Right -> Map
-		$data['data']['right']['map']['width'] = '300';
-		$data['data']['right']['map']['height'] = '200';
-		$data['data']['right']['map']['hide_map'] = 'no';
+		$this->load->view('templates/left_center_right_template', $data);
 		
-		$this->load->view('templates/center_right_template', $data);
 	}
 	
 	function supplier_save_add() {
@@ -150,6 +149,26 @@ class Manufacture extends Controller {
 				echo 'no';
 			}
 		}
+	}
+	
+	function ajaxSearchManufactureSuppliers() {
+		$q = $this->input->post('q');
+		$this->load->model('SupplierModel');
+		$suppliers = $this->SupplierModel->getSupplierForCompanyJson('', '', $q, '', '', '');
+		
+		echo json_encode($suppliers);
+	}
+	
+	function ajaxSearchRestaurantMenus() {
+		$this->load->model('RestaurantModel', '', TRUE);
+		$restaurants = $this->RestaurantModel->getRestaurantMenusJson();
+		echo json_encode($restaurants);
+	}
+	
+	function ajaxSearchManufactureMenus() {
+		$this->load->model('ManufactureModel', '', TRUE);
+		$menus = $this->ManufactureModel->getManufactureMenusJson();
+		echo json_encode($menus);
 	}
 	
 }

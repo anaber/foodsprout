@@ -77,14 +77,16 @@ function createMarker(o, point, html) {
 	return marker;
 }
 
-function viewMarker(record_id) {
+function viewMarker(record_id, viewBubble) {
 	clearInfoWindow();
 	
 	var marker = gmarkers[record_id];
+	
 	var infowindow = new google.maps.InfoWindow({ 
   		content: htmls[record_id]
   		//maxWidth: 50
     });
+    
     infowindow.open(map, marker);
     
     infowindows[0] = infowindow;

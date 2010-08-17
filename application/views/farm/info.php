@@ -43,7 +43,7 @@
 					var arr = record_id.split('_');
 					record_id = arr[1];
 					
-					viewMarker(record_id);
+					viewMarker(record_id, 0);
 					//$('html, body').animate({scrollTop:2000}, 'slow');
 					$('html, body').scrollTop(2000);
 				}
@@ -61,6 +61,7 @@
 	      disableDefaultUI: true,
 	      navigationControl: false,
 	      scrollwheel: false,
+	      draggable: false,
 	      mapTypeId: google.maps.MapTypeId.ROADMAP
 	    }
 	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
