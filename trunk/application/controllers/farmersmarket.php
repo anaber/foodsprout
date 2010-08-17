@@ -85,64 +85,86 @@ class FarmersMarket extends Controller {
 	
 	// View the information on a single restaurant
 	function view() {
-		$this->load->library('functionlib');
+		global $SUPPLIER_TYPES_2;
+		
 		$data = array();
-		
+
 		$farmersMarketId = $this->uri->segment(3);
-		
+
+		// Getting information from models
 		$this->load->model('FarmersMarketModel');
 		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($farmersMarketId);
-		
-		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForCompany('', '', '', '', '', $farmersMarketId );
-		
-		
+
+		$this->load->model('ProductTypeModel');
+		$productTypes = $this->ProductTypeModel->listProductType();
+
 		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('farm_detail');
-		
+
 		$seo_data_array = array(
-			'farmers_market_name' => $farmersMarket->farmersMarketName,
+			'farm_name' => $farmersMarket->farmersMarketName,
 			'restaurant_type' => 'Fast Food',
 			'cuisines' => 'Fast Food, American, Pizza',
 		);
-		
+
 		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
 		$data['SEO'] = $seo;
 		// SEO ENDS here
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'info' => '/farmers_market/info',
-				'suppliers' => '/farmers_market/suppliers',
-			);
-		
-		$data['RIGHT'] = array(
-				'image' => 'includes/right/image',
-				'ad' => 'includes/right/ad',
+
+		// List of views to be included, these are files that are pulled from different views in the view folders
+
+		// Load all the views for the center column
+		$data['LEFT'] = array(
+				'img' => '/includes/left/images',
 				'map' => 'includes/right/map',
 			);
-		 
+
+
+		// Load all the views for the center column
+		$data['CENTER'] = array(
+				'info' => '/farmers_market/info',
+			);
+
+		// Load all the views for the right column
+		$data['RIGHT'] = array(
+				'ad' => 'includes/banners/sky',
+			);
+
 		// Data to be passed to the views
-		// Center -> Menu
-		$data['data']['center']['info']['FARMERS_MARKET'] = $farmersMarket;
-		//$data['data']['center']['companies']['COMPANIES'] = $companies;
-		$data['data']['center']['suppliers']['SUPPLIERS'] = $suppliers;
+		// Center -> Info
+		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
+		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['info']['TABLE'] = 'farmers_market_supplier';
+		
+		// Left -> Map
+		$data['data']['left']['map']['width'] = '225';
+		$data['data']['left']['map']['height'] = '225';
+		$data['data']['left']['map']['hide_map'] = 'no';
+		
+		$data['FARMERS_MARKET'] = $farmersMarket;
+		
+		$data['NAME'] = array(
+							$farmersMarket->farmersMarketName => '',
+							);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'restaurant'
+						);
 		
 		
-		// Right -> Image
-		$data['data']['right']['image']['src'] = '/img/standard/restaurant-na-icon.jpg';
-		$data['data']['right']['image']['width'] = '300';
-		$data['data']['right']['image']['height'] = '200';
-		$data['data']['right']['image']['title'] = '';
-		
-		// Right -> Map
-		$data['data']['right']['map']['width'] = '300';
-		$data['data']['right']['map']['height'] = '200';
-		$data['data']['right']['map']['hide_map'] = 'no';
-		
-		$this->load->view('templates/center_right_template', $data);
+		$this->load->view('templates/left_center_right_template', $data);
 	}
+	
+	function ajaxSearchFarmersMarketSuppliers() {
+		$q = $this->input->post('q');
+		$this->load->model('SupplierModel');
+		$suppliers = $this->SupplierModel->getSupplierForCompanyJson('', '', '', '', '', $q);
+
+		echo json_encode($suppliers);
+	}
+	
 }
 
 /* End of file farm.php */
