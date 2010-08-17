@@ -50,7 +50,7 @@ function reinitializeAutoSuggestEvent(dataManufactures) {
 			onItemSelect:selectItem,
 			onFindValue:findValue,
 			formatItem:formatItem,
-			autoFill:false,
+			autoFill:false
 			/*
 			extraParams: {
 		       //extra: $("#selectedStateId").val()
