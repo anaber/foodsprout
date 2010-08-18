@@ -184,9 +184,9 @@ function drawAddItem() {
 	if (currentContent == 'supplier') {
 		html += '<a href="#"><div id = "addSupplier">+ Farm</div></a>';
 	} else if (currentContent == 'menu') {
-		html += '<a href="#"><div id = "addMenu">+ Add Menu</div></a>';
+		html += '<a href="#"><div id = "addMenu">+ Menu</div></a>';
 	} else if (currentContent == 'comment') {
-		html += '<a href="#"><div id = "addComment">+ Add Comment</div></a>';
+		html += '<a href="#"><div id = "addComment">+ Comment</div></a>';
 	}
 	return html;
 }

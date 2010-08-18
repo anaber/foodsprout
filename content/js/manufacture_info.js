@@ -182,11 +182,11 @@ function redrawContent(data, type) {
 function drawAddItem() {
 	html = "";
 	if (currentContent == 'supplier') {
-		html += '<a href="#"><div id = "addSupplier">+ Add Supplier</div></a>';
+		html += '<a href="#"><div id = "addSupplier">+ Supplier</div></a>';
 	} else if (currentContent == 'menu') {
-		html += '<a href="#"><div id = "addMenu">+ Add Product</div></a>';
+		html += '<a href="#"><div id = "addMenu">+ Product</div></a>';
 	} else if (currentContent == 'comment') {
-		html += '<a href="#"><div id = "addComment">+ Add Comment</div></a>';
+		html += '<a href="#"><div id = "addComment">+ Comment</div></a>';
 	}
 	return html;
 }
