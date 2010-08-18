@@ -88,7 +88,8 @@
 			<div id="addItem" class="add-item"><a href="#">+Supplier</a></div>
 		</div>
 		
-		<div id="divAddSupplier" style = "display:none;" class="addform"> 
+		<div id="divAddSupplier" style = "display:none;padding-left:3px;padding-right:5px;">
+			<div class="addform">  
 			<?php
 				$data = array(
 						'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
@@ -97,9 +98,11 @@
 						);
 				$this->load->view('includes/supplier_form', $data );
 			?>
+			</div>
 		</div>
 		
-		<div id="divAddMenu" style = "display:none;" class="addform">
+		<div id="divAddMenu" style = "display:none;padding-left:3px;padding-right:5px;">
+			<div class="addform">
 			<?php
 				$data = array(
 						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
@@ -107,6 +110,7 @@
 						);
 				$this->load->view('includes/menu_form', $data );
 			?>
+			</div>
 		</div>
 		
 		<div id="divAddComment" style = "display:none;">Comment form will come here</div>

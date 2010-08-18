@@ -131,7 +131,8 @@
 	font-weight: bold;
 	font-size: 14px;
 	text-align: center;
-	background-color: #e5e5e5;
+	/*background-color: #e5e5e5;*/
+	background-color: #FFFFFF;
 	color: #90171E;
 	line-height: 19px;
 }
@@ -190,12 +191,10 @@
 }
 
 .addform{
-	width:538px;
-	background: #e5e5e5;
+	width:530px;
 	margin-bottom:10px;
 	padding-bottom:5px;
-	border-left:1px solid #999;
-	border-right:1px solid #999;
-	border-bottom:1px solid #999;
-	
+	border-left:1px solid #90171E;
+	border-right:1px solid #90171E;
+	border-bottom:1px solid #90171E;
 }
