@@ -40,8 +40,7 @@ class UserModel extends Model{
 			log_message('debug', 'UserModel.createUser : Try to get duplicate User record : ' . $query);
 			
 			$result = $this->db->query($query);
-			echo $_SERVER['REMOTE_ADDR'];
-			die("Deepak here");
+			
 			if ($result->num_rows() == 0) {
 				
 				$new_user_insert_data = array(
