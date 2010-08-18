@@ -320,9 +320,9 @@ class ProductModel extends Model {
             $userGroup = $this->session->userdata['userGroup'];
             
             if ( $userGroup != 'admin') {
-            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", NULL, "queue", 0, ' . $this->session->userdata('userId') . ', NOW() )';
+            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "queue", ' . $this->input->post('hasFructose') . ', ' . $this->session->userdata('userId') . ', NOW() )';
             } else {
-            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", NULL, "live", 0, ' . $this->session->userdata('userId') . ', NOW() )';
+            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "live", ' . $this->input->post('hasFructose') . ', ' . $this->session->userdata('userId') . ', NOW() )';
             }
 
             log_message('debug', 'ProductModel.addProduct : Insert Product : ' . $query);
