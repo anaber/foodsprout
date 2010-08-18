@@ -88,7 +88,7 @@
 			<div id="addItem" class = "add-item"><a href="#">+ Add Supplier</a></div>
 		</div>
 		
-		<div id="divAddSupplier" style = "display:none;"> 
+		<div id="divAddSupplier" style = "display:none;" class="addform"> 
 			<?php
 				$data = array(
 						'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
@@ -101,7 +101,7 @@
 		<?php
 			/*
 		?>
-		<div id="divAddMenu" style = "display:none;">
+		<div id="divAddMenu" style = "display:none;" class="addform">
 			<?php
 				$data = array(
 						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
