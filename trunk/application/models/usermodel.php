@@ -48,7 +48,7 @@ class UserModel extends Model{
 					'email' => $email,
 					'zipcode' => $this->input->post('zipcode'),
 					'password' => md5($this->input->post('password')),
-					'register_ipaddress' => $_SERVER['REMOTE_ADDR'],
+					'register_ipaddress' => getRealIpAddr(),//$_SERVER['REMOTE_ADDR'],
 					'isActive' => 1
 				);
 	
