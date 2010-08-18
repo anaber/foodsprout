@@ -127,6 +127,7 @@ class Restaurant extends Controller {
 		// Center -> Info
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['info']['RESTAURANT_ID'] = $restaurant->restaurantId;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
 		
 		// Left -> Map

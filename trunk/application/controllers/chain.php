@@ -102,6 +102,7 @@ class Chain extends Controller {
 		// Center -> Info
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['info']['RESTAURANT_CHAIN_ID'] = $restaurantChain->restaurantChainId;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_chain_supplier';
 		
 		$data['RESTAURANT_CHAIN'] = $restaurantChain;

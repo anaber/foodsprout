@@ -64,7 +64,7 @@ $(document).ready(function() {
                 formAction = '/chain/menu_item_save_add';
                 postArray = {
                     productName:$('#productName').val(),
-                    productTypeId: 1, //$('#productTypeId').val(),
+                    productTypeId: $('#productTypeId').val(),
                     brand: '', //$('#brand').val(),
                     upc:'',
                     hasFructose:0,
@@ -126,7 +126,7 @@ $(document).ready(function() {
             </td>
         </tr>
         <?php
-        	/*
+        	if ( isset( $MANUFACTURE_ID ) ) {
         ?>
         <tr>
             <td width = "25%">Product Type</td>
@@ -135,13 +135,20 @@ $(document).ready(function() {
                     <option value = ''>--Product Type--</option>
                     <?php
                     foreach ($PRODUCT_TYPES as $key => $value) {
-                        echo '<option value="' . $value->productTypeId . '"' . ( ( isset($PRODUCT) && ( $value->productTypeId == $PRODUCT->productTypeId ) ) ? ' SELECTED' : '' ) . '>' . $value->productType . '</option>';
+                        if ($value->productTypeId != 1) {
+                        	echo '<option value="' . $value->productTypeId . '"' . ( ( isset($PRODUCT) && ( $value->productTypeId == $PRODUCT->productTypeId ) ) ? ' SELECTED' : '' ) . '>' . $value->productType . '</option>';
+                        }
                     }
                     ?>
                 </select>
             </td>
         </tr>
-        
+        <?php
+        	} else {
+        		echo '<input type = "hidden" name = "productTypeId" id = "productTypeId" value = "1">';
+        	}
+        	/*
+        ?>
         <tr>
             <td width = "25%">Brand</td>
             <td width = "75%">
