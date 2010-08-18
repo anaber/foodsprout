@@ -66,6 +66,8 @@ $(document).ready(function() {
                     productName:$('#productName').val(),
                     productTypeId: 1, //$('#productTypeId').val(),
                     brand: '', //$('#brand').val(),
+                    upc:'',
+                    hasFructose:0,
                     ingredient:$('#ingredient').val(),
 						  
                     manufactureId: $('#manufactureId').val(),
