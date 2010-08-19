@@ -7,9 +7,7 @@
 <meta name="keywords" content="<?php echo (isset($SEO->metaKeywords)? $SEO->metaKeywords: 'food source, food location'); ?>" />
 <meta name="robots" content="index,follow" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<link href="/css/mainstyle.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url();?>css/mainstyle.css" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url();?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <?php 
 if (isset ($CSS) ) {
 	foreach ($CSS as $key => $css_file) {

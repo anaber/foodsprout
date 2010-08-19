@@ -132,7 +132,7 @@
 	font-size: 14px;
 	text-align: center;
 	/*background-color: #e5e5e5;*/
-	background-color: #FFFFFF;
+	background-color: #E5E5E5;
 	color: #90171E;
 	line-height: 19px;
 }
@@ -199,4 +199,5 @@
 	border-left:1px solid #90171E;
 	border-right:1px solid #90171E;
 	border-bottom:1px solid #90171E;
+	background: #E5E5E5;
 }

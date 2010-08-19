@@ -29,7 +29,7 @@
 	</ul>
 </div>
 
-<div style="float:left; width:490px;">
+<div style="float:left; width:490px;" class="ui-tabs">
 	
 		<?php		
 			$this->load->view('home/restaurant');
