@@ -766,10 +766,15 @@ class RestaurantModel extends Model{
 			$GLOBALS['error'] = 'no_name';
 			$return = false;
 		} else {
+			
 			if ( empty($companyId) ) {
 				// Enter manufacture into company
 				$CI->load->model('CompanyModel','',true);
 				$companyId = $CI->CompanyModel->addCompany($this->input->post('restaurantName'));
+				if ( !$companyId) {
+					//$return = false;
+					return false;
+				}
 			} else {
 				if (empty($restaurantName) ) {
 					// Consider company name as manufacture name
@@ -783,10 +788,11 @@ class RestaurantModel extends Model{
 			log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
 			
 			$result = $this->db->query($query);
+			$restaurantChainId = $this->input->post('restaurantChainId');
 			
 			if ($result->num_rows() == 0) {
 				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, phone, fax, email, url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('restaurantChainId') . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+						" values (NULL, '".$companyId."', " . ( !empty ( $restaurantChainId ) ? $restaurantChainId : 'NULL' ) . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
 				
 				log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 				$return = true;
