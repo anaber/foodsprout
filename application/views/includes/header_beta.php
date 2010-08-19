@@ -11,28 +11,17 @@
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
 <link href="/css/mainstyle.css" rel="stylesheet" type="text/css" />
-<link href="/css/rest1.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="<?php echo base_url()?>css/messages.css" type="text/css" media="all" />
-<link rel="stylesheet" href="<?php echo base_url()?>css/validationEngine.jquery.css" type="text/css" media="screen" title="no title" charset="utf-8" />
-<link rel="stylesheet" href="<?php echo base_url()?>css/popup.css" type="text/css" media="all"/>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.validationEngine.css" type="text/css" media="screen" title="no title" charset="utf-8" />
 
 <script src="<?php echo base_url()?>js/jquery.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.plugin.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.validationEngine_old.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-135491-28']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
+var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_trackPageview']);
+(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);})();
 </script>
+
 <style type="text/css">
 body {
 	background: #E5E5E5;

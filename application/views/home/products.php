@@ -1,4 +1,4 @@
-<div id="tabs-2">
+<div id="tabs-2" class="ui-tabs-hide">
 	At Food Sprout we are striving to reach deep into the your food supply chain.  Here you can start to learn more about the products you buy at the grocery.<br><br>
 	<a href="/product/fructose">Products with High-Fructose</a><br/><br/>
 	

@@ -1,4 +1,4 @@
-<div id="tabs-1">
+<div id="tabs-1" class="ui-tabs-hide">
 	<a href = "/chain/fastfood" style="text-decoration:none;">Explore Restaurant Chains</a><br><img src="/img/homech.jpg" align="left" style="padding:4px;"><span style="font-size:14px;">Use this feature to learn more about the larger chains from McDonald's to TGI Friday's.  If they have multiple locations, odds are they are here.</span><br/><br/><br/>
 	<!-- a href="#">Our Recommendations</a><br><br-->
 	<div class="graybox">

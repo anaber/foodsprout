@@ -1,4 +1,4 @@
-<div id="tabs-3">
+<div id="tabs-3" class="ui-tabs-hide">
 	Resources to start learning about the source of your food- the farm.<br><br>
 	<a href="/farm">Listing of Farms</a><br>
 	<a href="/farmersmarket">Find a Farmers Market</a><br><br>
