@@ -55,11 +55,38 @@ class Login extends Controller {
 	function create_user() {
 		$GLOBALS = array();
 		
+		// Validate the information before sending to model
+		$this->load->library('form_validation');
+		
+		// field name, error message, validation rules
+		$this->form_validation->set_rules('firstname', 'Name', 'trim|required');
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+		
+		if($this->form_validation->run() == FALSE)
+		{
+			$data = array();
+			$data['CENTER'] = array(
+					'list' => 'beta/beta1',
+			);
+			
+			if ( isset ($GLOBALS['error']) && $GLOBALS['error']) {
+				$data['ERROR'] = $GLOBALS['error'];
+			} else {
+				$data['ERROR'] = 'registration_failed';
+			}
+			
+			$data['FIRST_NAME'] = $this->input->post('firstname'); 
+			$data['EMAIL'] = $this->input->post('email');
+			$data['PASSWORD'] = '';
+			$data['ZIPCODE'] = $this->input->post('zipcode');
+			
+			$this->load->view('beta/beta1', $data);
+			exit;
+		}
 		$this->load->model('UserModel');
 		$create_user = $this->UserModel->createUser();
 		
 		if($create_user == true) {
-			redirect('/');
 				
 			$this->load->library('email');
 
@@ -70,6 +97,9 @@ class Login extends Controller {
 			$this->email->message('Welcome '.$this->input->post('firstname').",\r\n \r\nThank you for joining Food Sprout and taking an interest in learning more about where our food comes from and what is in it.  We hope you will also join us in sharing what information you have so that we may all benefit. \r\n \r\n Food Sprout Team");
 
 			$this->email->send();
+			
+			//echo $this->email->print_debugger();
+			redirect('/');
 			
 		} else {
 			$data = array();
