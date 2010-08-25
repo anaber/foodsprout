@@ -231,5 +231,65 @@ class About extends Controller {
         $this->load->view('templates/center_template', $data);
     }
 
+	//send an email
+    function sendMail() {
+	
+		if($this->input->post('sendemail') == FALSE)
+		{
+			redirect('about/contact');
+		}
+		else
+		{
+	
+			// Validate the information before sending to model
+			$this->load->library('form_validation');
+		
+			// field name, error message, validation rules
+			$this->form_validation->set_rules('username', 'Name', 'trim|required');
+			$this->form_validation->set_rules('useremail', 'Email', 'trim|required|valid_email');
+			if($this->form_validation->run() == FALSE)
+			{
+				$this->contact();
+			}
+			else
+			{
+				$this->load->library('email');
+				
+				$from = 'noreply@foodsprout.com';
+
+				$this->email->from($this->input->post('useremail'));
+				$this->email->reply_to($this->input->post('useremail'), $this->input->post('username'));
+				$this->email->to('contact@foodsprout.com');
+
+				$this->email->subject('Food Sprout Contact Form');
+				$this->email->message($this->input->post('message'));
+
+				$this->email->send();
+				
+				//echo $this->email->print_debugger();
+	
+        		$data = array();
+
+        		// List of views to be included
+        		$data['LEFT'] = array(
+            		'navigation' => 'about/left_nav',
+        		);
+
+        		$data['CENTER'] = array(
+            		'content' => 'about/contact',
+        		);
+
+        		// Data to send to the views
+        		$data['BREADCRUMB'] = array(
+							'Food Sprout' => '/',
+							'Contacting Food Sprout' => '/about/contact',
+						);
+        
+        		$this->load->view('/templates/left_center_template', $data);
+			}
+		}
+    }
+	
+
 }
 ?>
