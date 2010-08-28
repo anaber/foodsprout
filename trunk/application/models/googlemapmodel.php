@@ -26,14 +26,30 @@ class GoogleMapModel extends Model{
 	}
 	
 	function geoCodeAddressV3($address) {
-		$a = array();
-		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+		global $GEOCODE_URL;
 		
-		if ($d = @fopen($url, "r")) {
+		$json = '';
+		
+		if (!empty($GEOCODE_URL) ) {
+			$url = $GEOCODE_URL . "?address=".urlencode($address);
+			if ($d = @fopen($url, "r")) {
 			
-			$gcsv = @fread($d, 30000);
-			@fclose($d);
-			$arr = json_decode($gcsv);
+				$json = @fread($d, 30000);
+				@fclose($d);
+			}
+		} else {
+			$a = array();
+			$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+			
+			if ($d = @fopen($url, "r")) {
+			
+				$json = @fread($d, 30000);
+				@fclose($d);
+			}
+		}
+		
+		if ( $json ) {
+			$arr = json_decode($json);
 			if ($arr->status != 'OK') {
 				return false;
 			} else {
@@ -41,6 +57,8 @@ class GoogleMapModel extends Model{
 				$a['longitude'] = $arr->results[0]->geometry->location->lng;
 				return $a;
 			}
+		} else {
+			return false;
 		}
 	}
 	

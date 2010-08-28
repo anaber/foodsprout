@@ -26,6 +26,7 @@ $GOOGLE_MAP_KEY = 'ABQIAAAANHHVmwbFmPA69NdT2eV5nBTTs6hNVB8_1pP2Zl7l6kCVegzTUBRWM
 $PER_PAGE = 20;
 $PER_PAGE_2 = 60;
 
+$GEOCODE_URL = 'http://geocode.foodsprout.com/geocode.php';
 /*
  * ======================================================
  * Table Names
