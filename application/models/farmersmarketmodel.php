@@ -429,7 +429,8 @@ class FarmersMarketModel extends Model{
 				. ' OR restaurant.restaurant_id like "%' . $q . '%"';
 		*/
 		
-		if ( !empty($q) || !empty($city) ) {
+		//if ( !empty($q) || !empty($city) ) {
+		if ( count ($latLng) > 0 ) {
 			if (!empty($where) ) {
 				$where .= ' AND (';  
 			} else {
