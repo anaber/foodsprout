@@ -463,7 +463,7 @@ class FarmModel extends Model{
 			$CI->load->model('GoogleMapModel','',true);
 			$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 		}
-		print_r_pre($latLng);
+		
 		$start = 0;
 	
 		$page = 0;
