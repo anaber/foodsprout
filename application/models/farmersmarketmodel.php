@@ -408,7 +408,7 @@ class FarmersMarketModel extends Model{
 		if (! empty ($q) ) {
 			$address = $q. ', USA';
 			$CI->load->model('GoogleMapModel','',true);
-			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+			$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 		}
 		
 		$start = 0;
