@@ -26,6 +26,8 @@ $GOOGLE_MAP_KEY = 'ABQIAAAANHHVmwbFmPA69NdT2eV5nBQwaD-ZLXj78-bu070_JIa4Gc751BRaJ
 $PER_PAGE = 20;
 $PER_PAGE_2 = 60;
 
+$GEOCODE_URL = 'http://geocode.local/geocode.php';
+
 /*
  * ======================================================
  * General Site Details
