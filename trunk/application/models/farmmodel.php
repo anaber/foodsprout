@@ -400,18 +400,24 @@ class FarmModel extends Model{
 	}
 	
 	function getFarmsJson() {
-		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
+		global $PER_PAGE, $FARM_DEFAULT_RADIUS, 
+		$DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL, $FARM_ZOOM_LEVEL;
+		
+		$CI =& get_instance();
 		
 		$p = $this->input->post('p'); // Page
 		$pp = $this->input->post('pp'); // Per Page
 		$sort = $this->input->post('sort');
 		$order = $this->input->post('order');
 		$filter = $this->input->post('f');
+		$radius = $this->input->post('r');
+		
+		if (empty  ($radius) ) {
+			$radius = $FARM_DEFAULT_RADIUS;
+		}
 		
 		//$filter = 'r_10,c_6';
 		
-		
-		//echo $filter;
 		$arr_filter = explode(',', $filter);
 		
 		$arrFarmTypeId = array();
@@ -423,13 +429,7 @@ class FarmModel extends Model{
 			if ($arr_value[0] == 'f') {
 				$arrFarmTypeId[] = $arr_value[1];
 			}
-			/*
-			if ($arr_value[0] == 'c') {
-				$arrCuisineId[] = $arr_value[1];
-			}
-			*/
 		}
-		
 		
 		$q = $this->input->post('q');
 		//$q = '80301';
@@ -439,44 +439,34 @@ class FarmModel extends Model{
 			$q = '';
 		}
 		
-		$city = '';
-		//$city = '41,6009,13721';
-		
-		$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
-		
-		/*
 		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 		
 		if ($q == '') {
-			
 			if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
 				$q = $_COOKIE['seachedZip'];
-				$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+				$mapZoomLevel = $FARM_ZOOM_LEVEL;
 			} else {
-				// By default display all restaurants of SFO
-				$city = '41,6009,13721';
-				$city = '';
-				$mapZoomLevel = $CITY_ZOOM_LEVEL;
+				if ($this->session->userdata('isAuthenticated') == 1 ) { // Authenticated
+					$q = $this->session->userdata['zipcode'];
+					$mapZoomLevel = $FARM_ZOOM_LEVEL;
+					setcookie('seachedZip', $q, time()+60*60*24*30*365);
+				}
 			}
 		} else {
 			setcookie('seachedZip', $q, time()+60*60*24*30*365);
-			$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+			$mapZoomLevel = $FARM_ZOOM_LEVEL;
 		}
-		*/
 		
+		$latLng = array();
+		if (! empty ($q) ) {
+			$address = $q. ', USA';
+			$CI->load->model('GoogleMapModel','',true);
+			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+		}
 		
 		$start = 0;
 	
 		$page = 0;
-		
-		/*
-		$base_query = 'SELECT restaurant.*, restaurant_cuisine.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
-				' FROM restaurant, restaurant_cuisine, cuisine, restaurant_type';
-		
-		$where = ' WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id '
-				. ' AND restaurant_cuisine.cuisine_id = cuisine.cuisine_id '
-				. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
-		*/
 		
 		$base_query = 'SELECT farm.*, farm_type.farm_type' .
 				' FROM farm, farm_type';
@@ -484,9 +474,9 @@ class FarmModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM farm, farm_type';
 		
-		
+
 		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id';
-		
+
 		/*
 		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
 				. ' OR restaurant.restaurant_id like "%' . $q . '%"';
@@ -500,24 +490,6 @@ class FarmModel extends Model{
 				$where .= ' farm.farm_type_id IN (' . implode(',', $arrFarmTypeId) . ')';
 			}
 			
-			/*
-			if(count($arrCuisineId) > 0 ) {
-			 		// Cuisine 
-				if(count($arrRestaurantTypeId) > 0 ) {
-					$where	.= ' OR ( ';
-				} else {
-					$where	.= ' ( ';
-				}
-				
-			$where	.= '		SELECT restaurant_cuisine.restaurant_cuisine_id ' 
-					. '			FROM restaurant_cuisine' 
-					. '			WHERE' 
-					. '				restaurant_cuisine.restaurant_id = restaurant.restaurant_id'
-					. ' 			AND restaurant_cuisine.cuisine_id IN (' . implode(',', $arrCuisineId) . ')'
-					. '				LIMIT 0, 1'
-					. '		)';
-			 }
-			*/
 			$where .= ' )';
 		}
 		
@@ -527,24 +499,27 @@ class FarmModel extends Model{
 			} else {
 				$where .= ' WHERE (';
 			}
-			
 
-			//$where	.= ' OR ( '
-			$where	.= '		SELECT address.address_id' 
-					. '			from address, state, country'
+			$where	.= '		SELECT ';
+			if (count($latLng) > 0 ) {
+				$where .= ' 			( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance ';
+			} else if ( !empty($q) ) {
+				$where	.= '		address.address_id';
+			}
+					 
+					$where	.=  '	from address, state, country'
 					. '			WHERE' 
 					. '				address.farm_id = farm.farm_id'
 					. '				AND address.state_id = state.state_id'
-					. '				AND address.country_id = country.country_id'
-					. ' 			AND (';
-				if ( !empty($q) ) {	 
-			$where	.= '					address.zipcode = "' . $q . '"';
-				} else if ( !empty($city) ) {
-			$where	.= '					address.city_id IN (' . $city . ')';
-				}
+					. '				AND address.country_id = country.country_id';
 					
-			$where	.= '				)'
-					. '				LIMIT 0, 1'
+				if (count($latLng) > 0 ) {
+					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
+				} else if ( !empty($q) ) {	 
+					$where	.= ' 			HAVING ( address.zipcode = "' . $q . '") ';
+				} 
+					
+			$where	.= '				LIMIT 0, 1'
 					. '		)';
 			
 		}
@@ -600,8 +575,6 @@ class FarmModel extends Model{
 		
 		$farms = array();
 		
-		$CI =& get_instance();
-		
 		$geocodeArray = array();
 		foreach ($result->result_array() as $row) {
 			
@@ -640,7 +613,6 @@ class FarmModel extends Model{
 				$geocodeArray[] = $arrLatLng;
 			}
 			
-			
 			$farms[] = $this->FarmLib;
 			unset($this->FarmLib);
 		}
@@ -657,7 +629,8 @@ class FarmModel extends Model{
 			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 		}
 		
-		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel);
+		//$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel);
+		$params = requestToParams3($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $radius);
 		$arr = array(
 			'results'    => $farms,
 			'param'      => $params,

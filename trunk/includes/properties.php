@@ -11,7 +11,7 @@
  * ======================================================
  */
 
-$ENV_PROPERTY_FILE = "env_properties/andrew.php";
+$ENV_PROPERTY_FILE = "env_properties/staging_server.php";
 
 include($ENV_PROPERTY_FILE);
 
@@ -22,6 +22,43 @@ include($ENV_PROPERTY_FILE);
  */
 $DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
 
+/*
+ * ======================================================
+ * ZOOM Level
+ * ======================================================
+ */
+
+$DEFAULT_ZOOM_LEVEL = 3;
+$FARM_ZOOM_LEVEL = 7;
+$CITY_ZOOM_LEVEL = 11;
+$ZIPCODE_ZOOM_LEVEL = 13;
+
+/*
+ * ======================================================
+ * Radius Search
+ * ======================================================
+ */
+$FARM_DEFAULT_RADIUS = 20;
+$FARM_RADIUS = array(
+					'min' => 0,
+					'max' => 120,
+					'step' => 20,
+				);
+
+$FARMERS_MARKET_DEFAULT_RADIUS = 5;
+$FARMERS_MARKET_RADIUS = array(
+					'min' => 0,
+					'max' => 20,
+					'step' => 5,
+				);
+
+
+
+/*
+ * ======================================================
+ * Activilty Level
+ * ======================================================
+ */
 $ACTIVITY_LEVEL = array(
 					0 => "Inactive",
 					1 => "Active", 

@@ -4,9 +4,9 @@ var showMap = true;
 var showFilters = true;
 //var topCuisines;
 var topFarmTypes;
+var farmsData;
 
 <?php
-	
 	if ($hide_map == 'yes') {
 ?>
 	showMap = false;
@@ -39,14 +39,17 @@ var topFarmTypes;
 			
 			$.post(formAction, postArray,function(farmTypes) {
 				topFarmTypes = farmTypes;
-				
+				farmsData = data;
 				redrawContent(data, '');
+				
+				reinitializeRadiusSearch();
 				
 			},
 			"json");
 			
 		},
 		"json");
+		
 	});
 	
 </script>

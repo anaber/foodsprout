@@ -169,7 +169,7 @@ class SupplierModel extends Model{
 			if ( $userGroup != 'admin') {
 				$query .= ', user_id';
 			}
-			$query .= ', status';
+			$query .= ', status, track_ip';
 			
 			$query .= ")" .
 					" values (NULL, '" . $fieldValue . "', ";
@@ -191,7 +191,7 @@ class SupplierModel extends Model{
 			} else {
 				$query .= ', \'live\'';
 			}
-			$query .= " )";
+			$query .= ", '" . getRealIpAddr() . "' )";
 			
 			log_message('debug', 'SupplierModel.addSuppluer : Insert Suppluer : ' . $query);
 			

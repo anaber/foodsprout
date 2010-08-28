@@ -12,6 +12,7 @@ class FarmersMarket extends Controller {
 	}
 	
 	function index() {
+		global $FARM_RADIUS, $FARM_DEFAULT_RADIUS;
 		$data = array();
 		
 		// SEO
@@ -46,9 +47,8 @@ class FarmersMarket extends Controller {
 		}
 		
 		// Data to be passed to the views
-		if ( empty($f) ) {
-		//$data['data']['left']['filter']['VIEW_HEADER'] = "Filters";
-		}
+		$data['data']['left']['filter']['FARM_RADIUS'] = $FARM_RADIUS;
+		$data['data']['left']['filter']['FARM_DEFAULT_RADIUS'] = $FARM_DEFAULT_RADIUS;
 		
 		if ( empty($f) ) {
 		//$data['data']['center']['map']['VIEW_HEADER'] = "Map";

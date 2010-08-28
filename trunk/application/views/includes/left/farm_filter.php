@@ -15,15 +15,15 @@ $(function() {
 	
 	$("#slider").slider({
 		range: "min",
-		value: 20,
-		min: 0,
-		max: 120,
-		step: 20,
+		value: <?php echo $FARM_DEFAULT_RADIUS; ?>,
+		min: <?php echo $FARM_RADIUS['min']; ?>,
+		max: <?php echo $FARM_RADIUS['max']; ?>,
+		step: <?php echo $FARM_RADIUS['step']; ?>,
 		slide: function(event, ui) {
-			$("#amount").html(ui.value + ' miles');
+			$("#radius").html(ui.value + ' miles');
 		}
 	});
-	$("#amount").html( $("#slider").slider("value") + ' miles' );
+	$("#radius").html( $("#slider").slider("value") + ' miles' );
 });
 </script>
 	<?php /* ?>
@@ -35,13 +35,15 @@ $(function() {
 	<?php */ ?>
 	
 	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;background: #F05A25; color:#fff; padding:5px;padding-left:10px;">Radius Search</div>
-	<div id="" style="background:#e5e5e5; font-size:90%;padding-left:5px;padding-bottom:5px;padding-top:5px;">
-		<form id="frmFilters">
-			Zip Code <input type="text" size="6" maxlength="5" id = "q">
-		</form>
+	<div style="background:#e5e5e5; font-size:90%;padding-left:5px;padding-bottom:5px;padding-top:5px;">
+		<div id="divZipcode">
+			<form id="frmFilters">
+				Zip Code <input type="text" size="6" maxlength="5" id = "q">
+			</form>
+		</div>
 		<br />
 		<div id="slider" style = "font-size: 62.5%; width:160px;"></div> 
-		<div id="amount" style="border:0; color:#F05A25; font-weight:bold;"></div>
+		<div id="radius" style="border:0; color:#F05A25; font-weight:bold;"></div>
 	</div>
 	<br />
 	

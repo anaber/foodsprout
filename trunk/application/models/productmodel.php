@@ -306,7 +306,7 @@ class ProductModel extends Model {
                 $query .= 'manufacture_id';
             }
             
-            $query .= ', product_type_id, product_name, ingredient_text, brand, upc, status, has_fructose, user_id, creation_date)' .
+            $query .= ', product_type_id, product_name, ingredient_text, brand, upc, status, has_fructose, user_id, creation_date, track_ip)' .
                     ' values (NULL, ' . (!empty($companyId) ? $companyId : 'NULL' ) . ', ';
 
             if (!empty($restaurantId)) {
@@ -320,9 +320,9 @@ class ProductModel extends Model {
             $userGroup = $this->session->userdata['userGroup'];
             
             if ( $userGroup != 'admin') {
-            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "queue", ' . $this->input->post('hasFructose') . ', ' . $this->session->userdata('userId') . ', NOW() )';
+            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "queue", ' . $this->input->post('hasFructose') . ', ' . $this->session->userdata('userId') . ', NOW(), "' . getRealIpAddr() . '" )';
             } else {
-            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "live", ' . $this->input->post('hasFructose') . ', ' . $this->session->userdata('userId') . ', NOW() )';
+            	$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "live", ' . $this->input->post('hasFructose') . ', ' . $this->session->userdata('userId') . ', NOW(), "' . getRealIpAddr() . '" )';
             }
 
             log_message('debug', 'ProductModel.addProduct : Insert Product : ' . $query);

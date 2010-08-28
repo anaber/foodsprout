@@ -9,14 +9,14 @@ var allFarmTypes;
 
 
 
-function postAndRedrawContent(page, perPage, s, o, query, filter) {
+function postAndRedrawContent(page, perPage, s, o, query, filter, radius) {
 	
 	var formAction = '/farm/ajaxSearchFarms';
 	
-	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
+	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter, r:radius };
 	
-	$.post(formAction, postArray,function(data) {		
-		
+	$.post(formAction, postArray,function(data) {
+		farmsData = data;
 		redrawContent(data, filter);
 	},
 	"json");
@@ -120,7 +120,7 @@ function reinitializePopupFarmTypeEvent (data, allFarmTypes) {
 		selectedTopFarmTypeId = "";
 		//disablePopup();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.radius);
 	});
 	
 	$("#cancelFarmTypeFilter").click(function(e){
@@ -231,8 +231,6 @@ function redrawZipcodeBox() {
 	formFilterContent = '<form id = "frmFilters">Zip Code <input type="text" size="6" maxlength="5" id = "q"></form>';
 	$('#divZipcode').html(formFilterContent);
 }
-		
-	
 
 function redrawContent(data, filter) {
 	
@@ -285,6 +283,8 @@ function redrawContent(data, filter) {
 	}
 	
 	redrawZipcodeBox();
+	$( "#slider" ).slider( "value", data.param.radius );
+	$("#radius").html( $("#slider").slider("value") + ' miles' );
 	
 	$("#q").val(data.param.q);
 	
@@ -326,15 +326,17 @@ function redrawContent(data, filter) {
 	
 	reinitializeShowHideMap(data);
 	
+	//reinitializeRadiusSearch(data);
+	
 	//disablePopupFadeIn();
 }
 
 function addZeroResult() {
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:600px;" align = "center">No results found. Please retry with some other filter options...</div>' + 
+	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
+	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;">No results found. Please retry with some other filter options.</div>' + 
 	'</div>'
-	;
+	;	
 	return html;
 }
 
@@ -396,14 +398,14 @@ function reinitializeFilterEvent (data) {
 				strFilters = selectedFarmTypeId;
 			}
 		}
-		alert(strFilters );
+		//alert(strFilters );
 		
 		if (strFilters != '') {
 			filters = strFilters;
 		}
 		
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.radius);
 	});
 }
 
@@ -413,10 +415,19 @@ function reinitializeQueryFilterEvent (data) {
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.radius);
 	});
 }
 
+
+function reinitializeRadiusSearch () {
+	$( "#slider" ).slider({
+   		stop: function(event, ui) { 
+   			data = farmsData;
+   			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value") );
+   		}
+	});
+}
 
 function reinitializeRemoveFilters(data) {
 	
@@ -432,7 +443,7 @@ function reinitializeRemoveFilters(data) {
 		
 		filters = '';
 
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', '');
 		$('#frmFilters')[0].reset();
 	});
 }

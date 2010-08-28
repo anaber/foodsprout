@@ -92,10 +92,10 @@ function reinitializeTabs() {
 
 function addZeroResult() {
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:520px;" align = "center">No results found.</div>' + 
+	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
+	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;">No results found. Please retry with some other filter options.</div>' + 
 	'</div>'
-	;
+	;	
 	return html;
 }
 
