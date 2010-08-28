@@ -141,7 +141,7 @@ class AddressModel extends Model{
 				
 		$CI->load->model('GoogleMapModel','',true);
 		
-		$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+		$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 		
 		
 		$query = "INSERT INTO address (address_id, address, city, state_id, zipcode, country_id, latitude , longitude, ";
@@ -246,7 +246,7 @@ class AddressModel extends Model{
 				
 		$CI->load->model('GoogleMapModel','',true);
 		
-		$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+		$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 			
 		$data = array(
 					'address' => $this->input->post('address'), 

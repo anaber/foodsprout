@@ -461,7 +461,7 @@ class FarmModel extends Model{
 		if (! empty ($q) ) {
 			$address = $q. ', USA';
 			$CI->load->model('GoogleMapModel','',true);
-			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+			$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 		}
 		
 		$start = 0;
@@ -516,10 +516,10 @@ class FarmModel extends Model{
 					
 				if (count($latLng) > 0 ) {
 					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
-				} else if ( !empty($q) ) {	 
+				} else if ( !empty($q) ) {
 					$where	.= ' 			HAVING ( address.zipcode = "' . $q . '") ';
 				} 
-					
+
 			$where	.= '				LIMIT 0, 1'
 					. '		)';
 			

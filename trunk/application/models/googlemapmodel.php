@@ -25,6 +25,25 @@ class GoogleMapModel extends Model{
 		}
 	}
 	
+	function geoCodeAddressV3($address) {
+		$a = array();
+		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+		
+		if ($d = @fopen($url, "r")) {
+			
+			$gcsv = @fread($d, 30000);
+			@fclose($d);
+			$arr = json_decode($gcsv);
+			if ($arr->status != 'OK') {
+				return false;
+			} else {
+				$a['latitude'] = $arr->results[0]->geometry->location->lat;
+				$a['longitude'] = $arr->results[0]->geometry->location->lng;
+				return $a;
+			}
+		}
+	}
+	
 }
 
 
