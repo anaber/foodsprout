@@ -494,7 +494,7 @@ class FarmModel extends Model{
 		}
 		
 		//if ( !empty($q) || !empty($city) ) {
-		if ( count ($latLng) > 0 ) {
+		if ( $latLng ) {
 			if (!empty($where) ) {
 				$where .= ' AND (';  
 			} else {
