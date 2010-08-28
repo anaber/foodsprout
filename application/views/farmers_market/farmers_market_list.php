@@ -1,6 +1,7 @@
 <script src="<?php echo base_url()?>js/farmers_market_search.js" type="text/javascript"></script>
 <script>
 var showMap = true;
+var farmersMarketData;
 
 <?php
 	
@@ -22,7 +23,9 @@ var showMap = true;
 			if (showMap ==  true) {
 				loadMapOnStartUp(38.41055825094609, -98, 3);
 			}
+			farmersMarketData = data;
 			redrawContent(data);
+			reinitializeRadiusSearch();
 		},
 		"json");
 	});

@@ -1,13 +1,13 @@
 var isMapVisible = 1;
 
-function postAndRedrawContent(page, perPage, s, o, query, filter) {
+function postAndRedrawContent(page, perPage, s, o, query, filter, radius) {
 	
 	var formAction = '/farmersmarket/ajaxSearchFarmersMarket';
 	
-	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
+	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter, r:radius };
 	
 	$.post(formAction, postArray,function(data) {		
-		
+		farmersMarketData = data;
 		redrawContent(data);
 	},
 	"json");
@@ -65,6 +65,8 @@ function redrawContent(data) {
 	}
 	
 	redrawZipcodeBox();
+	$( "#slider" ).slider( "value", data.param.radius );
+	$("#radius").html( $("#slider").slider("value") + ' miles' );
 	
 	$("#q").val(data.param.q);
 	
@@ -106,10 +108,10 @@ function redrawContent(data) {
 
 function addZeroResult() {
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:700px;" align = "center">No results found. Please retry with some other filter options...</div>' + 
+	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
+	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;">No results found. Please retry with some other filter options.</div>' + 
 	'</div>'
-	;
+	;	
 	return html;
 }
 
@@ -135,17 +137,25 @@ function reinitializeQueryFilterEvent (data) {
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.radius);
 	});
 }
 
+function reinitializeRadiusSearch () {
+	$( "#slider" ).slider({
+   		stop: function(event, ui) { 
+   			data = farmersMarketData;
+   			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value") );
+   		}
+	});
+}
 
 function reinitializePagingEvent(data) {
 	
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
 	});
 	
 	$("#imgPrevious").click(function(e) {
@@ -155,7 +165,7 @@ function reinitializePagingEvent(data) {
 			previousPage = data.param.firstPage;
 		}
 		//loadPopupFadeIn();
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
 	});
 	
 	$("#imgNext").click(function(e) {
@@ -165,13 +175,13 @@ function reinitializePagingEvent(data) {
 			nextPage = data.param.lastPage;
 		}
 		//loadPopupFadeIn();
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
 	});
 	
 }
@@ -180,25 +190,25 @@ function reinitializePageCountEvent(data) {
 	$("#10PerPage").click(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
 	});
 	
 	$("#20PerPage").click(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
 	});
 	
 	$("#40PerPage").click(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
 	});
 	
 	$("#50PerPage").click(function(e) {
 		e.preventDefault();
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
 	});
 	
 }

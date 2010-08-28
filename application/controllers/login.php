@@ -83,11 +83,12 @@ class Login extends Controller {
 			$this->load->view('beta/beta1', $data);
 			exit;
 		}
+		
 		$this->load->model('UserModel');
 		$create_user = $this->UserModel->createUser();
 		
 		if($create_user == true) {
-				
+			
 			$this->load->library('email');
 
 			$this->email->from('contact@foodsprout.com', 'Food Sprout');
@@ -98,10 +99,13 @@ class Login extends Controller {
 
 			$this->email->send();
 			
+			
 			//echo $this->email->print_debugger();
+			
 			redirect('/');
 			
 		} else {
+			
 			$data = array();
 			$data['CENTER'] = array(
 					'list' => 'beta/beta1',

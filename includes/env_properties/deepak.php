@@ -26,11 +26,6 @@ $GOOGLE_MAP_KEY = 'ABQIAAAANHHVmwbFmPA69NdT2eV5nBQwaD-ZLXj78-bu070_JIa4Gc751BRaJ
 $PER_PAGE = 20;
 $PER_PAGE_2 = 60;
 
-$DEFAULT_ZOOM_LEVEL = 3;
-$CITY_ZOOM_LEVEL = 11;
-$ZIPCODE_ZOOM_LEVEL = 13;
-
-
 /*
  * ======================================================
  * General Site Details

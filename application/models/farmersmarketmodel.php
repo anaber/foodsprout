@@ -335,13 +335,20 @@ class FarmersMarketModel extends Model{
 	}
 	
 	function getFarmersMarketJson() {
-		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
+		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL, $FARM_ZOOM_LEVEL, $FARM_DEFAULT_RADIUS;
+		
+		$CI =& get_instance();
 		
 		$p = $this->input->post('p'); // Page
 		$pp = $this->input->post('pp'); // Per Page
 		$sort = $this->input->post('sort');
 		$order = $this->input->post('order');
 		$filter = $this->input->post('f');
+		$radius = $this->input->post('r');
+		
+		if (empty  ($radius) ) {
+			$radius = $FARM_DEFAULT_RADIUS;
+		}
 		
 		//$filter = 'r_10,c_6';
 		
@@ -379,26 +386,30 @@ class FarmersMarketModel extends Model{
 		
 		$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
 		
-		/*
 		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 		
 		if ($q == '') {
-			
 			if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
 				$q = $_COOKIE['seachedZip'];
-				$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+				$mapZoomLevel = $FARM_ZOOM_LEVEL;
 			} else {
-				// By default display all restaurants of SFO
-				$city = '41,6009,13721';
-				$city = '';
-				$mapZoomLevel = $CITY_ZOOM_LEVEL;
+				if ($this->session->userdata('isAuthenticated') == 1 ) { // Authenticated
+					$q = $this->session->userdata['zipcode'];
+					$mapZoomLevel = $FARM_ZOOM_LEVEL;
+					setcookie('seachedZip', $q, time()+60*60*24*30*365);
+				}
 			}
 		} else {
 			setcookie('seachedZip', $q, time()+60*60*24*30*365);
-			$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+			$mapZoomLevel = $FARM_ZOOM_LEVEL;
 		}
-		*/
 		
+		$latLng = array();
+		if (! empty ($q) ) {
+			$address = $q. ', USA';
+			$CI->load->model('GoogleMapModel','',true);
+			$latLng = $CI->GoogleMapModel->geoCodeAddress($address);
+		}
 		
 		$start = 0;
 	
@@ -425,7 +436,30 @@ class FarmersMarketModel extends Model{
 				$where .= ' WHERE (';
 			}
 			
-
+			
+			$where	.= '		SELECT ';
+			if (count($latLng) > 0 ) {
+				$where .= ' 			( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance ';
+			} else if ( !empty($q) ) {
+				$where	.= '		address.address_id';
+			}
+					 
+					$where	.=  '	from address, state, country'
+					. '			WHERE' 
+					. '				address.farmers_market_id = farmers_market.farmers_market_id'
+					. '				AND address.state_id = state.state_id'
+					. '				AND address.country_id = country.country_id';
+					
+				if (count($latLng) > 0 ) {
+					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
+				} else if ( !empty($q) ) {	 
+					$where	.= ' 			HAVING ( address.zipcode = "' . $q . '") ';
+				} 
+					
+			$where	.= '				LIMIT 0, 1'
+					. '		)';
+			
+			/*		
 			//$where	.= ' OR ( '
 			$where	.= '		SELECT address.address_id' 
 					. '			from address, state, country'
@@ -443,6 +477,7 @@ class FarmersMarketModel extends Model{
 			$where	.= '				)'
 					. '				LIMIT 0, 1'
 					. '		) ';
+			*/
 			
 		}
 		$base_query_count = $base_query_count . $where;
@@ -491,13 +526,12 @@ class FarmersMarketModel extends Model{
 			}
 		}
 		//print_r_pre($_REQUEST);
-		
+		//echo $query;
+		//die;
 		log_message('debug', "FarmersMarketModel.getFarmersMarketJson : " . $query);
 		$result = $this->db->query($query);
 		
 		$farms = array();
-		
-		$CI =& get_instance();
 		
 		$geocodeArray = array();
 		foreach ($result->result_array() as $row) {
@@ -548,7 +582,7 @@ class FarmersMarketModel extends Model{
 			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 		}
 		
-		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel);
+		$params = requestToParams3($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $radius);
 		$arr = array(
 			'results'    => $farms,
 			'param'      => $params,
