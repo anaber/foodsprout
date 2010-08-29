@@ -922,7 +922,6 @@ class RestaurantModel extends Model{
 	// Pulls the data from the database for a specific restaurant
 	function getRestaurantChainFromId($restaurantChainId) {
 		
-		
 		$query = "SELECT * FROM restaurant_chain WHERE restaurant_chain_id = " . $restaurantChainId;
 		
 		log_message('debug', "RestaurantModel.getRestaurantChainFromId : " . $query);
@@ -939,7 +938,6 @@ class RestaurantModel extends Model{
 		
 		return $this->restaurantChainLib;
 	}
-	
 	
 	// Update the restaurant in the database with new information
 	function updateRestaurant() {
@@ -969,18 +967,14 @@ class RestaurantModel extends Model{
 			$where = "restaurant_id = " . $this->input->post('restaurantId');
 			$query = $this->db->update_string('restaurant', $data, $where);
 			
-			
 			log_message('debug', 'RestaurantModel.updateRestaurant : ' . $query);
 			if ( $this->db->query($query) ) {
-
-                                //update cuisines
-                                $this->updateCuisines($this->input->post('restaurantId'), explode(",", $this->input->post('cuisineId')));
-
+				//update cuisines
+				$this->updateCuisines($this->input->post('restaurantId'), explode(",", $this->input->post('cuisineId')));
 				$return = true;
 			} else {
 				$return = false;
 			}
-			
 		} else {
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
@@ -990,28 +984,39 @@ class RestaurantModel extends Model{
 	}
         
 
-        function updateCuisines($restaurantId, $cuisineIds)
-        {
-                $query = "SELECT cuisine_id FROM restaurant_cuisine WHERE restaurant_id = $restaurantId";
+	function updateCuisines($restaurantId, $cuisineIds) {
+		$query = "SELECT cuisine_id FROM restaurant_cuisine WHERE restaurant_id = $restaurantId";
 		log_message('debug', 'RestaurantModel.updateCuisines : get existing cuisines : ' . $query);
 
 		$result = $this->db->query($query);
-                $existingCuisineIds = array();
+		$existingCuisineIds = array();
 		foreach ($result->result_array() as $row) {
-                    $existingCuisineIds[] = $row['cuisine_id'];
-                }
-
-
-                foreach($cuisineIds as $cuisineId)
-                {
-                    $cuisineId = trim($cuisineId);
-                    if (!(in_array($cuisineId, $existingCuisineIds) > 0)) {
-                        $query = "INSERT INTO restaurant_cuisine (restaurant_id, cuisine_id) VALUE ( $restaurantId, $cuisineId)";
-                        log_message('debug', 'RestaurantModel.updateRestaurant : insert new cuisine : ' . $query);
-                        $result = $this->db->query($query);
-                    }
-                }
-        }
+			$existingCuisineIds[] = $row['cuisine_id'];
+		}
+		
+		$action = array();
+		
+		foreach($cuisineIds as $cuisineId) {
+			$cuisineId = trim($cuisineId);
+			if (!(in_array($cuisineId, $existingCuisineIds) > 0)) {
+				$query = "INSERT INTO restaurant_cuisine (restaurant_id, cuisine_id) VALUE ( $restaurantId, $cuisineId)";
+				log_message('debug', 'RestaurantModel.updateRestaurant : insert new cuisine : ' . $query);
+				$result = $this->db->query($query);
+			} else {
+				$action[$cuisineId] = 'update';
+			}
+		}
+		
+		foreach ($existingCuisineIds as $existingCuisineId) {
+			if (array_key_exists ($existingCuisineId, $action) ) {
+				// Do nothing...
+			} else {
+				$query = "DELETE FROM restaurant_cuisine WHERE restaurant_id = $restaurantId AND cuisine_id = $existingCuisineId";
+				log_message('debug', 'RestaurantModel.updateRestaurant : delete cuisine : ' . $query);
+				$result = $this->db->query($query);
+			}
+		}
+	}
 	
 	function addRestaurantWithNameOnly($restaurantName) {
 		global $ACTIVITY_LEVEL_DB;
