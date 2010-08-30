@@ -1,44 +1,7 @@
 <?php
 
 class FarmersMarketModel extends Model{
-	
-	// Create a simple list of all the farms
-	function listFarm()
-	{
-		$query = "SELECT farm.* " .
-				" FROM farm " .
-				" ORDER BY farm_name";
-		
-		log_message('debug', "FarmModel.listFarm : " . $query);
-		$result = $this->db->query($query);
-		
-		$farms = array();
-		$CI =& get_instance();
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('FarmLib');
-			unset($this->FarmLib);
-			
-			$this->FarmLib->farmId = $row['farm_id'];
-			$this->FarmLib->farmName = $row['farm_name'];
-			$this->FarmLib->farmerType = $row['farmer_type'];
-			$this->FarmLib->creationDate = $row['creation_date'];
-			
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '' );
-			$this->FarmLib->addresses = $addresses;
-			
-			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', $row['farm_id'], '', '', '', '' );
-			$this->FarmLib->suppliers = $suppliers;
-			
-			$farms[] = $this->FarmLib;
-			unset($this->FarmLib);
-		}
-		
-		return $farms;
-	}
-	
+
 	// Insert the new farm data into the database
 	function addFarmersMarket() {
 		$return = true;
@@ -53,8 +16,8 @@ class FarmersMarketModel extends Model{
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
-			$query = "INSERT INTO farmers_market (farmers_market_id, farmers_market_name, city_id, custom_url, url, status)" .
-					" values (NULL, \"" . $farmersMarketName . "\", NULL, '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "' )";
+			$query = "INSERT INTO farmers_market (farmers_market_id, farmers_market_name, city_id, custom_url, url, status, track_ip, user_id)" .
+					" values (NULL, \"" . $farmersMarketName . "\", NULL, '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 			
 			log_message('debug', 'FarmModel.addFarmersMarket : Insert Farmers Market : ' . $query);
 			$return = true;
@@ -97,7 +60,6 @@ class FarmersMarketModel extends Model{
 			$this->FarmersMarketLib->customUrl = $row->custom_url;
 			$this->FarmersMarketLib->url = $row->url;
 			$this->FarmersMarketLib->status = $row->status;
-			
 			
 			$CI =& get_instance();
 			
@@ -188,8 +150,8 @@ class FarmersMarketModel extends Model{
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
-					$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", NULL, \"" . $farmName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, status, track_ip, user_id )" .
+							" values (NULL, ".$companyId.", NULL, \"" . $farmName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 					
 					log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
 					$return = true;
@@ -421,13 +383,7 @@ class FarmersMarketModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM farmers_market';
 		
-		
-		$where = '';
-		
-		/*
-		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
-				. ' OR restaurant.restaurant_id like "%' . $q . '%"';
-		*/
+		$where = ' WHERE farmers_market.status = \'live\' ';
 		
 		//if ( !empty($q) || !empty($city) ) {
 		if ( $latLng ) {

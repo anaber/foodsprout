@@ -17,8 +17,8 @@ class Restaurant extends Controller {
 		$data = array();
 		$restaurants = array();
 		
-		$this->load->model('RestaurantModel');
-		$restaurants = $this->RestaurantModel->listRestaurant();
+		//$this->load->model('RestaurantModel');
+		//$restaurants = $this->RestaurantModel->listRestaurant();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -27,7 +27,7 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Restaurants";
-		$data['data']['center']['list']['RESTAURANTS'] = $restaurants;
+		//$data['data']['center']['list']['RESTAURANTS'] = $restaurants;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}

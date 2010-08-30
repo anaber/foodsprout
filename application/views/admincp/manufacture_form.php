@@ -42,7 +42,7 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
 							  manufactureTypeId:$('#manufactureTypeId').val(),
-							  isActive:$('#status').val(),
+							  status:$('#status').val(),
 							  							 
 							  manufactureId: $('#manufactureId').val()
 							};
@@ -55,7 +55,7 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
 							  manufactureTypeId:$('#manufactureTypeId').val(),
-							  isActive:$('#status').val(),
+							  status:$('#status').val(),
 							  address:$('#address').val(),
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
@@ -230,9 +230,11 @@ function formatItem(row) {
 		<td width = "75%">
 			<select name="status" id="status"  class="validate[required]">
 				<option value="">--Choose Status--</option>
-				<option value="active"<?php echo ((isset($MANUFACTURE) && ($MANUFACTURE->isActive == 1)) ? ' SELECTED' : '')?>>Active</option>
-				<option value="inactive"<?php echo ((isset($MANUFACTURE) && ($MANUFACTURE->isActive == 0)) ? ' SELECTED' : '')?>>In-active</option>
-			</select>
+			<?php
+				foreach($STATUS as $key => $value) {
+					echo '<option value="'.$key.'"' . (  ( isset($MANUFACTURE) && ( $key == $MANUFACTURE->status )  ) ? ' SELECTED' : '' ) . '>'.$value.'</option>';
+				}
+			?></select>
 		</td>
 	</tr>
 <?php

@@ -27,8 +27,8 @@ class Distributor extends Controller {
 	}
 	
 	// Create the form page to add a manufacture to the database, does not actually add the data, only builds the form
-	function add()
-	{
+	function add() {
+		global $STATUS;
 		$data = array();
 		
 		$this->load->model('StateModel');
@@ -46,13 +46,14 @@ class Distributor extends Controller {
 		$data['data']['center']['form']['VIEW_HEADER'] = "Add Distributor";
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// Update a record using an id
-	function update($id)
-	{
+	function update($id) {
+		global $STATUS;
 		$data = array();
 		
 		$this->load->model('DistributorModel');
@@ -74,6 +75,7 @@ class Distributor extends Controller {
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Distributor";
 		$data['data']['center']['form']['DISTRIBUTOR'] = $distributor;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}

@@ -2,56 +2,6 @@
 
 class RestaurantModel extends Model{
 	
-	
-	// Generate a simple list of all the restaurants in the database.
-	function listRestaurant()
-	{
-		/*
-		$query = "SELECT restaurant.* , restaurant_cuisine.*, cuisine.cuisine_name
-					FROM restaurant, restaurant_cuisine, cuisine
-					WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id
-					AND cuisine.cuisine_id = restaurant_cuisine.cuisine_id
-					ORDER BY restaurant_name limit 0, 100";
-		*/
-		$query = "SELECT restaurant.*
-					FROM restaurant
-					ORDER BY restaurant_name limit 0, 100";
-		
-		
-		log_message('debug', "RestaurantModel.listRestaurant : " . $query);
-		$result = $this->db->query($query);
-		
-		$restaurants = array();
-		$CI =& get_instance();
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('RestaurantLib');
-			unset($this->RestaurantLib);
-			
-			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
-			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
-			//$this->RestaurantLib->cuisineId = $row['cuisine_id'];
-			//$this->RestaurantLib->cuisine = $row['cuisine_name'];
-			
-			$this->RestaurantLib->creationDate = $row['creation_date'];
-			
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', '', '' );
-			$this->RestaurantLib->addresses = $addresses;
-			
-			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '', '' );
-			$this->RestaurantLib->suppliers = $suppliers;
-			
-			
-			$restaurants[] = $this->RestaurantLib;
-			unset($this->RestaurantLib);
-		}
-		
-		return $restaurants;
-	}
-	
-	
 	// Generate a simple list of the recent restaurants added to the db
 	function listNewRestaurants()
 	{
@@ -79,7 +29,6 @@ class RestaurantModel extends Model{
 		
 		return $restaurants;
 	}
-	
 	
 	// Generate a simple list of all the fast food chain restaurants.
 	function listFastFood()
@@ -199,7 +148,8 @@ class RestaurantModel extends Model{
 				' FROM restaurant, restaurant_type';
 		
 		
-		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
+				' AND restaurant.status = \'live\' ';
 		
 		/*
 		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
@@ -695,13 +645,6 @@ class RestaurantModel extends Model{
 		
 	}
 	
-	
-	// Generate a detailed list of all the restaurants in the database.
-	function listRestaurantMore()
-	{
-		
-	}
-	
 	function getCuisinesForRestaurant($restaurantId) {
 		$cuisines = array();
 		
@@ -750,9 +693,6 @@ class RestaurantModel extends Model{
 	
 	// Input the data from the controller
 	function addRestaurant() {
-		global $ACTIVITY_LEVEL_DB;
-		
-		
 		$return = true;
 		
 		$companyId = $this->input->post('companyId');
@@ -791,8 +731,8 @@ class RestaurantModel extends Model{
 			$restaurantChainId = $this->input->post('restaurantChainId');
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, phone, fax, email, url, is_active)" .
-						" values (NULL, '".$companyId."', " . ( !empty ( $restaurantChainId ) ? $restaurantChainId : 'NULL' ) . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, phone, fax, email, url, status, track_ip, user_id)" .
+						" values (NULL, '".$companyId."', " . ( !empty ( $restaurantChainId ) ? $restaurantChainId : 'NULL' ) . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 				
 				log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 				$return = true;
@@ -883,7 +823,7 @@ class RestaurantModel extends Model{
 			$this->restaurantLib->fax = $row->fax;
 			$this->restaurantLib->email = $row->email;
 			$this->restaurantLib->restaurantURL = $row->url;
-			$this->restaurantLib->isActive = $row->is_active;
+			$this->restaurantLib->status = $row->status;
 			
 			$cuisines = $this->getCuisineIdsForRestaurant( $row->restaurant_id);
 			$this->restaurantLib->cuisines = $cuisines;
@@ -941,7 +881,6 @@ class RestaurantModel extends Model{
 	
 	// Update the restaurant in the database with new information
 	function updateRestaurant() {
-		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
 		$query = "SELECT * FROM restaurant WHERE restaurant_name = \"" . $this->input->post('restaurantName') . "\" AND restaurant_id <> " . $this->input->post('restaurantId');
@@ -962,7 +901,7 @@ class RestaurantModel extends Model{
 						'email' => $this->input->post('email'),
 						'url' => $this->input->post('url'),
 						//'cuisine_id' => $this->input->post('cuisineId'),
-						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
+						'status' => $this->input->post('status'),
 					);
 			$where = "restaurant_id = " . $this->input->post('restaurantId');
 			$query = $this->db->update_string('restaurant', $data, $where);
@@ -1043,8 +982,8 @@ class RestaurantModel extends Model{
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
-					$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_type_id, restaurant_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", NULL, \"" . $restaurantName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_type_id, restaurant_name, creation_date, custom_url, status, track_ip, user_id)" .
+							" values (NULL, ".$companyId.", NULL, \"" . $restaurantName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 					
 					log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 					$return = true;
@@ -1262,6 +1201,169 @@ class RestaurantModel extends Model{
 	    );
 	    
 	    return $arr;
+	}
+	
+	function getQueueRestaurantsJson() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$arrRestaurantTypeId = array();
+		$arrCuisineId = array();
+		
+		$q = $this->input->post('q');
+		//$q = 'fast';
+		//$filter = 'c_7';
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$start = 0;
+	
+		$page = 0;
+		
+		$base_query = 'SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name, restaurant_type.restaurant_type, user.email, user.first_name' .
+				' FROM restaurant, user ' .
+				' LEFT JOIN restaurant_chain' .
+				' ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id' .
+				' LEFT JOIN company' .
+				' ON restaurant.company_id = company.company_id' . 
+				' LEFT JOIN restaurant_type' .
+				' ON restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+						
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM restaurant, restaurant_type, user';
+				
+		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
+				' AND restaurant.user_id = user.user_id ' .
+				' AND restaurant.status = \'queue\' ';
+		
+		if ( !empty($q) ) {
+			
+			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"'
+					. ' OR restaurant.restaurant_id like "%' . $q . '%"'
+					. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';
+			
+			$where .= ' OR (';
+			$where	.= '		SELECT address.address_id' 
+					. '			from address, state, country'
+					. '			WHERE' 
+					. '				address.restaurant_id = restaurant.restaurant_id'
+					. '				AND address.state_id = state.state_id'
+					. '				AND address.country_id = country.country_id'
+					. ' 			AND (';
+			$where	.= '					address.zipcode = "' . $q . '"'
+					. '						OR address.address like "%' . $q . '%"'
+					. '						OR address.city like "%' . $q . '%"'
+					. '						OR address.zipcode like "%' . $q . '%"'
+					. '						OR state.state_name like "%' . $q . '%"'
+					. '						OR state.state_code like "%' . $q . '%"'
+					. '						OR country.country_name like "%' . $q . '%"'
+					. '				)'
+					. '				LIMIT 0, 1'
+					. '		)';
+			
+			$where .= ' )';
+		}
+		
+		
+		$base_query_count = $base_query_count . $where;
+		
+		
+		
+		//$query = $base_query_count . " ORDER BY restaurant_name ";
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY restaurant_name';
+			$sort = 'restaurant_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		//echo $query;
+		//die;
+		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$restaurants = array();
+		
+		$CI =& get_instance();
+		
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('RestaurantLib');
+			unset($this->RestaurantLib);
+			
+			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
+			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
+			$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
+			$this->RestaurantLib->companyName = $row['company_name'];
+			
+			$this->FarmLib->userId = $row['user_id'];
+			$this->FarmLib->email = $row['email'];
+			$this->FarmLib->ip = $row['track_ip'];
+			$this->FarmLib->dateAdded = date ("Y-m-d", strtotime($row['creation_date']) ) ;
+			
+			$restaurants[] = $this->RestaurantLib;
+			unset($this->RestaurantLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $restaurants,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    //print_r_pre($arr);
+		//die;
+	    return $arr;
+		
 	}
 	
 }

@@ -2,43 +2,6 @@
 
 class FarmModel extends Model{
 	
-	// Create a simple list of all the farms
-	function listFarm()
-	{
-		$query = "SELECT farm.* " .
-				" FROM farm " .
-				" ORDER BY farm_name";
-		
-		log_message('debug', "FarmModel.listFarm : " . $query);
-		$result = $this->db->query($query);
-		
-		$farms = array();
-		$CI =& get_instance();
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('FarmLib');
-			unset($this->FarmLib);
-			
-			$this->FarmLib->farmId = $row['farm_id'];
-			$this->FarmLib->farmName = $row['farm_name'];
-			$this->FarmLib->farmerType = $row['farmer_type'];
-			$this->FarmLib->creationDate = $row['creation_date'];
-			
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '' );
-			$this->FarmLib->addresses = $addresses;
-			
-			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', $row['farm_id'], '', '', '' );
-			$this->FarmLib->suppliers = $suppliers;
-			
-			$farms[] = $this->FarmLib;
-			unset($this->FarmLib);
-		}
-		
-		return $farms;
-	}
-	
 	// list new farms
 	function listNewFarms()
 	{
@@ -100,8 +63,8 @@ class FarmModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, url, status, track_ip, user_id)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 				
 				log_message('debug', 'FarmModel.addManufacture : Insert Farm : ' . $query);
 				$return = true;
@@ -153,7 +116,7 @@ class FarmModel extends Model{
 			$this->FarmLib->farmName = $row->farm_name;
 			$this->FarmLib->customUrl = $row->custom_url;
 			$this->FarmLib->url = $row->url;
-			$this->FarmLib->isActive = $row->is_active;
+			$this->FarmLib->status = $row->status;
 			
 			
 			$CI =& get_instance();
@@ -187,7 +150,6 @@ class FarmModel extends Model{
 	}
 	
 	function updateFarm() {
-		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
 		$query = "SELECT * FROM farm WHERE farm_name = \"" . $this->input->post('farmName') . "\" AND farm_id <> " . $this->input->post('farmId');
@@ -204,7 +166,7 @@ class FarmModel extends Model{
 						'url' => $this->input->post('url'),
 						'farm_type_id' => $this->input->post('farmTypeId'),
 						'farmer_type' => $this->input->post('farmerType'),
-						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
+						'status' => $this->input->post('status'),
 					);
 			$where = "farm_id = " . $this->input->post('farmId');
 			$query = $this->db->update_string('farm', $data, $where);
@@ -225,8 +187,6 @@ class FarmModel extends Model{
 	}
 	
 	function addFarmWithNameOnly($farmName) {
-		global $ACTIVITY_LEVEL_DB;
-		
 		$return = true;
 		
 		$companyId = '';
@@ -249,8 +209,8 @@ class FarmModel extends Model{
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
-					$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", NULL, \"" . $farmName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, status, track_ip)" .
+							" values (NULL, ".$companyId.", NULL, \"" . $farmName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "' )";
 					
 					log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
 					$return = true;
@@ -475,7 +435,8 @@ class FarmModel extends Model{
 				' FROM farm, farm_type';
 		
 
-		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id';
+		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id ' .
+				' AND farm.status = \'live\'';
 
 		/*
 		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
@@ -669,6 +630,127 @@ class FarmModel extends Model{
 		return $farmTypes;
 	}
 	
+	function getQueueFarmsJson() {
+		global $PER_PAGE, $FARMER_TYPES;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		
+		$base_query = 'SELECT farm.*, farm_type.farm_type, user.email, user.first_name' .
+				' FROM farm, farm_type, user';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM farm, farm_type, user';
+		
+		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id' .
+				' AND farm.user_id = user.user_id ' .
+				' AND farm.status = \'queue\' ';
+		
+		$where .= ' AND (' 
+				. '	farm.farm_name like "%' .$q . '%"'
+				. ' OR farm.farm_id like "%' . $q . '%"'
+				. ' OR farm_type.farm_type like "%' . $q . '%"';		
+		$where .= ' )';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY farm_name';
+			$sort = 'farm_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "FarmModel.getQueueFarmsJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$farms = array();
+		
+		$CI =& get_instance();
+		
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('FarmLib');
+			unset($this->FarmLib);
+			
+			$this->FarmLib->farmId = $row['farm_id'];
+			$this->FarmLib->farmName = $row['farm_name'];
+			$this->FarmLib->farmTypeId = $row['farm_type_id'];
+			$this->FarmLib->farmType = $row['farm_type'];
+			$this->FarmLib->farmerType = ( !empty($row['farmer_type']) ? $FARMER_TYPES[$row['farmer_type']] : '');
+			$this->FarmLib->userId = $row['user_id'];
+			$this->FarmLib->email = $row['email'];
+			$this->FarmLib->ip = $row['track_ip'];
+			$this->FarmLib->dateAdded = date ("Y-m-d", strtotime($row['creation_date']) ) ;
+			
+			$farms[] = $this->FarmLib;
+			unset($this->FarmLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $farms,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    
+	    return $arr;
+	}
 	
 }
 

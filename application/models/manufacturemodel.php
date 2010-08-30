@@ -2,42 +2,6 @@
 
 class ManufactureModel extends Model{
 	
-	// Create a simple list of all the manufactures
-	function listManufacture()
-	{
-		$query = "SELECT manufacture.* " .
-				" FROM manufacture " .
-				" ORDER BY manufacture_name";
-		
-		log_message('debug', "ManufactureModel.list_manufacture : " . $query);
-		$result = $this->db->query($query);
-		
-		$manufactures = array();
-		$CI =& get_instance();
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('ManufactureLib');
-			unset($this->manufactureLib);
-			
-			$this->manufactureLib->manufactureId = $row['manufacture_id'];
-			$this->manufactureLib->manufactureName = $row['manufacture_name'];
-			$this->manufactureLib->creationDate = $row['creation_date'];
-			
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '', '' );
-			$this->manufactureLib->addresses = $addresses;
-			
-			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '', '' );
-			$this->manufactureLib->suppliers = $suppliers;
-			
-			$manufactures[] = $this->manufactureLib;
-			unset($this->manufactureLib);
-		}
-		
-		return $manufactures;
-	}
-	
 	function searchManufactures($q) {
 		
 		$arr_q = explode('___', $q);
@@ -58,7 +22,6 @@ class ManufactureModel extends Model{
 	
 	// Insert the new manufacture data into the database
 	function addManufacture() {
-		global $ACTIVITY_LEVEL_DB;
 		
 		$return = true;
 		
@@ -90,8 +53,8 @@ class ManufactureModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, url, is_active)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", \"" . $manufactureName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, url, status, track_ip, user_id)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", \"" . $manufactureName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 				
 				log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
 				$return = true;
@@ -140,7 +103,7 @@ class ManufactureModel extends Model{
 			$this->manufactureLib->manufactureName = $row->manufacture_name;
 			$this->manufactureLib->customUrl = $row->custom_url;
 			$this->manufactureLib->url = $row->url;
-			$this->manufactureLib->isActive = $row->is_active;
+			$this->manufactureLib->status = $row->status;
 			
 			
 			$CI =& get_instance();
@@ -175,7 +138,6 @@ class ManufactureModel extends Model{
 	
 	// Update the manufactures information in the database
 	function updateManufacture() {
-		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
 		$query = "SELECT * FROM manufacture WHERE manufacture_name = '" . $this->input->post('manufactureName') . "' AND manufacture_id <> " . $this->input->post('manufactureId');
@@ -191,7 +153,7 @@ class ManufactureModel extends Model{
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
 						'manufacture_type_id' => $this->input->post('manufactureTypeId'),
-						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
+						'status' => $this->input->post('status'),
 					);
 			$where = "manufacture_id = " . $this->input->post('manufactureId');
 			$query = $this->db->update_string('manufacture', $data, $where);
@@ -236,8 +198,8 @@ class ManufactureModel extends Model{
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
-					$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", NULL, \"" . $manufactureName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, status, track_ip, user_id)" .
+							" values (NULL, ".$companyId.", NULL, \"" . $manufactureName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 					
 					log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
 					$return = true;
@@ -414,7 +376,8 @@ class ManufactureModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM manufacture, manufacture_type';
 		
-		$where = ' WHERE manufacture.manufacture_type_id = manufacture_type.manufacture_type_id';
+		$where = ' WHERE manufacture.manufacture_type_id = manufacture_type.manufacture_type_id' .
+				' AND manufacture.status = \'live\' ';
 		/*
 		$where .= ' AND (' 
 				. '	manufacture.manufacture_name like "%' .$q . '%"'

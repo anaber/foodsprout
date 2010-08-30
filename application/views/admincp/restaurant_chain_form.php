@@ -57,6 +57,7 @@ $(document).ready(function() {
 							  restaurantChain:$('#restaurantChain').val(),
 							  matchString:$('#matchString').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
+							  status:$('#status').val()
 							};
 				act = 'update';		
 			} else {
@@ -64,7 +65,8 @@ $(document).ready(function() {
 				postArray = { 
 							  restaurantChain:$('#restaurantChain').val(),
 							  matchString:$('#matchString').val(),
-							  restaurantTypeId:$('#restaurantTypeId').val(),				  
+							  restaurantTypeId:$('#restaurantTypeId').val(),
+							  status:$('#status').val()				  
 							};
 				act = 'add';
 			}
@@ -151,6 +153,19 @@ $(document).ready(function() {
 			<?php
 				foreach($RESTAURANT_TYPES as $key => $value) {
 					echo '<option value="'.$value->restaurantTypeId.'"' . (  ( isset($RESTAURANT) && ( $value->restaurantTypeId == $RESTAURANT->restaurantTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->restaurantTypeName.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Status</td>
+		<td width = "75%">
+			<select name="status" id="status"  class="validate[required]">
+				<option value="">--Choose Status--</option>
+			<?php
+				foreach($STATUS as $key => $value) {
+					echo '<option value="'.$key.'"' . (  ( isset($RESTAURANT) && ( $key == $RESTAURANT->status )  ) ? ' SELECTED' : '' ) . '>'.$value.'</option>';
 				}
 			?>
 			</select>

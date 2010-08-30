@@ -47,6 +47,7 @@ document.onclick = jsddm_close;
 				<li><?php echo anchor('admincp/restaurant', 'Restaurant'); ?></li>
 				<li><?php echo anchor('admincp/restaurantchain', 'Restaurant Chain'); ?></li>
 				<li><?php echo anchor('admincp/distributor', 'Distributor'); ?></li>
+				<li><?php echo anchor('admincp/queue', 'Queue'); ?></li>
 			</ul>
 		</li>
 		<li><a href="#">Food Web</a>

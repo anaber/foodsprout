@@ -26,8 +26,9 @@ class Manufacture extends Controller {
 	}
 	
 	// Create the form page to add a manufacture to the database, does not actually add the data, only builds the form
-	function add()
-	{
+	function add() {
+		global $STATUS;
+		
 		$data = array();
 		
 		$this->load->model('StateModel');
@@ -49,13 +50,15 @@ class Manufacture extends Controller {
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['MANUFACTURE_TYPES'] = $manufactureTypes;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	// Update a record using an id
-	function update($id)
-	{
+	function update($id) {
+		global $STATUS;
+		
 		$data = array();
 		
 		$this->load->model('ManufactureModel');
@@ -82,6 +85,7 @@ class Manufacture extends Controller {
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
 		$data['data']['center']['form']['MANUFACTURE_TYPES'] = $manufactureTypes;
 		$data['data']['center']['form']['MANUFACTURE'] = $manufacture;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}

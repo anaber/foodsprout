@@ -143,9 +143,11 @@ $(document).ready(function() {
 		<td width = "75%">
 			<select name="status" id="status"  class="validate[required]">
 				<option value="">--Choose Status--</option>
-				<option value="live"<?php echo ((isset($FARMERS_MARKET) && ($FARMERS_MARKET->status == 'live')) ? ' SELECTED' : '')?>>Live</option>
-				<option value="queue"<?php echo ((isset($FARMERS_MARKET) && ($FARMERS_MARKET->status == 'queue')) ? ' SELECTED' : '')?>>Queue</option>
-				<option value="hide"<?php echo ((isset($FARMERS_MARKET) && ($FARMERS_MARKET->status == 'hide')) ? ' SELECTED' : '')?>>Hide</option>
+			<?php
+				foreach($STATUS as $key => $value) {
+					echo '<option value="'.$key.'"' . (  ( isset($FARMERS_MARKET) && ( $key == $FARMERS_MARKET->status )  ) ? ' SELECTED' : '' ) . '>'.$value.'</option>';
+				}
+			?>
 			</select>
 		</td>
 	</tr>
