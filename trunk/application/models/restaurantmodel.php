@@ -1247,7 +1247,7 @@ class RestaurantModel extends Model{
 			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"'
 					. ' OR restaurant.restaurant_id like "%' . $q . '%"'
 					. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';
-			
+			 
 			$where .= ' OR (';
 			$where	.= '		SELECT address.address_id' 
 					. '			from address, state, country'
