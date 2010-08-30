@@ -1,4 +1,0 @@
-RewriteEngine on
-RewriteBase /
-RewriteCond $1 !^(index\.php|import\.php|geocode\.php|images|img|uploads|css|js)
-RewriteRule ^(.*)$ /index.php/$1 [L]
