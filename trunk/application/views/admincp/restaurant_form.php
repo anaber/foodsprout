@@ -65,7 +65,7 @@ $(document).ready(function() {
 							  email:$('#email').val(),
 							  url:$('#website').val(),
 							  
-							  isActive:$('#status').val(),
+							  status:$('#status').val(),
 							  
 							  restaurantId: $('#restaurantId').val()
 							};
@@ -85,7 +85,7 @@ $(document).ready(function() {
 							  email:$('#email').val(),
 							  url:$('#website').val(),
 							  
-							  isActive:$('#status').val(),
+							  status:$('#status').val(),
 							  address:$('#address').val(),
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
@@ -335,8 +335,11 @@ function findValueRestaurantChain(li) {
 		<td width = "75%">
 			<select name="status" id="status"  class="validate[required]">
 				<option value="">--Choose Status--</option>
-				<option value="active"<?php echo ((isset($RESTAURANT) && ($RESTAURANT->isActive == 1)) ? ' SELECTED' : '')?>>Active</option>
-				<option value="inactive"<?php echo ((isset($RESTAURANT) && ($RESTAURANT->isActive == 0)) ? ' SELECTED' : '')?>>In-active</option>
+			<?php
+				foreach($STATUS as $key => $value) {
+					echo '<option value="'.$key.'"' . (  ( isset($RESTAURANT) && ( $key == $RESTAURANT->status )  ) ? ' SELECTED' : '' ) . '>'.$value.'</option>';
+				}
+			?>
 			</select>
 		</td>
 	</tr>

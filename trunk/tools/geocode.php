@@ -47,7 +47,7 @@ class GeoCode {
 			echo $row['address_id'] . ":";
 			$latLng = array();
 			
-			$latLng = $this->geoCodeAddress($address);
+			$latLng = $this->geoCodeAddressV3($address);
 			
 			if ( isset($latLng['latitude']) && !empty($latLng['latitude']) ) {
 				if ($this->updateAddress($latLng['latitude'], $latLng['longitude'], $row['address_id']) ) {
@@ -102,6 +102,25 @@ class GeoCode {
 			} else {
 				$a['latitude'] = $tmp[2];
 				$a['longitude'] = $tmp[3];
+				return $a;
+			}
+		}
+	}
+	
+	function geoCodeAddressV3($address) {
+		$a = array();
+		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+		
+		if ($d = @fopen($url, "r")) {
+			
+			$gcsv = @fread($d, 30000);
+			@fclose($d);
+			$arr = json_decode($gcsv);
+			if ($arr->status != 'OK') {
+				return false;
+			} else {
+				$a['latitude'] = $arr->results[0]->geometry->location->lat;
+				$a['longitude'] = $arr->results[0]->geometry->location->lng;
 				return $a;
 			}
 		}

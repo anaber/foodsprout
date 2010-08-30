@@ -166,9 +166,9 @@ class SupplierModel extends Model{
 			}
 			
 			$userGroup = $this->session->userdata['userGroup'];
-			if ( $userGroup != 'admin') {
+			//if ( $userGroup != 'admin') {
 				$query .= ', user_id';
-			}
+			//}
 			$query .= ', status, track_ip';
 			
 			$query .= ")" .
@@ -182,9 +182,9 @@ class SupplierModel extends Model{
 			} else if ( !empty($supplierDistributorId) ) {
 				$query .= $supplierDistributorId;
 			}
-			if ( $userGroup != 'admin') {
+			//if ( $userGroup != 'admin') {
 				$query .= ', ' . $this->session->userdata['userId'];
-			}
+			//}
 			
 			if ( $userGroup != 'admin') {
 				$query .= ', \'queue\'';

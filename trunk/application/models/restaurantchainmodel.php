@@ -17,7 +17,6 @@ class RestaurantChainModel extends Model{
 		return $restaurantChains;
 	}
 	
-	
 	function getRestaurantChainsJsonAdmin() {
 		global $PER_PAGE;
 		
@@ -155,6 +154,7 @@ class RestaurantChainModel extends Model{
 		
 		$this->restaurantChainLib->matchString = $row->match_string;
 		$this->restaurantChainLib->restaurantTypeId = $row->restaurant_type_id;
+		$this->restaurantChainLib->status = $row->status;
 		
 		return $this->restaurantChainLib;
 	}
@@ -169,8 +169,8 @@ class RestaurantChainModel extends Model{
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
-			$query = "INSERT INTO restaurant (restaurant_chain_id, restaurant_chain, restaurant_type_id, match_string)" .
-					" values (NULL, \"" . $this->input->post('restaurantChain') . "\", " . $this->input->post('restaurantTypeId') . ", \"" . $this->input->post('matchString') . "\")";
+			$query = "INSERT INTO restaurant (restaurant_chain_id, restaurant_chain, restaurant_type_id, match_string, status, track_ip, user_id)" .
+					" values (NULL, \"" . $this->input->post('restaurantChain') . "\", " . $this->input->post('restaurantTypeId') . ", \"" . $this->input->post('matchString') . "\", '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ")";
 			
 			log_message('debug', 'RestaurantChainModel.addRestaurantChain : Insert Restaurant Chain : ' . $query);
 			$return = true;
@@ -205,6 +205,7 @@ class RestaurantChainModel extends Model{
 						'restaurant_chain' => $this->input->post('restaurantChain'), 
 						'match_string' => $this->input->post('matchString'),
 						'restaurant_type_id' => $this->input->post('restaurantTypeId'),
+						'status' => $this->input->post('status'),
 					);
 			$where = "restaurant_chain_id = " . $this->input->post('restaurantChainId');
 			$query = $this->db->update_string('restaurant_chain', $data, $where);
@@ -247,7 +248,7 @@ class RestaurantChainModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM restaurant_chain';
 		
-		$where = '';
+		$where = ' WHERE restaurant_chain.status = \'live\' ';
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -378,7 +379,7 @@ class RestaurantChainModel extends Model{
 				' FROM product';
 		
 		$where = ' WHERE restaurant_chain_id  = ' . $q . 
-				 ' AND product.status = \'live\'';
+				 ' AND product.status = \'live\' ';
 		
 		$base_query_count = $base_query_count . $where;
 		

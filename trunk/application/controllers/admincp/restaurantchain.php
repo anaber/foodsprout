@@ -34,6 +34,7 @@ class RestaurantChain extends Controller {
 	
 	// This function will create the form to add a restaurant but does not save the data to the database
 	function add() {
+		global $STATUS;
 		$data = array();
 		
 		$this->load->model('RestauranttypeModel');
@@ -47,12 +48,14 @@ class RestaurantChain extends Controller {
 		// Data to be passed to the views
 		$data['data']['center']['form']['VIEW_HEADER'] = "Add Restaurant Chain";
 		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function update($id)
-	{
+	function update($id) {
+		global $STATUS;
+		
 		$data = array();
 		
 		$this->load->model('RestaurantChainModel');
@@ -74,6 +77,7 @@ class RestaurantChain extends Controller {
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Restaurant Chain";
 		$data['data']['center']['form']['RESTAURANT'] = $restaurant;
 		$data['data']['center']['form']['RESTAURANT_TYPES'] = $restaurantTypes;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_CHAIN_ID'] = $id;

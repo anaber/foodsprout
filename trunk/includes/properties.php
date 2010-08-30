@@ -69,6 +69,11 @@ $ACTIVITY_LEVEL_DB = array(
 					'inactive' => 0, 
 				);
 
+$STATUS = array(
+					'live' => "Live",
+					'queue' => "Queue", 
+					'hide' => "Hide",
+				);
 
 $SUPPLIER_TYPES = array(
 					'farm' 			=> 'Farm',

@@ -2,42 +2,6 @@
 
 class DistributorModel extends Model{
 	
-	// Create a simple list of all the Distributor
-	function listDistributor()
-	{
-		$query = "SELECT distributor.* " .
-				" FROM distributor " .
-				" ORDER BY distributor_name";
-		
-		log_message('debug', "DistributorModel.list_distributor : " . $query);
-		$result = $this->db->query($query);
-		
-		$distributors = array();
-		$CI =& get_instance();
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('DistributorLib');
-			unset($this->DistributorLib);
-			
-			$this->DistributorLib->distributorId = $row['distributor_id'];
-			$this->DistributorLib->distributorName = $row['distributor_name'];
-			$this->DistributorLib->creationDate = $row['creation_date'];
-			
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['distributor_id'], '', '', '');
-			$this->DistributorLib->addresses = $addresses;
-			
-			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', $row['distributor_id'], '', '');
-			$this->DistributorLib->suppliers = $suppliers;
-			
-			$distributors[] = $this->DistributorLib;
-			unset($this->DistributorLib);
-		}
-		
-		return $distributors;
-	}
-	
 	// Insert the new Distributor data into the database
 	function addDistributor() {
 		global $ACTIVITY_LEVEL_DB;
@@ -72,8 +36,8 @@ class DistributorModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, url, is_active)" .
-						" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $ACTIVITY_LEVEL_DB[$this->input->post('isActive')] . "' )";
+				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, url, status, track_ip, user_id)" .
+						" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 				
 				log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
 				$return = true;
@@ -121,7 +85,7 @@ class DistributorModel extends Model{
 			$this->DistributorLib->distributorName = $row->distributor_name;
 			$this->DistributorLib->customUrl = $row->custom_url;
 			$this->DistributorLib->url = $row->url;
-			$this->DistributorLib->isActive = $row->is_active;
+			$this->DistributorLib->status = $row->status;
 			
 			$CI =& get_instance();
 				
@@ -154,7 +118,6 @@ class DistributorModel extends Model{
 	}
 	
 	function updateDistributor() {
-		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
 		$query = "SELECT * FROM distributor WHERE distributor_name = \"" . $this->input->post('distributorName') . "\" AND distributor_id <> " . $this->input->post('distributorId');
@@ -169,7 +132,7 @@ class DistributorModel extends Model{
 						'distributor_name' => $this->input->post('distributorName'),
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
-						'is_active' => $ACTIVITY_LEVEL_DB[$this->input->post('isActive')],
+						'status' => $this->input->post('status'),
 					);
 			$where = "distributor_id = " . $this->input->post('distributorId');
 			$query = $this->db->update_string('distributor', $data, $where);
@@ -214,8 +177,8 @@ class DistributorModel extends Model{
 				$result = $this->db->query($query);
 				
 				if ($result->num_rows() == 0) {
-					$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, is_active)" .
-							" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), NULL, '" . $ACTIVITY_LEVEL_DB['active'] . "' )";
+					$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, status, track_ip, user_id)" .
+							" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 					
 					log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
 					$return = true;
@@ -384,7 +347,7 @@ class DistributorModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM distributor';
 		
-		$where = '';
+		$where = ' WHERE distributor.status = \'live\' ';
 		
 		$base_query_count = $base_query_count . $where;
 		

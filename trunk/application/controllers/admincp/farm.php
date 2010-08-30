@@ -28,9 +28,8 @@ class Farm extends Controller {
 	}
 	
 	// Create the form page to add a farm to the database, does not actually add the data, only builds the form
-	function add()
-	{
-		global $FARMER_TYPES;
+	function add() {
+		global $FARMER_TYPES, $STATUS;
 		$data = array();
 		
 		$this->load->model('StateModel');
@@ -53,13 +52,13 @@ class Farm extends Controller {
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
 		$data['data']['center']['form']['FARMER_TYPES'] = $FARMER_TYPES;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	function update($id)
-	{
-		global $FARMER_TYPES;
+	function update($id) {
+		global $FARMER_TYPES, $STATUS;
 		$data = array();
 		
 		$this->load->model('FarmModel');
@@ -87,6 +86,7 @@ class Farm extends Controller {
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
 		$data['data']['center']['form']['FARM'] = $farm;
 		$data['data']['center']['form']['FARMER_TYPES'] = $FARMER_TYPES;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		

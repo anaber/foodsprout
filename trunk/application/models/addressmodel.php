@@ -138,11 +138,10 @@ class AddressModel extends Model{
 		$CI =& get_instance();
 		
 		$address = $this->prepareAddress($this->input->post('address'), $this->input->post('city'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
-				
+		
 		$CI->load->model('GoogleMapModel','',true);
 		
 		$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
-		
 		
 		$query = "INSERT INTO address (address_id, address, city, state_id, zipcode, country_id, latitude , longitude, ";
 		if ( !empty($restaurantId) ) {
@@ -156,7 +155,7 @@ class AddressModel extends Model{
 		} else if ( !empty($farmersMarketId) ) {
 			$query .= 'farmers_market_id';
 		}
-		$query .= ", company_id)" .
+		$query .= ", company_id, geocoded)" .
 				" values (NULL, \"" . $this->input->post('address') . "\", \"" . $this->input->post('city') . "\", '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', ";
 		if ( !empty($restaurantId) ) {
 			$query .= $restaurantId;
@@ -174,6 +173,12 @@ class AddressModel extends Model{
 			$query .= ", '$companyId'";
 		} else {
 			$query .= ", NULL ";
+		}
+		
+		if ( isset($latLng['latitude']) && isset($latLng['longitude']) ) {
+			$query .= ", 1";
+		} else {
+			$query .= ", 0";
 		}
 		$query .= ")";
 		

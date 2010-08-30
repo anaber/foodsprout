@@ -26,8 +26,8 @@ class FarmersMarket extends Controller {
 	}
 	
 	// Create the form page to add a farm to the database, does not actually add the data, only builds the form
-	function add()
-	{
+	function add() {
+		global $STATUS;
 		$data = array();
 		
 		$this->load->model('StateModel');
@@ -45,11 +45,13 @@ class FarmersMarket extends Controller {
 		$data['data']['center']['form']['VIEW_HEADER'] = "Add Farmers Market";
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['STATES'] = $states;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function update($id) {
+		global $STATUS;
 		$data = array();
 		
 		$this->load->model('FarmersMarketModel');
@@ -71,6 +73,7 @@ class FarmersMarket extends Controller {
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Farmers Market";
 		$data['data']['center']['form']['FARMERS_MARKET'] = $farmersMarket;
+		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		

@@ -29,33 +29,34 @@ class GoogleMapModel extends Model{
 		global $GEOCODE_URL;
 		
 		$json = '';
+		$a = array();
 		
 		if (!empty($GEOCODE_URL) ) {
 			$url = $GEOCODE_URL . "?address=".urlencode($address);
-			if ($d = @fopen($url, "r")) {
-			
-				$json = @fread($d, 30000);
-				@fclose($d);
-			}
-		} else {
-			$a = array();
+		} else {	
 			$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
-			
-			if ($d = @fopen($url, "r")) {
-			
-				$json = @fread($d, 30000);
-				@fclose($d);
-			}
 		}
+		
+		$ch = curl_init ();
+		curl_setopt ($ch, CURLOPT_URL, $url);
+		curl_setopt ($ch, CURLOPT_POST, 1); 
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt ($ch, CURLOPT_VERBOSE, 1);
+		$json = curl_exec ($ch);
+		curl_close($ch);
 		
 		if ( $json ) {
 			$arr = json_decode($json);
 			if ($arr->status != 'OK') {
 				return false;
 			} else {
-				$a['latitude'] = $arr->results[0]->geometry->location->lat;
-				$a['longitude'] = $arr->results[0]->geometry->location->lng;
-				return $a;
+				if (count($arr->results) > 1 ) {
+					return false;
+				} else {
+					$a['latitude'] = $arr->results[0]->geometry->location->lat;
+					$a['longitude'] = $arr->results[0]->geometry->location->lng;
+					return $a;
+				}
 			}
 		} else {
 			return false;
