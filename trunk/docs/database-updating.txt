@@ -1,0 +1,27 @@
+HOWTO: Update db
+
+This quick tutorial/steps will help you update the database to the latest version.
+
+Step 1:
+
+Reverse engineer the current database into a MySQL Workbench file
+
+Step 2:
+
+Rename the newly imported schema to "food2" (there is a bug in Workbench where the current Workbench file we use has food2 deep somewhere in the script)
+
+Step 3:
+
+Go to File > Export > Forward Engineer SQL Create script...
+
+Step 4:
+
+Open the latest Workbench file from SVN that contains the latest db schema
+
+Step 5:
+
+Go to File > Export > Forward Engineer SQL Alter script...
+
+Step 6:
+
+Find the create script that was created in step 3 and select that as the first option, leave the second option blank to generate the alter script in MySQL workbench
