@@ -100,7 +100,7 @@ function addZeroResult(type) {
 	html += 'We are currently working on adding ';
 	
 	if (type == 'supplier') {
-		html += 'suppliers';
+		html += 'farms';
 	} else if (type == 'menu') {
 		html += 'products';
 	}
@@ -108,7 +108,7 @@ function addZeroResult(type) {
 	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to do add ';
 	
 	if (type == 'supplier') {
-		html += '<a href="#" id = "addSupplier2">suppliers</a>';
+		html += '<a href="#" id = "addSupplier2">farms</a>';
 	} else if (type == 'menu') {
 		html += '<a href="#" id = "addMenu2">products</a>';
 	}
