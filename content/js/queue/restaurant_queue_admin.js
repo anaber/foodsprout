@@ -58,13 +58,24 @@ function reinitializeTableHeadingEvent(data) {
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'restaurant_name', order, data.param.q);
 	});
 	
+	$("#heading_user").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'email');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'email', order, data.param.q);
+	});
+	
+	$("#heading_track_ip").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'track_ip');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'track_ip', order, data.param.q);
+	});
+	
 	$("#heading_creation_date").click(function(e) {
 		e.preventDefault();
 		order = getOrder(data, 'creation_date');
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'creation_date', order, data.param.q);
 	});
 }
-
 
 function addResult(restaurant, i) {
 	var html =
@@ -73,41 +84,9 @@ function addResult(restaurant, i) {
 	'	<td valign="top"><a href="/admincp/restaurant/update/'+ restaurant.restaurantId +'">'+ restaurant.restaurantName +'</a></td>' +
 	'	<td valign="top">'+ (restaurant.restaurantChain ? restaurant.restaurantChain : '' ) +'</td>' + 
 	'	<td valign="top">'+ (restaurant.companyName ? restaurant.companyName : '' ) +'</td>' +
-	//'	<td valign="top">'+ restaurant.creationDate +'</td>' + 
-	'	<td valign="top">';
-	
-		
-	$.each(restaurant.suppliers, function(j, supplier) {
-		supplierType = supplier.supplierType
-		supplierType = supplierType.substring(0, 1);
-		
-		if (restaurant.suppliersFrom == 'restaurant') {
-			html += '<a href = "/admincp/restaurant/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"</a><br /><br />";
-		} else {
-			html += supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"<br /><br />";
-		}
-	});
-	if (restaurant.suppliersFrom == 'restaurant') {
-		html += '<a href = "/admincp/restaurant/add_supplier/'+restaurant.restaurantId+'">Supplier</a>';
-	}
-	
-	html += '</td>';
-	
-	html +=
-	'	<td valign="top">';
-	/*
-	$.each(restaurant.addresses, function(j, address) {
-		html += '<a href = "/admincp/restaurant/update_address/'+address.addressId+'">' + address.completeAddress + '</a><br /><br />';
-	});
-	*/
-	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantId+'">Address</a>' +
-			'</td>';
-	html +=
-	'	<td valign="top">';
-	html += '<a href = "/admincp/restaurant/add_menu_item/'+restaurant.restaurantId+'">Menu Item</a>' +
-			'</td>';
-	
-	html +=
+	'	<td valign="top">'+ restaurant.email +'</td>' +  
+	'	<td valign="top">'+ restaurant.ip +'</td>' +  
+	'	<td valign="top">'+ restaurant.dateAdded +'</td>' +
 	'</tr>'
 	;
 	
@@ -116,7 +95,6 @@ function addResult(restaurant, i) {
 
 function getResultTableHeader() {
 	var html =
-	//'<table width="790" border="1" cellpadding="5" cellspacing="0" id = "table_results">' +
 	' <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "99%">' +
 	'	<thead>' +
 	'	<tr>' +
@@ -124,10 +102,9 @@ function getResultTableHeader() {
 	'		<th id = "heading_restaurant"><a href = "#" style = "color:#FFFFFF">Restaurant Name</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Chain</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
-	//'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Creation Date</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Locations</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Menu</a></th>' +
+	'		<th id = "heading_user"><a href = "#" style = "color:#FFFFFF">User</a></th>' +
+	'		<th id = "heading_track_ip"><a href = "#" style = "color:#FFFFFF">IP</a></th>' +
+	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Date Added</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';
