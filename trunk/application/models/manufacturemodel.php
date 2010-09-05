@@ -74,8 +74,8 @@ class ManufactureModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, url, status, track_ip, user_id)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", \"" . $manufactureName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
+				$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", \"" . $manufactureName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
 				
 				log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
 				$return = true;
@@ -124,6 +124,8 @@ class ManufactureModel extends Model{
 			$this->manufactureLib->manufactureName = $row->manufacture_name;
 			$this->manufactureLib->customUrl = $row->custom_url;
 			$this->manufactureLib->url = $row->url;
+			$this->manufactureLib->facebook = $row->facebook;
+			$this->manufactureLib->twitter = $row->twitter;
 			$this->manufactureLib->status = $row->status;
 			
 			
@@ -161,7 +163,7 @@ class ManufactureModel extends Model{
 	function updateManufacture() {
 		$return = true;
 		
-		$query = "SELECT * FROM manufacture WHERE manufacture_name = '" . $this->input->post('manufactureName') . "' AND manufacture_id <> " . $this->input->post('manufactureId');
+		$query = "SELECT * FROM manufacture WHERE manufacture_name = \"" . $this->input->post('manufactureName') . "\" AND manufacture_id <> " . $this->input->post('manufactureId');
 		log_message('debug', 'ManufactureModel.updateManufacture : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -174,6 +176,8 @@ class ManufactureModel extends Model{
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
 						'manufacture_type_id' => $this->input->post('manufactureTypeId'),
+						'facebook' => $this->input->post('facebook'),
+						'twitter' => $this->input->post('twitter'),
 						'status' => $this->input->post('status'),
 					);
 			$where = "manufacture_id = " . $this->input->post('manufactureId');

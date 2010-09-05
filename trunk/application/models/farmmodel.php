@@ -63,8 +63,8 @@ class FarmModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, url, status, track_ip, user_id)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
+				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
+						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
 				
 				log_message('debug', 'FarmModel.addManufacture : Insert Farm : ' . $query);
 				$return = true;
@@ -116,6 +116,8 @@ class FarmModel extends Model{
 			$this->FarmLib->farmName = $row->farm_name;
 			$this->FarmLib->customUrl = $row->custom_url;
 			$this->FarmLib->url = $row->url;
+			$this->FarmLib->facebook = $row->facebook;
+			$this->FarmLib->twitter = $row->twitter;
 			$this->FarmLib->status = $row->status;
 			
 			
@@ -166,6 +168,8 @@ class FarmModel extends Model{
 						'url' => $this->input->post('url'),
 						'farm_type_id' => $this->input->post('farmTypeId'),
 						'farmer_type' => $this->input->post('farmerType'),
+						'facebook' => $this->input->post('facebook'),
+						'twitter' => $this->input->post('twitter'),
 						'status' => $this->input->post('status'),
 					);
 			$where = "farm_id = " . $this->input->post('farmId');
