@@ -92,10 +92,28 @@ function reinitializeTabs() {
 	
 }
 
-function addZeroResult() {
+function addZeroResult(type) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;">No results found. Please retry with some other filter options.</div>' + 
+	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;">';
+	
+	html += 'We are currently working on adding ';
+	
+	if (type == 'supplier') {
+		html += 'suppliers';
+	} else if (type == 'menu') {
+		html += 'products';
+	}
+	
+	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to do add ';
+	
+	if (type == 'supplier') {
+		html += '<a href="#" id = "addSupplier2">suppliers</a>';
+	} else if (type == 'menu') {
+		html += '<a href="#" id = "addMenu2">products</a>';
+	}
+	
+	html +='</div>' + 
 	'</div>'
 	;	
 	return html;
@@ -212,6 +230,26 @@ function reinitializeAddItemEvent(data) {
 		}
 	});	
 	
+	$("#addSupplier2").click(function(e) {
+		e.preventDefault();
+		
+		if (isSupplierFormVisible == true) {
+			$.validationEngine.closePrompt('.formError',true);
+			$("#divAddSupplier").hide( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item');	
+			} );
+			isSupplierFormVisible = false;
+			
+		} else if (isSupplierFormVisible == false) {
+			
+			$("#divAddSupplier").show( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item-selected');
+			});
+			isSupplierFormVisible = true;
+		}
+	});	
+	
+	
 	$("#addMenu").click(function(e) {
 		e.preventDefault();
 		if (isMenuFormVisible == true) {
@@ -230,6 +268,23 @@ function reinitializeAddItemEvent(data) {
 		}
 	});	
 	
+	$("#addMenu2").click(function(e) {
+		e.preventDefault();
+		if (isMenuFormVisible == true) {
+			$.validationEngine.closePrompt('.formError',true);
+			$("#divAddMenu").hide( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item');
+			} );
+			isMenuFormVisible = false;
+
+		} else if (isMenuFormVisible == false) {
+			
+			$("#divAddMenu").show( toggleDuration, function() {
+				$("#addItem").removeClass().addClass('add-item-selected');
+			} );
+			isMenuFormVisible = true;
+		}
+	});
 	
 	$("#addComment").click(function(e) {
 		e.preventDefault();

@@ -4,6 +4,7 @@
 <script>
 	
 	var restaurantChainId = <?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>;
+	var name = "<?php echo $RESTAURANT_CHAIN->restaurantChain; ?>";
 	var jsonData;
 	var currentContent;
 	

@@ -4,6 +4,7 @@
 <script>
 	
 	var farmersMarketId = <?php echo $FARMERS_MARKET->farmersMarketId; ?>;
+	var name = "<?php echo $FARMERS_MARKET->farmersMarketName; ?>";
 	var jsonData;
 	var currentContent;
 	

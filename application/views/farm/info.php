@@ -4,6 +4,7 @@
 <script>
 	
 	var farmId = <?php echo $FARM->farmId; ?>;
+	var name = "<?php echo $FARM->farmName; ?>";
 	var jsonData;
 	var currentContent;
 	
