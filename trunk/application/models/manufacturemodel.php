@@ -20,6 +20,27 @@ class ManufactureModel extends Model{
 		return $manufactures;
 	}
 	
+	function searchManufacturesForAutoSuggest($q) {
+		
+		$query = 'SELECT manufacture_id, manufacture_name
+					FROM manufacture
+					WHERE manufacture_name like "'.$q.'%"
+					ORDER BY manufacture_name ';
+		$manufactures = '';
+		log_message('debug', "ManufactureModel.searchManufacturesForAutoSuggest : " . $query);
+		$result = $this->db->query($query);
+		
+		if ( $result->num_rows() > 0) {
+			foreach ($result->result() as $row) {
+				$manufactures .= $row->manufacture_name . "|" . $row->manufacture_id ."\n";
+			}
+		} else {
+			$manufactures .= 'No Manufacture';
+		}
+		
+		return $manufactures;
+	}
+	
 	// Insert the new manufacture data into the database
 	function addManufacture() {
 		

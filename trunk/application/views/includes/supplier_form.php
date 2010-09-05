@@ -16,9 +16,6 @@ function resetSupplierForm() {
 	
 $(document).ready(function() {
 	
-	
-	var formValidated = true;
-	 
  	function findValueCallback(event, data, formatted) {
 		document.getElementById('companyId').value = data[1];
 	}
@@ -47,6 +44,8 @@ $(document).ready(function() {
 		$(":input").unautocomplete();
 	});
 	
+	
+	var formValidated = true;
 	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
 	

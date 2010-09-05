@@ -243,7 +243,6 @@ class Farm extends Controller {
 	
 	function ajaxSearchFarmCompanies() {
 		$q = $this->input->post('q');
-		$q = 281;
 		$this->load->model('SupplierModel');
 		$companies = $this->SupplierModel->getCompaniesForSupplierJson('', $q, '', '');
 			

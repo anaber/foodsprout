@@ -23,7 +23,7 @@ $BASE_URL = "http://food.local/";
 
 $GOOGLE_MAP_KEY = 'ABQIAAAANHHVmwbFmPA69NdT2eV5nBQwaD-ZLXj78-bu070_JIa4Gc751BRaJHyd-O0--ruTVW-u9B9s_lu8nQ';
 
-$PER_PAGE = 20;
+$PER_PAGE = 10;
 $PER_PAGE_2 = 60;
 
 $GEOCODE_URL = 'http://geocode.local/geocode.php';

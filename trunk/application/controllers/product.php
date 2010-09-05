@@ -8,8 +8,7 @@ class Product extends Controller {
 	}
 	
 	function index() {
-		if ($this->session->userdata('isAuthenticated') != 1 ) //moved by Nutan
-		{
+		if ($this->session->userdata('isAuthenticated') != 1 ) {
 			redirect('about/privatebeta');
 		}
 		global $GOOGLE_MAP_KEY;
@@ -73,8 +72,7 @@ class Product extends Controller {
 	}
 	
 	function detail($id) {
-		if ($this->session->userdata('isAuthenticated') != 1 ) //moved by Nutan
-		{
+		if ($this->session->userdata('isAuthenticated') != 1 ) {
 			redirect('about/privatebeta');
 		}
 		
@@ -128,34 +126,38 @@ class Product extends Controller {
 	}
 	
 	// list of products with fructose
-	function fructose($currentPage = 1) {
-		global $PER_PAGE;
+	function fructose() {
 		$data = array();
-		$this->load->model('ProductModel');
-		$productCount = $this->ProductModel->getProductCount(1);
-		$products = $this->ProductModel->listFructose($currentPage, $PER_PAGE);
-
-                
-                // List of views to be included
-		$data['CENTER'] = array(
-				'list_product' => 'product/product_list',
-			);
-
-		$data['RIGHT'] = array(
-				'ad' => 'includes/banners/sky',
-			);
-
-		$data['data']['center']['list_product']['VIEW_HEADER'] = "List of Products with Fructose";
 		
-		// Data to be passed to the views
-		$data['data']['center']['list_product']['DISP_PER_PAGE'] = $PER_PAGE;
-		$data['data']['center']['list_product']['TOTAL_RECORD_COUNT'] = $productCount;
-		$data['data']['center']['list_product']['CURRENT_PAGE'] = $currentPage;
-		$data['data']['center']['list_product']['PRODUCTS'] = $products;
-		$data['data']['center']['list_product']['PAGING_CALLBACK'] = "/product/fructose";
-
-		$this->load->view('templates/center_right_narrow_template', $data);
+		// Views to include in the data array
+		$data['CENTER'] = array(
+				'list' => '/product/product_list',
+			);
+		
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/product_filter',
+			);
+		
+		// Center -> List
+		$data['data']['center']['list']['FRUCTOSE'] = true;
+		
+		$this->load->view('templates/left_center_template', $data);
 	}
+	
+	function ajaxSearchProducts() {
+		$this->load->model('ProductModel', '', TRUE);
+		$products = $this->ProductModel->getProductJson();
+		echo json_encode($products);
+	}
+	
+	function get_products_for_auto_suggest() {
+		$q = strtolower($_REQUEST['q']);
+		
+		$this->load->model('ProductModel', '', TRUE);
+		$products = $this->ProductModel->searchProducts($q);
+		echo $products;
+	}
+	
 }
 
 /* End of file product.php */
