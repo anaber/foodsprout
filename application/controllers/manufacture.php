@@ -17,8 +17,7 @@ class Manufacture extends Controller {
 		// Views to include in the data array
 		$data['CENTER'] = array(
 				'list' => '/manufacture/manufacture_list',
-			);
-		
+			);		
 		
 		$data['LEFT'] = array(
 				'filter' => 'includes/left/manufacture_filter',
@@ -35,9 +34,17 @@ class Manufacture extends Controller {
 	
 	function searchManufactures($q) {
 		$this->load->model('ManufactureModel', '', TRUE);
-		$companies = $this->ManufactureModel->searchManufactures($q);
-		echo $companies;
+		$manufactures = $this->ManufactureModel->searchManufactures($q);
+		echo $manufactures;
 	}
+	
+	function get_manufactutes_for_auto_suggest() {
+		$q = strtolower($_REQUEST['q']);
+		$this->load->model('ManufactureModel', '', TRUE);
+		$manufactures = $this->ManufactureModel->searchManufacturesForAutoSuggest($q);
+		echo $manufactures;
+	}
+	
 	
 	function ajaxSearchManufactureInfo() {
 		$manufactureId = $this->input->post('manufactureId');

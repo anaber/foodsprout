@@ -12,7 +12,7 @@ $tab = $this->uri->segment(1);
 	?>
 	<?php
 	 	$manuclass=NULL;
-		if($tab == "manufacture") { 
+		if($tab == "manufacture" || $tab == "product") { 
 			$manuclass = 'class="tabon"';
 		}
 		echo anchor('manufacture', 'Products', $manuclass);

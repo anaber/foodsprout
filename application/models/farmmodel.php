@@ -436,13 +436,8 @@ class FarmModel extends Model{
 		
 
 		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id ' .
-				' AND farm.status = \'live\'';
+				' AND farm.status = \'live\' ';
 
-		/*
-		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
-				. ' OR restaurant.restaurant_id like "%' . $q . '%"';
-		*/
-		
 		//if ( count($arrFarmTypeId) > 0  || count($arrCuisineId) > 0 ) {
 		if ( count($arrFarmTypeId) > 0 ) {
 			$where .= ' AND (';

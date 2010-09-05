@@ -149,7 +149,7 @@ class RestaurantModel extends Model{
 		
 		
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
-				' AND restaurant.status = \'live\' ';
+				' AND restaurant.status = \'queue\' ';
 		
 		/*
 		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
@@ -222,58 +222,6 @@ class RestaurantModel extends Model{
 			
 		}
 		
-		
-		
-		/*
-		if(count($arrRestaurantTypeId) > 0 ) {
-			$where .= ' AND restaurant.restaurant_type_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
-		}
-		
-		
-		if ( !empty($q) || !empty($city) || count($arrCuisineId) > 0 ) {
-			if (!empty($where) ) {
-				$where .= ' AND (';  
-			} else {
-				$where .= ' WHERE (';
-			}
-			
-			//$where	.= ' OR ( '
-			$where	.= ' ( '
-					. '		SELECT address.address_id' 
-					. '			from address, state, country'
-					. '			WHERE' 
-					. '				address.restaurant_id = restaurant.restaurant_id'
-					. '				AND address.state_id = state.state_id'
-					. '				AND address.country_id = country.country_id'
-					. ' 			AND (';
-				if ( !empty($q) ) {	 
-			$where	.= '					address.zipcode = "' . $q . '"';
-				} else if ( !empty($city) ) {
-			$where	.= '					address.city_id IN (' . $city . ')';
-				}
-				
-			$where	.= '				)'
-					. '				LIMIT 0, 1'
-					. '		)';
-					
-			 	if(count($arrCuisineId) > 0 ) {
-			 		
-			 		// Cuisine 
-			$where	.= ' AND ( '
-					. '		SELECT restaurant_cuisine.restaurant_cuisine_id ' 
-					. '			from restaurant_cuisine' 
-					. '			WHERE' 
-					. '				restaurant_cuisine.restaurant_id = restaurant.restaurant_id'
-					. ' 			AND restaurant_cuisine.cuisine_id IN (' . implode(',', $arrCuisineId) . ')'
-					. '				LIMIT 0, 1'
-					. '		)';
-			 	} 
-					;
-			
-			$where .= ')';
-			
-		}
-		*/
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -484,7 +432,8 @@ class RestaurantModel extends Model{
 		*/
 		if ( !empty($q) ) {
 			
-			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"'
+			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"';
+			/*
 					. ' OR restaurant.restaurant_id like "%' . $q . '%"'
 					. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';
 			
@@ -506,8 +455,9 @@ class RestaurantModel extends Model{
 					. '				)'
 					. '				LIMIT 0, 1'
 					. '		)';
-			
+			*/
 			$where .= ' )';
+			
 		}
 		
 		
@@ -1277,7 +1227,8 @@ class RestaurantModel extends Model{
 		
 		//$query = $base_query_count . " ORDER BY restaurant_name ";
 		$query = $base_query_count;
-		
+		echo $query;
+		die;
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;

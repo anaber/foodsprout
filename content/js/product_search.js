@@ -1,12 +1,12 @@
 function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
-	var formAction = '/manufacture/ajaxSearchManufactures';
+	var formAction = '/product/ajaxSearchProducts';
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
 	
 	$.post(formAction, postArray,function(data) {		
-		dataManufactures = data;
-		redrawContent(dataManufactures);
+		dataProducts = data;
+		redrawContent(dataProducts);
 	},
 	"json");
 }
@@ -56,27 +56,14 @@ function redrawContent(data) {
 	} else  {
 		$('#suggestion_box').val('');
 	}
-	
 }
 
-function addResult(manufacture, count) {
+function addResult(product, count) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/manufacture/view/' + manufacture.manufactureId + '" id = "'+ manufacture.manufactureId +'" style="text-decoration:none;">'+ manufacture.manufactureName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;">Type : '+ manufacture.manufactureType + '</div>' +
-	'	<div style="float:left; width:295px;">Address:<br /><div style = "font-size:12px;">';
-	
-	$.each(manufacture.addresses, function(j, address) {
-		if (j == 0) {
-			html += '' + address.displayAddress + '';
-		} else {
-			html += "<br /><br />" + '' + address.displayAddress + '';
-		}
-	});
-	
-	html += '</div></div>';
-	html +=
-	'</div>'
-	;
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/product/view/' + product.productId + '" id = "'+ product.productId +'" style="text-decoration:none;">'+ product.productName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;">Type : '+ product.productType + '<br />Brand:' + product.brand + '</div>' +
+	'	<div style="float:left; width:295px;">Manufacture:<br /><a href="/manufacture/view/' + product.manufactureId + '">' + product.manufactureName + '</a></div>' +
+	'</div>';
 	
 	return html;
 }
@@ -164,6 +151,7 @@ function reinitializePagingEvent(data) {
 	});
 	
 	$("#imgNext").click(function(e) {
+		
 		e.preventDefault();
 		nextPage = parseInt(data.param.page)+1;
 		if (nextPage >= data.param.totalPages) {

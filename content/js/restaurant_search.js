@@ -210,20 +210,6 @@ function reinitializeMoreCuisine(data) {
 		disablePopup();
 	});
 	
-	
-	/*
-	//Click out event!
-	$("#backgroundPopup").click(function(){
-		disablePopup();
-	});
-	
-	//Press Escape event!
-	$(document).keypress(function(e){
-		if(e.keyCode==27 && popupStatus==1){
-			disablePopup();
-		}
-	});
-	*/
 }
 
 
