@@ -62,7 +62,6 @@ class Queue extends Controller {
 	}
 	
 	function index() {
-		global $FARMER_TYPES;
 		$data = array();
 		
 		// List of views to be included
@@ -72,13 +71,11 @@ class Queue extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Farm - Queue";
-		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function farmersmarket() {
-		global $FARMER_TYPES;
 		$data = array();
 		
 		// List of views to be included
@@ -88,13 +85,11 @@ class Queue extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Farmers Market - Queue";
-		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function manufacture() {
-		global $FARMER_TYPES;
 		$data = array();
 		
 		// List of views to be included
@@ -104,14 +99,11 @@ class Queue extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Manufacture - Queue";
-		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
-	
 	function restaurant() {
-		global $FARMER_TYPES;
 		$data = array();
 		
 		// List of views to be included
@@ -121,14 +113,12 @@ class Queue extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Restaurant - Queue";
-		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	
 	function distributor() {
-		global $FARMER_TYPES;
 		$data = array();
 		
 		// List of views to be included
@@ -138,13 +128,11 @@ class Queue extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Distributor - Queue";
-		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function supplier() {
-		global $FARMER_TYPES;
 		$data = array();
 		
 		// List of views to be included
@@ -154,13 +142,11 @@ class Queue extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Suppliers - Queue";
-		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function menu() {
-		global $FARMER_TYPES;
 		$data = array();
 		
 		// List of views to be included
@@ -170,7 +156,6 @@ class Queue extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Menu Items - Queue";
-		$data['data']['center']['list']['FARMER_TYPES'] = $FARMER_TYPES;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -186,8 +171,26 @@ class Queue extends Controller {
 		$restaurants = $this->RestaurantModel->getQueueRestaurantsJson();
 		echo json_encode($restaurants);
 	}
+	
+	function ajaxQueueManufactures() {
+		$this->load->model('ManufactureModel', '', TRUE);
+		$manufactures = $this->ManufactureModel->getQueueManufacturesJson();
+		echo json_encode($manufactures);
+	}
+	
+	function ajaxQueueDistributors() {
+		$this->load->model('DistributorModel', '', TRUE);
+		$distributors = $this->DistributorModel->getQueueDistributorJson();
+		echo json_encode($distributors);
+	}
+	
+	function ajaxQueueFarmersMarket() {
+		$this->load->model('FarmersMarketModel', '', TRUE);
+		$farmersMarket = $this->FarmersMarketModel->getQueueFarmersMarketJson();
+		echo json_encode($farmersMarket);
+	}
 }
 
-/* End of file company.php */
+/* End of file queue.php */
 
 ?>
