@@ -66,8 +66,26 @@ function reinitializeTableHeadingEvent(data) {
 	
 	$("#heading_farmer_type").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farmer_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmer_name', order, data.param.q);
+		order = getOrder(data, 'farmer_type');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmer_type', order, data.param.q);
+	});
+	
+	$("#heading_user").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'email');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'email', order, data.param.q);
+	});
+	
+	$("#heading_track_ip").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'track_ip');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'track_ip', order, data.param.q);
+	});
+	
+	$("#heading_creation_date").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'creation_date');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'creation_date', order, data.param.q);
 	});
 }
 
@@ -96,9 +114,9 @@ function getResultTableHeader() {
 	'		<th id = "heading_farm"><a href = "#" style = "color:#FFFFFF">Farm Name</a></th>' +
 	'		<th id = "heading_farm_type"><a href = "#" style = "color:#FFFFFF">Farm Type</a></th>' +
 	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">Farmer Type</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">User</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">IP</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Date Added</a></th>' +
+	'		<th id = "heading_user"><a href = "#" style = "color:#FFFFFF">User</a></th>' +
+	'		<th id = "heading_track_ip"><a href = "#" style = "color:#FFFFFF">IP</a></th>' +
+	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Date Added</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';

@@ -1180,27 +1180,31 @@ class RestaurantModel extends Model{
 		$page = 0;
 		
 		$base_query = 'SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name, restaurant_type.restaurant_type, user.email, user.first_name' .
-				' FROM restaurant, user ' .
+				' FROM restaurant' .
 				' LEFT JOIN restaurant_chain' .
 				' ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id' .
 				' LEFT JOIN company' .
 				' ON restaurant.company_id = company.company_id' . 
 				' LEFT JOIN restaurant_type' .
-				' ON restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+				' ON restaurant.restaurant_type_id = restaurant_type.restaurant_type_id' .
+				' LEFT JOIN user' .
+				' ON restaurant.user_id = user.user_id';
+				;
 						
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM restaurant, restaurant_type, user';
 				
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
-				' AND restaurant.user_id = user.user_id ' .
 				' AND restaurant.status = \'queue\' ';
 		
 		if ( !empty($q) ) {
 			
-			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"'
+			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"';
+			
+			/*
 					. ' OR restaurant.restaurant_id like "%' . $q . '%"'
 					. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';
-			 
+			
 			$where .= ' OR (';
 			$where	.= '		SELECT address.address_id' 
 					. '			from address, state, country'
@@ -1219,19 +1223,16 @@ class RestaurantModel extends Model{
 					. '				)'
 					. '				LIMIT 0, 1'
 					. '		)';
-			
+			*/
 			$where .= ' )';
 		}
 		
 		
 		$base_query_count = $base_query_count . $where;
 		
-		
-		
 		//$query = $base_query_count . " ORDER BY restaurant_name ";
 		$query = $base_query_count;
-		echo $query;
-		die;
+		
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;
@@ -1264,14 +1265,11 @@ class RestaurantModel extends Model{
 				$p = $p * $PER_PAGE;
 				$query .= " LIMIT $p, " . $PER_PAGE;
 				$start = $p;
-				
 			} else {
 				$query .= " LIMIT 0, " . $PER_PAGE;
 			}
 		}
 		
-		//echo $query;
-		//die;
 		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
 		$result = $this->db->query($query);
 		
@@ -1289,11 +1287,10 @@ class RestaurantModel extends Model{
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
 			$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
 			$this->RestaurantLib->companyName = $row['company_name'];
-			
-			$this->FarmLib->userId = $row['user_id'];
-			$this->FarmLib->email = $row['email'];
-			$this->FarmLib->ip = $row['track_ip'];
-			$this->FarmLib->dateAdded = date ("Y-m-d", strtotime($row['creation_date']) ) ;
+			$this->RestaurantLib->userId = $row['user_id'];
+			$this->RestaurantLib->email = $row['email'];
+			$this->RestaurantLib->ip = $row['track_ip'];
+			$this->RestaurantLib->dateAdded = date ("Y-m-d", strtotime($row['creation_date']) ) ;
 			
 			$restaurants[] = $this->RestaurantLib;
 			unset($this->RestaurantLib);
