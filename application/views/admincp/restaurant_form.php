@@ -64,6 +64,8 @@ $(document).ready(function() {
 							  fax:$('#fax').val(),
 							  email:$('#email').val(),
 							  url:$('#website').val(),
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
 							  
 							  status:$('#status').val(),
 							  
@@ -84,6 +86,8 @@ $(document).ready(function() {
 							  fax:$('#fax').val(),
 							  email:$('#email').val(),
 							  url:$('#website').val(),
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
 							  
 							  status:$('#status').val(),
 							  address:$('#address').val(),
@@ -329,7 +333,18 @@ function findValueRestaurantChain(li) {
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantURL : '') ?>" class="validate[optional]" type="text" name="website" id="website"/>
 		</td>
 	</tr>
-	
+	<tr>
+		<td width = "25%" nowrap>Facebook</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->facebook : '') ?>" class="validate[optional]" type="text" name="facebook" id="facebook"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Twitter</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->twitter : '') ?>" class="validate[optional]" type="text" name="twitter" id="twitter"/>
+		</td>
+	</tr>
 	<tr>
 		<td width = "25%" nowrap>Status</td>
 		<td width = "75%">

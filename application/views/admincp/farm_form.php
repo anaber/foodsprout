@@ -44,7 +44,9 @@ $(document).ready(function() {
 							  farmTypeId:$('#farmTypeId').val(),
 							  farmerType:$('#farmerType').val(),
 							  status:$('#status').val(),
-							  							 
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
+							  
 							  farmId: $('#farmId').val()
 							};
 				act = 'update';		
@@ -58,6 +60,9 @@ $(document).ready(function() {
 							  farmTypeId:$('#farmTypeId').val(),
 							  farmerType:$('#farmerType').val(),
 							  status:$('#status').val(),
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
+							  
 							  address:$('#address').val(),
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
@@ -238,6 +243,18 @@ function formatItem(row) {
 		<td width = "25%" nowrap>Website</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($FARM) ? $FARM->url : '') ?>" class="validate[optional]" type="text" name="url" id="url"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Facebook</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->facebook : '') ?>" class="validate[optional]" type="text" name="facebook" id="facebook"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Twitter</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARM) ? $FARM->twitter : '') ?>" class="validate[optional]" type="text" name="twitter" id="twitter"/>
 		</td>
 	</tr>
 	<tr>

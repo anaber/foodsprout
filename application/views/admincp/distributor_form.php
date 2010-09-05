@@ -41,8 +41,10 @@ $(document).ready(function() {
 							  distributorName:$('#distributorName').val(),
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
 							  status:$('#status').val(),
-							  							 
+
 							  distributorId: $('#distributorId').val()
 							};
 				act = 'update';		
@@ -55,6 +57,9 @@ $(document).ready(function() {
 							  url:$('#url').val(),
 							  status:$('#status').val(),
 							  address:$('#address').val(),
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
+							  
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
@@ -210,6 +215,18 @@ function formatItem(row) {
 		<td width = "25%" nowrap>Website</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->url : '') ?>" class="validate[optional]" type="text" name="url" id="url"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Facebook</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->facebook : '') ?>" class="validate[optional]" type="text" name="facebook" id="facebook"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Twitter</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->twitter : '') ?>" class="validate[optional]" type="text" name="twitter" id="twitter"/>
 		</td>
 	</tr>
 	<tr>

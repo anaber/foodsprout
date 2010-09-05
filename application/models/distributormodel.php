@@ -36,8 +36,8 @@ class DistributorModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, url, status, track_ip, user_id)" .
-						" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
+				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
+						" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
 				
 				log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
 				$return = true;
@@ -85,6 +85,8 @@ class DistributorModel extends Model{
 			$this->DistributorLib->distributorName = $row->distributor_name;
 			$this->DistributorLib->customUrl = $row->custom_url;
 			$this->DistributorLib->url = $row->url;
+			$this->DistributorLib->facebook = $row->facebook;
+			$this->DistributorLib->twitter = $row->twitter;
 			$this->DistributorLib->status = $row->status;
 			
 			$CI =& get_instance();
@@ -132,6 +134,8 @@ class DistributorModel extends Model{
 						'distributor_name' => $this->input->post('distributorName'),
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
+						'facebook' => $this->input->post('facebook'),
+						'twitter' => $this->input->post('twitter'),
 						'status' => $this->input->post('status'),
 					);
 			$where = "distributor_id = " . $this->input->post('distributorId');

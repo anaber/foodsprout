@@ -681,8 +681,8 @@ class RestaurantModel extends Model{
 			$restaurantChainId = $this->input->post('restaurantChainId');
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, phone, fax, email, url, status, track_ip, user_id)" .
-						" values (NULL, '".$companyId."', " . ( !empty ( $restaurantChainId ) ? $restaurantChainId : 'NULL' ) . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
+				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, phone, fax, email, url, status, track_ip, user_id, facebook, twitter)" .
+						" values (NULL, '".$companyId."', " . ( !empty ( $restaurantChainId ) ? $restaurantChainId : 'NULL' ) . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
 				
 				log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 				$return = true;
@@ -773,6 +773,8 @@ class RestaurantModel extends Model{
 			$this->restaurantLib->fax = $row->fax;
 			$this->restaurantLib->email = $row->email;
 			$this->restaurantLib->restaurantURL = $row->url;
+			$this->restaurantLib->facebook = $row->facebook;
+			$this->restaurantLib->twitter = $row->twitter;
 			$this->restaurantLib->status = $row->status;
 			
 			$cuisines = $this->getCuisineIdsForRestaurant( $row->restaurant_id);
@@ -850,7 +852,8 @@ class RestaurantModel extends Model{
 						'fax' => $this->input->post('fax'),
 						'email' => $this->input->post('email'),
 						'url' => $this->input->post('url'),
-						//'cuisine_id' => $this->input->post('cuisineId'),
+						'facebook' => $this->input->post('facebook'),
+						'twitter' => $this->input->post('twitter'),
 						'status' => $this->input->post('status'),
 					);
 			$where = "restaurant_id = " . $this->input->post('restaurantId');
