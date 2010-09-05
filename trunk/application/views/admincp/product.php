@@ -1,31 +1,8 @@
-<?php echo anchor('admincp/product/add', 'Add Product'); ?><br /><br />
+<script>
+	var hasFructose = <?php echo ( isset($FRUCTOSE) && $FRUCTOSE) ? '1' : '0'; ?>;
+</script>
+<script src="<?php echo base_url()?>js/jquery.colorize.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/product_search_admin.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/admin_ajax_page_common_content.js" type="text/javascript"></script>
 
-<?php
-if (count($PRODUCTS) > 0 ) {
-?>
-<table cellpadding="3" cellspacing="0" border="0" id="tbllist">
-	<tr>
-		<th>Product Id</th>
-		<th>Product Name</th>
-	</tr>
-			
-	
-<?php
-
-	$i = 0;
-	foreach($PRODUCTS as $r) :
-		$i++;
-		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.anchor('admincp/product/update/'.$r->productId, $r->productId).'</td>';
-		echo '	<td>'.anchor('admincp/product/update/'.$r->productId, $r->productName).'</td>';
-		echo '</tr>';
- 	endforeach;
-?>
-
-<?php
-} else {
-	echo "No product available";
-}
-
-?>
-</table>
+<?php $this->load->view('admincp/includes/ajax_paging'); ?>
