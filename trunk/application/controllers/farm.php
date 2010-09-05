@@ -201,6 +201,7 @@ class Farm extends Controller {
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
 				'map' => 'includes/right/map',
+				'info' => 'includes/left/info',
 			);
 
 		// Load all the views for the center column
@@ -224,6 +225,13 @@ class Farm extends Controller {
 		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
 		
+		// Left -> Info
+		$INFO = array (
+					'url' => $farm->url,
+					'facebook' => $farm->facebook,
+					'twitter' => $farm->twitter,
+				);
+		$data['data']['left']['info']['INFO'] = $INFO;
 		
 		$data['FARM'] = $farm;
 		

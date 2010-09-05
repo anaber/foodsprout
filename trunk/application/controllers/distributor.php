@@ -46,7 +46,7 @@ class Distributor extends Controller {
 	function view() {
 		$this->load->library('functionlib');
 
-                $data = array();
+        $data = array();
 		
 		$distributorId = $this->uri->segment(3);
 		

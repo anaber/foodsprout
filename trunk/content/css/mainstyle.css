@@ -18,6 +18,7 @@ text-align:right;-moz-border-radius:5px;-webkit-border-radius:5px;background:#E5
 #footerbg{height:24px;width:1000px;margin-right:auto;margin-left:auto;padding-top:10px;}
 #footerbg #footertext{margin-top:5px;float:left;height:28px;/*width:211px;*/
 font-size:13px;color:#466ABA;background-color:#fff;line-height:27px;padding-left:15px;padding-right:15px;-moz-border-radius:6px;-webkit-border-radius:6px;}
+.clear {clear:both;}
 /* Text and font colors */
 .greencolor{color:#496829;}
 h1,h2,h3,h4,h5,h6{margin:0;}
