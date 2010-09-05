@@ -41,6 +41,8 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
 							  status:$('#status').val(),
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
 
 							  farmersMarketId: $('#farmersMarketId').val()
 							};
@@ -52,6 +54,9 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
 							  status:$('#status').val(),
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
+							  
 							  address:$('#address').val(),
 							  city: $('#city').val(),
 							  stateId:$('#stateId').val(),
@@ -136,6 +141,18 @@ $(document).ready(function() {
 		<td width = "25%" nowrap>Website</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->url : '') ?>" class="validate[optional]" type="text" name="url" id="url"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Facebook</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->facebook : '') ?>" class="validate[optional]" type="text" name="facebook" id="facebook"/>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Twitter</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->twitter : '') ?>" class="validate[optional]" type="text" name="twitter" id="twitter"/>
 		</td>
 	</tr>
 	<tr>

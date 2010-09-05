@@ -118,6 +118,7 @@ class FarmersMarket extends Controller {
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
 				'map' => 'includes/right/map',
+				'info' => 'includes/left/info',
 			);
 
 
@@ -141,6 +142,14 @@ class FarmersMarket extends Controller {
 		$data['data']['left']['map']['width'] = '225';
 		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
+		
+		// Left -> Info
+		$INFO = array (
+					'url' => $farmersMarket->url,
+					'facebook' => $farmersMarket->facebook,
+					'twitter' => $farmersMarket->twitter,
+				);
+		$data['data']['left']['info']['INFO'] = $INFO;
 		
 		$data['FARMERS_MARKET'] = $farmersMarket;
 		

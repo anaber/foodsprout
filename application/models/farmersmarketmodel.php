@@ -16,8 +16,8 @@ class FarmersMarketModel extends Model{
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
-			$query = "INSERT INTO farmers_market (farmers_market_id, farmers_market_name, city_id, custom_url, url, status, track_ip, user_id)" .
-					" values (NULL, \"" . $farmersMarketName . "\", NULL, '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
+			$query = "INSERT INTO farmers_market (farmers_market_id, farmers_market_name, city_id, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
+					" values (NULL, \"" . $farmersMarketName . "\", NULL, '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
 			
 			log_message('debug', 'FarmModel.addFarmersMarket : Insert Farmers Market : ' . $query);
 			$return = true;
@@ -59,6 +59,8 @@ class FarmersMarketModel extends Model{
 			$this->FarmersMarketLib->farmersMarketName = $row->farmers_market_name;
 			$this->FarmersMarketLib->customUrl = $row->custom_url;
 			$this->FarmersMarketLib->url = $row->url;
+			$this->FarmersMarketLib->facebook = $row->facebook;
+			$this->FarmersMarketLib->twitter = $row->twitter;
 			$this->FarmersMarketLib->status = $row->status;
 			
 			$CI =& get_instance();
@@ -106,6 +108,8 @@ class FarmersMarketModel extends Model{
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
 						'status' => $this->input->post('status'),
+						'facebook' => $this->input->post('facebook'),
+						'twitter' => $this->input->post('twitter'),
 					);
 			$where = "farmers_market_id = " . $this->input->post('farmersMarketId');
 			$query = $this->db->update_string('farmers_market', $data, $where);
