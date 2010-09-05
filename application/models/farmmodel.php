@@ -657,11 +657,13 @@ class FarmModel extends Model{
 				' AND farm.user_id = user.user_id ' .
 				' AND farm.status = \'queue\' ';
 		
-		$where .= ' AND (' 
-				. '	farm.farm_name like "%' .$q . '%"'
-				. ' OR farm.farm_id like "%' . $q . '%"'
-				. ' OR farm_type.farm_type like "%' . $q . '%"';		
-		$where .= ' )';
+		if (!empty ($q) ) {
+			$where .= ' AND (' 
+					. '	farm.farm_name like "%' .$q . '%"'
+					. ' OR farm.farm_id like "%' . $q . '%"'
+					. ' OR farm_type.farm_type like "%' . $q . '%"';		
+			$where .= ' )';
+		}
 		
 		$base_query_count = $base_query_count . $where;
 		
