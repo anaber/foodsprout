@@ -48,26 +48,32 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_id', order, data.param.q);
+		order = getOrder(data, 'product_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'product_id', order, data.param.q);
 	});
 	
-	$("#heading_farm").click(function(e) {
+	$("#heading_product").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_name', order, data.param.q);
+		order = getOrder(data, 'product_name');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'product_name', order, data.param.q);
 	});
 	
-	$("#heading_farm_type").click(function(e) {
+	$("#heading_product_type").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_type');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_type', order, data.param.q);
+		order = getOrder(data, 'product_type');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'product_type', order, data.param.q);
 	});
 	
-	$("#heading_farmer_type").click(function(e) {
+	$("#heading_brand").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farmer_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmer_name', order, data.param.q);
+		order = getOrder(data, 'brand');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'brand', order, data.param.q);
+	});
+	
+	$("#heading_upc").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'upc');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'upc', order, data.param.q);
 	});
 }
 
@@ -123,11 +129,11 @@ function getResultTableHeader() {
 	'	<thead>' +
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
-	'		<th id = "heading_farm"><a href = "#" style = "color:#FFFFFF">Product Name</a></th>' +
-	'		<th id = "heading_farm_type"><a href = "#" style = "color:#FFFFFF">Product Type</a></th>' +
-	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Brand</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">UPC</a></th>' +
+	'		<th id = "heading_product"><a href = "#" style = "color:#FFFFFF">Product Name</a></th>' +
+	'		<th id = "heading_product_type"><a href = "#" style = "color:#FFFFFF">Product Type</a></th>' +
+	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
+	'		<th id = "heading_brand"><a href = "#" style = "color:#FFFFFF">Brand</a></th>' +
+	'		<th id = "heading_upc"><a href = "#" style = "color:#FFFFFF">UPC</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';
