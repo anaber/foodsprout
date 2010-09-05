@@ -1,38 +1,9 @@
 <?php
 
 class ProductModel extends Model {
-
-    // List all the product in the database
-    function listProduct($hasFructose = 0) {
-        if ($hasFructose == 1) {
-            $query = "SELECT * FROM product WHERE has_fructose = 1 ORDER BY product_name";
-        } else {
-            $query = "SELECT * FROM product ORDER BY product_name";
-        }
-
-
-        log_message('debug', "ProductModel.listProduct : " . $query);
-        $result = $this->db->query($query);
-
-        $products = array();
-
-        foreach ($result->result_array() as $row) {
-
-            $this->load->library('ProductLib');
-            unset($this->productLib);
-
-            $this->productLib->productId = $row['product_id'];
-            $this->productLib->productName = $row['product_name'];
-
-            $products[] = $this->productLib;
-            unset($this->productLib);
-        }
-        return $products;
-    }
-
-
+	
 	// List the recent products
-    function listNewProducts() {
+	function listNewProducts() {
         
         $query = "SELECT * FROM product WHERE product_type_id <> 1 ORDER BY product_id DESC LIMIT 5";
 
@@ -54,41 +25,10 @@ class ProductModel extends Model {
         }
         return $products;
     }
-
-    // Insert the product into the database
-    /*
-      function addProduct() {
-      $return = true;
-
-      $query = "SELECT * FROM product WHERE product_name = '" . $this->input->post('productName') . "'";
-      log_message('debug', 'ProductModel.addProduct : Try to get duplicate Product record : ' . $query);
-
-      $result = $this->db->query($query);
-
-      if ($result->num_rows() == 0) {
-
-      $query = "INSERT INTO product (product_id, product_name)" .
-      " values (NULL, '" . $this->input->post('productName') . "')";
-      log_message('debug', 'ProductModel.addProduct : Insert Product : ' . $query);
-
-      if ( $this->db->query($query) ) {
-      $return = true;
-      } else {
-      $return = false;
-      }
-
-      $return = true;
-      } else {
-      $GLOBALS['error'] = 'duplicate';
-      $return = false;
-      }
-
-      return $return;
-      }
-     */
-
-
-
+    
+    /**
+	 * I may remove this method. I do not like this
+	 */
     function listProductDetails($hasFructose = 0,  $currentPage = 1, $dispPerPage = 10) {
         if ($hasFructose == 1) {
             $whereClause = " WHERE has_fructose = 1";
@@ -151,24 +91,6 @@ class ProductModel extends Model {
         return $products;
     }
 
-    function getProductCount($hasFructose = 0) {
-        if ($hasFructose == 1) {
-            $whereClause = " WHERE has_fructose = 1";
-        } else {
-            $whereClause = " ";
-        }
-        $query = "SELECT count(*) as product_count
-                FROM product p  $whereClause";
-
-
-        log_message('debug', "ProductModel.getProductCount : " . $query);
-        $result = $this->db->query($query);
-
-        return $result->row()->product_count;
-    }
-
-
-
     function getProductFromId($productId) {
 
         $query = "SELECT * FROM product WHERE product_id = " . $productId;
@@ -198,42 +120,8 @@ class ProductModel extends Model {
         $this->productLib->creationDate = $row->creation_date;
         $this->productLib->modifyDate = $row->modify_date;
 
-
         return $this->productLib;
     }
-
-    /*
-      function updateProduct() {
-      $return = true;
-
-      $query = "SELECT * FROM product WHERE product_name = '" . $this->input->post('productName') . "' AND product_id <> " . $this->input->post('productId');
-      log_message('debug', 'ProductModel.updateProduct : Try to get Duplicate record : ' . $query);
-
-      $result = $this->db->query($query);
-
-      if ($result->num_rows() == 0) {
-
-      $data = array(
-      'product_name' => $this->input->post('productName'),
-      );
-      $where = "product_id = " . $this->input->post('productId');
-      $query = $this->db->update_string('product', $data, $where);
-
-      log_message('debug', 'ProductModel.updateProduct : ' . $query);
-      if ( $this->db->query($query) ) {
-      $return = true;
-      } else {
-      $return = false;
-      }
-
-      } else {
-      $GLOBALS['error'] = 'duplicate';
-      $return = false;
-      }
-
-      return $return;
-      }
-     */
 
     function addProductIntermediate() {
 
@@ -448,59 +336,6 @@ class ProductModel extends Model {
         return $return;
     }
     
-    function listFructose($currentPage = 1, $dispPerPage) {
-        $query = "SELECT product.*,
-                  product_type.product_type,
-                  manufacture.manufacture_name
-                FROM product";
-        
-        $query = $query 
-            . " LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id) "
-            . " LEFT JOIN manufacture ON (product.manufacture_id =  manufacture.manufacture_id) ";
-
-        $startRecord = ($currentPage - 1) * $dispPerPage;
-        $query = $query . " WHERE has_fructose = 1 ORDER BY product_ID LIMIT $startRecord, $dispPerPage";
-
-		
-        log_message('debug', "ProductModel.listFructose : " . $query);
-        $result = $this->db->query($query);
-
-        $products = array();
-        foreach ($result->result() as $row) {
-
-            $this->load->library('ProductLib');
-            unset($this->productLib);
-
-            $this->productLib->productId = $row->product_id;
-            $this->productLib->productName = $row->product_name;
-            $this->productLib->manufactureId = $row->manufacture_id;
-            $this->productLib->manufactureName = $row->manufacture_name;
-            $this->productLib->productTypeId = $row->product_type_id;
-            $this->productLib->productType = $row->product_type;
-            $this->productLib->ingredient = $row->ingredient_text;
-            $this->productLib->brand = $row->brand;
-            $this->productLib->upc = $row->upc;
-            $this->productLib->status = $row->status;
-            $this->productLib->fructose = $row->has_fructose;
-            $this->productLib->userId = $row->user_id;
-            $this->productLib->creationDate = $row->creation_date;
-            $this->productLib->modifyDate = $row->modify_date;
-
-            $products[] = $this->productLib;
-            unset($this->productLib);
-        }
-        return $products;
-    }
-
-
-
-
-
-
-	/**
-	 * CHANGES BY DEEPAK
-	 * I may remove almost complete code from above. I do not like them at all
-	 */
 	function getProductJson() {
 		global $PER_PAGE;
 		
@@ -525,7 +360,8 @@ class ProductModel extends Model {
 		$start = 0;
 		$page = 0;
 
-        $base_query = 'SELECT product.*, product_type.product_type, manufacture.manufacture_name, manufacture.manufacture_id' .
+        $base_query = 'SELECT product.*, product_type.product_type, ' .
+        		' manufacture.manufacture_name, restaurant.restaurant_name, restaurant_chain.restaurant_chain ' .
 				' FROM product';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
@@ -533,6 +369,8 @@ class ProductModel extends Model {
 		
 		$where = ' LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id)  ' .
 				' LEFT JOIN manufacture ON (product.manufacture_id =  manufacture.manufacture_id) ' .
+				' LEFT JOIN restaurant ON (product.restaurant_id =  restaurant.restaurant_id) ' .
+				' LEFT JOIN restaurant_chain ON (product.restaurant_chain_id =  restaurant_chain.restaurant_chain_id) ' .
 				' WHERE  ';
 				
 		if (!empty($filter) ) {
@@ -604,6 +442,10 @@ class ProductModel extends Model {
             $this->productLib->productName = $row->product_name;
             $this->productLib->manufactureId = $row->manufacture_id;
             $this->productLib->manufactureName = $row->manufacture_name;
+            $this->productLib->restaurantId = $row->restaurant_id;
+            $this->productLib->restaurantName = $row->restaurant_name;
+            $this->productLib->restaurantChainId = $row->restaurant_chain_id;
+            $this->productLib->restaurantChain = $row->restaurant_chain;
             $this->productLib->productTypeId = $row->product_type_id;
             $this->productLib->productType = $row->product_type;
             $this->productLib->ingredient = $row->ingredient_text;
@@ -662,7 +504,140 @@ class ProductModel extends Model {
 		
 	}
 
+	function getProductsJsonAdmin() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		$filter = $this->input->post('f');
+		
+		if ($filter == false) {
+			$filter = '';
+		}
+		 
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		//$filter = 8;
+		//$q = 1;
+		
+		$start = 0;
+		$page = 0;
 
+        $base_query = 'SELECT product.*, product_type.product_type, ' .
+        		' manufacture.manufacture_name, restaurant.restaurant_name, restaurant_chain.restaurant_chain ' .
+				' FROM product';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM product';
+		
+		$where = ' LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id)  ' .
+				' LEFT JOIN manufacture ON (product.manufacture_id =  manufacture.manufacture_id) ' .
+				' LEFT JOIN restaurant ON (product.restaurant_id =  restaurant.restaurant_id) ' .
+				' LEFT JOIN restaurant_chain ON (product.restaurant_chain_id =  restaurant_chain.restaurant_chain_id) ' .
+				' WHERE  ';
+				
+		if (!empty($filter) ) {
+			$where .= ' product.has_fructose =  1 AND ';
+		}
+		
+		$where .= ' (' 
+				. '	product.product_name like "%' .$q . '%"';		
+		$where .= ' )';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY product_name';
+			$sort = 'product_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "ProductModel.getProductsJsonAdmin : " . $query);
+		$result = $this->db->query($query);
+		
+		$products = array();
+		
+		$geocodeArray = array();
+		foreach ($result->result() as $row) {
+			
+			$this->load->library('ProductLib');
+            unset($this->productLib);
+
+            $this->productLib->productId = $row->product_id;
+            $this->productLib->productName = $row->product_name;
+            $this->productLib->manufactureId = $row->manufacture_id;
+            $this->productLib->manufactureName = $row->manufacture_name;
+            $this->productLib->restaurantId = $row->restaurant_id;
+            $this->productLib->restaurantName = $row->restaurant_name;
+            $this->productLib->restaurantChainId = $row->restaurant_chain_id;
+            $this->productLib->restaurantChain = $row->restaurant_chain;
+            $this->productLib->productTypeId = $row->product_type_id;
+            $this->productLib->productType = $row->product_type;
+            $this->productLib->ingredient = $row->ingredient_text;
+            $this->productLib->brand = $row->brand;
+            $this->productLib->upc = $row->upc;
+            
+			$products[] = $this->productLib;
+			unset($this->productLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, '');
+		$arr = array(
+			'results'    => $products,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    
+	    return $arr;
+	}
 
 
 

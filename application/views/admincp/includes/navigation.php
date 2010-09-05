@@ -61,15 +61,12 @@ document.onclick = jsddm_close;
 		</li>
 		<li><?php echo anchor('admincp/ingredient', 'Ingredients'); ?></li>
 
-
 		<li><a href="#">Product</a>
 			<ul>
-				<li><?php echo anchor('admincp/product', 'Manage Products'); ?></li>
-                                <li><?php echo anchor('admincp/product/listproduct', 'All Products'); ?></li>
-                                <li><?php echo anchor('admincp/product/fructose', 'Products With Fructose'); ?></li>
+				<li><?php echo anchor('admincp/product', 'All Products'); ?></li>
+				<li><?php echo anchor('admincp/product/fructose', 'Products With Fructose'); ?></li>
 			</ul>
 		</li>
-
 
 		<li><a href="#">Types</a>
 			<ul>

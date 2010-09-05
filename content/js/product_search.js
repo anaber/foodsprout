@@ -62,7 +62,18 @@ function addResult(product, count) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
 	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/product/view/' + product.productId + '" id = "'+ product.productId +'" style="text-decoration:none;">'+ product.productName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;">Type : '+ product.productType + '<br />Brand:' + product.brand + '</div>' +
-	'	<div style="float:left; width:295px;">Manufacture:<br /><a href="/manufacture/view/' + product.manufactureId + '">' + product.manufactureName + '</a></div>' +
+	'	<div style="float:left; width:295px;">';
+	
+	if (product.restaurantName) {
+		html += 'Restaurant:<br /><a href="/restaurant/view/' + product.restaurantId + '">' + product.restaurantName + '</a>';
+	} else if (product.restaurantChain) {
+		html += 'Restaurant Chain<br /><a href = "/chain/view/'+product.restaurantChainId+'">' + product.restaurantChain + '</a>';
+	} else if (product.manufactureName) {
+		html += 'Manufacture:<br /><a href="/manufacture/view/' + product.manufactureId + '">' + product.manufactureName + '</a>';
+	}
+	
+	html +=
+	'</div>' +
 	'</div>';
 	
 	return html;

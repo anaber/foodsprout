@@ -11,38 +11,22 @@ class Product extends Controller {
 		if ($this->session->userdata('isAuthenticated') != 1 ) {
 			redirect('about/privatebeta');
 		}
-		global $GOOGLE_MAP_KEY;
-		
 		$data = array();
 		
-		// Getting information from models
-		$this->load->model('ProductModel');
-		$products = $this->ProductModel->listproduct();
-		
-		// List of views to be included
-		$data['LEFT'] = array(
-				'ad' => 'includes/banners/sky',
-			);
-		
+		// Views to include in the data array
 		$data['CENTER'] = array(
-				'map'  => 'includes/map',
 				'list' => '/product/product_list',
 			);
 		
-		// Data to be passed to the views
-		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['center']['map']['VIEW_HEADER'] = "Distributor Map";
-		$data['data']['center']['map']['width'] = '790';
-		$data['data']['center']['map']['height'] = '250';
-		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Product List";
-		$data['data']['center']['list']['LIST'] = $products;
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/product_filter',
+			);
 		
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
 	function newProducts() {
-		
+		global $GOOGLE_MAP_KEY;
 		$data = array();
 		
 		// Getting information from models
