@@ -88,6 +88,7 @@ class Manufacture extends Controller {
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
 				'map' => 'includes/right/map',
+				'info' => 'includes/left/info',
 			);
 
 		// Load all the views for the center column
@@ -112,6 +113,14 @@ class Manufacture extends Controller {
 		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
 		
+		// Left -> Info
+		$INFO = array (
+					'url' => $manufacture->url,
+					'facebook' => $manufacture->facebook,
+					'twitter' => $manufacture->twitter,
+				);
+		
+		$data['data']['left']['info']['INFO'] = $INFO;
 		
 		$data['MANUFACTURE'] = $manufacture;
 		

@@ -772,7 +772,7 @@ class RestaurantModel extends Model{
 			$this->restaurantLib->phone = $row->phone;
 			$this->restaurantLib->fax = $row->fax;
 			$this->restaurantLib->email = $row->email;
-			$this->restaurantLib->restaurantURL = $row->url;
+			$this->restaurantLib->url = $row->url;
 			$this->restaurantLib->facebook = $row->facebook;
 			$this->restaurantLib->twitter = $row->twitter;
 			$this->restaurantLib->status = $row->status;
