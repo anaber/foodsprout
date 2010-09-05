@@ -4,6 +4,7 @@
 <script>
 	
 	var manufactureId = <?php echo $MANUFACTURE->manufactureId; ?>;
+	var name = "<?php echo $MANUFACTURE->manufactureName; ?>";
 	var jsonData;
 	var currentContent;
 	
