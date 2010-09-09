@@ -46,29 +46,6 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 
 
 function reinitializeTableHeadingEvent(data) {
-	$("#heading_id").click(function(e) {
-		e.preventDefault();
-		order = getOrder(data, 'farm_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_id', order, data.param.q);
-	});
-	
-	$("#heading_farm").click(function(e) {
-		e.preventDefault();
-		order = getOrder(data, 'farm_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_name', order, data.param.q);
-	});
-	
-	$("#heading_farm_type").click(function(e) {
-		e.preventDefault();
-		order = getOrder(data, 'farm_type');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_type', order, data.param.q);
-	});
-	
-	$("#heading_farmer_type").click(function(e) {
-		e.preventDefault();
-		order = getOrder(data, 'farmer_type');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmer_type', order, data.param.q);
-	});
 	
 	$("#heading_user").click(function(e) {
 		e.preventDefault();
@@ -81,12 +58,7 @@ function reinitializeTableHeadingEvent(data) {
 		order = getOrder(data, 'track_ip');
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'track_ip', order, data.param.q);
 	});
-	
-	$("#heading_creation_date").click(function(e) {
-		e.preventDefault();
-		order = getOrder(data, 'creation_date');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'creation_date', order, data.param.q);
-	});
+		
 }
 
 function addResult(supplier, i) {
@@ -118,8 +90,8 @@ function getResultTableHeader() {
 	' <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "99%">' +
 	'	<thead>' +
 	'	<tr>' +
-	'		<th id = "heading_farm"><a href = "#" style = "color:#FFFFFF">Parent Name</a></th>' +
-	'		<th id = "heading_farm_type"><a href = "#" style = "color:#FFFFFF">Supplier Name</a></th>' +
+	'		<th><a href = "#" style = "color:#FFFFFF">Parent Name</a></th>' +
+	'		<th><a href = "#" style = "color:#FFFFFF">Supplier Name</a></th>' +
 	'		<th id = "heading_user"><a href = "#" style = "color:#FFFFFF">User</a></th>' +
 	'		<th id = "heading_track_ip"><a href = "#" style = "color:#FFFFFF">IP</a></th>' +
 	'	</tr>' +
