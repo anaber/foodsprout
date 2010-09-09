@@ -189,6 +189,13 @@ class Queue extends Controller {
 		$farmersMarket = $this->FarmersMarketModel->getQueueFarmersMarketJson();
 		echo json_encode($farmersMarket);
 	}
+	
+	function ajaxQueueSuppliers() {
+		$this->load->model('SupplierModel', '', TRUE);
+		$suppliers = $this->SupplierModel->getQueueSuppliersJson();
+		echo json_encode($suppliers);
+	}
+	
 }
 
 /* End of file queue.php */

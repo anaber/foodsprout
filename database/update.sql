@@ -63,4 +63,36 @@ SET user_id = '1',
 track_ip = '174.143.112.149';
 
 
+--
+-- 9/10/2010
+--
+UPDATE restaurant_chain_supplier
+SET user_id = '1', 
+track_ip = '174.143.112.149';
+
+UPDATE distributor_supplier
+SET user_id = '1', 
+track_ip = '174.143.112.149';
+
+UPDATE farmers_market_supplier
+SET user_id = '1', 
+track_ip = '174.143.112.149';
+
+UPDATE manufacture_supplier
+SET user_id = '1', 
+track_ip = '174.143.112.149';
+
+UPDATE restaurant_supplier
+SET user_id = '1', 
+track_ip = '174.143.112.149';
+
+UPDATE farm_supplier
+SET user_id = '1', 
+track_ip = '174.143.112.149';
+
+
+
+
+
+
 
