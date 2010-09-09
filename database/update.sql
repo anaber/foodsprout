@@ -90,6 +90,9 @@ UPDATE farm_supplier
 SET user_id = '1', 
 track_ip = '174.143.112.149';
 
+UPDATE product
+SET track_ip = '174.143.112.149';
+
 
 
 
