@@ -51,7 +51,9 @@ class AddressModel extends Model{
 		
 		if (!empty($zipcode) ) {
 			$city = $this->getCityFromZipcode($zipcode);
-			$query .= ' AND address.city_id IN (' . $city . ')';
+			if (!empty($city) ) {
+				$query .= ' AND address.city_id IN (' . $city . ')';
+			}
 		} else if (!empty($city) ) {
 			$query .= ' AND address.city_id IN (' . $city . ')';
 		}
@@ -100,8 +102,11 @@ class AddressModel extends Model{
 		$this->load->library('AddressLib');
 		
 		$row = $result->row();
-		
-		return $row->city_id;
+		if ($row) {
+			return $row->city_id;
+		} else {
+			return '';	
+		} 
 	}
 	
 	// Get all the information about one specific manufacture from an ID

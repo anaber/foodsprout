@@ -1238,6 +1238,360 @@ class SupplierModel extends Model{
 	    return $arr;
 	}
 	
+	function getQueueSuppliersJson() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$status = 'live';
+		
+		$query_count = 'SELECT 
+							(SELECT count(*)
+							FROM restaurant_supplier 
+							LEFT JOIN farm 
+								ON restaurant_supplier.supplier_farm_id = farm.farm_id 
+							LEFT JOIN distributor 
+								ON restaurant_supplier.supplier_distributor_id = distributor.distributor_id 
+							LEFT JOIN manufacture 
+								ON restaurant_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+							LEFT JOIN restaurant 
+								ON restaurant_supplier.supplier_restaurant_id = restaurant.restaurant_id 
+							WHERE restaurant_supplier.status = \''.$status.'\')  
+							
+							+
+							
+							(SELECT 
+								count(*)
+							FROM restaurant_chain_supplier 
+							LEFT JOIN farm 
+								ON restaurant_chain_supplier.supplier_farm_id = farm.farm_id 
+							LEFT JOIN distributor 
+								ON restaurant_chain_supplier.supplier_distributor_id = distributor.distributor_id 
+							LEFT JOIN manufacture 
+								ON restaurant_chain_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+							WHERE restaurant_chain_supplier.status = \''.$status.'\')  
+							
+							+
+							
+							(SELECT count(*)
+							FROM distributor_supplier 
+							LEFT JOIN farm 
+								ON distributor_supplier.supplier_farm_id = farm.farm_id 
+							LEFT JOIN distributor 
+								ON distributor_supplier.supplier_distributor_id = distributor.distributor_id 
+							LEFT JOIN manufacture 
+								ON distributor_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+							LEFT JOIN restaurant 
+								ON distributor_supplier.supplier_restaurant_id = restaurant.restaurant_id 
+							WHERE distributor_supplier.status = \''.$status.'\')  
+							
+							+
+							
+							(SELECT count(*)
+							FROM manufacture_supplier 
+							LEFT JOIN farm 
+								ON manufacture_supplier.supplier_farm_id = farm.farm_id 
+							LEFT JOIN distributor 
+								ON manufacture_supplier.supplier_distributor_id = distributor.distributor_id 
+							LEFT JOIN manufacture 
+								ON manufacture_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+							LEFT JOIN restaurant 
+								ON manufacture_supplier.supplier_restaurant_id = restaurant.restaurant_id 
+							WHERE manufacture_supplier.status = \''.$status.'\')  
+							
+							+
+							
+							(SELECT count(*)
+							FROM farm_supplier 
+							LEFT JOIN farm 
+								ON farm_supplier.supplier_farm_id = farm.farm_id 
+							LEFT JOIN distributor 
+								ON farm_supplier.supplier_distributor_id = distributor.distributor_id 
+							LEFT JOIN manufacture 
+								ON farm_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+							LEFT JOIN restaurant 
+								ON farm_supplier.supplier_restaurant_id = restaurant.restaurant_id 
+							WHERE farm_supplier.status = \''.$status.'\')  
+							
+							+
+							
+							(SELECT count(*)
+							FROM farmers_market_supplier 
+							LEFT JOIN farm 
+								ON farmers_market_supplier.supplier_farm_id = farm.farm_id 
+							WHERE farmers_market_supplier.status = \''.$status.'\')  
+							
+							AS num_records
+							';
+		
+		$result = $this->db->query($query_count);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		
+		$query = '(SELECT 
+						restaurant_supplier.restaurant_supplier_id as supplier_id, restaurant_supplier.restaurant_id AS id, CONCAT(\'restaurant\') AS type,
+						restaurant_supplier.supplier_farm_id, farm.farm_name, 
+						restaurant_supplier.supplier_manufacture_id, manufacture.manufacture_name, 
+						restaurant_supplier.supplier_distributor_id, distributor.distributor_name,
+						restaurant_supplier.supplier_restaurant_id, restaurant.restaurant_name,
+						(
+							SELECT restaurant_name 
+							FROM restaurant
+							WHERE restaurant.restaurant_id = restaurant_supplier.restaurant_id
+						) AS parent_name,
+						restaurant_supplier.user_id, restaurant_supplier.track_ip, user.email, user.first_name
+					FROM restaurant_supplier 
+					LEFT JOIN farm 
+						ON restaurant_supplier.supplier_farm_id = farm.farm_id 
+					LEFT JOIN distributor 
+						ON restaurant_supplier.supplier_distributor_id = distributor.distributor_id 
+					LEFT JOIN manufacture 
+						ON restaurant_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+					LEFT JOIN restaurant 
+						ON restaurant_supplier.supplier_restaurant_id = restaurant.restaurant_id 
+					LEFT JOIN user 
+						ON restaurant_supplier.user_id = user.user_id 
+					WHERE restaurant_supplier.status = \''.$status.'\')  
+					
+					UNION
+					
+					(SELECT 
+						restaurant_chain_supplier.restaurant_chain_supplier_id as supplier_id, restaurant_chain_supplier.restaurant_chain_id AS id, CONCAT(\'restaurantchain\') AS type,
+						restaurant_chain_supplier.supplier_farm_id, farm.farm_name, 
+						restaurant_chain_supplier.supplier_manufacture_id, manufacture.manufacture_name, 
+						restaurant_chain_supplier.supplier_distributor_id, distributor.distributor_name,
+						NULL AS supplier_restaurant_id, NULL AS restaurant_name,
+						(
+							SELECT restaurant_chain 
+							FROM restaurant_chain
+							WHERE restaurant_chain.restaurant_chain_id = restaurant_chain_supplier.restaurant_chain_id
+						) AS parent_name,
+						restaurant_chain_supplier.user_id, restaurant_chain_supplier.track_ip, user.email, user.first_name
+					FROM restaurant_chain_supplier 
+					LEFT JOIN farm 
+						ON restaurant_chain_supplier.supplier_farm_id = farm.farm_id 
+					LEFT JOIN distributor 
+						ON restaurant_chain_supplier.supplier_distributor_id = distributor.distributor_id 
+					LEFT JOIN manufacture 
+						ON restaurant_chain_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+					LEFT JOIN user 
+						ON restaurant_chain_supplier.user_id = user.user_id 
+					WHERE restaurant_chain_supplier.status = \''.$status.'\')
+					
+					UNION
+					
+					(SELECT 
+						distributor_supplier.distributor_supplier_id as supplier_id, distributor_supplier.distributor_id AS id, CONCAT(\'distributor\') AS type,
+						distributor_supplier.supplier_farm_id, farm.farm_name, 
+						distributor_supplier.supplier_manufacture_id, manufacture.manufacture_name, 
+						distributor_supplier.supplier_distributor_id, distributor.distributor_name,
+						distributor_supplier.supplier_restaurant_id, restaurant.restaurant_name,
+						(
+							SELECT distributor_name 
+							FROM distributor
+							WHERE distributor.distributor_id = distributor_supplier.distributor_id
+						) AS parent_name,
+						distributor_supplier.user_id, distributor_supplier.track_ip, user.email, user.first_name
+					FROM distributor_supplier 
+					LEFT JOIN farm 
+						ON distributor_supplier.supplier_farm_id = farm.farm_id 
+					LEFT JOIN distributor 
+						ON distributor_supplier.supplier_distributor_id = distributor.distributor_id 
+					LEFT JOIN manufacture 
+						ON distributor_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+					LEFT JOIN restaurant 
+						ON distributor_supplier.supplier_restaurant_id = restaurant.restaurant_id 
+					LEFT JOIN user 
+						ON distributor_supplier.user_id = user.user_id 
+					WHERE distributor_supplier.status = \''.$status.'\')  
+					
+					UNION
+					
+					(SELECT 
+						manufacture_supplier.manufacture_supplier_id as supplier_id, manufacture_supplier.manufacture_id AS id, CONCAT(\'manufacture\') AS type,
+						manufacture_supplier.supplier_farm_id, farm.farm_name, 
+						manufacture_supplier.supplier_manufacture_id, manufacture.manufacture_name, 
+						manufacture_supplier.supplier_distributor_id, distributor.distributor_name,
+						manufacture_supplier.supplier_restaurant_id, restaurant.restaurant_name,
+						(
+							SELECT manufacture_name 
+							FROM manufacture
+							WHERE manufacture.manufacture_id = manufacture_supplier.manufacture_id
+						) AS parent_name,
+						manufacture_supplier.user_id, manufacture_supplier.track_ip, user.email, user.first_name
+					FROM manufacture_supplier 
+					LEFT JOIN farm 
+						ON manufacture_supplier.supplier_farm_id = farm.farm_id 
+					LEFT JOIN distributor 
+						ON manufacture_supplier.supplier_distributor_id = distributor.distributor_id 
+					LEFT JOIN manufacture 
+						ON manufacture_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+					LEFT JOIN restaurant 
+						ON manufacture_supplier.supplier_restaurant_id = restaurant.restaurant_id 
+					LEFT JOIN user 
+						ON manufacture_supplier.user_id = user.user_id 
+					WHERE manufacture_supplier.status = \''.$status.'\')  
+					
+					UNION
+					
+					(SELECT 
+						farm_supplier.farm_supplier_id as supplier_id, farm_supplier.farm_id AS id, CONCAT(\'farm\') AS type,
+						farm_supplier.supplier_farm_id, farm.farm_name, 
+						farm_supplier.supplier_manufacture_id, manufacture.manufacture_name, 
+						farm_supplier.supplier_distributor_id, distributor.distributor_name,
+						farm_supplier.supplier_restaurant_id, restaurant.restaurant_name,
+						(
+							SELECT farm_name 
+							FROM farm
+							WHERE farm.farm_id = farm_supplier.farm_id
+						) AS parent_name,
+						farm_supplier.user_id, farm_supplier.track_ip, user.email, user.first_name
+					FROM farm_supplier 
+					LEFT JOIN farm 
+						ON farm_supplier.supplier_farm_id = farm.farm_id 
+					LEFT JOIN distributor 
+						ON farm_supplier.supplier_distributor_id = distributor.distributor_id 
+					LEFT JOIN manufacture 
+						ON farm_supplier.supplier_manufacture_id = manufacture.manufacture_id 
+					LEFT JOIN restaurant 
+						ON farm_supplier.supplier_restaurant_id = restaurant.restaurant_id 
+					LEFT JOIN user 
+						ON farm_supplier.user_id = user.user_id 
+					WHERE farm_supplier.status = \''.$status.'\')  
+					
+					UNION
+					
+					(SELECT 
+						farmers_market_supplier.farmers_market_supplier_id as supplier_id, farmers_market_supplier.farmers_market_id AS id, CONCAT(\'farmersmarket\') AS type,
+						farmers_market_supplier.supplier_farm_id, farm.farm_name, 
+						NULL AS supplier_manufacture_id, NULL AS manufacture_name,
+						NULL AS supplier_distributor_id, NULL AS distributor_name,
+						NULL AS supplier_restaurant_id, NULL AS restaurant_name,
+						(
+							SELECT farmers_market_name 
+							FROM farmers_market
+							WHERE farmers_market.farmers_market_id = farmers_market_supplier.farmers_market_id
+						) AS parent_name,
+						farmers_market_supplier.user_id, farmers_market_supplier.track_ip, user.email, user.first_name
+					FROM farmers_market_supplier 
+					LEFT JOIN farm 
+						ON farmers_market_supplier.supplier_farm_id = farm.farm_id 
+					LEFT JOIN user 
+						ON farmers_market_supplier.user_id = user.user_id 
+					WHERE farmers_market_supplier.status = \''.$status.'\')      
+					';
+		
+		$start = 0;
+		$page = 0;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY supplier_id';
+			$sort = 'supplier_id';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "SupplierModel.getQueueSuppliersJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$suppliers = array();
+		$CI =& get_instance();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('SupplierLib');
+			unset($this->supplierLib);
+			
+			$CI->load->model('AddressModel','',true);
+			
+			$this->supplierLib->supplierId = $row['supplier_id'];
+			$this->supplierLib->parentType = $row['type'];
+			$this->supplierLib->parentId = $row['id'];
+			$this->supplierLib->parentName = $row['parent_name'];
+			
+			if (isset( $row['restaurant_name']) ) {
+				$this->supplierLib->supplierType = 'restaurant';
+				$this->supplierLib->supplierName = $row['restaurant_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_restaurant_id'];
+				
+			} else if ( isset($row['farm_name']) ) {
+				$this->supplierLib->supplierType = 'farm';
+				$this->supplierLib->supplierName = $row['farm_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_farm_id'];
+				
+			} else if ( isset($row['manufacture_name']) ) {
+				$this->supplierLib->supplierType = 'manufacture';
+				$this->supplierLib->supplierName = $row['manufacture_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_manufacture_id'];
+				
+			} else if ( isset($row['distributor_name']) ) {
+				$this->supplierLib->supplierType = 'distributor';
+				$this->supplierLib->supplierName = $row['distributor_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_distributor_id'];
+				
+			}
+			$this->supplierLib->userId = $row['user_id'];
+			$this->supplierLib->email = $row['email'];
+			$this->supplierLib->ip = $row['track_ip'];
+			
+			$suppliers[] = $this->supplierLib;
+			unset($this->supplierLib);
+		}
+		
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $suppliers,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
 }
 
 
