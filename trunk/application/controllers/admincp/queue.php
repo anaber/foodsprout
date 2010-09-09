@@ -196,6 +196,12 @@ class Queue extends Controller {
 		echo json_encode($suppliers);
 	}
 	
+	function ajaxQueueMenuItems() {
+		$this->load->model('ProductModel', '', TRUE);
+		$products = $this->ProductModel->getQueueProductsJson();
+		echo json_encode($products);
+	}
+	
 }
 
 /* End of file queue.php */
