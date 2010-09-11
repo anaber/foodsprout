@@ -1,4 +1,4 @@
-<script src="<?php echo base_url()?>js/farm_search.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/search/farm_search.js" type="text/javascript"></script>
 <script>
 var showMap = true;
 var showFilters = true;
