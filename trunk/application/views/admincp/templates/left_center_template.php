@@ -13,7 +13,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 }
 */
 ?>
-
+<br />
 <div id="main-content">
 <table width = "980" border = "0" cellpadding = "5" cellspacing = "0">
 	<tr>
