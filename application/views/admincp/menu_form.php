@@ -208,7 +208,7 @@ if (isset($MANUFACTURE_ID)) {
         <tr>
             <td width = "25%">Ingredient</td>
             <td width = "75%">
-                <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "5" cols = "30"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
+                <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "8" cols = "50"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
             </td>
         </tr>
 
