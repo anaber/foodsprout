@@ -145,12 +145,18 @@ class Distributor extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $distributor->distributorName . ' (D)';
+		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($distributor->distributorName, '', 'supplier', 'add');
 		$data['data']['center']['list']['DISTRIBUTOR'] = $distributor;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'distributor_supplier';
 		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
+		$data['BREADCRUMB'] = array(
+				'Distributors' => '/admincp/distributor',
+				$distributor->distributorName => '/admincp/distributor/update/' . $distributor->distributorId,
+				'Add Supplier' => '/admincp/distributor/add_supplier/' . $distributor->distributorId,
+			);
+			
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
@@ -163,6 +169,9 @@ class Distributor extends Controller {
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'distributor');
 		
 		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', '', $supplier->distributorId, '', '');
+		
+		$this->load->model('DistributorModel');
+		$distributor = $this->DistributorModel->getDistributorFromId($supplier->distributorId);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -178,11 +187,17 @@ class Distributor extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $supplier->distributorId;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (D)';
+		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($distributor->distributorName, $id, 'supplier', 'update');
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'distributor_supplier';
 		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
+		
+		$data['BREADCRUMB'] = array(
+				'Distributor' => '/admincp/distributor',
+				$distributor->distributorName => '/admincp/distributor/update/' . $supplier->distributorId,
+				'Supplier #' . $supplier->supplierId => '/admincp/distributor/update_supplier/' . $supplier->supplierId,
+			);
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
@@ -253,10 +268,16 @@ class Distributor extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $distributor->distributorName . ' (D)';
+		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($distributor->distributorName, '', 'address', 'add');
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['ADDRESSES'] = $addresses;
+		
+		$data['BREADCRUMB'] = array(
+				'Distributors' => '/admincp/distributor',
+				$distributor->distributorName => '/admincp/distributor/update/' . $distributor->distributorId,
+				'Add Address' => '/admincp/distributor/add_address/' . $distributor->distributorId,
+			);
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
@@ -276,6 +297,9 @@ class Distributor extends Controller {
 		
 		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', $address->distributorId, '', '', '');
 		
+		$this->load->model('DistributorModel');
+		$distributor = $this->DistributorModel->getDistributorFromId($address->distributorId);
+		
 		// List of views to be included
 		$data['LEFT'] = array(
 				'navigation' => 'admincp/includes/left/nav_distributor',
@@ -290,12 +314,18 @@ class Distributor extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['DISTRIBUTOR_ID'] = $address->distributorId;
 		
-		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id . ' (D)';
+		$data['data']['center']['form']['VIEW_HEADER'] = prepareHeading($distributor->distributorName, $id, 'address', 'update');
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['ADDRESS'] = $address;
 		$data['data']['center']['form']['DISTRIBUTOR_ID'] = $address->distributorId;
 		$data['data']['center']['form']['ADDRESSES'] = $addresses;
+		
+		$data['BREADCRUMB'] = array(
+				'Distributors' => '/admincp/distributor',
+				$distributor->distributorName => '/admincp/distributor/update/' . $address->distributorId,
+				'Address #' . $address->addressId => '/admincp/distributor/update_address/' . $address->addressId,
+			);
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		

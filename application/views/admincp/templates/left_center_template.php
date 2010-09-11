@@ -13,15 +13,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 }
 */
 ?>
-<?php
-	if (isset($BREADCRUMB) ) {
-		
-		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
-	}
-	else{
-		echo '<br>';
-	}
-?>
+
 <div id="main-content">
 <table width = "980" border = "0" cellpadding = "5" cellspacing = "0">
 	<tr>
@@ -43,6 +35,14 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		<td>
 			
 		<td width = "830" valign = "top">
+		
+		<?php
+			if (isset($BREADCRUMB) ) {
+				
+				$this->load->view('/admincp/includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
+			}
+		?>
+		
 		<?php
 			foreach($CENTER as $key => $view) {
 				if (isset($data['center'][$key]['VIEW_HEADER']) ) {
