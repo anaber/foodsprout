@@ -143,12 +143,18 @@ class FarmersMarket extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['FARMERS_MARKET_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Supplier - " . $farmersMarket->farmersMarketName . ' (FM)';
+		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($farmersMarket->farmersMarketName, '', 'supplier', 'add');
 		$data['data']['center']['list']['FARMERS_MARKET'] = $farmersMarket;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'farmers_market_supplier';
 		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
+		$data['BREADCRUMB'] = array(
+				'Farmers Market' => '/admincp/farmersmarket',
+				$farmersMarket->farmersMarketName => '/admincp/farmersmarket/update/' . $farmersMarket->farmersMarketId,
+				'Add Supplier' => '/admincp/farmersmarket/add_supplier/' . $farmersMarket->farmersMarketId,
+			);
+			
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
@@ -162,6 +168,10 @@ class FarmersMarket extends Controller {
 		
 		$this->load->model('SupplierModel','',true);
 		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', '', '', '', $supplier->farmersMarketId );
+		
+		$this->load->model('FarmersMarketModel');
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($supplier->farmersMarketId);
+		
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -178,12 +188,18 @@ class FarmersMarket extends Controller {
 		$data['data']['left']['navigation']['FARMERS_MARKET_ID'] = $supplier->farmersMarketId;
 		$data['data']['left']['navigation']['SUPPLIER_ID'] = $supplier->supplierId;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Supplier - " . $id . ' (FM)';
+		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($farmersMarket->farmersMarketName, $id, 'supplier', 'update');
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'farmers_market_supplier';
 		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
+		$data['BREADCRUMB'] = array(
+				'Farmers Market' => '/admincp/farmersmarket',
+				$farmersMarket->farmersMarketName => '/admincp/farmersmarket/update/' . $supplier->farmersMarketId,
+				'Supplier #' . $supplier->supplierId => '/admincp/farmersmarket/update_supplier/' . $supplier->supplierId,
+			);
+			
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
@@ -216,11 +232,17 @@ class FarmersMarket extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['FARMERS_MARKET_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Address - " . $farmersMarket->farmersMarketName . " (FM)";
+		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($farmersMarket->farmersMarketName, '', 'address', 'add');
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['ADDRESSES'] = $addresses;
 		
+		$data['BREADCRUMB'] = array(
+				'Farmers Market' => '/admincp/farmersmarket',
+				$farmersMarket->farmersMarketName => '/admincp/farmersmarket/update/' . $farmersMarket->farmersMarketId,
+				'Add Address' => '/admincp/farmersmarket/add_address/' . $farmersMarket->farmersMarketId,
+			);
+			
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
@@ -239,6 +261,9 @@ class FarmersMarket extends Controller {
 		
 		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', '', $address->farmersMarketId, '', '');
 		
+		$this->load->model('FarmersMarketModel');
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($address->farmersMarketId);
+		
 		// List of views to be included
 		$data['LEFT'] = array(
 				'navigation' => 'admincp/includes/left/nav_farmers_market',
@@ -254,12 +279,18 @@ class FarmersMarket extends Controller {
 		$data['data']['left']['navigation']['FARMERS_MARKET_ID'] = $address->farmersMarketId;
 		$data['data']['left']['navigation']['ADDRESS_ID'] = $address->addressId;
 		
-		$data['data']['center']['form']['VIEW_HEADER'] = "Update Address - #" . $id . ' (FM)';
+		$data['data']['center']['form']['VIEW_HEADER'] = prepareHeading($farmersMarket->farmersMarketName, $id, 'address', 'update');
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['ADDRESS'] = $address;
 		$data['data']['center']['form']['FARMERS_MARKET_ID'] = $address->farmersMarketId;
 		$data['data']['center']['form']['ADDRESSES'] = $addresses;
+		
+		$data['BREADCRUMB'] = array(
+				'Farmers Market' => '/admincp/farmersmarket',
+				$farmersMarket->farmersMarketName => '/admincp/farmersmarket/update/' . $address->farmersMarketId,
+				'Address #' . $address->addressId => '/admincp/farmersmarket/update_address/' . $address->addressId,
+			);
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 		

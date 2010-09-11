@@ -103,5 +103,16 @@ function distance($lat1, $lon1, $lat2, $lon2, $unit) {
 	}
 }
 
+function prepareHeading ($company, $id, $crudEntity, $action) {
+	$str = '';
+	if ($action == 'add') {
+		$str = 'Add ' . $crudEntity . ' for "' . $company . '"';
+	} else if ($action == 'update') {
+		$str = 'Update ' . $crudEntity . ' for "' . $company . '" - #' . $id;
+	}
+	
+	return $str;
+}
+
 
 ?>
