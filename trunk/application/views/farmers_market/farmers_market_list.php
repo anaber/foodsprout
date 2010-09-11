@@ -1,4 +1,4 @@
-<script src="<?php echo base_url()?>js/farmers_market_search.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/search/farmers_market_search.js" type="text/javascript"></script>
 <script>
 var showMap = true;
 var farmersMarketData;

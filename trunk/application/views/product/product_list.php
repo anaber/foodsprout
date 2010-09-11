@@ -1,4 +1,4 @@
-<script src="<?php echo base_url()?>js/product_search.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/search/product_search.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 
 <script>

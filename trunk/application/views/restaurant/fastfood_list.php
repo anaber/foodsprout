@@ -1,4 +1,4 @@
-<script src="<?php echo base_url()?>js/restaurant_chain_search.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/search/restaurant_chain_search.js" type="text/javascript"></script>
 <!--<script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>-->
 <script>
 	$(document).ready(function() {
