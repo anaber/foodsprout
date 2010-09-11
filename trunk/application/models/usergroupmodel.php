@@ -58,7 +58,7 @@ class UsergroupModel extends Model{
 	function getUsergroupFromId($usergroupId) {
 		
 		$query = "SELECT * FROM user_group WHERE user_group_id = " . $usergroupId;
-		log_message('debug', "UsergroupModel.getFarmFromId : " . $query);
+		log_message('debug', "UsergroupModel.getUsergroupFromId : " . $query);
 		$result = $this->db->query($query);
 		
 		$usergroup = array();

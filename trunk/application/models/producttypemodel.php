@@ -7,7 +7,7 @@ class ProductTypeModel extends Model{
 	{
 		$query = "SELECT * FROM product_type ORDER BY product_type";
 		
-		log_message('debug', "ProducttypeModel.list_producttype : " . $query);
+		log_message('debug', "ProducttypeModel.listProductType : " . $query);
 		$result = $this->db->query($query);
 		
 		$productTypes = array();

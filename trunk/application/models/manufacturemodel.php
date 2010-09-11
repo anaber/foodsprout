@@ -102,7 +102,6 @@ class ManufactureModel extends Model{
 	// Get all the information about one specific manufacture from an ID
 	function getManufactureFromId($manufactureId) {
 		
-		//$query = "SELECT manufacture.*, address.* FROM manufacture, address WHERE manufacture.manufacture_id = address.manufacture_id AND manufacture.manufacture_id = " . $manufactureId;
 		$query = "SELECT manufacture.*, company.company_name " .
 				" FROM manufacture, company" .
 				" WHERE manufacture.manufacture_id = " . $manufactureId .
@@ -218,7 +217,7 @@ class ManufactureModel extends Model{
 			
 			if ($companyId) {
 				$query = "SELECT * FROM manufacture WHERE manufacture_name = \"" . $manufactureName . "\" AND company_id = '" . $companyId . "'";
-				log_message('debug', 'ManufactureModel.addManufacture : Try to get duplicate Manufacture record : ' . $query);
+				log_message('debug', 'ManufactureModel.addManufactureWithNameOnly : Try to get duplicate Manufacture record : ' . $query);
 				
 				$result = $this->db->query($query);
 				
@@ -226,7 +225,7 @@ class ManufactureModel extends Model{
 					$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, status, track_ip, user_id)" .
 							" values (NULL, ".$companyId.", NULL, \"" . $manufactureName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 					
-					log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
+					log_message('debug', 'ManufactureModel.addManufactureWithNameOnly : Insert Manufacture : ' . $query);
 					$return = true;
 					
 					if ( $this->db->query($query) ) {
@@ -274,11 +273,13 @@ class ManufactureModel extends Model{
 		
 		$where = ' WHERE manufacture.manufacture_type_id = manufacture_type.manufacture_type_id';
 		
+		if (! empty ($q) ) {
 		$where .= ' AND (' 
 				. '	manufacture.manufacture_name like "%' .$q . '%"'
 				. ' OR manufacture.manufacture_id like "%' . $q . '%"'
-				. ' OR manufacture_type.manufacture_type like "%' . $q . '%"';		
-		$where .= ' )';
+				. ' OR manufacture_type.manufacture_type like "%' . $q . '%"'		
+				. ' )';
+		}
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -322,7 +323,7 @@ class ManufactureModel extends Model{
 			}
 		}
 		
-		log_message('debug', "FarmModel.getFarmsJsonAdmin : " . $query);
+		log_message('debug', "ManufactureModel.getManufactureJsonAdmin : " . $query);
 		$result = $this->db->query($query);
 		
 		$manufactures = array();
@@ -484,7 +485,7 @@ class ManufactureModel extends Model{
 			}
 		}
 		
-		log_message('debug', "FarmModel.getFarmsJsonAdmin : " . $query);
+		log_message('debug', "ManufactureModel.getManufactureJson : " . $query);
 		$result = $this->db->query($query);
 		
 		$manufactures = array();

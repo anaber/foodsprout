@@ -265,7 +265,7 @@ class SupplierModel extends Model{
 		//echo $query . "<BR /><BR />";
 		
 		
-		log_message('debug', "AddressModel.getAddressForCompany : " . $query);
+		log_message('debug', "SupplierModel.getSupplierForCompany : " . $query);
 		$result = $this->db->query($query);
 		
 		foreach ($result->result_array() as $row) {
@@ -523,7 +523,7 @@ class SupplierModel extends Model{
 		}
 		$query .= ' AND ' . $idFieldName . ' <> ' . $supplierId;
 		
-		log_message('debug', 'SupplierModel.addSuppluer : Try to get duplicate supplier record : ' . $query);
+		log_message('debug', 'SupplierModel.updateSuppluer : Try to get duplicate supplier record : ' . $query);
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
@@ -1252,7 +1252,7 @@ class SupplierModel extends Model{
 			$q = '';
 		}
 		
-		$status = 'live';
+		$status = 'queue';
 		
 		$query_count = 'SELECT 
 							(SELECT count(*)

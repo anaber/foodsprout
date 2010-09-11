@@ -123,7 +123,7 @@ class CompanyModel extends Model{
 		
 		$companies = '';
 		
-		log_message('debug', "CompanyModel.getCompanyBasedOnType : " . $query);
+		log_message('debug', "CompanyModel.getCompanyBasedOnTypeFrontEnd : " . $query);
 		$result = $this->db->query($query);
 		
 		if ( $result->num_rows() > 0) {

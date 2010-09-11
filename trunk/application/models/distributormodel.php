@@ -176,7 +176,7 @@ class DistributorModel extends Model{
 			
 			if ($companyId) {
 				$query = "SELECT * FROM distributor WHERE distributor_name = \"" . $distributorName . "\" AND company_id = '" . $companyId . "'";
-				log_message('debug', 'DistributorModel.addDistributor : Try to get duplicate Distributor record : ' . $query);
+				log_message('debug', 'DistributorModel.addDistributorWithNameOnly : Try to get duplicate Distributor record : ' . $query);
 				
 				$result = $this->db->query($query);
 				
@@ -184,7 +184,7 @@ class DistributorModel extends Model{
 					$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, status, track_ip, user_id)" .
 							" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 					
-					log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
+					log_message('debug', 'DistributorModel.addDistributorWithNameOnly : Insert Distributor : ' . $query);
 					$return = true;
 					
 					if ( $this->db->query($query) ) {
@@ -199,7 +199,7 @@ class DistributorModel extends Model{
 					$return = false;
 				}
 			} else {
-				//echo "DEEPAK IN FALSE";
+				
 				$return = false;
 			}
 			
@@ -507,7 +507,7 @@ class DistributorModel extends Model{
 			}
 		}
 		
-		log_message('debug', "DistributorModel.getDistributorsJsonAdmin : " . $query);
+		log_message('debug', "DistributorModel.getQueueDistributorJson : " . $query);
 		$result = $this->db->query($query);
 		
 		$distributors = array();

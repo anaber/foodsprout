@@ -60,7 +60,7 @@ class MeattypeModel extends Model{
 	function getMeattypeFromId($meattypeId) {
 		
 		$query = "SELECT * FROM meat_type WHERE meat_type_id = " . $meattypeId;
-		log_message('debug', "MeattypeModel.getFarmFromId : " . $query);
+		log_message('debug', "MeattypeModel.getMeattypeFromId : " . $query);
 		$result = $this->db->query($query);
 		
 		$meattype = array();
