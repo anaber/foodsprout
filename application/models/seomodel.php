@@ -5,7 +5,7 @@ class SeoModel extends Model{
 	function getSeoDetailsFromPage($page) {
 		
 		$query = 'SELECT * FROM seo_page WHERE page = \''. $page . '\'';
-		log_message('debug', "SeoPageModel.getSeoPageFromPage : " . $query);
+		log_message('debug', "SeoPageModel.getSeoDetailsFromPage : " . $query);
 		$result = $this->db->query($query);
 		
 		$this->load->library('SeoLib');

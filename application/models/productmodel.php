@@ -25,76 +25,11 @@ class ProductModel extends Model {
         }
         return $products;
     }
-    
-    /**
-	 * I may remove this method. I do not like this
-	 */
-    function listProductDetails($hasFructose = 0,  $currentPage = 1, $dispPerPage = 10) {
-        if ($hasFructose == 1) {
-            $whereClause = " WHERE has_fructose = 1";
-        } else {
-            $whereClause = " ";
-        }
-        $query = "SELECT p.*,
-                  c.company_name,
-                  pt.product_type,
-                  r.restaurant_name,
-                  rc.restaurant_chain,
-                  m.manufacture_name
-                FROM product p ";
-        
-        $query = $query 
-            . " LEFT JOIN company c ON (p.company_id =  c.company_id) "
-            . " LEFT JOIN product_type pt ON (p.product_type_id =  pt.product_type_id) "
-            . " LEFT JOIN restaurant r ON (p.restaurant_id =  r.restaurant_id) "
-            . " LEFT JOIN restaurant_chain rc ON (p.restaurant_chain_id =  rc.restaurant_chain_id) "
-            . " LEFT JOIN manufacture m ON (p.manufacture_id =  m.manufacture_id) "
-            ;
-
-        $startRecord = ($currentPage - 1) * $dispPerPage ;
-        $query = $query . " $whereClause ORDER BY product_ID LIMIT $startRecord, $dispPerPage";
-
-
-        log_message('debug', "ProductModel.listProductDetails : " . $query);
-        $result = $this->db->query($query);
-
-        $products = array();
-        foreach ($result->result() as $row) {
-
-            $this->load->library('ProductLib');
-            unset($this->productLib);
-
-            $this->productLib->productId = $row->product_id;
-            $this->productLib->productName = $row->product_name;
-            $this->productLib->companyId = $row->company_id;
-            $this->productLib->companyName = $row->company_name;
-            $this->productLib->restaurantId = $row->restaurant_id;
-            $this->productLib->restaurantName = $row->restaurant_name;
-            $this->productLib->restaurantChainId = $row->restaurant_chain_id;
-            $this->productLib->restaurantChainName = $row->restaurant_chain;
-            $this->productLib->manufactureId = $row->manufacture_id;
-            $this->productLib->manufactureName = $row->manufacture_name;
-            $this->productLib->productTypeId = $row->product_type_id;
-            $this->productLib->productType = $row->product_type;
-            $this->productLib->ingredient = $row->ingredient_text;
-            $this->productLib->brand = $row->brand;
-            $this->productLib->upc = $row->upc;
-            $this->productLib->status = $row->status;
-            $this->productLib->fructose = $row->has_fructose;
-            $this->productLib->userId = $row->user_id;
-            $this->productLib->creationDate = $row->creation_date;
-            $this->productLib->modifyDate = $row->modify_date;
-
-            $products[] = $this->productLib;
-            unset($this->productLib);
-        }
-        return $products;
-    }
 
     function getProductFromId($productId) {
 
         $query = "SELECT * FROM product WHERE product_id = " . $productId;
-        log_message('debug', "ProductModel.getFarmFromId : " . $query);
+        log_message('debug', "ProductModel.getProductFromId : " . $query);
         $result = $this->db->query($query);
 
         $product = array();
@@ -732,7 +667,7 @@ class ProductModel extends Model {
 			}
 		}
 		
-		log_message('debug', "ProductModel.getProductsJsonAdmin : " . $query);
+		log_message('debug', "ProductModel.getQueueProductsJson : " . $query);
 		$result = $this->db->query($query);
 		
 		$products = array();

@@ -66,7 +66,7 @@ class FarmModel extends Model{
 				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
 						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
 				
-				log_message('debug', 'FarmModel.addManufacture : Insert Farm : ' . $query);
+				log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
 				$return = true;
 				
 				if ( $this->db->query($query) ) {
@@ -91,7 +91,6 @@ class FarmModel extends Model{
 	// Get all the information about one specific farm from an ID
 	function getFarmFromId($farmId) {
 		
-		//$query = "SELECT manufacture.*, address.* FROM manufacture, address WHERE manufacture.manufacture_id = address.manufacture_id AND manufacture.manufacture_id = " . $manufactureId;
 		$query = "SELECT farm.*, company.company_name, farm_type.farm_type " .
 				" FROM farm, company, farm_type " .
 				" WHERE farm.farm_id = " . $farmId . 
@@ -119,7 +118,6 @@ class FarmModel extends Model{
 			$this->FarmLib->facebook = $row->facebook;
 			$this->FarmLib->twitter = $row->twitter;
 			$this->FarmLib->status = $row->status;
-			
 			
 			$CI =& get_instance();
 			
@@ -208,7 +206,7 @@ class FarmModel extends Model{
 			
 			if ($companyId) {
 				$query = "SELECT * FROM farm WHERE farm_name = \"" . $farmName . "\" AND company_id = '" . $companyId . "'";
-				log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
+				log_message('debug', 'FarmModel.addFarmWithNameOnly : Try to get duplicate Farm record : ' . $query);
 				
 				$result = $this->db->query($query);
 				
@@ -216,7 +214,7 @@ class FarmModel extends Model{
 					$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, status, track_ip)" .
 							" values (NULL, ".$companyId.", NULL, \"" . $farmName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "' )";
 					
-					log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
+					log_message('debug', 'FarmModel.addFarmWithNameOnly : Insert Farm : ' . $query);
 					$return = true;
 					
 					if ( $this->db->query($query) ) {
@@ -265,12 +263,13 @@ class FarmModel extends Model{
 		
 		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id';
 		
+		if (! empty ($q) ) {
 		$where .= ' AND (' 
 				. '	farm.farm_name like "%' .$q . '%"'
 				. ' OR farm.farm_id like "%' . $q . '%"'
-				. ' OR farm_type.farm_type like "%' . $q . '%"';		
-		$where .= ' )';
-		
+				. ' OR farm_type.farm_type like "%' . $q . '%"'		
+				. ' )';
+		}
 		$base_query_count = $base_query_count . $where;
 		
 		$query = $base_query_count;
@@ -590,7 +589,6 @@ class FarmModel extends Model{
 			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 		}
 		
-		//$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel);
 		$params = requestToParams3($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $radius);
 		$arr = array(
 			'results'    => $farms,

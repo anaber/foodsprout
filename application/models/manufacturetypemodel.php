@@ -31,7 +31,7 @@ class ManufactureTypeModel extends Model{
 		$return = true;
 		
 		$query = "SELECT * FROM manufacture_type WHERE manufacture_type = \"" . $this->input->post('manufactureType') . "\"";
-		log_message('debug', 'ManufacturetypeModel.addManufacturetype : Try to get duplicate Manufacturetype record : ' . $query);
+		log_message('debug', 'ManufacturetypeModel.addManufactureType : Try to get duplicate Manufacturetype record : ' . $query);
 		
 		$result = $this->db->query($query);
 		
@@ -60,7 +60,7 @@ class ManufactureTypeModel extends Model{
 	function getManufactureTypeFromId($manufacturetypeId) {
 		
 		$query = "SELECT * FROM manufacture_type WHERE manufacture_type_id = " . $manufacturetypeId;
-		log_message('debug', "ManufacturetypeModel.getManufacturetypeFromId : " . $query);
+		log_message('debug', "ManufacturetypeModel.getManufactureTypeFromId : " . $query);
 		$result = $this->db->query($query);
 		
 		$manufactureType = array();

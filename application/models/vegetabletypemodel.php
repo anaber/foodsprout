@@ -39,7 +39,7 @@ class VegetabletypeModel extends Model{
 			
 			$query = "INSERT INTO vegetable_type (vegetable_type_id, vegetable_type)" .
 					" values (NULL, \"" . $this->input->post('vegetabletypeName') . "\")";
-			log_message('debug', 'VegetabletypeModel.addvegetabletype : Insert Vegetabletype : ' . $query);
+			log_message('debug', 'VegetabletypeModel.addVegetabletype : Insert Vegetabletype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
 				$return = true;

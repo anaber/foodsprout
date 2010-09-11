@@ -164,7 +164,7 @@ class RestaurantChainModel extends Model{
 		$return = true;
 		
 		$query = "SELECT * FROM restaurant_chain WHERE restaurant_chain = \"" . $this->input->post('restaurantChain') . "\" ";
-		log_message('debug', 'RestaurantChainModel.addRestaurantChain : Try to get duplicate Restaurant record : ' . $query);
+		log_message('debug', 'RestaurantChainModel.addRestaurantChain : Try to get duplicate Chain record : ' . $query);
 		
 		$result = $this->db->query($query);
 		
@@ -195,7 +195,7 @@ class RestaurantChainModel extends Model{
 		$return = true;
 		
 		$query = "SELECT * FROM restaurant_chain WHERE restaurant_chain = \"" . $this->input->post('restaurantName') . "\" AND restaurant_chain_id <> " . $this->input->post('restaurantChainId');
-		log_message('debug', 'RestaurantModel.updateRestaurant : Try to get Duplicate record : ' . $query);
+		log_message('debug', 'RestaurantChainModel.updateRestaurantChain : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
 		

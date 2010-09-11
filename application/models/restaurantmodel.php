@@ -9,7 +9,7 @@ class RestaurantModel extends Model{
 					FROM restaurant
 					ORDER BY restaurant_id DESC limit 5";
 		
-		log_message('debug', "RestaurantModel.listRestaurant : " . $query);
+		log_message('debug', "RestaurantModel.listNewRestaurants : " . $query);
 		$result = $this->db->query($query);
 		
 		$restaurants = array();
@@ -29,36 +29,6 @@ class RestaurantModel extends Model{
 		
 		return $restaurants;
 	}
-	
-	// Generate a simple list of all the fast food chain restaurants.
-	function listFastFood()
-	{
-		
-		$query = "SELECT restaurant_chain.*
-					FROM restaurant_chain
-					ORDER BY restaurant_chain limit 0, 100";
-		
-		
-		log_message('debug', "RestaurantModel.listFastFood : " . $query);
-		$result = $this->db->query($query);
-		
-		$restaurants = array();
-		$CI =& get_instance();
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('RestaurantChainLib');
-			unset($this->RestaurantChainLib);
-			
-			$this->RestaurantChainLib->restaurantChainId = $row['restaurant_chain_id'];
-			$this->RestaurantChainLib->restaurantChain = $row['restaurant_chain'];
-			
-			$restaurants[] = $this->RestaurantChainLib;
-			unset($this->RestaurantChainLib);
-		}
-		
-		return $restaurants;
-	}
-	
 	
 	function getRestaurantsJson() {
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
@@ -149,7 +119,7 @@ class RestaurantModel extends Model{
 		
 		
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
-				' AND restaurant.status = \'queue\' ';
+				' AND restaurant.status = \'live\' ';
 		
 		/*
 		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
@@ -314,14 +284,6 @@ class RestaurantModel extends Model{
 				$geocodeArray[] = $arrLatLng;
 			}
 			
-			
-			//$CI->load->model('SupplierModel','',true);
-			//$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '', '' );
-			//$this->RestaurantLib->suppliers = $suppliers;
-			
-			
-			
-			
 			$restaurants[] = $this->RestaurantLib;
 			unset($this->RestaurantLib);
 		}
@@ -375,14 +337,7 @@ class RestaurantModel extends Model{
 		$start = 0;
 	
 		$page = 0;
-		/*
-		$base_query = 'SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name, restaurant_type.restaurant_type' .
-				' FROM restaurant, restaurant_type' .
-				' LEFT JOIN restaurant_chain' .
-				' ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id' .
-				' LEFT JOIN company' .
-				' ON restaurant.company_id = company.company_id';
-		*/
+		
 		$base_query = 'SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name, restaurant_type.restaurant_type' .
 				' FROM restaurant' .
 				' LEFT JOIN restaurant_chain' .
@@ -397,39 +352,6 @@ class RestaurantModel extends Model{
 				
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
 		
-		
-		
-		
-		
-		/*
-		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
-			$where .= ' AND (';
-			
-			if(count($arrRestaurantTypeId) > 0 ) {
-				$where .= ' restaurant.restaurant_type_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
-			}
-			
-			
-			if(count($arrCuisineId) > 0 ) {
-			 		// Cuisine 
-				if(count($arrRestaurantTypeId) > 0 ) {
-					$where	.= ' OR ( ';
-				} else {
-					$where	.= ' ( ';
-				}
-				
-			$where	.= '		SELECT restaurant_cuisine.restaurant_cuisine_id ' 
-					. '			FROM restaurant_cuisine' 
-					. '			WHERE' 
-					. '				restaurant_cuisine.restaurant_id = restaurant.restaurant_id'
-					. ' 			AND restaurant_cuisine.cuisine_id IN (' . implode(',', $arrCuisineId) . ')'
-					. '				LIMIT 0, 1'
-					. '		)';
-			 }
-			
-			$where .= ' )';
-		}
-		*/
 		if ( !empty($q) ) {
 			
 			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"';
@@ -463,9 +385,6 @@ class RestaurantModel extends Model{
 		
 		$base_query_count = $base_query_count . $where;
 		
-		
-		
-		//$query = $base_query_count . " ORDER BY restaurant_name ";
 		$query = $base_query_count;
 		
 		$result = $this->db->query($query);
@@ -508,7 +427,7 @@ class RestaurantModel extends Model{
 		
 		//echo $query;
 		//die;
-		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
+		log_message('debug', "RestaurantModel.getRestaurantsJsonAdmin : " . $query);
 		$result = $this->db->query($query);
 		
 		$restaurants = array();
@@ -527,32 +446,6 @@ class RestaurantModel extends Model{
 			$this->RestaurantLib->companyName = $row['company_name'];
 			
 			$this->RestaurantLib->creationDate = $row['creation_date'];
-			/*
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', $q, '');
-			$this->RestaurantLib->addresses = $addresses;
-			
-			
-			$cuisines = $this->getCuisinesForRestaurant( $row['restaurant_id']);
-			$this->RestaurantLib->cuisines = $cuisines;
-			
-			
-			foreach ($addresses as $key => $address) {
-				$arrLatLng = array();
-				
-				$arrLatLng['latitude'] = $address->latitude;
-				$arrLatLng['longitude'] = $address->longitude;
-				$arrLatLng['address'] = $address->completeAddress;
-				
-				$arrLatLng['addressLine1'] = $address->address;
-				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
-				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
-				
-				$arrLatLng['restaurantName'] = $this->RestaurantLib->restaurantName;
-				$arrLatLng['id'] = $address->addressId;
-				$geocodeArray[] = $arrLatLng;
-			}
-			*/
 			
 			if ( $row['restaurant_chain_id'] ) {
 				$CI->load->model('SupplierModel','',true);
@@ -702,7 +595,6 @@ class RestaurantModel extends Model{
 						}
 					}
 					
-					
 					$CI->load->model('AddressModel','',true);
 					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', '', $companyId);
 				} else {
@@ -722,8 +614,6 @@ class RestaurantModel extends Model{
 	// Pulls the data from the database for a specific restaurant
 	function getRestaurantFromId($restaurantId) {
 		
-		//$query = "SELECT restaurant.*, address.* FROM restaurant, address WHERE restaurant.restaurant_id = address.restaurant_id AND restaurant.restaurant_id = " . $restaurantId;
-		//$query = "SELECT * FROM restaurant WHERE restaurant_id = " . $restaurantId;
 		$query = "SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name" .
 				" FROM restaurant" .
 				" LEFT JOIN restaurant_chain" .
@@ -892,7 +782,7 @@ class RestaurantModel extends Model{
 			$cuisineId = trim($cuisineId);
 			if (!(in_array($cuisineId, $existingCuisineIds) > 0)) {
 				$query = "INSERT INTO restaurant_cuisine (restaurant_id, cuisine_id) VALUE ( $restaurantId, $cuisineId)";
-				log_message('debug', 'RestaurantModel.updateRestaurant : insert new cuisine : ' . $query);
+				log_message('debug', 'RestaurantModel.updateCuisines : insert new cuisine : ' . $query);
 				$result = $this->db->query($query);
 			} else {
 				$action[$cuisineId] = 'update';
@@ -904,7 +794,7 @@ class RestaurantModel extends Model{
 				// Do nothing...
 			} else {
 				$query = "DELETE FROM restaurant_cuisine WHERE restaurant_id = $restaurantId AND cuisine_id = $existingCuisineId";
-				log_message('debug', 'RestaurantModel.updateRestaurant : delete cuisine : ' . $query);
+				log_message('debug', 'RestaurantModel.updateCuisines : delete cuisine : ' . $query);
 				$result = $this->db->query($query);
 			}
 		}
@@ -930,7 +820,7 @@ class RestaurantModel extends Model{
 			
 			if ($companyId) {
 				$query = "SELECT * FROM restaurant WHERE restaurant_name = \"" . $restaurantName . "\" AND company_id = '" . $companyId . "'";
-				log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
+				log_message('debug', 'RestaurantModel.addRestaurantWithNameOnly : Try to get duplicate Restaurant record : ' . $query);
 				
 				$result = $this->db->query($query);
 				
@@ -938,7 +828,7 @@ class RestaurantModel extends Model{
 					$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_type_id, restaurant_name, creation_date, custom_url, status, track_ip, user_id)" .
 							" values (NULL, ".$companyId.", NULL, \"" . $restaurantName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
 					
-					log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
+					log_message('debug', 'RestaurantModel.addRestaurantWithNameOnly : Insert Restaurant : ' . $query);
 					$return = true;
 					
 					if ( $this->db->query($query) ) {
@@ -967,7 +857,7 @@ class RestaurantModel extends Model{
 					FROM restaurant, restaurant_type
 					WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id LIMIT 0, $c";
 		
-		log_message('debug', "RestaurantModel.getDistinctRestaurantType : " . $query);
+		log_message('debug', "RestaurantModel.getDistinctUsedRestaurantType : " . $query);
 		$result = $this->db->query($query);
 		
 		$restaurantTypes = array();
@@ -1199,32 +1089,8 @@ class RestaurantModel extends Model{
 		
 		if ( !empty($q) ) {
 			
-			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"';
+			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%")';
 			
-			/*
-					. ' OR restaurant.restaurant_id like "%' . $q . '%"'
-					. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';
-			
-			$where .= ' OR (';
-			$where	.= '		SELECT address.address_id' 
-					. '			from address, state, country'
-					. '			WHERE' 
-					. '				address.restaurant_id = restaurant.restaurant_id'
-					. '				AND address.state_id = state.state_id'
-					. '				AND address.country_id = country.country_id'
-					. ' 			AND (';
-			$where	.= '					address.zipcode = "' . $q . '"'
-					. '						OR address.address like "%' . $q . '%"'
-					. '						OR address.city like "%' . $q . '%"'
-					. '						OR address.zipcode like "%' . $q . '%"'
-					. '						OR state.state_name like "%' . $q . '%"'
-					. '						OR state.state_code like "%' . $q . '%"'
-					. '						OR country.country_name like "%' . $q . '%"'
-					. '				)'
-					. '				LIMIT 0, 1'
-					. '		)';
-			*/
-			$where .= ' )';
 		}
 		
 		
@@ -1270,7 +1136,7 @@ class RestaurantModel extends Model{
 			}
 		}
 		
-		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
+		log_message('debug', "RestaurantModel.getRestaurantMenusJson : " . $query);
 		$result = $this->db->query($query);
 		
 		$restaurants = array();

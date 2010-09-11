@@ -39,7 +39,7 @@ class IngredienttypeModel extends Model{
 			
 			$query = "INSERT INTO ingredient_type (ingredient_type_id, ingredient_type)" .
 					" values (NULL, \"" . $this->input->post('ingredienttypeName') . "\")";
-			log_message('debug', 'IngredienttypeModel.addingredienttype : Insert Ingredienttype : ' . $query);
+			log_message('debug', 'IngredienttypeModel.addIngredienttype : Insert Ingredienttype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
 				$return = true;

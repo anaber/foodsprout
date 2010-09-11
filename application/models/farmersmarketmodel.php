@@ -19,7 +19,7 @@ class FarmersMarketModel extends Model{
 			$query = "INSERT INTO farmers_market (farmers_market_id, farmers_market_name, city_id, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
 					" values (NULL, \"" . $farmersMarketName . "\", NULL, '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
 			
-			log_message('debug', 'FarmModel.addFarmersMarket : Insert Farmers Market : ' . $query);
+			log_message('debug', 'FarmersMarketModel.addFarmersMarket : Insert Farmers Market : ' . $query);
 			$return = true;
 			
 			if ( $this->db->query($query) ) {
@@ -127,57 +127,6 @@ class FarmersMarketModel extends Model{
 		}
 		
 		return $return;
-	}
-	
-	function addFarmWithNameOnly($farmName) {
-		global $ACTIVITY_LEVEL_DB;
-		
-		$return = true;
-		
-		$companyId = '';
-		
-		$CI =& get_instance();
-		
-		if (empty($companyId) && empty($farmName) ) {
-			$GLOBALS['error'] = 'no_name';
-			$return = false;
-		} else {
-			if ( empty($companyId) ) {
-				$CI->load->model('CompanyModel','',true);
-				$companyId = $CI->CompanyModel->addCompany($farmName);
-			} 
-			
-			if ($companyId) {
-				$query = "SELECT * FROM farm WHERE farm_name = \"" . $farmName . "\" AND company_id = '" . $companyId . "'";
-				log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
-				
-				$result = $this->db->query($query);
-				
-				if ($result->num_rows() == 0) {
-					$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farm_name, creation_date, custom_url, status, track_ip, user_id )" .
-							" values (NULL, ".$companyId.", NULL, \"" . $farmName . "\", NOW(), NULL, 'live', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . " )";
-					
-					log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
-					$return = true;
-					
-					if ( $this->db->query($query) ) {
-						$newFarmId = $this->db->insert_id();
-						$return = $newFarmId;
-					} else {
-						$return = false;
-					}
-					
-				} else {
-					$GLOBALS['error'] = 'duplicate';
-					$return = false;
-				}
-			} else {
-				$return = false;
-			}
-			
-		}
-		
-		return $return;	
 	}
 	
 	function getFarmersMarketsJsonAdmin() {
@@ -419,32 +368,9 @@ class FarmersMarketModel extends Model{
 					
 			$where	.= '				LIMIT 0, 1'
 					. '		)';
-			
-			/*		
-			//$where	.= ' OR ( '
-			$where	.= '		SELECT address.address_id' 
-					. '			from address, state, country'
-					. '			WHERE' 
-					. '				address.farmers_market_id = farmers_market.farmers_market_id'
-					. '				AND address.state_id = state.state_id'
-					. '				AND address.country_id = country.country_id'
-					. ' 			AND (';
-				if ( !empty($q) ) {	 
-			$where	.= '					address.zipcode = "' . $q . '"';
-				} else if ( !empty($city) ) {
-			$where	.= '					address.city_id IN (' . $city . ')';
-				}
-					
-			$where	.= '				)'
-					. '				LIMIT 0, 1'
-					. '		) ';
-			*/
-			
 		}
 		$base_query_count = $base_query_count . $where;
 		
-		//echo $base_query_count;
-		//die;
 		
 		//$query = $base_query_count . " ORDER BY restaurant_name ";
 		$query = $base_query_count;
@@ -486,9 +412,7 @@ class FarmersMarketModel extends Model{
 				$query .= " LIMIT 0, " . $PER_PAGE;
 			}
 		}
-		//print_r_pre($_REQUEST);
-		//echo $query;
-		//die;
+		
 		log_message('debug', "FarmersMarketModel.getFarmersMarketJson : " . $query);
 		$result = $this->db->query($query);
 		
@@ -549,36 +473,9 @@ class FarmersMarketModel extends Model{
 			'param'      => $params,
 			'geocode'	 => $geocodeArray,
 	    );
-	    //print_r_pre($arr);
-		//die;
+		
 	    return $arr;
 		
-	}
-	
-	function getDistinctUsedFarmType($c)
-	{
-		$query = "SELECT DISTINCT farm.farm_type_id, farm_type.farm_type
-					FROM farm, farm_type
-					WHERE farm.farm_type_id = farm_type.farm_type_id LIMIT 0, $c";
-		
-		log_message('debug', "FarmModel.getDistinctUsedFarmType : " . $query);
-		$result = $this->db->query($query);
-		
-		$farmTypes = array();
-		$CI =& get_instance();
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('FarmTypeLib');
-			unset($this->FarmTypeLib);
-			
-			$this->FarmTypeLib->farmTypeId = $row['farm_type_id'];
-			$this->FarmTypeLib->farmType = $row['farm_type'];
-			
-			$farmTypes[] = $this->FarmTypeLib;
-			unset($this->FarmTypeLib);
-		}
-		
-		return $farmTypes;
 	}
 	
 	function getQueueFarmersMarketJson() {

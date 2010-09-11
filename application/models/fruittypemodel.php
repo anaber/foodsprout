@@ -39,7 +39,7 @@ class FruittypeModel extends Model{
 			
 			$query = "INSERT INTO fruit_type (fruit_type_id, fruit_type)" .
 					" values (NULL, \"" . $this->input->post('fruittypeName') . "\")";
-			log_message('debug', 'FruittypeModel.addfruittype : Insert Fruittype : ' . $query);
+			log_message('debug', 'FruittypeModel.addFruittype : Insert Fruittype : ' . $query);
 			
 			if ( $this->db->query($query) ) {
 				$return = true;

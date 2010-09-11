@@ -58,7 +58,7 @@ class AnimalModel extends Model{
 	function getAnimalFromId($animalId) {
 		
 		$query = "SELECT * FROM animal WHERE animal_id = " . $animalId;
-		log_message('debug', "AnimalModel.getFarmFromId : " . $query);
+		log_message('debug', "AnimalModel.getAnimalFromId : " . $query);
 		$result = $this->db->query($query);
 		
 		$animal = array();
