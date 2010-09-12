@@ -109,7 +109,7 @@ function redrawContent(data) {
 function addZeroResult() {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;">No results found. Please retry with some other filter options.</div>' + 
+	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">No results found. Please retry with some other filter options.</div>' + 
 	'</div>'
 	;	
 	return html;
@@ -288,12 +288,12 @@ function addResult(farmersMarket, i) {
 	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/farmersmarket/view/' + farmersMarket.farmersMarketId + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
 	
 	html += '</div>' + 
-	'	<div style="float:left; width:400px;">Address:<br />';
+	'	<div style="float:left; width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left; width:340px;font-size:13px;">';
 	$.each(farmersMarket.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
+			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
 		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
+			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
 		}
 	});
 	

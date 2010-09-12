@@ -178,7 +178,7 @@ function redrawTopCuisines(data) {
 		});	
 	}
 	
-	resultHtml += '<br><a href = "#" id = "chooseMoreCuisine" name = "">Choose More...</a><br>';
+	resultHtml += '<br><a href = "#" id = "chooseMoreCuisine" name = "" style="font-size:13px;text-decoration:none;">Choose More...</a><br>';
 		
 	$('#divCuisines').html(resultHtml);
 	
@@ -407,7 +407,7 @@ function redrawTopRestaurantTypes(data) {
 		});	
 	}
 	
-	resultHtml += '<br><a href = "#" id = "chooseMoreRestaurantType" name = "">Choose More...</a><br>';
+	resultHtml += '<br><a href = "#" id = "chooseMoreRestaurantType" name = "" style="font-size:13px;text-decoration:none;">Choose More...</a><br>';
 		
 	$('#divRestaurantTypes').html(resultHtml);
 	
@@ -567,7 +567,7 @@ function redrawContent(data, filter) {
 function addZeroResult() {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;">No results found. Please retry with some other filter options.</div>' + 
+	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">No results found. Please retry with some other filter options.</div>' + 
 	'</div>'
 	;	
 	return html;
@@ -922,7 +922,7 @@ function drawNumRecords(params) {
 function addResult(restaurant, i) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;">Cuisine: ';
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;font-size:13px;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Cuisine:</b> ';
 	
 	$.each(restaurant.cuisines, function(j, cuisine) {
 		if (j == 0) {
@@ -933,12 +933,12 @@ function addResult(restaurant, i) {
 	});
 	
 	html += '</div>' + 
-	'	<div style="float:left; width:295px;">Address:<br />';
+	'	<div style="float:left; width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left; width:235px;font-size:13px;">';
 	$.each(restaurant.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
+			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
 		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:12px;text-decoration:none;">' + address.displayAddress + '</a>';
+			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
 		}
 	});
 	html += '</div>';

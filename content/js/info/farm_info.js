@@ -93,7 +93,7 @@ function reinitializeTabs() {
 function addZeroResult(type) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;">';
+	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">';
 	
 	html += 'We are currently working on adding ';
 	
@@ -106,9 +106,9 @@ function addZeroResult(type) {
 	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to do add ';
 	
 	if (type == 'supplier') {
-		html += '<a href="#" id = "addSupplier2">suppliers</a>';
+		html += '<a href="#" id = "addSupplier2" style="font-size:13px;text-decoration:none;">suppliers</a>';
 	} else if (type == 'menu') {
-		html += '<a href="#" id = "addMenu2">products</a>';
+		html += '<a href="#" id = "addMenu2" style="font-size:13px;text-decoration:none;">products</a>';
 	}
 	
 	html +='</div>' + 
@@ -326,21 +326,21 @@ function addCompanyResult(company, count) {
 	
 	var html =
 	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:220px;"><a href="/' + company.type + '/view/' + company.companyId + '">'+ company.companyName +'</a><br>Type: '+ company.type + '</div>' +
-	'	<div style="float:right; width:300px;">Address:<br />';
+	'	<div style="float:left; width:220px;font-size:13px;"><a href="/' + company.type + '/view/' + company.companyId + '" style="font-size:13px;text-decoration:none;">'+ company.companyName +'</a><br><b>Type:</b> '+ company.type + '</div>' +
+	'	<div style="float:left; width:60px;font-size:13px;"><b>Address: </b></div><div style="float:left; width:240px;font-size:13px;">';
 	
 	$.each(company.addresses, function(j, address) {
 		if (j == 0) {
-			html += '<em>' + address.displayAddress + '</em>';
+			html += address.displayAddress;
 		} else {
-			html += "<br /><br />" + '<em>' + address.displayAddress + '</em>';
+			html += "<br /><br />" + address.displayAddress;
 		}
 	});
 	
 	
 	html += '</div>';
 	html +=
-	'</div>'
+	'</div><div style="font-size:13px;height:5px;">&nbsp;</div>'
 	;
 	
 	return html;
