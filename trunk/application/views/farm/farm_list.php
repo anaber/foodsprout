@@ -53,6 +53,7 @@ var farmsData;
 	});
 	
 </script>
+
 <div style="float:right; width:160px;">
 	<?php
 		$this->load->view('includes/banners/sky');

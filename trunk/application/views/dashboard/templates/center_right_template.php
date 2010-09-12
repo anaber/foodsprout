@@ -1,8 +1,8 @@
 <?php
 	if (isset($SEO) ) {
-		$this->load->view('includes/header', array('SEO' => $SEO));
+		$this->load->view('dashboard/includes/header', array('SEO' => $SEO));
 	} else {
-		$this->load->view('includes/header');
+		$this->load->view('dashboard/includes/header');
 	}
 ?>
 <?php
@@ -17,32 +17,9 @@
 	}
 	else{
 	}
-	
 ?>
-
-	<!-- left column-->
-	<div id="rest-main-details">
-
-	<?php
-		foreach($LEFT as $key => $view) {
-			if (isset($data['left'][$key]['VIEW_HEADER']) ) {
-				$this->load->view('includes/block_header', array('VIEW_HEADER' => $data['left'][$key]['VIEW_HEADER'] ) );
-			}
-
-			if (isset($data['left'][$key]) ) {
-				$this->load->view($view, $data['left'][$key]);
-			} else {
-				$this->load->view($view);
-			}
-
-		}
-    ?>
-
-
-	</div>
-	<!-- end left column -->
-
-  	<?php
+<br />
+<?php
 		foreach($CENTER as $key => $view) {
 			if (isset($data['center'][$key]['VIEW_HEADER']) ) {
 				$this->load->view('includes/block_header', array('VIEW_HEADER' => $data['center'][$key]['VIEW_HEADER'] ) );
@@ -54,7 +31,7 @@
 				$this->load->view($view);
 			}
 		}
-  	?>
+?>
 
 	<!-- right ads -->
 	<div id="add-designs">
@@ -71,7 +48,6 @@
 				$this->load->view($view);
 			}
 		}
-		
 	?>
 
 	</div>

@@ -71,7 +71,9 @@ body{background: #E5E5E5;}
 
 
 <!-- leaf bg -->
+<?php /* ?><div id="leafimg"><?php */ ?>
 <div id="leafimg">
 
 <!-- main active tab area -->
+<?php /* ?><div id="mainimg"><?php */ ?>
 <div id="mainimg">

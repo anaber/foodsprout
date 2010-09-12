@@ -26,14 +26,7 @@ $(function() {
 	$("#radius").html( $("#slider").slider("value") + ' miles' );
 });
 </script>
-	<?php /* ?>
-	<div id="divZipcode" style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px; -moz-border-radius-bottomleft:7px;-webkit-border-radius-bottomleft:7px;background: #F05A25; color:#fff; padding:5px;padding-left:10px;">
-		<form id="frmFilters">
-			Zip Code <input type="text" size="6" maxlength="5" id = "q">
-		</form>
-	</div><br>
-	<?php */ ?>
-	
+
 	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;border-top-left-radius:7px;background: #F05A25; color:#fff; padding:5px;padding-left:10px;">Radius Search</div>
 	<div style="background:#e5e5e5; font-size:90%;padding-left:5px;padding-bottom:5px;padding-top:5px;">
 		<div id="divZipcode">
@@ -55,7 +48,25 @@ $(function() {
 		<a id="imgRemoveFilters" href="#">Remove Filters</a>
 	</div>
 	
-	 
+	
+	<style type="text/css">
+		.box1 {
+			background-color: #f0f0f0;
+			width: 110px;
+			height: 60px;
+			margin: 0 auto 5px auto;
+			padding: 30px;
+			border: 1px solid #d7d7d7;
+			-moz-border-radius: 11px;
+			-webkit-border-radius: 11px;
+			border-radius: 11px;
+			behavior: url(/css/border-radius.htc);
+		}
+	</style>
+	<br />
+	<div class="box1">
+		Text in rounded corner box 
+	</div>
 </div>
  
 <div id="popupContact"> 
@@ -63,4 +74,4 @@ $(function() {
 	<div id="divAllFarmTypes"></div>
 </div> 
 <div id="backgroundPopup"></div>
-<div id="backgroundWhitePopup"></div>  
+<div id="backgroundWhitePopup"></div> 
