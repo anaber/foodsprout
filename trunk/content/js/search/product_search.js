@@ -61,15 +61,15 @@ function redrawContent(data) {
 function addResult(product, count) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/product/view/' + product.productId + '" id = "'+ product.productId +'" style="text-decoration:none;">'+ product.productName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;">Type : '+ product.productType + '<br />Brand:' + product.brand + '</div>' +
-	'	<div style="float:left; width:295px;">';
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/product/view/' + product.productId + '" id = "'+ product.productId +'" style="text-decoration:none;">'+ product.productName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Type:</b> '+ product.productType + '<br /><b>Brand:</b> ' + product.brand + '</div>';
+
 	
 	if (product.restaurantName) {
-		html += 'Restaurant:<br /><a href="/restaurant/view/' + product.restaurantId + '">' + product.restaurantName + '</a>';
+		html += '<div style="float:left; width:75px;font-size:13px;"><b>Restaurant:</b></div><div style="float:left; width:220px;font-size:13px;"><a href="/restaurant/view/' + product.restaurantId + '" style="font-size:13px;text-decoration:none;">' + product.restaurantName + '</a>';
 	} else if (product.restaurantChain) {
-		html += 'Restaurant Chain<br /><a href = "/chain/view/'+product.restaurantChainId+'">' + product.restaurantChain + '</a>';
+		html += '<div style="float:left; width:115px;font-size:13px;"><b>Restaurant:</b></div><div style="float:left; width:180px;font-size:13px;"><a href = "/chain/view/'+product.restaurantChainId+'" style="font-size:13px;text-decoration:none;">' + product.restaurantChain + '</a>';
 	} else if (product.manufactureName) {
-		html += 'Manufacture:<br /><a href="/manufacture/view/' + product.manufactureId + '">' + product.manufactureName + '</a>';
+		html += '<div style="float:left; width:85px;font-size:13px;"><b>Manufacture:</b></div><div style="float:left; width:215px;font-size:13px;"><a href="/manufacture/view/' + product.manufactureId + '" style="font-size:13px;text-decoration:none;">' + product.manufactureName + '</a>';
 	}
 	
 	html +=
@@ -82,7 +82,7 @@ function addResult(product, count) {
 function addZeroResult() {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;">No results found. Please retry with some other filter options.</div>' + 
+	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">No results found. Please retry with some other filter options.</div>' + 
 	'</div>'
 	;	
 	return html;

@@ -38,5 +38,5 @@ $(document).ready(function() {
 	</div>
 	<br />
 	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;border-top-left-radius:7px;background: #F05A25; color:#fff; padding:5px;">More Options</div>
-	<div style="background:#e5e5e5; font-size:90%; padding:5px;"><a href = "/manufacture">All Manufacturers</a></div>
+	<div style="background:#e5e5e5; font-size:90%; padding:5px;"><a href = "/manufacture" style="font-size:13px;text-decoration:none;">All Manufacturers</a></div>
 	

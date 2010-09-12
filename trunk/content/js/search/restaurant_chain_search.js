@@ -79,7 +79,7 @@ function addResult(restaurantChain, count) {
 	}
 	
 	html +=
-		'	<div style="padding-bottom:8px;"><a href="/chain/view/' + restaurantChain.restaurantChainId + '" id = "'+ restaurantChain.restaurantChainId +'">'+ restaurantChain.restaurantChain + '</a></div>';
+		'	<div style="padding-bottom:8px;"><a href="/chain/view/' + restaurantChain.restaurantChainId + '" id = "'+ restaurantChain.restaurantChainId +'" style="font-size:13px;text-decoration:none;">'+ restaurantChain.restaurantChain + '</a></div>';
 	
 	if (count == (halfRecordCount-1) ) {
 		html += 

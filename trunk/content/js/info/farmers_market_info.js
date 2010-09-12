@@ -95,7 +95,7 @@ function reinitializeTabs() {
 function addZeroResult(type) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;">';
+	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">';
 	
 	html += 'We are currently working on adding ';
 	
@@ -108,9 +108,9 @@ function addZeroResult(type) {
 	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to do add ';
 	
 	if (type == 'supplier') {
-		html += '<a href="#" id = "addSupplier2">farms</a>';
+		html += '<a href="#" id = "addSupplier2" style="font-size:13px;text-decoration:none;">farms</a>';
 	} else if (type == 'menu') {
-		html += '<a href="#" id = "addMenu2">products</a>';
+		html += '<a href="#" id = "addMenu2" style="font-size:13px;text-decoration:none;">products</a>';
 	}
 	
 	html +='</div>' + 

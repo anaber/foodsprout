@@ -29,7 +29,7 @@ $(function() {
 
 	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;border-top-left-radius:7px;background: #F05A25; color:#fff; padding:5px;padding-left:10px;">Radius Search</div>
 	<div style="background:#e5e5e5; font-size:90%;padding-left:5px;padding-bottom:5px;padding-top:5px;">
-		<div id="divZipcode">
+		<div id="divZipcode" style="font-size:13px;">
 			<form id="frmFilters">
 				Zip Code <input type="text" size="6" maxlength="5" id = "q">
 			</form>
@@ -41,11 +41,11 @@ $(function() {
 	<br />
 	
 	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;border-top-left-radius:7px;background: #F05A25; color:#fff; padding:5px;padding-left:10px;">Farm Type</div>
-	<div id="divFarmTypes" style="background:#e5e5e5; font-size:90%;padding-left:5px;padding-bottom:5px;padding-top:5px;"></div>
+	<div id="divFarmTypes" style="background:#e5e5e5; font-size:90%;padding-left:5px;padding-bottom:5px;padding-top:5px;font-size:13px;"></div>
 	
 	<br />
 	<div id="removeFilters">
-		<a id="imgRemoveFilters" href="#">Remove Filters</a>
+		<a id="imgRemoveFilters" href="#" style="font-size:13px;text-decoration:none;">Remove Filters</a>
 	</div>
 	
 	

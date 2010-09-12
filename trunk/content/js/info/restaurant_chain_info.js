@@ -95,7 +95,7 @@ function reinitializeTabs() {
 function addZeroResult(type) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;">';
+	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">';
 	
 	html += 'We are currently working on adding ';
 	
@@ -108,9 +108,9 @@ function addZeroResult(type) {
 	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to do add ';
 	
 	if (type == 'supplier') {
-		html += '<a href="#" id = "addSupplier2">suppliers</a>';
+		html += '<a href="#" id = "addSupplier2" style="font-size:13px;text-decoration:none;">suppliers</a>';
 	} else if (type == 'menu') {
-		html += '<a href="#" id = "addMenu2">products</a>';
+		html += '<a href="#" id = "addMenu2" style="font-size:13px;text-decoration:none;">products</a>';
 	}
 	
 	html +='</div>' + 
@@ -339,8 +339,8 @@ function addSupplierResult(supplier, count) {
 	
 	var html =
 	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:220px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '">'+ supplier.supplierName +'</a><br>Type: '+ supplier.supplierType + '</div>' +
-	'	<div style="float:right; width:300px;">Address:<br />';
+	'	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>' +
+	'	<div style="float:left;width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left;width:240px;font-size:13px;">';
 	
 	$.each(supplier.addresses, function(j, address) {
 		if (j == 0) {
@@ -352,7 +352,7 @@ function addSupplierResult(supplier, count) {
 	
 	html += '</div>';
 	html +=
-	'</div>'
+	'</div><div style="font-size:13px;height:5px;">&nbsp;</div>'
 	;
 	
 	return html;
