@@ -47,6 +47,7 @@ text-align:right;-moz-border-radius:5px;-webkit-border-radius:5px;background:#E5
 		border-top-left-radius:4px;
 		border-top-right-radius:4px;
 		
+		
 }
 #header #headeritms #navigation a.tabon:hover{
 		background-color:#FFF;
@@ -133,8 +134,29 @@ text-align:right;-moz-border-radius:5px;-webkit-border-radius:5px;background:#E5
 		border-top-right-radius:4px;
 }
 
-#leafimg{background-image:url(../img/leaf-bg.gif);background-repeat:no-repeat;background-position:center center;width:100%;}
-#mainimg{width:980px;margin-right:auto;margin-left:auto;color:#000;background-color:#FFF;-moz-box-shadow:0px 5px 10px #2C190F;-webkit-box-shadow:0px 5px 10px #2C190F;overflow:hidden;padding-left:10px;padding-right:10px;padding-bottom:30px;clear:left;-moz-border-radius: 8px;-webkit-border-radius: 8px;}
+#leafimg{
+	background-image:url(/img/leaf-bg.gif); /*Conflict here*/
+	background-repeat:no-repeat;
+	background-position:center center;
+	width:100%;
+}
+#mainimg{
+	width:980px;
+	margin-right:auto;
+	margin-left:auto;
+	color:#000000;
+	background-color:#ffffff; /*Conflict here*/
+	-moz-box-shadow:0px 5px 10px #2C190F;
+	-webkit-box-shadow:0px 5px 10px #2C190F;
+	overflow:hidden;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:30px;
+	clear:left;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
 .spacefivepixel{padding-right:4px;padding-left:4px;}
 #footerbg{height:24px;width:1000px;margin-right:auto;margin-left:auto;padding-top:10px;}
 #footerbg #footertext{margin-top:5px;float:left;height:28px;/*width:211px;*/

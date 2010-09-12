@@ -34,5 +34,5 @@ $(document).ready(function() {
 		<input type="text" size="29" id = "suggestion_box">
 	</div>
 	<br />
-	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;background: #F05A25; color:#fff; padding:5px;">More Options</div>
+	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;border-top-left-radius:7px;background: #F05A25; color:#fff; padding:5px;">More Options</div>
 	<div style="background:#e5e5e5; font-size:90%; padding:5px;"><a href = "/product/fructose">Products with Fructose</a></div>

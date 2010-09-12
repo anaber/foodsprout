@@ -32,11 +32,25 @@ class User extends Controller {
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'user/dashboard',
-		);
+			);
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "My Dashboard";
-			
-		$this->load->view('/dashboard/templates/center_template', $data);
+		// Load all the views for the right column
+		$data['RIGHT'] = array(
+				'ad' => 'includes/banners/sky',
+			);
+		
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId(43);
+		
+		//$data['data']['center']['list']['VIEW_HEADER'] = "My Dashboard";
+		$data['RESTAURANT'] = $restaurant;
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard'
+					);
+					
+		$this->load->view('/dashboard/templates/center_right_template', $data);
 	}
 	
 	// The settings for the user
