@@ -2,22 +2,19 @@
 
 class User extends Controller {
 	
-	function __construct()
-	{
+	function __construct() {
+		global $LANDING_PAGE;
 		// Ensure the user is logged in before allowing access to any of these methods
-		
 		parent::Controller();
-		/*
-		if ($this->session->userdata('isAuthenticated') != 1 )
-		{
-			redirect('login');
+		
+		if ($this->session->userdata('isAuthenticated') != 1 ) {
+			redirect($LANDING_PAGE);
 		}
-		*/
 	}
 	
 	// The default for the user is the dashboard
-	function index()
-	{
+	function index() {
+		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'user/dashboard',
@@ -27,8 +24,7 @@ class User extends Controller {
 	}
 	
 	// The default page after login, the users dashboard
-	function dashboard()
-	{
+	function dashboard() {
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'user/dashboard',
@@ -112,8 +108,7 @@ class User extends Controller {
 		
 	}
 	
-	function create()
-	{
+	function create() {
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'user/create_account',
@@ -121,10 +116,6 @@ class User extends Controller {
 		
 		$this->load->view('/templates/center_template', $data);
 	}
-	
-	
 }
-
-
 
 ?>

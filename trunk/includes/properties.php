@@ -123,5 +123,8 @@ $FARMER_TYPES = array(
 					'natural' 			=> 'Natural',
 					'organic' 			=> 'Organic',
 				);
+
+$LANDING_PAGE = '/about/privatebeta';
+$ADMIN_LANDING_PAGE = '/admincp/login';
 				
 ?>

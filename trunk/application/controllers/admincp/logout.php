@@ -8,8 +8,9 @@ class Logout extends Controller {
 	}
 	
 	function index() {
+		global $ADMIN_LANDING_PAGE;
 		$this->session->sess_destroy();
-		redirect('/admincp/login', 'refresh');
+		redirect($ADMIN_LANDING_PAGE, 'refresh');
 	}
 
 }
