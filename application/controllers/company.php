@@ -4,10 +4,11 @@ class Company extends Controller {
 	
 	function __construct()
 	{
+		global $LANDING_PAGE;
 		parent::Controller();
 		if ($this->session->userdata('isAuthenticated') != 1 )
 		{
-			redirect('about/privatebeta');
+			redirect($LANDING_PAGE);
 		}
 	}
 	

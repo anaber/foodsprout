@@ -8,8 +8,9 @@ class Product extends Controller {
 	}
 	
 	function index() {
+		global $LANDING_PAGE;
 		if ($this->session->userdata('isAuthenticated') != 1 ) {
-			redirect('about/privatebeta');
+			redirect($LANDING_PAGE);
 		}
 		$data = array();
 		
@@ -56,8 +57,9 @@ class Product extends Controller {
 	}
 	
 	function detail($id) {
+		global $LANDING_PAGE;
 		if ($this->session->userdata('isAuthenticated') != 1 ) {
-			redirect('about/privatebeta');
+			redirect($LANDING_PAGE);
 		}
 		
 		global $GOOGLE_MAP_KEY;
