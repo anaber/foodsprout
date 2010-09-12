@@ -32,7 +32,7 @@ var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_tr
 <script type='text/javascript'>GA_googleFetchAds();</script>
 
 <style type="text/css">
-body{background: #E5E5E5;}
+body{background: #4D4D4D;}
 </style>
 
 </head>
@@ -69,7 +69,7 @@ body{background: #E5E5E5;}
 </div>
 <!-- end header -->
 
-
+	
 <!-- leaf bg -->
 <?php /* ?><div id="leafimg"><?php */ ?>
 <div id="leafimg">

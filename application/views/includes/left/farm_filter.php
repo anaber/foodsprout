@@ -51,7 +51,7 @@ $(function() {
 	
 	<style type="text/css">
 		.box1 {
-			background-color: #f0f0f0;
+			background-color: #ff5555;
 			width: 110px;
 			height: 60px;
 			margin: 0 auto 5px auto;
@@ -61,12 +61,18 @@ $(function() {
 			-webkit-border-radius: 11px;
 			border-radius: 11px;
 			behavior: url(/css/border-radius.htc);
+			z-index:99999;
 		}
 	</style>
 	<br />
 	<div class="box1">
 		Text in rounded corner box 
 	</div>
+	<?php
+		//die;
+	?>
+	
+	
 </div>
  
 <div id="popupContact"> 
