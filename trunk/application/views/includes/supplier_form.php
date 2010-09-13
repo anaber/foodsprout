@@ -162,7 +162,7 @@ $(document).ready(function() {
 <form id="supplierForm" method="post">
 <table class="formTable">
 	<tr>
-		<td width = "25%" nowrap>Supplier Type</td>
+		<td width = "25%" nowrap style="font-size:13px;">Supplier Type</td>
 		<td width = "75%">
 			<select name="supplierType" id="supplierType" class="validate[required]">
 			<option value = ''>--Supplier Type--</option>
@@ -176,7 +176,7 @@ $(document).ready(function() {
 	</tr>
 	
 	<tr>
-		<td width = "25%" nowrap>Company</td>
+		<td width = "25%" nowrap style="font-size:13px;">Company</td>
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyName : '') ?>" style="width: 200px;"  class="validate[required]" />
 		</td>

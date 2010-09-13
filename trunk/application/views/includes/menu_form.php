@@ -120,7 +120,7 @@ $(document).ready(function() {
 <form id="productForm" method="post">
     <table class="formTable">
         <tr>
-            <td width = "25%">Name</td>
+            <td width = "25%" style="font-size:13px;">Name</td>
             <td width = "75%">
                 <input value="<?php echo (isset($PRODUCT) ? $PRODUCT->productName : '') ?>" class="validate[required]" type="text" name="productName" id="productName"/><br />
             </td>
@@ -129,7 +129,7 @@ $(document).ready(function() {
         	if ( isset( $MANUFACTURE_ID ) ) {
         ?>
         <tr>
-            <td width = "25%">Product Type</td>
+            <td width = "25%" style="font-size:13px;">Product Type</td>
             <td width = "75%">
                 <select name="productTypeId" id="productTypeId"  class="validate[required]">
                     <option value = ''>--Product Type--</option>
@@ -159,7 +159,7 @@ $(document).ready(function() {
         	*/
         ?>
         <tr>
-            <td width = "25%">Ingredient</td>
+            <td width = "25%" style="font-size:13px;">Ingredient</td>
             <td width = "75%">
                 <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "3" cols = "30"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
             </td>
