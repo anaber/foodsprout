@@ -83,7 +83,7 @@ $(document).ready(function() {
 <strong><?php echo $this->session->userdata('email'); ?>'s Settings</strong>
 <hr size="1">
 
-<strong>Account</strong> | <?php echo anchor('user/password', 'Password'); ?>
+<div style="font-size:13px;text-decoration:none;float:left;"><strong>Account</strong> | <?php echo anchor('user/password', 'Password', 'style="font-size:13px;text-decoration:none;"'); ?></div>
 <br><br>
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br />
 
@@ -95,7 +95,7 @@ echo form_open('user/updateSettings', $attributes);
 ?>
 <table cellpadding="10" cellspacing="0" border="0" width="600" id="settings">
 	<tr>
-		<td width="150">
+		<td width="150" style="font-size:13px;text-decoration:none;">
 			Email
 		</td>
 		<td width="450">
@@ -103,7 +103,7 @@ echo form_open('user/updateSettings', $attributes);
 		</td>
 	</tr>
 	<tr>
-		<td width="150">
+		<td width="150" style="font-size:13px;text-decoration:none;">
 			Screen Name
 		</td>
 		<td width="450">
@@ -112,7 +112,7 @@ echo form_open('user/updateSettings', $attributes);
 	</tr>
 	
 	<tr>
-		<td width="150">
+		<td width="150" style="font-size:13px;text-decoration:none;">
 			First Name
 		</td>
 		<td width="450">
@@ -120,7 +120,7 @@ echo form_open('user/updateSettings', $attributes);
 		</td>
 	</tr>
 	<tr>
-		<td width="150">
+		<td width="150" style="font-size:13px;text-decoration:none;">
 			Zip Code
 		</td>
 		<td width="450">

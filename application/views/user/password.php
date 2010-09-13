@@ -79,7 +79,7 @@ $(document).ready(function() {
 <strong><?php echo $this->session->userdata('email'); ?>'s Settings</strong>
 <hr size="1">
 
-<?php echo anchor('user/settings', 'Account'); ?> | <strong>Password</strong>
+<div style="font-size:13px;text-decoration:none;float:left;"><?php echo anchor('user/settings', 'Account', 'style="font-size:13px;text-decoration:none;"'); ?> | <strong>Password</strong></div>
 <br><br>
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br />
 
@@ -91,7 +91,7 @@ echo form_open('/user/updatePassword', $attributes);
 ?>
 <table cellpadding="10" cellspacing="0" border="0" width="600" id="settings">
 	<tr>
-		<td width="150">
+		<td width="150" style="font-size:13px;text-decoration:none;">
 			Current Password
 		</td>
 		<td width="450">
@@ -99,7 +99,7 @@ echo form_open('/user/updatePassword', $attributes);
 		</td>
 	</tr>
 	<tr>
-		<td width="150">
+		<td width="150" style="font-size:13px;text-decoration:none;">
 			New Password
 		</td>
 		<td width="450">
@@ -107,7 +107,7 @@ echo form_open('/user/updatePassword', $attributes);
 		</td>
 	</tr>
 	<tr>
-		<td width="150">
+		<td width="150" style="font-size:13px;text-decoration:none;">
 			Verify New Password
 		</td>
 		<td width="450">
