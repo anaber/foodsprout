@@ -32,7 +32,7 @@
 	<script type='text/javascript'>GA_googleFetchAds();</script>
 
 	<style type="text/css">
-	body{background: #4D4D4D;}
+	body{background: #e5e5e5;}
 	</style>
 
 	</head>
