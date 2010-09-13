@@ -267,7 +267,7 @@ function reinitializeAddItemEvent(data) {
 		}
 	});
 	
-	$("#addMenu").click(function(e) {
+	$("#addMenu2").click(function(e) {
 		e.preventDefault();
 		if (isMenuFormVisible == true) {
 			$.validationEngine.closePrompt('.formError',true);
