@@ -154,7 +154,7 @@ a,a:visited{color:#2076B9;}
 }
 
 #leafimg{
-	background-image:url(/img/leaf-bg.gif); /*Conflict here*/
+	/*background-image:url(/img/leaf-bg.gif); /*Conflict here*/
 	background-repeat:no-repeat;
 	background-position:center center;
 	width:100%;

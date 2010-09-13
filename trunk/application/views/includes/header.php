@@ -32,7 +32,7 @@ var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_tr
 <script type='text/javascript'>GA_googleFetchAds();</script>
 
 <style type="text/css">
-body{background: #e5e5e5;}
+body{background: #4D4D4D;}
 </style>
 
 </head>
