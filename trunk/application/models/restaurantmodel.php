@@ -63,7 +63,7 @@ class RestaurantModel extends Model{
 		
 		
 		$q = $this->input->post('q');
-		//$q = '94107';
+		//$q = '94117';
 		//$filter = 'c_7';
 		
 		if ($q == '0') {
