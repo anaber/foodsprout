@@ -485,8 +485,6 @@ class FarmModel extends Model{
 		}
 		$base_query_count = $base_query_count . $where;
 		
-		//echo $base_query_count;
-		//die;
 		
 		//$query = $base_query_count . " ORDER BY restaurant_name ";
 		$query = $base_query_count;

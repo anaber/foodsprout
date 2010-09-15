@@ -52,7 +52,7 @@ class AddressModel extends Model{
 		if (!empty($zipcode) ) {
 			$city = $this->getCityFromZipcode($zipcode);
 			if (!empty($city) ) {
-				$query .= ' AND address.city_id IN (' . $city . ')';
+				$query .= ' AND ( address.city_id IN (' . $city . ') OR address.zipcode = \'' . $zipcode . '\')';
 			}
 		} else if (!empty($city) ) {
 			$query .= ' AND address.city_id IN (' . $city . ')';
