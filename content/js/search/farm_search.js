@@ -272,13 +272,13 @@ function redrawContent(data, filter) {
 	
 	if (showFilters ==  true) {
 		$('#removeFilters').empty();
-		removeFilterContent = '<a id = "imgRemoveFilters" href = "#">Remove Filters</a>';
+		removeFilterContent = '<a id = "imgRemoveFilters" href = "#" style="font-size:13px;text-decoration:none;">Remove Filters</a>';
 		$('#removeFilters').append(removeFilterContent);
 	}
 	
 	if (showMap ==  true) { 
 		$('#divHideMap').empty();
-		showHideMapContent = '<a href = "#" id = "linkHideMap">Show/Hide Map</a>';
+		showHideMapContent = '<a href = "#" id = "linkHideMap" style="font-size:13px;text-decoration:none;">Show/Hide Map</a>';
 		$('#divHideMap').append(showHideMapContent);
 	}
 	

@@ -48,31 +48,6 @@ $(function() {
 		<a id="imgRemoveFilters" href="#" style="font-size:13px;text-decoration:none;">Remove Filters</a>
 	</div>
 	
-	
-	<style type="text/css">
-		.box1 {
-			background-color: #ff5555;
-			width: 110px;
-			height: 60px;
-			margin: 0 auto 5px auto;
-			padding: 30px;
-			border: 1px solid #d7d7d7;
-			-moz-border-radius: 11px;
-			-webkit-border-radius: 11px;
-			border-radius: 11px;
-			behavior: url(/css/border-radius.htc);
-			z-index:99999;
-		}
-	</style>
-	<br />
-	<div class="box1">
-		Text in rounded corner box 
-	</div>
-	<?php
-		//die;
-	?>
-	
-	
 </div>
  
 <div id="popupContact"> 
