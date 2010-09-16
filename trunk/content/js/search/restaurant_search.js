@@ -106,7 +106,7 @@ function redrawAllCuisines(data, allCuisines) {
 		}
 		resultHtml += '</tr>';
 	}
-	resultHtml += '<tr><td colspan = "3" align = "right"><a id = "cancelCuisineFilter" href = "#">Cancel</a> &nbsp;&nbsp;&nbsp; <input type = "button" id = "btnApplyCuisines" value = "Apply Filters"></td></tr>';
+	resultHtml += '<tr><td colspan = "3" align = "right"><a id = "cancelCuisineFilter" href = "#" style="font-size:13px;text-decoration:none;">Cancel</a> &nbsp;&nbsp;&nbsp; <input type = "button" id = "btnApplyCuisines" value = "Apply Filters"></td></tr>';
 	resultHtml += '</table>';
 	
 	
@@ -284,7 +284,7 @@ function redrawAllRestaurantTypes(data, allRestaurantTypes) {
 		}
 		resultHtml += '</tr>';
 	}
-	resultHtml += '<tr><td colspan = "3" align = "right"><a id = "cancelRestaurantTypeFilter" href = "#">Cancel</a> &nbsp;&nbsp;&nbsp; <input type = "button" id = "btnApplyRestaurantTypes" value = "Apply Filters"></td></tr>';
+	resultHtml += '<tr><td colspan = "3" align = "right"><a id = "cancelRestaurantTypeFilter" href = "#" style="font-size:13px;text-decoration:none;">Cancel</a> &nbsp;&nbsp;&nbsp; <input type = "button" id = "btnApplyRestaurantTypes" value = "Apply Filters"></td></tr>';
 	resultHtml += '</table>';
 	
 	$('#divAllRestaurantTypes').html(resultHtml);
@@ -504,13 +504,13 @@ function redrawContent(data, filter) {
 	
 	if (showFilters ==  true) {
 		$('#removeFilters').empty();
-		removeFilterContent = '<a id = "imgRemoveFilters" href = "#">Remove Filters</a>';
+		removeFilterContent = '<a id = "imgRemoveFilters" href = "#" style="font-size:13px;text-decoration:none;">Remove Filters</a>';
 		$('#removeFilters').append(removeFilterContent);
 	}
 	
 	if (showMap ==  true) { 
 		$('#divHideMap').empty();
-		showHideMapContent = '<a href = "#" id = "linkHideMap">Show/Hide Map</a>';
+		showHideMapContent = '<a href = "#" id = "linkHideMap" style="font-size:13px;text-decoration:none;">Show/Hide Map</a>';
 		$('#divHideMap').append(showHideMapContent);
 	}
 	
