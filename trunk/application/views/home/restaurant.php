@@ -1,7 +1,21 @@
 <div id="tabs-1" class="ui-tabs-hide">
-	<a href = "/chain/fastfood" style="text-decoration:none;">Explore Restaurant Chains</a><br><img src="/img/homech.jpg" align="left" style="padding:4px;"><span style="font-size:14px;">Use this feature to learn more about the larger chains from McDonald's to TGI Friday's.  If they have multiple locations, odds are they are here.</span><br/><br/><br/>
+	
+	<h1>View Sustainable Restaurants in Your City</h1>
+	<div style="float:left; width:200px;">
+	<a href="#">San Francisco</a><br/>
+	<a href="#">Berkeley</a><br/>
+	<a href="#">Oakland</a><br/>
+	</div>
+	<div style="float:left; width:200px;">
+	<a href="#">San Jose</a><br/>
+	<a href="#">New York</a><br/>
+	<a href="#">Los Angeles</a><br/>
+	</div>
+	
+	<br/><br/><br/><br><br>
+	<h2>Explore Restaurant Chains</h2><br><img src="/img/homech.jpg" align="left" style="padding:4px;"><span style="font-size:14px;">Use this feature to learn more about the larger chains from McDonald's to TGI Friday's.  If they have multiple locations, odds are they are here.  <a href="#">Start exploring chains now...</a></span><br/>
 	<!-- a href="#">Our Recommendations</a><br><br-->
-	<div class="graybox">
+			<!-- div class="graybox">
 						<span class="redtxt"><b>Find Restaurants in Your Area</b></span>
 						<br>
 						<span style="font-size:14px;">See where your local restaurant is getting its food,<br> or share what you know.</span>
@@ -12,7 +26,7 @@
 								<input type="submit" name="submit" value="Find" syle="font-size: 24px;" />
 							</form>
 						</div>
-				</div>
+				</div -->
 				<br><br>
 		Recently Added<br>
 		<?php
