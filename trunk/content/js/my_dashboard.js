@@ -4,7 +4,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 	if (type == 'menu') {
 		formAction = '/restaurant/ajaxSearchRestaurantMenus';
 	} else if (type == 'supplier') {
-		formAction = '/restaurant/ajaxSearchRestaurantSuppliers';
+		formAction = '/user/ajaxSuppliersByUser';
 	} else if (type == 'comment') {
 		formAction = '/restaurant/ajaxSearchRestaurantComments';
 	}
@@ -47,25 +47,17 @@ function reinitializeTabs() {
 
 function addZeroResult(type) {
 	var html =
-	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;">';
+	'<div style="overflow:auto; width:785px; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
+	'	<div style="float:left; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">';
 	
-	html += 'We are currently working on adding ';
+	html += 'You have not contributed any informationt to the site. All viewers of the site may also update data like Wikipedia. Feel free to do add ';
 	
 	if (type == 'supplier') {
 		html += 'suppliers';
 	} else if (type == 'menu') {
 		html += 'products';
 	}
-	
-	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to do add ';
-	
-	if (type == 'supplier') {
-		html += '<a href="#" id = "addSupplier2">suppliers</a>';
-	} else if (type == 'menu') {
-		html += '<a href="#" id = "addMenu2">products</a>';
-	}
-	
+	html += '.';
 	html +='</div>' + 
 	'</div>'
 	;	
@@ -77,6 +69,8 @@ function redrawContent(data, type) {
 	$('#resultTableContainer').empty();
 	var resultTableHtml = '';
 	
+	resultTableHtml += addZeroResult(type);
+	/*
 	if (data.param.numResults == 0) {
 		resultTableHtml += addZeroResult(type);
 	} else {
@@ -94,7 +88,7 @@ function redrawContent(data, type) {
 			});
 		}
 	}
-	
+	*/
 	$('#resultTableContainer').append(resultTableHtml);
 	
 	//$('#messageContainer').hide();

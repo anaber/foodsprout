@@ -13,16 +13,19 @@ $(document).ready(function() {
 		
 	$("#suggestion_box").keyup(function() {
 		
-		$('#resultsContainer').hide();
-		$('#messageContainer').show();
-		$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		var query = $("#suggestion_box").val();
 		
-		$.post("/admincp/farm/ajaxSearchFarms", { q:query },
-		function(data){
-			redrawContent(data);
-      	},
-      	"json");
+		if ( query.length >= 3 || query.length == 0 ) {
+			$('#resultsContainer').hide();
+			$('#messageContainer').show();
+			$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
+			
+			$.post("/admincp/farm/ajaxSearchFarms", { q:query },
+			function(data){
+				redrawContent(data);
+	      	},
+	      	"json");
+	    }
       	
 	});
 
