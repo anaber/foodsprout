@@ -313,6 +313,7 @@ class RestaurantModel extends Model{
 	}
 	
 	function getRestaurantsJsonAdmin() {
+		
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 		
 		$p = $this->input->post('p'); // Page
@@ -332,7 +333,6 @@ class RestaurantModel extends Model{
 		}
 		
 		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
-		
 		
 		$start = 0;
 	
@@ -354,34 +354,13 @@ class RestaurantModel extends Model{
 		
 		if ( !empty($q) ) {
 			
-			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%"';
-			/*
-					. ' OR restaurant.restaurant_id like "%' . $q . '%"'
-					. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';
+			$where  .= ' AND (restaurant.restaurant_name like "' .$q . '%"'
 			
-			$where .= ' OR (';
-			$where	.= '		SELECT address.address_id' 
-					. '			from address, state, country'
-					. '			WHERE' 
-					. '				address.restaurant_id = restaurant.restaurant_id'
-					. '				AND address.state_id = state.state_id'
-					. '				AND address.country_id = country.country_id'
-					. ' 			AND (';
-			$where	.= '					address.zipcode = "' . $q . '"'
-					. '						OR address.address like "%' . $q . '%"'
-					. '						OR address.city like "%' . $q . '%"'
-					. '						OR address.zipcode like "%' . $q . '%"'
-					. '						OR state.state_name like "%' . $q . '%"'
-					. '						OR state.state_code like "%' . $q . '%"'
-					. '						OR country.country_name like "%' . $q . '%"'
-					. '				)'
-					. '				LIMIT 0, 1'
-					. '		)';
-			*/
+					. ' OR restaurant.restaurant_id like "' . $q . '%"';
+			
 			$where .= ' )';
 			
 		}
-		
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -425,8 +404,6 @@ class RestaurantModel extends Model{
 			}
 		}
 		
-		//echo $query;
-		//die;
 		log_message('debug', "RestaurantModel.getRestaurantsJsonAdmin : " . $query);
 		$result = $this->db->query($query);
 		
@@ -444,21 +421,7 @@ class RestaurantModel extends Model{
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
 			$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
 			$this->RestaurantLib->companyName = $row['company_name'];
-			
 			$this->RestaurantLib->creationDate = $row['creation_date'];
-			
-			if ( $row['restaurant_chain_id'] ) {
-				$CI->load->model('SupplierModel','',true);
-				$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id'], '' );
-				$this->RestaurantLib->suppliers = $suppliers;
-				$this->RestaurantLib->suppliersFrom = 'restaurantChain';
-			} else {
-				$CI->load->model('SupplierModel','',true);
-				$suppliers = $CI->SupplierModel->getSupplierForCompany( $row['restaurant_id'], '', '', '', '', '' );
-				$this->RestaurantLib->suppliers = $suppliers;
-				$this->RestaurantLib->suppliersFrom = 'restaurant';
-			}
-			
 			
 			$restaurants[] = $this->RestaurantLib;
 			unset($this->RestaurantLib);
@@ -482,8 +445,7 @@ class RestaurantModel extends Model{
 			'param'      => $params,
 			'geocode'	 => $geocodeArray,
 	    );
-	    //print_r_pre($arr);
-		//die;
+	    
 	    return $arr;
 		
 	}

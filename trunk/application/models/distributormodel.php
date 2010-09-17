@@ -235,8 +235,8 @@ class DistributorModel extends Model{
 		$where = ' WHERE ';
 		
 		$where .= ' (' 
-				. '	distributor.distributor_name like "%' .$q . '%"'
-				. ' OR distributor.distributor_id like "%' . $q . '%"';
+				. '	distributor.distributor_name like "' .$q . '%"'
+				. ' OR distributor.distributor_id like "' . $q . '%"';
 		$where .= ' )';
 		
 		$base_query_count = $base_query_count . $where;
@@ -297,14 +297,6 @@ class DistributorModel extends Model{
 			$this->DistributorLib->distributorId = $row['distributor_id'];
 			$this->DistributorLib->distributorName = $row['distributor_name'];
 			
-			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', $row['distributor_id'], '', '');
-			$this->DistributorLib->suppliers = $suppliers;
-			
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['distributor_id'], '', '', '');
-			$this->DistributorLib->addresses = $addresses;
-			
 			$distributors[] = $this->DistributorLib;
 			unset($this->DistributorLib);
 		}
@@ -316,7 +308,6 @@ class DistributorModel extends Model{
 		$totalPages = ceil($numResults/$PER_PAGE);
 		$first = 0;
 		$last = $totalPages - 1;
-		
 		
 		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
 		$arr = array(

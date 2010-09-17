@@ -72,39 +72,16 @@ function addResult(restaurant, i) {
 	'	<td valign="top"><a href="/admincp/restaurant/update/'+ restaurant.restaurantId +'">'+ restaurant.restaurantId +'</a></td>' +
 	'	<td valign="top"><a href="/admincp/restaurant/update/'+ restaurant.restaurantId +'">'+ restaurant.restaurantName +'</a></td>' +
 	'	<td valign="top">'+ (restaurant.restaurantChain ? restaurant.restaurantChain : '' ) +'</td>' + 
-	'	<td valign="top">'+ (restaurant.companyName ? restaurant.companyName : '' ) +'</td>' +
-	//'	<td valign="top">'+ restaurant.creationDate +'</td>' + 
-	'	<td valign="top">';
-	
-		
-	$.each(restaurant.suppliers, function(j, supplier) {
-		supplierType = supplier.supplierType
-		supplierType = supplierType.substring(0, 1);
-		
-		if (restaurant.suppliersFrom == 'restaurant') {
-			html += '<a href = "/admincp/restaurant/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"</a><br /><br />";
-		} else {
-			html += supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"<br /><br />";
-		}
-	});
-	if (restaurant.suppliersFrom == 'restaurant') {
-		html += '<a href = "/admincp/restaurant/add_supplier/'+restaurant.restaurantId+'">Supplier</a>';
-	}
-	
-	html += '</td>';
+	'	<td valign="top">'+ (restaurant.companyName ? restaurant.companyName : '' ) +'</td>';
 	
 	html +=
 	'	<td valign="top">';
-	/*
-	$.each(restaurant.addresses, function(j, address) {
-		html += '<a href = "/admincp/restaurant/update_address/'+address.addressId+'">' + address.completeAddress + '</a><br /><br />';
-	});
-	*/
+	
 	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantId+'">Address</a>' +
 			'</td>';
 	html +=
 	'	<td valign="top">';
-	html += '<a href = "/admincp/restaurant/add_menu_item/'+restaurant.restaurantId+'">Menu Item</a>' +
+	html += '<a href = "/admincp/restaurant/add_menu_item/'+restaurant.restaurantId+'">+Menu Item</a>' +
 			'</td>';
 	
 	html +=
@@ -124,8 +101,6 @@ function getResultTableHeader() {
 	'		<th id = "heading_restaurant"><a href = "#" style = "color:#FFFFFF">Restaurant Name</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Chain</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
-	//'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Creation Date</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Locations</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Menu</a></th>' +
 	'	</tr>' +

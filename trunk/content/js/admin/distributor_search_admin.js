@@ -63,27 +63,7 @@ function addResult(distributor, i) {
 	var html =
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/distributor/update/'+ distributor.distributorId +'">'+ distributor.distributorId +'</a></td>' +
-	'	<td valign="top"><a href="/admincp/distributor/update/'+ distributor.distributorId +'">'+ distributor.distributorName +'</a></td>' +
-	'	<td valign="top">';
-	
-	$.each(distributor.suppliers, function(j, supplier) {
-		supplierType = supplier.supplierType
-		supplierType = supplierType.substring(0, 1);
-		html += '<a href = "/admincp/distributor/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"</a><br /><br />";
-	});
-	
-	html += '<a href = "/admincp/distributor/add_supplier/'+distributor.distributorId+'">Supplier</a>' +
-			'</td>';
-	html +=
-	'	<td valign="top">';
-	
-	$.each(distributor.addresses, function(j, address) {
-		html += '<a href = "/admincp/distributor/update_address/'+address.addressId+'">' + address.displayAddress + '</a><br /><br />';
-	});
-	
-	html += '<a href = "/admincp/distributor/add_address/'+distributor.distributorId+'">Addresses</a>' +
-			'</td>';
-	
+	'	<td valign="top"><a href="/admincp/distributor/update/'+ distributor.distributorId +'">'+ distributor.distributorName +'</a></td>';
 	html +=
 	'</tr>'
 	;
@@ -98,8 +78,6 @@ function getResultTableHeader() {
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 	'		<th id = "heading_distributor"><a href = "#" style = "color:#FFFFFF">Distributor Name</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Location</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';
