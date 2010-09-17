@@ -413,6 +413,9 @@ class FarmersMarketModel extends Model{
 			}
 		}
 		
+		//echo $query;
+		//die;
+		
 		log_message('debug', "FarmersMarketModel.getFarmersMarketJson : " . $query);
 		$result = $this->db->query($query);
 		

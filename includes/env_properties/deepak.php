@@ -17,7 +17,7 @@
 $DB_HOST  = "localhost";
 $DB_USER  = "root";
 $DB_PASSWORD  = "";
-$DATABSE  = "food2";
+$DATABSE  = "food_live";
 
 $BASE_URL = "http://food.local/";
 

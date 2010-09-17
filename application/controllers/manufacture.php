@@ -88,8 +88,8 @@ class Manufacture extends Controller {
 		// Load all the views for the center column
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
-				'map' => 'includes/right/map',
 				'info' => 'includes/left/info',
+				'map' => 'includes/right/map',
 			);
 
 		// Load all the views for the center column

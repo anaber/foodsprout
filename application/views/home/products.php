@@ -1,6 +1,6 @@
 <div id="tabs-2" class="ui-tabs-hide">
 	At Food Sprout we are striving to reach deep into the your food supply chain.  Here you can start to learn more about the products you buy at the grocery.<br><br>
-	<a href="/product/fructose">Products with High-Fructose</a><br/><br/>
+	<a href="/product/fructose" style="text-decoration:none;font-size:13px;">Products with High-Fructose</a><br/><br/>
 	
 	<div class="graybox">
 		<span class="redtxt"><b>Quick Search by Brand</b></span>
@@ -17,7 +17,7 @@
 	<br/><br/>Recently Added Products<br>
 	<?php
 		foreach ($NEWPRODUCTS as $key1) {
-			echo '<a href="/product/view/'.$key1->productId.'" style="text-decoration:none;">'.$key1->productName.'</span></a>, ';
+			echo '<a href="/product/view/'.$key1->productId.'" style="text-decoration:none;font-size:13px;">'.$key1->productName.'</span></a>, ';
 		}
 	?><br><br>
 </div>

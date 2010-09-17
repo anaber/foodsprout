@@ -116,6 +116,16 @@ class User extends Controller {
 		
 		$this->load->view('/templates/center_template', $data);
 	}
+	
+	function ajaxSuppliersByUser() {
+		
+		$this->load->model('SupplierModel');
+		$suppliers = $this->SupplierModel->getSuppliersByUserJson();
+		
+		echo json_encode($suppliers);
+	}
+	
+	
 }
 
 ?>
