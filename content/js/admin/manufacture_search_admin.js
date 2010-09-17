@@ -88,10 +88,10 @@ function addResult(manufacture, i) {
 		html += '<a href = "/admincp/manufacture/update_address/'+address.addressId+'">' + address.displayAddress + '</a><br /><br />';
 	});
 	
-	html += '<a href = "/admincp/manufacture/add_address/'+manufacture.manufactureId+'">Addresses</a>' +
+	html += '<a href = "/admincp/manufacture/add_address/'+manufacture.manufactureId+'">+Addresses</a>' +
 			'</td>';
 	html +='<td valign="top">' + 
-			'<a href = "/admincp/manufacture/add_menu_item/'+manufacture.manufactureId+'">Menu Items</a>' +
+			'<a href = "/admincp/manufacture/add_menu_item/'+manufacture.manufactureId+'">+Product</a>' +
 			'</td>';
 	
 	html +=
@@ -111,7 +111,7 @@ function getResultTableHeader() {
 	'		<th id = "heading_manufacture_type"><a href = "#" style = "color:#FFFFFF">Type</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Location</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Menu</a></th>' +
+	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Products</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';
