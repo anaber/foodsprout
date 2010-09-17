@@ -1,8 +1,7 @@
-<div style="float:left; width:225px;font-size:13px;">
 	<?php
 		if (!empty ($INFO['url'])) {
 	?>
-	<div style="float:left;"><a href = "<?php echo $INFO['url']; ?>" target = "_url" style="font-size:13px;text-decoration:none;">Website</a></div>
+	<div style="float:left;">&nbsp;Website: <a href = "<?php echo $INFO['url']; ?>" target = "_url" style="font-size:13px;text-decoration:none;"><?php echo $INFO['url']; ?></a></div>
 	<br /><br />
 	<?php
 		}
@@ -21,5 +20,3 @@
 	<?php
 		}
 	?>
-	<div class="clear"></div>
-</div>

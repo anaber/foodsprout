@@ -31,10 +31,6 @@ var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_tr
 <script type='text/javascript'>GA_googleAddSlot("ca-pub-5358554883766443", "FoodSprout-ROS-MediumRec");GA_googleAddSlot("ca-pub-5358554883766443", "FoodSprout-ROS-Sky");</script>
 <script type='text/javascript'>GA_googleFetchAds();</script>
 
-<style type="text/css">
-body{background: #4D4D4D;}
-</style>
-
 </head>
 <body>
 <!-- header -->

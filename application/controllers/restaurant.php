@@ -111,8 +111,8 @@ class Restaurant extends Controller {
 		// Load all the views for the center column
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
-				'map' => 'includes/right/map',
-				'info' => 'includes/left/info',
+				'info' => '/includes/left/info',
+				'map' => '/includes/right/map',
 			);
 
 		// Load all the views for the center column
@@ -122,7 +122,7 @@ class Restaurant extends Controller {
 
 		// Load all the views for the right column
 		$data['RIGHT'] = array(
-				'ad' => 'includes/banners/sky',
+				'ad' => '/includes/banners/sky',
 			);
 
 		// Data to be passed to the views
@@ -133,8 +133,8 @@ class Restaurant extends Controller {
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
 		
 		// Left -> Map
-		$data['data']['left']['map']['width'] = '225';
-		$data['data']['left']['map']['height'] = '225';
+		$data['data']['left']['map']['width'] = '220';
+		$data['data']['left']['map']['height'] = '180';
 		$data['data']['left']['map']['hide_map'] = 'no';
 		
 		// Left -> Info
