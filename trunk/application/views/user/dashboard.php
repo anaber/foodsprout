@@ -1,7 +1,7 @@
 <script src="<?php echo base_url()?>js/my_dashboard.js" type="text/javascript"></script>
 <script>
 	
-	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
+	var userId = <?php echo $this->session->userdata('userId'); ?>;
 	var name = "<?php echo $RESTAURANT->restaurantName; ?>";
 	var jsonData;
 	var currentContent;
@@ -14,7 +14,7 @@
 	$(document).ready(function() {
 		$('#bottomPaging').hide();
 		
-		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId },
+		$.post("/user/ajaxSuppliersByUser", { q: userId },
 		function(data){
 			currentContent = 'supplier';
 			jsonData = data;
@@ -22,16 +22,7 @@
 			reinitializeTabs();
 		},
 		"json");
-		
-		$.post("/restaurant/ajaxSearchRestaurantInfo", { restaurantId:"<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '' ) ?>" },
-		function(data){
-			if (data.geocode != '') {
-				//reinitializeMap(data, 13);
-			}
-		},
-		"json");	
 	});
-		
 	
 </script>
 

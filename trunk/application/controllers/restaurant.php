@@ -72,6 +72,7 @@ class Restaurant extends Controller {
 	
 	function ajaxSearchRestaurantInfo() {
 		$restaurantId = $this->input->post('restaurantId');
+		
 		$this->load->model('RestaurantModel', '', TRUE);
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
 		echo json_encode($restaurant);
@@ -111,8 +112,8 @@ class Restaurant extends Controller {
 		// Load all the views for the center column
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
-				'info' => '/includes/left/info',
-				'map' => '/includes/right/map',
+				'info' => 'includes/left/info',
+				'map' => 'includes/right/map',
 			);
 
 		// Load all the views for the center column

@@ -21,11 +21,11 @@
 <div id="tabs">
 <div id="homevtabs">
 	<br/><ul>
-		<li><a href="#tabs-1">Near Me</a></li>
-		<li><a href="#tabs-2">From the Grocery</a></li>
-		<li><a href="#tabs-3">From the Source</a></li>
+		<li><a href="#tabs-1" style="text-decoration:none;">Near Me</a></li>
+		<li><a href="#tabs-2" style="text-decoration:none;">From the Grocery</a></li>
+		<li><a href="#tabs-3" style="text-decoration:none;">From the Source</a></li>
 		<!-- li><a href="#tabs-4">Recommendations</a></li -->
-		<li><a href="#tabs-5">Resources</a></li>
+		<li><a href="#tabs-5" style="text-decoration:none;">Resources</a></li>
 	</ul>
 </div>
 
