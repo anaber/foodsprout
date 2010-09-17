@@ -79,7 +79,7 @@ function addResult(restaurant, i) {
 	html +=
 	'	<td valign="top">';
 	
-	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantId+'">Address</a>' +
+	html += '<a href = "/admincp/restaurant/add_address/'+restaurant.restaurantId+'">+Address</a>' +
 			'</td>';
 	html +=
 	'	<td valign="top">';

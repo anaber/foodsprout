@@ -74,7 +74,7 @@ function addResult(farmersMarket, i) {
 		html += '<a href = "/admincp/farmersmarket/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"</a><br /><br />";
 	});
 	
-	html += '<a href = "/admincp/farmersmarket/add_supplier/'+farmersMarket.farmersMarketId+'">Supplier</a>' +
+	html += '<a href = "/admincp/farmersmarket/add_supplier/'+farmersMarket.farmersMarketId+'">+Supplier</a>' +
 			'</td>';
 	html +=
 	'	<td valign="top">';
@@ -83,7 +83,7 @@ function addResult(farmersMarket, i) {
 		html += '<a href = "/admincp/farmersmarket/update_address/'+address.addressId+'">' + address.displayAddress + '</a><br /><br />';
 	});
 	
-	html += '<a href = "/admincp/farmersmarket/add_address/'+farmersMarket.farmersMarketId+'">Addresses</a>' +
+	html += '<a href = "/admincp/farmersmarket/add_address/'+farmersMarket.farmersMarketId+'">+Address</a>' +
 			'</td>';
 	
 	html +=

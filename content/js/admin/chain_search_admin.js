@@ -81,7 +81,7 @@ function addResult(restaurant, i) {
 		html += '<a href = "/admincp/restaurantchain/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"</a><br /><br />";
 	});
 	
-	html += '<a href = "/admincp/restaurantchain/add_supplier/'+restaurant.restaurantChainId+'">Add Supplier</a>' +
+	html += '<a href = "/admincp/restaurantchain/add_supplier/'+restaurant.restaurantChainId+'">+Supplier</a>' +
 			'</td>';
 	
 	
@@ -92,7 +92,7 @@ function addResult(restaurant, i) {
 		html += '<a href = "/admincp/restaurant/update_address/'+address.addressId+'">' + address.completeAddress + '</a><br /><br />';
 	});
 	*/
-	html += '<a href = "/admincp/restaurantchain/add_menu_item/'+restaurant.restaurantChainId+'">Menu Item</a>' +
+	html += '<a href = "/admincp/restaurantchain/add_menu_item/'+restaurant.restaurantChainId+'">+Menu Item</a>' +
 			'</td>';
 
 	
