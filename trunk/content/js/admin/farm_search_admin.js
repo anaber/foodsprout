@@ -89,7 +89,7 @@ function addResult(farm, i) {
 		html += '<a href = "/admincp/farm/update_supplier/'+supplier.supplierId+'">' + supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +"</a><br /><br />";
 	});
 	
-	html += '<a href = "/admincp/farm/add_supplier/'+farm.farmId+'">Supplier</a>' +
+	html += '<a href = "/admincp/farm/add_supplier/'+farm.farmId+'">+Supplier</a>' +
 			'</td>';
 	html +=
 	'	<td valign="top">';
@@ -98,7 +98,7 @@ function addResult(farm, i) {
 		html += '<a href = "/admincp/farm/update_address/'+address.addressId+'">' + address.displayAddress + '</a><br /><br />';
 	});
 	
-	html += '<a href = "/admincp/farm/add_address/'+farm.farmId+'">Addresses</a>' +
+	html += '<a href = "/admincp/farm/add_address/'+farm.farmId+'">+Address</a>' +
 			'</td>';
 	
 	html +=

@@ -90,7 +90,7 @@ function addResult(manufacture, i) {
 		html += '<a href = "/admincp/manufacture/update_address/'+address.addressId+'">' + address.displayAddress + '</a><br /><br />';
 	});
 	
-	html += '<a href = "/admincp/manufacture/add_address/'+manufacture.manufactureId+'">+Addresses</a>' +
+	html += '<a href = "/admincp/manufacture/add_address/'+manufacture.manufactureId+'">+Address</a>' +
 			'</td>';
 	html +='<td valign="top">' + 
 			'<a href = "/admincp/manufacture/add_menu_item/'+manufacture.manufactureId+'">+Product</a>' +
