@@ -42,8 +42,8 @@
 
 
 $route['default_controller'] = "home";
-//$route['^restaurant/([\\w]*-[\\w]*)'] = "restaurant/city/$1";
 
+// RESTAURANT
 $route['^restaurant/ajaxGetAllCuisine'] 				= "restaurant/ajaxGetAllCuisine";
 $route['^restaurant/ajaxGetAllRestaurantType'] 			= "restaurant/ajaxGetAllRestaurantType";
 $route['^restaurant/ajaxGetDistinctUsedCuisine'] 		= "restaurant/ajaxGetDistinctUsedCuisine";
@@ -55,8 +55,10 @@ $route['^restaurant/ajaxSearchRestaurantSuppliers'] 	= "restaurant/ajaxSearchRes
 $route['^restaurant/map'] 								= "restaurant/map";
 $route['^restaurant/view/(:num)'] 						= "restaurant/view/$1";
 $route['^restaurant'] 									= "restaurant/index";
-
 $route['^restaurant/(:any)'] 							= "restaurant/city/$1";
+
+// ADMINCP
+$route['^admincp'] 										= "admincp/dashboard";
 
 $route['scaffolding_trigger'] = "";
 

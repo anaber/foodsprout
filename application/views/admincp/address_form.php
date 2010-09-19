@@ -32,8 +32,39 @@ var documentLocation = '';
 ?>
 formValidated = true;
 
+function resetSupplierForm() {
+	$('#cityId').val('');
+	$('#cityAjax').val('');
+}
+
 $(document).ready(function() {
 	
+	function findValueCallback(event, data, formatted) {
+		document.getElementById('cityId').value = data[1];
+	}
+	
+	$(":text, textarea").result(findValueCallback).next().click(function() {
+		$(this).prev().search();
+	});
+	
+	$("#cityAjax").autocomplete("/city/get_cities_based_on_state", {
+		width: 260,
+		selectFirst: false,
+		cacheLength:0,
+		extraParams: {
+	       stateId: function() { return $("#stateId").val(); }
+	   	}
+	});
+	
+	$("#cityAjax").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	$("#clear").click(function() {
+		$(":input").unautocomplete();
+	});
+		
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
 	$("#addressForm").validationEngine({
 		success :  function() {formValidated = true;},
@@ -64,11 +95,24 @@ $(document).ready(function() {
 		<?php
 			}
 		?>
+		
+			var cityId = $('#cityId').val();
+			var cityName;
+			
+			if (isNaN( cityId ) ) {
+				cityName = cityId;
+				cityId = '';
+			}
+			
 			if ($('#addressId').val() != '' ) {
 				var formAction = '/admincp/manufacture/address_save_update';
 				postArray = {
 							  address:$('#address').val(),
 							  city: $('#city').val(),
+							  
+							  cityId:cityId,
+							  cityName:cityName,
+							  
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(),
@@ -82,6 +126,10 @@ $(document).ready(function() {
 				postArray = { 
 							  address:$('#address').val(),
 							  city: $('#city').val(),
+							  
+							  cityId:cityId,
+							  cityName:cityName,
+							  
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(),
@@ -142,6 +190,9 @@ $(document).ready(function() {
 		
 </script>
 
+<script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
+
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 <?php
 	//print_r_pre($MANUFACTURE);
@@ -160,12 +211,6 @@ $(document).ready(function() {
 	</tr>
 	
 	<tr>
-		<td width = "25%">City</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
-		</td>
-	</tr>
-	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
 			<select name="stateId" id="stateId"  class="validate[required]">
@@ -178,6 +223,21 @@ $(document).ready(function() {
 			</select>
 		</td>
 	</tr>
+	
+	<tr>
+		<td width = "25%">City Name<div style = "font-size:12px;float:right;color:#0000FF;">(New)</div></td>
+		<td width = "75%">
+			<input type="text" id="cityAjax" value="<?php echo (isset($ADDRESS) ? $ADDRESS->cityName : '') ?>" class="validate[required]" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td width = "25%">City<div style = "font-size:12px;float:right;color:#FF0000;">(Deprecated)</div></td>
+		<td width = "75%">
+			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->city : '') ?>" class="validate[optional]" type="text" name="city" id="city"/><br />
+		</td>
+	</tr>
+	
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
@@ -223,6 +283,7 @@ $(document).ready(function() {
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
 			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR_ID) ? $DISTRIBUTOR_ID : '') ?>">			
 			<input type = "hidden" name = "farmersMarketId" id = "farmersMarketId" value = "<?php echo (isset($FARMERS_MARKET_ID) ? $FARMERS_MARKET_ID : '') ?>">
+			<input type = "hidden" name = "companyId" id = "cityId" value = "<?php echo (isset($ADDRESS) ? $ADDRESS->cityId : '') ?>">
 		</td>
 	</tr>
 </table>
