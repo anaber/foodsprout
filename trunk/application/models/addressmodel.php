@@ -181,6 +181,8 @@ class AddressModel extends Model{
 		
 		$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 		
+		$claimsSustainable = $this->input->post('claimsSustainable');
+		
 		$query = "INSERT INTO address (address_id, address, city, city_id, state_id, zipcode, country_id, latitude , longitude, ";
 		if ( !empty($restaurantId) ) {
 			$query .= 'restaurant_id';
@@ -218,7 +220,7 @@ class AddressModel extends Model{
 		} else {
 			$query .= ", 0";
 		}
-		$query .= ", '". $ACTIVITY_LEVEL_DB[$this->input->post('claimsSustainable')] ."')";
+		$query .= ", '". (!empty ($claimsSustainable) ? $ACTIVITY_LEVEL_DB[$claimsSustainable] : '0') ."')";
 		
 		log_message('debug', 'AddressModel.addAddress : Insert Address : ' . $query);
 		
@@ -300,7 +302,9 @@ class AddressModel extends Model{
 		$CI->load->model('GoogleMapModel','',true);
 		
 		$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
-			
+		
+		$claimsSustainable = $this->input->post('claimsSustainable');
+		
 		$data = array(
 					'address' => $this->input->post('address'), 
 					'city' => $this->input->post('city'),
@@ -310,7 +314,7 @@ class AddressModel extends Model{
 					'zipcode' => $this->input->post('zipcode'),
 					'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ),
 					'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
-					'claims_sustainable' => $ACTIVITY_LEVEL_DB[$this->input->post('claimsSustainable')],
+					'claims_sustainable' => (!empty ($claimsSustainable) ? $ACTIVITY_LEVEL_DB[$claimsSustainable] : '0'),
 				);
 		$where = "address_id = " . $this->input->post('addressId');
 		$query = $this->db->update_string('address', $data, $where);
