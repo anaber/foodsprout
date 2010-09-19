@@ -25,7 +25,7 @@ var topRestaurantTypes;
 		//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		loadPopupFadeIn();
 		
-		$.post("/restaurant/ajaxSearchRestaurants", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
+		$.post("/restaurant/ajaxSearchRestaurants", { city:"<?php echo (isset($CITY) ? $CITY->cityId : '' ) ?>", q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
 		function(data){
 			
 			if (showMap ==  true) {

@@ -2,8 +2,7 @@
 
 class Restaurant extends Controller {
 	
-	function __construct()
-	{
+	function __construct() {
 		global $ADMIN_LANDING_PAGE;
 		parent::Controller();
 		if ($this->session->userdata('isAuthenticated') != 1 || $this->session->userdata('userGroup') != 'admin' )
@@ -13,8 +12,7 @@ class Restaurant extends Controller {
 	}
 	
 	// Default is to list all the restaurants
-	function index()
-	{
+	function index() {
 		$data = array();
 		$restaurants = array();
 		
@@ -407,7 +405,6 @@ class Restaurant extends Controller {
 			
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
-	
 	
 }
 

@@ -56,7 +56,14 @@ $(document).ready(function() {
 			var formAction = '';
 			var postArray = '';
 			var act = '';
-			
+			var strClaimsSustainable;
+		<?php
+			if ( isset($RESTAURANT_ID) ) {
+		?>
+			strClaimsSustainable = $('#claimsSustainable').val();
+		<?php
+			}
+		?>
 			if ($('#addressId').val() != '' ) {
 				var formAction = '/admincp/manufacture/address_save_update';
 				postArray = {
@@ -65,7 +72,8 @@ $(document).ready(function() {
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(),
-							   
+							  claimsSustainable:strClaimsSustainable,
+							  
 							  addressId: $('#addressId').val()
 							};
 				act = 'update';		
@@ -77,6 +85,7 @@ $(document).ready(function() {
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val(),
+							  claimsSustainable:strClaimsSustainable,
 							  
 							  manufactureId: $('#manufactureId').val(),
 							  farmId: $('#farmId').val(),
@@ -189,7 +198,20 @@ $(document).ready(function() {
 		</td>
 	</tr>
 <?php
-	
+	if ( isset($RESTAURANT_ID) ) {
+?>
+	<tr>
+		<td width = "25%" nowrap>Claims Sustainable?</td>
+		<td width = "75%">
+			<select name="claimsSustainable" id="claimsSustainable"  class="validate[required]">
+				<option value="">--Choose--</option>
+				<option value="active"<?php echo ((isset($ADDRESS) && ($ADDRESS->claimsSustainable == 1)) ? ' SELECTED' : '')?>>Yes</option>
+				<option value="inactive"<?php echo ((isset($ADDRESS) && ($ADDRESS->claimsSustainable == 0)) ? ' SELECTED' : '')?>>No</option>
+			</select>
+		</td>
+	</tr>
+<?php
+	}
 ?>
 	<tr>
 		<td width = "25%" colspan = "2">

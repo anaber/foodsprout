@@ -81,6 +81,7 @@ class AddressModel extends Model{
 			$this->addressLib->country = $row['country_name'];
 			$this->addressLib->latitude = $row['latitude'];
 			$this->addressLib->longitude = $row['longitude'];
+			$this->addressLib->claimsSustainable = $row['claims_sustainable'];
 			
 			$this->addressLib->completeAddress = $this->prepareAddress($row['address'], $row['city'], $row['state_id'], $row['country_id'], $row['zipcode']);
 			$this->addressLib->displayAddress = $this->prepareAddressToDisplay($row['address'], $row['city'], $row['state_id'], $row['country_id'], $row['zipcode']);
@@ -133,12 +134,13 @@ class AddressModel extends Model{
 		$this->addressLib->manufactureId = $row->manufacture_id;
 		$this->addressLib->distributorId = $row->distributor_id;
 		$this->addressLib->farmersMarketId = $row->farmers_market_id;
-		
+		$this->addressLib->claimsSustainable = $row->claims_sustainable;
 		
 		return $this->addressLib;
 	}
 	
 	function addAddress($restaurantId, $farmId, $manufactureId, $distributorId, $farmersMarketId, $companyId) {
+		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		$CI =& get_instance();
 		
@@ -160,7 +162,7 @@ class AddressModel extends Model{
 		} else if ( !empty($farmersMarketId) ) {
 			$query .= 'farmers_market_id';
 		}
-		$query .= ", company_id, geocoded)" .
+		$query .= ", company_id, geocoded, claims_sustainable)" .
 				" values (NULL, \"" . $this->input->post('address') . "\", \"" . $this->input->post('city') . "\", '" . $this->input->post('stateId') . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', ";
 		if ( !empty($restaurantId) ) {
 			$query .= $restaurantId;
@@ -185,7 +187,7 @@ class AddressModel extends Model{
 		} else {
 			$query .= ", 0";
 		}
-		$query .= ")";
+		$query .= ", '". $ACTIVITY_LEVEL_DB[$this->input->post('claimsSustainable')] ."')";
 		
 		log_message('debug', 'AddressModel.addAddress : Insert Address : ' . $query);
 		
@@ -248,6 +250,7 @@ class AddressModel extends Model{
 	}
 	
 	function updateAddress() {
+		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		
 		$CI =& get_instance();
@@ -266,6 +269,7 @@ class AddressModel extends Model{
 					'zipcode' => $this->input->post('zipcode'),
 					'latitude' => ( isset($latLng['latitude']) ? $latLng['latitude']:'' ),
 					'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
+					'claims_sustainable' => $ACTIVITY_LEVEL_DB[$this->input->post('claimsSustainable')],
 				);
 		$where = "address_id = " . $this->input->post('addressId');
 		$query = $this->db->update_string('address', $data, $where);

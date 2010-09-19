@@ -236,6 +236,55 @@ class Restaurant extends Controller {
 		$restaurants = $this->RestaurantModel->getRestaurantMenusJson();
 		echo json_encode($restaurants);
 	}
+	
+	function city($c) {
+		$arr = explode ('-', $c);
+		$cityName = implode(' ', $arr);
+		
+		$this->load->model('CityModel', '', TRUE);
+		$city = $this->CityModel->getCityFromName($cityName);
+		
+		$data = array();
+		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_list');
+		$data['SEO'] = $seo;
+		
+		$f = $this->input->post('f');
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'map' => 'includes/map',
+				'list' => '/restaurant/restaurant_list',
+			);
+		
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/restaurant_filter',
+			);
+		
+		if ( empty($f) ) {
+		$data['data']['center']['map']['width'] = '795';
+		$data['data']['center']['map']['height'] = '250';
+		}
+		
+		$data['data']['center']['list']['CITY'] = $city;
+		$data['data']['center']['list']['f'] = $f;
+		if ( !empty($f) ) {
+			$data['data']['center']['list']['hide_map'] = 'yes';
+			$data['data']['center']['list']['hide_filters'] = 'yes';
+		} else {
+			$data['data']['center']['list']['hide_map'] = 'no';
+			$data['data']['center']['list']['hide_filters'] = 'no';
+		}
+		
+		$data['CSS'] = array(
+						'listing'
+					);
+		
+		$this->load->view('templates/left_center_template', $data);
+	}
+	
 }
 
 /* End of file restaurant.php */
