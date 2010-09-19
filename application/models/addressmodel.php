@@ -44,7 +44,7 @@ class AddressModel extends Model{
 		return $address;
 	}
 	
-	function getAddressForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $farmersMarketId, $zipcode, $city) {
+	function getAddressForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $farmersMarketId, $zipcode, $city, $citySearch) {
 		
 		$addresses = array();
 		
@@ -70,6 +70,8 @@ class AddressModel extends Model{
 			}
 		} else if (!empty($city) ) {
 			$query .= ' AND address.city_id IN (' . $city . ')';
+		} else if ( !empty($citySearch) ) {
+			$query	.= ' AND address.city_id = ' . $citySearch . ' AND address.claims_sustainable = 1 ';
 		}
 			$query .= " AND address.state_id = state.state_id" .
 					" AND address.country_id = country.country_id" .

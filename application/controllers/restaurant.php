@@ -278,6 +278,8 @@ class Restaurant extends Controller {
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
 		
+		$data['data']['left']['filter']['CITY'] = $city;
+		
 		$data['CSS'] = array(
 						'listing'
 					);

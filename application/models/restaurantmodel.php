@@ -71,7 +71,8 @@ class RestaurantModel extends Model{
 		}
 		
 		$city = '';
-		$citySearch = $this->input->post('city');
+		
+		$citySearch =  $this->input->post('city');
 		//$city = '41,6009,13721';
 		
 		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
@@ -99,6 +100,8 @@ class RestaurantModel extends Model{
 				setcookie('seachedZip', $q, time()+60*60*24*30*365);
 				$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
 			}
+		} else {
+			$mapZoomLevel = $CITY_ZOOM_LEVEL;
 		}
 		
 		$start = 0;
@@ -138,7 +141,7 @@ class RestaurantModel extends Model{
 			
 			
 			if(count($arrCuisineId) > 0 ) {
-			 		// Cuisine 
+			 	// Cuisine 
 				if(count($arrRestaurantTypeId) > 0 ) {
 					$where	.= ' OR ( ';
 				} else {
@@ -180,17 +183,7 @@ class RestaurantModel extends Model{
 				} else if ( !empty($citySearch) ) {
 			$where	.= '					address.city_id = ' . $citySearch . ' AND address.claims_sustainable = 1 ';
 				}
-					/*
-					. '						address.address like "%' . $q . '%"'
-					. '						OR address.city like "%' . $q . '%"'
-					. '						OR address.zipcode like "%' . $q . '%"'
-					. '						OR state.state_name like "%' . $q . '%"'
-					. '						OR state.state_code like "%' . $q . '%"'
-					. '						OR country.country_name like "%' . $q . '%"'
-					*/
-
-					
-					
+				
 			$where	.= '				)'
 					. '				LIMIT 0, 1'
 					. '		)';
@@ -259,15 +252,12 @@ class RestaurantModel extends Model{
 			
 			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
-			//$this->RestaurantLib->cuisineId = $row['cuisine_id'];
-			//$this->RestaurantLib->cuisine = $row['cuisine_name'];
 			
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', $q, $city);
+			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', $q, $city, $citySearch);
 			$this->RestaurantLib->addresses = $addresses;
-			
 			
 			$cuisines = $this->getCuisinesForRestaurant( $row['restaurant_id']);
 			$this->RestaurantLib->cuisines = $cuisines;
@@ -304,7 +294,7 @@ class RestaurantModel extends Model{
 			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 		}
 		
-		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel);
+		$params = requestToParamsCitySearch($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $citySearch);
 		$arr = array(
 			'results'    => $restaurants,
 			'param'      => $params,
