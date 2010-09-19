@@ -514,7 +514,9 @@ function redrawContent(data, filter) {
 		$('#divHideMap').append(showHideMapContent);
 	}
 	
-	if (data.param.q) {
+	if (data.param.city) {	
+		// Do nothing
+	} else {
 		redrawZipcodeBox();
 		
 		$("#q").val(data.param.q);
