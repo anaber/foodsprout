@@ -232,8 +232,8 @@ $(document).ready(function() {
 	</tr>
 	
 	<tr>
-		<td width = "25%">City<div style = "font-size:12px;float:right;color:#FF0000;">(Deprecated)</div></td>
-		<td width = "75%">
+		<td width = "50%">City<div style = "font-size:12px;float:right;color:#FF0000;">(Deprecated)</div></td>
+		<td width = "50%">
 			<input value="<?php echo (isset($ADDRESS) ? $ADDRESS->city : '') ?>" class="validate[optional]" type="text" name="city" id="city"/><br />
 		</td>
 	</tr>
@@ -289,10 +289,17 @@ $(document).ready(function() {
 </table>
 </form>
 
-<table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "50%">
+<table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "60%">
 	<tr>
 		<th>Id</th>
 		<th>Address</th>
+<?php
+	if ( isset($RESTAURANT_ID) ) {
+?>
+		<th>Claims Sustainable</th>
+<?php
+	}
+?>
 	</tr>
 <?php
 	$controller = $this->uri->segment(2);
@@ -302,6 +309,9 @@ $(document).ready(function() {
 		echo '<tr class="d'.($i & 1).'">';
 		echo '	<td>'.anchor('/admincp/'.$controller.'/update_address/'.$address->addressId, $address->addressId).'</td>';
 		echo '	<td>'.anchor('/admincp/'.$controller.'/update_address/'.$address->addressId, $address->displayAddress).'</td>';
+	if ( isset($RESTAURANT_ID) ) {
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_address/'.$address->addressId, ($address->claimsSustainable == 1 ? 'Yes' : 'No')   ).'</td>';
+	}
 		echo '</tr>';
 
  	endforeach;
