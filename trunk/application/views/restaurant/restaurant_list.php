@@ -5,8 +5,7 @@ var showFilters = true;
 var topCuisines;
 var topRestaurantTypes;
 
-<?php
-	
+<?php	
 	if ($hide_map == 'yes') {
 ?>
 	showMap = false;
@@ -18,6 +17,7 @@ var topRestaurantTypes;
 	showFilters = false;
 <?php
 	}
+	
 ?>
 	
 	$(document).ready(function() {

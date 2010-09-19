@@ -12,7 +12,7 @@ var allRestaurantTypes;
 
 
 
-function postAndRedrawContent(page, perPage, s, o, query, filter) {
+function postAndRedrawContent(page, perPage, s, o, query, filter, city) {
 	
 	//$('#resultsContainer').hide();
 	//$('#messageContainer').show();
@@ -20,7 +20,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter) {
 	
 	var formAction = '/restaurant/ajaxSearchRestaurants';
 	
-	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter };
+	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter, city:city };
 	
 	$.post(formAction, postArray,function(data) {		
 		
@@ -335,7 +335,7 @@ function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
 		selectedTopRestaurantTypeId = "";
 		disablePopup();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
 	});
 	
 	$("#cancelRestaurantTypeFilter").click(function(e){
@@ -514,9 +514,12 @@ function redrawContent(data, filter) {
 		$('#divHideMap').append(showHideMapContent);
 	}
 	
-	redrawZipcodeBox();
+	if (data.param.q) {
+		redrawZipcodeBox();
+		
+		$("#q").val(data.param.q);
+	}
 	
-	$("#q").val(data.param.q);
 	
 	//$('#table_results tbody tr td a').click(function(e) {
 	$('#resultTableContainer div div a').click(function(e) {
@@ -550,15 +553,10 @@ function redrawContent(data, filter) {
 		reinitializeRemoveFilters(data);
 	}
 	
-	//reinitializeTableHeadingEvent(data);
-	
 	reinitializeFilterEvent(data);
 	
 	reinitializeQueryFilterEvent(data);
-	
 	reinitializeShowHideMap(data);
-	
-	
 	
 	//$("#table_results").colorize( { ignoreHeaders:true });
 	disablePopupFadeIn();
@@ -671,7 +669,7 @@ function reinitializeFilterEvent (data) {
 		}
 		
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
 	});
 }
 
@@ -717,7 +715,7 @@ function reinitializePopupCuisineEvent (data, allCuisines) {
 		selectedTopCuisineId = "";
 		disablePopup();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
 	});
 	
 	$("#cancelCuisineFilter").click(function(e){
@@ -734,7 +732,7 @@ function reinitializeQueryFilterEvent (data) {
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.city);
 	});
 }
 
@@ -753,7 +751,7 @@ function reinitializeRemoveFilters(data) {
 		
 		filters = '';
 
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', data.param.city);
 		$('#frmFilters')[0].reset();
 	});
 }
@@ -764,7 +762,7 @@ function reinitializePagingEvent(data) {
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 	});
 	
 	$("#imgPrevious").click(function(e) {
@@ -774,7 +772,7 @@ function reinitializePagingEvent(data) {
 			previousPage = data.param.firstPage;
 		}
 		loadPopupFadeIn();
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 	});
 	
 	$("#imgNext").click(function(e) {
@@ -784,13 +782,13 @@ function reinitializePagingEvent(data) {
 			nextPage = data.param.lastPage;
 		}
 		loadPopupFadeIn();
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 	});
 	
 }
@@ -799,25 +797,25 @@ function reinitializePageCountEvent(data) {
 	$("#10PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 	});
 	
 	$("#20PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 	});
 	
 	$("#40PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 	});
 	
 	$("#50PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter);
+		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 	});
 	
 	/*
@@ -826,17 +824,6 @@ function reinitializePageCountEvent(data) {
 	});
 	*/
 }
-
-/*
-function reinitializeTableHeadingEvent(data) {
-	$("#heading_restaurant").click(function(e) {
-		e.preventDefault();
-		order = getOrder(data, 'restaurant_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'restaurant_name', order, data.param.q, data.param.filter);
-	});
-}
-*/
-
 
 function getOrder(data, field_name ) {
 	var order = 'ASC';

@@ -69,6 +69,28 @@ function requestToParams3($numResults, $start, $totalPages, $first, $last, $page
 	return $param;
 }
 
+function requestToParamsCitySearch($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $city) {
+	global $PER_PAGE;
+	
+	$param = array(
+		'page'     		=> $page,
+		'totalPages' 	=> $totalPages,
+		'perPage'  		=> $PER_PAGE,
+		'start'    		=> $start+1,
+		'end'    		=> ( ($start + $PER_PAGE) > $numResults ? $numResults : ($start + $PER_PAGE) ) ,
+		'firstPage'		=> $first,
+		'lastPage'		=> $last,
+		'numResults'  	=> $numResults,
+		'sort'  		=> $sort,
+		'order'  		=> $order,
+		'q'  			=> $q,
+		'filter'		=> $filter,
+		'city'			=> $city,
+		'zoomLevel'		=> $mapZoomLevel,
+	);
+	return $param;
+}
+
 function getRealIpAddr() {
     if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
     {
