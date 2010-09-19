@@ -94,8 +94,11 @@ UPDATE product
 SET track_ip = '174.143.112.149';
 
 
+--
+-- 9/19/2010
+--
+ALTER TABLE address ADD COLUMN claims_sustainable INT(1) NULL DEFAULT NULL  AFTER geocoded ;
 
-
-
+UPDATE address SET claims_sustainable = 0;
 
 

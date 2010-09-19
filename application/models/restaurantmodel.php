@@ -71,31 +71,34 @@ class RestaurantModel extends Model{
 		}
 		
 		$city = '';
+		$citySearch = $this->input->post('city');
 		//$city = '41,6009,13721';
 		
 		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 		
-		if ($q == '') {
-			
-			if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
-				$q = $_COOKIE['seachedZip'];
-				$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
-			} else {
+		if ($citySearch == '') {
+			if ($q == '') {
 				
-				if ($this->session->userdata('isAuthenticated') != 1 ) {
-					// If user is NOT logged in, display restaurants from SFO
-					$city = '41,6009,13721';
-					$mapZoomLevel = $CITY_ZOOM_LEVEL;
-				} else {
-					// If user is LOGGED in, display restaurants near hiz zipcode
-					$q = $this->session->userdata['zipcode'];
+				if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
+					$q = $_COOKIE['seachedZip'];
 					$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
-					setcookie('seachedZip', $q, time()+60*60*24*30*365);
+				} else {
+					
+					if ($this->session->userdata('isAuthenticated') != 1 ) {
+						// If user is NOT logged in, display restaurants from SFO
+						$city = '41,6009,13721';
+						$mapZoomLevel = $CITY_ZOOM_LEVEL;
+					} else {
+						// If user is LOGGED in, display restaurants near hiz zipcode
+						$q = $this->session->userdata['zipcode'];
+						$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+						setcookie('seachedZip', $q, time()+60*60*24*30*365);
+					}
 				}
+			} else {
+				setcookie('seachedZip', $q, time()+60*60*24*30*365);
+				$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
 			}
-		} else {
-			setcookie('seachedZip', $q, time()+60*60*24*30*365);
-			$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
 		}
 		
 		$start = 0;
@@ -154,7 +157,7 @@ class RestaurantModel extends Model{
 			$where .= ' )';
 		}
 		
-		if ( !empty($q) || !empty($city) ) {
+		if ( !empty($q) || !empty($city) || !empty($citySearch)  ) {
 			if (!empty($where) ) {
 				$where .= ' AND (';  
 			} else {
@@ -173,7 +176,9 @@ class RestaurantModel extends Model{
 				if ( !empty($q) ) {	 
 			$where	.= '					address.zipcode = "' . $q . '"';
 				} else if ( !empty($city) ) {
-			$where	.= '					address.city_id IN (' . $city . ')';
+			$where	.= '					address.city_id IN (' . $city . ') ';
+				} else if ( !empty($citySearch) ) {
+			$where	.= '					address.city_id = ' . $citySearch . ' AND address.claims_sustainable = 1 ';
 				}
 					/*
 					. '						address.address like "%' . $q . '%"'
@@ -191,7 +196,6 @@ class RestaurantModel extends Model{
 					. '		)';
 			
 		}
-		
 		
 		$base_query_count = $base_query_count . $where;
 		

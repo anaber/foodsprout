@@ -40,9 +40,25 @@
 |
 */
 
-$route['default_controller'] = "home";
-$route['scaffolding_trigger'] = "";
 
+$route['default_controller'] = "home";
+//$route['^restaurant/([\\w]*-[\\w]*)'] = "restaurant/city/$1";
+
+$route['^restaurant/ajaxGetAllCuisine'] 				= "restaurant/ajaxGetAllCuisine";
+$route['^restaurant/ajaxGetAllRestaurantType'] 			= "restaurant/ajaxGetAllRestaurantType";
+$route['^restaurant/ajaxGetDistinctUsedCuisine'] 		= "restaurant/ajaxGetDistinctUsedCuisine";
+$route['^restaurant/ajaxGetDistinctUsedRestaurantType'] = "restaurant/ajaxGetDistinctUsedRestaurantType";
+$route['^restaurant/ajaxSearchRestaurantInfo'] 			= "restaurant/ajaxSearchRestaurantInfo";
+$route['^restaurant/ajaxSearchRestaurantMenus'] 		= "restaurant/ajaxSearchRestaurantMenus";
+$route['^restaurant/ajaxSearchRestaurants'] 			= "restaurant/ajaxSearchRestaurants";
+$route['^restaurant/ajaxSearchRestaurantSuppliers'] 	= "restaurant/ajaxSearchRestaurantSuppliers";
+$route['^restaurant/map'] 								= "restaurant/map";
+$route['^restaurant/view/(:num)'] 						= "restaurant/view/$1";
+$route['^restaurant'] 									= "restaurant/index";
+
+$route['^restaurant/(:any)'] 							= "restaurant/city/$1";
+
+$route['scaffolding_trigger'] = "";
 
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */
