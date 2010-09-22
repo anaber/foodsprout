@@ -95,6 +95,7 @@ class CityModel extends Model{
 		}
 	}
 	
+	
 }
 
 
