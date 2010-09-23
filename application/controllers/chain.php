@@ -37,6 +37,7 @@ class Chain extends Controller {
 	}
 
 	function fastfood() {
+		global $RECOMMENDED_CITIES;
 		$data = array();
 
 		// Views to include in the data array
@@ -50,7 +51,7 @@ class Chain extends Controller {
 
 		// Data to be passed to the views
 		// $data['data']['center']['list']['VIEW_HEADER'] = "List of Restaurant Chains";
-
+		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
 		$this->load->view('templates/left_center_template', $data);
 	}
 
