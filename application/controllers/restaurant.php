@@ -13,6 +13,7 @@ class Restaurant extends Controller {
 	}
 	
 	function index() {
+		global $RECOMMENDED_CITIES;
 		$data = array();
 		
 		// SEO
@@ -62,6 +63,8 @@ class Restaurant extends Controller {
 			$data['data']['center']['list']['hide_map'] = 'no';
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
+		
+		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
 		
 		$data['CSS'] = array(
 						'listing'
@@ -238,6 +241,8 @@ class Restaurant extends Controller {
 	}
 	
 	function city($c) {
+		global $RECOMMENDED_CITIES;
+		
 		$arr = explode ('-', $c);
 		$cityName = implode(' ', $arr);
 		
@@ -279,6 +284,7 @@ class Restaurant extends Controller {
 		}
 		
 		$data['data']['left']['filter']['CITY'] = $city;
+		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
 		
 		$data['CSS'] = array(
 						'listing'
