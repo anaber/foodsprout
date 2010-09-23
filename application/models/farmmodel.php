@@ -122,7 +122,7 @@ class FarmModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row->farm_id, '', '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', $row->farm_id, '', '', '', '', '', '');
 			$this->FarmLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
@@ -336,7 +336,7 @@ class FarmModel extends Model{
 			$this->FarmLib->suppliers = $suppliers;
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '', '');
 			$this->FarmLib->addresses = $addresses;
 			
 			$farms[] = $this->FarmLib;
@@ -547,8 +547,8 @@ class FarmModel extends Model{
 			$this->FarmLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			//$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', $q, $city);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '');
+			//$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', $q, $city, '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '', '');
 			$this->FarmLib->addresses = $addresses;
 			
 			

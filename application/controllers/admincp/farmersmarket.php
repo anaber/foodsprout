@@ -217,7 +217,7 @@ class FarmersMarket extends Controller {
 		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($id);
 		
 		$this->load->model('AddressModel','',true);
-		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', '', $id, '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', '', $id, '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -260,7 +260,7 @@ class FarmersMarket extends Controller {
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
 		
-		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', '', $address->farmersMarketId, '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', '', $address->farmersMarketId, '', '', '');
 		
 		$this->load->model('FarmersMarketModel');
 		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($address->farmersMarketId);

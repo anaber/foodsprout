@@ -245,7 +245,7 @@ class Restaurant extends Controller {
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
 		$this->load->model('AddressModel','',true);
-		$addresses = $this->AddressModel->getAddressForCompany( $id, '', '', '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( $id, '', '', '', '', '', '', '');
 				
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -288,7 +288,7 @@ class Restaurant extends Controller {
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
 		
-		$addresses = $this->AddressModel->getAddressForCompany( $address->restaurantId, '', '', '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( $address->restaurantId, '', '', '', '', '', '', '');
 		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($address->restaurantId);

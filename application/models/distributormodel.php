@@ -92,7 +92,7 @@ class DistributorModel extends Model{
 			$CI =& get_instance();
 				
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row->distributor_id, '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row->distributor_id, '', '', '', '');
 			$this->DistributorLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {

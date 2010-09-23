@@ -629,7 +629,7 @@ class RestaurantModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', '', $q, $city);
+			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', '', $q, $city, '');
 			$this->restaurantLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
