@@ -21,8 +21,10 @@ class CityUpdate {
 	
 	function __construct() {
 		global $DB_HOST, $DB_USER, $DB_PASSWORD, $DATABSE;
-		$this->db = mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD);
-		mysql_select_db($DATABSE, $this->db);
+		//$this->db = mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD);
+		//mysql_select_db($DATABSE, $this->db);
+		$this->db = mysql_connect('174.143.132.250', '468258_food3user', 'R3alF00d');
+		mysql_select_db('468258_food3', $this->db);
 	}
 	
 	function index() {
@@ -43,6 +45,7 @@ class CityUpdate {
 		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 			
 			echo $row['address_id'] . " : " . $row['city'] . ":";
+			
 			$cities = $this->searchCityWithinState($row['state_id'], $row['city']);
 			
 			$city_id = '';

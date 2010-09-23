@@ -126,5 +126,14 @@ $FARMER_TYPES = array(
 
 $LANDING_PAGE = '/about/privatebeta';
 $ADMIN_LANDING_PAGE = '/admincp/login';
-				
+
+$RECOMMENDED_CITIES = array (
+					'San Francisco',
+					'Berkeley',
+					'Oakland',
+					'San Jose',
+					'New York',
+					'Los Angeles',					
+				);
+			
 ?>
