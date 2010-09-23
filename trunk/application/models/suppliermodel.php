@@ -769,7 +769,7 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierName = $row['restaurant_name'];
 				$this->supplierLib->supplierReferenceId = $row['supplier_restaurant_id'];
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( $row['supplier_restaurant_id'], '', '', '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( $row['supplier_restaurant_id'], '', '', '', '', '', '', '');
 				$this->supplierLib->addresses = $addresses;
 				
 			} else if ( isset($row['farm_name']) ) {
@@ -777,7 +777,7 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierName = $row['farm_name'];
 				$this->supplierLib->supplierReferenceId = $row['supplier_farm_id'];
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['supplier_farm_id'], '', '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['supplier_farm_id'], '', '', '', '', '', '');
 				$this->supplierLib->addresses = $addresses;
 				
 			} else if ( isset($row['manufacture_name']) ) {
@@ -785,7 +785,7 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierName = $row['manufacture_name'];
 				$this->supplierLib->supplierReferenceId = $row['supplier_manufacture_id'];
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['supplier_manufacture_id'], '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['supplier_manufacture_id'], '', '', '', '', '');
 				$this->supplierLib->addresses = $addresses;
 				
 			} else if ( isset($row['distributor_name']) ) {
@@ -793,7 +793,7 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierName = $row['distributor_name'];
 				$this->supplierLib->supplierReferenceId = $row['supplier_distributor_id'];
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['supplier_distributor_id'], '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['supplier_distributor_id'], '', '', '', '');
 				$this->supplierLib->addresses = $addresses;
 				
 			}
@@ -968,7 +968,7 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierName = $row['restaurant_name'];
 				$this->supplierLib->supplierReferenceId = $row['supplier_restaurant_id'];
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( $row['supplier_restaurant_id'], '', '', '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( $row['supplier_restaurant_id'], '', '', '', '', '', '', '');
 				$this->supplierLib->addresses = $addresses;
 				
 			} else if ( isset($row['farm_name']) ) {
@@ -976,7 +976,7 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierName = $row['farm_name'];
 				$this->supplierLib->supplierReferenceId = $row['supplier_farm_id'];
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['supplier_farm_id'], '', '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['supplier_farm_id'], '', '', '', '', '', '');
 				$this->supplierLib->addresses = $addresses;
 				
 			} else if ( isset($row['manufacture_name']) ) {
@@ -984,7 +984,7 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierName = $row['manufacture_name'];
 				$this->supplierLib->supplierReferenceId = $row['supplier_manufacture_id'];
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['supplier_manufacture_id'], '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['supplier_manufacture_id'], '', '', '', '', '');
 				$this->supplierLib->addresses = $addresses;
 				
 			} else if ( isset($row['distributor_name']) ) {
@@ -992,7 +992,7 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierName = $row['distributor_name'];
 				$this->supplierLib->supplierReferenceId = $row['supplier_distributor_id'];
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['supplier_distributor_id'], '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['supplier_distributor_id'], '', '', '', '');
 				$this->supplierLib->addresses = $addresses;
 				
 			}
@@ -1183,31 +1183,31 @@ class SupplierModel extends Model{
 			if ( $row['type'] == 'restaurant' ) {
 				$this->companyLib->type = 'restaurant';
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( $row['company_id'], '', '', '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( $row['company_id'], '', '', '', '', '', '', '');
 				$this->companyLib->addresses = $addresses;
 				
 			} else if ( $row['type'] == 'farm' ) {
 				$this->companyLib->type = 'farm';
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['company_id'], '', '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['company_id'], '', '', '', '', '', '');
 				$this->companyLib->addresses = $addresses;
 				
 			} else if ( $row['type'] == 'manufacture' ) {
 				$this->companyLib->type = 'manufacture';
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['company_id'], '', '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['company_id'], '', '', '', '', '');
 				$this->companyLib->addresses = $addresses;
 				
 			} else if ( $row['type'] == 'distributor' ) {
 				$this->companyLib->type = 'distributor';
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['company_id'], '', '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['company_id'], '', '', '', '');
 				$this->companyLib->addresses = $addresses;
 				
 			} else if ( $row['type'] == 'farmers_market' ) {
 				$this->companyLib->type = 'farmersmarket';
 				
-				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', '', $row['company_id'], '', '');
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', '', $row['company_id'], '', '', '');
 				$this->companyLib->addresses = $addresses;
 				
 			} else if ( $row['type'] == 'restaurant_chain' ) {

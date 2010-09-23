@@ -263,7 +263,7 @@ class Manufacture extends Controller {
 		$manufacture = $this->ManufactureModel->getManufactureFromId($id);
 		
 		$this->load->model('AddressModel','',true);
-		$addresses = $this->AddressModel->getAddressForCompany( '', '', $id, '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', '', $id, '', '', '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -306,7 +306,7 @@ class Manufacture extends Controller {
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
 		
-		$addresses = $this->AddressModel->getAddressForCompany( '', '', $address->manufactureId, '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', '', $address->manufactureId, '', '', '', '', '');
 		
 		$this->load->model('ManufactureModel');
 		$manufacture = $this->ManufactureModel->getManufactureFromId($address->manufactureId);

@@ -253,7 +253,7 @@ class Distributor extends Controller {
 		$distributor = $this->DistributorModel->getDistributorFromId($id);
 		
 		$this->load->model('AddressModel','',true);
-		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', $id, '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', $id, '', '', '', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -296,7 +296,7 @@ class Distributor extends Controller {
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
 		
-		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', $address->distributorId, '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', '', '', $address->distributorId, '', '', '', '');
 		
 		$this->load->model('DistributorModel');
 		$distributor = $this->DistributorModel->getDistributorFromId($address->distributorId);
