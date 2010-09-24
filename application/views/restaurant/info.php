@@ -1,6 +1,9 @@
 <link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/restaurant_info.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
+
+<link href="<?php echo base_url()?>css/supplier.css" rel="stylesheet" type="text/css" />
+
 <script>
 	
 	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
@@ -14,6 +17,27 @@
 	var isCommentFormVisible = false;
 	
 	$(document).ready(function() {
+		
+		
+		$('#show-login-button').click(function(event){
+			event.preventDefault();
+			$.validationEngine.closePrompt('.formError',true);
+			if($(this).hasClass('active')){
+				$(this).removeClass('active');
+				$('#login-form').stop(true, false).fadeOut(200);
+			} else {
+				$(this).addClass('active');
+				$('#login-form').stop(true, false).fadeIn(200);
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
 		$('#bottomPaging').hide();
 		
 		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId },
@@ -86,8 +110,24 @@
 		<div id="menu-bar"> 
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
 			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
-			<div id="comments" class = "non-selected"  style = "display:none;"><a href="#">Comments</a></div>
+			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">Comments</a></div>
+			
+			<div class = "non-selected" id="show-login-button"><a href="#">Log In</a></div>
 			<div id="addItem" class="add-item"><a href="#">+ Supplier</a></div>
+			
+			<div id="login-form">
+				<form action="/login/validate" method="post" name="frmLogin" id="frmLogin">
+					<h2>Log In</h2>								
+					<input type="text" name="login_email" id="login_email" class="validate[required,custom[email]]" value="Email" onfocus="if(this.value == 'Email')this.value='';" onblur="if(this.value=='')this.value='Email';" />
+					<input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
+					<!--label for="remember_me" class="checkbox-wrapper">
+						<input type="checkbox" name="remember_me" value="remember_me" id="remember_me" />
+						<span>Remember me</span>
+					</label -->
+					<input type="submit" name="submit" value="Login" />
+				</form>
+			</div>
+			
 		</div>
 		
 		<div id="divAddSupplier" style = "display:none;" class="addform">
