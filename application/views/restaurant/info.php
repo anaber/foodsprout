@@ -112,8 +112,7 @@
 			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
 			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">Comments</a></div>
 			
-			<div class = "non-selected" id="show-login-button"><a href="#">Log In</a></div>
-			<div id="addItem" class="add-item"><a href="#">+ Supplier</a></div>
+			<div id="show-login-button"><a href="#">+Supplier</a></div>
 			
 			<div id="login-form">
 				<form action="/login/validate" method="post" name="frmLogin" id="frmLogin">

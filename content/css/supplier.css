@@ -1,8 +1,26 @@
-#login-wrapper{position:relative;left:20px;text-align:right;top:10px;}
-#login-form{width:260px;height:200px;background:#F0F0F0;border:1px solid #aaa;
-position:relative;left:20;z-index:101;text-align:left;display:none;-moz-border-radius:5px;
--webkit-border-radius:5px;border-radius:5px;-moz-box-shadow:0 4px 10px #444;-webkit-box-shadow:0 4px 10px #444;box-shadow:0 4px 10px #444;}
-#content #login-form h2{margin:0 0 5px 0;}
+#login-wrapper{position:relative;right:20px;text-align:right;top:10px;}
+
+#login-form{
+	width:260px;
+	height:200px;
+	background:#F0F0F0;
+	border:1px solid #aaa;
+position:relative;
+clear:right;
+left:259px;
+z-index:101;
+text-align:left;
+display:none;
+-moz-border-radius:5px;
+-webkit-border-radius:5px;
+border-radius:5px;
+-moz-box-shadow:0 4px 10px #444;
+-webkit-box-shadow:0 4px 10px #444;
+box-shadow:0 4px 10px #444;
+}
+
+#content #login-form h2{margin:10px 0 5px 0;}
+
 #login-form form{margin:2px 10px;}
 #login-form input{margin-bottom:10px;width:230px;}
 #login-form input[type='submit']{width:240px;}
@@ -11,7 +29,9 @@ position:relative;left:20;z-index:101;text-align:left;display:none;-moz-border-r
 .checkbox-wrapper *{display:inline;}
 #login-form .checkbox-wrapper input,
 .checkbox-wrapper input{width:20px;margin:0 10px 0 0;}
-#show-login-button{margin-left:10px;color:#666;background:#9F9D9C url(/img/slidedown-trigger.png) 90% 2px no-repeat;padding:5px 30px 5px 5px;margin-right:1px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
+
+#show-login-button{float:right;width:100px;margin-right:10px;color:#666;background:#9F9D9C url(/img/slidedown-trigger.png) 90% 2px no-repeat;padding:2px;margin-right:1px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}
 #show-login-button:hover{text-decoration:none;background-color:#CCC;}
-#show-login-button.active{color:#1A1A1A;background-color:#F0F0F0;background-position:90% -37px;position:relative;z-index:102;-moz-border-radius:5px 5px 0 0;-webkit-border-radius:5px;-webkit-border-bottom-left-radius:0;-webkit-border-bottom-right-radius:0;border-radius:5px 5px 0 0;}
+#show-login-button.active{color:#1A1A1A;background-color:#F0F0F0;background-position:90% -37px;position:relative;z-index:103;-moz-border-radius:5px 5px 0 0;-webkit-border-radius:5px;-webkit-border-bottom-left-radius:0;-webkit-border-bottom-right-radius:0;border-radius:5px 5px 0 0;}
 #show-login-button.active:hover{color:#888;}
+#show-login-button.active a{color:#666;}
