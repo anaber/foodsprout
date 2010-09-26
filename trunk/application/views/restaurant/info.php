@@ -1,9 +1,7 @@
 <link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/restaurant_info.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
-
 <link href="<?php echo base_url()?>css/supplier.css" rel="stylesheet" type="text/css" />
-
 <script>
 	
 	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
@@ -56,29 +54,7 @@
 			}
 		});
 		
-		/*
-		$('div').click( function(event) {
-			var clicked = $(this); // jQuery wrapper for clicked element
-			elementId = $(clicked).attr('id');
-			alert(elementId);
-			if (elementId == 'addItem' || elementId == 'divAddSupplier') {
-				
-			} else {
-				$("#addSupplier").removeClass('active');
-				$('#divAddSupplier').stop(true, false).fadeOut(200);
-				isSupplierFormVisible = false;
-			}
-			
-			if (elementId == 'addItem' || elementId == 'divAddMenu') {
-				
-			} else {
-				$("#addMenu").removeClass('active');
-				$('#divAddMenu').stop(true, false).fadeOut(200);
-				isMenuFormVisible = false;
-			}
-			return false;
-		});
-		*/
+		
 	});
 		
 	function loadSmallMapOnStartUp(lat, lng, zoom) {
@@ -175,3 +151,6 @@
 		
 	</div>
 <!-- end center tabs -->
+<?php
+
+?>
