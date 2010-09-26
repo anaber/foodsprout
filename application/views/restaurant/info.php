@@ -18,19 +18,6 @@
 	
 	$(document).ready(function() {
 		
-		$('#addItem2').click(function(event){
-			event.preventDefault();
-			$.validationEngine.closePrompt('.formError',true);
-
-			if($(this).hasClass('active')){
-				$(this).removeClass('active');
-				$('#divAddSupplier').stop(true, false).fadeOut(200);
-			} else {
-				$(this).addClass('active');
-				$('#divAddSupplier').stop(true, false).fadeIn(200);
-			}
-		});
-		
 		$('#bottomPaging').hide();
 		
 		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId },
@@ -126,7 +113,6 @@
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
 			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
 			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">Comments</a></div>
-			
 			<div id="addItem" class = "addItem">&nbsp;+ Supplier</div>
 			
 			<div id="divAddSupplier" class="supplier">
