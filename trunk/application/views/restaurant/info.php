@@ -69,7 +69,29 @@
 			}
 		});
 		
-		
+		/*
+		$('div').click( function(event) {
+			var clicked = $(this); // jQuery wrapper for clicked element
+			elementId = $(clicked).attr('id');
+			alert(elementId);
+			if (elementId == 'addItem' || elementId == 'divAddSupplier') {
+				
+			} else {
+				$("#addSupplier").removeClass('active');
+				$('#divAddSupplier').stop(true, false).fadeOut(200);
+				isSupplierFormVisible = false;
+			}
+			
+			if (elementId == 'addItem' || elementId == 'divAddMenu') {
+				
+			} else {
+				$("#addMenu").removeClass('active');
+				$('#divAddMenu').stop(true, false).fadeOut(200);
+				isMenuFormVisible = false;
+			}
+			return false;
+		});
+		*/
 	});
 		
 	function loadSmallMapOnStartUp(lat, lng, zoom) {
@@ -105,8 +127,7 @@
 			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
 			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">Comments</a></div>
 			
-			<div id="addItem2" class = "addItem">&nbsp;+ Supplier</div>
-			
+			<div id="addItem" class = "addItem">&nbsp;+ Supplier</div>
 			
 			<div id="divAddSupplier" class="supplier">
 				<?php
@@ -130,32 +151,7 @@
 			</div>
 			
 		</div>
-		<?php
-			/*
-		?>
-		<div id="divAddSupplier" style = "display:none;" class="addform">
-			<?php
-				$data = array(
-						'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
-						'TABLE' => $TABLE,
-						'RESTAURANT_ID' => $RESTAURANT->restaurantId
-						);
-				$this->load->view('includes/supplier_form', $data );
-			?>
-		</div>
 		
-		<div id="divAddMenu" style = "display:none;" class="addform">
-			<?php
-				$data = array(
-						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
-						'RESTAURANT_ID' => $RESTAURANT->restaurantId
-						);
-				$this->load->view('includes/menu_form', $data );
-			?>
-		</div>
-		<?php
-			*/
-		?>
 		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
 		
 		<div style="overflow:auto; padding:5px;"></div>

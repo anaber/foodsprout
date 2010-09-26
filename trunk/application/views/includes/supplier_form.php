@@ -25,7 +25,7 @@ $(document).ready(function() {
 	});
 	
 	$("#companyAjax").autocomplete("/company/get_companies_based_on_type", {
-		width: 260,
+		width: 203,
 		selectFirst: false,
 		cacheLength:0,
 		extraParams: {
@@ -123,9 +123,14 @@ $(document).ready(function() {
 					}
 					hideMessage($alert, '', '');
 					$.validationEngine.closePrompt('.formError',true);
+					/*
 					$("#divAddSupplier").hide( toggleDuration, function() {
 						$("#addItem").removeClass().addClass('add-item');	
 					} );
+					*/
+					$("#addSupplier").removeClass('active');
+					$('#divAddSupplier').stop(true, false).fadeOut(200);
+					
 					isSupplierFormVisible = false;
 					resetSupplierForm();
 					

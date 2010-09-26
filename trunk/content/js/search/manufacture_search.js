@@ -60,9 +60,10 @@ function redrawContent(data) {
 }
 
 function addResult(manufacture, count) {
-	var html =
-	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/manufacture/view/' + manufacture.manufactureId + '" id = "'+ manufacture.manufactureId +'" style="text-decoration:none;">'+ manufacture.manufactureName +'</a></div><div style="float:left; width:300px;clear:left;padding-left:3px;padding-right:10px;font-size:13px;"><b>Type:</b> '+ manufacture.manufactureType + '</div>' +
+	var html = 
+	'<div style="padding:0px; margin-right:10px; padding-bottom:10px;">' +
+	'	<div style="float:left; padding:3px; clear:left; width:605px; background:#e5e5e5; font-weight:bold;"><a href="/manufacture/view/' + manufacture.manufactureId + '" id = "'+ manufacture.manufactureId +'" style="text-decoration:none;">'+ manufacture.manufactureName +'</a></div>' + 
+	'	<div style="float:left; width:300px;clear:left;padding-left:3px;padding-right:10px;font-size:13px;"><b>Type:</b> '+ manufacture.manufactureType + '</div>' +
 	'	<div style="float:left;width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left;width:235px;font-size:13px;">';
 	
 	$.each(manufacture.addresses, function(j, address) {
@@ -74,9 +75,11 @@ function addResult(manufacture, count) {
 	});
 	
 	html += '</div>';
+	
 	html +=
 	'</div>'
 	;
+	
 	
 	return html;
 }

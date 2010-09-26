@@ -1,5 +1,4 @@
 <script src="<?php echo base_url()?>js/search/manufacture_search.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 
 <script>
 var dataManufactures;

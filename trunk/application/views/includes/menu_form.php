@@ -88,9 +88,14 @@ $(document).ready(function() {
 					}
 					hideMessage($alert, '', '');
 					$.validationEngine.closePrompt('.formError',true);
+					/*
 					$("#divAddMenu").hide( toggleDuration, function() {
 						$("#addItem").removeClass().addClass('add-item');	
 					} );
+					*/
+					$("#addMenu").removeClass('active');
+					$('#divAddMenu').stop(true, false).fadeOut(200);
+			
 					isMenuFormVisible = false;
 					resetMenuForm();
                     
