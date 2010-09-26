@@ -18,25 +18,18 @@
 	
 	$(document).ready(function() {
 		
-		
-		$('#show-login-button').click(function(event){
+		$('#addItem2').click(function(event){
 			event.preventDefault();
 			$.validationEngine.closePrompt('.formError',true);
+
 			if($(this).hasClass('active')){
 				$(this).removeClass('active');
-				$('#login-form').stop(true, false).fadeOut(200);
+				$('#divAddSupplier').stop(true, false).fadeOut(200);
 			} else {
 				$(this).addClass('active');
-				$('#login-form').stop(true, false).fadeIn(200);
+				$('#divAddSupplier').stop(true, false).fadeIn(200);
 			}
 		});
-		
-		
-		
-		
-		
-		
-		
 		
 		$('#bottomPaging').hide();
 		
@@ -112,23 +105,34 @@
 			<div id="menu" class = "non-selected"><a href="#">Menu</a></div>
 			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">Comments</a></div>
 			
-			<div id="show-login-button"><a href="#">+Supplier</a></div>
+			<div id="addItem2" class = "addItem">&nbsp;+ Supplier</div>
 			
-			<div id="login-form">
-				<form action="/login/validate" method="post" name="frmLogin" id="frmLogin">
-					<h2>Log In</h2>								
-					<input type="text" name="login_email" id="login_email" class="validate[required,custom[email]]" value="Email" onfocus="if(this.value == 'Email')this.value='';" onblur="if(this.value=='')this.value='Email';" />
-					<input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
-					<!--label for="remember_me" class="checkbox-wrapper">
-						<input type="checkbox" name="remember_me" value="remember_me" id="remember_me" />
-						<span>Remember me</span>
-					</label -->
-					<input type="submit" name="submit" value="Login" />
-				</form>
+			
+			<div id="divAddSupplier" class="supplier">
+				<?php
+					$data = array(
+							'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
+							'TABLE' => $TABLE,
+							'RESTAURANT_ID' => $RESTAURANT->restaurantId
+							);
+					$this->load->view('includes/supplier_form', $data );
+				?>
+			</div>
+			
+			<div id="divAddMenu" class="supplier">
+				<?php
+					$data = array(
+							'PRODUCT_TYPES' => $PRODUCT_TYPES, 
+							'RESTAURANT_ID' => $RESTAURANT->restaurantId
+							);
+					$this->load->view('includes/menu_form', $data );
+				?>
 			</div>
 			
 		</div>
-		
+		<?php
+			/*
+		?>
 		<div id="divAddSupplier" style = "display:none;" class="addform">
 			<?php
 				$data = array(
@@ -149,8 +153,12 @@
 				$this->load->view('includes/menu_form', $data );
 			?>
 		</div>
-		
+		<?php
+			*/
+		?>
 		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
+		
+		<div style="overflow:auto; padding:5px;"></div>
 		
 		<div style="overflow:auto; padding:5px;">
 			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>

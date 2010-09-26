@@ -1,6 +1,5 @@
 <?php
 	$method = $this->uri->segment(2);
-	echo $method;
 ?>
 <span id="signup">
 	<div id="membername">

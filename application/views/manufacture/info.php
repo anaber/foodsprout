@@ -1,6 +1,8 @@
 <link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/manufacture_info.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
+
+<link href="<?php echo base_url()?>css/supplier.css" rel="stylesheet" type="text/css" />
 <script>
 	
 	var manufactureId = <?php echo $MANUFACTURE->manufactureId; ?>;
@@ -14,6 +16,23 @@
 	var isCommentFormVisible = false;
 	
 	$(document).ready(function() {
+		
+		$('#addItem2').click(function(event){
+			event.preventDefault();
+			$.validationEngine.closePrompt('.formError',true);
+
+			if($(this).hasClass('active')){
+				$(this).removeClass('active');
+				//$('#divAddSupplier').stop(true, false).fadeOut(200);
+				$('#divAddMenu').stop(true, false).fadeOut(200);
+			} else {
+				$(this).addClass('active');
+				//$('#divAddSupplier').stop(true, false).fadeIn(200);
+				$('#divAddMenu').stop(true, false).fadeIn(200);
+			}
+		});
+		
+		
 		$('#bottomPaging').hide();
 		
 		$.post("/manufacture/ajaxSearchManufactureSuppliers", { q: manufactureId },
@@ -87,31 +106,35 @@
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
 			<div id="menu" class = "non-selected"><a href="#">Products</a></div>
 			<div id="comments" class = "non-selected"  style = "display:none;"><a href="#">Comments</a></div>
-			<div id="addItem" class = "add-item"><a href="#">+ Supplier</a></div>
+			<div id="addItem2" class = "addItem">&nbsp;+ Supplier</div>
+			
+			<div id="divAddSupplier" class="supplier">
+				<?php
+					$data = array(
+							'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
+							'TABLE' => $TABLE,
+							'MANUFACTURE_ID' => $MANUFACTURE->manufactureId
+							);
+					$this->load->view('includes/supplier_form', $data );
+				?>
+			</div>
+			
+			<div id="divAddMenu" class="supplier">
+				<?php
+					$data = array(
+							'PRODUCT_TYPES' => $PRODUCT_TYPES, 
+							'MANUFACTURE_ID' => $MANUFACTURE->manufactureId
+							);
+					$this->load->view('includes/menu_form', $data );
+				?>
+			</div>
 		</div>
 		
-		<div id="divAddSupplier" style = "display:none;" class="addform"> 
-			<?php
-				$data = array(
-						'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
-						'TABLE' => $TABLE,
-						'MANUFACTURE_ID' => $MANUFACTURE->manufactureId
-						);
-				$this->load->view('includes/supplier_form', $data );
-			?>
-		</div>
 		
-		<div id="divAddMenu" style = "display:none;" class="addform">
-			<?php
-				$data = array(
-						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
-						'MANUFACTURE_ID' => $MANUFACTURE->manufactureId
-						);
-				$this->load->view('includes/menu_form', $data );
-			?>
-		</div>
 		
 		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
+		
+		<div style="overflow:auto; padding:5px;"></div>
 		
 		<div style="overflow:auto; padding:5px;">
 			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
