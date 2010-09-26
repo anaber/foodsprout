@@ -20,6 +20,8 @@ if (isset ($CSS) ) {
 <script src="<?php echo base_url()?>js/jquery.plugin.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.validationEngine.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.validationEngine-en.js" type="text/javascript"></script>
+<link href="<?php echo base_url();?>css/jquery.validationEngine.css" rel="stylesheet" type="text/css" />
+
 
 <script type="text/javascript">
 var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_trackPageview']);

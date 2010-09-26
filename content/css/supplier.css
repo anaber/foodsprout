@@ -30,13 +30,14 @@ from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);ba
 .supplier input{margin-bottom:10px;width:230px;}
 .supplier input[type='submit']{width:140px;}
 
-.addItem{margin-left:10px;
+
+.addItem{
+	margin-left:10px;
 	width:105px;
 	float:right;
 	margin-top:2px;
 	font-weight: bold;
 	font-size: 14px;
-	
 	color:#666;
 	background:#9F9D9C url(/img/slidedown-trigger.png) 90% 2px no-repeat;
 	padding:3px 3px 3px 3px;
@@ -46,7 +47,6 @@ from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);ba
 	-webkit-border-bottom-left-radius:0;
 	-webkit-border-bottom-right-radius:0;
 	border-radius:5px 5px 0 0;
-	
 	height: 17px;
 }
 .addItem:hover{
