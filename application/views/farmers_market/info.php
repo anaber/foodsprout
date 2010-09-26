@@ -1,6 +1,7 @@
 <link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/farmers_market_info.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
+<link href="<?php echo base_url()?>css/supplier.css" rel="stylesheet" type="text/css" />
 <script>
 	
 	var farmersMarketId = <?php echo $FARMERS_MARKET->farmersMarketId; ?>;
@@ -84,31 +85,33 @@
 			<div id="suppliers" class = "selected"><a href="#">Farms at Market</a></div>
 			<div id="menu" class = "non-selected" style = "display:none;"><a href="#">Menu</a></div>
 			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">Comments</a></div>
-			<div id="addItem" class = "add-item"><a href="#">+ Farm</a></div>
-		</div>
-		
-		<div id="divAddSupplier" style = "display:none;" class="addform"> 
-			<?php
-				$data = array(
-						'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
-						'TABLE' => $TABLE,
-						'FARMERS_MARKET_ID' => $FARMERS_MARKET->farmersMarketId
-						);
-				$this->load->view('includes/supplier_form', $data );
-			?>
-		</div>
-		
-		<div id="divAddMenu" style = "display:none;" class="addform">
-			<?php
-				$data = array(
-						'PRODUCT_TYPES' => $PRODUCT_TYPES, 
-						'FARMERS_MARKET_ID' => $FARMERS_MARKET->farmersMarketId
-						);
-				$this->load->view('includes/menu_form', $data );
-			?>
+			<div id="addItem" class = "addItem">&nbsp;+ Farm</div>
+			
+			<div id="divAddSupplier" class="supplier">
+				<?php
+					$data = array(
+							'SUPPLIER_TYPES_2' => $SUPPLIER_TYPES_2, 
+							'TABLE' => $TABLE,
+							'FARMERS_MARKET_ID' => $FARMERS_MARKET->farmersMarketId
+							);
+					$this->load->view('includes/supplier_form', $data );
+				?>
+			</div>
+			
+			<div id="divAddMenu" class="supplier">
+				<?php
+					$data = array(
+							'PRODUCT_TYPES' => $PRODUCT_TYPES, 
+							'FARMERS_MARKET_ID' => $FARMERS_MARKET->farmersMarketId
+							);
+					$this->load->view('includes/menu_form', $data );
+				?>
+			</div>
 		</div>
 		
 		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
+		
+		<div style="overflow:auto; padding:5px;"></div>
 		
 		<div style="overflow:auto; padding:5px;">
 			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>

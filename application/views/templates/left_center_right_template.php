@@ -4,6 +4,7 @@
 	} else {
 		$this->load->view('includes/header');
 	}
+
 ?>
 <?php
 	if (isset($NAME) ) {
@@ -17,7 +18,7 @@
 	}
 	else{
 	}
-	
+
 ?>
 
 	<!-- left column-->
@@ -43,6 +44,7 @@
 	<!-- end left column -->
 
   	<?php
+
 		foreach($CENTER as $key => $view) {
 			if (isset($data['center'][$key]['VIEW_HEADER']) ) {
 				$this->load->view('includes/block_header', array('VIEW_HEADER' => $data['center'][$key]['VIEW_HEADER'] ) );
@@ -54,24 +56,24 @@
 				$this->load->view($view);
 			}
 		}
-  	?>
+
+	?>
 
 	<!-- right ads -->
 	<div id="add-designs">
 
     <?php
 		foreach($RIGHT as $key => $view) {
-			if (isset($data['center'][$key]['VIEW_HEADER']) ) {
-				$this->load->view('includes/block_header', array('VIEW_HEADER' => $data['center'][$key]['VIEW_HEADER'] ) );
+			if (isset($data['right'][$key]['VIEW_HEADER']) ) {
+				$this->load->view('includes/block_header', array('VIEW_HEADER' => $data['right'][$key]['VIEW_HEADER'] ) );
 			}
-
-			if (isset($data['center'][$key]) ) {
-				$this->load->view($view, $data['center'][$key]);
+			
+			if (isset($data['right'][$key]) ) {
+				$this->load->view($view, $data['right'][$key]);
 			} else {
 				$this->load->view($view);
 			}
 		}
-		
 	?>
 
 	</div>
