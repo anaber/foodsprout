@@ -118,61 +118,64 @@ $(document).ready(function() {
 </script>
 
 <form id="productForm" method="post">
-    <table class="formTable">
-        <tr>
-            <td width = "25%" style="font-size:13px;">Name</td>
-            <td width = "75%">
-                <input value="<?php echo (isset($PRODUCT) ? $PRODUCT->productName : '') ?>" class="validate[required]" type="text" name="productName" id="productName"/><br />
-            </td>
-        </tr>
-        <?php
-        	if ( isset( $MANUFACTURE_ID ) ) {
-        ?>
-        <tr>
-            <td width = "25%" style="font-size:13px;">Product Type</td>
-            <td width = "75%">
-                <select name="productTypeId" id="productTypeId"  class="validate[required]">
-                    <option value = ''>--Product Type--</option>
-                    <?php
-                    foreach ($PRODUCT_TYPES as $key => $value) {
-                        if ($value->productTypeId != 1) {
-                        	echo '<option value="' . $value->productTypeId . '"' . ( ( isset($PRODUCT) && ( $value->productTypeId == $PRODUCT->productTypeId ) ) ? ' SELECTED' : '' ) . '>' . $value->productType . '</option>';
-                        }
+<table class="formTable">
+	<tr>
+		<td colspan = "2" style="height:5px;"></td>
+	</tr>
+    <tr>
+        <td width = "25%" style="font-size:13px;">Name</td>
+        <td width = "75%">
+            <input value="<?php echo (isset($PRODUCT) ? $PRODUCT->productName : '') ?>" class="validate[required]" type="text" name="productName" id="productName" style="width: 200px;"/><br />
+        </td>
+    </tr>
+    <?php
+    	if ( isset( $MANUFACTURE_ID ) ) {
+    ?>
+    <tr>
+        <td width = "25%" nowrap style="font-size:13px;">Product Type</td>
+        <td width = "75%">
+            <select name="productTypeId" id="productTypeId"  class="validate[required]" style="width: 205px;">
+                <option value = ''>--Product Type--</option>
+                <?php
+                foreach ($PRODUCT_TYPES as $key => $value) {
+                    if ($value->productTypeId != 1) {
+                    	echo '<option value="' . $value->productTypeId . '"' . ( ( isset($PRODUCT) && ( $value->productTypeId == $PRODUCT->productTypeId ) ) ? ' SELECTED' : '' ) . '>' . $value->productType . '</option>';
                     }
-                    ?>
-                </select>
-            </td>
-        </tr>
-        <?php
-        	} else {
-        		echo '<input type = "hidden" name = "productTypeId" id = "productTypeId" value = "1">';
-        	}
-        	/*
-        ?>
-        <tr>
-            <td width = "25%">Brand</td>
-            <td width = "75%">
-                <input value="<?php echo (isset($PRODUCT) ? $PRODUCT->brand : '') ?>"  type="text" name="brand" id="brand"/><br />
-            </td>
-        </tr>
-        <?php
-        	*/
-        ?>
-        <tr>
-            <td width = "25%" style="font-size:13px;">Ingredient</td>
-            <td width = "75%">
-                <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "3" cols = "30"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
-            </td>
-        </tr>
-        <tr>
-            <td width = "25%" colspan = "2">
-                <input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PRODUCT)) ? 'Update Menu Item' : 'Add Menu Item' ?>">
-                <input type = "hidden" name = "productId" id = "productId" value = "<?php echo (isset($PRODUCT) ? $PRODUCT->productId : '') ?>">
+                }
+                ?>
+            </select>
+        </td>
+    </tr>
+    <?php
+    	} else {
+    		echo '<input type = "hidden" name = "productTypeId" id = "productTypeId" value = "1">';
+    	}
+    	/*
+    ?>
+    <tr>
+        <td width = "25%">Brand</td>
+        <td width = "75%">
+            <input value="<?php echo (isset($PRODUCT) ? $PRODUCT->brand : '') ?>"  type="text" name="brand" id="brand"/><br />
+        </td>
+    </tr>
+    <?php
+    	*/
+    ?>
+    <tr>
+        <td width = "25%" style="font-size:13px;">Ingredient</td>
+        <td width = "75%">
+            <textarea name="ingredient" id="ingredient" class="validate[required]" rows = "3" cols = "30" style="width: 200px;"><?php echo (isset($PRODUCT) ? $PRODUCT->ingredient : '') ?></textarea><br />
+        </td>
+    </tr>
+    <tr>
+        <td colspan = "2" align = "right" style = "padding-right:16px;">
+            <input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PRODUCT)) ? 'Update Menu Item' : 'Add Menu Item' ?>">
+            <input type = "hidden" name = "productId" id = "productId" value = "<?php echo (isset($PRODUCT) ? $PRODUCT->productId : '') ?>">
 
-                <input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE_ID) ? $MANUFACTURE_ID : '') ?>">
-                <input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
-                <input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
-            </td>
-        </tr>
-    </table>
+            <input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE_ID) ? $MANUFACTURE_ID : '') ?>">
+            <input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
+            <input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
+        </td>
+    </tr>
+</table>
 </form>
