@@ -2,14 +2,14 @@
 function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 	var formAction;
 	if (type == 'menu') {
-		formAction = '/restaurant/ajaxSearchRestaurantMenus';
+		formAction = '/user/ajaxMenuByUser';
 	} else if (type == 'supplier') {
 		formAction = '/user/ajaxSuppliersByUser';
 	} else if (type == 'comment') {
-		formAction = '/restaurant/ajaxSearchRestaurantComments';
+		formAction = '/user/ajaxCommentByUser';
 	}
 	
-	postArray = { p:page, pp:perPage, sort:s, order:o, q:restaurantId, f:filter };
+	postArray = { p:page, pp:perPage, sort:s, order:o, q:userId, f:filter };
 	
 	$.post(formAction, postArray,function(data) {		
 		jsonData = data;
@@ -69,8 +69,6 @@ function redrawContent(data, type) {
 	$('#resultTableContainer').empty();
 	var resultTableHtml = '';
 	
-	resultTableHtml += addZeroResult(type);
-	/*
 	if (data.param.numResults == 0) {
 		resultTableHtml += addZeroResult(type);
 	} else {
@@ -86,9 +84,17 @@ function redrawContent(data, type) {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addCommentResult(a, i);
 			});
+		} else if (type == 'restaurant') {
+			$.each(data.results, function(i, a) {
+				resultTableHtml += addRestaurantResult(a, i);
+			});
+		} else if (type == 'farm') {
+			$.each(data.results, function(i, a) {
+				resultTableHtml += addFarmResult(a, i);
+			});
 		}
 	}
-	*/
+	
 	$('#resultTableContainer').append(resultTableHtml);
 	
 	//$('#messageContainer').hide();
@@ -285,19 +291,12 @@ function addSupplierResult(supplier, count) {
 	*/
 	
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:220px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '">'+ supplier.supplierName +'</a><br>Type: '+ supplier.supplierType + '</div>' +
-	'	<div style="float:right; width:300px;">Address:<br />';
-	
-	$.each(supplier.addresses, function(j, address) {
-		if (j == 0) {
-			html += '<em>' + address.displayAddress + '</em>';
-		} else {
-			html += "<br /><br />" + '<em>' + address.displayAddress + '</em>';
-		}
-	});
-	
-	html += '</div>';
+	'<div style="overflow:auto; padding:5px;width:770px;">' +
+	'	<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#FF0000;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>' +
+	'	<div style="float:left; width:60px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;"><b>Parent:</b><br /><b>Type:</b></div>' + 
+	'	<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#0000FF;"><a href="/' + supplier.parentType + '/view/' + supplier.parentId + '" style="font-size:13px;text-decoration:none;">'+ supplier.parentName +'</a><br>'+ supplier.parentType + '</div>' + 
+	'	<div style="float:left; width:60px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;">' + supplier.status + '</div>' +
+	'	<div style="float:right; width:100px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;">' + supplier.ip + '</div>';
 	html +=
 	'</div>'
 	;
@@ -305,20 +304,32 @@ function addSupplierResult(supplier, count) {
 	return html;
 }
 
-function addMenuResult(menu, count) {
+function addMenuResult(product, count) {
 	var html = '';
 	
 	html +=	'<div class="menuitem">';
 	//html +=	'	<div class="menuitemimg"><img src="/img/img1.jpg" width="132" height="107" alt="receipe" />';
 	
 	html +=	'	<div class="menuitemimg">';
-	if (menu.image) {
-		html +=	'<img src="' + menu.image + '" width="132" height="107" alt="receipe" />';
+	if (product.image) {
+		html +=	'<img src="' + product.image + '" width="132" height="107" alt="receipe" />';
 	}
 	
 	html += '	</div>';
-	html +=	'	<div class="menuitemname">' + menu.productName + '</div>';
-	html +=	'	<div class="menuitemdetails">' + menu.ingredient + '</div>';
+	html +=	'	<div class="menuitemname">' + product.productName + '</div>';
+	html +=	'	<div class="menuitemdetails">' + product.ingredient + '</div>';
+	html +=	'	<div class="menuitemdetails">';
+	html += '		<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#FF0000;">';
+	if (product.restaurantName) {
+		html += '<b>Restaurant: </b><a href = "/restaurant/view/'+product.restaurantId+'" style="font-size:13px;text-decoration:none;">' + product.restaurantName + '</a>';
+	} else if (product.restaurantChain) {
+		html += '<b>Chain: </b><a href = "/chain/view/'+product.restaurantChainId+'" style="font-size:13px;text-decoration:none;">' + product.restaurantChain + '</a>';
+	} else if (product.manufactureName) {
+		html += '<b>Manufacture: </b><a href = "/manufacture/view/'+product.manufactureId+'" style="font-size:13px;text-decoration:none;">' + product.manufactureName + '</a>';
+	}
+	html += '		</div>';
+	html += '		<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;"><b>Status: </b>' + product.status + '</div>';
+	html += '	</div>';
 	html +=	'</div>';
 	
 	return html;

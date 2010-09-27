@@ -61,7 +61,8 @@ function redrawContent(data) {
 function addResult(product, count) {
 	var html =
 	'<div style="padding:0px; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; padding:3px; clear:left; width:605px; background:#e5e5e5; font-weight:bold;"><a href="/product/view/' + product.productId + '" id = "'+ product.productId +'" style="text-decoration:none;">'+ product.productName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Type:</b> '+ product.productType + '<br /><b>Brand:</b> ' + product.brand + '</div>';
+	//'	<div style="float:left; padding:3px; clear:left; width:605px; background:#e5e5e5; font-weight:bold;"><a href="/product/view/' + product.productId + '" id = "'+ product.productId +'" style="text-decoration:none;">'+ product.productName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Type:</b> '+ product.productType + '<br /><b>Brand:</b> ' + product.brand + '</div>';
+	'	<div style="float:left; padding:3px; clear:left; width:605px; background:#e5e5e5; font-weight:bold;">'+ product.productName +'</div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Type:</b> '+ product.productType + '<br /><b>Brand:</b> ' + product.brand + '</div>';
 
 	
 	if (product.restaurantName) {
