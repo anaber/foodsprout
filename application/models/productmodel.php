@@ -727,7 +727,7 @@ class ProductModel extends Model {
 		$order = $this->input->post('order');
 		
 		$q = $this->input->post('q');
-		$q = 4;
+		
 		if ($q == '0') {
 			$q = '';
 		}
