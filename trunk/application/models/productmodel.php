@@ -737,7 +737,7 @@ class ProductModel extends Model {
 		$start = 0;
 		$page = 0;
 		
-		$status = 'queue';
+		//$status = 'queue';
 		
         $base_query = 'SELECT product.*, product_type.product_type, ' .
         		' manufacture.manufacture_name, restaurant.restaurant_name, restaurant_chain.restaurant_chain, ' .
@@ -755,10 +755,10 @@ class ProductModel extends Model {
 				' WHERE  ';
 				
 		
-		$where .= ' product.status = \'' . $status . '\' ';
+		//$where .= ' product.status = \'' . $status . '\' ';
 		
 		if (!empty($q) ) {
-		$where .= ' AND (' 
+		$where .= ' (' 
 				. '	product.user_id = ' . $q
 				. ' )';
 		}

@@ -1607,7 +1607,7 @@ class SupplierModel extends Model{
 			$q = '';
 		}
 		
-		$status = 'queue';
+		//$status = 'queue';
 		
 		$query_count = 'SELECT 
 							(SELECT count(*)
