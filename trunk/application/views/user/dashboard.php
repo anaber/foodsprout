@@ -32,15 +32,15 @@
 		<div id="menu-bar"> 
 			<div id="suppliers" class = "selected"><a href="#">My Suppliers</a></div>
 			<div id="menu" class = "non-selected"><a href="#">My Menu</a></div>
-			<div id="comments" class = "non-selected"><a href="#">My Comments</a></div>
-			<div id="restaurants" class = "non-selected"><a href="#">My Restaurants</a></div>
-			<div id="farms" class = "non-selected"><a href="#">My Farms</a></div>
+			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">My Comments</a></div>
+			<div id="restaurants" class = "non-selected" style = "display:none;"><a href="#">My Restaurants</a></div>
+			<div id="farms" class = "non-selected" style = "display:none;"><a href="#">My Farms</a></div>
 		</div>
 		
 		<div style="overflow:auto; padding:5px;">
-			<div style="float:left; width:110px; font-size:10px;" id = 'numRecords'>Records 0-0 of 0</div>
+			<div style="float:left; width:110px; font-size:10px;border-style:solid;border-width:0px;border-color:#FF0000;" id = 'numRecords'>Records 0-0 of 0</div>
 			
-			<div style="float:left; width:225px; font-size:10px;" id = 'pagingLinks' align = "center">
+			<div style="float:left; width:500px; font-size:10px;border-style:solid;border-width:0px;border-color:#FF0000;" id = 'pagingLinks' align = "center">
 				<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;
 				<a href="#" id = "imgPrevious">Previous</a>
 				&nbsp;&nbsp;&nbsp; Page 1 of 1 &nbsp;&nbsp;&nbsp;
@@ -48,7 +48,7 @@
 				<a href="#" id = "imgLast">Last</a>
 			</div>
 			
-			<div style="float:right; width:185px; font-size:10px;" id = 'recordsPerPage' align = "right">
+			<div style="float:right; width:165px; font-size:10px;border-style:solid;border-width:0px;border-color:#FF0000;" id = 'recordsPerPage' align = "right">
 				Items per page:&nbsp;
 				<a href="#" id = "10PerPage">10</a> | 
 				<a href="#" id = "20PerPage">20</a> |  

@@ -118,13 +118,26 @@ class User extends Controller {
 	}
 	
 	function ajaxSuppliersByUser() {
-		
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSuppliersByUserJson();
 		
 		echo json_encode($suppliers);
 	}
 	
+	function ajaxMenuByUser() {
+		$this->load->model('ProductModel');
+		$menu = $this->ProductModel->getProductByUserJson();
+		
+		echo json_encode($menu);
+	}
+	/*
+	function ajaxCommentByUser() {
+		$this->load->model('SupplierModel');
+		$suppliers = $this->SupplierModel->getSuppliersByUserJson();
+		
+		echo json_encode($suppliers);
+	}
+	*/
 	
 }
 

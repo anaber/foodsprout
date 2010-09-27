@@ -1721,7 +1721,7 @@ class SupplierModel extends Model{
 					UNION
 					
 					(SELECT 
-						restaurant_chain_supplier.restaurant_chain_supplier_id as supplier_id, restaurant_chain_supplier.restaurant_chain_id AS id, CONCAT(\'restaurantchain\') AS type,
+						restaurant_chain_supplier.restaurant_chain_supplier_id as supplier_id, restaurant_chain_supplier.restaurant_chain_id AS id, CONCAT(\'chain\') AS type,
 						restaurant_chain_supplier.supplier_farm_id, farm.farm_name, 
 						restaurant_chain_supplier.supplier_manufacture_id, manufacture.manufacture_name, 
 						restaurant_chain_supplier.supplier_distributor_id, distributor.distributor_name,
@@ -1949,7 +1949,7 @@ class SupplierModel extends Model{
 			'results'    => $suppliers,
 			'param'      => $params,
 	    );
-	    
+	    	   
 	    return $arr;
 	}
 	

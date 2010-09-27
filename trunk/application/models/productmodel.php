@@ -718,7 +718,145 @@ class ProductModel extends Model {
 	    return $arr;
 	}
 
+	function getProductByUserJson() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		$q = 4;
+		if ($q == '0') {
+			$q = '';
+		}
+		//$filter = 8;
+		//$q = 1;
+		
+		$start = 0;
+		$page = 0;
+		
+		$status = 'queue';
+		
+        $base_query = 'SELECT product.*, product_type.product_type, ' .
+        		' manufacture.manufacture_name, restaurant.restaurant_name, restaurant_chain.restaurant_chain, ' .
+        		' user.email, user.first_name ' .
+				' FROM product';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM product';
+		
+		$where = ' LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id)  ' .
+				' LEFT JOIN manufacture ON (product.manufacture_id =  manufacture.manufacture_id) ' .
+				' LEFT JOIN restaurant ON (product.restaurant_id =  restaurant.restaurant_id) ' .
+				' LEFT JOIN restaurant_chain ON (product.restaurant_chain_id =  restaurant_chain.restaurant_chain_id) ' .
+				' LEFT JOIN user ON product.user_id = user.user_id' .  
+				' WHERE  ';
+				
+		
+		$where .= ' product.status = \'' . $status . '\' ';
+		
+		if (!empty($q) ) {
+		$where .= ' AND (' 
+				. '	product.user_id = ' . $q
+				. ' )';
+		}
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY product_name';
+			$sort = 'product_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "ProductModel.getProductJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$products = array();
+		
+		$geocodeArray = array();
+		foreach ($result->result() as $row) {
+			
+			$this->load->library('ProductLib');
+            unset($this->productLib);
 
+            $this->productLib->productId = $row->product_id;
+            $this->productLib->productName = $row->product_name;
+            $this->productLib->manufactureId = $row->manufacture_id;
+            $this->productLib->manufactureName = $row->manufacture_name;
+            $this->productLib->restaurantId = $row->restaurant_id;
+            $this->productLib->restaurantName = $row->restaurant_name;
+            $this->productLib->restaurantChainId = $row->restaurant_chain_id;
+            $this->productLib->restaurantChain = $row->restaurant_chain;
+            $this->productLib->productTypeId = $row->product_type_id;
+            $this->productLib->productType = $row->product_type;
+            $this->productLib->ingredient = $row->ingredient_text;
+            $this->productLib->brand = $row->brand;
+            $this->productLib->upc = $row->upc;
+            
+            $this->productLib->userId = $row->user_id;
+			$this->productLib->email = $row->email;
+			$this->productLib->ip = $row->track_ip;
+			$this->productLib->status = $row->status;
+            
+			$products[] = $this->productLib;
+			unset($this->productLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $products,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    //print_r_pre($arr);die;
+	    return $arr;
+	}
 
 }
 ?>
