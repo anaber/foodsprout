@@ -1,4 +1,4 @@
-body{margin:0px;padding:0px;background: url(/images/bg.png);color:#000;font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;}
+body{margin:0px;padding:0px;background:url(/img/bg.jpg) #E4D4B2;color:#000;font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;}
 a,a:visited{color:#2076B9;}
 #header{height:80px;background:#2C190F;}
 #header #headeritms{height:80px;width:1000px;margin-right:auto;margin-left:auto;}
@@ -103,7 +103,7 @@ a,a:visited{color:#2076B9;}
 		line-height:28px;
 		color:#478D3D;
 		text-decoration:none;
-		background-color:#EEE7CB;
+		background-color:#E4D4B2;
 		margin-left:3px;
 		margin-top:6px;
 		border-top-width:1px;
@@ -112,9 +112,9 @@ a,a:visited{color:#2076B9;}
 		border-top-style:solid;
 		border-right-style:solid;
 		border-left-style:solid;
-		border-top-color:#EEE7CB;
-		border-right-color:#EEE7CB;
-		border-left-color:#EEE7CB;
+		border-top-color:#E4D4B2;
+		border-right-color:#E4D4B2;
+		border-left-color:#E4D4B2;
 		-moz-border-radius-topright:6px;
 		-webkit-border-radius-topright:6px;
 		-moz-border-radius-topleft:6px;

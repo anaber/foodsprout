@@ -52,6 +52,7 @@ from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);ba
 .addItem:hover{
 	text-decoration:none;
 	background-color:#CCC;
+	cursor:pointer;
 }
 .addItem.active{
 	color:#1A1A1A;
