@@ -37,8 +37,8 @@ code{font-family:Monaco,Consolas,"Andale Mono","DejaVu Sans Mono",monospace;}
 /* =Global Elements
 -------------------------------------------------------------- */
 /* Main global 'theme' and typographic styles */
-body{background:url(/images/bg.png);}
-body.home{background:url(/images/bg.png);}
+body{background:url(/img/bg.jpg);}
+body.home{background:url(/img/bg.jpg);}
 body,
 input,
 textarea{color:#666666;font-size:12px;line-height:18px;}
