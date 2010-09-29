@@ -28,29 +28,6 @@
 		},
 		"json");
 		
-		/*
-		$('div').click( function(event) {
-			var clicked = $(this); // jQuery wrapper for clicked element
-			elementId = $(clicked).attr('id');
-			alert(elementId);
-			if (elementId == 'addItem' || elementId == 'divAddSupplier') {
-				
-			} else {
-				$("#addSupplier").removeClass('active');
-				$('#divAddSupplier').stop(true, false).fadeOut(200);
-				isSupplierFormVisible = false;
-			}
-			
-			if (elementId == 'addItem' || elementId == 'divAddMenu') {
-				
-			} else {
-				$("#addMenu").removeClass('active');
-				$('#divAddMenu').stop(true, false).fadeOut(200);
-				isMenuFormVisible = false;
-			}
-			return false;
-		});
-		*/
 		
 	});
 	

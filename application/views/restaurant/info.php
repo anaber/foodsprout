@@ -55,6 +55,47 @@
 		});
 		
 		
+		/*
+		$(document).click( function(event) {
+			var clicked = $(this); // jQuery wrapper for clicked element
+			elementId = $(clicked).attr('id');
+			//alert(elementId);
+			if (elementId == 'addItem' || elementId == 'divAddSupplier') {
+				
+			} else {
+				$("#addSupplier").removeClass('active');
+				$('#divAddSupplier').stop(true, false).fadeOut(200);
+				isSupplierFormVisible = false;
+			}
+			
+			if (elementId == 'addItem' || elementId == 'divAddMenu') {
+				
+			} else {
+				$("#addMenu").removeClass('active');
+				$('#divAddMenu').stop(true, false).fadeOut(200);
+				isMenuFormVisible = false;
+			}
+			
+		});
+		*/
+		
+		/*
+		$(document).click(function(event) { 
+			var target = $(event.target);
+			if( target.parents("#login-form").length == 0 ){
+				/*
+				$('#show-login-button').removeClass('active');
+				$('#login-form').stop(true, false).fadeOut(200);
+				*/
+				$("#addSupplier").removeClass('active');
+				$('#divAddComment').stop(true, false).fadeOut(200);
+				
+				$("#addMenu").removeClass('active');
+				$('#divAddMenu').stop(true, false).fadeOut(200);
+			}
+		});
+		*/
+		
 	});
 		
 	function loadSmallMapOnStartUp(lat, lng, zoom) {
