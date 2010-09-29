@@ -1,3 +1,4 @@
+<script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/manufacture_info.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
