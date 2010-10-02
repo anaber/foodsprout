@@ -317,7 +317,8 @@ class RestaurantChain extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
-	function searchRestaurantChains($q) {
+	function searchRestaurantChains() {
+		$q = strtolower($_REQUEST['q']);
 		$this->load->model('RestaurantChainModel', '', TRUE);
 		$restaurantChains = $this->RestaurantChainModel->searchRestaurantChains($q);
 		echo $restaurantChains;

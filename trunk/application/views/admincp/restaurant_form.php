@@ -11,6 +11,85 @@ formValidated = true;
 
 $(document).ready(function() {
 	
+	/* ----------------------------------------------------
+	 * Company
+	 * ----------------------------------------------------*/
+	 
+	function findValueCallbackCompany(event, data, formatted) {
+		document.getElementById('companyId').value = data[1];
+	}
+	
+	$("#companyAjax").result(findValueCallbackCompany).next().click(function() {
+		$(this).prev().search();
+	});
+	
+	$("#companyAjax").autocomplete("/admincp/company/searchCompanies", {
+		width: 260,
+		selectFirst: false,
+		cacheLength:0,
+		extraParams: {
+	       stateId: function() { return $("#stateId").val(); }
+	   	}
+	});
+	
+	$("#companyAjax").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	/* ----------------------------------------------------
+	 * City
+	 * ----------------------------------------------------*/
+	 
+	function findValueCallbackCity(event, data, formatted) {
+		document.getElementById('cityId').value = data[1];
+	}
+	
+	$("#cityAjax").result(findValueCallbackCity).next().click(function() {
+		$(this).prev().search();
+	});
+	
+	$("#cityAjax").autocomplete("/city/get_cities_based_on_state", {
+		width: 260,
+		selectFirst: false,
+		cacheLength:0,
+		extraParams: {
+	       stateId: function() { return $("#stateId").val(); }
+	   	}
+	});
+	
+	$("#cityAjax").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	/* ----------------------------------------------------
+	 * Restaurant Chain
+	 * ----------------------------------------------------*/
+	
+	function findValueCallbackChain(event, data, formatted) {
+		document.getElementById('restaurantChainId').value = data[1];
+		//alert( "Chain : " + $('#restaurantChainId').val() );
+	}
+	
+	$("#restaurantChainAjax").result(findValueCallbackChain).next().click(function() {
+		$(this).prev().search();
+	});
+	
+	$("#restaurantChainAjax").autocomplete("/admincp/restaurantchain/searchRestaurantChains", {
+		width: 260,
+		selectFirst: false,
+		cacheLength:0,
+	});
+	
+	$("#restaurantChainAjax").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	$("#clear").click(function() {
+		$(":input").unautocomplete();
+	});
 	
 	<?php echo (isset($RESTAURANT) ? '' : "$('#companyId').val('');") ?>
 	
@@ -49,6 +128,14 @@ $(document).ready(function() {
 			    }
 			    j++;
 			});
+			
+			var cityId = $('#cityId').val();
+			var cityName;
+			
+			if (isNaN( cityId ) ) {
+				cityName = cityId;
+				cityId = '';
+			}
 			
 			if ($('#restaurantId').val() != '' ) {
 				var formAction = '/admincp/restaurant/save_update';
@@ -91,7 +178,10 @@ $(document).ready(function() {
 							  
 							  status:$('#status').val(),
 							  address:$('#address').val(),
-							  city: $('#city').val(),
+							  
+							  cityId:cityId,
+							  cityName:cityName,
+							  
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val()
@@ -159,82 +249,22 @@ $(document).ready(function() {
 		
 	});	
 
-
-	$("#companyAjax").autocomplete(
-		"/admincp/company/searchCompanies",
-		{
-			delay:10,
-			minChars:3,
-			matchSubset:1,
-			matchContains:1,
-			cacheLength:10,
-			onItemSelect:selectItem,
-			onFindValue:findValue,
-			formatItem:formatItem,
-			autoFill:false
-		}
-	);
-	
-	$("#restaurantChainAjax").autocomplete(
-		"/admincp/restaurantchain/searchRestaurantChains",
-		{
-			delay:10,
-			minChars:3,
-			matchSubset:1,
-			matchContains:1,
-			cacheLength:10,
-			onItemSelect:selectItemRestaurantChain,
-			onFindValue:findValueRestaurantChain,
-			formatItem:formatItem,
-			autoFill:false
-		}
-	);
-
 });
 
-function findValue(li) {
-	if( li == null ) return alert("No match!");
- 
-	// if coming from an AJAX call, let's use the CityId as the value
-	if( !!li.extra ) var sValue = li.extra[0];
- 
-	// otherwise, let's just display the value in the text box
-	else var sValue = li.selectValue;
- 	
-	//alert("The value you selected was: " + sValue);
-	document.getElementById('companyId').value = sValue;	
-}
- 
-function selectItem(li) {
-	findValue(li);
-}
-
-function selectItemRestaurantChain(li) {
-	findValueRestaurantChain(li);
-}
-
-function formatItem(row) {
-	//return row[0] + " (id: " + row[1] + ")";
-	return row[0];
-}
-
-function findValueRestaurantChain(li) {
-	if( li == null ) return alert("No match!");
- 
-	// if coming from an AJAX call, let's use the CityId as the value
-	if( !!li.extra ) var sValue = li.extra[0];
- 
-	// otherwise, let's just display the value in the text box
-	else var sValue = li.selectValue;
- 	
-	//alert("The value you selected was: " + sValue);
-	document.getElementById('restaurantChainId').value = sValue;	
-}
-
 </script>
-
+<?php
+/*
+?>
 <script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
+<?php
+*/
+?>
+
+<script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
+
+
 <?php
 	if (!isset($RESTAURANT)) {
 ?>
@@ -373,12 +403,7 @@ function findValueRestaurantChain(li) {
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->address : '') ?>" class="validate[required]" type="text" name="address" id="address"/><br />
 		</td>
 	</tr>
-	<tr>
-		<td width = "25%">City</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
-		</td>
-	</tr>
+	
 	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
@@ -392,6 +417,14 @@ function findValueRestaurantChain(li) {
 			</select>
 		</td>
 	</tr>
+	
+	<tr>
+		<td width = "25%">City</td>
+		<td width = "75%">
+			<input type="text" id="cityAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->cityName : '') ?>" class="validate[required]" />
+		</td>
+	</tr>
+	
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
@@ -420,6 +453,7 @@ function findValueRestaurantChain(li) {
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>">
 			<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantChainId : '') ?>">
 			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->companyId : '') ?>">
+			<input type = "hidden" name = "companyId" id = "cityId" value = "">
 		</td>
 	</tr>
 </table>

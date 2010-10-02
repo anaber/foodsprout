@@ -304,6 +304,17 @@ function formatItem(row) {
 		</td>
 	</tr>
 	<tr>
+        <td width = "25%" nowrap>Status</td>
+        <td width = "75%">
+            <select name="status" id="status"  class="validate[required]">
+                <option value="">--Status--</option>
+                <option value="live"<?php echo ((isset($SUPPLIER) && ($SUPPLIER->status == 'live')) ? ' SELECTED' : '') ?>>Live</option>
+                <option value="queue"<?php echo ((isset($SUPPLIER) && ($SUPPLIER->status == 'queue')) ? ' SELECTED' : '') ?>>Queue</option>
+                <option value="queue"<?php echo ((isset($SUPPLIER) && ($SUPPLIER->status == 'hide')) ? ' SELECTED' : '') ?>>Hide</option>
+            </select>
+        </td>
+    </tr>
+	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($SUPPLIER)) ? 'Update Supplier' : 'Add Supplier' ?>">
 			<input type = "button" name = "btnReset" id = "btnReset" value = "Reset" class = "button">
