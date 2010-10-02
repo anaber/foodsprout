@@ -11,7 +11,7 @@ if (file_exists($defines_file))
 
 $geocode = new GeoCode();
 
-$geocode->index();
+$geocode->geocodeZip();
 
 
 
@@ -108,20 +108,83 @@ class GeoCode {
 	}
 	
 	function geoCodeAddressV3($address) {
+		$json = '';
 		$a = array();
+		
 		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
 		
-		if ($d = @fopen($url, "r")) {
+		$ch = curl_init ();
+		curl_setopt ($ch, CURLOPT_URL, $url);
+		curl_setopt ($ch, CURLOPT_POST, 1); 
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt ($ch, CURLOPT_VERBOSE, 0);
+		$json = curl_exec ($ch);
+		curl_close($ch);
+		
+		if ( $json ) {
+			$arr = json_decode($json);
 			
-			$gcsv = @fread($d, 30000);
-			@fclose($d);
-			$arr = json_decode($gcsv);
 			if ($arr->status != 'OK') {
 				return false;
 			} else {
 				$a['latitude'] = $arr->results[0]->geometry->location->lat;
 				$a['longitude'] = $arr->results[0]->geometry->location->lng;
+				$a['approximate'] = ( (count($arr->results) > 1) ? 1 : 0 );
 				return $a;
+			}
+		} else {
+			return false;
+		}
+	}
+	
+	function geocodeZip () {
+		$query = "SELECT * " .
+				" FROM zip_source " .
+				" WHERE CountryID = 223 ORDER BY Zip limit 1, 15000";
+		$result = mysql_query($query);
+		
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			$zipcode = $row['Zip'];
+			$address = $row['City'] . ", " . $row['State']  . " " . $zipcode . ', USA';
+			
+			$latLng = $this->geoCodeAddressV3($address);
+			
+			$query = "SELECT * FROM " .
+					" zipcode " .
+					" WHERE zipcode = " . $zipcode;
+			$result1 = mysql_query($query);
+			if (mysql_num_rows($result1) > 0) {
+				$query = '';
+				if (count ($latLng) > 0 ) {
+					$query = 'UPDATE zipcode ' .
+						' SET latitude = \'' . $latLng['latitude'] . '\', ' .
+						' longitude = \'' . $latLng['longitude'] . '\',' .
+						' approximate = ' . ( ( $latLng['approximate'] == 1 ) ? 1 : 0 ) . ', ' . 
+						' geocoded = 1 ' . 
+						' WHERE zipcode =  ' . $zipcode;
+					echo $zipcode . " : DONE \n"; 
+				} else {
+					$query = 'UPDATE zipcode ' .
+						' SET geocoded = 0 ' .
+						' WHERE zipcode =  ' . $zipcode;
+					echo $zipcode . " : FAILED \n";
+				}
+				//echo $query . "\n";
+				mysql_query($query);
+				
+			} else {
+				$query = '';
+				if (count ($latLng) > 0 ) {
+					$query = 'INSERT INTO zipcode' .
+						' (zipcode, latitude, longitude, approximate, geocoded) ' .
+						' VALUES ('.$zipcode.', \''. $latLng['latitude'] .'\', \''. $latLng['latitude'] .'\', \''. $latLng['approximate'] .'\', 1 )';
+				} else {
+					$query = 'INSERT INTO zipcode' .
+						' (zipcode, latitude, longitude, approximate, geocoded) ' .
+						' VALUES ('.$zipcode.', NULL, NULL, NULL, 0 )';
+				}
+				mysql_query($query);
+				echo $zipcode . " : ADDED \n"; 
 			}
 		}
 	}

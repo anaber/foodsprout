@@ -11,7 +11,7 @@
  * ======================================================
  */
 
-$ENV_PROPERTY_FILE = "env_properties/live_server.php";
+$ENV_PROPERTY_FILE = "env_properties/deepak.php";
 
 include($ENV_PROPERTY_FILE);
 
