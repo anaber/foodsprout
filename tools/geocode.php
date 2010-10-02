@@ -138,9 +138,21 @@ class GeoCode {
 	}
 	
 	function geocodeZip () {
+		/*
+		$query = "SELECT * " .
+				" FROM zipcode " .
+				" ORDER BY zipcode limit 0, 5000";
+		$result = mysql_query($query);
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			echo $row['zipcode'] . " : " . $row['latitude'] . " : " . $row['longitude'] . " : " . $row['approximate'] . " : " . $row['geocoded'] . " \n"; 
+		}
+		die;
+		*/
 		$query = "SELECT * " .
 				" FROM zip_source " .
-				" WHERE CountryID = 223 ORDER BY Zip limit 1, 15000";
+				" WHERE CountryID = 223 " .
+				" AND Geocoded = 0 " .
+				" ORDER BY Zip limit 0, 15000";
 		$result = mysql_query($query);
 		
 		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
@@ -155,37 +167,56 @@ class GeoCode {
 			$result1 = mysql_query($query);
 			if (mysql_num_rows($result1) > 0) {
 				$query = '';
-				if (count ($latLng) > 0 ) {
+				
+				if ( $latLng ) {
 					$query = 'UPDATE zipcode ' .
 						' SET latitude = \'' . $latLng['latitude'] . '\', ' .
 						' longitude = \'' . $latLng['longitude'] . '\',' .
 						' approximate = ' . ( ( $latLng['approximate'] == 1 ) ? 1 : 0 ) . ', ' . 
 						' geocoded = 1 ' . 
 						' WHERE zipcode =  ' . $zipcode;
+					mysql_query($query);
 					echo $zipcode . " : DONE \n"; 
+					
+					$query = 'UPDATE zip_source ' .
+						' SET Geocoded = 1 ' .
+						' WHERE LocationID =  ' . $row['LocationID'];
+					mysql_query($query);
 				} else {
 					$query = 'UPDATE zipcode ' .
 						' SET geocoded = 0 ' .
 						' WHERE zipcode =  ' . $zipcode;
-					echo $zipcode . " : FAILED \n";
+					mysql_query($query);
+					
+					echo $zipcode . " : FAILED #" . $address . "\n";
 				}
-				//echo $query . "\n";
-				mysql_query($query);
 				
 			} else {
+				
 				$query = '';
-				if (count ($latLng) > 0 ) {
+				if ( $latLng ) {
 					$query = 'INSERT INTO zipcode' .
 						' (zipcode, latitude, longitude, approximate, geocoded) ' .
 						' VALUES ('.$zipcode.', \''. $latLng['latitude'] .'\', \''. $latLng['latitude'] .'\', \''. $latLng['approximate'] .'\', 1 )';
+					mysql_query($query);
+					echo $zipcode . " : ADDED \n"; 
+					
+					$query = 'UPDATE zip_source ' .
+						' SET Geocoded = 1 ' .
+						' WHERE LocationID =  ' . $row['LocationID'];
+					mysql_query($query);
+					
 				} else {
 					$query = 'INSERT INTO zipcode' .
 						' (zipcode, latitude, longitude, approximate, geocoded) ' .
 						' VALUES ('.$zipcode.', NULL, NULL, NULL, 0 )';
+					mysql_query($query);
+					
+					echo $zipcode . " : ADDED-F #" . $address . "\n"; 
 				}
-				mysql_query($query);
-				echo $zipcode . " : ADDED \n"; 
+				
 			}
+			
 		}
 	}
 	

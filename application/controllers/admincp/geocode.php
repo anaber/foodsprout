@@ -14,11 +14,16 @@ class Geocode extends Controller {
 	function validateZip () {
 		$query = "SELECT * " .
 				" FROM zip_source " .
-				" WHERE CountryID = 223 ORDER BY Zip limit 1, 20";
+				" WHERE CountryID = 223 " .
+				" AND Zip > 8551 ORDER BY Zip limit 0, 5";
 		//echo $query;die;
 		$result = $this->db->query($query);
 		
 		$this->load->model('GoogleMapModel', '', TRUE);
+		/*
+		$address = 'ROCKY HILL, NJ 8553, USA';
+		$latLng = $this->GoogleMapModel->geoCodeAddressV3($address);
+		*/
 		
 		foreach ($result->result_array() as $row) {
 			
@@ -30,7 +35,6 @@ class Geocode extends Controller {
 			if ($row['Latitude'] > 0) {
 				
 			} else {
-				
 				$cLat = $row['Longitude'];
 				$cLng = $row['Latitude'];
 			}
