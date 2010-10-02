@@ -23,8 +23,12 @@ class CityUpdate {
 		global $DB_HOST, $DB_USER, $DB_PASSWORD, $DATABSE;
 		//$this->db = mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD);
 		//mysql_select_db($DATABSE, $this->db);
-		$this->db = mysql_connect('174.143.132.250', '468258_food3user', 'R3alF00d');
-		mysql_select_db('468258_food3', $this->db);
+		// Staging
+		//$this->db = mysql_connect('174.143.132.250', '468258_food3user', 'R3alF00d');
+		//mysql_select_db('468258_food3', $this->db);
+		// Live
+		$this->db = mysql_connect('174.143.132.251', '492717_foodie', 'R3alF00dRulz');
+		mysql_select_db('492717_livefood', $this->db);
 	}
 	
 	function index() {

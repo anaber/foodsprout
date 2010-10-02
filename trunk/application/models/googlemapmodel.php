@@ -37,6 +37,7 @@ class GoogleMapModel extends Model{
 			$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
 		}
 		
+		
 		$ch = curl_init ();
 		curl_setopt ($ch, CURLOPT_URL, $url);
 		curl_setopt ($ch, CURLOPT_POST, 1); 
@@ -47,9 +48,17 @@ class GoogleMapModel extends Model{
 		
 		if ( $json ) {
 			$arr = json_decode($json);
+			
 			if ($arr->status != 'OK') {
 				return false;
 			} else {
+				
+				$a['latitude'] = $arr->results[0]->geometry->location->lat;
+				$a['longitude'] = $arr->results[0]->geometry->location->lng;
+				$a['approximate'] = ( (count($arr->results) > 1) ? 1 : 0 );
+				return $a;
+				
+				/*
 				if (count($arr->results) > 1 ) {
 					return false;
 				} else {
@@ -57,6 +66,7 @@ class GoogleMapModel extends Model{
 					$a['longitude'] = $arr->results[0]->geometry->location->lng;
 					return $a;
 				}
+				*/
 			}
 		} else {
 			return false;
