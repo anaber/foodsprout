@@ -11,6 +11,62 @@ formValidated = true;
 
 $(document).ready(function() {
 	
+	/* ----------------------------------------------------
+	 * Company
+	 * ----------------------------------------------------*/
+	 
+	function findValueCallbackCompany(event, data, formatted) {
+		document.getElementById('companyId').value = data[1];
+	}
+	
+	$("#companyAjax").result(findValueCallbackCompany).next().click(function() {
+		$(this).prev().search();
+	});
+	
+	$("#companyAjax").autocomplete("/admincp/company/searchCompanies", {
+		width: 260,
+		selectFirst: false,
+		cacheLength:0,
+		extraParams: {
+	       stateId: function() { return $("#stateId").val(); }
+	   	}
+	});
+	
+	$("#companyAjax").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	/* ----------------------------------------------------
+	 * City
+	 * ----------------------------------------------------*/
+	 
+	function findValueCallbackCity(event, data, formatted) {
+		document.getElementById('cityId').value = data[1];
+	}
+	
+	$("#cityAjax").result(findValueCallbackCity).next().click(function() {
+		$(this).prev().search();
+	});
+	
+	$("#cityAjax").autocomplete("/city/get_cities_based_on_state", {
+		width: 260,
+		selectFirst: false,
+		cacheLength:0,
+		extraParams: {
+	       stateId: function() { return $("#stateId").val(); }
+	   	}
+	});
+	
+	$("#cityAjax").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	$("#clear").click(function() {
+		$(":input").unautocomplete();
+	});
+	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
 	$("#manufactureForm").validationEngine({
 		success :  function() {formValidated = true;},
@@ -33,6 +89,14 @@ $(document).ready(function() {
 			var formAction = '';
 			var postArray = '';
 			var act = '';
+			
+			var cityId = $('#cityId').val();
+			var cityName;
+			
+			if (isNaN( cityId ) ) {
+				cityName = cityId;
+				cityId = '';
+			}
 			
 			if ($('#manufactureId').val() != '' ) {
 				var formAction = '/admincp/manufacture/save_update';
@@ -62,7 +126,10 @@ $(document).ready(function() {
 							  twitter:$('#twitter').val(),
 							  
 							  address:$('#address').val(),
-							  city: $('#city').val(),
+							  
+							  cityId:cityId,
+							  cityName:cityName,
+							  
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val()
@@ -128,50 +195,13 @@ $(document).ready(function() {
 		
 	});	
 	
-	
-	$("#companyAjax").autocomplete(
-		"/admincp/company/searchCompanies",
-		{
-			delay:10,
-			minChars:3,
-			matchSubset:1,
-			matchContains:1,
-			cacheLength:10,
-			onItemSelect:selectItem,
-			onFindValue:findValue,
-			formatItem:formatItem,
-			autoFill:false
-		}
-	);	
-
 });
-
-function findValue(li) {
-	if( li == null ) return alert("No match!");
- 
-	// if coming from an AJAX call, let's use the CityId as the value
-	if( !!li.extra ) var sValue = li.extra[0];
- 
-	// otherwise, let's just display the value in the text box
-	else var sValue = li.selectValue;
- 
-	//alert("The value you selected was: " + sValue);
-	document.getElementById('companyId').value = sValue;	
-}
- 
-function selectItem(li) {
-	findValue(li);
-}
-
-function formatItem(row) {
-	//return row[0] + " (id: " + row[1] + ")";
-	return row[0];
-}
 
 </script>
 
-<script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
+<script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
+
 <?php
 	if (!isset($MANUFACTURE)) {
 ?>
@@ -270,12 +300,6 @@ function formatItem(row) {
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%">City</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
-		</td>
-	</tr>
-	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
 			<select name="stateId" id="stateId"  class="validate[required]">
@@ -288,6 +312,14 @@ function formatItem(row) {
 			</select>
 		</td>
 	</tr>
+	
+	<tr>
+		<td width = "25%">City</td>
+		<td width = "75%">
+			<input type="text" id="cityAjax" value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->cityName : '') ?>" class="validate[required]" />
+		</td>
+	</tr>
+	
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
@@ -315,6 +347,7 @@ function formatItem(row) {
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MANUFACTURE)) ? 'Update Manufacture' : 'Add Manufacture' ?>">
 			<input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureId : '') ?>">
 			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->companyId : '') ?>">
+			<input type = "hidden" name = "companyId" id = "cityId" value = "">
 		</td>
 	</tr>
 </table>

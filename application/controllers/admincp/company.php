@@ -117,7 +117,8 @@ class Company extends Controller {
 		echo $companies;
 	}
 	
-	function searchCompanies($q) {
+	function searchCompanies() {
+		$q = strtolower($_REQUEST['q']);
 		$this->load->model('CompanyModel', '', TRUE);
 		$companies = $this->CompanyModel->searchCompanies($q);
 		echo $companies;

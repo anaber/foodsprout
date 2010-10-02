@@ -11,6 +11,36 @@ formValidated = true;
 
 $(document).ready(function() {
 	
+	/* ----------------------------------------------------
+	 * City
+	 * ----------------------------------------------------*/
+	 
+	function findValueCallbackCity(event, data, formatted) {
+		document.getElementById('cityId').value = data[1];
+	}
+	
+	$("#cityAjax").result(findValueCallbackCity).next().click(function() {
+		$(this).prev().search();
+	});
+	
+	$("#cityAjax").autocomplete("/city/get_cities_based_on_state", {
+		width: 260,
+		selectFirst: false,
+		cacheLength:0,
+		extraParams: {
+	       stateId: function() { return $("#stateId").val(); }
+	   	}
+	});
+	
+	$("#cityAjax").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	$("#clear").click(function() {
+		$(":input").unautocomplete();
+	});
+	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
 	$("#farmForm").validationEngine({
 		success :  function() {formValidated = true;},
@@ -33,6 +63,14 @@ $(document).ready(function() {
 			var formAction = '';
 			var postArray = '';
 			var act = '';
+			
+			var cityId = $('#cityId').val();
+			var cityName;
+			
+			if (isNaN( cityId ) ) {
+				cityName = cityId;
+				cityId = '';
+			}
 			
 			if ($('#farmersMarketId').val() != '' ) {
 				var formAction = '/admincp/farmersmarket/save_update';
@@ -58,7 +96,10 @@ $(document).ready(function() {
 							  twitter:$('#twitter').val(),
 							  
 							  address:$('#address').val(),
-							  city: $('#city').val(),
+							  
+							  cityId:cityId,
+							  cityName:cityName,
+							  
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
 							  zipcode:$('#zipcode').val()
@@ -109,8 +150,10 @@ $(document).ready(function() {
 
 
 </script>
-<script src="<?php echo base_url()?>js/jquery.autocomplete.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.css" type="text/css" />
+
+<script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
+
 <?php
 	if (!isset($FARMERS_MARKET)) {
 ?>
@@ -184,12 +227,6 @@ $(document).ready(function() {
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%">City</td>
-		<td width = "75%">
-			<input value="<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->city : '') ?>" class="validate[required]" type="text" name="city" id="city"/><br />
-		</td>
-	</tr>
-	<tr>
 		<td width = "25%">State</td>
 		<td width = "75%">
 			<select name="stateId" id="stateId"  class="validate[required]">
@@ -202,6 +239,13 @@ $(document).ready(function() {
 			</select>
 		</td>
 	</tr>
+	<tr>
+		<td width = "25%">City</td>
+		<td width = "75%">
+			<input type="text" id="cityAjax" value="<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->cityName : '') ?>" class="validate[required]" />
+		</td>
+	</tr>
+	
 	<tr>
 		<td width = "25%">Country</td>
 		<td width = "75%">
@@ -228,6 +272,7 @@ $(document).ready(function() {
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FARMERS_MARKET)) ? 'Update Farmers Market' : 'Add Farmers Market' ?>">
 			<input type = "hidden" name = "farmersMarketId" id = "farmersMarketId" value = "<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->farmersMarketId : '') ?>">
+			<input type = "hidden" name = "companyId" id = "cityId" value = "">
 		</td>
 	</tr>
 </table>
