@@ -182,9 +182,9 @@
 						<h2>News</h2>
 						<a class="readmore" href="#">Read more ></a>
 						<div id="social-icons">
-							<a href="http://twitter.com/foodsprout" id="fs-twitter"><span>Twitter</span></a>
-							<a href="http://www.facebook.com/foodsprout" id="fs-facebook"><span>Facebook</span></a>
-							<a href="http://blog.foodsprout.com" id="fs-blog"><span>Blog</span></a>
+							<a href="http://twitter.com/foodsprout" id="fs-twitter" target = "_blank"><span>Twitter</span></a>
+							<a href="http://www.facebook.com/foodsprout" id="fs-facebook" target = "_blank"><span>Facebook</span></a>
+							<a href="http://blog.foodsprout.com" id="fs-blog" target = "_blank"><span>Blog</span></a>
 						</div>
 					</div>
 					<div id="newsbody">
