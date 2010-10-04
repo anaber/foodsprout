@@ -44,4 +44,6 @@ $SITE_TITLE  = "Food";
 $SYSTEM_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.sproutchain.com/web/system";
 $APPLICATION_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.sproutchain.com/web/application";
 
+$UPLOAD_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.sproutchain.com/web/content/uploads";
+
 ?>

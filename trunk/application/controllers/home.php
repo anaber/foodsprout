@@ -13,8 +13,9 @@ class Home extends Controller {
 	}
 	
 	// Homepage
-	function index()
-	{
+	function index() {
+		$rss_url = base_url() . "/uploads/twitter.rss";
+		
 		$data = array();
 		
 		$this->load->model('SeoModel');
@@ -46,7 +47,8 @@ class Home extends Controller {
 			
 		// Load the rssparse
 		// Get the latest blog posts
-		$this->load->library('RSSParser', array('url' => 'http://twitter.com/statuses/user_timeline/124974783.rss', 'life' => 0));
+		//$this->load->library('RSSParser', array('url' => 'http://twitter.com/statuses/user_timeline/124974783.rss', 'life' => 0));
+		$this->load->library('RSSParser', array('url' => $rss_url, 'life' => 0));
 	  	
 		$twitterdata = array();
 		//Get 1 items from the feed

@@ -38,4 +38,6 @@ $SITE_TITLE  = "Food";
 $SYSTEM_FOLDER = "C:/Projects/food/system";
 $APPLICATION_FOLDER = "C:/Projects/food/trunk/application";
 
+$UPLOAD_FOLDER = "C:/Projects/food/trunk/content/uploads";
+
 ?>
