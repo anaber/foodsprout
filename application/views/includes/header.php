@@ -53,14 +53,7 @@ var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_tr
 	<!-- end login -->
     <!-- main tabs -->
     <?php
-		if ($this->session->userdata('isAuthenticated') == 1 )
-		{
 			$this->load->view('includes/navigation');
-		}
-		else
-		{
-			$this->load->view('includes/navigation_beta');
-		}
 	?>
     <!-- end main tabs -->
   </div>

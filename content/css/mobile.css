@@ -1,0 +1,94 @@
+#mainarea{
+	margin:5px;
+	color:#000;
+	background:#ffffff;
+	padding:5px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
+body #menu {
+	position:			relative;
+	margin:				34px 0 -8px -4px;
+	padding:			0;
+	background:			transparent url("/img/mobile/bg_menu_center.png") repeat-y left top;
+}
+body #menu li {
+	padding:			0;
+}
+body #menu li a {
+	display:			block;
+	width:				282px;
+	margin-left:		4px;
+	padding:			12px 0 10px 10px;
+	border-bottom:		1px solid #DCDCDC;
+	font-size:			1.6em;
+	font-weight:		bold;
+	line-height:		1em;
+	color:				#176EB1;
+	background:			transparent url("/img/mobile/bg_menu_icon_arrow.png") no-repeat left 0;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+body #menu li a:active,
+body #menu li a.active {
+	background-position:0 -110px;
+	color:				#FFF;
+}
+body #menu li a:active span,
+body #menu li a.active span {
+	color:				#FFF;
+}
+body #menu li.first  {
+	position:			relative;
+	left:				0;
+	top:				-12px;
+	margin:				0 0 -12px -12px;
+	padding:			2px 0 0 12px;
+	background:			transparent url("/img/mobile/bg_menu_top.png") no-repeat 12px top;
+}
+body #menu li.first a:active,
+body #menu li.first a.active {
+	background-position:0 -55px;
+}
+body #menu li.last {
+	position:			relative;
+	left:				0;
+	bottom:				-12px;
+	margin-top:			-12px;
+	padding-bottom:		4px;
+	background:			transparent url("/img/mobile/bg_menu_bottom.png") no-repeat left bottom;
+}
+body #menu li.last a:active,
+body #menu li.last a.active {
+	background-position:0 -165px;
+}
+body #menu.twoItems li.last {
+	margin-top:			-24px;
+}
+body #menu.short li a {
+	background-image:	url("/img/mobile/bg_menu_icon_arrow_short.png");
+}
+body #menu.short li.first a:active,
+body #menu.short li.first a.active {
+	background-position:0 -38px;
+}
+body #menu.short li a:active,
+body #menu.short li a.active {
+	background-position:0 -76px;
+}
+body #menu.short li.last a:active,
+body #menu.short li.last a.active {
+	background-position:0 -114px;
+}
+
+body #menu li.last a {
+	border:				none;
+}
+body #menu li a span {
+	display:			block;
+	padding-top:		4px;
+	font-size:			13px;
+	line-height:		1em;
+	font-weight:		normal;
+	color:				#333;
+}	

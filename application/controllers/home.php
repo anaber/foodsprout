@@ -6,10 +6,6 @@ class Home extends Controller {
 	{
 		global $LANDING_PAGE;
 		parent::Controller();
-		if ($this->session->userdata('isAuthenticated') != 1 )
-		{
-			redirect($LANDING_PAGE);
-		}
 	}
 	
 	// Homepage
