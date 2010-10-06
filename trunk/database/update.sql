@@ -191,3 +191,149 @@ ALTER TABLE `farm_supplier` ADD COLUMN `track_ip` VARCHAR(20) NULL DEFAULT NULL 
 
 ALTER TABLE `farmers_market_supplier` ADD COLUMN `track_ip` VARCHAR(20) NULL DEFAULT NULL  AFTER `status` ;
 
+--
+-- Above mentioned queries are on LIVE NOW
+-- 2010/10/05
+-- PHOTOS and COMMENTS
+--
+
+CREATE  TABLE IF NOT EXISTS `comment` (
+  `comment_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `address_id` INT(11) NULL DEFAULT NULL ,
+  `restaurant_id` INT(11) NULL DEFAULT NULL ,
+  `farm_id` INT(11) NULL DEFAULT NULL ,
+  `farmers_market_id` INT(11) NULL DEFAULT NULL ,
+  `manufacture_id` INT(11) NULL DEFAULT NULL ,
+  `restaurant_chain_id` INT(11) NULL DEFAULT NULL ,
+  `comment` TEXT NULL DEFAULT NULL ,
+  `rating` INT(1) NULL DEFAULT NULL ,
+  `user_id` INT(11) NULL DEFAULT NULL ,
+  `status` ENUM('live','queue','hide') NULL DEFAULT NULL ,
+  `track_ip` VARCHAR(20) NULL DEFAULT NULL ,
+  `added_on` DATETIME NULL DEFAULT NULL ,
+  PRIMARY KEY (`comment_id`) ,
+  INDEX `fk_comment_address1` (`address_id` ASC) ,
+  INDEX `fk_comment_restaurant1` (`restaurant_id` ASC) ,
+  INDEX `fk_comment_farm1` (`farm_id` ASC) ,
+  INDEX `fk_comment_farmers_market1` (`farmers_market_id` ASC) ,
+  INDEX `fk_comment_manufacture1` (`manufacture_id` ASC) ,
+  INDEX `fk_comment_restaurant_chain1` (`restaurant_chain_id` ASC) ,
+  INDEX `fk_comment_user1` (`user_id` ASC) ,
+  CONSTRAINT `fk_comment_address1`
+    FOREIGN KEY (`address_id` )
+    REFERENCES `address` (`address_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_restaurant1`
+    FOREIGN KEY (`restaurant_id` )
+    REFERENCES `restaurant` (`restaurant_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_farm1`
+    FOREIGN KEY (`farm_id` )
+    REFERENCES `farm` (`farm_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_farmers_market1`
+    FOREIGN KEY (`farmers_market_id` )
+    REFERENCES `farmers_market` (`farmers_market_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_manufacture1`
+    FOREIGN KEY (`manufacture_id` )
+    REFERENCES `manufacture` (`manufacture_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_restaurant_chain1`
+    FOREIGN KEY (`restaurant_chain_id` )
+    REFERENCES `restaurant_chain` (`restaurant_chain_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_user1`
+    FOREIGN KEY (`user_id` )
+    REFERENCES `user` (`user_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1
+COLLATE = latin1_swedish_ci;
+
+CREATE  TABLE IF NOT EXISTS `photo` (
+  `photo_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `address_id` INT(11) NULL DEFAULT NULL ,
+  `restaurant_id` INT(11) NULL DEFAULT NULL ,
+  `farm_id` INT(11) NULL DEFAULT NULL ,
+  `farmers_market_id` INT(11) NULL DEFAULT NULL ,
+  `manufacture_id` INT(11) NULL DEFAULT NULL ,
+  `product_id` INT(11) NULL DEFAULT NULL ,
+  `title` VARCHAR(45) NULL DEFAULT NULL ,
+  `description` VARCHAR(255) NULL DEFAULT NULL ,
+  `path` VARCHAR(255) NULL DEFAULT NULL ,
+  `thumb_photo_name` VARCHAR(255) NOT NULL ,
+  `photo_name` VARCHAR(255) NOT NULL ,
+  `original_photo_name` VARCHAR(255) NOT NULL ,
+  `extension` VARCHAR(10) NOT NULL ,
+  `mime_type` VARCHAR(45) NOT NULL ,
+  `thumb_height` INT(5) NOT NULL ,
+  `thumb_width` INT(5) NOT NULL ,
+  `height` INT(5) NOT NULL ,
+  `width` INT(5) NOT NULL ,
+  `user_id` INT(11) NOT NULL ,
+  `status` ENUM('live','queue','hide') NOT NULL ,
+  `track_ip` VARCHAR(20) NOT NULL ,
+  `added_on` DATETIME NULL DEFAULT NULL ,
+  PRIMARY KEY (`photo_id`) ,
+  INDEX `fk_photos_address1` (`address_id` ASC) ,
+  INDEX `fk_photos_restaurant1` (`restaurant_id` ASC) ,
+  INDEX `fk_photos_farm1` (`farm_id` ASC) ,
+  INDEX `fk_photos_farmers_market1` (`farmers_market_id` ASC) ,
+  INDEX `fk_photos_manufacture1` (`manufacture_id` ASC) ,
+  INDEX `fk_photos_product1` (`product_id` ASC) ,
+  INDEX `fk_photos_user1` (`user_id` ASC) ,
+  CONSTRAINT `fk_photos_address1`
+    FOREIGN KEY (`address_id` )
+    REFERENCES `address` (`address_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_photos_restaurant1`
+    FOREIGN KEY (`restaurant_id` )
+    REFERENCES `restaurant` (`restaurant_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_photos_farm1`
+    FOREIGN KEY (`farm_id` )
+    REFERENCES `farm` (`farm_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_photos_farmers_market1`
+    FOREIGN KEY (`farmers_market_id` )
+    REFERENCES `farmers_market` (`farmers_market_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_photos_manufacture1`
+    FOREIGN KEY (`manufacture_id` )
+    REFERENCES `manufacture` (`manufacture_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_photos_product1`
+    FOREIGN KEY (`product_id` )
+    REFERENCES `product` (`product_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_photos_user1`
+    FOREIGN KEY (`user_id` )
+    REFERENCES `user` (`user_id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1
+COLLATE = latin1_swedish_ci;
+
+
+
+
+
+
+
+
+
