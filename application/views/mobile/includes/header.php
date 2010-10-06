@@ -2,8 +2,12 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<meta name="apple-mobile-web-app-capable" content="yes" />
+			<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+			<!-- blackberry -->
+			<meta name="HandheldFriendly" content="true" > 
 <title><?php echo (isset($SEO->titleTag)? $SEO->titleTag: 'Food Sprout'); ?></title>
-<meta name="description" content="<?php echo (isset($SEO->metaDescription)? $SEO->metaDescription: 'Mapping the World\'s Food Chain'); ?>" />
+<meta name="description" content="<?php echo (isset($SEO->metaDescription)? $SEO->metaDescription: 'Mapping our Food\'s Impact'); ?>" />
 <meta name="keywords" content="<?php echo (isset($SEO->metaKeywords)? $SEO->metaKeywords: 'food source, food location'); ?>" />
 <meta name="robots" content="index,follow" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />

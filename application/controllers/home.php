@@ -10,7 +10,7 @@ class Home extends Controller {
 	
 	// Homepage
 	function index() {
-		$rss_url = base_url() . "/uploads/twitter.rss";
+		$rss_url = base_url() . "uploads/twitter.rss";
 		
 		$data = array();
 		
