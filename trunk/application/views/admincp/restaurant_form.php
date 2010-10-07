@@ -137,6 +137,8 @@ $(document).ready(function() {
 				cityId = '';
 			}
 			
+			strClaimsSustainable = $('#claimsSustainable').val();
+			
 			if ($('#restaurantId').val() != '' ) {
 				var formAction = '/admincp/restaurant/save_update';
 				postArray = {
@@ -184,7 +186,9 @@ $(document).ready(function() {
 							  
 							  stateId:$('#stateId').val(),
 							  countryId:$('#countryId').val(),
-							  zipcode:$('#zipcode').val()
+							  zipcode:$('#zipcode').val(),
+							  claimsSustainable:strClaimsSustainable
+							  
 							};
 				act = 'add';
 			}
@@ -442,6 +446,16 @@ $(document).ready(function() {
 		<td width = "25%">Zip</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Claims Sustainable?</td>
+		<td width = "75%">
+			<select name="claimsSustainable" id="claimsSustainable"  class="validate[required]">
+				<option value="">--Choose--</option>
+				<option value="active"<?php echo ((isset($RESTAURANT) && ($RESTAURANT->claimsSustainable == 1)) ? ' SELECTED' : '')?>>Yes</option>
+				<option value="inactive"<?php echo ((isset($RESTAURANT) && ($RESTAURANT->claimsSustainable == 0)) ? ' SELECTED' : '')?>>No</option>
+			</select>
 		</td>
 	</tr>
 <?php
