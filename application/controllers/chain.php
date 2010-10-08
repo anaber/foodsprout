@@ -139,33 +139,40 @@ class Chain extends Controller {
 	}
 	
 	function menu_item_save_add() {
-		
-		$this->load->model('ProductModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->ProductModel->addProductIntermediate() ) {
-			echo 'yes';
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
+		if ($this->session->userdata('isAuthenticated') == 1 ) {
+			$this->load->model('ProductModel', '', TRUE);
+			
+			$GLOBALS = array();
+			if ( $this->ProductModel->addProductIntermediate() ) {
+				echo 'yes';
 			} else {
-				echo 'no';
+				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+					echo $GLOBALS['error'];
+				} else {
+					echo 'no';
+				}
 			}
+		} else {
+			echo 'no';
 		}
 	}
 	
 	function menu_item_save_update() {
-		$this->load->model('ProductModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->ProductModel->updateProduct() ) {
-			echo "yes";
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
+		if ($this->session->userdata('isAuthenticated') == 1 ) {
+			$this->load->model('ProductModel', '', TRUE);
+			
+			$GLOBALS = array();
+			if ( $this->ProductModel->updateProduct() ) {
+				echo "yes";
 			} else {
-				echo 'no';
+				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+					echo $GLOBALS['error'];
+				} else {
+					echo 'no';
+				}
 			}
+		} else {
+			echo 'no';
 		}
 	}
 }
