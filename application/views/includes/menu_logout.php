@@ -7,7 +7,7 @@
 		<?php echo anchor('user/dashboard', 'Dashboard', 'style="font-size:13px;text-decoration:none;"'); ?> | 
 		<?php echo ( !empty($method) &&  ( $method == 'settings' || $method == 'password' ) ) ? '<strong>Settings</strong>' : anchor('user/settings', 'Settings', 'style="font-size:13px;text-decoration:none;"'); ?> | 
 		<?php 
-		if ($this->session->userdata('isAuthenticated') == 1 || $this->session->userdata('userGroup') == 'admin' ) {
+		if ($this->session->userdata('isAuthenticated') == 1 && $this->session->userdata('userGroup') == 'admin' ) {
 			echo anchor('/admincp/dashboard', 'Admin', 'style="font-size:13px;text-decoration:none;"') . ' | ';
 		}
 		?>
