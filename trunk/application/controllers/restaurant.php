@@ -248,7 +248,14 @@ class Restaurant extends Controller {
 		
 		// SEO
 		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_list');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('sustainable_restaurants');
+		
+		$seo_data_array = array(
+			'city' => $city->city,
+		);
+
+		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
+		
 		$data['SEO'] = $seo;
 		
 		$f = $this->input->post('f');
@@ -286,6 +293,7 @@ class Restaurant extends Controller {
 					);
 		
 		$this->load->view('templates/left_center_template', $data);
+		
 	}
 	
 }
