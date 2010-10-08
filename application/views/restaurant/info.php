@@ -7,7 +7,6 @@
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <link href="<?php echo base_url()?>css/supplier.css" rel="stylesheet" type="text/css" />
 <script>
-	var isAuthenticated = <?php echo ($isAuthenticated ? "true" : "false") ?>;
 	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
 	var name = "<?php echo $RESTAURANT->restaurantName; ?>";
 	var jsonData;
@@ -18,6 +17,7 @@
 	var isMenuFormVisible = false;
 	var isCommentFormVisible = false;
 	
+	var isAuthenticated = <?php echo ($isAuthenticated ? "true" : "false") ?>;
 	var isLoginMessageVisible = false;
 	
 	$(document).ready(function() {

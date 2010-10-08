@@ -1,3 +1,6 @@
+<?php
+	$isAuthenticated = $this->session->userdata('isAuthenticated');
+?>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/farm_info.js" type="text/javascript"></script>
@@ -14,6 +17,9 @@
 	var isSupplierFormVisible = false;
 	var isMenuFormVisible = false;
 	var isCommentFormVisible = false;
+	
+	var isAuthenticated = <?php echo ($isAuthenticated ? "true" : "false") ?>;
+	var isLoginMessageVisible = false;
 	
 	$(document).ready(function() {
 		$('#bottomPaging').hide();
@@ -98,6 +104,12 @@
 							'FARM_ID' => $FARM->farmId
 							);
 					$this->load->view('includes/supplier_form', $data );
+				?>
+			</div>
+			
+			<div id="divLoginMessage" class="supplier">
+				<?php
+					$this->load->view('includes/login_message');
 				?>
 			</div>
 		

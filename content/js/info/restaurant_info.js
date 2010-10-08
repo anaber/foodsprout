@@ -91,6 +91,9 @@ function reinitializeTabs() {
 		isMenuFormVisible = false;
 		resetMenuForm();
 		
+		$('#divLoginMessage').stop(true, false).fadeOut(200);
+		isLoginMessageVisible = false;
+		
 		$('#bottomPaging').hide();
 		/*
 		if (isSupplierFormVisible || isMenuFormVisible || isCommentFormVisible) {

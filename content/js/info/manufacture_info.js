@@ -35,6 +35,9 @@ function reinitializeTabs() {
 		isCommentFormVisible = false;
 		//resetCommentForm();
 		
+		$('#divLoginMessage').stop(true, false).fadeOut(200);
+		isLoginMessageVisible = false;
+		
 		$('#bottomPaging').hide();
 		/*
 		if (isSupplierFormVisible || isMenuFormVisible || isCommentFormVisible) {
@@ -58,6 +61,9 @@ function reinitializeTabs() {
 		$('#divAddComment').stop(true, false).fadeOut(200);
 		isCommentFormVisible = false;
 		//resetCommentForm();
+		
+		$('#divLoginMessage').stop(true, false).fadeOut(200);
+		isLoginMessageVisible = false;
 		
 		$('#bottomPaging').hide();
 		/*
@@ -83,6 +89,9 @@ function reinitializeTabs() {
 		$('#divAddMenu').stop(true, false).fadeOut(200);
 		isMenuFormVisible = false;
 		resetMenuForm();
+		
+		$('#divLoginMessage').stop(true, false).fadeOut(200);
+		isLoginMessageVisible = false;
 		
 		$('#bottomPaging').hide();
 		/*
@@ -220,103 +229,149 @@ function reinitializeAddItemEvent(data) {
 	
 	$("#addSupplier").click(function(e) {
 		e.preventDefault();
-		
-		if (isSupplierFormVisible == true) {
-			$.validationEngine.closePrompt('.formError',true);
-			/*
-			$("#divAddSupplier").hide( toggleDuration, function() {
-				$("#addItem").removeClass().addClass('add-item');	
-			} );
-			*/
-			$(this).removeClass('active');
-			$('#divAddSupplier').stop(true, false).fadeOut(200);
-			isSupplierFormVisible = false;
-			
-		} else if (isSupplierFormVisible == false) {
-			/*
-			$("#divAddSupplier").show( toggleDuration, function() {
-				$("#addItem").removeClass().addClass('add-item-selected');
-			});
-			*/
-			$(this).addClass('active');
-			$('#divAddSupplier').stop(true, false).fadeIn(200);
-			isSupplierFormVisible = true;
+		if (isAuthenticated == true) {
+			if (isSupplierFormVisible == true) {
+				$.validationEngine.closePrompt('.formError',true);
+				/*
+				$("#divAddSupplier").hide( toggleDuration, function() {
+					$("#addItem").removeClass().addClass('add-item');	
+				} );
+				*/
+				$(this).removeClass('active');
+				$('#divAddSupplier').stop(true, false).fadeOut(200);
+				isSupplierFormVisible = false;
+				
+			} else if (isSupplierFormVisible == false) {
+				/*
+				$("#divAddSupplier").show( toggleDuration, function() {
+					$("#addItem").removeClass().addClass('add-item-selected');
+				});
+				*/
+				$(this).addClass('active');
+				$('#divAddSupplier').stop(true, false).fadeIn(200);
+				isSupplierFormVisible = true;
+			}
+		} else {
+			if (isLoginMessageVisible == true) {
+				$(this).removeClass('active');
+				$('#divLoginMessage').stop(true, false).fadeOut(200);
+				isLoginMessageVisible = false;
+			} else if (isLoginMessageVisible == false) {
+				$(this).addClass('active');
+				$('#divLoginMessage').stop(true, false).fadeIn(200);
+				isLoginMessageVisible = true;
+			}
 		}
 	});
 	
 	$("#addSupplier2").click(function(e) {
 		e.preventDefault();
-		
-		if (isSupplierFormVisible == true) {
-			$.validationEngine.closePrompt('.formError',true);
-			/*
-			$("#divAddSupplier").hide( toggleDuration, function() {
-				$("#addItem").removeClass().addClass('add-item');	
-			} );
-			*/
-			$("#addSupplier").removeClass('active');
-			$('#divAddSupplier').stop(true, false).fadeOut(200);
-			isSupplierFormVisible = false;
-			
-		} else if (isSupplierFormVisible == false) {
-			/*
-			$("#divAddSupplier").show( toggleDuration, function() {
-				$("#addItem").removeClass().addClass('add-item-selected');
-			});
-			*/
-			$("#addSupplier").addClass('active');
-			$('#divAddSupplier').stop(true, false).fadeIn(200);
-			isSupplierFormVisible = true;
+		if (isAuthenticated == true) {
+			if (isSupplierFormVisible == true) {
+				$.validationEngine.closePrompt('.formError',true);
+				/*
+				$("#divAddSupplier").hide( toggleDuration, function() {
+					$("#addItem").removeClass().addClass('add-item');	
+				} );
+				*/
+				$("#addSupplier").removeClass('active');
+				$('#divAddSupplier').stop(true, false).fadeOut(200);
+				isSupplierFormVisible = false;
+				
+			} else if (isSupplierFormVisible == false) {
+				/*
+				$("#divAddSupplier").show( toggleDuration, function() {
+					$("#addItem").removeClass().addClass('add-item-selected');
+				});
+				*/
+				$("#addSupplier").addClass('active');
+				$('#divAddSupplier').stop(true, false).fadeIn(200);
+				isSupplierFormVisible = true;
+			}
+		} else {
+			if (isLoginMessageVisible == true) {
+				$("#addSupplier").removeClass('active');
+				$('#divLoginMessage').stop(true, false).fadeOut(200);
+				isLoginMessageVisible = false;
+			} else if (isLoginMessageVisible == false) {
+				$("#addSupplier").addClass('active');
+				$('#divLoginMessage').stop(true, false).fadeIn(200);
+				isLoginMessageVisible = true;
+			}
 		}
 	});
 	
 	$("#addMenu").click(function(e) {
 		e.preventDefault();
-		if (isMenuFormVisible == true) {
-			$.validationEngine.closePrompt('.formError',true);
-			/*
-			$("#divAddMenu").hide( toggleDuration, function() {
-				$("#addItem").removeClass().addClass('add-item');
-			} );
-			*/
-			$(this).removeClass('active');
-			$('#divAddMenu').stop(true, false).fadeOut(200);
-			isMenuFormVisible = false;
-			
-		} else if (isMenuFormVisible == false) {
-			/*
-			$("#divAddMenu").show( toggleDuration, function() {
-				$("#addItem").removeClass().addClass('add-item-selected');
-			} );
-			*/
-			$(this).addClass('active');
-			$('#divAddMenu').stop(true, false).fadeIn(200);
-			isMenuFormVisible = true;
+		if (isAuthenticated == true) {
+			if (isMenuFormVisible == true) {
+				$.validationEngine.closePrompt('.formError',true);
+				/*
+				$("#divAddMenu").hide( toggleDuration, function() {
+					$("#addItem").removeClass().addClass('add-item');
+				} );
+				*/
+				$(this).removeClass('active');
+				$('#divAddMenu').stop(true, false).fadeOut(200);
+				isMenuFormVisible = false;
+				
+			} else if (isMenuFormVisible == false) {
+				/*
+				$("#divAddMenu").show( toggleDuration, function() {
+					$("#addItem").removeClass().addClass('add-item-selected');
+				} );
+				*/
+				$(this).addClass('active');
+				$('#divAddMenu').stop(true, false).fadeIn(200);
+				isMenuFormVisible = true;
+			}
+		} else {
+			if (isLoginMessageVisible == true) {
+				$(this).removeClass('active');
+				$('#divLoginMessage').stop(true, false).fadeOut(200);
+				isLoginMessageVisible = false;
+			} else if (isLoginMessageVisible == false) {
+				$(this).addClass('active');
+				$('#divLoginMessage').stop(true, false).fadeIn(200);
+				isLoginMessageVisible = true;
+			}
 		}
 	});
 	
 	$("#addMenu2").click(function(e) {
 		e.preventDefault();
-		if (isMenuFormVisible == true) {
-			$.validationEngine.closePrompt('.formError',true);
-			/*
-			$("#divAddMenu").hide( toggleDuration, function() {
-				$("#addItem").removeClass().addClass('add-item');
-			} );
-			*/
-			$("#addMenu").removeClass('active');
-			$('#divAddMenu').stop(true, false).fadeOut(200);
-			isMenuFormVisible = false;
-			
-		} else if (isMenuFormVisible == false) {
-			/*
-			$("#divAddMenu").show( toggleDuration, function() {
-				$("#addItem").removeClass().addClass('add-item-selected');
-			} );
-			*/
-			$("#addMenu").addClass('active');
-			$('#divAddMenu').stop(true, false).fadeIn(200);
-			isMenuFormVisible = true;
+		if (isAuthenticated == true) {
+			if (isMenuFormVisible == true) {
+				$.validationEngine.closePrompt('.formError',true);
+				/*
+				$("#divAddMenu").hide( toggleDuration, function() {
+					$("#addItem").removeClass().addClass('add-item');
+				} );
+				*/
+				$("#addMenu").removeClass('active');
+				$('#divAddMenu').stop(true, false).fadeOut(200);
+				isMenuFormVisible = false;
+				
+			} else if (isMenuFormVisible == false) {
+				/*
+				$("#divAddMenu").show( toggleDuration, function() {
+					$("#addItem").removeClass().addClass('add-item-selected');
+				} );
+				*/
+				$("#addMenu").addClass('active');
+				$('#divAddMenu').stop(true, false).fadeIn(200);
+				isMenuFormVisible = true;
+			}
+		} else {
+			if (isLoginMessageVisible == true) {
+				$("#addMenu").removeClass('active');
+				$('#divLoginMessage').stop(true, false).fadeOut(200);
+				isLoginMessageVisible = false;
+			} else if (isLoginMessageVisible == false) {
+				$("#addMenu").addClass('active');
+				$('#divLoginMessage').stop(true, false).fadeIn(200);
+				isLoginMessageVisible = true;
+			}
 		}
 	});
 	
