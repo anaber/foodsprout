@@ -5,7 +5,7 @@
 		<strong>Dashboard</strong> | 
 		<?php echo anchor('user/settings', 'Settings', 'style="font-size:13px;text-decoration:none;"'); ?> | 
 		<?php 
-		if ($this->session->userdata('isAuthenticated') == 1 || $this->session->userdata('userGroup') == 'admin' ) {
+		if ($this->session->userdata('isAuthenticated') == 1 && $this->session->userdata('userGroup') == 'admin' ) {
 			echo anchor('/admincp/dashboard', 'Admin', 'style="font-size:13px;text-decoration:none;"') . ' | ';
 		}
 		?>
