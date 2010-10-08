@@ -2,14 +2,9 @@
 
 class City extends Controller {
 	
-	function __construct()
-	{
-		global $LANDING_PAGE;
+	function __construct() {
 		parent::Controller();
-		if ($this->session->userdata('isAuthenticated') != 1 )
-		{
-			redirect($LANDING_PAGE);
-		}
+		checkUserLogin();
 	}
 	
 	function get_cities_based_on_state() {		

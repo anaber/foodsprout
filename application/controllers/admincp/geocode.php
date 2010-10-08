@@ -15,7 +15,7 @@ class Geocode extends Controller {
 		$query = "SELECT * " .
 				" FROM zip_source " .
 				" WHERE CountryID = 223 " .
-				" AND Zip > 8551 ORDER BY Zip limit 0, 5";
+				" ORDER BY Zip limit 0, 5";
 		//echo $query;die;
 		$result = $this->db->query($query);
 		

@@ -1,10 +1,13 @@
+<?php
+	$isAuthenticated = $this->session->userdata('isAuthenticated');
+?>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/restaurant_info.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <link href="<?php echo base_url()?>css/supplier.css" rel="stylesheet" type="text/css" />
 <script>
-	
+	var isAuthenticated = <?php echo ($isAuthenticated ? "true" : "false") ?>;
 	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
 	var name = "<?php echo $RESTAURANT->restaurantName; ?>";
 	var jsonData;
@@ -14,6 +17,8 @@
 	var isSupplierFormVisible = false;
 	var isMenuFormVisible = false;
 	var isCommentFormVisible = false;
+	
+	var isLoginMessageVisible = false;
 	
 	$(document).ready(function() {
 		
@@ -148,6 +153,32 @@
 							'RESTAURANT_ID' => $RESTAURANT->restaurantId
 							);
 					$this->load->view('includes/menu_form', $data );
+				?>
+			</div>
+			
+			<div id="divAddComment" class="supplier">
+				<?php
+					$data = array(
+							'PRODUCT_TYPES' => $PRODUCT_TYPES, 
+							'RESTAURANT_ID' => $RESTAURANT->restaurantId
+							);
+					$this->load->view('includes/menu_form', $data );
+				?>
+			</div>
+			
+			<div id="divAddPhoto" class="supplier">
+				<?php
+					$data = array(
+							'PRODUCT_TYPES' => $PRODUCT_TYPES, 
+							'RESTAURANT_ID' => $RESTAURANT->restaurantId
+							);
+					$this->load->view('includes/menu_form', $data );
+				?>
+			</div>
+			
+			<div id="divLoginMessage" class="supplier">
+				<?php
+					$this->load->view('includes/login_message');
 				?>
 			</div>
 			

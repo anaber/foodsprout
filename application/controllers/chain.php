@@ -2,15 +2,10 @@
 
 class Chain extends Controller {
 	var $css;
-	function __construct()
-	{
-		global $LANDING_PAGE;
+	function __construct() {
 		parent::Controller();
-		if ($this->session->userdata('isAuthenticated') != 1 )
-		{
-			redirect($LANDING_PAGE);
-		}
-
+		checkUserLogin();
+		
 		$this->css = array(
 			'restaurant',
 		);

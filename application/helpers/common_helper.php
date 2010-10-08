@@ -136,5 +136,16 @@ function prepareHeading ($company, $id, $crudEntity, $action) {
 	return $str;
 }
 
+function checkUserLogin () {
+	/*
+	global $LANDING_PAGE;
+	
+	$CI =& get_instance();
+	if ($CI->session->userdata('isAuthenticated') != 1 ) {
+		redirect($LANDING_PAGE);
+	}
+	*/
+}
+
 
 ?>
