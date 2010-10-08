@@ -2,9 +2,9 @@
 
 class Home extends Controller {
 	
-	function __construct()
-	{
-		global $LANDING_PAGE;
+	function __construct() {
+		parent::Controller();
+		checkUserLogin();
 		parent::Controller();
 	}
 	

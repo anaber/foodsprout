@@ -2,16 +2,13 @@
 
 class Product extends Controller {
 	
-	function __construct()
-	{
+	function __construct() {
 		parent::Controller();
+		checkUserLogin();
 	}
 	
 	function index() {
-		global $LANDING_PAGE;
-		if ($this->session->userdata('isAuthenticated') != 1 ) {
-			redirect($LANDING_PAGE);
-		}
+		
 		$data = array();
 		
 		// Views to include in the data array
@@ -56,12 +53,7 @@ class Product extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	function detail($id) {
-		global $LANDING_PAGE;
-		if ($this->session->userdata('isAuthenticated') != 1 ) {
-			redirect($LANDING_PAGE);
-		}
-		
+	function view($id) {
 		global $GOOGLE_MAP_KEY;
 		
 		$data = array();

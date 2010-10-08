@@ -206,7 +206,6 @@ CREATE  TABLE IF NOT EXISTS `comment` (
   `manufacture_id` INT(11) NULL DEFAULT NULL ,
   `restaurant_chain_id` INT(11) NULL DEFAULT NULL ,
   `comment` TEXT NULL DEFAULT NULL ,
-  `rating` INT(1) NULL DEFAULT NULL ,
   `user_id` INT(11) NULL DEFAULT NULL ,
   `status` ENUM('live','queue','hide') NULL DEFAULT NULL ,
   `track_ip` VARCHAR(20) NULL DEFAULT NULL ,

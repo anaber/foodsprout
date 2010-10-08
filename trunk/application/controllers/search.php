@@ -2,9 +2,9 @@
 
 class Search extends Controller {
 	
-	function __construct()
-	{
+	function __construct() {
 		parent::Controller();
+		checkUserLogin();
 	}
 	
 	function index()

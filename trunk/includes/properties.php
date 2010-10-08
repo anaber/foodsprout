@@ -124,7 +124,7 @@ $FARMER_TYPES = array(
 					'organic' 			=> 'Organic',
 				);
 
-$LANDING_PAGE = '/about/privatebeta';
+$LANDING_PAGE = '/login';
 $ADMIN_LANDING_PAGE = '/admincp/login';
 
 $RECOMMENDED_CITIES = array (
