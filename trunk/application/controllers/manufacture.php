@@ -134,33 +134,40 @@ class Manufacture extends Controller {
 	}
 	
 	function supplier_save_add() {
-		
-		$this->load->model('SupplierModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->SupplierModel->addSupplierIntermediate() ) {
-			echo 'yes';
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
+		if ($this->session->userdata('isAuthenticated') == 1 ) {
+			$this->load->model('SupplierModel', '', TRUE);
+			
+			$GLOBALS = array();
+			if ( $this->SupplierModel->addSupplierIntermediate() ) {
+				echo 'yes';
 			} else {
-				echo 'no';
+				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+					echo $GLOBALS['error'];
+				} else {
+					echo 'no';
+				}
 			}
+		} else {
+			echo 'no';
 		}
 	}
 	
 	function supplier_save_update() {
-		$this->load->model('SupplierModel', '', TRUE);
-		
-		$GLOBALS = array();
-		if ( $this->SupplierModel->updateSupplierIntermediate() ) {
-			echo 'yes';
-		} else {
-			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-				echo $GLOBALS['error'];
+		if ($this->session->userdata('isAuthenticated') == 1 ) {
+			$this->load->model('SupplierModel', '', TRUE);
+			
+			$GLOBALS = array();
+			if ( $this->SupplierModel->updateSupplierIntermediate() ) {
+				echo 'yes';
 			} else {
-				echo 'no';
+				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+					echo $GLOBALS['error'];
+				} else {
+					echo 'no';
+				}
 			}
+		} else {
+			echo 'no';
 		}
 	}
 	
