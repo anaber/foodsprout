@@ -8,7 +8,8 @@ class City extends Controller {
 	}
 	
 	function get_cities_based_on_state() {		
-		$q = strtolower($_REQUEST['q']);
+		//$q = strtolower($_REQUEST['q']);
+		$q = $_REQUEST['q'];
 		$stateId = $_REQUEST['stateId'];
 		
 		$this->load->model('CityModel', '', TRUE);
