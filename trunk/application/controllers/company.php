@@ -122,7 +122,8 @@ class Company extends Controller {
 	
 	//function get_companies_based_on_type($q) {
 	function get_companies_based_on_type() {		
-		$q = strtolower($_REQUEST['q']);
+		//$q = strtolower($_REQUEST['q']);
+		$q = $_REQUEST['q'];
 		$companyType = $_REQUEST['supplierType'];
 		
 		$this->load->model('CompanyModel', '', TRUE);

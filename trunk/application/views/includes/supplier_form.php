@@ -15,7 +15,7 @@ function resetSupplierForm() {
 }
 	
 $(document).ready(function() {
-	
+	resetSupplierForm();
  	function findValueCallback(event, data, formatted) {
 		document.getElementById('companyId').value = data[1];
 	}
@@ -44,6 +44,12 @@ $(document).ready(function() {
 		$(":input").unautocomplete();
 	});
 	
+	$('#companyAjax').keyup(function() {
+		companyName = $("#companyAjax").val();
+		if (companyName == '') {
+			$('#companyId').val('');
+		}
+	});
 	
 	var formValidated = true;
 	
@@ -77,79 +83,86 @@ $(document).ready(function() {
 			if (isNaN( companyId ) ) {
 				companyName = companyId;
 				companyId = '';
-			}
-			
-			if ($('#supplierId').val() != '' ) {
-				var formAction = '/manufacture/supplier_save_update';
-				postArray = {
-							  supplierType:$('#supplierType').val(),
-							  companyId:companyId,
-							  companyName:companyName,
-							  
-							  manufactureId: $('#manufactureId').val(),
-							  farmId: $('#farmId').val(),
-							  restaurantId: $('#restaurantId').val(),
-							  distributorId: $('#distributorId').val(),
-							  restaurantChainId: $('#restaurantChainId').val(),
-							  farmersMarketId: $('#farmersMarketId').val(),
-							   
-							  supplierId: $('#supplierId').val()
-							};
-				act = 'update';		
 			} else {
-				formAction = '/manufacture/supplier_save_add';
-				postArray = { 
-							  supplierType:$('#supplierType').val(),
-							  companyId:companyId,
-							  companyName:companyName,
-							  
-							  manufactureId: $('#manufactureId').val(),
-							  farmId: $('#farmId').val(),
-							  restaurantId: $('#restaurantId').val(),
-							  distributorId: $('#distributorId').val(),
-							  restaurantChainId: $('#restaurantChainId').val(),
-							  farmersMarketId: $('#farmersMarketId').val()
-							};
-				act = 'add';
+				companyName = '';
 			}
 			
-			$.post(formAction, postArray,function(data) {
+			if (companyName != '' || companyId != '') {
 				
-				if(data=='yes') {
-					if (act == 'add') {
-						displayFailedMessage($alert, "Supplier added...");
-					} else if (act == 'update') {
-						displayFailedMessage($alert, "Supplier updated...");
-					}
-					hideMessage($alert, '', '');
-					$.validationEngine.closePrompt('.formError',true);
-					/*
-					$("#divAddSupplier").hide( toggleDuration, function() {
-						$("#addItem").removeClass().addClass('add-item');	
-					} );
-					*/
-					$("#addSupplier").removeClass('active');
-					$('#divAddSupplier').stop(true, false).fadeOut(200);
-					
-					isSupplierFormVisible = false;
-					resetSupplierForm();
-					
-				} else if(data == 'duplicate_company') {
-					displayFailedMessage($alert, "Duplicate Company...");
-					hideMessage($alert, '', '');
-				} else if(data == 'duplicate') {
-					displayFailedMessage($alert, "Duplicate Supplier...");
-					hideMessage($alert, '', '');
+				if ($('#supplierId').val() != '' ) {
+					var formAction = '/manufacture/supplier_save_update';
+					postArray = {
+								  supplierType:$('#supplierType').val(),
+								  companyId:companyId,
+								  companyName:companyName,
+								  
+								  manufactureId: $('#manufactureId').val(),
+								  farmId: $('#farmId').val(),
+								  restaurantId: $('#restaurantId').val(),
+								  distributorId: $('#distributorId').val(),
+								  restaurantChainId: $('#restaurantChainId').val(),
+								  farmersMarketId: $('#farmersMarketId').val(),
+								   
+								  supplierId: $('#supplierId').val()
+								};
+					act = 'update';		
 				} else {
-					if (act == 'add') {
-						displayFailedMessage($alert, "Not added...");
-					} else if (act == 'update') {
-						displayFailedMessage($alert, "Not updated...");
-					}
-					hideMessage($alert, '', '');
+					formAction = '/manufacture/supplier_save_add';
+					postArray = { 
+								  supplierType:$('#supplierType').val(),
+								  companyId:companyId,
+								  companyName:companyName,
+								  
+								  manufactureId: $('#manufactureId').val(),
+								  farmId: $('#farmId').val(),
+								  restaurantId: $('#restaurantId').val(),
+								  distributorId: $('#distributorId').val(),
+								  restaurantChainId: $('#restaurantChainId').val(),
+								  farmersMarketId: $('#farmersMarketId').val()
+								};
+					act = 'add';
 				}
-			});
-			
+				
+				$.post(formAction, postArray,function(data) {
+					
+					if(data=='yes') {
+						if (act == 'add') {
+							displayFailedMessage($alert, "Supplier added...");
+						} else if (act == 'update') {
+							displayFailedMessage($alert, "Supplier updated...");
+						}
+						hideMessage($alert, '', '');
+						$.validationEngine.closePrompt('.formError',true);
+						/*
+						$("#divAddSupplier").hide( toggleDuration, function() {
+							$("#addItem").removeClass().addClass('add-item');	
+						} );
+						*/
+						$("#addSupplier").removeClass('active');
+						$('#divAddSupplier').stop(true, false).fadeOut(200);
+						
+						isSupplierFormVisible = false;
+						resetSupplierForm();
+						
+					} else if(data == 'duplicate_company') {
+						displayFailedMessage($alert, "Duplicate Company...");
+						hideMessage($alert, '', '');
+					} else if(data == 'duplicate') {
+						displayFailedMessage($alert, "Duplicate Supplier...");
+						hideMessage($alert, '', '');
+					} else {
+						if (act == 'add') {
+							displayFailedMessage($alert, "Not added...");
+						} else if (act == 'update') {
+							displayFailedMessage($alert, "Not updated...");
+						}
+						hideMessage($alert, '', '');
+					}
+				});
+			} else {
+				displayFailedMessage($alert, "Company not selected...");
+				hideMessage($alert, '', '');
+			}
 			
 		}
 		
