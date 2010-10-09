@@ -2,14 +2,14 @@
 	
 	<h1>View Sustainable Restaurants in Your City</h1>
 	<div style="float:left; width:200px;">
-	<a href="/restaurant/san-francisco" style="font-size:13px;text-decoration:none;">San Francisco</a><br/>
-	<a href="/restaurant/berkeley" style="font-size:13px;text-decoration:none;">Berkeley</a><br/>
-	<a href="/restaurant/oakland" style="font-size:13px;text-decoration:none;">Oakland</a><br/>
+	<a href="/sustainable/san-francisco" style="font-size:13px;text-decoration:none;">San Francisco</a><br/>
+	<a href="/sustainable/berkeley" style="font-size:13px;text-decoration:none;">Berkeley</a><br/>
+	<a href="/sustainable/oakland" style="font-size:13px;text-decoration:none;">Oakland</a><br/>
 	</div>
 	<div style="float:left; width:200px;">
-	<a href="/restaurant/san-jose" style="font-size:13px;text-decoration:none;">San Jose</a><br/>
-	<a href="/restaurant/new-york" style="font-size:13px;text-decoration:none;">New York</a><br/>
-	<a href="/restaurant/los-angeles" style="font-size:13px;text-decoration:none;">Los Angeles</a><br/>
+	<a href="/sustainable/san-jose" style="font-size:13px;text-decoration:none;">San Jose</a><br/>
+	<a href="/sustainable/new-york" style="font-size:13px;text-decoration:none;">New York</a><br/>
+	<a href="/sustainable/los-angeles" style="font-size:13px;text-decoration:none;">Los Angeles</a><br/>
 	</div>
 	
 	<br/><br/><br/><br><br>

@@ -55,7 +55,8 @@ $route['^restaurant/ajaxSearchRestaurantSuppliers'] 	= "restaurant/ajaxSearchRes
 $route['^restaurant/map'] 								= "restaurant/map";
 $route['^restaurant/view/(:num)'] 						= "restaurant/view/$1";
 $route['^restaurant'] 									= "restaurant/index";
-$route['^restaurant/(:any)'] 							= "restaurant/city/$1";
+//$route['^restaurant/(:any)'] 							= "restaurant/city/$1";
+$route['^sustainable/(:any)'] 							= "restaurant/city/$1";
 
 // ADMINCP
 $route['^admincp'] 										= "admincp/dashboard";
