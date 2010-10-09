@@ -321,9 +321,18 @@ class FarmersMarketModel extends Model{
 		
 		$latLng = array();
 		if (! empty ($q) ) {
-			$address = $q. ', USA';
-			$CI->load->model('GoogleMapModel','',true);
-			$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
+			$CI->load->model('ZipcodeModel','',true);
+			$latLng = $CI->ZipcodeModel->getCoordinatesFromZipcode($q);
+			
+			if ( ! $latLng) {
+				$address = $q. ', USA';
+				$CI->load->model('GoogleMapModel','',true);
+				$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
+				
+				if ( $latLng ) {
+					$CI->ZipcodeModel->addZipcode($q, $latLng);
+				}
+			}
 		}
 		
 		$start = 0;

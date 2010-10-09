@@ -16,8 +16,8 @@ class Geocode extends Controller {
 		$query = "SELECT * " .
 				" FROM zip_source " .
 				" WHERE CountryID = 223 " .
-				" AND Zip <> '' " .
-				" ORDER BY Zip limit 0, 10";
+				" AND Geocoded = 0 " .
+				" ORDER BY Zip limit 0, 15";
 		
 		$result = $this->db->query($query);
 		
@@ -67,6 +67,41 @@ class Geocode extends Controller {
 					echo "<ul>";
 					echo "<li>" . $latLng2['latitude'] . " (lat), " . $latLng2['longitude'] ." (lng) --- " . distance($cLat, $cLng, $latLng2['latitude'], $latLng2['longitude'], "m") . " (distance from database record)</li>";
 					echo "<li>Approximate:" . ( ($latLng2['approximate'] == 1) ? 'YES' : 'NO') . "</li>";
+					echo "</ul>";
+				
+				echo "</ul>";
+			echo "</ul>";
+		}
+	}
+	
+	function validateZip2 () {
+		
+		$query = "SELECT * " .
+				" FROM zipcode " .
+				" WHERE geocoded = 0 " .
+				//" OR approximate = 1 " .
+				" ORDER BY zipcode limit 0, 15";
+		
+		$result = $this->db->query($query);
+		
+		$this->load->model('GoogleMapModel', '', TRUE);
+		
+		foreach ($result->result_array() as $row) {
+			$zip = $row['zipcode'];
+			
+			$address = $zip . ', USA';
+			$latLng = array();
+			
+			$latLng = $this->GoogleMapModel->geoCodeAddressV3($address);
+			
+			echo "<ul>";
+			echo "<li>". $zip ."</li>";
+				echo "<ul>";
+				
+					echo "<li>" . $address . "</li>";
+					echo "<ul>";
+					echo "<li>" . $latLng['latitude'] . " (lat), " . $latLng['longitude'] ." (lng) </li>";
+					echo "<li>Approximate:" . ( ($latLng['approximate'] == 1) ? 'YES' : 'NO') . "</li>";
 					echo "</ul>";
 				
 				echo "</ul>";
