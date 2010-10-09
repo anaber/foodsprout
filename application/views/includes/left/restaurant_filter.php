@@ -35,7 +35,7 @@
 		<?php
 			foreach ($RECOMMENDED_CITIES as $rec_city) {
 				$browser_compatible_rec_city = implode('-', explode (' ', strtolower($rec_city)) );
-				echo '<a href="/restaurant/' . $browser_compatible_rec_city . '" style="font-size:13px;text-decoration:none;">'. ( ($browser_compatible_rec_city == $city) ? '<b>'.$rec_city.'</b>' : $rec_city ) . '</a><br/>';
+				echo '<a href="/sustainable/' . $browser_compatible_rec_city . '" style="font-size:13px;text-decoration:none;">'. ( ($browser_compatible_rec_city == $city) ? '<b>'.$rec_city.'</b>' : $rec_city ) . '</a><br/>';
 			}
 		?>
 	</div>
