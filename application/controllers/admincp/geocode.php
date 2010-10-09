@@ -12,11 +12,13 @@ class Geocode extends Controller {
 	}
 	
 	function validateZip () {
+		
 		$query = "SELECT * " .
 				" FROM zip_source " .
 				" WHERE CountryID = 223 " .
-				" ORDER BY Zip limit 0, 5";
-		//echo $query;die;
+				" AND Zip <> '' " .
+				" ORDER BY Zip limit 0, 10";
+		
 		$result = $this->db->query($query);
 		
 		$this->load->model('GoogleMapModel', '', TRUE);
@@ -26,9 +28,14 @@ class Geocode extends Controller {
 		*/
 		
 		foreach ($result->result_array() as $row) {
+			$zip = $row['Zip'];
 			
-			$address1 = $row['Zip'] . ', USA';
-			$address2 = $row['City'] . ", " . $row['State']  . " " . $row['Zip'] . ', USA';
+			if (strlen ($zip) == 4 ) {
+				$zip = '0'.$zip;
+			}
+			
+			$address1 = $zip . ', USA';
+			$address2 = $row['City'] . ", " . $row['State']  . " " . $zip . ', USA';
 			
 			$cLat = $row['Latitude'];
 			$cLng = $row['Longitude'];

@@ -152,7 +152,7 @@ class GeoCode {
 				" FROM zip_source " .
 				" WHERE CountryID = 223 " .
 				" AND Geocoded = 0 " .
-				" ORDER BY Zip limit 0, 15000";
+				" ORDER BY Zip limit 0, 10000";
 		$result = mysql_query($query);
 		
 		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
