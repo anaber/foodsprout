@@ -23,7 +23,8 @@ class CityModel extends Model{
 	}
 	
 	function getCityBasedOnState ($stateId, $q) {
-		
+		$originalQ = $q;
+		$q = strtolower($q);
 		$query = 'SELECT city_id, city
 					FROM city
 					WHERE city like "%'.$q.'%"
@@ -40,7 +41,7 @@ class CityModel extends Model{
 				$cities .= $row['city']."|".$row['city_id']."\n";
 			}
 		} else {
-			$cities .= 'Create "'.$q.'"|' . $q;
+			$cities .= 'Create "'.$originalQ.'"|' . $originalQ;
 		}
 		
 		return $cities;
