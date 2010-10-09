@@ -391,7 +391,7 @@ $.Autocompleter.defaults = {
 	loadingClass: "ac_loading",
 	minChars: 1,
 	delay: 400,
-	matchCase: false,
+	matchCase: true,
 	matchSubset: true,
 	matchContains: false,
 	cacheLength: 10,

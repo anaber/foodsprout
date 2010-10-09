@@ -115,7 +115,8 @@ class CompanyModel extends Model{
 	}
 	
 	function getCompanyBasedOnTypeFrontEnd ($companyType, $q) {
-		
+		$originalQ = $q;
+		$q = strtolower($q);
 		$query = 'SELECT ' . $companyType . '_id, ' . $companyType . '_name
 					FROM ' . $companyType .'
 					WHERE ' . $companyType.'_name like "%'.$q.'%"
@@ -131,7 +132,7 @@ class CompanyModel extends Model{
 				$companies .= $row[$companyType . '_name']."|".$row[$companyType . '_id']."\n";
 			}
 		} else {
-			$companies .= 'Create "'.$q.'"|' . $q;
+			$companies .= 'Create "'.$originalQ.'"|' . $originalQ;
 		}
 		
 		return $companies;
