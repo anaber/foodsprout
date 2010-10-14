@@ -90,7 +90,7 @@ $(document).ready(function() {
 			if (companyName != '' || companyId != '') {
 				
 				if ($('#supplierId').val() != '' ) {
-					var formAction = '/manufacture/supplier_save_update';
+					var formAction = '/common/supplier_save_update';
 					postArray = {
 								  supplierType:$('#supplierType').val(),
 								  companyId:companyId,
@@ -107,7 +107,7 @@ $(document).ready(function() {
 								};
 					act = 'update';		
 				} else {
-					formAction = '/manufacture/supplier_save_add';
+					formAction = '/common/supplier_save_add';
 					postArray = { 
 								  supplierType:$('#supplierType').val(),
 								  companyId:companyId,

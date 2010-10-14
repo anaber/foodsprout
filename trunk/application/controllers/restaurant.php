@@ -296,6 +296,18 @@ class Restaurant extends Controller {
 		
 	}
 	
+	function ajaxSearchRestaurantComments() {
+		$this->load->model('CommentModel', '', TRUE);
+		$comments = $this->CommentModel->getCommentsJson('restaurant');
+		echo json_encode($comments);
+	}
+	
+	function ajaxSearchRestaurantPhotos() {
+		$this->load->model('CommentModel', '', TRUE);
+		$comments = $this->CommentModel->getCommentsJson();
+		echo json_encode($comments);
+	}
+	
 }
 
 /* End of file restaurant.php */

@@ -138,42 +138,10 @@ class Chain extends Controller {
 		echo json_encode($suppliers);
 	}
 	
-	function menu_item_save_add() {
-		if ($this->session->userdata('isAuthenticated') == 1 ) {
-			$this->load->model('ProductModel', '', TRUE);
-			
-			$GLOBALS = array();
-			if ( $this->ProductModel->addProductIntermediate() ) {
-				echo 'yes';
-			} else {
-				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-					echo $GLOBALS['error'];
-				} else {
-					echo 'no';
-				}
-			}
-		} else {
-			echo 'no';
-		}
-	}
-	
-	function menu_item_save_update() {
-		if ($this->session->userdata('isAuthenticated') == 1 ) {
-			$this->load->model('ProductModel', '', TRUE);
-			
-			$GLOBALS = array();
-			if ( $this->ProductModel->updateProduct() ) {
-				echo "yes";
-			} else {
-				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-					echo $GLOBALS['error'];
-				} else {
-					echo 'no';
-				}
-			}
-		} else {
-			echo 'no';
-		}
+	function ajaxSearchRestaurantChainComments() {
+		$this->load->model('CommentModel', '', TRUE);
+		$comments = $this->CommentModel->getCommentsJson('restaurant_chain');
+		echo json_encode($comments);
 	}
 }
 

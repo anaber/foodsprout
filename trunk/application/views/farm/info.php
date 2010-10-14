@@ -4,6 +4,8 @@
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/farm_info.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/jquery.maxlength.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/info/common.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <link href="<?php echo base_url()?>css/supplier.css" rel="stylesheet" type="text/css" />
 <script>
@@ -93,7 +95,8 @@
 		<div id="menu-bar"> 
 			<div id="suppliers" class = "selected"><a href="#">Suppliers</a></div>
 			<div id="menu" class = "non-selected" style = "display:none;"><a href="#">Menu</a></div>
-			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">Comments</a></div>
+			<div id="comments" class = "non-selected"><a href="#">Comments</a></div>
+			<div id="photos" class = "non-selected"><a href="#">Photos</a></div>
 			<div id="addItem" class = "addItem">&nbsp;+ Supplier</div>
 			
 			<div id="divAddSupplier" class="supplier">

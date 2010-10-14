@@ -170,6 +170,12 @@ class FarmersMarket extends Controller {
 		echo json_encode($suppliers);
 	}
 	
+	function ajaxSearchFarmersMarketComments() {
+		$this->load->model('CommentModel', '', TRUE);
+		$comments = $this->CommentModel->getCommentsJson('farmers_market');
+		echo json_encode($comments);
+	}
+	
 }
 
 /* End of file farm.php */

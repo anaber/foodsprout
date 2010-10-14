@@ -133,44 +133,6 @@ class Manufacture extends Controller {
 		
 	}
 	
-	function supplier_save_add() {
-		if ($this->session->userdata('isAuthenticated') == 1 ) {
-			$this->load->model('SupplierModel', '', TRUE);
-			
-			$GLOBALS = array();
-			if ( $this->SupplierModel->addSupplierIntermediate() ) {
-				echo 'yes';
-			} else {
-				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-					echo $GLOBALS['error'];
-				} else {
-					echo 'no';
-				}
-			}
-		} else {
-			echo 'no';
-		}
-	}
-	
-	function supplier_save_update() {
-		if ($this->session->userdata('isAuthenticated') == 1 ) {
-			$this->load->model('SupplierModel', '', TRUE);
-			
-			$GLOBALS = array();
-			if ( $this->SupplierModel->updateSupplierIntermediate() ) {
-				echo 'yes';
-			} else {
-				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
-					echo $GLOBALS['error'];
-				} else {
-					echo 'no';
-				}
-			}
-		} else {
-			echo 'no';
-		}
-	}
-	
 	function ajaxSearchManufactureSuppliers() {
 		$q = $this->input->post('q');
 		$this->load->model('SupplierModel');
@@ -191,6 +153,11 @@ class Manufacture extends Controller {
 		echo json_encode($menus);
 	}
 	
+	function ajaxSearchManufactureComments() {
+		$this->load->model('CommentModel', '', TRUE);
+		$comments = $this->CommentModel->getCommentsJson('manufacture');
+		echo json_encode($comments);
+	}
 }
 
 /* End of file manufacture.php */
