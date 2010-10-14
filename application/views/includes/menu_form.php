@@ -46,7 +46,7 @@ $(document).ready(function() {
 			strHasFructose = '0';
 
             if ($('#productId').val() != '' ) {
-                var formAction = '/chain/menu_item_save_update';
+                var formAction = '/common/menu_item_save_update';
                 postArray = {
                     productName:$('#productName').val(),
                     productTypeId: $('#productTypeId').val(),
@@ -61,7 +61,7 @@ $(document).ready(function() {
                 };
                 act = 'update';
             } else {
-                formAction = '/chain/menu_item_save_add';
+                formAction = '/common/menu_item_save_add';
                 postArray = {
                     productName:$('#productName').val(),
                     productTypeId: $('#productTypeId').val(),

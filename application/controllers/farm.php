@@ -253,6 +253,11 @@ class Farm extends Controller {
 		echo json_encode($companies);
 	}
 	
+	function ajaxSearchFarmComments() {
+		$this->load->model('CommentModel', '', TRUE);
+		$comments = $this->CommentModel->getCommentsJson('farm');
+		echo json_encode($comments);
+	}
 }
 
 /* End of file farm.php */
