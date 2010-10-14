@@ -85,13 +85,19 @@ document.onclick = jsddm_close;
 		
 		<li><a href="#">Control</a>
 			<ul>
+				<li><?php echo anchor('admincp/city', 'City'); ?></li>
 				<li><?php echo anchor('admincp/state', 'State'); ?></li>
 			    <li><?php echo anchor('admincp/country', 'Country'); ?></li>
 			    <li><?php echo anchor('admincp/seo', 'SEO'); ?></li>
 			</ul>
 		</li>
-		
-		<li><?php echo anchor('admincp/user', 'Users'); ?></li>
+		<li><a href="#">Users</a>
+			<ul>
+				<li><?php echo anchor('admincp/user', 'Users'); ?></li>
+			    <li><?php echo anchor('admincp/usergroup', 'User Groups'); ?></li>
+			    
+			</ul>
+		</li>
 		<li><?php echo anchor('admincp/logout', 'Logout'); ?></li>
 	</ul>
 </div>

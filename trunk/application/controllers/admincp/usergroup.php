@@ -31,17 +31,11 @@ class Usergroup extends Controller {
 				'list' => 'admincp/usergroup',
 			);
 			
-		$data['LEFT'] = array(
-				'list' => 'admincp/includes/left/nav_user',
-			);
-			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Usergroups";
 		$data['data']['center']['list']['USERGROUPS'] = $usergroups;
-	
-		$data['data']['left']['navigation']['VIEW_HEADER'] = "User Options";
 		
-		$this->load->view('admincp/templates/left_center_template', $data);
+		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function add()

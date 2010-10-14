@@ -126,8 +126,10 @@ class Manufacture extends Controller {
 		
 		// Custom CSS
 		$data['CSS'] = array(
-						'restaurant'
-					);
+				'restaurant',
+				'supplier',
+				'floating_messages'
+		);
 		
 		$this->load->view('templates/left_center_right_template', $data);
 		
