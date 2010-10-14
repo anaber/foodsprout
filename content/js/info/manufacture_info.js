@@ -33,14 +33,22 @@ function addZeroResult(type) {
 		html += 'suppliers';
 	} else if (type == 'menu') {
 		html += 'products';
+	} else if (type == 'comment') {
+		html += 'comments';
+	} else if (type == 'photo') {
+		html += 'photos';
 	}
 	
-	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to do add ';
+	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to add ';
 	
 	if (type == 'supplier') {
 		html += '<a href="#" id = "addSupplier2" style="font-size:13px;text-decoration:none;">suppliers</a>';
 	} else if (type == 'menu') {
 		html += '<a href="#" id = "addMenu2" style="font-size:13px;text-decoration:none;">products</a>';
+	} else if (type == 'comment') {
+		html += 'comments';
+	} else if (type == 'photo') {
+		html += '<a href="#" id = "addPhoto2" style="font-size:13px;text-decoration:none;">photos</a>';
 	}
 	
 	html +='</div>' + 

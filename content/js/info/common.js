@@ -244,58 +244,6 @@ function reinitializeAddItemEvent(data) {
 		}
 	});	
 	
-	$("#addComment").click(function(e) {
-		e.preventDefault();
-		if (isAuthenticated == true) {
-			if (isCommentFormVisible == true) {
-				$.validationEngine.closePrompt('.formError',true);
-				$(this).removeClass('active');
-				$('#divAddComment').stop(true, false).fadeOut(200);
-				isCommentFormVisible = false;
-			} else if (isCommentFormVisible == false) {
-				$(this).addClass('active');
-				$('#divAddComment').stop(true, false).fadeIn(200);
-				isCommentFormVisible = true;
-			}
-		} else {
-			if (isLoginMessageVisible == true) {
-				$(this).removeClass('active');
-				$('#divLoginMessage').stop(true, false).fadeOut(200);
-				isLoginMessageVisible = false;
-			} else if (isLoginMessageVisible == false) {
-				$(this).addClass('active');
-				$('#divLoginMessage').stop(true, false).fadeIn(200);
-				isLoginMessageVisible = true;
-			}
-		}
-	});
-	
-	$("#addComment2").click(function(e) {
-		e.preventDefault();
-		if (isAuthenticated == true) {
-			if (isCommentFormVisible == true) {
-				$.validationEngine.closePrompt('.formError',true);
-				$("#addComment").removeClass('active');
-				$('#divAddComment').stop(true, false).fadeOut(200);
-				isCommentFormVisible = false;
-			} else if (isCommentFormVisible == false) {
-				$("#addComment").addClass('active');
-				$('#divAddComment').stop(true, false).fadeIn(200);
-				isCommentFormVisible = true;
-			}
-		} else {
-			if (isLoginMessageVisible == true) {
-				$("#addComment").removeClass('active');
-				$('#divLoginMessage').stop(true, false).fadeOut(200);
-				isLoginMessageVisible = false;
-			} else if (isLoginMessageVisible == false) {
-				$("#addComment").addClass('active');
-				$('#divLoginMessage').stop(true, false).fadeIn(200);
-				isLoginMessageVisible = true;
-			}
-		}
-	});
-	
 	$("#addPhoto").click(function(e) {
 		e.preventDefault();
 		if (isAuthenticated == true) {
