@@ -100,69 +100,8 @@ class Farm extends Controller {
 		echo json_encode($farm);
 	}
 	
-	// View the information on a single restaurant
+	// View the information on a single farm
 	function view() {
-		/*
-		$this->load->library('functionlib');
-		$data = array();
-		
-		$farmId = $this->uri->segment(3);
-		
-		$this->load->model('FarmModel');
-		$farm = $this->FarmModel->getFarmFromId($farmId);
-		
-		$this->load->model('SupplierModel');
-		$companies = $this->SupplierModel->getCompaniesForSupplier('', $farmId, '', '');
-		
-		// SEO
-		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('farm_detail');
-		
-		$seo_data_array = array(
-			'farm_name' => $farm->farmName,
-			'restaurant_type' => 'Fast Food',
-			'cuisines' => 'Fast Food, American, Pizza',
-		);
-		
-		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
-		$data['SEO'] = $seo;
-		// SEO ENDS here
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'info' => '/farm/info',
-				'companies' => '/farm/companies',
-			);
-		
-		$data['RIGHT'] = array(
-				'image' => 'includes/right/image',
-				'ad' => 'includes/right/ad',
-				'map' => 'includes/right/map',
-			);
-		 
-		// Data to be passed to the views
-		// Center -> Menu
-		$data['data']['center']['info']['FARM'] = $farm;
-		$data['data']['center']['companies']['COMPANIES'] = $companies;
-		
-		// Right -> Image
-		$data['data']['right']['image']['src'] = '/img/standard/restaurant-na-icon.jpg';
-		$data['data']['right']['image']['width'] = '300';
-		$data['data']['right']['image']['height'] = '200';
-		$data['data']['right']['image']['title'] = '';
-		
-		// Right -> Map
-		$data['data']['right']['map']['width'] = '300';
-		$data['data']['right']['map']['height'] = '200';
-		$data['data']['right']['map']['hide_map'] = 'no';
-		
-		// Custom CSS
-		if (!empty ($this->css) ) {
-			$data['CSS'] = $this->css;
-		}
-		
-		$this->load->view('templates/center_template', $data);
-		*/
 		
 		global $SUPPLIER_TYPES_2;
 		
@@ -238,7 +177,9 @@ class Farm extends Controller {
 		// Custom CSS
 		if (!empty ($this->css) ) {
 			$data['CSS'] = array(
-							'restaurant'
+							'restaurant',
+							'supplier',
+							'floating_messages'
 						);
 		}
 		

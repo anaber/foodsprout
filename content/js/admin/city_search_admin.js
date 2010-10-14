@@ -3,7 +3,7 @@ $(document).ready(function() {
 	
 	$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
-	$.post("/admincp/user/ajaxSearchUsers", { },
+	$.post("/admincp/city/ajaxSearchCity", { },
 		function(data){
 			$('#suggestion_box').val('');
 			
@@ -19,7 +19,7 @@ $(document).ready(function() {
 			$('#messageContainer').show();
 			$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 			
-			$.post("/admincp/user/ajaxSearchUsers", { q:query },
+			$.post("/admincp/city/ajaxSearchCity", { q:query },
 			function(data){
 				redrawContent(data);
 	      	},
@@ -36,7 +36,7 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 	$('#messageContainer').show();
 	$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
-	var formAction = '/admincp/user/ajaxSearchUsers';
+	var formAction = '/admincp/city/ajaxSearchCity';
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query};
 	
@@ -50,31 +50,37 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'user_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'user_id', order, data.param.q);
+		order = getOrder(data, 'city_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'city_id', order, data.param.q);
 	});
 	
-	$("#heading_email").click(function(e) {
+	$("#heading_city").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'email');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'email', order, data.param.q);
+		order = getOrder(data, 'city');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'city', order, data.param.q);
 	});
 	
-	$("#heading_join_date").click(function(e) {
+	$("#heading_state").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'join_date');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'join_date', order, data.param.q);
+		order = getOrder(data, 'state');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'state', order, data.param.q);
 	});
+	
 }
 
-function addResult(user, i) {
+function addResult(city, i) {
 	var html =
 	'<tr>' +
-	'	<td valign="top"><a href="/admincp/user/update/'+ user.userId +'">'+ user.userId +'</a></td>' +
-	'	<td valign="top"><a href="/admincp/user/update/'+ user.userId +'">'+ user.email +'</a></td>' +
-	'	<td valign="top">'+ user.joinDate +'</td>';
+	'	<td valign="top">'+ city.cityId +'</td>' +
+	'	<td valign="top">'+ city.city +'</td>' +
+	'	<td valign="top">';
 	
-	html +=
+	$.each(city.states, function(j, state) {
+		html += state.stateName;
+	});
+	
+	html += '</td>';
+	
 	'</tr>';
 	
 	return html;
@@ -86,8 +92,8 @@ function getResultTableHeader() {
 	'	<thead>' +
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
-	'		<th id = "heading_user"><a href = "#" style = "color:#FFFFFF">Email</a></th>' +
-	'		<th id = "heading_user_type"><a href = "#" style = "color:#FFFFFF">Join Date</a></th>' +
+	'		<th id = "heading_city"><a href = "#" style = "color:#FFFFFF">City</a></th>' +
+	'		<th id = "heading_city"><a href = "#" style = "color:#FFFFFF">State</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';

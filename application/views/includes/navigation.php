@@ -5,7 +5,7 @@ $tab = $this->uri->segment(1);
 <div id="navigation">
 	<?php
 	 	$restclass=NULL;
-		if($tab == "chain" || $tab == "restaurant") { 
+		if($tab == "chain" || $tab == "restaurant" || $tab == "sustainable") { 
 			$restclass = 'class="tabon"'; 
 		} 
 		echo anchor('restaurant', 'Restaurants', $restclass);

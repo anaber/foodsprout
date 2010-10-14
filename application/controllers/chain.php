@@ -111,9 +111,11 @@ class Chain extends Controller {
 							);
 		
 		// Custom CSS
-		if (!empty ($this->css) ) {
-			$data['CSS'] = $this->css;
-		}
+		$data['CSS'] = array(
+			'restaurant',
+			'supplier',
+			'floating_messages'
+		);
 		
 		$this->load->view('templates/left_center_right_template', $data);
 	}

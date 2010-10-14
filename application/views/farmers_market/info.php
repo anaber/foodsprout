@@ -2,12 +2,10 @@
 	$isAuthenticated = $this->session->userdata('isAuthenticated');
 ?>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
-<link href="<?php echo base_url()?>css/floating_messages.css" rel="stylesheet" type="text/css" />
 <script src="<?php echo base_url()?>js/info/farmers_market_info.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.maxlength.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/info/common.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
-<link href="<?php echo base_url()?>css/supplier.css" rel="stylesheet" type="text/css" />
 <script>
 	
 	var farmersMarketId = <?php echo $FARMERS_MARKET->farmersMarketId; ?>;

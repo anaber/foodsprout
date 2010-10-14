@@ -35,19 +35,18 @@ from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);ba
 	margin-left:10px;
 	width:105px;
 	float:right;
-	margin-top:2px;
 	font-weight: bold;
-	font-size: 14px;
-	color:#666;
-	background:#9F9D9C url(/img/slidedown-trigger.png) 90% 2px no-repeat;
-	padding:3px 3px 3px 3px;
+	margin-top: 3px;
+	font-size: 12px;
+	color:#164b81;
+	background:#f9ece0 url(/img/slidedown-trigger.png) 90% 0px no-repeat;
+	padding:1px;
 	margin-right:5px;
-	-moz-border-radius:5px 5px 0 0;
-	-webkit-border-radius:5px;
-	-webkit-border-bottom-left-radius:0;
-	-webkit-border-bottom-right-radius:0;
-	border-radius:5px 5px 0 0;
-	height: 17px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	border-radius:4px;
+	height: 15px;
+	border: 1px solid #fff;
 }
 .addItem:hover{
 	text-decoration:none;
@@ -57,18 +56,17 @@ from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);ba
 .addItem.active{
 	color:#1A1A1A;
 	background-color:#F0F0F0;
-	background-position:90% -37px;
+	background-position:90% -40px;
 	position:relative;
 	z-index:102;
-	-moz-border-radius:5px 5px 0 0;
-	-webkit-border-radius:5px;
+	-moz-border-radius:4px 4px 0 0;
+	-webkit-border-radius:4px;
 	-webkit-border-bottom-left-radius:0;
 	-webkit-border-bottom-right-radius:0;
 	border-radius:5px 5px 0 0;
-	
-	padding:5px 3px 3px 3px;
-	
-	margin-top:1px;
+	padding:1px;
+	margin-top:3px;
+	height:20px;
 }
 .addItem.active:hover{
 	color:#888;

@@ -1,6 +1,6 @@
 <?php
 
-class User extends Controller {
+class City extends Controller {
 	
 	function __construct()
 	{
@@ -16,20 +16,20 @@ class User extends Controller {
 	{	
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/user',
+				'list' => 'admincp/city',
 			);
 			
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Users";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Cities";
 		
 		$this->load->view('admincp/templates/center_template', $data);		
 	}
 	
-	// Search for a user
-	function ajaxSearchUsers() {
-		$this->load->model('UserModel', '', TRUE);
-		$users = $this->UserModel->getUsersJsonAdmin();
-		echo json_encode($users);
+	// Search for a city
+	function ajaxSearchCity() {
+		$this->load->model('CityModel', '', TRUE);
+		$cities = $this->CityModel->getCityJsonAdmin();
+		echo json_encode($cities);
 	}	
 }
 

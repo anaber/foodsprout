@@ -96,6 +96,116 @@ class CityModel extends Model{
 		}
 	}
 	
+	function getCityJsonAdmin() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		
+		$base_query = 'SELECT city.*' .
+				' FROM city';
+		
+		$base_query_count = 'SELECT count(city_id) AS num_records' .
+				' FROM city';
+		$where = '';
+		if (! empty ($q) ) {
+		$where .= ' WHERE' 
+				. '	city like "%' .$q . '%"';
+		}
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY city';
+			$sort = 'city';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "CityModel.getCityJsonAdmin : " . $query);
+		$result = $this->db->query($query);
+		
+		$cities = array();
+		
+		$CI =& get_instance();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('CityLib');
+			unset($this->CityLib);
+			
+			$this->CityLib->cityId = $row['city_id'];
+			$this->CityLib->city = $row['city'];
+			
+			$CI->load->model('StateModel','',true);
+			$states = $CI->StateModel->getStateFromId($row['state_id']);
+			$this->CityLib->states = $states;
+			
+			$cities[] = $this->CityLib;
+			unset($this->CityLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $cities,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
 	
 }
 
