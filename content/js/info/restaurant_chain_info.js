@@ -47,7 +47,7 @@ function addZeroResult(type) {
 	} else if (type == 'comment') {
 		html += 'comments';
 	} else if (type == 'photo') {
-		html += '<a href="#" id = "addPhoto2" style="font-size:13px;text-decoration:none;">photos</a>';
+		html += 'photos';
 	}
 	
 	html +='</div>' + 
@@ -76,7 +76,14 @@ function redrawContent(data, type) {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addCommentResult(a, i);
 			});
-		} 
+		} else if (type == 'photo') {
+			resultTableHtml += '<div id="gallery">'; 
+			$.each(data.results, function(i, a) {
+				resultTableHtml += addPhotoResult(a, i);
+			});
+			resultTableHtml += '</div>';
+			resultTableHtml += '<hr size = "1" class="flt" style="width:530px;border: none 0;border-top: 1px dashed #ccc;height: 1px;">'
+		}
 	}
 	
 	if (type == 'comment') {
@@ -145,6 +152,7 @@ function redrawContent(data, type) {
 	}
 	
 	if (type == 'photo') {
+		reinitializeLitebox();
 		reinitializeUploadPhotoForm();
 	}
 	//disablePopupFadeIn();

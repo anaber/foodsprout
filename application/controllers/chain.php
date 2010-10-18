@@ -146,7 +146,7 @@ class Chain extends Controller {
 		echo json_encode($comments);
 	}
 	
-	function ajaxSearchRestaurantChainComments() {
+	function ajaxSearchRestaurantChainPhotos() {
 		$this->load->model('PhotoModel', '', TRUE);
 		$comments = $this->PhotoModel->getPhotosJson('restaurant_chain');
 		echo json_encode($comments);

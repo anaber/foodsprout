@@ -664,6 +664,32 @@ function reinitializeSubmitCommentForm() {
 	});
 }
 
+function addPhotoResult(photo, count) {
+	var html = '';
+	
+	i = count+1;
+	
+	if (i%3 == 0) {
+	html += 
+		'<div class="portfolio_sites flt">';
+	} else {
+	html += 
+		'<div class="portfolio_sites mar_rt_45 flt">'
+	}
+	html +=
+	'	<div class="porffoilo_img">' +
+	'		<a href="' + photo.photo + '" rel = "lightbox" title="' + (photo.description ? photo.description : '') + '" style = "text-decoration:none;">' + 
+	'	        <img src="' + photo.thumbPhoto + '" width="137" height="107" alt="" border = "0" /> ' +
+	'	    </a>' +
+	'	</div> ' +
+	'	<div class="porffoilo_content" style = "font-size:11px;">' + 
+			(photo.title ? photo.title + '<br />' : '') + 'By: <b>' + photo.firstName + '</b><br />on ' + photo.addedOn +
+	'	</div>' + 
+	'</div>';
+	
+	return html;
+}
+
 function addPhotoForm() {
 	var html = '';
 	
@@ -680,6 +706,10 @@ function addPhotoForm() {
 		html = '<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;height:30px;"><div style="font-size:13px;border: #ccc 1px solid;width:520px;height:30px;padding-top:15px;float:left" align = "center">You are not logged in. Please <a href = "/login" style="font-size:13px;text-decoration:none;">sign-in</a> or <a href = "/login" style="font-size:13px;text-decoration:none;">register</a> to upload photos.</div></div>';
 	}
 	return html;
+}
+
+function reinitializeLitebox() {
+	$('#gallery a').lightBox();
 }
 
 function reinitializeUploadPhotoForm() {

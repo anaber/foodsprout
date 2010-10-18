@@ -227,3 +227,9 @@ h3{font-size:14px;}
 .messageboxleft105{position:absolute;margin-left:105px;width:auto;border:1px solid #c93;background:#ffc;padding:3px;font-family:calibri;}
 .messageboxokleft105{position:absolute;margin-left:105px;width:auto;border:1px solid #349534;background:#C9FFCA;padding:3px;font-weight:bold;color:#008000;font-family:calibri;}
 .messageboxerrorleft105{position:absolute;margin-left:105px;width:auto;border:1px solid #CC0000;background:#F7CBCA;padding:3px;font-weight:bold;color:#CC0000;font-family:calibri;}
+/* photos css */
+.portfolio_sites{ width:148px;}
+.porffoilo_img{background:#eee; border:1px solid #ccd; padding:5px;}
+.porffoilo_content{padding:5px 0px;}
+.mar_rt_45 {margin-right:45px; }
+.flt {float:left;}

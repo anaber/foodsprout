@@ -13,6 +13,9 @@
 <script type="text/javascript" src="<?php echo base_url()?>js/uploadify/swfobject.js"></script> 
 <script type="text/javascript" src="<?php echo base_url()?>js/uploadify/jquery.uploadify.v2.1.0.js"></script>
 
+<script src="<?php echo base_url()?>js/jquery.lightbox-0.5.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.lightbox-0.5.css" type="text/css" />
+
 <script>
 	
 	var restaurantChainId = <?php echo $RESTAURANT_CHAIN->restaurantChainId; ?>;
