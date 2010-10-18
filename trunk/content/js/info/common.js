@@ -543,7 +543,7 @@ function drawNumRecords(params) {
 function addCommentResult(comment, count) {
 	var html =
 	'	<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;" align = "justify"><strong>' + comment.firstName + ':</strong>&nbsp;'+comment.comment+'<br /><div style="font-size:11px;font-weight:bold;">On '+comment.addedOn+'</div></div>' +
-	'<hr size = "1" style="width:530px;">';
+	'<hr size = "1" style="width:530px;border: none 0;border-top: 1px dashed #ccc;height: 1px;">';
 	return html;
 }
 
@@ -663,3 +663,63 @@ function reinitializeSubmitCommentForm() {
 		return false; //not to post the  form physically
 	});
 }
+
+function addPhotoForm() {
+	var html = '';
+	
+	if (isAuthenticated == true) {
+		html = '<div id="uploadContainer">' +
+				//'	<div class="demo">' +
+				//'	<p><strong>Multiple File Upload</strong></p>' + 
+				//'	<input id="fileInput2" name="fileInput2" type="file" /> <a href="javascript:$(\'#fileInput2\').uploadifyUpload();" style="font-size:13px;text-decoration:none;">Upload Files</a> | <a href="javascript:$(\'#fileInput2\').uploadifyClearQueue();" style="font-size:13px;text-decoration:none;">Clear Queue</a></div>' + 
+				'	<div class="demo"> ' +
+				//'	<p><strong>Single File Upload &#8211; Auto Start</strong></p>' + 
+				'	<input id="fileInput" name="fileInput3" type="file" /></div>' +
+				'</div>';
+	} else {
+		html = '<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;height:30px;"><div style="font-size:13px;border: #ccc 1px solid;width:520px;height:30px;padding-top:15px;float:left" align = "center">You are not logged in. Please <a href = "/login" style="font-size:13px;text-decoration:none;">sign-in</a> or <a href = "/login" style="font-size:13px;text-decoration:none;">register</a> to upload photos.</div></div>';
+	}
+	return html;
+}
+
+function reinitializeUploadPhotoForm() {
+	/*
+	$("#fileInput2").uploadify({
+		'uploader'       : '/js/uploadify/uploadify.swf',
+		'script'         : '/common/photo_save_add',
+		'cancelImg'      : '/images/cancel.png',
+		'folder'         : '/uploads',
+		'multi'          : true
+	});
+	*/
+	$("#fileInput").uploadify({
+		'uploader'       : '/js/uploadify/uploadify.swf',
+		'script'         : '/common/photo_save_add',
+		'cancelImg'      : '/images/cancel.png',
+		'folder'         : '/uploads',
+		'auto'           : true,
+		'multi'          : false,
+		'fileDesc'		 : '*.png;*.gif;*.jpg;*.bmp', //'Images',
+		'fileExt'		 : '*.png;*.gif;*.jpg;*.bmp',
+		'buttonText'	 : 'Upload Photos',
+		'scriptData'	 : {
+								manufactureId: $('#manufactureId').val(),
+								farmId: $('#farmId').val(),
+							  	restaurantId: $('#restaurantId').val(),
+							  	distributorId: $('#distributorId').val(),
+							  	restaurantChainId: $('#restaurantChainId').val(),
+							  	farmersMarketId: $('#farmersMarketId').val(),
+							  	userGroup: userGroup,
+							  	userId: userId
+							},
+		'onError'		 : function(event, queueID, fileObj, errorObj) {
+								aletr(errorObj.type);
+								aletr(errorObj.info);
+     						},
+     	'onComplete'	 : function (event, queueID, fileObj, response, data) {
+     								alert(fileObj.filePath);
+     								alert(response);
+     						}
+	});
+}
+

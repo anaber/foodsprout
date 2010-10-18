@@ -305,8 +305,8 @@ class Restaurant extends Controller {
 	}
 	
 	function ajaxSearchRestaurantPhotos() {
-		$this->load->model('CommentModel', '', TRUE);
-		$comments = $this->CommentModel->getCommentsJson();
+		$this->load->model('PhotoModel', '', TRUE);
+		$comments = $this->PhotoModel->getPhotosJson('restaurant');
 		echo json_encode($comments);
 	}
 	

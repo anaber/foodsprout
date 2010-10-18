@@ -145,6 +145,12 @@ class Chain extends Controller {
 		$comments = $this->CommentModel->getCommentsJson('restaurant_chain');
 		echo json_encode($comments);
 	}
+	
+	function ajaxSearchRestaurantChainComments() {
+		$this->load->model('PhotoModel', '', TRUE);
+		$comments = $this->PhotoModel->getPhotosJson('restaurant_chain');
+		echo json_encode($comments);
+	}
 }
 
 /* End of file restaurant.php */

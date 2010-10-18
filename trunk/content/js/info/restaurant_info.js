@@ -13,7 +13,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:restaurantId, f:filter };
 	
-	$.post(formAction, postArray,function(data) {		
+	$.post(formAction, postArray,function(data) {	
 		jsonData = data;
 		currentContent = type;
 		
@@ -87,7 +87,10 @@ function redrawContent(data, type) {
 	
 	if (type == 'comment') {
 		resultTableHtml += addCommentForm();
-		reinitializeCommentCharacterCount();
+	}
+	
+	if (type == 'photo') {
+		resultTableHtml += addPhotoForm();
 	}
 	
 	$('#resultTableContainer').append(resultTableHtml);
@@ -146,6 +149,10 @@ function redrawContent(data, type) {
 		reinitializeCommentCharacterCount();
 		reinitializeSubmitCommentForm();
 	}
+	
+	if (type == 'photo') {
+		reinitializeUploadPhotoForm();
+	}
 	//disablePopupFadeIn();
 }
 
@@ -159,25 +166,13 @@ function drawAddItem() {
 		html += '<div id = "addMenu" class = "addItem">&nbsp;+ Menu</div>';
 	} /*else if (currentContent == 'comment') {
 		html += '<div id = "addComment" class = "addItem">&nbsp;+ Comment</div>';
-	} */else if (currentContent == 'photo') {
+	} else if (currentContent == 'photo') {
 		html += '<div id = "addPhoto" class = "addItem">&nbsp;+ Photo</div>';
-	}
+	}*/
 	return html;
 }
 
 function addSupplierResult(supplier, count) {
-	/*
-	var html = '';
-	html +=	'<div class="menuitem">';
-	
-	supplierType = supplier.supplierType
-	supplierType = supplierType.substring(0, 1);
-
-	html +=	'	<div class="menuitemname">' + supplier.supplierName + ' (' + supplierType.toUpperCase() + ')' + '</div>';
-	html +=	'</div>';
-	
-	*/
-	
 	var html =
 	'<div style="overflow:auto; padding:5px;">' +
 	'	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>' +

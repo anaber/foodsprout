@@ -84,6 +84,10 @@ function redrawContent(data, type) {
 		resultTableHtml += addCommentForm();
 	}
 	
+	if (type == 'photo') {
+		resultTableHtml += addPhotoForm();
+	}
+	
 	$('#resultTableContainer').append(resultTableHtml);
 	
 	//$('#messageContainer').hide();
@@ -139,6 +143,10 @@ function redrawContent(data, type) {
 		$('#farmersMarketId').val(farmersMarketId);
 		reinitializeCommentCharacterCount();
 		reinitializeSubmitCommentForm();
+	}
+	
+	if (type == 'photo') {
+		reinitializeUploadPhotoForm();
 	}
 	//disablePopupFadeIn();
 }

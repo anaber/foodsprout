@@ -160,6 +160,12 @@ class Manufacture extends Controller {
 		$comments = $this->CommentModel->getCommentsJson('manufacture');
 		echo json_encode($comments);
 	}
+	
+	function ajaxSearchManufacturePhotos() {
+		$this->load->model('PhotoModel', '', TRUE);
+		$comments = $this->PhotoModel->getPhotosJson('manufacture');
+		echo json_encode($comments);
+	}
 }
 
 /* End of file manufacture.php */

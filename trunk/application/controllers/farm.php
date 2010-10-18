@@ -199,6 +199,12 @@ class Farm extends Controller {
 		$comments = $this->CommentModel->getCommentsJson('farm');
 		echo json_encode($comments);
 	}
+	
+	function ajaxSearchFarmPhotos() {
+		$this->load->model('PhotoModel', '', TRUE);
+		$comments = $this->PhotoModel->getPhotosJson('farm');
+		echo json_encode($comments);
+	}
 }
 
 /* End of file farm.php */

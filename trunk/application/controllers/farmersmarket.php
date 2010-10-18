@@ -177,6 +177,11 @@ class FarmersMarket extends Controller {
 		echo json_encode($comments);
 	}
 	
+	function ajaxSearchFarmersMarketPhotos() {
+		$this->load->model('PhotoModel', '', TRUE);
+		$comments = $this->PhotoModel->getPhotosJson('farmers_market');
+		echo json_encode($comments);
+	}
 }
 
 /* End of file farm.php */
