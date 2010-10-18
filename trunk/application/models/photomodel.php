@@ -85,15 +85,25 @@ class PhotoModel extends Model{
 			
 			$this->load->library('PhotoLib');
 			unset($this->PhotoLib);
+			$path = '/uploads' . $row['path'];
+			$this->PhotoLib->photoId = $row['photo_id'];
+			$this->PhotoLib->path = $path;
 			
-			$this->PhotoLib->commentId = $row['comment_id'];
-			$this->PhotoLib->comment = $row['comment'];
+			$this->PhotoLib->thumbPhoto = $path . 'thumb/' . $row['thumb_photo_name'];
+			$this->PhotoLib->thumbHeight = $row['thumb_height'];
+			$this->PhotoLib->thumbWidth = $row['thumb_width'];
+			
+			$this->PhotoLib->photo = $path . 'main/' . $row['photo_name'];
+			$this->PhotoLib->height = $row['height'];
+			$this->PhotoLib->width = $row['width'];
+			
+			$this->PhotoLib->title = $row['title'];
+			$this->PhotoLib->description = $row['description'];
+			
 			$this->PhotoLib->userId = $row['user_id'];
-			
 			$firstName = $row['first_name'];
 			$arrFirstName = explode(' ', $firstName);
 			$this->PhotoLib->firstName = $arrFirstName[0];
-			
 			$this->PhotoLib->email = $row['email'];
 			$this->PhotoLib->ip = $row['track_ip'];
 			$this->PhotoLib->status = $row['status'];
@@ -128,7 +138,7 @@ class PhotoModel extends Model{
 		$userGroup = $this->input->post('userGroup');
 		
 		$randomString = generateRandomString();
-		$randomString = 'vz5hmxr04w9jysgc';
+		//$randomString = 'vz5hmxr04w9jysgc';
 		
 		if (!empty($_FILES)) {
 			
@@ -137,20 +147,23 @@ class PhotoModel extends Model{
 	        $manufactureId = $this->input->post('manufactureId');
 	        $farmId = $this->input->post('farmId');
 	        $farmersMarketId = $this->input->post('farmersMarketId');
+	        $productId = $this->input->post('productId');
         	
 			$tempFile = $_FILES['Filedata']['tmp_name'];
 			
 			if (!empty($restaurantId)) {
-				$targetPath = $UPLOAD_FOLDER . '/restaurant/photo/' . $restaurantId . '/';
-	        } else if (!empty($restaurantChainId)) {
-	            $targetPath = $UPLOAD_FOLDER . '/restaurant_chain/photo/' . $restaurantChainId . '/';
+				$path = '/restaurant/photo/' . $restaurantId . '/';
+			} else if (!empty($restaurantChainId)) {
+	            $path = '/restaurant_chain/photo/' . $restaurantChainId . '/';
 	        } else if (!empty($manufactureId)) {
-	            $targetPath = $UPLOAD_FOLDER . '/manufacture/photo/' . $manufactureId . '/';
+	            $path = '/manufacture/photo/' . $manufactureId . '/';
 	        } else if (!empty($farmId)) {
-	            $targetPath = $UPLOAD_FOLDER . '/farm/photo/' . $farmId . '/';
+	            $path = '/farm/photo/' . $farmId . '/';
 	        } else if (!empty($farmersMarketId)) {
-	            $targetPath = $UPLOAD_FOLDER . '/farmers_market/photo/' . $farmersMarketId . '/';
+	            $path = '/farmers_market/photo/' . $farmersMarketId . '/';
 	        }
+	        
+			$targetPath = $UPLOAD_FOLDER . $path;
 			
 			$originalTargetPath = $targetPath . 'original/';
 			$mainTargetPath = $targetPath . 'main/';
@@ -166,121 +179,88 @@ class PhotoModel extends Model{
 				mkdir(str_replace('//','/',$thumbTargetPath), 0755, true);
 			}
 			
-			$originalTargetFile = $originalTargetPath . $userId . '_' . $randomString . '_original' . '.png';
-			$mainTargetFile = $mainTargetPath . $userId . '_' . $randomString . '.png';
-			$thumbTargetFile = $thumbTargetPath . $userId . '_' . $randomString . '_thumb' . '.png';
+			$originalPhotoName = $userId . '_' . $randomString . '_original' . '.png';
+			$originalTargetFile = $originalTargetPath . $originalPhotoName;
 			
-			//move_uploaded_file($tempFile, $originalTargetFile);
-			//copy($originalTargetFile, $mainTargetFile);
-			//copy($originalTargetFile, $thumbTargetFile);
+			$mainPhotoName = $userId . '_' . $randomString . '.png';
+			$mainTargetFile = $mainTargetPath . $mainPhotoName;
 			
-			$arr = getimagesize($originalTargetFile);
-			//print_r_pre($arr);
+			$thumbPhotoName = $userId . '_' . $randomString . '_thumb' . '.png';
+			$thumbTargetFile = $thumbTargetPath . $thumbPhotoName;
+			
+			move_uploaded_file($tempFile, $originalTargetFile);
+			copy($originalTargetFile, $mainTargetFile);
+			copy($originalTargetFile, $thumbTargetFile);
+			
+			$arr = getimagesize($thumbTargetFile);
+			$thumbWidth = $arr[0];
+			$thumbHeight = $arr[1];
+			
+			$arr = getimagesize($mainTargetFile);
 			$width = $arr[0];
 			$height = $arr[1];
 			$mime = $arr['mime'];
-			return true;
 			
-			// $fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
-			// $fileTypes  = str_replace(';','|',$fileTypes);
-			// $typesArray = split('\|',$fileTypes);
-			// $fileParts  = pathinfo($_FILES['Filedata']['name']);
 			
-			//if (in_array($fileParts['extension'], $typesArray)) {
-			//	return true;
-			//} else {
-			//	echo 'Invalid file type.';
-			//}
+			$fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
+			$typesArray = explode(';',$fileTypes);
+			$fileParts  = pathinfo($_FILES['Filedata']['name']);
+			
+			//print_r_pre($typesArray);
+			//print_r_pre($fileParts);
+			
+			if (in_array($fileParts['extension'], $typesArray)) {
+				
+				$CI = & get_instance();
+			
+	            $query = 'INSERT INTO photo (photo_id, address_id, ';
+	            if (!empty($restaurantId)) {
+	                $query .= 'restaurant_id';
+	            } else if (!empty($restaurantChainId)) {
+	                $query .= 'restaurant_chain_id';
+	            } else if (!empty($manufactureId)) {
+	                $query .= 'manufacture_id';
+	            } else if (!empty($farmId)) {
+	                $query .= 'farm_id';
+	            } else if (!empty($farmersMarketId)) {
+	                $query .= 'farmers_market_id';
+	            } else if (!empty($productId)) {
+	                $query .= 'product_id';
+	            }
+	            
+	            $query .= ', title, description, path, thumb_photo_name, photo_name, original_photo_name, extension, mime_type, thumb_height, thumb_width, height, width, user_id, status, track_ip, added_on)' .
+	                    ' values (NULL, NULL, ';
+	
+	            if (!empty($restaurantId)) {
+	                $query .= $restaurantId;
+	            } else if (!empty($restaurantChainId)) {
+	                $query .= $restaurantChainId;
+	            } else if (!empty($manufactureId)) {
+	                $query .= $manufactureId;
+	            } else if (!empty($farmId)) {
+	                $query .= $farmId;
+	            } else if (!empty($farmersMarketId)) {
+	                $query .= $farmersMarketId;
+	            } else if (!empty($productId)) {
+	                $query .= $productId;
+	            }
+	            
+	            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
+	            //echo $query;
+	            
+	            log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
+	
+	            if ($this->db->query($query)) {
+	                $return = true;
+	            } else {
+	                $return = false;
+	            }
+				
+			} else {
+				echo 'Invalid file type.';
+			}
+			
 		}
-		
-		/*
-        $restaurantId = $this->input->post('restaurantId');
-        $restaurantChainId = $this->input->post('restaurantChainId');
-        $manufactureId = $this->input->post('manufactureId');
-        $farmId = $this->input->post('farmId');
-        $farmersMarketId = $this->input->post('farmersMarketId');
-        $userId = $this->session->userdata['userId'];
-          
-        $CI = & get_instance();
-
-        $query = 'SELECT * FROM comment ' .
-                ' WHERE' .
-                ' comment = "' . $this->input->post('comment') . '"' .
-                ' AND ';
-        if (!empty($restaurantId)) {
-            $query .= 'restaurant_id';
-        } else if (!empty($restaurantChainId)) {
-            $query .= 'restaurant_chain_id';
-        } else if (!empty($manufactureId)) {
-            $query .= 'manufacture_id';
-        } else if (!empty($farmId)) {
-            $query .= 'farm_id';
-        } else if (!empty($farmersMarketId)) {
-            $query .= 'farmers_market_id';
-        }
-        $query .= ' = ';
-        if (!empty($restaurantId)) {
-            $query .= $restaurantId;
-        } else if (!empty($restaurantChainId)) {
-            $query .= $restaurantChainId;
-        } else if (!empty($manufactureId)) {
-            $query .= $manufactureId;
-        } else if (!empty($farmId)) {
-            $query .= $farmId;
-        } else if (!empty($farmersMarketId)) {
-            $query .= $farmersMarketId;
-        }
-        $query .= ' AND user_id = ' . $userId;
-        
-        log_message('debug', 'CommentModel.addComment : Try to get duplicate comment record : ' . $query);
-        $result = $this->db->query($query);	
-			
-        if ($result->num_rows() == 0) {
-        
-            $query = 'INSERT INTO comment (comment_id, address_id, ';
-            if (!empty($restaurantId)) {
-                $query .= 'restaurant_id';
-            } else if (!empty($restaurantChainId)) {
-                $query .= 'restaurant_chain_id';
-            } else if (!empty($manufactureId)) {
-                $query .= 'manufacture_id';
-            } else if (!empty($farmId)) {
-                $query .= 'farm_id';
-            } else if (!empty($farmersMarketId)) {
-                $query .= 'farmers_market_id';
-            }
-            
-            $query .= ', comment, user_id, status, track_ip, added_on)' .
-                    ' values (NULL, NULL, ';
-
-            if (!empty($restaurantId)) {
-                $query .= $restaurantId;
-            } else if (!empty($restaurantChainId)) {
-                $query .= $restaurantChainId;
-            } else if (!empty($manufactureId)) {
-                $query .= $manufactureId;
-            } else if (!empty($farmId)) {
-                $query .= $farmId;
-            } else if (!empty($farmersMarketId)) {
-                $query .= $farmersMarketId;
-            }
-            
-            $userGroup = $this->session->userdata['userGroup'];
-            
-            $query .= ',  "' . $this->input->post('comment') . '", "' . $this->session->userdata('userId') . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
-            
-            log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
-
-            if ($this->db->query($query)) {
-                $return = true;
-            } else {
-                $return = false;
-            }
-        } else {
-            $GLOBALS['error'] = 'duplicate';
-            $return = false;
-        }
-		*/
         return $return;
         
     }
