@@ -122,6 +122,21 @@ class Common extends Controller {
 		}
 	}
 	*/
+	
+	function photo_save_add() {
+		$this->load->model('PhotoModel', '', TRUE);
+		$GLOBALS = array();
+		if ( $this->PhotoModel->addPhoto() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}	
+	}
+	
 }
 
 /* End of file manufacture.php */

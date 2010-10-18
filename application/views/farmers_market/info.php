@@ -1,15 +1,25 @@
 <?php
 	$isAuthenticated = $this->session->userdata('isAuthenticated');
+	$userGroup = $this->session->userdata('userGroup');
+	$userId = $this->session->userdata('userId');
 ?>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/info/farmers_market_info.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.maxlength.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/info/common.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="<?php echo base_url()?>css/uploadify.css" type="text/css" /> 
+<script type="text/javascript" src="<?php echo base_url()?>js/uploadify/swfobject.js"></script> 
+<script type="text/javascript" src="<?php echo base_url()?>js/uploadify/jquery.uploadify.v2.1.0.js"></script>
+
 <script>
 	
 	var farmersMarketId = <?php echo $FARMERS_MARKET->farmersMarketId; ?>;
 	var name = "<?php echo $FARMERS_MARKET->farmersMarketName; ?>";
+	var userGroup = "<?php echo $userGroup; ?>";
+	var userId = "<?php echo $userId; ?>";
+	
 	var jsonData;
 	var currentContent;
 	

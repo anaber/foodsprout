@@ -1,8 +1,8 @@
 <?php
 
-class CommentModel extends Model{
+class PhotoModel extends Model{
 	
-	function getCommentsJson($type) {
+	function getPhotosJson($type) {
 		global $PER_PAGE;
 		
 		$p = $this->input->post('p'); // Page
@@ -18,32 +18,21 @@ class CommentModel extends Model{
 		
 		$CI =& get_instance();
 		
-		//$CI->load->model('RestaurantModel');
-		//$restaurant = $CI->RestaurantModel->getRestaurantFromId($q);
-		//$restaurantChainId = $restaurant->restaurantChainId;
-		
 		$start = 0;
 		$page = 0;
 		
-		$base_query = 'SELECT comment.*, user.email, user.first_name' .
-				' FROM comment, user';
+		$base_query = 'SELECT photo.*, user.email, user.first_name' .
+				' FROM photo, user';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM comment, user';
+				' FROM photo, user';
 		
 		
 		$where = '';
-		/*
-		if( !empty($restaurantChainId) ){
-			$where = ' WHERE (restaurant_id  = ' . $q . ' OR restaurant_chain_id = ' . $q . ') ';
-		} else {
-			$where = ' WHERE restaurant_id  = ' . $q;
-		}
-		*/
-		$where = ' WHERE comment.'.$type.'_id  = ' . $q;
+		$where = ' WHERE photo.'.$type.'_id  = ' . $q;
 		
-		$where .= ' AND comment.status = \'live\'' .
-				' AND comment.user_id = user.user_id ';
+		$where .= ' AND photo.status = \'live\'' .
+				' AND photo.user_id = user.user_id ';
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -87,31 +76,31 @@ class CommentModel extends Model{
 			}
 		}
 		
-		log_message('debug', "CommentModel.getCommentsJson : " . $query);
+		log_message('debug', "PhotoModel.getPhotosJson : " . $query);
 		$result = $this->db->query($query);
 		
 		$menu = array();
 		
 		foreach ($result->result_array() as $row) {
 			
-			$this->load->library('CommentLib');
-			unset($this->CommentLib);
+			$this->load->library('PhotoLib');
+			unset($this->PhotoLib);
 			
-			$this->CommentLib->commentId = $row['comment_id'];
-			$this->CommentLib->comment = $row['comment'];
-			$this->CommentLib->userId = $row['user_id'];
+			$this->PhotoLib->commentId = $row['comment_id'];
+			$this->PhotoLib->comment = $row['comment'];
+			$this->PhotoLib->userId = $row['user_id'];
 			
 			$firstName = $row['first_name'];
 			$arrFirstName = explode(' ', $firstName);
-			$this->CommentLib->firstName = $arrFirstName[0];
+			$this->PhotoLib->firstName = $arrFirstName[0];
 			
-			$this->CommentLib->email = $row['email'];
-			$this->CommentLib->ip = $row['track_ip'];
-			$this->CommentLib->status = $row['status'];
-			$this->CommentLib->addedOn = date('Y M, d H:i:s', strtotime ($row['added_on'] ) ) ;
+			$this->PhotoLib->email = $row['email'];
+			$this->PhotoLib->ip = $row['track_ip'];
+			$this->PhotoLib->status = $row['status'];
+			$this->PhotoLib->addedOn = date('Y M, d H:i:s', strtotime ($row['added_on'] ) ) ;
 			
-			$menu[] = $this->CommentLib;
-			unset($this->CommentLib);
+			$menu[] = $this->PhotoLib;
+			unset($this->PhotoLib);
 		}
 		
 		if (!empty($pp) && $pp == 'all') {
@@ -131,10 +120,80 @@ class CommentModel extends Model{
 	    return $arr;
 	}
 	
-	function addComment() {
-
-        $return = true;
-
+	function addPhoto() {
+		global $UPLOAD_FOLDER;
+		$return = true;
+		
+		$userId = $this->input->post('userId');
+		$userGroup = $this->input->post('userGroup');
+		
+		$randomString = generateRandomString();
+		$randomString = 'vz5hmxr04w9jysgc';
+		
+		if (!empty($_FILES)) {
+			
+			$restaurantId = $this->input->post('restaurantId');
+			$restaurantChainId = $this->input->post('restaurantChainId');
+	        $manufactureId = $this->input->post('manufactureId');
+	        $farmId = $this->input->post('farmId');
+	        $farmersMarketId = $this->input->post('farmersMarketId');
+        	
+			$tempFile = $_FILES['Filedata']['tmp_name'];
+			
+			if (!empty($restaurantId)) {
+				$targetPath = $UPLOAD_FOLDER . '/restaurant/photo/' . $restaurantId . '/';
+	        } else if (!empty($restaurantChainId)) {
+	            $targetPath = $UPLOAD_FOLDER . '/restaurant_chain/photo/' . $restaurantChainId . '/';
+	        } else if (!empty($manufactureId)) {
+	            $targetPath = $UPLOAD_FOLDER . '/manufacture/photo/' . $manufactureId . '/';
+	        } else if (!empty($farmId)) {
+	            $targetPath = $UPLOAD_FOLDER . '/farm/photo/' . $farmId . '/';
+	        } else if (!empty($farmersMarketId)) {
+	            $targetPath = $UPLOAD_FOLDER . '/farmers_market/photo/' . $farmersMarketId . '/';
+	        }
+			
+			$originalTargetPath = $targetPath . 'original/';
+			$mainTargetPath = $targetPath . 'main/';
+			$thumbTargetPath = $targetPath . 'thumb/';
+			
+			if ( !file_exists($originalTargetPath) ) {
+				mkdir(str_replace('//','/',$originalTargetPath), 0755, true);
+			}
+			if ( !file_exists($mainTargetPath) ) {
+				mkdir(str_replace('//','/',$mainTargetPath), 0755, true);
+			}
+			if ( !file_exists($thumbTargetPath) ) {
+				mkdir(str_replace('//','/',$thumbTargetPath), 0755, true);
+			}
+			
+			$originalTargetFile = $originalTargetPath . $userId . '_' . $randomString . '_original' . '.png';
+			$mainTargetFile = $mainTargetPath . $userId . '_' . $randomString . '.png';
+			$thumbTargetFile = $thumbTargetPath . $userId . '_' . $randomString . '_thumb' . '.png';
+			
+			//move_uploaded_file($tempFile, $originalTargetFile);
+			//copy($originalTargetFile, $mainTargetFile);
+			//copy($originalTargetFile, $thumbTargetFile);
+			
+			$arr = getimagesize($originalTargetFile);
+			//print_r_pre($arr);
+			$width = $arr[0];
+			$height = $arr[1];
+			$mime = $arr['mime'];
+			return true;
+			
+			// $fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
+			// $fileTypes  = str_replace(';','|',$fileTypes);
+			// $typesArray = split('\|',$fileTypes);
+			// $fileParts  = pathinfo($_FILES['Filedata']['name']);
+			
+			//if (in_array($fileParts['extension'], $typesArray)) {
+			//	return true;
+			//} else {
+			//	echo 'Invalid file type.';
+			//}
+		}
+		
+		/*
         $restaurantId = $this->input->post('restaurantId');
         $restaurantChainId = $this->input->post('restaurantChainId');
         $manufactureId = $this->input->post('manufactureId');
@@ -221,7 +280,7 @@ class CommentModel extends Model{
             $GLOBALS['error'] = 'duplicate';
             $return = false;
         }
-		
+		*/
         return $return;
         
     }
