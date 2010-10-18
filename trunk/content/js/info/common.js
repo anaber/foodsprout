@@ -700,11 +700,12 @@ function addPhotoForm() {
 				//'	<input id="fileInput2" name="fileInput2" type="file" /> <a href="javascript:$(\'#fileInput2\').uploadifyUpload();" style="font-size:13px;text-decoration:none;">Upload Files</a> | <a href="javascript:$(\'#fileInput2\').uploadifyClearQueue();" style="font-size:13px;text-decoration:none;">Clear Queue</a></div>' + 
 				'	<div class="demo"> ' +
 				//'	<p><strong>Single File Upload &#8211; Auto Start</strong></p>' + 
-				'	<input id="fileInput" name="fileInput3" type="file" /></div>' +
+				'	<input id="fileInput" name="fileInput" type="file" /><div id = "photoTitleContent"></div></div>' +
 				'</div>';
 	} else {
 		html = '<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;height:30px;"><div style="font-size:13px;border: #ccc 1px solid;width:520px;height:30px;padding-top:15px;float:left" align = "center">You are not logged in. Please <a href = "/login" style="font-size:13px;text-decoration:none;">sign-in</a> or <a href = "/login" style="font-size:13px;text-decoration:none;">register</a> to upload photos.</div></div>';
 	}
+	
 	return html;
 }
 
@@ -743,13 +744,133 @@ function reinitializeUploadPhotoForm() {
 							  	userId: userId
 							},
 		'onError'		 : function(event, queueID, fileObj, errorObj) {
-								aletr(errorObj.type);
-								aletr(errorObj.info);
+								//alert(errorObj.type);
+								//alert(errorObj.info);
      						},
      	'onComplete'	 : function (event, queueID, fileObj, response, data) {
-     								alert(fileObj.filePath);
-     								alert(response);
+    							//alert(fileObj.filePath);
+    							//alert(response);
+    							var jsonObject = eval('(' + response + ')');
+    							redrawPhotoTitleForm(jsonObject);
      						}
 	});
 }
+
+function redrawPhotoTitleForm(response) {
+	
+	$('#photoTitleContent').empty();
+	
+	var html = '';
+	html +=  '<form id="photoForm" method="post">' +
+		'	<table class="formTable" border = "0" width = "100%">' +
+		'		<tr>' +
+		'			<td colspan = "3" style="height:15px;"></td>' +
+		'		</tr>' +
+		'		<tr>' +
+		'			<td width = "" nowrap style="font-size:13px;">Caption</td>' +
+		'			<td width = "230">' +
+		'				<input value="" class="validate[required]" type="text" name="photoTitle" id="photoTitle" style="width: 230px;"/><br />' +
+		'			</td>' +
+		'			<td rowspan = "3" width = "170" align = "right">'+
+		'				<div class="portfolio_sites"><div class="porffoilo_img">' +
+		'	        		<img src="' + response.thumbPhoto + '" width="137" height="107" alt="" border = "0" /> ' +
+		'				</div></div>' +
+		'			</td>' +
+		'		</tr>' +
+		'		<tr>' +
+		'			<td width = "" nowrap style="font-size:13px;">Description</td>' +
+		'			<td width = "">' +
+		'				<textarea class="limited" maxlength="300" style = "width:230px;height:40px;" id = "description"></textarea>' +
+		'				<div class="charsLeft" style = "float:left;font-size:11px;">300</div><div style = "float:left;font-size:11px;">&nbsp;characters remaining</div>'+
+		'			</td>' +
+		'		</tr>' +
+		'		<tr>' +
+		'			<td colspan = "2" align = "right">' +
+		'				<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "Add Caption" style = "width:140px;">' +				
+		'				<input type = "hidden" name = "photoId" id = "photoId" value = "' + response.photoId + '">' +
+		'			</td>' +
+		'		</tr>' +
+		'	</table>' +
+		'</form>';	
+	
+	$('#photoTitleContent').append(html);
+	
+	reinitializePhotoCharacterCount();
+	reinitializeSubmitPhotoTitleForm();
+}
+
+function reinitializePhotoCharacterCount() {
+	$('textarea.limited').maxlength({
+		'feedback' : '.charsLeft' // note: looks within the current form
+	});
+}
+
+function reinitializeSubmitPhotoTitleForm() {
+	var formValidated = true;
+
+	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
+	$("#photoForm").validationEngine({
+		scroll:false,
+		unbindEngine:false,
+		success :  function() {formValidated = true;},
+		failure : function() {formValidated = false; }
+	});
+	
+	$("#photoForm").submit(function() {
+		
+		if (formValidated == false) {
+			// Don't post the form.
+			//displayFailedMessage($alert, "Form validation failed...");
+			//hideMessage($alert, '', '');
+		} else {
+			
+			var $alert = $('#alert');
+			displayProcessingMessage($alert, "Processing...");
+			
+			var formAction = '';
+			var postArray = '';
+			var act = '';
+			
+			if ($('#photoId').val() != '' ) {
+				var formAction = '/common/photo_title_save_update';
+				postArray = {
+							  photoTitle: $('#photoTitle').val(),
+							  description: $('#description').val(),
+							  
+							  photoId: $('#photoId').val()
+							};
+				act = 'update';		
+			} else {
+				formAction = '/common/comment_save_add';
+				postArray = { 
+							  comment: $('#txtComment').val(),
+							  
+							  manufactureId: $('#manufactureId').val(),
+							  farmId: $('#farmId').val(),
+							  restaurantId: $('#restaurantId').val(),
+							  distributorId: $('#distributorId').val(),
+							  restaurantChainId: $('#restaurantChainId').val(),
+							  farmersMarketId: $('#farmersMarketId').val()
+							};
+				act = 'add';
+			}
+			
+			$.post(formAction, postArray,function(data) {
+				
+				if(data=='yes') {
+					displayFailedMessage($alert, "Photo uploaded...");
+					hideMessage($alert, '', '');
+					$.validationEngine.closePrompt('.formError',true);
+					$('#photoTitleContent').empty();
+				} else {
+					displayFailedMessage($alert, "Photo not uploaded...");
+					hideMessage($alert, '', '');
+				}
+			});
+			
+		}
+		return false; //not to post the  form physically
+	});
+}
+
 

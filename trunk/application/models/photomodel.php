@@ -187,11 +187,11 @@ class PhotoModel extends Model{
 			
 			$thumbPhotoName = $userId . '_' . $randomString . '_thumb' . '.png';
 			$thumbTargetFile = $thumbTargetPath . $thumbPhotoName;
-			
+			/*
 			move_uploaded_file($tempFile, $originalTargetFile);
 			copy($originalTargetFile, $mainTargetFile);
 			copy($originalTargetFile, $thumbTargetFile);
-			
+			*/
 			$arr = getimagesize($thumbTargetFile);
 			$thumbWidth = $arr[0];
 			$thumbHeight = $arr[1];
@@ -206,8 +206,6 @@ class PhotoModel extends Model{
 			$typesArray = explode(';',$fileTypes);
 			$fileParts  = pathinfo($_FILES['Filedata']['name']);
 			
-			//print_r_pre($typesArray);
-			//print_r_pre($fileParts);
 			
 			if (in_array($fileParts['extension'], $typesArray)) {
 				
@@ -246,24 +244,53 @@ class PhotoModel extends Model{
 	            }
 	            
 	            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
-	            //echo $query;
 	            
 	            log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
 	
 	            if ($this->db->query($query)) {
-	                $return = true;
+	                $newPhotoId = $this->db->insert_id();
+	                
+	                $array = array(
+						'photoId' => $newPhotoId, 
+						'thumbPhoto' =>  '/uploads' . $path . 'thumb/' .$thumbPhotoName,
+						'thumbHeight' =>  $thumbHeight,
+						'thumbWidth' =>  $thumbWidth,
+						);
+				
+	                $return = $array;
 	            } else {
 	                $return = false;
 	            }
 				
 			} else {
-				echo 'Invalid file type.';
+				$return = false;
 			}
 			
 		}
         return $return;
         
     }
+    
+    
+    function updatePhotoTitle() {
+		$return = true;
+		
+		$data = array(
+					'title' => $this->input->post('photoTitle'), 
+					'description' => $this->input->post('description'),
+				);
+		$where = "photo_id = " . $this->input->post('photoId');
+		$query = $this->db->update_string('photo', $data, $where);
+		
+		log_message('debug', 'PhotoModel.updatePhotoTitle : ' . $query);
+		if ( $this->db->query($query) ) {
+			$return = true;
+		} else {
+			$return = false;
+		}
+				
+		return $return;
+	}
 	
 }
 
