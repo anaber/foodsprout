@@ -187,11 +187,11 @@ class PhotoModel extends Model{
 			
 			$thumbPhotoName = $userId . '_' . $randomString . '_thumb' . '.png';
 			$thumbTargetFile = $thumbTargetPath . $thumbPhotoName;
-			/*
+			
 			move_uploaded_file($tempFile, $originalTargetFile);
 			copy($originalTargetFile, $mainTargetFile);
 			copy($originalTargetFile, $thumbTargetFile);
-			*/
+			
 			$arr = getimagesize($thumbTargetFile);
 			$thumbWidth = $arr[0];
 			$thumbHeight = $arr[1];
