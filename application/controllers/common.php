@@ -126,8 +126,11 @@ class Common extends Controller {
 	function photo_save_add() {
 		$this->load->model('PhotoModel', '', TRUE);
 		$GLOBALS = array();
-		if ( $this->PhotoModel->addPhoto() ) {
-			echo 'yes';
+		
+		$return = $this->PhotoModel->addPhoto();
+		if ( $return ) {
+			echo json_encode($return);
+			//echo 'yes';
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
 				echo $GLOBALS['error'];
@@ -135,6 +138,25 @@ class Common extends Controller {
 				echo 'no';
 			}
 		}	
+	}
+	
+	function photo_title_save_update() {
+		if ($this->session->userdata('isAuthenticated') == 1 ) {
+			$this->load->model('PhotoModel', '', TRUE);
+			
+			$GLOBALS = array();
+			if ( $this->PhotoModel->updatePhotoTitle() ) {
+				echo 'yes';
+			} else {
+				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+					echo $GLOBALS['error'];
+				} else {
+					echo 'no';
+				}
+			}
+		} else {
+			echo 'no';
+		}
 	}
 	
 }
