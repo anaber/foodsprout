@@ -37,7 +37,7 @@ class Login extends Controller {
 				$data['ERROR'] = 'login_failed';
 			}
 			
-			$this->load->view('beta/beta1', $data);
+			$this->load->view('login', $data);
 		} else {
 			redirect('/');
 		}
@@ -66,7 +66,7 @@ class Login extends Controller {
 		{
 			$data = array();
 			$data['CENTER'] = array(
-					'list' => 'beta/beta1',
+					'list' => 'login',
 			);
 			
 			if ( isset ($GLOBALS['error']) && $GLOBALS['error']) {
@@ -80,7 +80,7 @@ class Login extends Controller {
 			$data['PASSWORD'] = '';
 			$data['ZIPCODE'] = $this->input->post('zipcode');
 			
-			$this->load->view('beta/beta1', $data);
+			$this->load->view('login', $data);
 			exit;
 		}
 		
@@ -108,7 +108,7 @@ class Login extends Controller {
 			
 			$data = array();
 			$data['CENTER'] = array(
-					'list' => 'beta/beta1',
+					'list' => 'login',
 			);
 			
 			if ( isset ($GLOBALS['error']) && $GLOBALS['error']) {
@@ -122,7 +122,7 @@ class Login extends Controller {
 			$data['PASSWORD'] = '';
 			$data['ZIPCODE'] = $this->input->post('zipcode');
 			
-			$this->load->view('beta/beta1', $data);
+			$this->load->view('login', $data);
 			
 		}
 		
