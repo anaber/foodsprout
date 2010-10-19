@@ -40,12 +40,21 @@
 			<!--<div id="branding" role="banner"> -->
 				<div class="site-title" class="beta"> 
 					<h1> 
-						<a href="#" title="FoodSprout" rel="home"><span>FoodSprout Private Beta</span></a> 
+						<a href="/" title="FoodSprout" rel="home"><span>Food Sprout</span></a> 
 					</h1> 
 				</div> 
 				 	<div class="skip-link screen-reader-text" role="navigation"><a href="#headerNav" title="Skip to content">Skip to content</a> 
 				</div> 
-				
+				<div id="login-form">
+					<form action="/login/validate" method="post" name="frmLogin" id="frmLogin">
+							<input type="checkbox" id="remember"/>
+							<span>Remember me</span>
+						<br/>						
+						<input type="text" name="login_email" id="login_email" class="validate[required]" value="Email" onfocus="if(this.value == 'Email')this.value='';" onblur="if(this.value=='')this.value='Email';" /> <input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
+						
+						 <input type="submit" name="submit" value="Login" />
+					</form>
+				</div>
 	</div><!-- #wrapper --> 
 </div><!-- #header --> 
 <script>
@@ -101,29 +110,16 @@
 				<div id="signup-box">
 					<div id="signup-box-wrapper">
 						<div id="login-wrapper">
-							<span>Already have an account?</span>
-							<a id="show-login-button" href="/login/">Log In</a>
-							<div id="login-form">
-								<form action="/login/validate" method="post" name="frmLogin" id="frmLogin">
-									<h2>Log In</h2>								
-									<input type="text" name="login_email" id="login_email" class="validate[required]" value="Email" onfocus="if(this.value == 'Email')this.value='';" onblur="if(this.value=='')this.value='Email';" />
-									<input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
-									<!--label for="remember_me" class="checkbox-wrapper">
-										<input type="checkbox" name="remember_me" value="remember_me" id="remember_me" />
-										<span>Remember me</span>
-									</label -->
-									<input type="submit" name="submit" value="Login" />
-								</form>
-							</div>
+							<span>Welcome to Food Sprout</span>
 						</div>
 						<div id="signup-form">
-							<h2 id="signup-title">Private Beta</h2>
-							<h3>We just launched in July, 2010. Join today for the <b>private beta</b>.</h3>
+							<h2 id="signup-title"> </h2>
+							<h3>Join today for <b>free</b> and get started exploring your food.</h3>
 							<form action="/login/create_user" method="post" name="frmAccount" id="frmAccount">								
-								<input type="text" name="firstname" id="firstname" class="validate[required]" value="Full Name" onfocus="if(this.value=='Full Name')this.value='';" onblur="if(this.value=='')this.value='Full Name';">
-								<input type="text" name="email" id="email" class="validate[required,custom[email]]" value="Email" onfocus="if(this.value=='Email')this.value='';" onblur="if(this.value=='')this.value='Email';">
-								<input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';">
-								<input type="text" name="zipcode" id="zipcode" class="validate[required]" value="Zip Code" onfocus="if(this.value=='Zip Code')this.value='';" onblur="if(this.value=='')this.value='Zip Code';">
+								Full Name: <input type="text" name="firstname" id="firstname" class="validate[required]" value="Full Name" onfocus="if(this.value=='Full Name')this.value='';" onblur="if(this.value=='')this.value='Full Name';"><br/>
+								Email: <input type="text" name="email" id="email" class="validate[required,custom[email]]" value="Email" onfocus="if(this.value=='Email')this.value='';" onblur="if(this.value=='')this.value='Email';"><br/>
+								Password: <input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';"><br/>
+								Zip Code: <input type="text" name="zipcode" id="zipcode" class="validate[required]" value="Zip Code" onfocus="if(this.value=='Zip Code')this.value='';" onblur="if(this.value=='')this.value='Zip Code';"><br/>
 								<input type="submit" name="submit" value="Create Account">
 							</form>
 						</div>
@@ -162,7 +158,7 @@
 	</div><!-- #content --> 
   </div><!-- #wrapper --> 
 </div><!-- #main -->
-<hr size="1">
+<div align="center"><hr size="1"></div>
 <div id="footer" role="contentinfo"> 
 	<div class="wrapper">
 		<div id="site-info"> 
@@ -193,89 +189,3 @@
 </div><!-- #footer --> 
 </body>
 </html>
-
-<?php
-	/*
-?>
-<script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
-<div id="alert"></div>
-
-<div>
-<strong class="redtxt">Mapping the world's food chain, and what's really in your food, start exploring it with us</strong><br><br>
-	
-	<div style="padding:10px;overflow:auto;">
-		<img src="/img/Connecting-Dots.gif" border="0" align="left" style="margin-right: 10px; margin-left:0px;">
-		<br><br><span class="redtxt"><b>Private Beta</b></span>
-		<br>
-
-		<span style="font-size:12px;">We just launched in July, 2010.  Join today for the private beta.</span>
-		<br>
-
-		<div style="font-size:18px; float:right; width:340px; margin-right:20px; ">
-		<br/><a href="/about">Learn More</a> | <?php echo anchor('/about/privatebeta', 'Join Us'); ?> <br/><br/>
-		</div>
-		<script>
-			loginFormValidated = true;
-			
-			$(document).ready(function() {
-				$("#frmLogin").validationEngine();
-		<?php
-			if (isset($ERROR) ) {
-		
-				if ($ERROR == 'blocked') {
-					$message = 'Your access is blocked';
-				} else if ($ERROR == 'login_failed') {
-					$message = 'Wrong Email and password combination.';
-				}
-		?>
-				var $alert = $('#alert');
-				message = '<?php echo $message; ?>';
-				displayProcessingMessage($alert, message);
-				displayFailedMessage($alert, message);
-				hideMessage($alert, '', '');
-		<?php
-			}
-		?>
-			});
-		</script>
-
-		<br>
-		
-		<div style="-moz-border-radius: 4px;
-			-webkit-border-radius: 4px;
-			background: #EEEEEE;
-			color: #000000;
-			-moz-box-shadow: 0 1px 0 #CCCCCC;
-			-webkit-box-shadow: 0 1px 0 #CCCCCC;padding:10px; width:320px; float:right; margin-right:20px;">
-			
-			<div align = "left"><div id="msgbox" style="display:none;"></div></div>
-			<strong>Sign In</strong><br />
-				<?php
-
-				$attributes = array('name' => 'frmLogin', 'id' => 'frmLogin');
-				echo form_open('login/validate', $attributes);
-				?>
-				<table width="300" cellpadding="2">
-					<tr>
-						<td colspan = "2"></td>
-					</tr>
-				<?php
-				echo '<tr><td align="right">Email:</td><td>'. '<input type = "text" name = "email" id = "email" class = "validate[required]">' .'</td></tr>' . "\n";
-				echo '<tr><td align="right">Password:</td><td>'. '<input type = "password" name = "password" id = "password" class = "validate[required]">' .'</td></tr>' . "\n";
-				
-				echo '<tr><td align="center" colspan="2">'.form_submit('submit', 'Login').'</td></tr>' . "\n";
-				?>
-				</table>
-				<?php
-					echo '</form>';
-				?>
-				<?php echo validation_errors('<p>'); ?>
-
-		</div>
-	</div>
-</div>
-	
-<br>
-<?php
-	*/
-?>
