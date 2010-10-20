@@ -134,7 +134,7 @@ class CommentModel extends Model{
 	function addComment() {
 
         $return = true;
-		
+        
         $restaurantId = $this->input->post('restaurantId');
         $restaurantChainId = $this->input->post('restaurantChainId');
         $manufactureId = $this->input->post('manufactureId');

@@ -77,6 +77,7 @@ function redrawContent(data, type) {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addCommentResult(a, i);
 			});
+			resultTableHtml += '<div id="divNewComment"></div>'; 
 		} else if (type == 'photo') {
 			resultTableHtml += '<div id="gallery">'; 
 			$.each(data.results, function(i, a) {
@@ -149,7 +150,7 @@ function redrawContent(data, type) {
 	if (type == 'comment') {
 		$('#farmersMarketId').val(farmersMarketId);
 		reinitializeCommentCharacterCount();
-		reinitializeSubmitCommentForm();
+		reinitializeSubmitCommentForm(data);
 	}
 	
 	if (type == 'photo') {

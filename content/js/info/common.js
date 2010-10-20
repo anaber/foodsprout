@@ -639,6 +639,7 @@ function reinitializeSubmitCommentForm(data) {
 					if (data.param.numResults == 0) {
 						postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
 					} else {
+						
 						var formAction;
 						formAction = '/common/ajaxGetCommentFromId';
 						postArray = { q:response };
