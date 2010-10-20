@@ -84,6 +84,9 @@ class Restaurant extends Controller {
 
 		$restaurantId = $this->uri->segment(3);
 
+		$this->load->model('PhotoModel');
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('restaurant', $restaurantId);
+		
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
@@ -135,6 +138,9 @@ class Restaurant extends Controller {
 		$data['data']['left']['map']['width'] = '220';
 		$data['data']['left']['map']['height'] = '180';
 		$data['data']['left']['map']['hide_map'] = 'no';
+		
+		// Left -> Images
+		$data['data']['left']['img']['PHOTOS'] = $thumbPhotos;
 		
 		// Left -> Info
 		$INFO = array (

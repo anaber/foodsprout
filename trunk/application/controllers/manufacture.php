@@ -57,6 +57,9 @@ class Manufacture extends Controller {
 
 		$manufactureId = $this->uri->segment(3);
 
+		$this->load->model('PhotoModel');
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('manufacture', $manufactureId);
+		
 		// Getting information from models
 		$this->load->model('ManufactureModel');
 		$manufacture = $this->ManufactureModel->getManufactureFromId($manufactureId);
@@ -108,6 +111,9 @@ class Manufacture extends Controller {
 		$data['data']['left']['map']['width'] = '225';
 		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
+		
+		// Left -> Images
+		$data['data']['left']['img']['PHOTOS'] = $thumbPhotos;
 		
 		// Left -> Info
 		$INFO = array (

@@ -109,6 +109,9 @@ class Farm extends Controller {
 
 		$farmId = $this->uri->segment(3);
 
+		$this->load->model('PhotoModel');
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('farm', $farmId);
+		
 		// Getting information from models
 		$this->load->model('FarmModel');
 		$farm = $this->FarmModel->getFarmFromId($farmId);
@@ -159,6 +162,9 @@ class Farm extends Controller {
 		$data['data']['left']['map']['width'] = '225';
 		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
+		
+		// Left -> Images
+		$data['data']['left']['img']['PHOTOS'] = $thumbPhotos;
 		
 		// Left -> Info
 		$INFO = array (

@@ -57,7 +57,7 @@ class Chain extends Controller {
 		$data = array();
 
 		$restaurantChainId = $this->uri->segment(3);
-
+		
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($restaurantChainId);

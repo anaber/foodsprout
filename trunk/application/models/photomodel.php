@@ -292,6 +292,55 @@ class PhotoModel extends Model{
 		return $return;
 	}
 	
+	function getThumbPhotos($type, $id) {
+		global $PER_PAGE;
+		
+		$query = 'SELECT photo.*' .
+				' FROM photo' .
+				' WHERE photo.'.$type.'_id  = ' . $id .
+				' AND photo.status = \'live\'';
+		
+		$result = $this->db->query($query);
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY added_on';
+			$sort = 'added_on';
+		}
+		
+		if ( empty($order) ) {
+			$order = 'DESC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		log_message('debug', "PhotoModel.getThumbPhotos : " . $query);
+		$result = $this->db->query($query);
+		
+		$photos = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('PhotoLib');
+			unset($this->PhotoLib);
+			$path = '/uploads' . $row['path'];
+			$this->PhotoLib->photoId = $row['photo_id'];
+			$this->PhotoLib->path = $path;
+			
+			$this->PhotoLib->thumbPhoto = $path . 'thumb/' . $row['thumb_photo_name'];
+			$this->PhotoLib->thumbHeight = $row['thumb_height'];
+			$this->PhotoLib->thumbWidth = $row['thumb_width'];
+			
+			$this->PhotoLib->title = $row['title'];
+			
+			
+			$photos[] = $this->PhotoLib;
+			unset($this->PhotoLib);
+		}
+		
+		
+	    return $photos;
+	}
+	
 }
 
 
