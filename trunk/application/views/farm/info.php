@@ -129,8 +129,6 @@
 		
 		</div>
 		
-		<div id="divAddComment" style = "display:none;">Comment form will come here</div>
-		
 		<div style="overflow:auto; padding:5px;"></div>
 		
 		<div style="overflow:auto; padding:5px;">
