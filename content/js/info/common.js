@@ -580,7 +580,7 @@ function reinitializeCommentCharacterCount() {
 	});
 }
 
-function reinitializeSubmitCommentForm() {
+function reinitializeSubmitCommentForm(data) {
 	var formValidated = true;
 
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
@@ -598,9 +598,6 @@ function reinitializeSubmitCommentForm() {
 			//displayFailedMessage($alert, "Form validation failed...");
 			//hideMessage($alert, '', '');
 		} else {
-			
-			var $alert = $('#alert');
-			displayProcessingMessage($alert, "Processing...");
 			
 			var formAction = '';
 			var postArray = '';
@@ -625,7 +622,7 @@ function reinitializeSubmitCommentForm() {
 				formAction = '/common/comment_save_add';
 				postArray = { 
 							  comment: $('#txtComment').val(),
-							  
+
 							  manufactureId: $('#manufactureId').val(),
 							  farmId: $('#farmId').val(),
 							  restaurantId: $('#restaurantId').val(),
@@ -636,23 +633,36 @@ function reinitializeSubmitCommentForm() {
 				act = 'add';
 			}
 			
-			$.post(formAction, postArray,function(data) {
+			$.post(formAction, postArray,function(response) {
 				
-				if(data=='yes') {
-					if (act == 'add') {
-						displayFailedMessage($alert, "Comment added...");
-					} else if (act == 'update') {
-						displayFailedMessage($alert, "Comment updated...");
+				if( !isNaN(response) ) {
+					if (data.param.numResults == 0) {
+						postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
+					} else {
+						var formAction;
+						formAction = '/common/ajaxGetCommentFromId';
+						postArray = { q:response };
+						
+						$.post(formAction, postArray,function(jsonData) {	
+							drawNewComment(jsonData);
+							if(window.resetCommentForm) {
+								resetCommentForm();
+							}
+						},
+						"json");
 					}
-					hideMessage($alert, '', '');
-					$.validationEngine.closePrompt('.formError',true);
-				} else if(data == 'duplicate') {
+				} else if(response == 'duplicate') {
+					var $alert = $('#alert');
+					displayProcessingMessage($alert, "Duplicate Comment...");
 					displayFailedMessage($alert, "Duplicate Comment...");
 					hideMessage($alert, '', '');
 				} else {
+					var $alert = $('#alert');
 					if (act == 'add') {
+						displayProcessingMessage($alert, "Not added...");
 						displayFailedMessage($alert, "Not added...");
 					} else if (act == 'update') {
+						displayProcessingMessage($alert, "Not updated...");
 						displayFailedMessage($alert, "Not updated...");
 					}
 					hideMessage($alert, '', '');
@@ -662,6 +672,14 @@ function reinitializeSubmitCommentForm() {
 		}
 		return false; //not to post the  form physically
 	});
+}
+
+function drawNewComment(comment) {
+	var html =
+	'	<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;" align = "justify"><strong>' + comment.firstName + ':</strong>&nbsp;'+comment.comment+'<br /><div style="font-size:11px;font-weight:bold;">On '+comment.addedOn+'</div></div>' +
+	'<hr size = "1" style="width:530px;border: none 0;border-top: 1px dashed #ccc;height: 1px;">';
+	$('#divNewComment').append(html);
+	return html;
 }
 
 function addPhotoResult(photo, count) {
@@ -677,9 +695,9 @@ function addPhotoResult(photo, count) {
 		'<div class="portfolio_sites mar_rt_45 flt">'
 	}
 	html +=
-	'	<div class="porffoilo_img">' +
+	'	<div class="porffoilo_img" align = "center">' +
 	'		<a href="' + photo.photo + '" rel = "lightbox" title="' + (photo.description ? photo.description : '') + '" style = "text-decoration:none;">' + 
-	'	        <img src="' + photo.thumbPhoto + '" width="137" height="107" alt="" border = "0" /> ' +
+	'	        <img src="' + photo.thumbPhoto + '" width="137" height="92" alt="" border = "0" /> ' +
 	'	    </a>' +
 	'	</div> ' +
 	'	<div class="porffoilo_content" style = "font-size:11px;">' + 
@@ -873,4 +891,8 @@ function reinitializeSubmitPhotoTitleForm() {
 	});
 }
 
+function resetCommentForm() {
+	$('#txtComment').val('');
+	reinitializeCommentCharacterCount();
+}
 

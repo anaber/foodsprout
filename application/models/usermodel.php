@@ -73,7 +73,7 @@ class UserModel extends Model{
 					
 					$this->load->library('UserLib');
 					
-					$this->user->userId = $userId;
+					$this->userLib->userId = $userId;
 					$this->userLib->email = $this->input->post('email');
 					$this->userLib->zipcode = $this->input->post('zipcode');
 					$this->userLib->firstName = $this->input->post('firstname');
