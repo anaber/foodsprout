@@ -75,6 +75,7 @@ class User extends Controller {
 		if ($this->session->userdata('isAuthenticated') != 1 ) {
 			redirect($LANDING_PAGE);
 		}
+		
 		$this->load->model('UserModel');
 		$user = $this->UserModel->getUserFromId($this->session->userdata('userId'));
 		

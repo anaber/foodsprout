@@ -88,8 +88,9 @@ class Common extends Controller {
 			$this->load->model('CommentModel', '', TRUE);
 			
 			$GLOBALS = array();
-			if ( $this->CommentModel->addComment() ) {
-				echo 'yes';
+			$return = $this->CommentModel->addComment();
+			if ( $return ) {
+				echo $return;
 			} else {
 				if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
 					echo $GLOBALS['error'];
@@ -159,8 +160,15 @@ class Common extends Controller {
 		}
 	}
 	
+	function ajaxGetCommentFromId() {
+		$commentId = $this->input->post('q');
+		$this->load->model('CommentModel', '', TRUE);
+		$comment = $this->CommentModel->getCommentFromId($commentId);
+		echo json_encode($comment);
+	}
+	
 }
 
-/* End of file manufacture.php */
+/* End of file common.php */
 
 ?>

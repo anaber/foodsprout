@@ -39,7 +39,6 @@ function addZeroResult(type) {
 		html += 'photos';
 	}
 	
-	
 	html += ' for "' + name + '". All viewers of the site may also update data like Wikipedia. Feel free to add ';
 	
 	if (type == 'supplier') {
@@ -54,7 +53,7 @@ function addZeroResult(type) {
 	
 	html +='</div>' + 
 	'</div>'
-	;	
+	;
 	return html;
 }
 
@@ -78,6 +77,7 @@ function redrawContent(data, type) {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addCommentResult(a, i);
 			});
+			resultTableHtml += '<div id="divNewComment"></div>'; 
 		} else if (type == 'photo') {
 			resultTableHtml += '<div id="gallery">'; 
 			$.each(data.results, function(i, a) {
@@ -150,7 +150,7 @@ function redrawContent(data, type) {
 	if (type == 'comment') {
 		$('#restaurantId').val(restaurantId);
 		reinitializeCommentCharacterCount();
-		reinitializeSubmitCommentForm();
+		reinitializeSubmitCommentForm(data);
 	}
 	
 	if (type == 'photo') {
@@ -194,7 +194,6 @@ function addSupplierResult(supplier, count) {
 	html +=
 	'</div><div style="font-size:13px;height:5px;">&nbsp;</div>'
 	;
-	
 	return html;
 }
 

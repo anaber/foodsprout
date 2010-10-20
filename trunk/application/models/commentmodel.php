@@ -134,7 +134,7 @@ class CommentModel extends Model{
 	function addComment() {
 
         $return = true;
-
+		
         $restaurantId = $this->input->post('restaurantId');
         $restaurantChainId = $this->input->post('restaurantChainId');
         $manufactureId = $this->input->post('manufactureId');
@@ -213,7 +213,8 @@ class CommentModel extends Model{
             log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
 
             if ($this->db->query($query)) {
-                $return = true;
+                $newCommentId = $this->db->insert_id();
+                $return = $newCommentId;
             } else {
                 $return = false;
             }
@@ -225,6 +226,39 @@ class CommentModel extends Model{
         return $return;
         
     }
+    
+    function getCommentFromId($commentId) {
+		
+		$query = 'SELECT comment.*, user.email, user.first_name' .
+				' FROM comment, user' . 
+				' WHERE comment.user_id = user.user_id ' .
+				' AND comment.comment_id = ' . $commentId;
+		
+		log_message('debug', "CommentModel.getCommentFromId : " . $query);
+		$result = $this->db->query($query);
+		
+		$comment = array();
+		
+		$this->load->library('CommentLib');
+		
+		$row = $result->row();
+		
+		$this->CommentLib->commentId = $row->comment_id;
+		$this->CommentLib->comment = $row->comment;
+		$this->CommentLib->userId = $row->user_id;
+		
+		$firstName = $row->first_name;
+		$arrFirstName = explode(' ', $firstName);
+		$this->CommentLib->firstName = $arrFirstName[0];
+		
+		$this->CommentLib->email = $row->email;
+		$this->CommentLib->ip = $row->track_ip;
+		$this->CommentLib->status = $row->status;
+		$this->CommentLib->addedOn = date('Y M, d H:i:s', strtotime ($row->added_on ) ) ;
+		
+		
+		return $this->CommentLib;
+	}
 	
 }
 
