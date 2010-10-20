@@ -87,6 +87,9 @@ class FarmersMarket extends Controller {
 
 		$farmersMarketId = $this->uri->segment(3);
 
+		$this->load->model('PhotoModel');
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('farmers_market', $farmersMarketId);
+		
 		// Getting information from models
 		$this->load->model('FarmersMarketModel');
 		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($farmersMarketId);
@@ -138,6 +141,9 @@ class FarmersMarket extends Controller {
 		$data['data']['left']['map']['width'] = '225';
 		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
+		
+		// Left -> Images
+		$data['data']['left']['img']['PHOTOS'] = $thumbPhotos;
 		
 		// Left -> Info
 		$INFO = array (
