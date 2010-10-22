@@ -90,6 +90,22 @@ class LoginModel extends Model{
 				$this->user->isAuthenticated = 1;
 				$this->user->userGroup = $row->user_group;
 				
+				$remember = $this->input->post('remember');
+				if ($remember == 'on') {
+					$baseUrl = base_url();
+					$url = parse_url ($baseUrl);
+					$sData = serialize($this->user);
+					$cookie = array(
+		                   'name'   => 'userObj',
+		                   'value'  => $sData,
+		                   'expire' => time()+60*60*24*30*365,
+		                   'domain' => $url['host'],
+		                   'path'   => '/',
+		                   'prefix' => '',
+		               );
+					set_cookie($cookie);
+				}
+				
 				$this->session->set_userdata($this->user );
 				$return = true;
 			} else {

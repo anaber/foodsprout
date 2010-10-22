@@ -2,15 +2,14 @@
 
 class Login extends Controller {
 	
-	function __construct()
-	{
+	function __construct() {
 		parent::Controller();
+		checkUserLogin();
 	}
 	
-	function index()
-	{
-		if ($this->session->userdata('isAuthenticated') == 1 )
-		{
+	function index() {
+		
+		if ($this->session->userdata('isAuthenticated') == 1 ) {
 			redirect('/home');
 		} else {
 			$data = array();
@@ -45,8 +44,18 @@ class Login extends Controller {
 	}
 	
 	// End a users session	
-	function signout()
-	{
+	function signout() {
+		$baseUrl = base_url();
+		$url = parse_url ($baseUrl);
+		$cookie = array(
+               'name'   => 'userObj',
+               'value'  => '',
+               'expire' => time()-60*60*24*30*365,
+               'domain' => $url['host'],
+               'path'   => '/',
+               'prefix' => '',
+           );
+		set_cookie($cookie);
 		$this->session->sess_destroy();
 		redirect('/');
 	}

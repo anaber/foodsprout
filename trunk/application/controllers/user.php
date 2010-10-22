@@ -5,6 +5,7 @@ class User extends Controller {
 	function __construct() {
 		// Ensure the user is logged in before allowing access to any of these methods
 		parent::Controller();
+		checkUserLogin();
 	}
 	
 	// The default for the user is the dashboard

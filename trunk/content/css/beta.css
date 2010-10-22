@@ -31,7 +31,7 @@ code{font-family:Monaco,Consolas,"Andale Mono","DejaVu Sans Mono",monospace;}
 /* =Structure
 -------------------------------------------------------------- */
 /* The main theme structure */
-.wrapper{margin:0 auto;width:940px;}
+.wrapper{margin:0 auto;width:990px;}
 #branding{position:relative;}
 .wrapper{padding:0 20px;position:relative;zoom:1 ;}
 /* =Global Elements
@@ -42,7 +42,7 @@ body.home{background:url(/img/bg.jpg);}
 body,
 input,
 textarea{color:#666;font-size:16px;line-height:18px;}
-hr{background-color:#000;border:0;height:1px;margin-bottom:5px;clear:both;width:940px;}
+hr{background-color:#000;border:0;height:1px;margin-bottom:5px;clear:both;width:990px;}
 /* Text elements */
 p{margin-bottom:18px;}
 ul{list-style:square;margin:0 0 18px 1.5em;}

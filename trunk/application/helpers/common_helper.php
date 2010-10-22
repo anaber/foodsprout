@@ -137,6 +137,16 @@ function prepareHeading ($company, $id, $crudEntity, $action) {
 }
 
 function checkUserLogin () {
+	$CI =& get_instance();
+	if ($CI->session->userdata('isAuthenticated') != 1 ) {
+		$userObj = get_cookie('userObj');
+		if ($userObj) {
+			$userObj = unserialize($userObj);
+			$CI->session->set_userdata($userObj );
+		}
+	} else {
+		
+	}
 	/*
 	global $LANDING_PAGE;
 	
