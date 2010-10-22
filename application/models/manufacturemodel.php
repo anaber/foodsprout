@@ -424,7 +424,7 @@ class ManufactureModel extends Model{
 			} else {
 				$where .= ' WHERE (';
 			}
-			
+			/*
 			$where	.= '		SELECT address.address_id' 
 					. '			from address, state'
 					. '			WHERE' 
@@ -436,6 +436,16 @@ class ManufactureModel extends Model{
 					. '						OR state.state_code like "%' . $filter . '%"'
 					. '				)'
 					. '				LIMIT 0, 1';
+			*/		
+			$where	.= '		SELECT product.product_id' 
+					. '			from product'
+					. '			WHERE' 
+					. '				product.manufacture_id = manufacture.manufacture_id'
+					. ' 			AND ('
+					. '						product.brand like "%' . $filter . '%"' 
+					. '				)'
+					. '				LIMIT 0, 1';
+					
 			$where .= ' )';
 		}
 		

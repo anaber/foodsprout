@@ -1,9 +1,11 @@
 <script src="<?php echo base_url()?>js/search/manufacture_search.js" type="text/javascript"></script>
-
+<?php
+	$brand = $this->input->post('f');
+?>
 <script>
 var dataManufactures;
 	$(document).ready(function() {
-		$.post("/manufacture/ajaxSearchManufactures", { },
+		$.post("/manufacture/ajaxSearchManufactures", { f:'<?php echo $brand; ?>'},
 		function(data){
 			dataManufactures = data;
 			
