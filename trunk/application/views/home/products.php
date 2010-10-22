@@ -8,8 +8,8 @@
 			<span style="font-size:14px;">Quickly find info about a specific product.<br><span style="font-size:11px;" class="redtxt">(e.g. Odwalla, Kelloggs).</span>
 						<br>
 						<div align="center" style="font-size:18px;">
-							<form action="/search" method="post">
-								Search: <input type="text" name="q" value="" id="q" maxlength="5" size="30" syle="font-size: 20px;" />
+							<form action="/manufacture" method="post">
+								Search: <input type="text" name="f" value="" id="f" size="30" syle="font-size: 20px;" />
 								<input type="submit" name="submit" value="Find" syle="font-size: 24px;" />
 							</form>
 						</div>
