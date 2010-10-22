@@ -47,7 +47,7 @@
 				</div> 
 				<div id="login-form">
 					<form action="/login/validate" method="post" name="frmLogin" id="frmLogin">
-							<input type="checkbox" id="remember"/>
+							<input type="checkbox" id="remember" name = "remember"/>
 							<span>Remember me</span>
 						<br/>						
 						<input type="text" name="login_email" id="login_email" class="validate[required]" value="Email" onfocus="if(this.value == 'Email')this.value='';" onblur="if(this.value=='')this.value='Email';" /> <input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
