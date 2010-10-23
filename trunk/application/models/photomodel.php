@@ -138,7 +138,7 @@ class PhotoModel extends Model{
 		$userGroup = $this->input->post('userGroup');
 		
 		$randomString = generateRandomString();
-		//$randomString = 'vz5hmxr04w9jysgc';
+		//$randomString = 't6jh91v8xzn4srpk';
 		
 		if (!empty($_FILES)) {
 			
@@ -187,85 +187,91 @@ class PhotoModel extends Model{
 			
 			$thumbPhotoName = $userId . '_' . $randomString . '_thumb' . '.png';
 			$thumbTargetFile = $thumbTargetPath . $thumbPhotoName;
+			//echo $originalTargetFile . "\n";
+			//echo $thumbTargetFile . "\n";
+			
 			
 			move_uploaded_file($tempFile, $originalTargetFile);
 			copy($originalTargetFile, $mainTargetFile);
-			copy($originalTargetFile, $thumbTargetFile);
+			//copy($originalTargetFile, $thumbTargetFile);
+			if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200') ) {
 			
-			$arr = getimagesize($thumbTargetFile);
-			$thumbWidth = $arr[0];
-			$thumbHeight = $arr[1];
-			
-			$arr = getimagesize($mainTargetFile);
-			$width = $arr[0];
-			$height = $arr[1];
-			$mime = $arr['mime'];
-			
-			
-			$fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
-			$typesArray = explode(';',$fileTypes);
-			$fileParts  = pathinfo($_FILES['Filedata']['name']);
-			
-			
-			if (in_array($fileParts['extension'], $typesArray)) {
+				$arr = getimagesize($thumbTargetFile);
+				$thumbWidth = $arr[0];
+				$thumbHeight = $arr[1];
 				
-				$CI = & get_instance();
-			
-	            $query = 'INSERT INTO photo (photo_id, address_id, ';
-	            if (!empty($restaurantId)) {
-	                $query .= 'restaurant_id';
-	            } else if (!empty($restaurantChainId)) {
-	                $query .= 'restaurant_chain_id';
-	            } else if (!empty($manufactureId)) {
-	                $query .= 'manufacture_id';
-	            } else if (!empty($farmId)) {
-	                $query .= 'farm_id';
-	            } else if (!empty($farmersMarketId)) {
-	                $query .= 'farmers_market_id';
-	            } else if (!empty($productId)) {
-	                $query .= 'product_id';
-	            }
-	            
-	            $query .= ', title, description, path, thumb_photo_name, photo_name, original_photo_name, extension, mime_type, thumb_height, thumb_width, height, width, user_id, status, track_ip, added_on)' .
-	                    ' values (NULL, NULL, ';
-	
-	            if (!empty($restaurantId)) {
-	                $query .= $restaurantId;
-	            } else if (!empty($restaurantChainId)) {
-	                $query .= $restaurantChainId;
-	            } else if (!empty($manufactureId)) {
-	                $query .= $manufactureId;
-	            } else if (!empty($farmId)) {
-	                $query .= $farmId;
-	            } else if (!empty($farmersMarketId)) {
-	                $query .= $farmersMarketId;
-	            } else if (!empty($productId)) {
-	                $query .= $productId;
-	            }
-	            
-	            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
-	            
-	            log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
-	
-	            if ($this->db->query($query)) {
-	                $newPhotoId = $this->db->insert_id();
-	                
-	                $array = array(
-						'photoId' => $newPhotoId, 
-						'thumbPhoto' =>  '/uploads' . $path . 'thumb/' .$thumbPhotoName,
-						'thumbHeight' =>  $thumbHeight,
-						'thumbWidth' =>  $thumbWidth,
-						);
+				$arr = getimagesize($mainTargetFile);
+				$width = $arr[0];
+				$height = $arr[1];
+				$mime = $arr['mime'];
 				
-	                $return = $array;
-	            } else {
-	                $return = false;
-	            }
 				
+				$fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
+				$typesArray = explode(';',$fileTypes);
+				$fileParts  = pathinfo($_FILES['Filedata']['name']);
+				
+				
+				if (in_array($fileParts['extension'], $typesArray)) {
+					
+					$CI = & get_instance();
+				
+		            $query = 'INSERT INTO photo (photo_id, address_id, ';
+		            if (!empty($restaurantId)) {
+		                $query .= 'restaurant_id';
+		            } else if (!empty($restaurantChainId)) {
+		                $query .= 'restaurant_chain_id';
+		            } else if (!empty($manufactureId)) {
+		                $query .= 'manufacture_id';
+		            } else if (!empty($farmId)) {
+		                $query .= 'farm_id';
+		            } else if (!empty($farmersMarketId)) {
+		                $query .= 'farmers_market_id';
+		            } else if (!empty($productId)) {
+		                $query .= 'product_id';
+		            }
+		            
+		            $query .= ', title, description, path, thumb_photo_name, photo_name, original_photo_name, extension, mime_type, thumb_height, thumb_width, height, width, user_id, status, track_ip, added_on)' .
+		                    ' values (NULL, NULL, ';
+		
+		            if (!empty($restaurantId)) {
+		                $query .= $restaurantId;
+		            } else if (!empty($restaurantChainId)) {
+		                $query .= $restaurantChainId;
+		            } else if (!empty($manufactureId)) {
+		                $query .= $manufactureId;
+		            } else if (!empty($farmId)) {
+		                $query .= $farmId;
+		            } else if (!empty($farmersMarketId)) {
+		                $query .= $farmersMarketId;
+		            } else if (!empty($productId)) {
+		                $query .= $productId;
+		            }
+		            
+		            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
+		            
+		            log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
+		
+		            if ($this->db->query($query)) {
+		                $newPhotoId = $this->db->insert_id();
+		                
+		                $array = array(
+							'photoId' => $newPhotoId, 
+							'thumbPhoto' =>  '/uploads' . $path . 'thumb/' .$thumbPhotoName,
+							'thumbHeight' =>  $thumbHeight,
+							'thumbWidth' =>  $thumbWidth,
+							);
+					
+		                $return = $array;
+		            } else {
+		                $return = false;
+		            }
+					
+				} else {
+					$return = false;
+				}
 			} else {
 				$return = false;
 			}
-			
 		}
         return $return;
         

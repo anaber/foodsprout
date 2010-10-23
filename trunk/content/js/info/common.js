@@ -749,8 +749,8 @@ function reinitializeUploadPhotoForm() {
 		'folder'         : '/uploads',
 		'auto'           : true,
 		'multi'          : false,
-		'fileDesc'		 : '*.png;*.gif;*.jpg;*.bmp', //'Images',
-		'fileExt'		 : '*.png;*.gif;*.jpg;*.bmp',
+		'fileDesc'		 : '*.png;*.gif;*.jpg', //'Images',
+		'fileExt'		 : '*.png;*.gif;*.jpg',
 		'buttonText'	 : 'Upload Photos',
 		'scriptData'	 : {
 								manufactureId: $('#manufactureId').val(),

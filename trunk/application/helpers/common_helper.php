@@ -179,5 +179,55 @@ function generateRandomString ($length = 16) {
 	return $password;
 }
 
+function createThumb($name,$filename,$new_w,$new_h) {
+	$return = true; 
+	$system=explode(".",$name);
+	if (preg_match("/jpg|jpeg/",$system[1])){$src_img=imagecreatefromjpeg($name);}
+	if (preg_match("/png/",$system[1])){$src_img=imagecreatefrompng($name);}
+	if (preg_match("/gif/",$system[1])){$src_img=imagecreatefromgif($name);}
+	
+	$old_x=imageSX($src_img);
+	$old_y=imageSY($src_img);
+	if ($old_x > $old_y) 
+	{
+		$thumb_w=$new_w;
+		$thumb_h=$old_y*($new_h/$old_x);
+	}
+	if ($old_x < $old_y) 
+	{
+		$thumb_w=$old_x*($new_w/$old_y);
+		$thumb_h=$new_h;
+	}
+	if ($old_x == $old_y) 
+	{
+		$thumb_w=$new_w;
+		$thumb_h=$new_h;
+	}
+	$dst_img=ImageCreateTrueColor($thumb_w,$thumb_h);
+	imagecopyresampled($dst_img,$src_img,0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y); 
+	if (preg_match("/png/",$system[1])) {
+		if (imagepng($dst_img,$filename) ) {
+			$return = true;
+		} else {
+			$return = false;
+		}
+	} else if (preg_match("/gif/",$system[1])) {
+		if (imagegif($dst_img,$filename) ) {
+			$return = true;
+		} else {
+			$return = false;
+		}
+	} else {
+		if (imagejpeg($dst_img,$filename) ) {
+			$return = true;
+		} else {
+			$return = false;
+		}
+	}
+	imagedestroy($dst_img); 
+	imagedestroy($src_img);
+	
+	return $return;
+}
 
 ?>
