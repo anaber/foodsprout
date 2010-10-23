@@ -167,9 +167,7 @@ function drawAddItem() {
 		html += '<div id = "addSupplier" class = "addItem">&nbsp;+ Supplier</div>';
 	} else if (currentContent == 'menu') {
 		html += '<div id = "addMenu" class = "addItem">&nbsp;+ Menu</div>';
-	} else if (currentContent == 'comment') {
-		html += '<div id = "addComment" class = "addItem">&nbsp;+ Comment</div>';
-	}
+	} 
 	return html;
 }
 
