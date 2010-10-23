@@ -61,9 +61,9 @@ class Restaurant extends Controller {
 		
 		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
 		
-		$data['CSS'] = array(
+		/*$data['CSS'] = array(
 						''
-					);
+					);*/
 		
 		$this->load->view('templates/left_center_template', $data);
 	}

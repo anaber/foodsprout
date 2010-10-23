@@ -40,6 +40,9 @@ h3{font-size:14px;}
 #recordsPerPageList{font-size:12px;}
 #suggestion_box{height:14px;font-size:12px;}
 .divZipcode{padding:5px;background:#F05A25;}
+/* listing */
+.filterh{-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;border-top-left-radius:7px;background: #F05A25; color:#fff; padding:5px;padding-left:10px;}
+.filterb{background:#e5e5e5; font-size:90%;padding-left:5px;padding-bottom:5px;padding-top:5px;font-size:13px;}
 /* popup css */
 #backgroundPopup{display:none;position:fixed;_position:absolute;/* hack for internet explorer 6*/ height:100%;width:100%;top:0;left:0;background:#000000;border:1px solid #cecece;z-index:1;}
 #backgroundWhitePopup{display:none;position:fixed;_position:absolute;/* hack for internet explorer 6*/ height:100%;width:100%;top:0;left:0;border:1px solid #cecece;z-index:1;}
