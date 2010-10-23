@@ -10,6 +10,11 @@ class Manufacture extends Controller {
 	function index() {
 		$data = array();
 		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('manufacture_list');
+		$data['SEO'] = $seo;
+		
 		// Views to include in the data array
 		$data['CENTER'] = array(
 				'list' => '/manufacture/manufacture_list',

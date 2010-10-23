@@ -37,8 +37,7 @@ function reinitializeAutoSuggestEvent(dataProducts) {
 
 
 <div id="resultsContainer" style="display:block" class="pd_tp1">
-	<div style="float:left;"><h1><?php echo ( isset($FRUCTOSE) && $FRUCTOSE) ? 'Products With Fructose' : 'Products'; ?></h1></div>
-	<div style="float:right;"><hr style = "border:1px solid #F05A25; width:410px; margin-right:22px;margin-top:10px;" /></div>
+	<div style="float:left; width:400px;"><h1><?php echo ( isset($FRUCTOSE) && $FRUCTOSE) ? 'Products With High-Fructose Corn Syrup' : 'Products'; ?></h1></div>
 	<div id="resultTableContainer"></div>
 	<div class="clear"></div>
 </div>
