@@ -63,7 +63,7 @@ var topRestaurantTypes;
 	?>
 </div>
 <div id="resultsContainer" style="display:none" class="pd_tp1">
-	<div style="float:left;width:400px;"><h1><?php echo ( isset($CITY) ? 'Recommended Restaurants in ' . $CITY->city : 'List of Restaurants' ) ?></h1></div>
+	<div style="float:left;width:400px;"><h1><?php echo ( isset($CITY) ? 'Sustainable Restaurants in ' . $CITY->city : 'List of Restaurants' ) ?></h1></div>
 	<div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:30px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
 	<div id="resultTableContainer"></div>
 </div>
