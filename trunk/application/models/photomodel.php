@@ -169,6 +169,10 @@ class PhotoModel extends Model{
 			$mainTargetPath = $targetPath . 'main/';
 			$thumbTargetPath = $targetPath . 'thumb/';
 			
+			//echo $originalTargetPath . "\n";
+			//echo $mainTargetPath . "\n";
+			//echo $thumbTargetPath . "\n";
+			
 			if ( !file_exists($originalTargetPath) ) {
 				mkdir(str_replace('//','/',$originalTargetPath), 0755, true);
 			}
