@@ -194,18 +194,18 @@ class PhotoModel extends Model{
 			move_uploaded_file($tempFile, $originalTargetFile);
 			copy($originalTargetFile, $mainTargetFile);
 			//copy($originalTargetFile, $thumbTargetFile);
-			//if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200') ) {
-			if ( copy($originalTargetFile, $thumbTargetFile) ) {
+			
+			$arr = getimagesize($mainTargetFile);
+			$width = $arr[0];
+			$height = $arr[1];
+			$mime = $arr['mime'];
+			
+			if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200', $width, $height) ) {
+			//if ( copy($originalTargetFile, $thumbTargetFile) ) {
 			
 				$arr = getimagesize($thumbTargetFile);
 				$thumbWidth = $arr[0];
 				$thumbHeight = $arr[1];
-				
-				$arr = getimagesize($mainTargetFile);
-				$width = $arr[0];
-				$height = $arr[1];
-				$mime = $arr['mime'];
-				
 				
 				$fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
 				$typesArray = explode(';',$fileTypes);
