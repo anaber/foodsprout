@@ -40,4 +40,6 @@ $APPLICATION_FOLDER = "C:/Projects/food/trunk/application";
 
 $UPLOAD_FOLDER = "C:/Projects/food/trunk/content/uploads";
 
+$IMAGEMAGICK_PATH = "convert";
+
 ?>

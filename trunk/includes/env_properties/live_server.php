@@ -45,4 +45,6 @@ $SYSTEM_FOLDER = "/mnt/stor2-wc1-dfw1/404946/492717/www.foodsprout.com/web/syste
 $APPLICATION_FOLDER = "/mnt/stor2-wc1-dfw1/404946/492717/www.foodsprout.com/web/application";
 
 $UPLOAD_FOLDER = "/mnt/stor2-wc1-dfw1/404946/492717/www.foodsprout.com/web/content/uploads";
+
+$IMAGEMAGICK_PATH = "/usr/bin/convert";
 ?>

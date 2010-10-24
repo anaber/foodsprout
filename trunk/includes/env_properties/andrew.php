@@ -39,4 +39,6 @@ $SYSTEM_FOLDER = "/Users/anaber/Sites/food/web/trunk/system";
 $APPLICATION_FOLDER = "/Users/anaber/Sites/food/web/trunk/application";
 
 $UPLOAD_FOLDER = "/Users/anaber/Sites/food/web/trunk/content/uploads";
+
+$IMAGEMAGICK_PATH = "/usr/bin/convert";
 ?>

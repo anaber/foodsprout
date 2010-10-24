@@ -44,4 +44,6 @@ $SYSTEM_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.vemoto.com/web/system";
 $APPLICATION_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.vemoto.com/web/application";
 
 $UPLOAD_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.vemoto.com/web/content/uploads";
+
+$IMAGEMAGICK_PATH = "/usr/bin/convert";
 ?>
