@@ -46,4 +46,5 @@ $APPLICATION_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.sproutchain.com/web
 
 $UPLOAD_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.sproutchain.com/web/content/uploads";
 
+$IMAGEMAGICK_PATH = "/usr/bin/convert";
 ?>
