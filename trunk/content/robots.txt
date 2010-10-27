@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /farm/ajaxGetDistinctUsedFarmType #AJAX call
+Disallow: /restaurant/ajaxGetDistinctUsedCuisine
+Disallow: /restaurant/ajaxGetDistinctUsedRestaurantType
+Allow: /
