@@ -107,6 +107,11 @@ class Product extends Controller {
 	function fructose() {
 		$data = array();
 		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('fructose_list');
+		$data['SEO'] = $seo;
+		
 		// Views to include in the data array
 		$data['CENTER'] = array(
 				'list' => '/product/product_list',
