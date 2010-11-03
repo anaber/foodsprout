@@ -192,7 +192,6 @@ ALTER TABLE `farm_supplier` ADD COLUMN `track_ip` VARCHAR(20) NULL DEFAULT NULL 
 ALTER TABLE `farmers_market_supplier` ADD COLUMN `track_ip` VARCHAR(20) NULL DEFAULT NULL  AFTER `status` ;
 
 --
--- Above mentioned queries are on LIVE NOW
 -- 2010/10/05
 -- PHOTOS and COMMENTS
 --
@@ -329,8 +328,12 @@ DEFAULT CHARACTER SET = latin1
 COLLATE = latin1_swedish_ci;
 
 
-
-
+--
+-- Latest SQL here
+-- 2011/11/03
+--
+ALTER TABLE `address` CHANGE COLUMN `zipcode` `zipcode` VARCHAR(6) NOT NULL  ;
+UPDATE `address` SET zipcode = CONCAT('0', zipcode) AND geocoded = 0 WHERE CHAR_LENGTH( `zipcode` ) = 4;
 
 
 

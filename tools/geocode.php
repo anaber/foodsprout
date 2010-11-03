@@ -11,7 +11,8 @@ if (file_exists($defines_file))
 
 $geocode = new GeoCode();
 
-$geocode->geocodeZip();
+$geocode->index();
+//$geocode->geocodeZip();
 
 
 
@@ -26,10 +27,14 @@ class GeoCode {
 	}
 	
 	function index() {
-		$this->processAddresses(1, 30000);
+		$this->processAddresses(1, 100000);
 	}
 	
 	function processAddresses($from, $to) {
+		// TO-DO : Alter zipcode field from address table before making these changes. 
+		// Update zipcode to add 0 before 4 digit zipcodes.
+		// ALTER TABLE `address` CHANGE COLUMN `zipcode` `zipcode` VARCHAR(6) NOT NULL  ;
+		// UPDATE `address` SET zipcode = CONCAT('0', zipcode) AND geocoded = 0 WHERE CHAR_LENGTH( `zipcode` ) = 4;
 		
 		$query = "SELECT address.*, state.state_code, country.country_name FROM address, state, country " .
 				" WHERE address_id >= $from AND address_id <= $to " .
@@ -48,9 +53,10 @@ class GeoCode {
 			$latLng = array();
 			
 			$latLng = $this->geoCodeAddressV3($address);
-			
-			if ( isset($latLng['latitude']) && !empty($latLng['latitude']) ) {
-				if ($this->updateAddress($latLng['latitude'], $latLng['longitude'], $row['address_id']) ) {
+			//print_r($latLng);die;
+			//if ( isset($latLng['latitude']) && !empty($latLng['latitude']) ) {
+			if ( $latLng ) {
+				if ($this->updateAddress($latLng['latitude'], $latLng['longitude'], $row['address_id'], $latLng) ) {
 					echo "DONE \n";
 				} else {
 					echo "FAILED \n";
@@ -62,12 +68,13 @@ class GeoCode {
 		}
 	}
 	
-	function updateAddress($latitude, $longitude, $address_id) {
+	function updateAddress($latitude, $longitude, $address_id, $latLng) {
 		$return = false;
 		
 		$query = 'UPDATE address SET ' .
 					'latitude = "' . $latitude . '", ' .
 					'longitude = "' . $longitude . '", ' .
+					' approximate = ' . ( ( $latLng['approximate'] == 1 ) ? 1 : 0 ) . ', ' . 
 					'geocoded = 1 ' .
 					' WHERE address_id = ' . $address_id;
 		
@@ -108,10 +115,16 @@ class GeoCode {
 	}
 	
 	function geoCodeAddressV3($address) {
+		global $GEOCODE_URL;
+		
 		$json = '';
 		$a = array();
 		
-		$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+		if (!empty($GEOCODE_URL) ) {
+			$url = $GEOCODE_URL . "?address=".urlencode($address);
+		} else {	
+			$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+		}
 		
 		$ch = curl_init ();
 		curl_setopt ($ch, CURLOPT_URL, $url);
@@ -127,6 +140,7 @@ class GeoCode {
 			if ($arr->status != 'OK') {
 				return false;
 			} else {
+				
 				$a['latitude'] = $arr->results[0]->geometry->location->lat;
 				$a['longitude'] = $arr->results[0]->geometry->location->lng;
 				$a['approximate'] = ( (count($arr->results) > 1) ? 1 : 0 );
