@@ -102,10 +102,9 @@
 <!-- center tabs -->
 	<div id="resultsContainer">
 		<div id="menu-bar"> 
-			<div id="suppliers" class = "selected"><a href="#">Farms at Market</a></div>
-			<div id="menu" class = "non-selected" style = "display:none;"><a href="#">Menu</a></div>
-			<div id="comments" class = "non-selected"><a href="#">Comments</a></div>
-			<div id="photos" class = "non-selected"><a href="#">Photos</a></div>
+			<div id="suppliers" class = "selected">Farms at Market</div>
+			<div id="comments" class = "non-selected">Comments</div>
+			<div id="photos" class = "non-selected">Photos</div>
 			<div id="addItem" class = "addItem">&nbsp;+ Farm</div>
 			
 			<div id="divAddSupplier" class="supplier">

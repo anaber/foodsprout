@@ -100,12 +100,12 @@ class Restaurant extends Controller {
 
 		$seo_data_array = array(
 			'restaurant_name' => $restaurant->restaurantName,
-			'restaurant_type' => 'Fast Food',
-			'cuisines' => 'Fast Food, American, Pizza',
+			// need to add more info about the restaurant here
 		);
 
 		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
 		$data['SEO'] = $seo;
+		
 		// SEO ENDS here
 
 		// List of views to be included, these are files that are pulled from different views in the view folders
