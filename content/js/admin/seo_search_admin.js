@@ -50,8 +50,8 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_id', order, data.param.q);
+		order = getOrder(data, 'seo_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'seo_id', order, data.param.q);
 	});
 	
 	$("#heading_farm").click(function(e) {
@@ -82,7 +82,6 @@ function addResult(seo, i) {
 	'	<td valign="top">'+ seo.metaDescription +'</td>' + 
 	'	<td valign="top">'+ seo.metaKeywords +'</td>' +
 	'	<td valign="top">'+ seo.h1 +'</td>' +
-	'	<td valign="top">'+ seo.url +'</td>' +
 	'</tr>'
 	;
 	
@@ -100,7 +99,6 @@ function getResultTableHeader() {
 	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">Meta Description</a></th>' +
 	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">Meta Keywords</a></th>' +
 	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">H1</a></th>' +
-	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">URL</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';
