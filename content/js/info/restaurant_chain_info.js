@@ -7,7 +7,9 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 		formAction = '/chain/ajaxSearchRestaurantChainSuppliers';
 	} else if (type == 'comment') {
 		formAction = '/chain/ajaxSearchRestaurantChainComments';
-	} 
+	} else if (type == 'photo') {
+		formAction = '/chain/ajaxSearchRestaurantChainPhotos';
+	}
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:restaurantChainId, f:filter };
 	
