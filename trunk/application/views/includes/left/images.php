@@ -1,6 +1,7 @@
 <?php /* ?><div id="rest-main-img"><img src="/img/applebee-img.jpg" width="211" height="143" alt="apple-img" /></div><?php */?>
 <?php
-	if (count ($PHOTOS) > 0 ) {
+	//if (isset($PHOTOS)) {
+	if (isset($PHOTOS) && count ($PHOTOS) > 0 ) {
 ?>
 <div id="rest-main-img"><div id="main_image"></div></div>
 <script src="<?php echo base_url()?>js/jquery.galleria.pack.js" type="text/javascript"></script>

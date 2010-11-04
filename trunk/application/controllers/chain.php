@@ -58,6 +58,9 @@ class Chain extends Controller {
 
 		$restaurantChainId = $this->uri->segment(3);
 		
+		$this->load->model('PhotoModel');
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('restaurant_chain', $restaurantChainId);
+		
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($restaurantChainId);
@@ -103,6 +106,9 @@ class Chain extends Controller {
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
 		$data['data']['center']['info']['RESTAURANT_CHAIN_ID'] = $restaurantChain->restaurantChainId;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_chain_supplier';
+		
+		// Left -> Images
+		$data['data']['left']['img']['PHOTOS'] = $thumbPhotos;
 		
 		$data['RESTAURANT_CHAIN'] = $restaurantChain;
 		
@@ -151,6 +157,7 @@ class Chain extends Controller {
 		$comments = $this->PhotoModel->getPhotosJson('restaurant_chain');
 		echo json_encode($comments);
 	}
+	
 }
 
 /* End of file restaurant.php */
