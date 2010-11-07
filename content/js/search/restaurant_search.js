@@ -943,7 +943,7 @@ function addResult(restaurant, i) {
 	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;font-size:13px;">';
 	
 	html += '<div style = "float:left;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div>';
-	if (restaurant.claimsSustainable) {
+	if (restaurant.claimsSustainable == 1) {
 		html += '<div style = "float:right;"><img src = "/img/leaf-small.png"></div>';
 	}
 	

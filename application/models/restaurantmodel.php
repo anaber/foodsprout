@@ -132,7 +132,9 @@ class RestaurantModel extends Model{
 		
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
 				' AND restaurant.status = \'live\' ';
-		
+		if ($sustainableWithZipcode) {
+			$where	.= ' AND claims_sustainable = 1 ';
+		}
 		
 		//$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
 		//		. ' OR restaurant.restaurant_id like "%' . $q . '%"';
@@ -184,9 +186,6 @@ class RestaurantModel extends Model{
 					. ' 			AND (';
 				if ( !empty($q) ) {
 			$where	.= '					address.zipcode = "' . $q . '"';
-					if ($sustainableWithZipcode) {
-			$where	.= '					AND address.claims_sustainable = 1 ';
-					}
 				} else if ( !empty($city) ) {
 			$where	.= '					address.city_id IN (' . $city . ') ';
 				} else if ( !empty($citySearch) ) {
