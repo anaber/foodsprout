@@ -3,8 +3,6 @@
 <script type="text/javascript" src="<?php echo base_url()?>js/jquery-ui/jquery.ui.mouse.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>js/jquery-ui/jquery.ui.slider.js"></script>
 
-<link type="text/css" href="<?php echo base_url()?>css/jquery-ui/jquery.ui.slider.css" rel="stylesheet" />
-<link type="text/css" href="<?php echo base_url()?>css/jquery-ui/jquery.ui.theme.css" rel="stylesheet" />
 <style type="text/css">
 	#demo-frame > div.demo { padding: 10px !important; };
 </style>

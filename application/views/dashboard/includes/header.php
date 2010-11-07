@@ -31,6 +31,8 @@ var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_tr
 <script type='text/javascript'>GA_googleAddSlot("ca-pub-5358554883766443", "FoodSprout-ROS-MediumRec");GA_googleAddSlot("ca-pub-5358554883766443", "FoodSprout-ROS-Sky");</script>
 <script type='text/javascript'>GA_googleFetchAds();</script>
 
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
+
 </head>
 <body>
 <!-- header -->
