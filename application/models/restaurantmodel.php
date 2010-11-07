@@ -651,6 +651,7 @@ class RestaurantModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
+			
 			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', '', $q, $city, '');
 			$this->restaurantLib->addresses = $addresses;
 			
@@ -1159,6 +1160,25 @@ class RestaurantModel extends Model{
 		//die;
 	    return $arr;
 		
+	}
+	
+	function updateRestaurantSustainable($restaurantId, $claimsSustainable) {
+		$return = true;
+		
+		$data = array(
+					'claims_sustainable' => $claimsSustainable,
+				);
+		$where = "restaurant_id = " . $restaurantId;
+		$query = $this->db->update_string('restaurant', $data, $where);
+		
+		log_message('debug', 'RestaurantModel.updateRestaurant : ' . $query);
+		if ( $this->db->query($query) ) {
+			$return = true;
+		} else {
+			$return = false;
+		}
+		
+		return $return;
 	}
 	
 }

@@ -336,6 +336,6 @@ ALTER TABLE `address` CHANGE COLUMN `zipcode` `zipcode` VARCHAR(6) NOT NULL  ;
 UPDATE `address` SET zipcode = CONCAT('0', zipcode) AND geocoded = 0 WHERE CHAR_LENGTH( `zipcode` ) = 4;
 
 ALTER TABLE `photo` ADD COLUMN `restaurant_chain_id` INT(11) NULL DEFAULT NULL  AFTER `manufacture_id` ;
-
+ALTER TABLE `restaurant` ADD COLUMN `claims_sustainable` INT(1) NULL DEFAULT NULL  AFTER `track_ip` ;
 
 

@@ -293,6 +293,7 @@ class AddressModel extends Model{
 		$stateId = $this->input->post('stateId');
 		$cityId = $this->input->post('cityId');
 		$cityName = $this->input->post('cityName');
+		$addressId = $this->input->post('addressId');
 		
 		if ( !empty ($cityName) && empty ($cityId)  ) {
 			$CI->load->model('CityModel','',true);
@@ -318,11 +319,28 @@ class AddressModel extends Model{
 					'longitude' => ( isset($latLng['longitude']) ? $latLng['longitude']:'' ),
 					'claims_sustainable' => (!empty ($claimsSustainable) ? $ACTIVITY_LEVEL_DB[$claimsSustainable] : '0'),
 				);
-		$where = "address_id = " . $this->input->post('addressId');
+		$where = "address_id = " . $addressId;
 		$query = $this->db->update_string('address', $data, $where);
 		
 		log_message('debug', 'AddressModel.updateAddress : ' . $query);
 		if ( $this->db->query($query) ) {
+			$restaurantId = $this->getRestaurantFromAddressId( $addressId );
+			
+			if ($restaurantId) {
+				$sustainableCount = $this->getSustainableAddressForRestaurantExceptGiven( $restaurantId, $addressId );
+				$CI->load->model('RestaurantModel','',true);
+				if ($sustainableCount == 0) {
+					// Set as 1
+					if ( $claimsSustainable == 'active') {
+						$CI->RestaurantModel->updateRestaurantSustainable($restaurantId, 1);
+					} else {
+						
+						$CI->RestaurantModel->updateRestaurantSustainable($restaurantId, 0);
+					} 
+				} else if ($sustainableCount > 0) {
+					// Don't do aything
+				}
+			}
 			$return = true;
 		} else {
 			$return = false;
@@ -340,6 +358,28 @@ class AddressModel extends Model{
 		$row = $result->row();
 		
 		return $row->manufacture_id;
+	}
+	
+	function getRestaurantFromAddressId($addressId) {
+		
+		$query = "SELECT * FROM address WHERE address_id = " . $addressId;
+		log_message('debug', "AddressModel.getRestaurantFromAddressId : " . $query);
+		$result = $this->db->query($query);
+		
+		$row = $result->row();
+		
+		return $row->restaurant_id;
+	}
+	
+	function getSustainableAddressForRestaurantExceptGiven($restaurantId, $addressId) {
+		
+		$query = "SELECT count(*) as num_row FROM address WHERE restaurant_id = " . $restaurantId . " AND address_id <> " . $addressId . ' AND 	claims_sustainable = 1';
+		log_message('debug', "AddressModel.getRestaurantFromAddressId : " . $query);
+		$result = $this->db->query($query);
+		
+		$row = $result->row();
+		
+		return $row->num_row;
 	}
 	
 }
