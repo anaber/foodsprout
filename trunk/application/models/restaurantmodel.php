@@ -31,6 +31,7 @@ class RestaurantModel extends Model{
 	}
 	
 	function getRestaurantsJson() {
+		
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 		
 		$p = $this->input->post('p'); // Page
@@ -43,6 +44,8 @@ class RestaurantModel extends Model{
 		
 		$CI =& get_instance();
 		
+		$sustainableWithZipcode = false;
+		
 		//echo $filter;
 		$arr_filter = explode(',', $filter);
 		
@@ -50,14 +53,18 @@ class RestaurantModel extends Model{
 		$arrCuisineId = array();
 		
 		foreach($arr_filter as $key => $value) {
-			$arr_value = explode('_', $value) ;
-			
-			if ($arr_value[0] == 'r') {
-				$arrRestaurantTypeId[] = $arr_value[1];
-			}
-			
-			if ($arr_value[0] == 'c') {
-				$arrCuisineId[] = $arr_value[1];
+			if ($value == 's') {
+				$sustainableWithZipcode = true;
+			} else {
+				$arr_value = explode('_', $value) ;
+				
+				if ($arr_value[0] == 'r') {
+					$arrRestaurantTypeId[] = $arr_value[1];
+				}
+				
+				if ($arr_value[0] == 'c') {
+					$arrCuisineId[] = $arr_value[1];
+				}
 			}
 		}
 		
@@ -108,14 +115,13 @@ class RestaurantModel extends Model{
 	
 		$page = 0;
 		
-		/*
-		$base_query = 'SELECT restaurant.*, restaurant_cuisine.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
-				' FROM restaurant, restaurant_cuisine, cuisine, restaurant_type';
+		//$base_query = 'SELECT restaurant.*, restaurant_cuisine.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
+		//		' FROM restaurant, restaurant_cuisine, cuisine, restaurant_type';
 		
-		$where = ' WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id '
-				. ' AND restaurant_cuisine.cuisine_id = cuisine.cuisine_id '
-				. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
-		*/
+		//$where = ' WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id '
+		//		. ' AND restaurant_cuisine.cuisine_id = cuisine.cuisine_id '
+		//		. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+		
 		
 		$base_query = 'SELECT restaurant.*, restaurant_type.restaurant_type' .
 				' FROM restaurant, restaurant_type';
@@ -127,10 +133,10 @@ class RestaurantModel extends Model{
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
 				' AND restaurant.status = \'live\' ';
 		
-		/*
-		$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
-				. ' OR restaurant.restaurant_id like "%' . $q . '%"';
-		*/
+		
+		//$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
+		//		. ' OR restaurant.restaurant_id like "%' . $q . '%"';
+		
 		
 		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
 			$where .= ' AND (';
@@ -160,7 +166,7 @@ class RestaurantModel extends Model{
 			$where .= ' )';
 		}
 		
-		if ( !empty($q) || !empty($city) || !empty($citySearch)  ) {
+		if ( !empty($q) || !empty($city) || !empty($citySearch) || $sustainableWithZipcode ) {
 			if (!empty($where) ) {
 				$where .= ' AND (';  
 			} else {
@@ -176,8 +182,11 @@ class RestaurantModel extends Model{
 					. '				AND address.state_id = state.state_id'
 					. '				AND address.country_id = country.country_id'
 					. ' 			AND (';
-				if ( !empty($q) ) {	 
+				if ( !empty($q) ) {
 			$where	.= '					address.zipcode = "' . $q . '"';
+					if ($sustainableWithZipcode) {
+			$where	.= '					AND address.claims_sustainable = 1 ';
+					}
 				} else if ( !empty($city) ) {
 			$where	.= '					address.city_id IN (' . $city . ') ';
 				} else if ( !empty($citySearch) ) {
@@ -310,6 +319,11 @@ class RestaurantModel extends Model{
 	    );
 	    //print_r_pre($arr);
 		//die;
+		/*
+		$arr = array(
+					'param' => array('numResults' => 0)
+				);
+	    */
 	    return $arr;
 		
 	}
