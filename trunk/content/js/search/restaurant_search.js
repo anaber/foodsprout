@@ -459,7 +459,24 @@ function redrawZipcodeBox() {
 		
 function redrawSustainableRestaurantsCheckbox() {
 	$('#divSustainableRestaurants').empty();
-	content = '<input type = "checkbox" name = "showSustainableRestaurants" id = "showSustainableRestaurants">&nbsp;Sustainable Restaurants';
+	var checkboxSelected = false;
+	
+	if (filters != '') {
+		arrFilter = filters.split(',');
+		
+		for(i = 0; i < arrFilter.length; i++ ) {
+			if (arrFilter[i] == 's') {
+				checkboxSelected = true;
+			}
+		}
+	}
+	
+	content = '<input type = "checkbox" name = "showSustainableRestaurants" id = "showSustainableRestaurants"';
+	if (checkboxSelected) {
+		content += ' CHECKED';
+	}
+	content += '>&nbsp;Sustainable Restaurants';
+	
 	$('#divSustainableRestaurants').html(content);
 }
 
@@ -682,10 +699,6 @@ function reinitializeFilterEvent (data) {
 			filters = strFilters;
 		//}
 		
-		alert("strFilters : " + strFilters);
-		alert("strCuisineFilters : " + strCuisineFilters);
-		alert("strRestaurantTypeFilters : " + strRestaurantTypeFilters);
-		alert("strSustainableFilters : " + strSustainableFilters);
 		loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
 	});
