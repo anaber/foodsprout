@@ -263,7 +263,7 @@ class RestaurantModel extends Model{
 			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
 			
 			$this->RestaurantLib->creationDate = $row['creation_date'];
-			$this->RestaurantLib->claimsSustainable = 0;
+			$this->RestaurantLib->claimsSustainable = $row['claims_sustainable'];
 			
 			$CI->load->model('AddressModel','',true);
 			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', $q, $city, $citySearch);
@@ -283,11 +283,11 @@ class RestaurantModel extends Model{
 				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
 				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
 				$arrLatLng['claimsSustainable'] = $address->claimsSustainable;
-				
+				/*
 				if ($address->claimsSustainable) {
 					$this->RestaurantLib->claimsSustainable = $address->claimsSustainable;
 				}
-				
+				*/
 				$arrLatLng['restaurantName'] = $this->RestaurantLib->restaurantName;
 				$arrLatLng['id'] = $address->addressId;
 				$geocodeArray[] = $arrLatLng;
