@@ -8,7 +8,7 @@ class FarmersMarket extends Controller {
 	}
 	
 	function index() {
-		global $FARM_RADIUS, $FARM_DEFAULT_RADIUS;
+		global $FARMERS_MARKET_RADIUS, $FARMERS_MARKET_DEFAULT_RADIUS;
 		$data = array();
 		
 		// SEO
@@ -43,8 +43,8 @@ class FarmersMarket extends Controller {
 		}
 		
 		// Data to be passed to the views
-		$data['data']['left']['filter']['FARM_RADIUS'] = $FARM_RADIUS;
-		$data['data']['left']['filter']['FARM_DEFAULT_RADIUS'] = $FARM_DEFAULT_RADIUS;
+		$data['data']['left']['filter']['FARMERS_MARKET_RADIUS'] = $FARMERS_MARKET_RADIUS;
+		$data['data']['left']['filter']['FARMERS_MARKET_DEFAULT_RADIUS'] = $FARMERS_MARKET_DEFAULT_RADIUS;
 		
 		if ( empty($f) ) {
 		//$data['data']['center']['map']['VIEW_HEADER'] = "Map";
@@ -62,6 +62,13 @@ class FarmersMarket extends Controller {
 			$data['data']['center']['list']['hide_map'] = 'no';
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
+		
+		// CSS files to use
+		$data['CSS'] = array(
+			'listing',
+			'jquery-ui/jquery.ui.slider',
+			'jquery-ui/jquery.ui.theme',
+		);
 		
 		$this->load->view('templates/left_center_template', $data);
 	}

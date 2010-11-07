@@ -250,7 +250,7 @@ class FarmersMarketModel extends Model{
 	}
 	
 	function getFarmersMarketJson() {
-		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL, $FARM_ZOOM_LEVEL, $FARM_DEFAULT_RADIUS;
+		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL, $FARM_ZOOM_LEVEL, $FARMERS_MARKET_ZOOM_LEVEL, $FARMERS_MARKET_DEFAULT_RADIUS;
 		
 		$CI =& get_instance();
 		
@@ -262,7 +262,7 @@ class FarmersMarketModel extends Model{
 		$radius = $this->input->post('r');
 		
 		if (empty  ($radius) ) {
-			$radius = $FARM_DEFAULT_RADIUS;
+			$radius = $FARMERS_MARKET_DEFAULT_RADIUS;
 		}
 		
 		//$filter = 'r_10,c_6';
@@ -299,24 +299,22 @@ class FarmersMarketModel extends Model{
 		$city = '';
 		//$city = '41,6009,13721';
 		
-		$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
-		
-		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+		$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
 		
 		if ($q == '') {
 			if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
 				$q = $_COOKIE['seachedZip'];
-				$mapZoomLevel = $FARM_ZOOM_LEVEL;
+				$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
 			} else {
 				if ($this->session->userdata('isAuthenticated') == 1 ) { // Authenticated
 					$q = $this->session->userdata['zipcode'];
-					$mapZoomLevel = $FARM_ZOOM_LEVEL;
+					$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
 					setcookie('seachedZip', $q, time()+60*60*24*30*365);
 				}
 			}
 		} else {
 			setcookie('seachedZip', $q, time()+60*60*24*30*365);
-			$mapZoomLevel = $FARM_ZOOM_LEVEL;
+			$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
 		}
 		
 		$latLng = array();
