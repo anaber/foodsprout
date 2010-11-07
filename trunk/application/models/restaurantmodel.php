@@ -214,8 +214,8 @@ class RestaurantModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY restaurant_name';
-			$sort = 'restaurant_name';
+			$sort_query = ' ORDER BY claims_sustainable, restaurant_name';
+			$sort = 'claims_sustainable';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
