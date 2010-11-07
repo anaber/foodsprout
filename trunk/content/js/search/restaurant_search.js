@@ -911,7 +911,17 @@ function drawNumRecords(params) {
 function addResult(restaurant, i) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;font-size:13px;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Cuisine:</b> ';
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;font-size:13px;">';
+	
+	html += '<div style = "float:left;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div>';
+	if (restaurant.claimsSustainable) {
+		html += '<div style = "float:right;"><img src = "/img/leaf-small.png"></div>';
+	}
+	
+	html += '</div>';
+	
+	
+	html += '<div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Cuisine:</b> ';
 	
 	$.each(restaurant.cuisines, function(j, cuisine) {
 		if (j == 0) {
