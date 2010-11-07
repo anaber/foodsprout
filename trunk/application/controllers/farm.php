@@ -65,9 +65,11 @@ class Farm extends Controller {
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
 		
+		// CSS files to use
 		$data['CSS'] = array(
 						'listing',
-						$this->css,
+						'jquery-ui/jquery.ui.slider',
+						'jquery-ui/jquery.ui.theme',
 					);
 		
 		$this->load->view('templates/left_center_template', $data);
