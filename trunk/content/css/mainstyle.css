@@ -63,3 +63,8 @@ h3{font-size:14px;}
 .porffoilo_content{padding:5px 0px; height:50px;}
 .mar_rt_45{margin-right:45px;}
 .flt{float:left;}
+#breadcrumb{padding-top:10px;font-size:18px;}
+#breadcrumb a{font-size:18px; text-decoration:none;}
+#breadcrumb h1{display:inline;}
+.abouton{text-decoration:none;line-height:30px;font-weight:bold;text-decoration:underline;}
+.aboutoff{text-decoration:none;line-height:30px;}

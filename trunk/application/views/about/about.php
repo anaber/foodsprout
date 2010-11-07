@@ -15,5 +15,10 @@ Our goals for Food Sprout are vast:<br>
 - To provide all the knowledge for people to make decisions about their food<br>
 - Help give people of the world access to high nutritional food<br><br>
 <h4>Values</h4>
+Food Sprout's values include:<br>
+- Providing open information about our food system<br>
+- Building quality tools for businesses and consumers<br>
+- A strong focus for design<br>
+- Using technology to solve sustainability issues<br>
 <br>
 <br>
