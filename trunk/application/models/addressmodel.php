@@ -227,6 +227,13 @@ class AddressModel extends Model{
 		log_message('debug', 'AddressModel.addAddress : Insert Address : ' . $query);
 		
 		if ( $this->db->query($query) ) {
+			
+			if ( !empty($restaurantId) ) {
+				if ( $claimsSustainable == 'active') {
+					$CI->RestaurantModel->updateRestaurantSustainable($restaurantId, 1);
+				}
+			}
+			
 			$return = true;
 		} else {
 			$return = false;
