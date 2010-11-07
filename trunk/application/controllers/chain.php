@@ -14,6 +14,11 @@ class Chain extends Controller {
 	function index() {
 		global $RECOMMENDED_CITIES;
 		$data = array();
+		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('chain_list');
+		$data['SEO'] = $seo;
 
 		// Views to include in the data array
 		$data['CENTER'] = array(
@@ -34,6 +39,11 @@ class Chain extends Controller {
 	function fastfood() {
 		global $RECOMMENDED_CITIES;
 		$data = array();
+		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('chain_list');
+		$data['SEO'] = $seo;
 
 		// Views to include in the data array
 		$data['CENTER'] = array(
@@ -70,12 +80,10 @@ class Chain extends Controller {
 
 		// SEO
 		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_detail');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('chain_detail');
 
 		$seo_data_array = array(
 			'restaurant_name' => $restaurantChain->restaurantChain,
-			'restaurant_type' => 'Fast Food',
-			'cuisines' => 'Fast Food, American, Pizza',
 		);
 
 		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
