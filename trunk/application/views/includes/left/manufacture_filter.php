@@ -1,5 +1,4 @@
 <script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
 <script>
 $(document).ready(function() {
 	

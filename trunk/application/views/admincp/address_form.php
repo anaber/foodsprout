@@ -203,7 +203,6 @@ $(document).ready(function() {
 </script>
 
 <script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 <?php

@@ -175,7 +175,6 @@ $(document).ready(function() {
 </script>
 
 <script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
 
 <form id="supplierForm" method="post">
 <table class="formTable">

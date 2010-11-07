@@ -31,6 +31,19 @@ var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_tr
 <script type='text/javascript'>GA_googleAddSlot("ca-pub-5358554883766443", "FoodSprout-ROS-MediumRec");GA_googleAddSlot("ca-pub-5358554883766443", "FoodSprout-ROS-Sky");</script>
 <script type='text/javascript'>GA_googleFetchAds();</script>
 
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo base_url()?>css/uploadify.css" type="text/css" /> 
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.lightbox-0.5.css" type="text/css" />
+
+<?php
+	$module = $this->uri->segment(1);
+	if ( $module == 'farm' || $module == 'farmersmarket' ) {
+?>
+<link type="text/css" href="<?php echo base_url()?>css/jquery-ui/jquery.ui.slider.css" rel="stylesheet" />
+<link type="text/css" href="<?php echo base_url()?>css/jquery-ui/jquery.ui.theme.css" rel="stylesheet" />
+<?php
+	}
+?>
 </head>
 <body>
 <!-- header -->
