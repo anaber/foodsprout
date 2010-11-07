@@ -132,7 +132,7 @@ class RestaurantModel extends Model{
 		
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
 				' AND restaurant.status = \'live\' ';
-		if ($sustainableWithZipcode) {
+		if ($sustainableWithZipcode || ( !empty($citySearch) ) ) {
 			$where	.= ' AND claims_sustainable = 1 ';
 		}
 		
@@ -189,7 +189,8 @@ class RestaurantModel extends Model{
 				} else if ( !empty($city) ) {
 			$where	.= '					address.city_id IN (' . $city . ') ';
 				} else if ( !empty($citySearch) ) {
-			$where	.= '					address.city_id = ' . $citySearch . ' AND address.claims_sustainable = 1 ';
+			//$where	.= '					address.city_id = ' . $citySearch . ' AND address.claims_sustainable = 1 ';
+			$where	.= '					address.city_id = ' . $citySearch;
 				}
 				
 			$where	.= '				)'
@@ -214,7 +215,7 @@ class RestaurantModel extends Model{
 		
 		if ( empty($sort) ) {
 			$sort_query = ' ORDER BY claims_sustainable DESC, restaurant_name';
-			$sort = 'claims_sustainable';
+			$sort = 'claims_sustainable DESC, restaurant_name';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
