@@ -9,6 +9,11 @@ class About extends Controller {
 
     // The default goes to the about page
     function index() {
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('about_index');
+		$data['SEO'] = $seo;
+	
         // List of views to be included
         $data['LEFT'] = array(
             'navigation' => 'about/left_nav',
@@ -20,8 +25,8 @@ class About extends Controller {
 
 		// Data to send to the views
 		$data['BREADCRUMB'] = array(
-							'Food Sprout' => '/',
-							'About Food Sprout' => '/about',
+							'About' => '/about',
+							'Food Sprout Mission' => '',
 						);
 
         $this->load->view('/templates/left_center_template', $data);
@@ -29,6 +34,11 @@ class About extends Controller {
 
     // Contact information
     function contact() {
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('about_contact');
+		$data['SEO'] = $seo;
+	
         // List of views to be included
         $data['LEFT'] = array(
             'navigation' => 'about/left_nav',
@@ -40,8 +50,33 @@ class About extends Controller {
 
         // Data to send to the views
         $data['BREADCRUMB'] = array(
-							'Food Sprout' => '/',
-							'Contacting Food Sprout' => '/about/contact',
+							'About' => '/about',
+							'Contacting Food Sprout' => '',
+						);
+        
+        $this->load->view('/templates/left_center_template', $data);
+    }
+
+	// Team information
+    function team() {
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('about_team');
+		$data['SEO'] = $seo;
+	
+        // List of views to be included
+        $data['LEFT'] = array(
+            'navigation' => 'about/left_nav',
+        );
+
+        $data['CENTER'] = array(
+            'content' => 'about/team',
+        );
+
+        // Data to send to the views
+        $data['BREADCRUMB'] = array(
+							'About' => '/about',
+							'Food Sprout Team' => '',
 						);
         
         $this->load->view('/templates/left_center_template', $data);
@@ -49,6 +84,11 @@ class About extends Controller {
 
     // Information for business owners
     function business() {
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('about_business');
+		$data['SEO'] = $seo;
+	
         // List of views to be included
         $data['LEFT'] = array(
             'navigation' => 'about/left_nav',
@@ -60,8 +100,8 @@ class About extends Controller {
 
         // Data to send to the views
         $data['BREADCRUMB'] = array(
-							'Food Sprout' => '/',
-							'Information for Restaurant &amp; Businesses' => '/about/business',
+							'About' => '/about',
+							'Information for Restaurant &amp; Businesses' => '',
 						);
         
         $this->load->view('/templates/left_center_template', $data);
@@ -74,6 +114,11 @@ class About extends Controller {
 
 	// The terms and conditions
     function terms() {
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('about_terms');
+		$data['SEO'] = $seo;
+	
         // List of views to be included
         $data['LEFT'] = array(
             'navigation' => 'about/left_nav',
@@ -85,8 +130,8 @@ class About extends Controller {
 
         // Data to send to the views
         $data['BREADCRUMB'] = array(
-							'Food Sprout' => '/',
-							'Terms & Conditions' => '/about/terms',
+							'About' => '/about',
+							'Terms & Conditions' => '',
 						);
 						
         $this->load->view('/templates/left_center_template', $data);
@@ -94,6 +139,11 @@ class About extends Controller {
 
 	// The privacy policy
     function privacy() {
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('about_privacy');
+		$data['SEO'] = $seo;
+	
         // List of views to be included
         $data['LEFT'] = array(
             'navigation' => 'about/left_nav',
@@ -105,8 +155,8 @@ class About extends Controller {
 
         // Data to send to the views
         $data['BREADCRUMB'] = array(
-							'Food Sprout' => '/',
-							'Food Sprout\'s Privacy Policy' => '/about/privacy',
+							'About' => '/about',
+							'Food Sprout\'s Privacy Policy' => '',
 						);
         
         $this->load->view('/templates/left_center_template', $data);

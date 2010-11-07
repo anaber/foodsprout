@@ -1,9 +1,49 @@
-<br />
-<a href = "/about">About</a><br>
-<a href = "/about/contact">Contact</a><br>
+<?php
+$tab = $this->uri->segment(2);
+?>
 
-<a href = "/about/business">Business</a><br>
+<p />
 
-<br/><br/><br/>
-Follow on Twitter:<br>
-<a href="http://www.twitter.com/foodsprout"><img src="/img/icons/twittericon.gif" width="40" height="40" alt="Food Sprout Twitter" border="0"></a>
+<?php
+$aboutclass=NULL;
+if($this->uri->segment(1) == "about" && $tab == '') { 
+	$aboutclass = 'class="abouton"';
+}
+else{
+	$aboutclass = 'class="aboutoff"';
+}
+echo anchor('/about', 'About', $aboutclass);
+?><br>
+
+<?php
+$teamclass=NULL;
+if($tab == "team") { 
+	$teamclass = 'class="abouton"';
+}
+else{
+	$teamclass = 'class="aboutoff"';
+}
+echo anchor('/about/team', 'Team', $teamclass);
+?><br>
+
+<?php
+$contactclass=NULL;
+if($tab == "contact") { 
+	$contactclass = 'class="abouton"';
+}
+else{
+	$contactclass = 'class="aboutoff"';
+}
+echo anchor('/about/contact', 'Contact', $contactclass);
+?><br>
+
+<?php
+$bizclass=NULL;
+if($tab == "business") { 
+	$bizclass = 'class="abouton"';
+}
+else{
+	$bizclass = 'class="aboutoff"';
+}
+echo anchor('/about/business', 'Business', $bizclass);
+?><br>
