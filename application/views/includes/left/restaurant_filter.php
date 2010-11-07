@@ -4,7 +4,10 @@
 	if ( isset($CITY) ) { }
 	else {
 ?>
-	<div id="divZipcode" class="divZipcode" style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;-moz-border-radius-bottomleft:7px;-webkit-border-radius-bottomleft:7px;border-top-left-radius:7px;border-bottom-left-radius:7px;background: #F05A25; color:#fff; padding:5px;padding-left:10px;"><form id="frmFilters">Zip Code <input type="text" size="6" maxlength="5" id = "q"></form></div><br>
+	<div id="divZipcode" class="filterh divZipcode"><form id="frmFilters">Zip Code <input type="text" size="6" maxlength="5" id = "q"></form></div>
+	<div id="divSustainableRestaurants" class="filterb"></div>
+	<br>
+	
 <?php
 	}
 	

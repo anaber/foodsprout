@@ -347,11 +347,8 @@ function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
 
 function redrawTopRestaurantTypes(data) {
 	$('#divRestaurantTypes').empty();
-	
 	var resultHtml = '';
-	
 	if (selectedRestaurantTypeId != "") {
-		
 		arrSelectedRestaurantTypes = new Array();
 		j = 0;
 		if (filters != '') {
@@ -377,7 +374,6 @@ function redrawTopRestaurantTypes(data) {
 		//resultHtml += '</ul>';
 		
 	} else {
-		
 		arrTopFilters = new Array();
 		j = 0;
 		if (filters != '') {
@@ -461,7 +457,11 @@ function redrawZipcodeBox() {
 	$('#divZipcode').html(formFilterContent);
 }
 		
-	
+function redrawSustainableRestaurantsCheckbox() {
+	$('#divSustainableRestaurants').empty();
+	content = '<input type = "checkbox" name = "showSustainableRestaurants" id = "showSustainableRestaurants">&nbsp;Sustainable Restaurants';
+	$('#divSustainableRestaurants').html(content);
+}
 
 function redrawContent(data, filter) {
 	
@@ -518,10 +518,10 @@ function redrawContent(data, filter) {
 		// Do nothing
 	} else {
 		redrawZipcodeBox();
-		
 		$("#q").val(data.param.q);
+		
+		redrawSustainableRestaurantsCheckbox();
 	}
-	
 	
 	//$('#table_results tbody tr td a').click(function(e) {
 	$('#resultTableContainer div div a').click(function(e) {
@@ -594,6 +594,7 @@ function reinitializeFilterEvent (data) {
 	var strFilters = '';
 	var strCuisineFilters = '';
 	var strRestaurantTypeFilters = '';
+	var strSustainableFilters = '';
 	
 	$(':checkbox').click(function () {
 		
@@ -614,8 +615,7 @@ function reinitializeFilterEvent (data) {
 	        }
 	        i++;
 	        
-		  }
-		);
+		  });
 
 		i = 0;
 		$('#divCuisines :checked').each(function() {
@@ -633,9 +633,12 @@ function reinitializeFilterEvent (data) {
 	        	strCuisineFilters += ',' + $(this).val();
 	        }
 	        i++;
-		  }
-		  
-		);
+		});
+		
+		$('#divSustainableRestaurants :checked').each(function() {
+		  	strSustainableFilters = 's';
+		  	//alert("Sustainable restaurants clicked");
+		});
 		
 		//alert("From line 294: " + strRestaurantTypeId);
 		//alert(strFilters);
@@ -656,7 +659,7 @@ function reinitializeFilterEvent (data) {
 			} else {
 				strFilters = selectedCuisineId;
 			}
-		} 
+		}
 		
 		if (selectedRestaurantTypeId != '') {
 			if (strFilters != '') {
@@ -666,10 +669,23 @@ function reinitializeFilterEvent (data) {
 			}
 		}
 		
-		if (strFilters != '') {
-			filters = strFilters;
+		if (strSustainableFilters != '') {
+			if (strFilters != '') {
+				strFilters = strFilters + ',' + strSustainableFilters;
+			} else {
+				strFilters = strSustainableFilters;
+			}
 		}
 		
+		// Don't remember why I had added this condition. But its causing bug, so removing this for now.
+		//if (strFilters != '') {
+			filters = strFilters;
+		//}
+		
+		alert("strFilters : " + strFilters);
+		alert("strCuisineFilters : " + strCuisineFilters);
+		alert("strRestaurantTypeFilters : " + strRestaurantTypeFilters);
+		alert("strSustainableFilters : " + strSustainableFilters);
 		loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
 	});

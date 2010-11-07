@@ -27,6 +27,7 @@ var topRestaurantTypes;
 		
 		$.post("/restaurant/ajaxSearchRestaurants", { city:"<?php echo (isset($CITY) ? $CITY->cityId : '' ) ?>", q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
 		function(data){
+		
 			
 			if (showMap ==  true) {
 				loadMapOnStartUp(38.41055825094609, -98, 3);
@@ -51,6 +52,7 @@ var topRestaurantTypes;
 			},
 			"json");
 			
+		
 		},
 		"json");
 		
