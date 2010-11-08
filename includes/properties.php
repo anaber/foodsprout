@@ -30,6 +30,7 @@ $DOCUMENT_ROOT = $_SERVER['DOCUMENT_ROOT'];
 
 $DEFAULT_ZOOM_LEVEL = 3;
 $FARM_ZOOM_LEVEL = 7;
+$FARMERS_MARKET_ZOOM_LEVEL = 13;
 $CITY_ZOOM_LEVEL = 11;
 $ZIPCODE_ZOOM_LEVEL = 13;
 
@@ -48,8 +49,8 @@ $FARM_RADIUS = array(
 $FARMERS_MARKET_DEFAULT_RADIUS = 5;
 $FARMERS_MARKET_RADIUS = array(
 					'min' => 0,
-					'max' => 20,
-					'step' => 5,
+					'max' => 12,
+					'step' => 2,
 				);
 
 
