@@ -19,6 +19,19 @@ class Chain extends Controller {
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('chain_list');
 		$data['SEO'] = $seo;
+		
+		// validate the data in the URL to make sure we don't have SQL injection
+		$urlpage = substr($this->uri->segment(2),4,5);
+		if(is_numeric($urlpage))
+		{
+			$page = $urlpage-1;
+		} else {
+			$page = 0;
+		}
+		$perpage = 60;
+		
+		$this->load->model('RestaurantChainModel');
+		$chains = $this->RestaurantChainModel->getRestaurantChains($page,$perpage);
 
 		// Views to include in the data array
 		$data['CENTER'] = array(
@@ -30,8 +43,8 @@ class Chain extends Controller {
 			);
 
 		// Data to be passed to the views
-		//$data['data']['center']['list']['VIEW_HEADER'] = "List of Fast Food Resturants";
 		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
+		$data['data']['center']['list']['CHAINS'] = $chains;
 		
 		$this->load->view('templates/left_center_template', $data);
 	}

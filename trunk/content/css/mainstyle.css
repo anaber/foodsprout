@@ -68,3 +68,11 @@ h3{font-size:14px;}
 #breadcrumb h1{display:inline;}
 .abouton{text-decoration:none;line-height:30px;font-weight:bold;text-decoration:underline;}
 .aboutoff{text-decoration:none;line-height:30px;}
+.chainlist{float:left; width:300px;line-height:170%;}
+.chainlist a{text-decoration:none;}
+.paging {word-spacing:12px;font-size:14px;}
+.paging a{text-decoration:none;}
+.productlisth{float:left; padding:3px; clear:left; width:600px; background:#e5e5e5; font-weight:bold;}
+.productlisth a{text-decoration:none;}
+.productlist_type{float:left; width:270px;clear:left;padding-left:3px;padding-right:10px;font-size:13px;}
+.product_addr{float:right;width:240px;font-size:13px;}

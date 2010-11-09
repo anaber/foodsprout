@@ -15,14 +15,30 @@ class Manufacture extends Controller {
 		$seo = $this->SeoModel->getSeoDetailsFromPage('manufacture_list');
 		$data['SEO'] = $seo;
 		
+		// validate the data in the URL to make sure we don't have SQL injection
+		$urlpage = substr($this->uri->segment(2),4,5);
+		if(is_numeric($urlpage))
+		{
+			$page = $urlpage-1;
+		} else {
+			$page = 0;
+		}
+		$perpage = 20;
+		
+		$this->load->model('ManufactureModel');
+		$manufactures = $this->ManufactureModel->getManufactures($page,$perpage);
+		
 		// Views to include in the data array
 		$data['CENTER'] = array(
-				'list' => '/manufacture/manufacture_list',
+				'list' => '/manufacture/manufacture_listb',
 			);		
 		
 		$data['LEFT'] = array(
 				'filter' => 'includes/left/manufacture_filter',
 			);
+			
+		// Data to be passed to the views
+		$data['data']['center']['list']['MANUFACTURES'] = $manufactures;
 		
 		$this->load->view('templates/left_center_template', $data);
 	}
