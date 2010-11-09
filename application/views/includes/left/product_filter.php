@@ -31,11 +31,11 @@ $(document).ready(function() {
 });
 </script>
 	
-	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;border-top-left-radius:7px;background: #F05A25; color:#fff; padding:5px;padding-left:10px;">Search</div>
-	<div style="background:#e5e5e5; font-size:90%;padding-left:5px;padding-bottom:5px;padding-top:5px;">
-		<input type="text" size="29" id = "suggestion_box">
+	<div class="filterh">Search</div>
+	<div class="filterb">
+		<input type="text" size="18" id="suggestion_box">
 	</div>
 	<br />
-	<div style="-moz-border-radius-topleft:7px;-webkit-border-radius-topleft:7px;border-top-left-radius:7px;background: #F05A25; color:#fff; padding:5px;">More Options</div>
-	<div style="background:#e5e5e5; font-size:90%; padding:5px;"><a href = "/manufacture" style="font-size:13px;text-decoration:none;">All Manufacturers</a></div>
+	<div class="filterh">More Options</div>
+	<div class="filterb"><a href = "/manufacture" style="font-size:13px;text-decoration:none;">All Manufacturers</a></div>
 	

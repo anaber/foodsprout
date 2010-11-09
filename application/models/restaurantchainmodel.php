@@ -331,6 +331,94 @@ class RestaurantChainModel extends Model{
 	    return $arr;
 	}
 	
+	// Get chains
+	function getRestaurantChains($page,$perpage) {
+		global $PER_PAGE_2;
+		
+		$p = $page; // Page
+		$pp = $perpage; // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		$base_query = 'SELECT *' .
+				' FROM restaurant_chain';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM restaurant_chain';
+		
+		$where = ' WHERE restaurant_chain.status = \'live\' ';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY restaurant_chain';
+			$sort = 'restaurant_chain';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE_2 = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE_2;
+				$query .= " LIMIT $p, " . $PER_PAGE_2;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE_2;
+			}
+		}
+		
+		log_message('debug', "RestaurantChainModel.getRestaurantChains : " . $query);
+		$result = $this->db->query($query);
+		
+		$restaurantChains = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('RestaurantChainLib');
+			unset($this->RestaurantChainLib);
+			
+			$this->RestaurantChainLib->restaurantChainId = $row['restaurant_chain_id'];
+			$this->RestaurantChainLib->restaurantChain = $row['restaurant_chain'];
+			
+			$restaurantChains[] = $this->RestaurantChainLib;
+			unset($this->RestaurantChainLib);
+		}
+	    
+	    return $restaurantChains;
+	}
+	
 	// Get Restaurant Chain Menu
 	function getRestaurantChainMenu($restaurantChainId){
 		$query = "SELECT * FROM product WHERE restaurant_chain_id = " . $restaurantChainId;
