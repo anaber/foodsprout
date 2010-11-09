@@ -1,0 +1,212 @@
+.test-class{
+	color:#FF0000;
+	font-size:18px;
+}
+
+#leafimg #mainimg #restaurantname {
+	height: 61px;
+	width: 1000px;
+}
+#leafimg #mainimg #restaurantname #logorestaurant {
+	float: left;
+	height: 35px;
+	width: 500px;
+	padding-left: 15px;
+	padding-top: 22px;
+}
+#leafimg #mainimg #rest-main-details {
+	float: left;
+	height: 390px;
+	width: 225px;
+}
+#leafimg #mainimg #rest-main-details #rest-main-img {
+	float: left;
+	height: 133px;
+	width: 201px;
+	
+	border: solid 10px #e5e5e5;
+}
+#leafimg #mainimg #rest-main-details #rest-dec {
+	float: right;
+	height: 89px;
+	width: 211px;
+	margin-top: 12px;
+	background-color: #b2b2b2;
+}
+#leafimg #mainimg #rest-main-details #rest-dec #dec-head {
+	height: 22px;
+	width: 106px;
+	padding-top: 6px;
+	padding-left: 8px;
+}
+#leafimg #mainimg #rest-main-details #rest-dec #description-details {
+	height: 50px;
+	width: 205px;
+	font-size: 11px;
+	color: #FFF;
+	text-align: justify;
+	font-family: "Myriad Pro";
+	padding-top: 5px;
+	padding-right: 3px;
+	padding-left: 3px;
+}
+#leafimg #mainimg #rest-main-details #location-icon {
+	height: 23px;
+	width: 89px;
+	padding-top: 15px;
+	padding-left: 8px;
+	float: left;
+}
+#leafimg #mainimg #rest-main-details #map {
+	float: left;
+	height: 100px;
+	width: 210px;
+	padding-top: 8px;
+	
+}
+
+#leafimg #mainimg #resultsContainer #menu-bar .non-selected a {
+	color: #FFF;
+	text-decoration: none;
+}
+#leafimg #mainimg #resultsContainer #menu-bar .selected a {
+	color: #90171E;
+	text-decoration: none;
+}
+
+#leafimg #mainimg #resultsContainer #menu-bar .add-item a {
+	color: #FFF;
+	text-decoration: none;
+}
+
+#leafimg #mainimg #resultsContainer #menu-bar .add-item-selected a {
+	color: #90171E;
+	text-decoration: none;
+}
+
+#leafimg #mainimg #resultsContainer {
+	float: left;
+	width: 530px;
+	padding-left: 15px;
+}
+#leafimg #mainimg #resultsContainer #menu-bar {
+	height: 25px;
+	width: 520px;
+	background-color: #90171E;
+	padding-left: 19px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+#leafimg #mainimg #resultsContainer #menu-bar .non-selected {
+	padding-right: 9px;
+	padding-left: 9px;
+	float: left;
+	height: 20px;
+	margin-top: 5px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+}
+
+#leafimg #mainimg #resultsContainer #menu-bar .selected {
+	padding-right: 9px;
+	padding-left: 9px;
+	float: left;
+	height: 22px;
+	margin-top: 3px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+	background-color: #FFF;
+	color: #90171E;
+	line-height: 19px;
+}
+
+#leafimg #mainimg #resultsContainer #menu-bar .add-item-selected {
+	float: left;
+	padding-right: 9px;
+	padding-left: 9px;
+	height: 22px;
+	margin-top: 3px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+	background-color: #FFF;
+	color: #90171E;
+	line-height: 19px;
+}
+
+#leafimg #mainimg #resultsContainer #menu-bar .add-item {
+	float: left;
+	padding-right: 10px;
+	padding-left: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #FFF;
+	line-height: 25px;
+}
+
+#leafimg #mainimg #resultsContainer .menus {
+	width: 538px;
+	float: left;
+	padding-left: 0px;
+}
+#leafimg #mainimg #resultsContainer .menus .menuitem {
+	float: left;
+	/*height: 112px;*/
+	width: 538px;
+	margin-top: 8px;
+	border: 1px solid #CCC;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#leafimg #mainimg #resultsContainer .menus .menuitem .menuitemimg {
+		height: 107px;
+	width: 135px;
+	float: right;
+	padding-top: 2px;
+	padding-right: 0px;
+}
+#leafimg #mainimg #resultsContainer .menus .menuitem .menuitemname {
+	float: left;
+	padding-top: 15px;
+	padding-left: 10px;
+	color: #333;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+}
+#leafimg #mainimg #resultsContainer .menus .menuitem .menuitemdetails {
+	float: left;
+	width: 350px;
+	color: #333;
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	padding-left: 12px;
+	padding-top: 10px;
+	text-align: justify;
+}
+#leafimg #mainimg #add-designs {
+	float: right;
+	height: 600px;
+	width: 200px;
+	padding-right: 4px;
+}
+#leafimg #mainimg #add-designs #add1 {
+	height: 171px;
+	width: 171px;
+	float: left;
+	padding-left: 15px;
+}
+#leafimg #mainimg #add-designs #add2 {
+	height: 171px;
+	width: 171px;
+	float: left;
+	margin-top: 5px;
+	padding-left: 15px;
+}
