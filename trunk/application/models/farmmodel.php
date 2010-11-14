@@ -426,6 +426,7 @@ class FarmModel extends Model{
 			$latLng = $CI->ZipcodeModel->getCoordinatesFromZipcode($q);
 			
 			if ( ! $latLng) {
+				
 				$address = $q. ', USA';
 				$CI->load->model('GoogleMapModel','',true);
 				$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
@@ -461,8 +462,10 @@ class FarmModel extends Model{
 			$where .= ' )';
 		}
 		
+		
 		//if ( !empty($q) || !empty($city) ) {
 		if ( $latLng ) {
+			//$latLng = array();
 			if (!empty($where) ) {
 				$where .= ' AND (';  
 			} else {
@@ -475,29 +478,35 @@ class FarmModel extends Model{
 			} else if ( !empty($q) ) {
 				$where	.= '		address.address_id';
 			}
-					 
+					/*
 					$where	.=  '	from address, state, country'
 					. '			WHERE' 
 					. '				address.farm_id = farm.farm_id'
 					. '				AND address.state_id = state.state_id'
 					. '				AND address.country_id = country.country_id';
+					*/
+					
+					$where	.=  '	from address'
+					. '			WHERE' 
+					. '				address.farm_id = farm.farm_id';
 					
 				if (count($latLng) > 0 ) {
 					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
 				} else if ( !empty($q) ) {
-					$where	.= ' 			HAVING ( address.zipcode = "' . $q . '") ';
+					$where	.= ' 			AND ( address.zipcode = "' . $q . '") ';
 				} 
 
 			$where	.= '				LIMIT 0, 1'
 					. '		)';
 			
 		}
+		
 		$base_query_count = $base_query_count . $where;
 		
 		
 		//$query = $base_query_count . " ORDER BY restaurant_name ";
 		$query = $base_query_count;
-		
+		//die($query);
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;

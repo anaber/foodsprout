@@ -360,12 +360,17 @@ class FarmersMarketModel extends Model{
 			} else if ( !empty($q) ) {
 				$where	.= '		address.address_id';
 			}
-					 
+					/*
 					$where	.=  '	from address, state, country'
 					. '			WHERE' 
 					. '				address.farmers_market_id = farmers_market.farmers_market_id'
 					. '				AND address.state_id = state.state_id'
 					. '				AND address.country_id = country.country_id';
+					*/
+					$where	.=  '	from address'
+					. '			WHERE' 
+					. '				address.farmers_market_id = farmers_market.farmers_market_id';
+					
 					
 				if (count($latLng) > 0 ) {
 					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
