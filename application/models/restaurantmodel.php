@@ -175,7 +175,7 @@ class RestaurantModel extends Model{
 				$where .= ' WHERE (';
 			}
 			
-
+			/*
 			//$where	.= ' OR ( '
 			$where	.= '		SELECT address.address_id' 
 					. '			from address, state, country'
@@ -183,6 +183,12 @@ class RestaurantModel extends Model{
 					. '				address.restaurant_id = restaurant.restaurant_id'
 					. '				AND address.state_id = state.state_id'
 					. '				AND address.country_id = country.country_id'
+					. ' 			AND (';
+			*/
+			$where	.= '		SELECT address.address_id' 
+					. '			from address'
+					. '			WHERE' 
+					. '				address.restaurant_id = restaurant.restaurant_id'
 					. ' 			AND (';
 				if ( !empty($q) ) {
 			$where	.= '					address.zipcode = "' . $q . '"';
