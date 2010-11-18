@@ -23,8 +23,22 @@ class Manufacture extends Controller {
 		} else {
 			$page = 0;
 		}
-		$perpage = 20;
 		
+		if($this->input->get('pp'))
+		{
+			$number_perpage = $this->input->get('pp');
+			if($number_perpage > 40)
+			{
+				$perpage = 20;
+			}
+			else{
+				$perpage = $number_perpage;
+			}
+		}
+		else{
+			$perpage = 10;
+		}
+			
 		$this->load->model('ManufactureModel');
 		$manufactures = $this->ManufactureModel->getManufactures($page,$perpage);
 		

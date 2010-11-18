@@ -1,6 +1,8 @@
 <script src="<?php echo base_url()?>js/search/manufacture_search.js" type="text/javascript"></script>
 <?php
 	$brand = $this->input->post('f');
+	
+	//print_r($MANUFACTURES);
 ?>
 
 <div style="float:left;width:600px; padding-left:10px;">
@@ -39,7 +41,7 @@
 				$prevpage = $currentpage;
 				$nextpage = $currentpage+1;
 			}
-			elseif($currentpage == 4)
+			elseif($currentpage == $MANUFACTURES['param']['totalPages'])
 			{
 				$prevpage = $currentpage-1;
 				$nextpage = $currentpage;
@@ -50,10 +52,10 @@
 				$nextpage = $currentpage+1;
 			}
 		?>
-			<div style="float:left; width:350px;" class="paging">
-				<a href="/manufacture/page<?php echo $prevpage; ?>">Prev</a> <a href="/manufacture/page1">1</a> <a href="/manufacture/page2">2</a> <a href="/manufacture/page3">3</a> <a href="/manufacture/page4">4</a> <a href="/manufacture/page<?php echo $nextpage; ?>">Next</a>
+			<div style="float:left; width:320px;" class="paging">
+				<a href="/manufacture/page<?php echo $prevpage; ?>?pp=<?php echo $MANUFACTURES['param']['perPage']; ?>">Prev</a> <a href="/manufacture/page1?pp=<?php echo $MANUFACTURES['param']['perPage']; ?>">1</a> <a href="/manufacture/page2?pp=<?php echo $MANUFACTURES['param']['perPage']; ?>">2</a> <a href="/manufacture/page3?pp=<?php echo $MANUFACTURES['param']['perPage']; ?>">3</a> <a href="/manufacture/page4?pp=<?php echo $MANUFACTURES['param']['perPage']; ?>">4</a> <a href="/manufacture/page<?php echo $nextpage; ?>?pp=<?php echo $MANUFACTURES['param']['perPage']; ?>">Next</a>
 			</div>
-			<div style="float:right; width:250px; font-size:14px; text-align:right;">1 - 10 of <?php echo $MANUFACTURES['param']['numResults']; ?> | Items Per Page 10 20 40</div>
+			<div style="float:right; width:280px; font-size:14px; text-align:right;"><?php echo $MANUFACTURES['param']['start']; ?> - <?php echo $MANUFACTURES['param']['end']; ?> of <?php echo $MANUFACTURES['param']['numResults']; ?> | Items Per Page <?php echo '<a href="'.current_url().'?pp=10">10</a>'; ?> | <?php echo '<a href="'.current_url().'?pp=20">20</a>'; ?> | <?php echo '<a href="'.current_url().'?pp=30">30</a>'; ?></div>
 	</div>
 </div>
 
