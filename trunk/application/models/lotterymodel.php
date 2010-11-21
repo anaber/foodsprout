@@ -106,8 +106,8 @@ class LotteryModel extends Model{
 			
 			$this->LotteryLib->startDate = ( $row['start_date'] ? date('m-d-Y', strtotime($row['start_date']) ) : '');
 			$this->LotteryLib->endDate = ( $row['end_date'] ? date('m-d-Y', strtotime($row['end_date']) ) : '');
-			$this->LotteryLib->startDate = ( $row['draw_date'] ? date('m-d-Y', strtotime($row['draw_date']) ) : '');
-			$this->LotteryLib->startDate = ( $row['result_date'] ? date('m-d-Y', strtotime($row['result_date']) ) : '');
+			$this->LotteryLib->drawDate = ( $row['draw_date'] ? date('m-d-Y', strtotime($row['draw_date']) ) : '');
+			$this->LotteryLib->resultDate = ( $row['result_date'] ? date('m-d-Y', strtotime($row['result_date']) ) : '');
 			
 			$CI->load->model('PrizeModel','',true);
 			$prizes = $CI->PrizeModel->getPrizesForLottery($row['lottery_id']);
@@ -132,7 +132,7 @@ class LotteryModel extends Model{
 			'param'      => $params,
 			'geocode'	 => $geocodeArray,
 	    );
-	    
+	    //print_r_pre($arr);
 	    return $arr;
 	}
 	
@@ -201,10 +201,10 @@ class LotteryModel extends Model{
 			$this->LotteryLib->city = $row->city;
 			$this->LotteryLib->stateCode = $row->state_code;
 			
-			$this->LotteryLib->startDate = ( $row->start_date ? date('m-d-Y', strtotime($row->start_date) ) : '');
-			$this->LotteryLib->endDate = ( $row->end_date ? date('m-d-Y', strtotime($row->end_date) ) : '');
-			$this->LotteryLib->startDate = ( $row->draw_date ? date('m-d-Y', strtotime($row->draw_date) ) : '');
-			$this->LotteryLib->startDate = ( $row->result_date ? date('m-d-Y', strtotime($row->result_date) ) : '');
+			$this->LotteryLib->startDate = ( $row->start_date ? date('m/d/Y', strtotime($row->start_date) ) : '');
+			$this->LotteryLib->endDate = ( $row->end_date ? date('m/d/Y', strtotime($row->end_date) ) : '');
+			$this->LotteryLib->drawDate = ( $row->draw_date ? date('m/d/Y', strtotime($row->draw_date) ) : '');
+			$this->LotteryLib->resultDate = ( $row->result_date ? date('m/d/Y', strtotime($row->result_date) ) : '');
 			//print_r_pre($this->LotteryLib);die;
 			return $this->LotteryLib;
 		} else {
