@@ -329,13 +329,21 @@ COLLATE = latin1_swedish_ci;
 
 
 --
--- Latest SQL here
 -- 2011/11/03
+-- Released
 --
 ALTER TABLE `address` CHANGE COLUMN `zipcode` `zipcode` VARCHAR(6) NOT NULL  ;
 UPDATE `address` SET zipcode = CONCAT('0', zipcode) AND geocoded = 0 WHERE CHAR_LENGTH( `zipcode` ) = 4;
 
 ALTER TABLE `photo` ADD COLUMN `restaurant_chain_id` INT(11) NULL DEFAULT NULL  AFTER `manufacture_id` ;
 ALTER TABLE `restaurant` ADD COLUMN `claims_sustainable` INT(1) NULL DEFAULT 0 AFTER `track_ip` ;
+
+--
+-- 2011/11/15
+-- Lottery Release
+--
+ALTER TABLE `lottery_entry` ADD COLUMN `enrolled_on` DATETIME NOT NULL  AFTER `lottery_id` ;
+ALTER TABLE `lottery_prize` DROP COLUMN `place` , ADD COLUMN `prize` VARCHAR(45) NULL DEFAULT NULL  AFTER `winner` ;
+ALTER TABLE `lottery` ADD COLUMN `draw_date` DATETIME NOT NULL  AFTER `end_date` , ADD COLUMN `result_date` DATETIME NOT NULL  AFTER `draw_date` ;
 
 

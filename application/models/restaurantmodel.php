@@ -1187,6 +1187,21 @@ class RestaurantModel extends Model{
 		return $return;
 	}
 	
+	function searchRestaurants($q) {
+		$query = "SELECT restaurant_id, restaurant_name
+					FROM restaurant
+					WHERE restaurant_name like '$q%'
+					ORDER BY restaurant_name ";
+		$restaurants = '';
+		log_message('debug', "RestaurantModel.searchRestaurants : " . $query);
+		$result = $this->db->query($query);
+		foreach ($result->result_array() as $row) {
+			$restaurants .= $row['restaurant_name']."|".$row['restaurant_id']."\n";
+		}
+		
+		return $restaurants;
+	}
+	
 }
 
 

@@ -206,6 +206,33 @@ class CityModel extends Model{
 	    return $arr;
 	}
 	
+	function getCityBasedOnRestaurant ($restaurantId, $q) {
+		$originalQ = $q;
+		$q = strtolower($q);
+		
+		$query = 'SELECT DISTINCT (address.city_id), city.city, city.state_id, state.state_code' .
+				' FROM address, city, state' .
+				' WHERE address.restaurant_id =1' .
+				' AND address.city_id = city.city_id' .
+				' AND city.state_id = state.state_id' .
+				' AND city.city like "%'.$q.'%"';
+		
+		$cities = '';
+		
+		log_message('debug', "CityModel.getCityBasedOnState : " . $query);
+		$result = $this->db->query($query);
+		
+		if ( $result->num_rows() > 0) {
+			foreach ($result->result_array() as $row) {
+				$cities .= $row['city'] . ', ' . $row['state_code'] ."|".$row['city_id']."\n";
+			}
+		} else {
+			$cities .= 'Create "'.$originalQ.'"|' . $originalQ;
+		}
+		
+		return $cities;
+	}
+	
 	
 }
 
