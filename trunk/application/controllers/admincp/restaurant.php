@@ -406,6 +406,13 @@ class Restaurant extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
+	function searchRestaurants() {
+		$q = strtolower($_REQUEST['q']);
+		$this->load->model('RestaurantModel', '', TRUE);
+		$restaurants = $this->RestaurantModel->searchRestaurants($q);
+		echo $restaurants;
+	}
+	
 }
 
 /* End of file restaurant.php */
