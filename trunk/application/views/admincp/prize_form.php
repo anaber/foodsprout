@@ -110,17 +110,19 @@ $(document).ready(function() {
 <table class="formTable">
 	
 	<tr>
-		<td width = "25%" nowrap>Dollar Amount</td>
-		<td width = "75%">
-			<input  value="<?php echo (isset($PRIZE) ? $PRIZE->dollarAmount : '') ?>" class="validate[required]"  type="text" name="dollarAmount" id="dollarAmount"/><br />
-		</td>
-	</tr>
-	<tr>
 		<td width = "25%" nowrap>Prize</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($PRIZE) ? $PRIZE->prize : '') ?>" class="validate[required]" type="text" name="prize" id="prize"/><br />
 		</td>
 	</tr>
+	
+	<tr>
+		<td width = "25%" nowrap>Dollar Amount</td>
+		<td width = "75%">
+			<input  value="<?php echo (isset($PRIZE) ? $PRIZE->dollarAmount : '') ?>" class="validate[required]"  type="text" name="dollarAmount" id="dollarAmount"/><br />
+		</td>
+	</tr>
+	
 	
 	<tr>
 		<td width = "25%" colspan = "2">
