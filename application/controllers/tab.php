@@ -13,8 +13,11 @@ class Tab extends Controller {
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('tab_index');
 		$data['SEO'] = $seo;
-	
-        $data['CENTER'] = array(
+
+		$this->load->model('LotteryModel', '', TRUE);
+		$lotteries = $this->LotteryModel->getLotteries();
+		
+		$data['CENTER'] = array(
             'content' => 'tab/info',
         );
 
@@ -23,15 +26,20 @@ class Tab extends Controller {
 							'Tab\'s on Us' => '/tab',
 						);
 
+		$data['data']['center']['content']['LOTTRIES'] = $lotteries;
+
         $this->load->view('/templates/center_template', $data);
     }
 
     // Contact information
-    function detail() {
+    function detail($id) {
 		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('tab_detail');
 		$data['SEO'] = $seo;
+
+		$this->load->model('LotteryModel', '', TRUE);
+		$lottery = $this->LotteryModel->getLotteryFromId($id);
 
         $data['CENTER'] = array(
             'content' => 'tab/detail',
@@ -42,7 +50,7 @@ class Tab extends Controller {
 							'Tab\'s on Us' => '/tab',
 							'This Week\'s Restaurant' => '',
 						);
-        
+        $data['data']['center']['content']['LOTTERY'] = $lottery;
         $this->load->view('/templates/center_template', $data);
     }
 	
