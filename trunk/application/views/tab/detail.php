@@ -51,8 +51,8 @@ $(document).ready(function() {
 
 </script>
 <div id="alert"></div>
-
-This weeks deal<br>
+<div style = "font-size: 13px;">
+<strong>This weeks deal</strong><br>
 Restaurant Name: <?php echo $LOTTERY->restaurantName; ?><br />
 City Name: <?php echo $LOTTERY->city; ?><br />
 Start Date: <?php echo date('m-d-Y', strtotime($LOTTERY->startDate) ); ?><br />
@@ -65,10 +65,14 @@ foreach ($LOTTERY->prizes as $key => $prize) {
 	echo $prize->prize . " : $" . number_format($prize->dollarAmount, 2) . "<br />";
 }
 ?>
+</div>
 <br>
 
-<a href = "#" id = "linkEnroll">Click here</a> to enter.  <!--Or use Facebook to enter.-->
+<div style = "font-size: 13px; text-decoration: none;"><a href = "#" id = "linkEnroll" style = "font-size: 13px; text-decoration: none;">Click here</a> to enter.  <!--Or use Facebook to enter.--> <br /></a>
+
+
+<div style = "font-size: 13px; text-decoration: none;"><a href = "/tab" style = "font-size: 13px; text-decoration: none;">Go back</a> to previous screen.</div> 
 
 <?php
-	print_r_pre($LOTTERY);
+	//print_r_pre($LOTTERY);
 ?>
