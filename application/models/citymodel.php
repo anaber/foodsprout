@@ -212,7 +212,7 @@ class CityModel extends Model{
 		
 		$query = 'SELECT DISTINCT (address.city_id), city.city, city.state_id, state.state_code' .
 				' FROM address, city, state' .
-				' WHERE address.restaurant_id =1' .
+				' WHERE address.restaurant_id = ' . $restaurantId .
 				' AND address.city_id = city.city_id' .
 				' AND city.state_id = state.state_id' .
 				' AND city.city like "%'.$q.'%"';
