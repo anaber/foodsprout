@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo base_url()?>css/uploadify.css" type="text/css" /> 
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.lightbox-0.5.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo base_url()?>css/floating_messages.css" type="text/css" />
 <?php 
 if (isset ($CSS) ) {
 	foreach ($CSS as $key => $css_file) {

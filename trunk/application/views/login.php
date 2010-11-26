@@ -31,7 +31,13 @@
 </head>
 
 
-
+<?php
+	$return = $this->input->get('return');
+	
+	if (!$return) {
+		$return = $this->input->post('return');
+	}
+?>
 <body class="home">
 	<script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 	<div id="alert"></div>
@@ -51,8 +57,8 @@
 							<span>Remember me</span>
 						<br/>						
 						<input type="text" name="login_email" id="login_email" class="validate[required]" value="Email" onfocus="if(this.value == 'Email')this.value='';" onblur="if(this.value=='')this.value='Email';" /> <input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
-						
-						 <input type="submit" name="submit" value="Login" />
+						<input type = "hidden" name = "return" value = "<?php echo $return; ?>">
+						<input type="submit" name="submit" value="Login" />
 					</form>
 				</div>
 	</div><!-- #wrapper --> 

@@ -25,6 +25,8 @@ class Login extends Controller {
 	// Check the user's data is valid
 	function validate() {
 		
+		$return = $this->input->post('return');
+		
 		$this->load->model('LoginModel', '', TRUE);
 		$authenticated = $this->LoginModel->validateUser();
 		
@@ -38,7 +40,12 @@ class Login extends Controller {
 			
 			$this->load->view('login', $data);
 		} else {
-			redirect('/');
+			
+			if ($return) {
+				redirect($return);
+			} else {
+				redirect('/');
+			}
 		}
 		
 	}

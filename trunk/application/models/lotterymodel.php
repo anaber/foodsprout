@@ -393,6 +393,41 @@ class LotteryModel extends Model{
 	    return $arr;
 	}
 	
+	function enroll() {
+		$return = true;
+		
+		$lotteryId = $this->input->post('lotteryId');
+		$userId = $this->session->userdata('userId');
+		
+		$CI =& get_instance();
+		
+		$query = "SELECT * FROM lottery_entry WHERE lottery_id = " . $lotteryId . " AND user_id = " . $userId;
+		log_message('debug', 'LotteryModel.enroll : Try to get duplicate record : ' . $query);
+		
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			$query = "INSERT INTO lottery_entry (user_id, lottery_id, enrolled_on)" .
+					" values (".$userId.", " . $lotteryId . ", NOW() )";
+			
+			log_message('debug', 'LotteryModel.enroll : Enroll : ' . $query);
+			$return = true;
+			
+			if ( $this->db->query($query) ) {
+				$return = true;
+			} else {
+				$return = false;
+			}
+			
+		} else {
+			$GLOBALS['error'] = 'already_enrolled';
+			$return = false;
+		}
+		
+		return $return;
+	}
+	
+	
 }
 
 ?>

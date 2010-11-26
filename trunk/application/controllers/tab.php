@@ -31,7 +31,7 @@ class Tab extends Controller {
         $this->load->view('/templates/center_template', $data);
     }
 
-    // Contact information
+    // Lottery Detail
     function detail($id) {
 		// SEO
 		$this->load->model('SeoModel');
@@ -53,7 +53,22 @@ class Tab extends Controller {
         $data['data']['center']['content']['LOTTERY'] = $lottery;
         $this->load->view('/templates/center_template', $data);
     }
-	
+
+	function enroll() {
+		$this->load->model('LotteryModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->LotteryModel->enroll() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+    }
+		
 
 }
 ?>
