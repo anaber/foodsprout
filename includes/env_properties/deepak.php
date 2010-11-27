@@ -41,5 +41,12 @@ $APPLICATION_FOLDER = "C:/Projects/food/trunk/application";
 $UPLOAD_FOLDER = "C:/Projects/food/trunk/content/uploads";
 
 $IMAGEMAGICK_PATH = "convert";
+/*
+ * ======================================================
+ * Facebook Connect
+ * ======================================================
+ */
+$FB_APP_ID = '161818017193989';
+$FB_SECRET_KEY = '27ed2b8d641f77bd101dac8c2a0a8c5a';
 
 ?>

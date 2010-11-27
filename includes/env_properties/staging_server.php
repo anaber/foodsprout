@@ -47,4 +47,12 @@ $APPLICATION_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.sproutchain.com/web
 $UPLOAD_FOLDER = "/mnt/stor2-wc1-dfw1/404946/468258/www.sproutchain.com/web/content/uploads";
 
 $IMAGEMAGICK_PATH = "/usr/bin/convert";
+
+/*
+ * ======================================================
+ * Facebook Connect
+ * ======================================================
+ */
+$FB_APP_ID = '174104705941049';
+$FB_SECRET_KEY = '595a457af7823c4bc1bcef9721b32b87';
 ?>

@@ -3,8 +3,23 @@
 class Tab extends Controller {
 
     function __construct() {
+        global $FB_APP_ID, $FB_SECRET_KEY;
         parent::Controller();
 		checkUserLogin();
+		
+		$this->load->plugin('facebook');
+		// Prevent the 'Undefined index: facebook_config' notice from being thrown.
+		//$GLOBALS['facebook_config']['debug'] = NULL;
+		// Create a Facebook client API object.
+		//$this->facebook = new Facebook($FB_APP_ID, $FB_SECRET_KEY);
+		
+		$this->facebook = new Facebook(array(
+  							'appId'  => $FB_APP_ID,
+  							'secret' => $FB_SECRET_KEY,
+  							'cookie' => true,
+						));
+		
+		//$user = $this->facebook->require_login();
     }
 
     // The default goes to the about page
@@ -51,6 +66,7 @@ class Tab extends Controller {
 							'This Week\'s Restaurant' => '',
 						);
         $data['data']['center']['content']['LOTTERY'] = $lottery;
+        $data['data']['center']['content']['FACEBOOK'] = $this->facebook;
         $this->load->view('/templates/center_template', $data);
     }
 
