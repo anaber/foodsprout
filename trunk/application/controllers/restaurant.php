@@ -150,6 +150,9 @@ class Restaurant extends Controller {
 				);
 		$data['data']['left']['info']['INFO'] = $INFO;
 		
+		$data['data']['left']['info']['INFO'] = $INFO;
+		$data['data']['left']['info']['RESTAURANT'] = $restaurant;
+		
 		$data['RESTAURANT'] = $restaurant;
 		
 		$data['NAME'] = array(
