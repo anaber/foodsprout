@@ -159,6 +159,7 @@ class FarmersMarket extends Controller {
 					'twitter' => $farmersMarket->twitter,
 				);
 		$data['data']['left']['info']['INFO'] = $INFO;
+		$data['data']['left']['info']['FARMERS_MARKET'] = $farmersMarket;
 		
 		$data['FARMERS_MARKET'] = $farmersMarket;
 		

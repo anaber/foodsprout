@@ -175,6 +175,7 @@ class Farm extends Controller {
 					'twitter' => $farm->twitter,
 				);
 		$data['data']['left']['info']['INFO'] = $INFO;
+		$data['data']['left']['info']['FARM'] = $farm;
 		
 		$data['FARM'] = $farm;
 		

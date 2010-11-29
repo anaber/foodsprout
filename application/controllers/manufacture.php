@@ -158,6 +158,7 @@ class Manufacture extends Controller {
 				);
 		
 		$data['data']['left']['info']['INFO'] = $INFO;
+		$data['data']['left']['info']['MANUFACTURE'] = $manufacture;
 		
 		$data['MANUFACTURE'] = $manufacture;
 		

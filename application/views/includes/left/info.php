@@ -1,3 +1,12 @@
+<script type="text/javascript">
+function makeNear2there(name,street,city,state) {
+    var webpage = document.location.href;
+    var txt = "<rem><name>" + name + "</name><street>" + street + "</street><city>" + city + "</city><state>" + state + "</state><webpage>" + webpage + "</webpage></rem>";
+    var esctxt = escape(txt);
+    window.open('http://www.near2there.com/ReminderFromButton.aspx?share=' + esctxt);
+}
+</script>
+
 	<?php
 		if (!empty ($INFO['url'])) {
 	?>
@@ -7,7 +16,7 @@
 		}
 	?>
 	<?php
-		if (!empty ($INFO['facebook']) || !empty ($INFO['twitter']) ) {
+		//if (!empty ($INFO['facebook']) || !empty ($INFO['twitter']) ) {
 	?>
 			<div style="float:left;width:180px;">
 	<?php
@@ -24,7 +33,52 @@
 	<?php
 			}
 	?>
+	<?php
+			$name = '';
+			$streetAddress = '';
+			$city = '';
+			$state = '';
+		if (isset ($RESTAURANT)) {
+			$name = $RESTAURANT->restaurantName;
+			foreach($RESTAURANT->addresses as $key => $address) {
+				$streetAddress = $address->address;
+				$city = $address->city;
+				$state = $address->state;
+				break;
+			}
+		} else if (isset ($FARM)) {
+			$name = $FARM->farmName;
+			foreach($FARM->addresses as $key => $address) {
+				$streetAddress = $address->address;
+				$city = $address->city;
+				$state = $address->state;
+				break;
+			}
+		} else if (isset ($MANUFACTURE)) {
+			$name = $MANUFACTURE->manufactureName;
+			foreach($MANUFACTURE->addresses as $key => $address) {
+				$streetAddress = $address->address;
+				$city = $address->city;
+				$state = $address->state;
+				break;
+			}
+		} else if (isset ($FARMERS_MARKET)) {
+			$name = $FARMERS_MARKET->farmersMarketName;
+			foreach($FARMERS_MARKET->addresses as $key => $address) {
+				$streetAddress = $address->address;
+				$city = $address->city;
+				$state = $address->state;
+				break;
+			}
+		}
+	?>
+			<a onclick="makeNear2there('<?php echo $name; ?>','<?php echo $streetAddress; ?>','<?php echo $city; ?>','<?php echo $state; ?>');" href="javascript:void(0);">
+      		<img src="http://www.near2there.com/images/near2there_button_s.png" alt="near2there" border = "0"/></a>
+	<?php
+		
+	?>
+	
 			</div>
 	<?php
-		}
+		//}
 	?>
