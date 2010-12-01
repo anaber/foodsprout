@@ -286,14 +286,12 @@ UPDATE product, producer set product.producer_id = producer.producer_id WHERE pr
 -- -----------------------------------------------------
 -- Populate the supplier table
 -- -----------------------------------------------------
-INSERT INTO `supplier`
-(`supplier`,
-`suppliee`,
-`user_id`,
-`status`,
-`record_ip`)
 
-SELECT c.producer_id AS supplier, c.restaurant_chain_id,a.user_id,a.status,a.track_ip FROM restaurant_chain_supplier AS a, restaurant AS b, producer AS c WHERE a.restaurant_chain_id=b.restaurant_chain_id
+-- Need to figure out how to alter this select query to double join the producer table twice to get the producer_id for the columns supplier_manufacture_id and supplier_distributor_id
+
+SELECT a_b.producer_id AS supplier, a_a.producer_id AS suppliee, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_a ON restaurant_chain_supplier.restaurant_chain_id = a_a.restaurant_chain_id LEFT JOIN producer a_b ON restaurant_chain_supplier.supplier_manufacture_id = a_b.manufacture_id UNION SELECT a_b.producer_id AS supplier, a_c.producer_id AS suppliee, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_b ON restaurant_chain_supplier.restaurant_chain_id = a_b.restaurant_chain_id LEFT JOIN producer a_c ON restaurant_chain_supplier.supplier_distributor_id = a_c.distributor_id;
+
+-- Repeat above query for each supplier table
 
 -- -----------------------------------------------------
 -- Delate all the old columns and data
