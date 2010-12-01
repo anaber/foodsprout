@@ -3,7 +3,7 @@ function makeNear2there(name,street,city,state) {
     var webpage = document.location.href;
     var txt = "<rem><name>" + name + "</name><street>" + street + "</street><city>" + city + "</city><state>" + state + "</state><webpage>" + webpage + "</webpage></rem>";
     var esctxt = escape(txt);
-    window.open('http://www.near2there.com/ReminderFromButton.aspx?share=' + esctxt);
+    window.open('http://www.near2there.com/ReminderFromButton.aspx?share=' + esctxt, '', 'height=600,width=450');
 }
 </script>
 
@@ -72,8 +72,8 @@ function makeNear2there(name,street,city,state) {
 			}
 		}
 	?>
-			<a onclick="makeNear2there('<?php echo $name; ?>','<?php echo $streetAddress; ?>','<?php echo $city; ?>','<?php echo $state; ?>');" href="javascript:void(0);">
-      		<img src="http://www.near2there.com/images/near2there_button_s.png" alt="near2there" border = "0"/></a>
+			<a onclick="makeNear2there('<?php echo addslashes($name); ?>','<?php echo $streetAddress; ?>','<?php echo $city; ?>','<?php echo $state; ?>');" href="javascript:void(0);">
+      		<img src="http://www.near2there.com/images/near2therebutton2.png" alt="near2there" border = "0"/></a>
 	<?php
 		
 	?>
