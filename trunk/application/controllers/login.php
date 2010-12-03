@@ -97,6 +97,7 @@ class Login extends Controller {
 			$data['ZIPCODE'] = $this->input->post('zipcode');
 			
 			$this->load->view('login', $data);
+			//to do
 			exit;
 		}
 		
