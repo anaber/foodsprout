@@ -2,6 +2,20 @@
 
 class UserModel extends Model{
 	
+	private $errors = array();
+	
+	private function set_error($name, $value){
+		
+		$this->errors[$name] = $value;
+		
+	}
+	
+	public function get_error($name){
+		
+		return $this->errors[$name];
+		
+	}
+	
 	
 	// Used to validate password before updating password in user settings
 	function validate_pass()
@@ -92,6 +106,9 @@ class UserModel extends Model{
 			} else {
 				
 				$GLOBALS['error'] = 'duplicate';
+				
+				$this->set_error('create_user','duplicate');
+				
 				$return = false;
 			}
 		} else {
@@ -220,7 +237,7 @@ class UserModel extends Model{
 			}
 			
 		} else {
-			$GLOBALS['error'] = 'wrong_password';
+			$GLOBALS['error'] = 'wrong_password'.$this->session->userdata('userId');
 			$return = false;
 		}
 		
@@ -335,7 +352,31 @@ class UserModel extends Model{
 	    return $arr;
 	}
 	
-	
+	function resetpassword($email){
+		
+		$this->db->from('user');
+		$this->db->where('email', $email);
+		$query = $this->db->get();
+		
+		if($query->num_rows > 0){
+			
+			$password = substr(md5(rand(9999, 19000)), -8);
+			
+			$data = array( 'password' => md5($password) );
+
+			$this->db->where('email', $email);
+			$this->db->update('user', $data); 
+			
+			$this->set_error('password', $password);
+			return TRUE;
+			
+		}else {
+			
+			$this->set_error('error', "email_not_found");
+			return FALSE;
+		}
+		
+	}
 }
 
 

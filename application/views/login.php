@@ -55,6 +55,8 @@
 					<form action="/login/validate" method="post" name="frmLogin" id="frmLogin">
 							<input type="checkbox" id="remember" name = "remember"/>
 							<span>Remember me</span>
+							<span> | </span>
+							<span><a href="<?php echo base_url();?>login/forgotpassword" title="Forgot" >Forgot Password?</a></span>
 						<br/>						
 						<input type="text" name="login_email" id="login_email" class="validate[required]" value="Email" onfocus="if(this.value == 'Email')this.value='';" onblur="if(this.value=='')this.value='Email';" /> <input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';" />
 						<input type = "hidden" name = "return" value = "<?php echo $return; ?>">
@@ -83,6 +85,18 @@
 			$message = 'Your access is blocked';
 		} else if ($ERROR == 'login_failed') {
 			$message = 'Wrong Email and password combination.';
+		}else if($ERROR == 'registration_failed'){
+			
+			$message = "Registration error! Please contact Administrator!";
+			
+		}else if($ERROR == 'duplicate'){
+			
+			$message = "This email is already registered!";
+			
+		}else if($ERROR == 'empty_email'){
+			
+			$message = "Please enter email address!";
+			
 		}
 ?>
 		var $alert = $('#alert');
@@ -99,6 +113,22 @@
 <div id="main"> 
   <div class="wrapper"> 
 	<div id="content" role="main"> 
+	
+		<div class="validation_error">
+			<?php
+			
+				if(isset($flashdata) && sizeof($flashdata) > 0){
+					
+					foreach ($flashdata as $mes){					
+						echo $mes. " <br />";					
+					}	
+				}
+			
+			
+				echo validation_errors(); 	
+			
+			?>
+		</div>
 			<div id="main-banner" class="left">
 				<div class="site-title" class="beta"> 
 					<h1><a href="#" title="FoodSprout" rel="home"><span>FoodSprout Private Beta</span></a></h1> 
@@ -122,10 +152,10 @@
 							<h2 id="signup-title"> </h2>
 							<h3>Join today for <b>free</b> and get started exploring your food.</h3>
 							<form action="/login/create_user" method="post" name="frmAccount" id="frmAccount">								
-								Full Name: <input type="text" name="firstname" id="firstname" class="validate[required]" value="Full Name" onfocus="if(this.value=='Full Name')this.value='';" onblur="if(this.value=='')this.value='Full Name';"><br/>
-								Email: <input type="text" name="email" id="email" class="validate[required,custom[email]]" value="Email" onfocus="if(this.value=='Email')this.value='';" onblur="if(this.value=='')this.value='Email';"><br/>
-								Password: <input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="Password" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';"><br/>
-								Zip Code: <input type="text" name="zipcode" id="zipcode" class="validate[required]" value="Zip Code" onfocus="if(this.value=='Zip Code')this.value='';" onblur="if(this.value=='')this.value='Zip Code';"><br/>
+								Full Name: <input type="text" name="firstname" id="firstname" class="validate[required]" value="<?php echo set_value('firstname', 'Full Name'); ?>" onfocus="if(this.value=='Full Name')this.value='';" onblur="if(this.value=='')this.value='Full Name';"><br/>
+								Email: <input type="text" name="email" id="email" class="validate[required,custom[email]]" value="<?php echo set_value('email', 'Email'); ?>" onfocus="if(this.value=='Email')this.value='';" onblur="if(this.value=='')this.value='Email';"><br/>
+								Password: <input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="<?php echo set_value('password', 'Password'); ?>" onfocus="if(this.value=='Password')this.value='';" onblur="if(this.value=='')this.value='Password';"><br/>
+								Zip Code: <input type="text" name="zipcode" id="zipcode" class="validate[required]" value="<?php echo set_value('zipcode', 'Zip Code'); ?>" onfocus="if(this.value=='Zip Code')this.value='';" onblur="if(this.value=='')this.value='Zip Code';"><br/>
 								<input type="submit" name="submit" value="Create Account">
 							</form>
 						</div>
