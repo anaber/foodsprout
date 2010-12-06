@@ -22,6 +22,7 @@ if (isset ($CSS) ) {
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.plugin.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.validationEngine.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.validationEngine-en.js" type="text/javascript"></script>
 
@@ -37,6 +38,28 @@ var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_tr
 
 </head>
 <body>
+<div id="alert"></div>
+<script>		
+<?php
+	if (isset($_SESSION['ERROR']) ) {
+		
+		if ($_SESSION['ERROR'] == 'registration_success') {
+			$message = 'Account successfuly created';
+			
+		}
+?>
+		var $alert = $('#alert');
+		message = '<?php echo $message; ?>';
+		displayProcessingMessage($alert, message);
+		displayFailedMessage($alert, message);
+		hideMessage($alert, '', '');
+<?php
+		unset($_SESSION['ERROR']);
+	}
+	
+?>
+</script> 
+
 <!-- header -->
 <div id="header">
   <div id="headeritms">
