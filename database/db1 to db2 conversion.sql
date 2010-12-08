@@ -81,12 +81,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `producer_category_member`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `producer_category_member` (
-  `producer_id` INT NOT NULL ,
-  `producer_category_id` INT NOT NULL ,
-  `address_id` INT NOT NULL ,
-  PRIMARY KEY (`producer_id`, `producer_category_id`, `address_id`) )
-ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `producer_category_member` (
+  `producer_id` int(11) default NULL,
+  `producer_category_id` int(11) NOT NULL,
+  `address_id` int(11) default NULL,
+  `producer_category_member_id` int(11) NOT NULL auto_increment,
+  PRIMARY KEY  (`producer_category_member_id`),
+  KEY `address_id` (`address_id`),
+  KEY `producer_category_id` (`producer_category_id`),
+  KEY `producer_id` (`producer_id`)
+) ENGINE = InnoDB;
+
 
 
 -- -----------------------------------------------------
@@ -130,8 +136,11 @@ ALTER TABLE `product` ADD COLUMN `producer_Id` INT NOT NULL  AFTER `product_id` 
 -- -----------------------------------------------------
 -- Update the producer and product table to index for faster update below
 -- -----------------------------------------------------
-ALTER TABLE `468258_foodnew`.`producer` ADD INDEX `chain_id` (`restaurant_chain_id` ASC);
-ALTER TABLE `468258_foodnew`.`product` ADD INDEX `fk_product_chain1` (`restaurant_chain_id` ASC);
+ALTER TABLE `producer` ADD INDEX `chain_id` (`restaurant_chain_id` ASC);
+ALTER TABLE `product` ADD INDEX `fk_product_chain1` (`restaurant_chain_id` ASC);
+ALTER TABLE `producer` ADD INDEX `restaurant_id` (`restaurant_id` ASC) ;
+ALTER TABLE `producer` ADD INDEX `farm_id` (`farm_id` ASC) ;
+ALTER TABLE `producer` ADD INDEX `manufacture_id` (`manufacture_id` ASC) ;
 
 -- -----------------------------------------------------
 -- These are temp columns to maintain data integrity and will be removed once all IDs are fixed in new db structure
@@ -277,10 +286,47 @@ UPDATE product, producer set product.producer_id = producer.producer_id WHERE pr
 UPDATE product, producer set product.producer_id = producer.producer_id WHERE product.restaurant_chain_id = producer.restaurant_chain_id;
 
 -- -----------------------------------------------------
--- Populate the producer_group_member table to include all the categories
+-- Populate the producer_category_member table to include all the categories
 -- -----------------------------------------------------
 
+-- Cuisine data first
+INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SELECT ab.producer_id, xy.producer_category_id FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id;
 
+-- saving for reference
+-- SELECT ab.producer_id, xy.producer_category_id, ac.cuisine_id, ac.cuisine_name, ab.producer, xy.producer_category FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id;
+-- -------
+
+-- Cuisine data for address
+
+INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, xy.producer_category_id FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+
+-- for reference
+-- SELECT xz.address_id, xy.producer_category_id, ac.cuisine_id, ac.cuisine_name, ab.producer, xy.producer_category, ab.producer_id FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+-- -------
+
+-- Restaurant Type for producer
+
+INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SELECT ab.producer_id, yz.producer_category_id FROM restaurant LEFT JOIN producer ab ON restaurant.restaurant_id = ab.restaurant_id LEFT JOIN restaurant_type xy ON restaurant.restaurant_type_id = xy.restaurant_type_id LEFT JOIN producer_category yz ON xy.restaurant_type_id = yz.restaurant_type_id;
+
+-- Restaurant type for addresses
+
+INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM restaurant LEFT JOIN producer ab ON restaurant.restaurant_id = ab.restaurant_id LEFT JOIN restaurant_type xy ON restaurant.restaurant_type_id = xy.restaurant_type_id LEFT JOIN producer_category yz ON xy.restaurant_type_id = yz.restaurant_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+
+-- Farm Type for producer
+
+INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SELECT ab.producer_id, yz.producer_category_id FROM farm LEFT JOIN producer ab ON farm.farm_id = ab.farm_id LEFT JOIN farm_type xy ON farm.farm_type_id = xy.farm_type_id LEFT JOIN producer_category yz ON xy.farm_type_id = yz.farm_type_id;
+
+-- Farm type for addresses
+
+INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM farm LEFT JOIN producer ab ON farm.farm_id = ab.farm_id LEFT JOIN farm_type xy ON farm.farm_type_id = xy.farm_type_id LEFT JOIN producer_category yz ON xy.farm_type_id = yz.farm_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+
+-- Manufacture Type for producer
+
+INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SELECT ab.producer_id, yz.producer_category_id FROM manufacture LEFT JOIN producer ab ON manufacture.manufacture_id = ab.manufacture_id LEFT JOIN manufacture_type xy ON manufacture.manufacture_type_id = xy.manufacture_type_id LEFT JOIN producer_category yz ON xy.manufacture_type_id = yz.manufacture_type_id;
+
+-- Manufacture type for addresses
+
+INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM manufacture LEFT JOIN producer ab ON manufacture.manufacture_id = ab.manufacture_id LEFT JOIN manufacture_type xy ON manufacture.manufacture_type_id = xy.manufacture_type_id LEFT JOIN producer_category yz ON xy.manufacture_type_id = yz.manufacture_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
 
 
 -- -----------------------------------------------------
@@ -290,6 +336,11 @@ UPDATE product, producer set product.producer_id = producer.producer_id WHERE pr
 -- Need to figure out how to alter this select query to double join the producer table twice to get the producer_id for the columns supplier_manufacture_id and supplier_distributor_id
 
 SELECT a_b.producer_id AS supplier, a_a.producer_id AS suppliee, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_a ON restaurant_chain_supplier.restaurant_chain_id = a_a.restaurant_chain_id LEFT JOIN producer a_b ON restaurant_chain_supplier.supplier_manufacture_id = a_b.manufacture_id UNION SELECT a_b.producer_id AS supplier, a_c.producer_id AS suppliee, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_b ON restaurant_chain_supplier.restaurant_chain_id = a_b.restaurant_chain_id LEFT JOIN producer a_c ON restaurant_chain_supplier.supplier_distributor_id = a_c.distributor_id;
+
+-- Alternative query?
+
+SELECT a_b.producer_id AS supplier, a_a.producer_id AS suppliee, a_c.producer_id AS supplier, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_a ON restaurant_chain_supplier.restaurant_chain_id = a_a.restaurant_chain_id LEFT JOIN producer a_b ON restaurant_chain_supplier.supplier_manufacture_id = a_b.manufacture_id LEFT JOIN producer a_c ON restaurant_chain_supplier.supplier_distributor_id = a_c.distributor_id;
+
 
 -- Repeat above query for each supplier table
 
