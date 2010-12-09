@@ -37,7 +37,7 @@
 				
 				// add a title for the clickable image
 				image.attr('title','next >>');
-			},
+			}
 			
 		});
 	});

@@ -18,7 +18,6 @@
 	}
 	else{
 	}
-
 ?>
 
 	<!-- left column-->
@@ -78,5 +77,7 @@
 
 	</div>
 	<!-- end right ads -->
+<?php
 
+?>
 <?php $this->load->view('includes/footer'); ?>

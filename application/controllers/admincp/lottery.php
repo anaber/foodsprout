@@ -217,6 +217,46 @@ class Lottery extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
+	function photo_save_add() {
+		$this->load->model('PhotoModel', '', TRUE);
+		$GLOBALS = array();
+		
+		$return = $this->PhotoModel->addLotteryPhoto();
+		if ( $return ) {
+			echo json_encode($return);
+			//echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}	
+	}
+	
+	function photo_save_update() {
+		echo "Deepak here";
+		/*
+		$this->load->model('PhotoModel', '', TRUE);
+		$GLOBALS = array();
+		
+		$return = $this->PhotoModel->updateLotteryPhoto();
+		if ( $return ) {
+			echo json_encode($return);
+			//echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+		*/
+	}
+	
+	
+	
+	
 }
 
 /* End of file company.php */
