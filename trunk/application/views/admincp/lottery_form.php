@@ -5,6 +5,9 @@
  * Author: Deepak Kumar
  */
 ?>
+<script type="text/javascript" src="<?php echo base_url()?>js/uploadify/swfobject.js"></script> 
+<script type="text/javascript" src="<?php echo base_url()?>js/uploadify/jquery.uploadify.v2.1.0.js"></script>
+
 <script>
 
 formValidated = true;
@@ -174,6 +177,41 @@ $(document).ready(function() {
 		
 	});	
 	
+	var action;
+	
+	if ($('#lotteryId').val() != '' ) {
+		var action = 'update';
+		scriptUrl = '/admincp/lottery/photo_save_update'
+	} else {
+		var action = 'add';
+		scriptUrl = '/admincp/lottery/photo_save_add'
+	}
+	$("#fileInput").uploadify({
+		'uploader'       : '/js/uploadify/uploadify.swf',
+		'script'         : '/common/lottery_photo_save_add',
+		'cancelImg'      : '/images/cancel.png',
+		'folder'         : '/uploads',
+		'auto'           : true,
+		'multi'          : false,
+		'fileDesc'		 : '*.png;*.gif;*.jpg', //'Images',
+		'fileExt'		 : '*.png;*.gif;*.jpg',
+		'buttonText'	 : 'Upload Photos',
+		'scriptData'	 : {
+								lotteryId: $('#lotteryId').val()
+							},
+		'onError'		 : function(event, queueID, fileObj, errorObj) {
+								//alert(errorObj.type + ' Error: ' + errorObj.info);
+								//alert(errorObj.type);
+								//alert(errorObj.info);
+     						},
+     	'onComplete'	 : function (event, queueID, fileObj, response, data) {
+    							alert(fileObj.filePath);
+    							//alert(response);
+    							var jsonObject = eval('(' + response + ')');
+    							//redrawPhotoTitleForm(jsonObject);
+     						}
+	});
+	
 });
 
 $(function() {
@@ -263,10 +301,22 @@ $(function() {
 			<input value="<?php echo ( (isset($LOTTERY) && !empty($LOTTERY->resultDate) ) ? $LOTTERY->resultDate : '') ?>" class="" type="text" name="resultDate" id="resultDate"/>
 		</td>
 	</tr>
+	
+	<tr>
+		<td width = "25%" nowrap>Thumbnail</td>
+		<td width = "75%">
+			<div id="uploadContainer">
+				<div class="demo">
+				<input id="fileInput" name="fileInput" type="file" /><div id = "photoTitleContent"></div></div>
+			</div>
+		</td>
+	</tr>
+	
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($LOTTERY)) ? 'Update Lottery' : 'Add Lottery' ?>">
 			<input type = "hidden" name = "lotteryId" id = "lotteryId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->lotteryId : '') ?>">
+			<input type = "hidden" name = "photoId" id = "photoId" value = "">
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->restaurantId : '') ?>">
 			<input type = "hidden" name = "cityId" id = "cityId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->cityId : '') ?>">
 		</td>

@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
 function makeNear2there(name,street,city,state) {
     var webpage = document.location.href;
@@ -71,6 +72,7 @@ function makeNear2there(name,street,city,state) {
 				break;
 			}
 		}
+		
 	?>
 			<a onclick="makeNear2there('<?php echo addslashes($name); ?>','<?php echo $streetAddress; ?>','<?php echo $city; ?>','<?php echo $state; ?>');" href="javascript:void(0);">
       		<img src="http://www.near2there.com/images/near2therebutton2.png" alt="near2there" border = "0"/></a>

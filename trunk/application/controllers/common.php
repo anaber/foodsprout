@@ -167,6 +167,24 @@ class Common extends Controller {
 		echo json_encode($comment);
 	}
 	
+	function lottery_photo_save_add() {
+		$this->load->model('PhotoModel', '', TRUE);
+		$GLOBALS = array();
+		/*
+		$return = $this->PhotoModel->addPhoto();
+		if ( $return ) {
+			echo json_encode($return);
+			//echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}	
+		*/
+	}
+	
 }
 
 /* End of file common.php */
