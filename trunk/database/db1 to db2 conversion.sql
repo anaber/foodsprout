@@ -341,6 +341,22 @@ SELECT a_b.producer_id AS supplier, a_a.producer_id AS suppliee, restaurant_chai
 
 SELECT a_b.producer_id AS supplier, a_a.producer_id AS suppliee, a_c.producer_id AS supplier, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_a ON restaurant_chain_supplier.restaurant_chain_id = a_a.restaurant_chain_id LEFT JOIN producer a_b ON restaurant_chain_supplier.supplier_manufacture_id = a_b.manufacture_id LEFT JOIN producer a_c ON restaurant_chain_supplier.supplier_distributor_id = a_c.distributor_id;
 
+-- By Deepak
+SELECT 
+	restaurant_chain_supplier.*, 
+	a_a.producer_id AS chain_suppliee, a_b.producer_id AS supplier_manufacturer, a_c.producer_id AS supplier_distributor, a_d.producer_id AS supplier_farm,
+	CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier
+FROM
+	restaurant_chain_supplier
+LEFT JOIN 
+	producer a_a ON restaurant_chain_supplier.restaurant_chain_id = a_a.restaurant_chain_id 
+LEFT JOIN 
+	producer a_b ON restaurant_chain_supplier.supplier_manufacture_id = a_b.manufacture_id
+LEFT JOIN 
+	producer a_c ON restaurant_chain_supplier.supplier_distributor_id = a_c.distributor_id
+LEFT JOIN 
+	producer a_d ON restaurant_chain_supplier.supplier_farm_id = a_d.farm_id;
+
 
 -- Repeat above query for each supplier table
 
