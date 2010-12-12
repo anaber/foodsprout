@@ -167,11 +167,11 @@ class Common extends Controller {
 		echo json_encode($comment);
 	}
 	
-	function lottery_photo_save_add() {
+	function lottery_photo_save() {
 		$this->load->model('PhotoModel', '', TRUE);
 		$GLOBALS = array();
-		/*
-		$return = $this->PhotoModel->addPhoto();
+		
+		$return = $this->PhotoModel->addUpdateLotteryPhoto();
 		if ( $return ) {
 			echo json_encode($return);
 			//echo 'yes';
@@ -181,10 +181,9 @@ class Common extends Controller {
 			} else {
 				echo 'no';
 			}
-		}	
-		*/
+		}
 	}
-	
+
 }
 
 /* End of file common.php */

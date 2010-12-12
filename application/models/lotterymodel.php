@@ -141,6 +141,7 @@ class LotteryModel extends Model{
 		
 		$restaurantId = $this->input->post('restaurantId');
 		$lotteryName = $this->input->post('lotteryName');
+		$mainPhotoName = $this->input->post('mainPhotoName');
 		
 		$CI =& get_instance();
 		
@@ -156,13 +157,17 @@ class LotteryModel extends Model{
 			$drawDate = $this->input->post('drawDate');
 			$resultDate = $this->input->post('resultDate');
 			
-			$query = "INSERT INTO lottery (lottery_id, lottery_name, restaurant_id, city_id, start_date, end_date, draw_date, result_date)" .
-					" values (NULL, \"". $this->input->post('lotteryName') ."\", " . $this->input->post('restaurantId') . ", " . $this->input->post('cityId') . ", " . ($startDate ? "'". date("Y-m-d 00:00:00", strtotime($startDate)) ."'" : 'NULL'). ", " . ($endDate ? "'". date("Y-m-d 23:59:59", strtotime($endDate)) ."'" : 'NULL'). ", " . ($drawDate ? "'". date("Y-m-d 00:00:00", strtotime($drawDate)) ."'" : 'NULL'). ", " . ($resultDate ? "'". date("Y-m-d 00:00:00", strtotime($resultDate)) ."'" : 'NULL'). " )";
+			$query = "INSERT INTO lottery (lottery_id, lottery_name, restaurant_id, city_id, info, start_date, end_date, draw_date, result_date)" .
+					" values (NULL, \"". $this->input->post('lotteryName') ."\", " . $this->input->post('restaurantId') . ", " . $this->input->post('cityId') . ", \"". $this->input->post('info') ."\", " . ($startDate ? "'". date("Y-m-d 00:00:00", strtotime($startDate)) ."'" : 'NULL'). ", " . ($endDate ? "'". date("Y-m-d 23:59:59", strtotime($endDate)) ."'" : 'NULL'). ", " . ($drawDate ? "'". date("Y-m-d 00:00:00", strtotime($drawDate)) ."'" : 'NULL'). ", " . ($resultDate ? "'". date("Y-m-d 00:00:00", strtotime($resultDate)) ."'" : 'NULL'). " )";
 			
 			log_message('debug', 'LotteryModel.addLottery : Insert Lottery : ' . $query);
 			$return = true;
 			
 			if ( $this->db->query($query) ) {
+				$newLotteryId = $this->db->insert_id();
+				$CI->load->model('PhotoModel','',true);
+				$CI->PhotoModel->addLotteryPhotoFromTemp($newLotteryId, $mainPhotoName);
+				
 				$return = true;
 			} else {
 				$return = false;
@@ -172,7 +177,7 @@ class LotteryModel extends Model{
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-			
+		
 		return $return;	
 	}
 	
@@ -200,6 +205,7 @@ class LotteryModel extends Model{
 			$this->LotteryLib->cityId = $row->city_id;
 			$this->LotteryLib->city = $row->city;
 			$this->LotteryLib->stateCode = $row->state_code;
+			$this->LotteryLib->info = $row->info;
 			
 			$this->LotteryLib->startDate = ( $row->start_date ? date('m/d/Y', strtotime($row->start_date) ) : '');
 			$this->LotteryLib->endDate = ( $row->end_date ? date('m/d/Y', strtotime($row->end_date) ) : '');
@@ -208,9 +214,14 @@ class LotteryModel extends Model{
 			//print_r_pre($this->LotteryLib);die;
 			
 			$CI =& get_instance();
+			
 			$CI->load->model('PrizeModel','',true);
 			$prizes = $CI->PrizeModel->getPrizesForLottery($row->lottery_id);
 			$this->LotteryLib->prizes = $prizes;
+			
+			$CI->load->model('PhotoModel','',true);
+			$prizes = $CI->PhotoModel->getLotteryPhotos($row->lottery_id);
+			$this->LotteryLib->photos = $prizes;
 			
 			return $this->LotteryLib;
 		} else {
@@ -238,6 +249,7 @@ class LotteryModel extends Model{
 					" lottery_name = \"" . $this->input->post('lotteryName') . "\", " .
 					" restaurant_id = " . $this->input->post('restaurantId') . ", " .
 					" city_id = " . $this->input->post('cityId') . ", " .
+					" info = \"" . $this->input->post('info') . "\", " .
 					" start_date = " . ($startDate ? "'". date("Y-m-d 00:00:00", strtotime($startDate)) ."'" : 'NULL') . ", " . 
 					" end_date = " . ($endDate ? "'". date("Y-m-d 23:59:59", strtotime($endDate)) ."'" : 'NULL') . ", " .
 					" draw_date = " . ($drawDate ? "'". date("Y-m-d 00:00:00", strtotime($drawDate)) ."'" : 'NULL') . ", " .
@@ -372,6 +384,10 @@ class LotteryModel extends Model{
 			$prizes = $CI->PrizeModel->getPrizesForLottery($row['lottery_id']);
 			$this->LotteryLib->prizes = $prizes;
 			
+			$CI->load->model('PhotoModel','',true);
+			$prizes = $CI->PhotoModel->getLotteryPhotos($row['lottery_id']);
+			$this->LotteryLib->photos = $prizes;
+			
 			$lotteries[] = $this->LotteryLib;
 			unset($this->LotteryLib);
 		}
@@ -398,30 +414,58 @@ class LotteryModel extends Model{
 		
 		$lotteryId = $this->input->post('lotteryId');
 		$userId = $this->session->userdata('userId');
+		$fbUserId = $this->input->post('fbUserId');
+		$fbToken = $this->input->post('fbToken');
 		
-		$CI =& get_instance();
-		
-		$query = "SELECT * FROM lottery_entry WHERE lottery_id = " . $lotteryId . " AND user_id = " . $userId;
-		log_message('debug', 'LotteryModel.enroll : Try to get duplicate record : ' . $query);
-		
-		$result = $this->db->query($query);
-		
-		if ($result->num_rows() == 0) {
-			$query = "INSERT INTO lottery_entry (user_id, lottery_id, enrolled_on)" .
-					" values (".$userId.", " . $lotteryId . ", NOW() )";
+		if ($fbUserId) {
 			
-			log_message('debug', 'LotteryModel.enroll : Enroll : ' . $query);
-			$return = true;
+			$query = "SELECT * FROM lottery_entry WHERE lottery_id = " . $lotteryId . " AND facebook_user_id = " . $fbUserId;
 			
-			if ( $this->db->query($query) ) {
+			log_message('debug', 'LotteryModel.enroll : Try to get duplicate record : ' . $query);
+			
+			$result = $this->db->query($query);
+			
+			if ($result->num_rows() == 0) {
+				$query = "INSERT INTO lottery_entry (entry_id, user_id, lottery_id, enrolled_on, facebook_user_id, facebook_token)" .
+						" values (NULL, NULL, " . $lotteryId . ", NOW(), ".$fbUserId.",  '".$fbToken."')";
+				
+				log_message('debug', 'LotteryModel.enroll : Enroll : ' . $query);
 				$return = true;
+				
+				if ( $this->db->query($query) ) {
+					$return = true;
+				} else {
+					$return = false;
+				}
+				
 			} else {
+				$GLOBALS['error'] = 'already_enrolled';
 				$return = false;
 			}
 			
 		} else {
-			$GLOBALS['error'] = 'already_enrolled';
-			$return = false;
+			$query = "SELECT * FROM lottery_entry WHERE lottery_id = " . $lotteryId . " AND user_id = " . $userId;
+			log_message('debug', 'LotteryModel.enroll : Try to get duplicate record : ' . $query);
+			
+			$result = $this->db->query($query);
+			
+			if ($result->num_rows() == 0) {
+				$query = "INSERT INTO lottery_entry (entry_id, user_id, lottery_id, enrolled_on, facebook_user_id, facebook_token)" .
+						" values (NULL, ".$userId.", " . $lotteryId . ", NOW(), NULL, NULL )";
+				
+				log_message('debug', 'LotteryModel.enroll : Enroll : ' . $query);
+				$return = true;
+				
+				if ( $this->db->query($query) ) {
+					$return = true;
+				} else {
+					$return = false;
+				}
+				
+			} else {
+				$GLOBALS['error'] = 'already_enrolled';
+				$return = false;
+			}
 		}
 		
 		return $return;

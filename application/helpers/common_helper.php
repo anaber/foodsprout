@@ -255,7 +255,7 @@ function createThumb($source,$destination,$new_w,$new_h, $old_x, $old_y) {
 	$thumb_w = floor($thumb_w);
 	$thumb_h = floor($thumb_h);
 		
-	$command = $IMAGEMAGICK_PATH . " $source    -resize ".$thumb_w."x".$thumb_h."\!  $destination";
+	$command = $IMAGEMAGICK_PATH . " $source    -resize ".$thumb_w."x".$thumb_h."!  $destination";
 	//echo $command;
 	system($command);
 	

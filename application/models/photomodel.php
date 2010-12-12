@@ -150,6 +150,7 @@ class PhotoModel extends Model{
 	        $productId = $this->input->post('productId');
         	
 			$tempFile = $_FILES['Filedata']['tmp_name'];
+			$fileParts  = pathinfo($_FILES['Filedata']['name']);
 			
 			if (!empty($restaurantId)) {
 				$path = '/restaurant/photo/' . $restaurantId . '/';
@@ -169,10 +170,6 @@ class PhotoModel extends Model{
 			$mainTargetPath = $targetPath . 'main/';
 			$thumbTargetPath = $targetPath . 'thumb/';
 			
-			//echo $originalTargetPath . "\n";
-			//echo $mainTargetPath . "\n";
-			//echo $thumbTargetPath . "\n";
-			
 			if ( !file_exists($originalTargetPath) ) {
 				mkdir(str_replace('//','/',$originalTargetPath), 0755, true);
 			}
@@ -183,21 +180,17 @@ class PhotoModel extends Model{
 				mkdir(str_replace('//','/',$thumbTargetPath), 0755, true);
 			}
 			
-			$originalPhotoName = $userId . '_' . $randomString . '_original' . '.png';
+			$originalPhotoName = $userId . '_' . $randomString . '_original' . '.' . $fileParts['extension'];
 			$originalTargetFile = $originalTargetPath . $originalPhotoName;
 			
-			$mainPhotoName = $userId . '_' . $randomString . '.png';
+			$mainPhotoName = $userId . '_' . $randomString . '.' . $fileParts['extension'];
 			$mainTargetFile = $mainTargetPath . $mainPhotoName;
 			
-			$thumbPhotoName = $userId . '_' . $randomString . '_thumb' . '.png';
+			$thumbPhotoName = $userId . '_' . $randomString . '_thumb' . '.' . $fileParts['extension'];
 			$thumbTargetFile = $thumbTargetPath . $thumbPhotoName;
-			//echo $originalTargetFile . "\n";
-			//echo $thumbTargetFile . "\n";
-			
 			
 			move_uploaded_file($tempFile, $originalTargetFile);
 			copy($originalTargetFile, $mainTargetFile);
-			//copy($originalTargetFile, $thumbTargetFile);
 			
 			$arr = getimagesize($mainTargetFile);
 			$width = $arr[0];
@@ -213,8 +206,6 @@ class PhotoModel extends Model{
 				
 				$fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
 				$typesArray = explode(';',$fileTypes);
-				$fileParts  = pathinfo($_FILES['Filedata']['name']);
-				
 				
 				if (in_array($fileParts['extension'], $typesArray)) {
 					
@@ -352,176 +343,108 @@ class PhotoModel extends Model{
 	    return $photos;
 	}
 	
-	
-	
-	function addLotteryPhoto() {
-		global $UPLOAD_FOLDER;
+	function addLotteryPhotoFromTemp($lotteryId, $mainPhotoName) {
+    	global $UPLOAD_FOLDER;
 		$return = true;
 		
-		$randomString = generateRandomString();
-		//$randomString = 't6jh91v8xzn4srpk';
+    	$arr = explode('.', $mainPhotoName);
+    	
+    	$randomString = $arr[0];
+    	$extension = $arr[1];
+    	
+    	$path = '/lottery/photo/' . $lotteryId . '/';
+    	$targetPath = $UPLOAD_FOLDER . $path;
+			
+		$originalTargetPath = $targetPath . 'original/';
+		$mainTargetPath = $targetPath . 'main/';
+		$thumbTargetPath = $targetPath . 'thumb/';
 		
-		if (!empty($_FILES)) {
-			
-			$lotteryId = $this->input->post('lotteryId');
-			
-			$tempFile = $_FILES['Filedata']['tmp_name'];
-			
-			if (!empty($lotteryId)) {
-				$path = '/lottery/temp/';
-			}
-	        
-			$targetPath = $UPLOAD_FOLDER . $path;
-			
-			$originalTargetPath = $targetPath . 'original/';
-			$mainTargetPath = $targetPath . 'main/';
-			$thumbTargetPath = $targetPath . 'thumb/';
-			echo $originalTargetPath;
-			//echo $originalTargetPath . "\n";
-			//echo $mainTargetPath . "\n";
-			//echo $thumbTargetPath . "\n";
-			/*
-			if ( !file_exists($originalTargetPath) ) {
-				mkdir(str_replace('//','/',$originalTargetPath), 0755, true);
-			}
-			if ( !file_exists($mainTargetPath) ) {
-				mkdir(str_replace('//','/',$mainTargetPath), 0755, true);
-			}
-			if ( !file_exists($thumbTargetPath) ) {
-				mkdir(str_replace('//','/',$thumbTargetPath), 0755, true);
-			}
-			
-			$originalPhotoName = $userId . '_' . $randomString . '_original' . '.png';
-			$originalTargetFile = $originalTargetPath . $originalPhotoName;
-			
-			$mainPhotoName = $userId . '_' . $randomString . '.png';
-			$mainTargetFile = $mainTargetPath . $mainPhotoName;
-			
-			$thumbPhotoName = $userId . '_' . $randomString . '_thumb' . '.png';
-			$thumbTargetFile = $thumbTargetPath . $thumbPhotoName;
-			//echo $originalTargetFile . "\n";
-			//echo $thumbTargetFile . "\n";
-			
-			
-			move_uploaded_file($tempFile, $originalTargetFile);
-			copy($originalTargetFile, $mainTargetFile);
-			//copy($originalTargetFile, $thumbTargetFile);
-			
-			$arr = getimagesize($mainTargetFile);
-			$width = $arr[0];
-			$height = $arr[1];
-			$mime = $arr['mime'];
-			*/
-			/*
-			if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200', $width, $height) ) {
-			//if ( copy($originalTargetFile, $thumbTargetFile) ) {
-			
-				$arr = getimagesize($thumbTargetFile);
-				$thumbWidth = $arr[0];
-				$thumbHeight = $arr[1];
-				
-				$fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
-				$typesArray = explode(';',$fileTypes);
-				$fileParts  = pathinfo($_FILES['Filedata']['name']);
-				
-				
-				if (in_array($fileParts['extension'], $typesArray)) {
-					
-					$CI = & get_instance();
-				
-		            $query = 'INSERT INTO photo (photo_id, address_id, ';
-		            if (!empty($restaurantId)) {
-		                $query .= 'restaurant_id';
-		            } else if (!empty($restaurantChainId)) {
-		                $query .= 'restaurant_chain_id';
-		            } else if (!empty($manufactureId)) {
-		                $query .= 'manufacture_id';
-		            } else if (!empty($farmId)) {
-		                $query .= 'farm_id';
-		            } else if (!empty($farmersMarketId)) {
-		                $query .= 'farmers_market_id';
-		            } else if (!empty($productId)) {
-		                $query .= 'product_id';
-		            }
-		            
-		            $query .= ', title, description, path, thumb_photo_name, photo_name, original_photo_name, extension, mime_type, thumb_height, thumb_width, height, width, user_id, status, track_ip, added_on)' .
-		                    ' values (NULL, NULL, ';
 		
-		            if (!empty($restaurantId)) {
-		                $query .= $restaurantId;
-		            } else if (!empty($restaurantChainId)) {
-		                $query .= $restaurantChainId;
-		            } else if (!empty($manufactureId)) {
-		                $query .= $manufactureId;
-		            } else if (!empty($farmId)) {
-		                $query .= $farmId;
-		            } else if (!empty($farmersMarketId)) {
-		                $query .= $farmersMarketId;
-		            } else if (!empty($productId)) {
-		                $query .= $productId;
-		            }
-		            
-		            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
-		            
-		            log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
-		
-		            if ($this->db->query($query)) {
-		                $newPhotoId = $this->db->insert_id();
-		                
-		                $array = array(
-							'photoId' => $newPhotoId, 
-							'thumbPhoto' =>  '/uploads' . $path . 'thumb/' .$thumbPhotoName,
-							'thumbHeight' =>  $thumbHeight,
-							'thumbWidth' =>  $thumbWidth,
-							);
-					
-		                $return = $array;
-		            } else {
-		                $return = false;
-		            }
-					
-				} else {
-					$return = false;
-				}
-			} else {
-				$return = false;
-			}
-			*/
-			
+		if ( !file_exists($originalTargetPath) ) {
+			mkdir(str_replace('//','/',$originalTargetPath), 0755, true);
 		}
-        return $return;
+		if ( !file_exists($mainTargetPath) ) {
+			mkdir(str_replace('//','/',$mainTargetPath), 0755, true);
+		}
+		if ( !file_exists($thumbTargetPath) ) {
+			mkdir(str_replace('//','/',$thumbTargetPath), 0755, true);
+		}
+		$originalPhotoName = $lotteryId . '_' . $randomString . '_original' . '.' . $extension;
+		$originalTargetFile = $originalTargetPath . $originalPhotoName;
+		
+		$mainPhotoName = $lotteryId . '_' . $randomString . '.' . $extension;
+		$mainTargetFile = $mainTargetPath . $mainPhotoName;
+		
+		$thumbPhotoName = $lotteryId . '_' . $randomString . '_thumb' . '.' . $extension;
+		$thumbTargetFile = $thumbTargetPath . $thumbPhotoName;
+		
+		$tempOriginalFileName = $UPLOAD_FOLDER . '/lottery/temp/original/' . $randomString . '_original' . '.' . $extension;
+		$tempMainFileName = $UPLOAD_FOLDER . '/lottery/temp/main/' . $randomString . '.' . $extension;
+		$tempThumbFileName = $UPLOAD_FOLDER . '/lottery/temp/thumb/' . $randomString . '_thumb' . '.' . $extension;
+		
+		rename($tempOriginalFileName, $originalTargetFile);
+		rename($tempMainFileName, $mainTargetFile);
+		rename($tempThumbFileName, $thumbTargetFile);
+		
+		$arr = getimagesize($mainTargetFile);
+		$width = $arr[0];
+		$height = $arr[1];
+		$mime = $arr['mime'];
+		
+		$arr = getimagesize($thumbTargetFile);
+		$thumbWidth = $arr[0];
+		$thumbHeight = $arr[1];
+		
+		
+		$query = 'INSERT INTO lottery_photo (photo_id, ';
+        if (!empty($lotteryId)) {
+            $query .= 'lottery_id';
+        } 
         
+        $query .= ', path, thumb_photo_name, photo_name, original_photo_name, extension, mime_type, thumb_height, thumb_width, height, width, added_on)' .
+                ' values (NULL, ';
+
+        if (!empty($lotteryId)) {
+            $query .= $lotteryId;
+        } 
+        
+        $query .= ', "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $extension . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", NOW() )';
+        
+        log_message('debug', 'PhotoModel.addLotteryPhoto : Add Photo : ' . $query);
+        if ($this->db->query($query)) {
+            $return = true;
+        } else {
+            $return = false;
+        }
     }
     
-    function updateLotteryPhoto() {
+	function addUpdateLotteryPhoto() {
 		global $UPLOAD_FOLDER;
 		$return = true;
 		
 		$randomString = generateRandomString();
-		//$randomString = 't6jh91v8xzn4srpk';
 		
 		if (!empty($_FILES)) {
 			
 			$lotteryId = $this->input->post('lotteryId');
+			$photoId = $this->input->post('photoId');
+			//echo "Lottery:" . $lotteryId . "\n";
 			
 			$tempFile = $_FILES['Filedata']['tmp_name'];
+			$fileParts = pathinfo($_FILES['Filedata']['name']);
 			
 			if (!empty($lotteryId)) {
-				$path = '/lottery/temp/';
-			}
+				$path = '/lottery/photo/' . $lotteryId . '/';
+			} else if (empty($lotteryId)) {
+	            $path = '/lottery/temp/';
+	        } 
 	        
 			$targetPath = $UPLOAD_FOLDER . $path;
-			echo $targetPath;
-			/*
+			
 			$originalTargetPath = $targetPath . 'original/';
 			$mainTargetPath = $targetPath . 'main/';
 			$thumbTargetPath = $targetPath . 'thumb/';
-			echo $originalTargetPath;
-			*/
-			//echo $originalTargetPath . "\n";
-			//echo $mainTargetPath . "\n";
-			//echo $thumbTargetPath . "\n";
-			/*
+			
 			if ( !file_exists($originalTargetPath) ) {
 				mkdir(str_replace('//','/',$originalTargetPath), 0755, true);
 			}
@@ -532,106 +455,181 @@ class PhotoModel extends Model{
 				mkdir(str_replace('//','/',$thumbTargetPath), 0755, true);
 			}
 			
-			$originalPhotoName = $userId . '_' . $randomString . '_original' . '.png';
+			if (!empty($lotteryId)) {
+				$originalPhotoName = $lotteryId . '_' . $randomString . '_original' . '.' . $fileParts['extension'];
+			} else {
+				$originalPhotoName = $randomString . '_original' . '.' . $fileParts['extension'];
+			}
 			$originalTargetFile = $originalTargetPath . $originalPhotoName;
 			
-			$mainPhotoName = $userId . '_' . $randomString . '.png';
+			if (!empty($lotteryId)) {
+				$mainPhotoName = $lotteryId . '_' . $randomString . '.' . $fileParts['extension'];
+			} else {
+				$mainPhotoName = $randomString . '.' . $fileParts['extension'];
+			}
 			$mainTargetFile = $mainTargetPath . $mainPhotoName;
 			
-			$thumbPhotoName = $userId . '_' . $randomString . '_thumb' . '.png';
+			if (!empty($lotteryId)) {
+				$thumbPhotoName = $lotteryId . '_' . $randomString . '_thumb' . '.' . $fileParts['extension'];
+			} else {
+				$thumbPhotoName = $randomString . '_thumb' . '.' . $fileParts['extension'];
+			}
 			$thumbTargetFile = $thumbTargetPath . $thumbPhotoName;
-			//echo $originalTargetFile . "\n";
-			//echo $thumbTargetFile . "\n";
-			
 			
 			move_uploaded_file($tempFile, $originalTargetFile);
 			copy($originalTargetFile, $mainTargetFile);
-			//copy($originalTargetFile, $thumbTargetFile);
-			
 			$arr = getimagesize($mainTargetFile);
 			$width = $arr[0];
 			$height = $arr[1];
 			$mime = $arr['mime'];
-			*/
-			/*
+			
 			if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200', $width, $height) ) {
 			//if ( copy($originalTargetFile, $thumbTargetFile) ) {
-			
+				
 				$arr = getimagesize($thumbTargetFile);
 				$thumbWidth = $arr[0];
 				$thumbHeight = $arr[1];
 				
 				$fileTypes  = str_replace('*.','',$_REQUEST['fileext']);
 				$typesArray = explode(';',$fileTypes);
-				$fileParts  = pathinfo($_FILES['Filedata']['name']);
-				
 				
 				if (in_array($fileParts['extension'], $typesArray)) {
-					
-					$CI = & get_instance();
+					if (!empty($lotteryId)) {
+						$CI = & get_instance();
+						
+						$query = "SELECT * FROM lottery_photo WHERE lottery_id = '" . $lotteryId . "'";
+						log_message('debug', 'PhotoModel.addLotteryPhoto : Try to get duplicate Lottery Photo record : ' . $query);
+						
+						$result = $this->db->query($query);
+						
+						if ($result->num_rows() > 0) {
+							
+							$row = $result->result_array();
+							$oldThumbPhoto = $UPLOAD_FOLDER . $row[0]['path'] . 'thumb/' . $row[0]['thumb_photo_name'];
+							$oldPhoto = $UPLOAD_FOLDER . $row[0]['path'] . 'main/' . $row[0]['photo_name'];
+							$oldOriginalPhoto = $UPLOAD_FOLDER . $row[0]['path'] . 'original/' . $row[0]['original_photo_name'];
+							
+							$data = array(
+										'thumb_photo_name' => $thumbPhotoName, 
+										'photo_name' => $mainPhotoName,
+										'original_photo_name' => $originalPhotoName,
+										'extension' => $fileParts['extension'] ,
+										'mime_type' => $mime,
+										'thumb_height' => $thumbHeight,
+										'thumb_width' => $thumbWidth,
+										'height' => $height,
+										'width' => $width,
+									);
+									
+							$where = "lottery_id = " . $lotteryId;
+							$query = $this->db->update_string('lottery_photo', $data, $where);
+							
+							log_message('debug', 'PhotoModel.updateLotteryPhoto : Add Photo : ' . $query);
+				            if ($this->db->query($query)) {
+				                $array = array(
+									'photoId' => $row[0]['photo_id'], 
+									'thumbPhoto' =>  '/uploads' . $path . 'thumb/' .$thumbPhotoName,
+									'thumbHeight' =>  $thumbHeight,
+									'thumbWidth' =>  $thumbWidth,
+									'mainPhotoName' => $mainPhotoName,
+									);
+								unlink($oldThumbPhoto);
+								unlink($oldPhoto);
+								unlink($oldOriginalPhoto);
+								
+				                $return = $array;
+				            } else {
+				                $return = false;
+				            }
+						} else {
+							$query = 'INSERT INTO lottery_photo (photo_id, ';
+				            if (!empty($lotteryId)) {
+				                $query .= 'lottery_id';
+				            } 
+				            
+				            $query .= ', path, thumb_photo_name, photo_name, original_photo_name, extension, mime_type, thumb_height, thumb_width, height, width, added_on)' .
+				                    ' values (NULL, ';
 				
-		            $query = 'INSERT INTO photo (photo_id, address_id, ';
-		            if (!empty($restaurantId)) {
-		                $query .= 'restaurant_id';
-		            } else if (!empty($restaurantChainId)) {
-		                $query .= 'restaurant_chain_id';
-		            } else if (!empty($manufactureId)) {
-		                $query .= 'manufacture_id';
-		            } else if (!empty($farmId)) {
-		                $query .= 'farm_id';
-		            } else if (!empty($farmersMarketId)) {
-		                $query .= 'farmers_market_id';
-		            } else if (!empty($productId)) {
-		                $query .= 'product_id';
-		            }
-		            
-		            $query .= ', title, description, path, thumb_photo_name, photo_name, original_photo_name, extension, mime_type, thumb_height, thumb_width, height, width, user_id, status, track_ip, added_on)' .
-		                    ' values (NULL, NULL, ';
-		
-		            if (!empty($restaurantId)) {
-		                $query .= $restaurantId;
-		            } else if (!empty($restaurantChainId)) {
-		                $query .= $restaurantChainId;
-		            } else if (!empty($manufactureId)) {
-		                $query .= $manufactureId;
-		            } else if (!empty($farmId)) {
-		                $query .= $farmId;
-		            } else if (!empty($farmersMarketId)) {
-		                $query .= $farmersMarketId;
-		            } else if (!empty($productId)) {
-		                $query .= $productId;
-		            }
-		            
-		            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
-		            
-		            log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
-		
-		            if ($this->db->query($query)) {
-		                $newPhotoId = $this->db->insert_id();
-		                
-		                $array = array(
-							'photoId' => $newPhotoId, 
+				            if (!empty($lotteryId)) {
+				                $query .= $lotteryId;
+				            } 
+				            
+				            $query .= ', "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", NOW() )';
+				            
+				            log_message('debug', 'PhotoModel.addLotteryPhoto : Add Photo : ' . $query);
+				            if ($this->db->query($query)) {
+				                $newPhotoId = $this->db->insert_id();
+				                
+				                $array = array(
+									'photoId' => $newPhotoId, 
+									'thumbPhoto' =>  '/uploads' . $path . 'thumb/' .$thumbPhotoName,
+									'thumbHeight' =>  $thumbHeight,
+									'thumbWidth' =>  $thumbWidth,
+									'mainPhotoName' => $mainPhotoName,
+									);
+							
+				                $return = $array;
+				            } else {
+				                $return = false;
+				            }
+						}
+					} else {
+						 $array = array(
+							'photoId' => '', 
 							'thumbPhoto' =>  '/uploads' . $path . 'thumb/' .$thumbPhotoName,
 							'thumbHeight' =>  $thumbHeight,
 							'thumbWidth' =>  $thumbWidth,
+							'mainPhotoName' => $mainPhotoName,
 							);
 					
 		                $return = $array;
-		            } else {
-		                $return = false;
-		            }
-					
+					}
 				} else {
 					$return = false;
 				}
+				
 			} else {
 				$return = false;
 			}
-			*/
+			
 		}
         return $return;
-        
     }
+    
+    function getLotteryPhotos($lotteryId) {
+    	$query = "SELECT * FROM lottery_photo WHERE lottery_id = " . $lotteryId .
+				" ORDER BY photo_id DESC";
+		
+		log_message('debug', "PhotoModel.getLotteryPhotos : " . $query);
+		$result = $this->db->query($query);
+		
+		$lotteryPhotos = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('PhotoLib');
+			unset($this->PhotoLib);
+			$path = '/uploads' . $row['path'];
+			$this->PhotoLib->photoId = $row['photo_id'];
+			$this->PhotoLib->path = $path;
+			
+			$this->PhotoLib->thumbPhoto = $path . 'thumb/' . $row['thumb_photo_name'];
+			$this->PhotoLib->thumbHeight = $row['thumb_height'];
+			$this->PhotoLib->thumbWidth = $row['thumb_width'];
+			
+			$this->PhotoLib->photo = $path . 'main/' . $row['photo_name'];
+			$this->PhotoLib->height = $row['height'];
+			$this->PhotoLib->width = $row['width'];
+			
+			$this->PhotoLib->addedOn = date('Y M, d H:i:s', strtotime ($row['added_on'] ) ) ;
+			
+			$lotteryPhotos[] = $this->PhotoLib;
+			unset($this->PhotoLib);
+		}
+		return $lotteryPhotos;
+    }
+    
+    
 	
 }
 

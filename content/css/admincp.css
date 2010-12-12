@@ -24,6 +24,7 @@ input[type=submit]:hover,form a:hover{background:#333333;}
 tr.d0 td{background-color:#FFFFFF;color:black;}
 tr.d1 td{background-color:#E9E9E9;color:black;}
 .formTable{-moz-border-radius:4px;-webkit-border-radius:4px;background:#EEEEEE;color:#000000;-moz-box-shadow:0 1px 0 #CCCCCC;-webkit-box-shadow:0 1px 0 #CCCCCC;padding:10px;width:330px;}
+.formTable2{-moz-border-radius:4px;-webkit-border-radius:4px;background:#EEEEEE;color:#000000;-moz-box-shadow:0 1px 0 #CCCCCC;-webkit-box-shadow:0 1px 0 #CCCCCC;padding:10px;width:130px;}
 .nav-wide{background:#E4E4C9;border-bottom:#CCC 1px solid;}
 #recordsPerPageList{font-size:12px;}
 #suggestion_box{height:18px;font-size:12px;}

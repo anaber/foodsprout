@@ -345,5 +345,26 @@ ALTER TABLE `restaurant` ADD COLUMN `claims_sustainable` INT(1) NULL DEFAULT 0 A
 ALTER TABLE `lottery_entry` ADD COLUMN `enrolled_on` DATETIME NOT NULL  AFTER `lottery_id` ;
 ALTER TABLE `lottery_prize` DROP COLUMN `place` , ADD COLUMN `prize` VARCHAR(45) NULL DEFAULT NULL  AFTER `winner` ;
 ALTER TABLE `lottery` ADD COLUMN `draw_date` DATETIME NOT NULL  AFTER `end_date` , ADD COLUMN `result_date` DATETIME NOT NULL  AFTER `draw_date` ;
+ALTER TABLE `lottery` ADD COLUMN `info` TEXT NULL DEFAULT NULL  AFTER `restaurant_id` ;
+
+CREATE  TABLE IF NOT EXISTS `lottery_photo` (
+  `photo_id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `lottery_id` INT(11) NULL DEFAULT NULL ,
+  `path` VARCHAR(255) NULL DEFAULT NULL ,
+  `thumb_photo_name` VARCHAR(255) NULL DEFAULT NULL ,
+  `photo_name` VARCHAR(255) NULL DEFAULT NULL ,
+  `original_photo_name` VARCHAR(255) NULL DEFAULT NULL ,
+  `extension` VARCHAR(45) NULL DEFAULT NULL ,
+  `mime_type` VARCHAR(45) NULL DEFAULT NULL ,
+  `thumb_height` INT(11) NULL DEFAULT NULL ,
+  `thumb_width` INT(11) NULL DEFAULT NULL ,
+  `height` INT(11) NULL DEFAULT NULL ,
+  `width` INT(11) NULL DEFAULT NULL ,
+  `added_on` DATETIME NULL DEFAULT NULL ,
+  PRIMARY KEY (`photo_id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1
+COLLATE = latin1_swedish_ci;
+
 
 
