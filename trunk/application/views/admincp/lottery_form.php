@@ -116,6 +116,7 @@ $(document).ready(function() {
 							  restaurantId:$('#restaurantId').val(),
 							  lotteryName:$('#lotteryName').val(),
 							  cityId:$('#cityId').val(),
+							  info:$('#info').val(),
 							  
 							  startDate:$('#startDate').val(),
 							  endDate:$('#endDate').val(),
@@ -131,11 +132,13 @@ $(document).ready(function() {
 							  restaurantId:$('#restaurantId').val(),
 							  lotteryName:$('#lotteryName').val(),
 							  cityId:$('#cityId').val(),
+							  info:$('#info').val(),
 							  
 							  startDate:$('#startDate').val(),
 							  endDate:$('#endDate').val(),
 							  drawDate:$('#drawDate').val(),
-							  resultDate:$('#resultDate').val()
+							  resultDate:$('#resultDate').val(),
+							  mainPhotoName:$('#mainPhotoName').val()
 							};
 				act = 'add';
 			}
@@ -179,16 +182,15 @@ $(document).ready(function() {
 	
 	var action;
 	
-	if ($('#lotteryId').val() != '' ) {
+	if ($('#photoId').val() != '' ) {
 		var action = 'update';
-		scriptUrl = '/admincp/lottery/photo_save_update'
 	} else {
 		var action = 'add';
-		scriptUrl = '/admincp/lottery/photo_save_add'
 	}
+	
 	$("#fileInput").uploadify({
 		'uploader'       : '/js/uploadify/uploadify.swf',
-		'script'         : '/common/lottery_photo_save_add',
+		'script'         : '/common/lottery_photo_save',
 		'cancelImg'      : '/images/cancel.png',
 		'folder'         : '/uploads',
 		'auto'           : true,
@@ -197,7 +199,8 @@ $(document).ready(function() {
 		'fileExt'		 : '*.png;*.gif;*.jpg',
 		'buttonText'	 : 'Upload Photos',
 		'scriptData'	 : {
-								lotteryId: $('#lotteryId').val()
+								lotteryId: $('#lotteryId').val(),
+								photoId: $('#photoId').val()
 							},
 		'onError'		 : function(event, queueID, fileObj, errorObj) {
 								//alert(errorObj.type + ' Error: ' + errorObj.info);
@@ -205,10 +208,10 @@ $(document).ready(function() {
 								//alert(errorObj.info);
      						},
      	'onComplete'	 : function (event, queueID, fileObj, response, data) {
-    							alert(fileObj.filePath);
+    							//alert(fileObj.filePath);
     							//alert(response);
     							var jsonObject = eval('(' + response + ')');
-    							//redrawPhotoTitleForm(jsonObject);
+    							redrawPhotoTitleForm(jsonObject);
      						}
 	});
 	
@@ -229,7 +232,29 @@ $(function() {
 $(function() {
 	$( "#resultDate" ).datepicker();
 });
+
+
+function redrawPhotoTitleForm(response) {
 	
+	$('#photoTitleContent').empty();
+	var html = '';
+	html +=  '<br /><form id="photoForm" method="post">' +
+		'	<table class="formTable2" border = "0" width = "100">' +
+		'		<tr>' +
+		'			<td align = "right" width = "100" >'+
+		'				<div class="portfolio_sites"><div class="porffoilo_img">' +
+		'	        		<img src="' + response.thumbPhoto + '" width="137" height="107" alt="" border = "0" /> ' +
+		'				</div></div>' +
+		'			</td>' +
+		'		</tr>' +
+		'	</table>' +
+		'</form>';	
+	
+	$('#photoTitleContent').append(html);
+	
+	$('#photoId').val(response.photoId);
+	$('#mainPhotoName').val(response.mainPhotoName);
+}
 </script>
 
 <script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
@@ -278,6 +303,13 @@ $(function() {
 	</tr>
 	
 	<tr>
+		<td width = "25%">Info</td>
+		<td width = "75%">
+			<textarea name="info" id="info" class="validate[required]" rows = "8" cols = "40"><?php echo (isset($LOTTERY) ? $LOTTERY->info : '') ?></textarea><br />
+		</td>
+	</tr>
+	
+	<tr>
 		<td width = "25%" nowrap>Start Date</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($LOTTERY) ? $LOTTERY->startDate : '') ?>" class="validate[required]" type="text" name="startDate" id="startDate"/>
@@ -303,11 +335,32 @@ $(function() {
 	</tr>
 	
 	<tr>
-		<td width = "25%" nowrap>Thumbnail</td>
+		<td width = "25%" nowrap>Photo</td>
 		<td width = "75%">
 			<div id="uploadContainer">
 				<div class="demo">
-				<input id="fileInput" name="fileInput" type="file" /><div id = "photoTitleContent"></div></div>
+				<input id="fileInput" name="fileInput" type="file" />
+					<div id = "photoTitleContent">
+					<?php
+						if (isset($LOTTERY) ) {
+							foreach($LOTTERY->photos as $photo) {
+								$str = '<br /><form id="photoForm" method="post">' .
+									'	<table class="formTable2" border = "0" width = "100">' .
+									'		<tr>' .
+									'			<td align = "right" width = "100" >'.
+									'				<div class="portfolio_sites"><div class="porffoilo_img">' .
+									'	        		<img src="' . $photo->thumbPhoto . '" width="137" height="107" alt="" border = "0" /> ' .
+									'				</div></div>' .
+									'			</td>' .
+									'		</tr>' .
+									'	</table>' .
+									'</form>';
+								echo $str;
+							}
+						}
+					?>
+					</div>
+				</div>
 			</div>
 		</td>
 	</tr>
@@ -316,7 +369,8 @@ $(function() {
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($LOTTERY)) ? 'Update Lottery' : 'Add Lottery' ?>">
 			<input type = "hidden" name = "lotteryId" id = "lotteryId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->lotteryId : '') ?>">
-			<input type = "hidden" name = "photoId" id = "photoId" value = "">
+			<input type = "hidden" name = "photoId" id = "photoId" value = "<?php echo ( (isset($LOTTERY) && isset($LOTTERY->photos[0]) ) ? $LOTTERY->photos[0]->photoId : '') ?>">
+			<input type = "hidden" name = "mainPhotoName" id = "mainPhotoName" value = "">
 			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->restaurantId : '') ?>">
 			<input type = "hidden" name = "cityId" id = "cityId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->cityId : '') ?>">
 		</td>

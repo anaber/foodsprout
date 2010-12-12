@@ -8,16 +8,13 @@ class Tab extends Controller {
 		checkUserLogin();
 		
 		$this->load->plugin('facebook');
-		// Prevent the 'Undefined index: facebook_config' notice from being thrown.
-		//$GLOBALS['facebook_config']['debug'] = NULL;
-		// Create a Facebook client API object.
-		//$this->facebook = new Facebook($FB_APP_ID, $FB_SECRET_KEY);
 		
 		$this->facebook = new Facebook(array(
   							'appId'  => $FB_APP_ID,
   							'secret' => $FB_SECRET_KEY,
   							'cookie' => true,
 						));
+		
 		
 		//$user = $this->facebook->require_login();
     }
@@ -31,6 +28,8 @@ class Tab extends Controller {
 
 		$this->load->model('LotteryModel', '', TRUE);
 		$lotteries = $this->LotteryModel->getLotteries();
+		
+		//print_r_pre($lotteries);
 		
 		$data['CENTER'] = array(
             'content' => 'tab/info',
@@ -73,6 +72,7 @@ class Tab extends Controller {
 	function enroll() {
 		$this->load->model('LotteryModel', '', TRUE);
 		
+		
 		$GLOBALS = array();
 		if ( $this->LotteryModel->enroll() ) {
 			echo 'yes';
@@ -83,6 +83,7 @@ class Tab extends Controller {
 				echo 'no';
 			}
 		}
+		
     }
 		
 
