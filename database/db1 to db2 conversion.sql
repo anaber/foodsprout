@@ -163,6 +163,13 @@ INSERT INTO producer_category (producer_category,manufacture_type_id) SELECT man
 ALTER TABLE `producer` ADD COLUMN `farm_id` INT NULL  AFTER `description` , ADD COLUMN `manufacture_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_chain_id` INT NULL  AFTER `description`;
 
 -- -----------------------------------------------------
+-- Alter various tables that need to reference new data
+-- -----------------------------------------------------
+
+ALTER TABLE `comment` ADD COLUMN `producer_id` INT NULL  AFTER `address_id` ;
+
+
+-- -----------------------------------------------------
 -- Insert all the restaurants/farms/manufactures/distributors into the producer table
 -- -----------------------------------------------------
 
@@ -330,22 +337,14 @@ INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SEL
 
 
 -- -----------------------------------------------------
--- Populate the supplier table
+-- Populate the supplier tables
 -- -----------------------------------------------------
 
--- Need to figure out how to alter this select query to double join the producer table twice to get the producer_id for the columns supplier_manufacture_id and supplier_distributor_id
+INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `record_ip`)
 
-SELECT a_b.producer_id AS supplier, a_a.producer_id AS suppliee, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_a ON restaurant_chain_supplier.restaurant_chain_id = a_a.restaurant_chain_id LEFT JOIN producer a_b ON restaurant_chain_supplier.supplier_manufacture_id = a_b.manufacture_id UNION SELECT a_b.producer_id AS supplier, a_c.producer_id AS suppliee, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_b ON restaurant_chain_supplier.restaurant_chain_id = a_b.restaurant_chain_id LEFT JOIN producer a_c ON restaurant_chain_supplier.supplier_distributor_id = a_c.distributor_id;
-
--- Alternative query?
-
-SELECT a_b.producer_id AS supplier, a_a.producer_id AS suppliee, a_c.producer_id AS supplier, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip, restaurant_chain_supplier.* FROM restaurant_chain_supplier LEFT JOIN producer a_a ON restaurant_chain_supplier.restaurant_chain_id = a_a.restaurant_chain_id LEFT JOIN producer a_b ON restaurant_chain_supplier.supplier_manufacture_id = a_b.manufacture_id LEFT JOIN producer a_c ON restaurant_chain_supplier.supplier_distributor_id = a_c.distributor_id;
-
--- By Deepak
-SELECT 
-	restaurant_chain_supplier.*, 
-	a_a.producer_id AS chain_suppliee, a_b.producer_id AS supplier_manufacturer, a_c.producer_id AS supplier_distributor, a_d.producer_id AS supplier_farm,
-	CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier
+SELECT  
+	CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier,
+	a_a.producer_id AS suppliee, restaurant_chain_supplier.user_id, restaurant_chain_supplier.status, restaurant_chain_supplier.track_ip
 FROM
 	restaurant_chain_supplier
 LEFT JOIN 
@@ -357,11 +356,110 @@ LEFT JOIN
 LEFT JOIN 
 	producer a_d ON restaurant_chain_supplier.supplier_farm_id = a_d.farm_id;
 
-
 -- Repeat above query for each supplier table
+
+-- Restaurant supplier, this query should be reviewed closely
+
+INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `record_ip`)
+
+SELECT  
+	CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier,
+	a_a.producer_id AS suppliee, restaurant_supplier.user_id, restaurant_supplier.status, restaurant_supplier.track_ip
+FROM
+	restaurant_supplier
+LEFT JOIN 
+	producer a_a ON restaurant_supplier.restaurant_id = a_a.restaurant_id 
+LEFT JOIN 
+	producer a_b ON restaurant_supplier.supplier_manufacture_id = a_b.manufacture_id
+LEFT JOIN 
+	producer a_c ON restaurant_supplier.supplier_distributor_id = a_c.distributor_id
+LEFT JOIN 
+	producer a_d ON restaurant_supplier.supplier_farm_id = a_d.farm_id;
+
+-- Distributor supplier
+	
+INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `record_ip`)
+
+SELECT  
+	CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier,
+	a_a.producer_id AS suppliee, distributor_supplier.user_id, distributor_supplier.status, distributor_supplier.track_ip
+FROM
+	distributor_supplier
+LEFT JOIN 
+	producer a_a ON distributor_supplier.distributor_id = a_a.distributor_id 
+LEFT JOIN 
+	producer a_b ON distributor_supplier.supplier_manufacture_id = a_b.manufacture_id
+LEFT JOIN 
+	producer a_c ON distributor_supplier.supplier_restaurant_id = a_c.restaurant_id
+LEFT JOIN 
+	producer a_d ON distributor_supplier.supplier_farm_id = a_d.farm_id;
+	
+-- Manufacture supplier
+
+INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `record_ip`)
+
+SELECT  
+		CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier,
+		a_a.producer_id AS suppliee, manufacture_supplier.user_id, manufacture_supplier.status, manufacture_supplier.track_ip
+FROM
+		manufacture_supplier
+LEFT JOIN 
+		producer a_a ON manufacture_supplier.manufacture_id = a_a.manufacture_id 
+LEFT JOIN 
+		producer a_b ON manufacture_supplier.supplier_distributor_id = a_b.distributor_id
+LEFT JOIN 
+		producer a_c ON manufacture_supplier.supplier_restaurant_id = a_c.restaurant_id
+LEFT JOIN 
+		producer a_d ON manufacture_supplier.supplier_farm_id = a_d.farm_id;
+
 
 -- -----------------------------------------------------
 -- Delate all the old columns and data
 -- -----------------------------------------------------
 
 -- Manually do this after backups and testing.
+
+-- Remove all the foreign keys for restaurant
+ALTER TABLE `restaurant` DROP FOREIGN KEY `fk_restaurant_city_area1` , DROP FOREIGN KEY `fk_restaurant_company1` , DROP FOREIGN KEY `fk_restaurant_restaurant_chain1` , DROP FOREIGN KEY `fk_restaurant_restaurant_type1` , DROP FOREIGN KEY `fk_restaurant_user1`;
+ALTER TABLE `address` DROP FOREIGN KEY `address_ibfk_7` , DROP FOREIGN KEY `fk_address_restaurant1` ;
+ALTER TABLE `distributor_supplier` DROP FOREIGN KEY `fk_distributor_supplier_restaurant1` ;
+ALTER TABLE `farm_supplier` DROP FOREIGN KEY `fk_farm_supplier_restaurant1` ;
+ALTER TABLE `manufacture_supplier` DROP FOREIGN KEY `fk_manufacture_supplier_restaurant1` ;
+ALTER TABLE `photo` DROP FOREIGN KEY `fk_photos_restaurant1` ;
+ALTER TABLE `product` DROP FOREIGN KEY `fk_product_restaurant1` ;
+ALTER TABLE `restaurant_photo` DROP FOREIGN KEY `fk_restaurant_photo_restaurant1` ;
+ALTER TABLE `custom_url` DROP FOREIGN KEY `fk_custom_url_restaurant1` ;
+
+
+drop table `restaurant_supplier`;
+drop table `restaurant_cuisine`;
+drop table `restaurant_chain_supplier`;
+drop table `farm_supplier`;
+drop table `manufacture_supplier`;
+drop table `biz_restaurants`;
+
+ALTER TABLE `restaurant_chain` DROP FOREIGN KEY `fk_restaurant_chain_restaurant_type1` , DROP FOREIGN KEY `fk_restaurant_chain_user` ;
+
+drop table `restaurant_type`;
+ALTER TABLE `manufacture` DROP FOREIGN KEY `fk_manufacture_company1` , DROP FOREIGN KEY `fk_manufacture_manufacture_type1` , DROP FOREIGN KEY `fk_manufacture_user1` ;
+drop table `manufacture_type`;
+drop table `distributor_supplier`;
+
+ALTER TABLE `comment` DROP FOREIGN KEY `fk_comment_farm1` , DROP FOREIGN KEY `fk_comment_manufacture1` , DROP FOREIGN KEY `fk_comment_restaurant1` , DROP FOREIGN KEY `fk_comment_restaurant_chain1` ;
+
+drop table `restaurant`;
+drop table `restaurant_chain`;
+
+ALTER TABLE `product` DROP FOREIGN KEY `fk_product_company1` , DROP FOREIGN KEY `fk_product_manufacture1` ;
+
+ALTER TABLE `custom_url` DROP FOREIGN KEY `fk_custom_url_company1` , DROP FOREIGN KEY `fk_custom_url_distributor1` , DROP FOREIGN KEY `fk_custom_url_farm1` , DROP FOREIGN KEY `fk_custom_url_manufacture1` ;
+
+drop table `cuisine`;
+ALTER TABLE `photo` DROP FOREIGN KEY `fk_photos_farm1` , DROP FOREIGN KEY `fk_photos_manufacture1` ;
+
+ALTER TABLE `address` DROP FOREIGN KEY `fk_address_company1` , DROP FOREIGN KEY `fk_address_distributor1` , DROP FOREIGN KEY `fk_address_farm1` , DROP FOREIGN KEY `fk_address_manufacture1` ;
+ALTER TABLE `address` 
+DROP INDEX `fk_address_company1` 
+, DROP INDEX `fk_address_distributor1` 
+, DROP INDEX `fk_address_farm1` 
+, DROP INDEX `fk_address_manufacture1` ;
