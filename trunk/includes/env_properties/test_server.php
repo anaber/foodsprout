@@ -14,10 +14,10 @@
  * Database Setup
  * ======================================================
  */
-$DB_HOST  = "mysql50-75.wc1.dfw1.stabletransit.com";
-$DB_USER  = "468258_fooduser2";
-$DB_PASSWORD  = "f00dRul3z";
-$DATABSE  = "468258_food2";
+$DB_HOST  = "mysql50-86.wc1.dfw1.stabletransit.com";
+$DB_USER  = "468258_food4user";
+$DB_PASSWORD  = "R3alF00d";
+$DATABSE  = "468258_food4";
 
 $BASE_URL = "http://www.vemoto.com/";
 
