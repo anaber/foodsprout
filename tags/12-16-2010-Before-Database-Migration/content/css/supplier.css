@@ -1,0 +1,14 @@
+input[type="submit"]{color:#4D4D4D;font-size:14px;font-weight:bold;padding:5px 0;text-shadow:0 1px 0 #888;text-shadow:0 1px 0 rgba(255,255,255,.5);border:4px solid #D2D2D2;cursor:pointer;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;background:#BFBFBF;background:-moz-linear-gradient(top,#EBEBEB,#929292);background:-webkit-gradient(linear,left top,left bottom,
+from(#EBEBEB),to(#929292));background:-o-linear-gradient(top,#EBEBEB,#929292);background:linear-gradient(top,#EBEBEB,#929292);}
+input[type="submit"]:hover{background:#71CE2F;background:-moz-linear-gradient(top,#71CE2F,#229500);background:-webkit-gradient(linear,left top,left bottom,
+from(#71CE2F),to(#229500));background:-o-linear-gradient(top,#71CE2F,#229500);background:linear-gradient(top,#71CE2F,#229500);color:white;text-shadow:0 -1px 0 #257703;}
+input[type="submit"]:active,
+input[type="submit"].active{background:#229500;background:-moz-linear-gradient(top,#229500,#48B117);background:-webkit-gradient(linear,left top,left bottom,
+from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);background:linear-gradient(top,#229500,#48B117);color:#277200;text-shadow:none;padding:6px 0 4px;}
+.supplier{padding-left:10px;left:200px;width:310px;background:#F0F0F0;border:1px solid #aaa;position:relative;right:0;z-index:101;text-align:left;display:none;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;-moz-box-shadow:0 4px 10px #444;-webkit-box-shadow:0 4px 10px #444;box-shadow:0 4px 10px #444;clear:left;}
+.supplier input{margin-bottom:10px;width:230px;}
+.supplier input[type='submit']{width:140px;}
+.addItem{margin-left:10px;width:105px;float:right;font-weight:bold;margin-top:3px;font-size:12px;color:#164b81;background:#f9ece0 url(/img/slidedown-trigger.png) 90% 0px no-repeat;padding:1px;margin-right:5px;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;height:15px;border:1px solid #fff;}
+.addItem:hover{text-decoration:none;background-color:#CCC;cursor:pointer;}
+.addItem.active{color:#1A1A1A;background-color:#F0F0F0;background-position:90% -40px;position:relative;z-index:102;-moz-border-radius:4px 4px 0 0;-webkit-border-radius:4px;-webkit-border-bottom-left-radius:0;-webkit-border-bottom-right-radius:0;border-radius:5px 5px 0 0;padding:1px;margin-top:3px;height:20px;}
+.addItem.active:hover{color:#888;}

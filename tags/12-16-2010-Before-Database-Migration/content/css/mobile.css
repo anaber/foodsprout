@@ -1,0 +1,47 @@
+#mainarea{
+	margin:5px;
+	color:#000;
+	background:#ffffff;
+	padding:5px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
+body #menu {
+
+	padding:			0;
+
+}
+body #menu li {
+	padding:			0;
+}
+body #menu li a {
+	display:			block;
+	margin-left:		4px;
+	padding:			12px 0 10px 10px;
+	border-bottom:		1px solid #DCDCDC;
+	font-size:			1.6em;
+	font-weight:		bold;
+	line-height:		1em;
+	color:				#176EB1;
+	text-decoration:    none;	
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+body #menu li a:active,
+body #menu li a.active {
+	color:				#FFF;
+}
+body #menu li a:active span,
+body #menu li a.active span {
+	color:				#FFF;
+}
+
+
+body #menu li a span {
+	display:			block;
+	padding-top:		4px;
+	font-size:			13px;
+	line-height:		1em;
+	font-weight:		normal;
+	color:				#333;
+}	

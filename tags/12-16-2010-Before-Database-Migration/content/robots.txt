@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /farm/ajaxGetDistinctUsedFarmType
+Disallow: /farm/ajaxSearchFarmInfo
+Disallow: /restaurant/ajaxGetDistinctUsedCuisine
+Disallow: /restaurant/ajaxGetDistinctUsedRestaurantType
+Disallow: /restaurant/ajaxSearchRestaurantInfo
+Disallow: /restaurant/ajaxSearchRestaurantSuppliers
+Disallow: /common/
+Disallow: /company/
+Allow: /
