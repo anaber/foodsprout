@@ -567,3 +567,13 @@ ALTER TABLE `farm` DROP FOREIGN KEY `fk_farm_company1` , DROP FOREIGN KEY `fk_fa
 
 drop table `company`;
 drop table `farm_type`;
+
+ALTER TABLE `farmers_market_supplier` ADD COLUMN `producer_id` INT NOT NULL  AFTER `farmers_market_id` ;
+ALTER TABLE `farmers_market_supplier` DROP FOREIGN KEY `fk_farmers_market_farms_farm1` , DROP FOREIGN KEY `fk_farmers_market_farms_farmers_market1` , DROP FOREIGN KEY `fk_farmers_market_farms_user1` ;
+ALTER TABLE `farmers_market_supplier` DROP COLUMN `supplier_farm_id` 
+, DROP INDEX `fk_farmers_market_farms_farm1` ;
+
+drop table `farm`;
+
+drop table `restaurant_photo`;
+
