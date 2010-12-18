@@ -135,8 +135,8 @@ class Restaurant extends Controller {
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
 		
 		// Left -> Map
-		$data['data']['left']['map']['width'] = '220';
-		$data['data']['left']['map']['height'] = '180';
+		$data['data']['left']['map']['width'] = '290';
+		$data['data']['left']['map']['height'] = '220';
 		$data['data']['left']['map']['hide_map'] = 'no';
 		
 		// Left -> Images
@@ -163,7 +163,7 @@ class Restaurant extends Controller {
 						'floating_messages'
 					);
 		
-		$this->load->view('templates/left_center_right_template', $data);
+		$this->load->view('templates/info_page', $data);
 	}
 	
 	

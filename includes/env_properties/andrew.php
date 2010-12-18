@@ -17,7 +17,7 @@
 $DB_HOST  = "localhost";
 $DB_USER  = "root";
 $DB_PASSWORD  = "root";
-$DATABSE  = "468258_food3";
+$DATABSE  = "foodsprout";
 
 $BASE_URL = "http://localhost:8888/";
 
@@ -36,7 +36,7 @@ $GEOCODE_URL = 'http://geocode.local/geocode.php';
 $SITE_TITLE  = "Food";
 
 $SYSTEM_FOLDER = "/Users/anaber/Sites/food/web/trunk/system";
-$APPLICATION_FOLDER = "/Users/anaber/Sites/food/web/trunk/application";
+$APPLICATION_FOLDER = "/Users/anaber/Sites/food/web/branches/anaber/application";
 
 $UPLOAD_FOLDER = "/Users/anaber/Sites/food/web/trunk/content/uploads";
 
