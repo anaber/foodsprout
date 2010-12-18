@@ -21,7 +21,7 @@
 			<?php
 				foreach($cities as $city){
 					
-					echo '<span><a href="'.base_url().'mobile/restaurants/'.$city['city_id'].'" >'.$city['city'].'</a></span><br />';
+					echo '<span><a href="'.base_url().'mobile/restaurants/cityrestaurantlist/'.$city['city_id'].'" >'.$city['city'].'</a></span><br />';
 				
 				}
 			?>
