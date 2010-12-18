@@ -5,9 +5,9 @@ class FarmModel extends Model{
 	// list new farms
 	function listNewFarms()
 	{
-		$query = "SELECT farm.* " .
-				" FROM farm " .
-				" ORDER BY farm_id DESC LIMIT 5";
+		$query = "SELECT producer.* " .
+				" FROM producer WHERE is_farm IS NOT NULL" .
+				" ORDER BY producer_id DESC LIMIT 5";
 		
 		log_message('debug', "FarmModel.listNewFarms : " . $query);
 		$result = $this->db->query($query);
@@ -19,8 +19,8 @@ class FarmModel extends Model{
 			$this->load->library('FarmLib');
 			unset($this->FarmLib);
 			
-			$this->FarmLib->farmId = $row['farm_id'];
-			$this->FarmLib->farmName = $row['farm_name'];
+			$this->FarmLib->farmId = $row['producer_id'];
+			$this->FarmLib->farmName = $row['producer'];
 			
 			$farms[] = $this->FarmLib;
 			unset($this->FarmLib);
@@ -441,15 +441,15 @@ class FarmModel extends Model{
 	
 		$page = 0;
 		
-		$base_query = 'SELECT farm.*, farm_type.farm_type' .
-				' FROM farm, farm_type';
+		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
+				' FROM producer, producer_category, producer_category_member';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM farm, farm_type';
+				' FROM producer, producer_category, producer_category_member';
 		
-
-		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id ' .
-				' AND farm.status = \'live\' ';
+		$where = ' WHERE is_farm IS NOT NULL'.
+		         ' AND producer.producer_id = producer_category_member.producer_id AND producer_category_member.producer_category_id=producer_category.producer_category_id' .
+				 ' AND producer.status = \'live\' ';
 
 		//if ( count($arrFarmTypeId) > 0  || count($arrCuisineId) > 0 ) {
 		if ( count($arrFarmTypeId) > 0 ) {
@@ -488,7 +488,7 @@ class FarmModel extends Model{
 					
 					$where	.=  '	from address'
 					. '			WHERE' 
-					. '				address.farm_id = farm.farm_id';
+					. '				address.producer_id = producer.producer_id';
 					
 				if (count($latLng) > 0 ) {
 					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
@@ -514,8 +514,8 @@ class FarmModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY farm_name';
-			$sort = 'farm_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -558,20 +558,15 @@ class FarmModel extends Model{
 			$this->load->library('FarmLib');
 			unset($this->FarmLib);
 			
-			$this->FarmLib->farmId = $row['farm_id'];
-			$this->FarmLib->farmName = $row['farm_name'];
-			$this->FarmLib->farmType = $row['farm_type'];
+			$this->FarmLib->farmId = $row['producer_id'];
+			$this->FarmLib->farmName = $row['producer'];
+			$this->FarmLib->farmType = $row['producer_category'];
 			
 			$this->FarmLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			//$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', $q, $city, '');
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id']);
 			$this->FarmLib->addresses = $addresses;
-			
-			
-			//$cuisines = $this->getCuisinesForRestaurant( $row['restaurant_id']);
-			//$this->FarmLib->cuisines = $cuisines;
 			
 			foreach ($addresses as $key => $address) {
 				$arrLatLng = array();
