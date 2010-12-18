@@ -7,11 +7,18 @@
 ?>
 
 <?php
+	if (isset($NAME) ) {
+		$this->load->view('includes/name', array('BREADCRUMB' => $NAME ) );
+	}
+	else{
+	}
+	
 	if (isset($BREADCRUMB) ) {
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
-	} else {
-		echo '<br>';
 	}
+	else{
+	}
+
 ?>
 <table width = "980" border = "0" cellpadding = "0" cellspacing = "0">
 	<tr>
