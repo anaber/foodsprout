@@ -101,7 +101,13 @@ class MobileRestaurantModel extends Model{
 		}
 
 	}
-
+	
+	function getRestaurantsByCityId($cityId){
+		
+		
+		
+		
+	}
 
 
 }
