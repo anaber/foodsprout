@@ -37,6 +37,10 @@ CREATE  TABLE IF NOT EXISTS `producer` (
   `track_ip` VARCHAR(18) NULL ,
   `claims_sustainable` INT NULL ,
   `is_chain_restaurant` TINYINT NULL ,
+  `is_restaurant` TINYINT NULL ,
+  `is_farm` TINYINT NULL ,
+  `is_manufacture` TINYINT NULL ,
+  `is_distributor` TINYINT NULL ,
   PRIMARY KEY (`producer_id`) )
 ENGINE = InnoDB;
 
@@ -125,6 +129,78 @@ CREATE  TABLE IF NOT EXISTS `producer_attribute` (
   `attribute_value` VARCHAR(95) NULL ,
   PRIMARY KEY (`producer_attribute_id`) )
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `lottery`
+-- -----------------------------------------------------
+
+CREATE TABLE `lottery` (
+  `lottery_id` int(11) NOT NULL auto_increment,
+  `lottery_name` varchar(45) NOT NULL,
+  `producer_id` int(11) NOT NULL,
+  `info` text,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime NOT NULL,
+  `draw_date` datetime NOT NULL,
+  `result_date` datetime NOT NULL,
+  `city_id` int(11) NOT NULL,
+  PRIMARY KEY  (`lottery_id`)
+) ENGINE=InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `lottery_entry`
+-- -----------------------------------------------------
+
+CREATE TABLE `lottery_entry` (
+  `entry_id` int(11) NOT NULL auto_increment,
+  `user_id` int(11) NOT NULL,
+  `lottery_id` int(11) NOT NULL,
+  `enrolled_on` datetime NOT NULL,
+  `facebook_user_id` bigint(20) default NULL,
+  `facebook_token` varchar(255) default NULL,
+  PRIMARY KEY  (`entry_id`)
+) ENGINE=InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `lottery_photo`
+-- -----------------------------------------------------
+
+CREATE TABLE `lottery_photo` (
+  `photo_id` int(11) NOT NULL,
+  `lottery_id` int(11) default NULL,
+  `path` varchar(255) default NULL,
+  `thumb_photo_name` varchar(255) default NULL,
+  `photo_name` varchar(255) default NULL,
+  `original_photo_name` varchar(255) default NULL,
+  `extension` varchar(45) default NULL,
+  `mime_type` varchar(45) default NULL,
+  `thumb_height` int(11) default NULL,
+  `thumb_width` int(11) default NULL,
+  `height` int(11) default NULL,
+  `width` int(11) default NULL,
+  `added_on` datetime default NULL,
+  PRIMARY KEY  (`photo_id`)
+) ENGINE=InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `lottery_prize`
+-- -----------------------------------------------------
+
+CREATE TABLE `lottery_prize` (
+  `lottery_prize_id` int(11) NOT NULL auto_increment,
+  `lottery_id` int(11) NOT NULL,
+  `dollar_amount` int(11) NOT NULL,
+  `winner` int(11) default NULL,
+  `prize` varchar(45) default NULL,
+  PRIMARY KEY  (`lottery_prize_id`)
+) ENGINE=InnoDB;
+
+
+
 
 -- -----------------------------------------------------
 -- Update the address table and product table
@@ -335,12 +411,25 @@ INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SE
 
 INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM manufacture LEFT JOIN producer ab ON manufacture.manufacture_id = ab.manufacture_id LEFT JOIN manufacture_type xy ON manufacture.manufacture_type_id = xy.manufacture_type_id LEFT JOIN producer_category yz ON xy.manufacture_type_id = yz.manufacture_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
 
+-- -----------------------------------------------------
+-- Put the categories into groups
+-- -----------------------------------------------------
+
+INSERT INTO `producer_category_group` (`producer_category_group_id`, `producer_category_group` ) VALUE (NULL, 'Cuisine');
+INSERT INTO `producer_category_group` (`producer_category_group_id`, `producer_category_group` ) VALUE (NULL, 'Restaurant Type');
+INSERT INTO `producer_category_group` (`producer_category_group_id`, `producer_category_group` ) VALUE (NULL, 'Farm Type');
+INSERT INTO `producer_category_group` (`producer_category_group_id`, `producer_category_group` ) VALUE (NULL, 'Manufacturer Type');
+
+UPDATE `producer_category` SET category_group1 = 1 WHERE cuisine_id IS NOT NULL;
+UPDATE `producer_category` SET category_group1 = 2 WHERE restaurant_type_id IS NOT NULL;
+UPDATE `producer_category` SET category_group1 = 3 WHERE farm_type_id IS NOT NULL;
+UPDATE `producer_category` SET category_group1 = 4 WHERE manufacture_type_id IS NOT NULL;
 
 -- -----------------------------------------------------
 -- Populate the supplier tables
 -- -----------------------------------------------------
 
-INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `record_ip`)
+INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `track_ip`)
 
 SELECT  
 	CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier,
@@ -360,7 +449,7 @@ LEFT JOIN
 
 -- Restaurant supplier, this query should be reviewed closely
 
-INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `record_ip`)
+INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `track_ip`)
 
 SELECT  
 	CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier,
@@ -378,7 +467,7 @@ LEFT JOIN
 
 -- Distributor supplier
 	
-INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `record_ip`)
+INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `track_ip`)
 
 SELECT  
 	CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier,
@@ -396,7 +485,7 @@ LEFT JOIN
 	
 -- Manufacture supplier
 
-INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `record_ip`)
+INSERT INTO `supplier` (`supplier`,`suppliee`, `user_id`, `status`, `track_ip`)
 
 SELECT  
 		CONCAT( IF (a_b.producer_id is NULL, '', a_b.producer_id), IF(a_c.producer_id is NULL, '', a_c.producer_id), IF(a_d.producer_id is NULL, '', a_d.producer_id) ) as supplier,
@@ -457,9 +546,24 @@ ALTER TABLE `custom_url` DROP FOREIGN KEY `fk_custom_url_company1` , DROP FOREIG
 drop table `cuisine`;
 ALTER TABLE `photo` DROP FOREIGN KEY `fk_photos_farm1` , DROP FOREIGN KEY `fk_photos_manufacture1` ;
 
-ALTER TABLE `address` DROP FOREIGN KEY `fk_address_company1` , DROP FOREIGN KEY `fk_address_distributor1` , DROP FOREIGN KEY `fk_address_farm1` , DROP FOREIGN KEY `fk_address_manufacture1` ;
-ALTER TABLE `address` 
-DROP INDEX `fk_address_company1` 
+ALTER TABLE `468258_food4`.`address` DROP FOREIGN KEY `address_ibfk_2` , DROP FOREIGN KEY `address_ibfk_4` , DROP FOREIGN KEY `address_ibfk_5` , DROP FOREIGN KEY `address_ibfk_6` , DROP FOREIGN KEY `address_ibfk_7` , DROP FOREIGN KEY `fk_address_company1` , DROP FOREIGN KEY `fk_address_distributor1` , DROP FOREIGN KEY `fk_address_farm1` , DROP FOREIGN KEY `fk_address_manufacture1` , DROP FOREIGN KEY `fk_address_restaurant1` , DROP FOREIGN KEY `address_ibfk_8` ;
+ALTER TABLE `468258_food4`.`address` 
+  ADD CONSTRAINT `address_ibfk_7`
+  FOREIGN KEY (`state_id` )
+  REFERENCES `468258_food4`.`state` (`state_id` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+, DROP INDEX `fk_address_company1` 
 , DROP INDEX `fk_address_distributor1` 
 , DROP INDEX `fk_address_farm1` 
-, DROP INDEX `fk_address_manufacture1` ;
+, DROP INDEX `fk_address_manufacture1` 
+, DROP INDEX `fk_address_restaurant1` ;
+
+drop table `manufacture`;
+drop table `distributor`;
+drop table `super_market`;
+
+ALTER TABLE `farm` DROP FOREIGN KEY `fk_farm_company1` , DROP FOREIGN KEY `fk_farm_farm_type1` , DROP FOREIGN KEY `fk_farm_user1` ;
+
+drop table `company`;
+drop table `farm_type`;
