@@ -19,7 +19,7 @@ class Home extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'home',
+				'mainarea' => 'mobile/home',
 			);
 		
 		$this->load->view('templates/mobile_template', $data);
