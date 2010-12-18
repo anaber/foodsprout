@@ -93,7 +93,7 @@ class Manufacture extends Controller {
 		$manufactureId = $this->uri->segment(3);
 
 		$this->load->model('PhotoModel');
-		$thumbPhotos = $this->PhotoModel->getThumbPhotos('manufacture', $manufactureId);
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('producer', $manufactureId);
 		
 		// Getting information from models
 		$this->load->model('ManufactureModel');
@@ -132,7 +132,7 @@ class Manufacture extends Controller {
 
 		// Load all the views for the right column
 		$data['RIGHT'] = array(
-				'ad' => 'includes/banners/sky',
+				//'ad' => 'includes/banners/sky',
 			);
 
 		// Data to be passed to the views
@@ -180,15 +180,9 @@ class Manufacture extends Controller {
 	function ajaxSearchManufactureSuppliers() {
 		$q = $this->input->post('q');
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForCompanyJson('', '', $q, '', '', '');
+		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q);
 		
 		echo json_encode($suppliers);
-	}
-	
-	function ajaxSearchRestaurantMenus() {
-		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantMenusJson();
-		echo json_encode($restaurants);
 	}
 	
 	function ajaxSearchManufactureMenus() {

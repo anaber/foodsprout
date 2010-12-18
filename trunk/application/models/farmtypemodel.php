@@ -6,9 +6,9 @@ class FarmTypeModel extends Model{
 	function listFarmType($c)
 	{
 		if ( isset($c) && !empty ($c) ) {
-			$query = "SELECT * FROM farm_type ORDER BY farm_type LIMIT 0, $c";
+			$query = "SELECT * FROM producer_category WHERE category_group1=3 ORDER BY producer_category LIMIT 0, $c";
 		} else {
-			$query = "SELECT * FROM farm_type ORDER BY farm_type";
+			$query = "SELECT * FROM producer_category WHERE category_group1=3 ORDER BY producer_category";
 		}
 		
 		log_message('debug', "FarmTypeModel.listFarmType : " . $query);
@@ -21,8 +21,8 @@ class FarmTypeModel extends Model{
 			$this->load->library('FarmTypeLib');
 			unset($this->farmTypeLib);
 			
-			$this->farmTypeLib->farmTypeId = $row['farm_type_id'];
-			$this->farmTypeLib->farmType = $row['farm_type'];
+			$this->farmTypeLib->farmTypeId = $row['producer_category_id'];
+			$this->farmTypeLib->farmType = $row['producer_category'];
 			
 			$farmTypes[] = $this->farmTypeLib;
 			unset($this->farmTypeLib);

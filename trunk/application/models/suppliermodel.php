@@ -821,6 +821,109 @@ class SupplierModel extends Model{
 	}
 	
 	
+	// Get the suppliers for a producer
+	
+	function getSupplierForProducerJson($producerId) {
+		global $SUPPLIER_TYPES_2, $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$start = 0;
+		$page = 0;
+		
+		/** $base_query_count */
+		$base_query_count = 'SELECT count(*) AS num_records';
+		$base_query_count .= ' FROM supplier';
+		$base_query_count .= ' WHERE suppliee='.$producerId;
+		
+		/** $base_query*/
+		$base_query = 'SELECT supplier.*, producer, producer_id';
+		$base_query .= ' FROM supplier, producer';
+		
+		$where = ' WHERE suppliee='.$producerId; 
+				 ' AND supplier.supplier = producer.producer_id';
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;	
+		$sort_query = ' ORDER BY producer';	
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "SupplierModel.getSupplierForCompanyJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$suppliers = array();
+		$CI =& get_instance();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('SupplierLib');
+			unset($this->supplierLib);
+			
+			$CI->load->model('AddressModel','',true);
+			
+			$this->supplierLib->supplierId = $row['supplier'];
+			
+			$this->supplierLib->supplierName = $row['producer'];
+			$this->supplierLib->supplierReferenceId = $row['suppliee'];
+				
+			$addresses = $CI->AddressModel->getAddressForProducer($row['supplier']);
+			$this->supplierLib->addresses = $addresses;
+			
+			$suppliers[] = $this->supplierLib;
+			unset($this->supplierLib);
+		}
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $fieldValue, '', '');
+		$arr = array(
+			'results'    => $suppliers,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
+	
 	/* This is a SPECIAL case
 	 * If restaurant belongs to a chain, we need to get suppliers of that chain as well
 	 * So, need to merge records from two table, restaurant_supplier and restaurant_chain_supplier

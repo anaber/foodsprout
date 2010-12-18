@@ -100,12 +100,12 @@ class ManufactureModel extends Model{
 	}
 	
 	// Get all the information about one specific manufacture from an ID
-	function getManufactureFromId($manufactureId) {
+	function getManufactureFromId($producerId) {
 		
-		$query = "SELECT manufacture.*, company.company_name " .
-				" FROM manufacture, company" .
-				" WHERE manufacture.manufacture_id = " . $manufactureId .
-				" AND manufacture.company_id = company.company_id";
+		$query = "SELECT producer.* " .
+				" FROM producer" .
+				" WHERE producer.producer_id = " . $producerId;
+				
 		log_message('debug', "ManufactureModel.getManufactureFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -116,11 +116,8 @@ class ManufactureModel extends Model{
 		if ($row) {
 			$geocodeArray = array();
 			
-			$this->manufactureLib->manufactureId = $row->manufacture_id;
-			$this->manufactureLib->companyId = $row->company_id;
-			$this->manufactureLib->companyName = $row->company_name;
-			$this->manufactureLib->manufactureTypeId = $row->manufacture_type_id;
-			$this->manufactureLib->manufactureName = $row->manufacture_name;
+			$this->manufactureLib->manufactureId = $row->producer_id;
+			$this->manufactureLib->manufactureName = $row->producer;
 			$this->manufactureLib->customUrl = $row->custom_url;
 			$this->manufactureLib->url = $row->url;
 			$this->manufactureLib->facebook = $row->facebook;
@@ -131,7 +128,7 @@ class ManufactureModel extends Model{
 			$CI =& get_instance();
 				
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row->manufacture_id, '', '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id);
 			$this->manufactureLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
@@ -569,18 +566,19 @@ class ManufactureModel extends Model{
 		$start = 0;
 		$page = 0;
 		
-		$base_query = 'SELECT manufacture.*, manufacture_type.manufacture_type' .
-				' FROM manufacture, manufacture_type';
+		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
+				' FROM producer, producer_category, producer_category_member';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM manufacture, manufacture_type';
+				' FROM producer, producer_category, producer_category_member';
 		
-		$where = ' WHERE manufacture.manufacture_type_id = manufacture_type.manufacture_type_id' .
-				' AND manufacture.status = \'live\' ';
+		$where = ' WHERE is_manufacture IS NOT NULL'.
+		         ' AND producer.producer_id = producer_category_member.producer_id AND producer_category_member.producer_category_id=producer_category.producer_category_id' .
+				 ' AND producer.status = \'live\' ';
 		
 		if (!empty($q) ) {
 		$where .= ' AND (' 
-				. '	manufacture.manufacture_id = ' . $q
+				. '	producer.producer_id = ' . $q
 				. ' )';
 		}
 		
@@ -595,7 +593,7 @@ class ManufactureModel extends Model{
 			$where	.= '		SELECT product.product_id' 
 					. '			from product'
 					. '			WHERE' 
-					. '				product.manufacture_id = manufacture.manufacture_id'
+					. '				product.producer_id = producer.producer_id'
 					. ' 			AND ('
 					. '						product.brand like "%' . $filter . '%"' 
 					. '				)'
@@ -616,8 +614,8 @@ class ManufactureModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY manufacture_name';
-			$sort = 'manufacture_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -662,17 +660,18 @@ class ManufactureModel extends Model{
 			$this->load->library('ManufactureLib');
 			unset($this->ManufactureLib);
 			
-			$this->ManufactureLib->manufactureId = $row['manufacture_id'];
-			$this->ManufactureLib->manufactureName = $row['manufacture_name'];
-			$this->ManufactureLib->manufactureTypeId = $row['manufacture_type_id'];
-			$this->ManufactureLib->manufactureType = $row['manufacture_type'];
+			$this->ManufactureLib->manufactureId = $row['producer_id'];
+			$this->ManufactureLib->manufactureName = $row['producer'];
+			$this->ManufactureLib->manufactureTypeId = $row['producer_category_id'];
+			$this->ManufactureLib->manufactureType = $row['producer_category'];
 			
-			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '', '');
-			$this->ManufactureLib->suppliers = $suppliers;
+			// Why do we get all the suppliers for a simple listing page?
+			//$CI->load->model('SupplierModel','',true);
+			//$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '', '');
+			//$this->ManufactureLib->suppliers = $suppliers;
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id']);
 			$this->ManufactureLib->addresses = $addresses;
 			
 			$manufactures[] = $this->ManufactureLib;
@@ -700,7 +699,7 @@ class ManufactureModel extends Model{
 	
 	// Get all the manufacture's products from the database
 	function getManufactureProducts($manufactureId) {
-		$query = "SELECT * FROM product WHERE manufacture_id = " . $manufactureId;
+		$query = "SELECT * FROM product WHERE producer_id = " . $manufactureId;
 		
 		log_message('debug', "ManufactureModel.getManufactureProducts : " . $query);
 		$result = $this->db->query($query);
@@ -745,7 +744,7 @@ class ManufactureModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM product';
 		
-		$where = ' WHERE manufacture_id  = ' . $q . 
+		$where = ' WHERE producer_id  = ' . $q . 
 				 ' AND product.status = \'live\'';
 		
 		$base_query_count = $base_query_count . $where;

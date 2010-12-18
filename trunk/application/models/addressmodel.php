@@ -111,6 +111,54 @@ class AddressModel extends Model{
 		
 	}
 	
+	function getAddressForProducer($producerId) {
+		
+		$addresses = array();
+		
+		$query = "SELECT address.*, state.state_code, state.state_name, country.country_name" .
+				" FROM address, state, country " .
+				" WHERE ";
+		
+		$query .= "producer_id = " . $producerId; 
+		
+		$query .= " AND address.state_id = state.state_id" .
+				  " AND address.country_id = country.country_id" .
+				  " ORDER BY address_id";
+		
+		log_message('debug', "AddressModel.getAddressForCompany : " . $query);
+		$result = $this->db->query($query);
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('AddressLib');
+			unset($this->addressLib);
+			
+			$this->addressLib->addressId = $row['address_id'];
+			$this->addressLib->address = $row['address'];
+			$this->addressLib->city = $row['city'];
+			$this->addressLib->cityId = $row['city_id'];
+			$this->addressLib->stateId = $row['state_id'];
+			$this->addressLib->state = $row['state_name'];
+			$this->addressLib->stateCode = $row['state_code'];
+			$this->addressLib->zipcode = $row['zipcode'];
+			$this->addressLib->countryId = $row['country_id'];
+			$this->addressLib->country = $row['country_name'];
+			$this->addressLib->latitude = $row['latitude'];
+			$this->addressLib->longitude = $row['longitude'];
+			$this->addressLib->claimsSustainable = $row['claims_sustainable'];
+			
+			$this->addressLib->completeAddress = $this->prepareAddress($row['address'], $row['city'], $row['city_id'], $row['state_id'], $row['country_id'], $row['zipcode']);
+			$this->addressLib->displayAddress = $this->prepareAddressToDisplay($row['address'], $row['city'], $row['city_id'], $row['state_id'], $row['country_id'], $row['zipcode']);
+			
+			$addresses[] = $this->addressLib;
+			unset($this->addressLib);
+		}
+		
+		return $addresses;
+		
+	}
+	
+	
 	function getCityFromZipcode($zipcode) {
 		
 		$query = "SELECT distinct city_id FROM address WHERE zipcode = " . $zipcode;

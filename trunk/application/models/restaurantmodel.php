@@ -5,9 +5,9 @@ class RestaurantModel extends Model{
 	// Generate a simple list of the recent restaurants added to the db
 	function listNewRestaurants()
 	{
-		$query = "SELECT restaurant.*
-					FROM restaurant
-					ORDER BY restaurant_id DESC limit 5";
+		$query = "SELECT producer.*
+					FROM producer WHERE is_restaurant IS NOT NULL
+					ORDER BY producer_id DESC limit 5";
 
 		log_message('debug', "RestaurantModel.listNewRestaurants : " . $query);
 		$result = $this->db->query($query);
@@ -19,8 +19,8 @@ class RestaurantModel extends Model{
 			$this->load->library('RestaurantLib');
 			unset($this->RestaurantLib);
 
-			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
-			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
+			$this->RestaurantLib->restaurantId = $row['producer_id'];
+			$this->RestaurantLib->restaurantName = $row['producer'];
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 
 			$restaurants[] = $this->RestaurantLib;
