@@ -112,7 +112,7 @@ class Restaurants extends Controller {
 		$this->load->view('templates/mobile_template', $data);
 	}
 	
-	function cityrestaurantlist(){
+	function cityrestaurantlist($cityID){
 				
 		$data = array();
 		
