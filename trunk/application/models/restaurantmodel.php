@@ -56,22 +56,32 @@ class RestaurantModel extends Model{
 
 				foreach($proximity_zips as $zip){
 
-					$isRestaurant = $this->db->get_where('restaurant', array('restaurant_id' => $zip['restaurant_id']))->result_array();
-
+					$isRestaurant = $this->db->get_where('producer', array('restaurant_id' => $zip['restaurant_id']))->result_array();
+					
+					
+					
+					
 					if( sizeof($isRestaurant) > 0){
 						foreach($isRestaurant as $restaurantData){
 
-							$restaurantsArray[$restaurantNumber]['restaurant_name'] = $restaurantData['restaurant_name'];
+							$restaurantsArray[$restaurantNumber]['restaurant_name'] = $restaurantData['producer'];
 							$restaurantsArray[$restaurantNumber]['address'] = $zip['address'];
 							$restaurantsArray[$restaurantNumber]['city'] = $zip['city'];
 							$restaurantsArray[$restaurantNumber]['address_id'] = $zip['address_id'];
 							$restaurantsArray[$restaurantNumber]['restaurant_id'] = $zip['restaurant_id'];
 								
 								
-							$cuisineQuery = "SELECT cuisine.cuisine_name 	FROM 	restaurant , restaurant_cuisine , cuisine WHERE
-													cuisine.cuisine_id =  restaurant_cuisine.cuisine_id AND
-													restaurant_cuisine.restaurant_id =  restaurant.restaurant_id AND
-													restaurant.restaurant_id =  '".$zip['restaurant_id']."'";
+							$cuisineQuery = "SELECT
+												producer_category.producer_category as cuisine_name
+												FROM
+												producer ,
+												producer_category ,
+												producer_category_member
+												WHERE
+												producer.producer_id =  producer_category_member.producer_id AND
+												producer_category_member.producer_category_id =  producer_category.producer_category_id AND
+												producer.restaurant_id =  '".$zip['restaurant_id']."' AND
+												producer_category.cuisine_id IS NOT NULL ";
 								
 							$cuisineResults = $this->db->query($cuisineQuery)->result_array();
 								
