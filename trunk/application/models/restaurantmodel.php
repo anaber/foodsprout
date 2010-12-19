@@ -81,7 +81,9 @@ class RestaurantModel extends Model{
 												producer.producer_id =  producer_category_member.producer_id AND
 												producer_category_member.producer_category_id =  producer_category.producer_category_id AND
 												producer.restaurant_id =  '".$zip['restaurant_id']."' AND
-												producer_category.cuisine_id IS NOT NULL ";
+												producer_category.cuisine_id IS NOT NULL 
+												AND producer.is_restaurant = 1";
+											
 								
 							$cuisineResults = $this->db->query($cuisineQuery)->result_array();
 								
