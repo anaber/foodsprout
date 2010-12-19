@@ -112,23 +112,62 @@ class Restaurants extends Controller {
 		$this->load->view('templates/mobile_template', $data);
 	}
 	
-	function cityrestaurantlist($cityID){
+	function cityrestaurantlist($cityID, $page=0){
 				
 		$data = array();
+		
+		if(!empty($_POST['page'])){
+			
+			$page = $this->input->post('page');
+			
+		}
+		
+		$perPage = 50; 
 		
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('index');
 		$data['SEO'] = $seo;
 		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'mainarea' => 'mobile/restaurant/citysearch'
-			);
-		
 		//load mobile restaurant model
 		$this->load->model('mobile/MobileRestaurantModel');
 		
 		
+		//create query limits
+		if($page != 0){	
+			$page = $page - 1;
+			$start  = $page*$perPage;
+			$stop = ($page*$perPage) + $perPage;		
+		}else{	
+			$start = 0; 
+			$stop = $perPage;
+		}
+		
+		//getting results from model
+		$data['results'] = $this->MobileRestaurantModel->getRestaurantsByCityId($cityID, $start, $stop);
+		
+		//calculate page numbers
+		$pagesNumber = ceil($data['results']['totalrecords']/$perPage); 
+		
+		//estabilishing values for display to users
+		$data['start']  = $start+1; 
+		if($this->input->post('page') == $pagesNumber){
+			$data['stop']  = $data['results']['totalrecords']; 
+		}else{
+			$data['stop'] = $stop;
+		}
+		$data['searched_page'] = $page+1;
+		$data['city_id'] = $cityID;
+		
+		//getting all jump steps 
+		$data['pages'] = range(1, $pagesNumber);
+
+		// List of views to be included
+		$data['CENTER'] = array(
+				'mainarea' => 'mobile/restaurant/list'
+			);
+
+		
+		$this->load->view('templates/mobile_template', $data);
 		
 	}
 }
