@@ -924,6 +924,170 @@ class SupplierModel extends Model{
 	}
 	
 	
+	// Get all the farms for a farmers market
+	
+	function getSupplierForFarmersMarketJson($farmersMarketId) {
+		global $SUPPLIER_TYPES_2, $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$fieldName = '';
+		$fieldValue = '';
+		
+		$tableName = 'farmers_market_supplier';
+		$idFieldName = 'producer_id';    			// supplier
+		$fieldName = 'farmers_market_id';			// suppliee
+		$fieldValue = $farmersMarketId; 
+		
+		$start = 0;
+		$page = 0;
+		
+		/** $base_query*/
+		$base_query = 'SELECT ' . $tableName . '.*';
+			foreach ($SUPPLIER_TYPES_2[$tableName] as $key => $value) {
+				$base_query .= ', '. $key .'.'.$key;
+			}
+			
+			$base_query .= ' FROM '.$tableName;
+						
+			foreach ($SUPPLIER_TYPES_2[$tableName] as $key => $value) {
+				$base_query .= ' LEFT JOIN ' . $key .
+				' ON ' . $tableName . '.' . $key . '_id = ' . $key . '.' . $key . '_id';
+			}
+		/** $base_query */
+		
+		/** $base_query_count */
+		$base_query_count = 'SELECT count(*) AS num_records';
+			
+			$base_query_count .= ' FROM '.$tableName;
+						
+			foreach ($SUPPLIER_TYPES_2[$tableName] as $key => $value) {
+				$base_query_count .= ' LEFT JOIN ' . $key .
+				' ON ' . $tableName . '.' . $key . '_id = ' . $key . '.' . $key . '_id';
+			}
+		/** $base_query_count */
+		
+		
+		$where = 
+				' WHERE '.$tableName . '.' .$fieldName . ' = ' . $fieldValue . 
+				' AND '.$tableName.'.status = \'live\'';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY ' . $idFieldName;
+			$sort = $idFieldName;
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "SupplierModel.getSupplierForCompanyJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$suppliers = array();
+		$CI =& get_instance();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('SupplierLib');
+			unset($this->supplierLib);
+			
+			$CI->load->model('AddressModel','',true);
+			
+			$this->supplierLib->supplierId = $row[$idFieldName];
+			if (isset( $row['restaurant_name']) ) {
+				$this->supplierLib->supplierType = 'restaurant';
+				$this->supplierLib->supplierName = $row['restaurant_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_restaurant_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( $row['supplier_restaurant_id'], '', '', '', '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
+			} else if ( isset($row['farm_name']) ) {
+				$this->supplierLib->supplierType = 'farm';
+				$this->supplierLib->supplierName = $row['farm_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_farm_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', $row['supplier_farm_id'], '', '', '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
+			} else if ( isset($row['manufacture_name']) ) {
+				$this->supplierLib->supplierType = 'manufacture';
+				$this->supplierLib->supplierName = $row['manufacture_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_manufacture_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['supplier_manufacture_id'], '', '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
+			} else if ( isset($row['distributor_name']) ) {
+				$this->supplierLib->supplierType = 'distributor';
+				$this->supplierLib->supplierName = $row['distributor_name'];
+				$this->supplierLib->supplierReferenceId = $row['supplier_distributor_id'];
+				
+				$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row['supplier_distributor_id'], '', '', '', '');
+				$this->supplierLib->addresses = $addresses;
+				
+			}
+			
+			$suppliers[] = $this->supplierLib;
+			unset($this->supplierLib);
+		}
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $fieldValue, '', '');
+		$arr = array(
+			'results'    => $suppliers,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
+	
 	/* This is a SPECIAL case
 	 * If restaurant belongs to a chain, we need to get suppliers of that chain as well
 	 * So, need to merge records from two table, restaurant_supplier and restaurant_chain_supplier

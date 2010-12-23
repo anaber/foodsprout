@@ -135,7 +135,7 @@ class FarmersMarket extends Controller {
 
 		// Load all the views for the right column
 		$data['RIGHT'] = array(
-				'ad' => 'includes/banners/sky',
+				//'ad' => 'includes/banners/sky',
 			);
 
 		// Data to be passed to the views
@@ -180,7 +180,7 @@ class FarmersMarket extends Controller {
 	function ajaxSearchFarmersMarketSuppliers() {
 		$q = $this->input->post('q');
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForCompanyJson('', '', '', '', '', $q);
+		$suppliers = $this->SupplierModel->getSupplierForFarmersMarketJson($q);
 
 		echo json_encode($suppliers);
 	}
