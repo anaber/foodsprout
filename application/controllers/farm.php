@@ -90,8 +90,8 @@ class Farm extends Controller {
 	
 	function ajaxGetAllFarmType() {
 		$c = $this->input->post('c');
-		$this->load->model('FarmTypeModel');
-		$farmTypes = $this->FarmTypeModel->listFarmType($c);
+		$this->load->model('ProducerCategoryModel');
+		$farmTypes = $this->ProducerCategoryModel->listProducerCategory('FARM', $c);
 		echo json_encode($farmTypes);
 	}
 	

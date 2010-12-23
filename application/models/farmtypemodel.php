@@ -2,13 +2,21 @@
 
 class FarmTypeModel extends Model{
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Andrew
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	// List all the facility_type in the database
-	function listFarmType($c)
-	{
+	function listFarmType($c) {
+		global $PRODUCER_CATEGORY_GROUP;
+		
 		if ( isset($c) && !empty ($c) ) {
-			$query = "SELECT * FROM producer_category WHERE category_group1=3 ORDER BY producer_category LIMIT 0, $c";
+			$query = "SELECT * FROM producer_category WHERE category_group1 = " . $PRODUCER_CATEGORY_GROUP['FARM'] . " ORDER BY producer_category LIMIT 0, $c";
 		} else {
-			$query = "SELECT * FROM producer_category WHERE category_group1=3 ORDER BY producer_category";
+			$query = "SELECT * FROM producer_category WHERE category_group1 = " . $PRODUCER_CATEGORY_GROUP['FARM'] . " ORDER BY producer_category";
 		}
 		
 		log_message('debug', "FarmTypeModel.listFarmType : " . $query);

@@ -17,9 +17,10 @@
 $DB_HOST  = "localhost";
 $DB_USER  = "root";
 $DB_PASSWORD  = "";
-$DATABSE  = "food2";
+$DATABSE  = "foodsprout3";
+// 468258_staging
 
-$BASE_URL = "http://food.local/";
+$BASE_URL = "http://foodsprout.local/";
 
 $GOOGLE_MAP_KEY = 'ABQIAAAANHHVmwbFmPA69NdT2eV5nBQwaD-ZLXj78-bu070_JIa4Gc751BRaJHyd-O0--ruTVW-u9B9s_lu8nQ';
 
@@ -35,10 +36,10 @@ $GEOCODE_URL = 'http://geocode.local/geocode.php';
  */
 $SITE_TITLE  = "Food";
 
-$SYSTEM_FOLDER = "C:/Projects/food/system";
-$APPLICATION_FOLDER = "C:/Projects/food/trunk/application";
+$SYSTEM_FOLDER = "C:/Projects/foodsprout/system";
+$APPLICATION_FOLDER = "C:/Projects/foodsprout/trunk/application";
 
-$UPLOAD_FOLDER = "C:/Projects/food/trunk/content/uploads";
+$UPLOAD_FOLDER = "C:/Projects/foodsprout/trunk/content/uploads";
 
 $IMAGEMAGICK_PATH = "convert";
 /*
