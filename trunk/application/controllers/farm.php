@@ -88,6 +88,13 @@ class Farm extends Controller {
 		echo json_encode($farmTypes);
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function ajaxGetAllFarmType() {
 		$c = $this->input->post('c');
 		$this->load->model('ProducerCategoryModel');

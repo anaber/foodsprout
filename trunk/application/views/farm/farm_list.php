@@ -33,7 +33,6 @@ var farmsData;
 			}
 			//currentZoomLevel = defaultZoomLevel;
 			
-			//var formAction = '/farm/ajaxGetDistinctUsedFarmType';
 			var formAction = '/farm/ajaxGetAllFarmType';
 			postArray = { c:10 };
 			

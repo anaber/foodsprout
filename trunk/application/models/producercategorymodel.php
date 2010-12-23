@@ -4,7 +4,7 @@ class ProducerCategoryModel extends Model{
 	
 	/**
 	 * Migration: 		Done
-	 * Migrated by: 	Andrew
+	 * Migrated by: 	Deepak
 	 * 
 	 * Verified: 		Yes
 	 * Verified By: 	Deepak
@@ -19,23 +19,30 @@ class ProducerCategoryModel extends Model{
 			$query = "SELECT * FROM producer_category WHERE category_group1 = " . $PRODUCER_CATEGORY_GROUP[$categotyType] . " ORDER BY producer_category";
 		}
 		
-		log_message('debug', "FarmTypeModel.listFarmType : " . $query);
+		log_message('debug', "ProducerCategoryModel.listProducerCategory : " . $query);
 		$result = $this->db->query($query);
 		
-		$farmTypes = array();
+		$producerCategories = array();
 		
 		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('FarmTypeLib');
-			unset($this->farmTypeLib);
-			
-			$this->farmTypeLib->farmTypeId = $row['producer_category_id'];
-			$this->farmTypeLib->farmType = $row['producer_category'];
-			
-			$farmTypes[] = $this->farmTypeLib;
-			unset($this->farmTypeLib);
+			if ($categotyType == 'CUISINE') {
+				
+			} else if ($categotyType == 'RESTAURANT') {
+				
+			} else if ($categotyType == 'FARM') {
+				$this->load->library('FarmTypeLib');
+				unset($this->farmTypeLib);
+				
+				$this->farmTypeLib->farmTypeId = $row['producer_category_id'];
+				$this->farmTypeLib->farmType = $row['producer_category'];
+				
+				$producerCategories[] = $this->farmTypeLib;
+				unset($this->farmTypeLib);
+			} else if ($categotyType == 'MANUFACTURE') {
+				
+			}
 		}
-		return $farmTypes;
+		return $producerCategories;
 	}
 	
 }
