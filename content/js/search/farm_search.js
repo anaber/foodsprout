@@ -23,6 +23,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, radius) {
 	
 }
 
+/*
 function redrawAllFarmTypes(data, allFarmTypes) {
 	$('#divAllFarmTypes').empty();
 	
@@ -129,14 +130,15 @@ function reinitializePopupFarmTypeEvent (data, allFarmTypes) {
 	});
 	
 }
+*/
 
 function redrawTopFarmTypes(data) {
 	$('#divFarmTypes').empty();
 	
 	var resultHtml = '';
-	
+	//alert(selectedFarmTypeId);
 	if (selectedFarmTypeId != "") {
-		
+		//alert("IF");
 		arrSelectedFarmTypes = new Array();
 		j = 0;
 		if (filters != '') {
@@ -162,7 +164,7 @@ function redrawTopFarmTypes(data) {
 		//resultHtml += '</ul>';
 		
 	} else {
-		
+		//alert("ELSE");
 		arrTopFilters = new Array();
 		j = 0;
 		if (filters != '') {
@@ -199,6 +201,7 @@ function redrawTopFarmTypes(data) {
 	//reinitializeMoreFarmType(data);
 }
 
+/*
 function reinitializeMoreFarmType(data) {
 	$("#chooseMoreFarmType").click(function(e){
 		e.preventDefault();
@@ -223,9 +226,9 @@ function reinitializeMoreFarmType(data) {
 	$("#popupClose").click(function(){
 		disablePopup();
 	});
-	
 }
-		
+*/
+
 function redrawZipcodeBox() {
 	$('#divZipcode').empty();
 	formFilterContent = '<form id = "frmFilters">Zip Code <input type="text" size="6" maxlength="5" id = "q"></form>';
@@ -400,9 +403,9 @@ function reinitializeFilterEvent (data) {
 		}
 		//alert(strFilters );
 		
-		if (strFilters != '') {
+		//if (strFilters != '') {
 			filters = strFilters;
-		}
+		//}
 		
 		//loadPopupFadeIn();
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.radius);
