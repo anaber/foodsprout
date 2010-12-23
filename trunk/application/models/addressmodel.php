@@ -111,6 +111,13 @@ class AddressModel extends Model{
 		
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function getAddressForProducer($producerId) {
 		
 		$addresses = array();

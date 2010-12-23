@@ -11,7 +11,7 @@
  * ======================================================
  */
 
-$ENV_PROPERTY_FILE = "env_properties/staging_server.php"; 
+$ENV_PROPERTY_FILE = "env_properties/deepak.php"; 
 
 include($ENV_PROPERTY_FILE);
 
@@ -135,6 +135,13 @@ $RECOMMENDED_CITIES = array (
 					'San Jose',
 					'New York',
 					'Los Angeles',					
+				);
+
+$PRODUCER_CATEGORY_GROUP = array(
+					'CUISINE' 		=> 1,
+					'RESTAURANT' 	=> 2,
+					'FARM' 			=> 3,
+					'MANUFACTURE' 	=> 4,
 				);
 			
 ?>

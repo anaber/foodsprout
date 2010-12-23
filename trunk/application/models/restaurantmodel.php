@@ -2,11 +2,15 @@
 
 class RestaurantModel extends Model{
 
+	/**
+	 * Migration: 		Done
+	 * Migration by: 	Deepak
+	 */
 	// Generate a simple list of the recent restaurants added to the db
 	function listNewRestaurants()
 	{
 		$query = "SELECT producer.*
-					FROM producer WHERE is_restaurant IS NOT NULL
+					FROM producer WHERE is_restaurant = 1
 					ORDER BY producer_id DESC limit 5";
 
 		log_message('debug', "RestaurantModel.listNewRestaurants : " . $query);
@@ -21,7 +25,7 @@ class RestaurantModel extends Model{
 
 			$this->RestaurantLib->restaurantId = $row['producer_id'];
 			$this->RestaurantLib->restaurantName = $row['producer'];
-			$this->RestaurantLib->creationDate = $row['creation_date'];
+			//$this->RestaurantLib->creationDate = $row['creation_date'];
 
 			$restaurants[] = $this->RestaurantLib;
 			unset($this->RestaurantLib);

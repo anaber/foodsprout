@@ -369,7 +369,7 @@ UPDATE product, producer set product.producer_id = producer.producer_id WHERE pr
 UPDATE product, producer set product.producer_id = producer.producer_id WHERE product.restaurant_chain_id = producer.restaurant_chain_id;
 
 -- -----------------------------------------------------
--- Update the product table to include the new is_ flags
+-- Update the producer table to include the new is_ flags
 -- -----------------------------------------------------
 
 UPDATE producer SET is_farm=1 WHERE farm_id IS NOT NULL;
@@ -377,6 +377,17 @@ UPDATE producer SET is_restaurant=1 WHERE restaurant_id IS NOT NULL;
 UPDATE producer SET is_restaurant_chain=1 WHERE restaurant_chain_id IS NOT NULL;
 UPDATE producer SET is_manufacture=1 WHERE manufacture_id IS NOT NULL;
 UPDATE producer SET is_distributor=1 WHERE distributor_id IS NOT NULL;
+
+
+-- -----------------------------------------------------
+-- Update the product table to add indexes in is_ columns
+-- -----------------------------------------------------
+ALTER TABLE `producer` ADD INDEX `is_restaurant_chain` (`is_restaurant_chain` ASC);
+ALTER TABLE `producer` ADD INDEX `is_restaurant` (`is_restaurant` ASC);
+ALTER TABLE `producer` ADD INDEX `is_farm` (`is_farm` ASC);
+ALTER TABLE `producer` ADD INDEX `is_manufacture` (`is_manufacture` ASC);
+ALTER TABLE `producer` ADD INDEX `is_distributor` (`is_distributor` ASC);
+
 
 -- -----------------------------------------------------
 -- Populate the producer_category_member table to include all the categories

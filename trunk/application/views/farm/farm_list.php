@@ -43,7 +43,7 @@ var farmsData;
 				redrawContent(data, '');
 				
 				reinitializeRadiusSearch();
-				
+
 			},
 			"json");
 			

@@ -2,11 +2,14 @@
 
 class FarmModel extends Model{
 	
+	/**
+	 * Migration: 		Done
+	 * Migration by: 	Deepak
+	 */
 	// list new farms
-	function listNewFarms()
-	{
+	function listNewFarms() {
 		$query = "SELECT producer.* " .
-				" FROM producer WHERE is_farm IS NOT NULL" .
+				" FROM producer WHERE is_farm = 1" .
 				" ORDER BY producer_id DESC LIMIT 5";
 		
 		log_message('debug', "FarmModel.listNewFarms : " . $query);
@@ -362,6 +365,13 @@ class FarmModel extends Model{
 	    return $arr;
 	}
 	
+	/**
+	 * Migration: 		Working
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function getFarmsJson() {
 		global $PER_PAGE, $FARM_DEFAULT_RADIUS, 
 		$DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL, $FARM_ZOOM_LEVEL;
@@ -382,9 +392,13 @@ class FarmModel extends Model{
 		//$filter = 'r_10,c_6';
 		
 		$arr_filter = explode(',', $filter);
-		
+		/*
+		if ($filter) {
+			print_r_pre($arr_filter);
+			die;
+		}
+		*/
 		$arrFarmTypeId = array();
-		//$arrCuisineId = array();
 		
 		foreach($arr_filter as $key => $value) {
 			$arr_value = explode('_', $value) ;
@@ -441,14 +455,16 @@ class FarmModel extends Model{
 	
 		$page = 0;
 		
+		
 		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
 				' FROM producer, producer_category, producer_category_member';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM producer, producer_category, producer_category_member';
 		
-		$where = ' WHERE is_farm IS NOT NULL'.
-		         ' AND producer.producer_id = producer_category_member.producer_id AND producer_category_member.producer_category_id=producer_category.producer_category_id' .
+		$where = ' WHERE is_farm = 1'.
+		         ' AND producer.producer_id = producer_category_member.producer_id ' .
+		         ' AND producer_category_member.producer_category_id = producer_category.producer_category_id' .
 				 ' AND producer.status = \'live\' ';
 
 		//if ( count($arrFarmTypeId) > 0  || count($arrCuisineId) > 0 ) {
@@ -456,7 +472,7 @@ class FarmModel extends Model{
 			$where .= ' AND (';
 			
 			if(count($arrFarmTypeId) > 0 ) {
-				$where .= ' farm.farm_type_id IN (' . implode(',', $arrFarmTypeId) . ')';
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrFarmTypeId) . ')';
 			}
 			
 			$where .= ' )';
@@ -478,13 +494,12 @@ class FarmModel extends Model{
 			} else if ( !empty($q) ) {
 				$where	.= '		address.address_id';
 			}
-					/*
-					$where	.=  '	from address, state, country'
-					. '			WHERE' 
-					. '				address.farm_id = farm.farm_id'
-					. '				AND address.state_id = state.state_id'
-					. '				AND address.country_id = country.country_id';
-					*/
+					
+					//$where	.=  '	from address, state, country'
+					//. '			WHERE' 
+					//. '				address.farm_id = farm.farm_id'
+					//. '				AND address.state_id = state.state_id'
+					//. '				AND address.country_id = country.country_id';
 					
 					$where	.=  '	from address'
 					. '			WHERE' 
@@ -502,11 +517,9 @@ class FarmModel extends Model{
 		}
 		
 		$base_query_count = $base_query_count . $where;
-		
-		
-		//$query = $base_query_count . " ORDER BY restaurant_name ";
+				
 		$query = $base_query_count;
-		//die($query);
+		
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;
