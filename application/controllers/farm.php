@@ -112,7 +112,7 @@ class Farm extends Controller {
 		$farmId = $this->uri->segment(3);
 
 		$this->load->model('PhotoModel');
-		$thumbPhotos = $this->PhotoModel->getThumbPhotos('farm', $farmId);
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('producer', $farmId);
 		
 		// Getting information from models
 		$this->load->model('FarmModel');
