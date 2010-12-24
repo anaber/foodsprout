@@ -230,13 +230,26 @@ class Farm extends Controller {
 		echo json_encode($suppliee);
 	}
 	
-	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function ajaxSearchFarmComments() {
 		$this->load->model('CommentModel', '', TRUE);
 		$comments = $this->CommentModel->getCommentsJson('farm');
 		echo json_encode($comments);
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function ajaxSearchFarmPhotos() {
 		$this->load->model('PhotoModel', '', TRUE);
 		$comments = $this->PhotoModel->getPhotosJson('farm');
