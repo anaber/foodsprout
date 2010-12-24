@@ -2,6 +2,13 @@
 
 class CommentModel extends Model{
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function getCommentsJson($type) {
 		global $PER_PAGE;
 		
@@ -30,17 +37,13 @@ class CommentModel extends Model{
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM comment, user';
-		
-		
-		$where = '';
-		/*
-		if( !empty($restaurantChainId) ){
-			$where = ' WHERE (restaurant_id  = ' . $q . ' OR restaurant_chain_id = ' . $q . ') ';
+				
+		$where = ' WHERE ';
+		if ($type == 'farmers_market') {
+			$where .= ' comment.farmers_market_id  = ' . $q;
 		} else {
-			$where = ' WHERE restaurant_id  = ' . $q;
+			$where .= ' comment.producer_id  = ' . $q;
 		}
-		*/
-		$where = ' WHERE comment.'.$type.'_id  = ' . $q;
 		
 		$where .= ' AND comment.status = \'live\'' .
 				' AND comment.user_id = user.user_id ';
@@ -131,6 +134,13 @@ class CommentModel extends Model{
 	    return $arr;
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function addComment() {
 
         $return = true;
@@ -149,13 +159,13 @@ class CommentModel extends Model{
                 ' comment = "' . $this->input->post('comment') . '"' .
                 ' AND ';
         if (!empty($restaurantId)) {
-            $query .= 'restaurant_id';
+            $query .= 'producer_id ';
         } else if (!empty($restaurantChainId)) {
-            $query .= 'restaurant_chain_id';
+            $query .= 'producer_id ';
         } else if (!empty($manufactureId)) {
-            $query .= 'manufacture_id';
+            $query .= 'producer_id ';
         } else if (!empty($farmId)) {
-            $query .= 'farm_id';
+            $query .= 'producer_id ';
         } else if (!empty($farmersMarketId)) {
             $query .= 'farmers_market_id';
         }
@@ -180,13 +190,13 @@ class CommentModel extends Model{
         
             $query = 'INSERT INTO comment (comment_id, address_id, ';
             if (!empty($restaurantId)) {
-                $query .= 'restaurant_id';
+                $query .= 'producer_id';
             } else if (!empty($restaurantChainId)) {
-                $query .= 'restaurant_chain_id';
+                $query .= 'producer_id';
             } else if (!empty($manufactureId)) {
-                $query .= 'manufacture_id';
+                $query .= 'producer_id';
             } else if (!empty($farmId)) {
-                $query .= 'farm_id';
+                $query .= 'producer_id';
             } else if (!empty($farmersMarketId)) {
                 $query .= 'farmers_market_id';
             }
@@ -227,6 +237,13 @@ class CommentModel extends Model{
         
     }
     
+    /**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
     function getCommentFromId($commentId) {
 		
 		$query = 'SELECT comment.*, user.email, user.first_name' .
@@ -255,7 +272,6 @@ class CommentModel extends Model{
 		$this->CommentLib->ip = $row->track_ip;
 		$this->CommentLib->status = $row->status;
 		$this->CommentLib->addedOn = date('Y M, d H:i:s', strtotime ($row->added_on ) ) ;
-		
 		
 		return $this->CommentLib;
 	}

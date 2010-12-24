@@ -91,29 +91,7 @@ class SupplierModel extends Model{
 				$CI->load->model('ProducerModel','',true);
 				$supplierId = $CI->ProducerModel->addProducerWithNameOnly($companyName, $supplierType);
 			}
-			/*
-			if ( $supplierType == 'restaurant' ) {
-				if (empty($supplierId) ) {
-					$CI->load->model('RestaurantModel','',true);
-					$supplierId = $CI->RestaurantModel->addRestaurantWithNameOnly($companyName);
-				} 
-			} else if ( $supplierType == 'farm' ) {
-				if (empty($supplierId) ) {
-					$CI->load->model('ProducerModel','',true);
-					$supplierId = $CI->ProducerModel->addProducerWithNameOnly($companyName, $supplierType);
-				}
-			} else if ( $supplierType == 'manufacture' ) {
-				if (empty($supplierId) ) {
-					$CI->load->model('ManufactureModel','',true);
-					$supplierId = $CI->ManufactureModel->addManufactureWithNameOnly($companyName);
-				} 
-			} else if ( $supplierType == 'distributor' ) {
-				if (empty($supplierId) ) {
-					$CI->load->model('DistributorModel','',true);
-					$supplierId = $CI->DistributorModel->addDistributorWithNameOnly($companyName);
-				}
-			}
-			*/
+			
 			if ( empty($supplierId) ) {
 				$return = false;
 			}
@@ -124,8 +102,6 @@ class SupplierModel extends Model{
 				} else {
 					$return = false;
 				}
-			} else {
-				die("ELSE");
 			}
 		}
 		

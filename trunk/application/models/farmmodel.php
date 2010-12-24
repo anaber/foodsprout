@@ -466,15 +466,17 @@ class FarmModel extends Model{
 		
 		
 		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
-				' FROM producer, producer_category, producer_category_member';
+				' FROM producer';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM producer, producer_category, producer_category_member';
+				' FROM producer';
 		
-		$where = ' WHERE is_farm = 1'.
-		         ' AND producer.producer_id = producer_category_member.producer_id ' .
-		         ' AND producer_category_member.producer_category_id = producer_category.producer_category_id' .
-				 ' AND producer.status = \'live\' ';
+		$where = ' LEFT JOIN producer_category_member ' .
+				 '		ON producer.producer_id = producer_category_member.producer_id'.
+				 ' LEFT JOIN producer_category '.
+				 '		ON producer_category_member.producer_category_id = producer_category.producer_category_id' . 
+				 ' WHERE is_farm = 1'.
+		         ' AND producer.status = \'live\' ';
 
 		//if ( count($arrFarmTypeId) > 0  || count($arrCuisineId) > 0 ) {
 		if ( count($arrFarmTypeId) > 0 ) {
