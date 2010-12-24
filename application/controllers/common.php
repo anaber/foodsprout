@@ -139,6 +139,13 @@ class Common extends Controller {
 	}
 	*/
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function photo_save_add() {
 		$this->load->model('PhotoModel', '', TRUE);
 		$GLOBALS = array();

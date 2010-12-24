@@ -605,3 +605,9 @@ drop table `restaurant_photo`;
 -- -----------------------------------------------------
 ALTER TABLE `product` CHANGE `producer_Id` `producer_id` INT( 11 ) NOT NULL;
 
+ALTER TABLE `comment`
+  DROP `restaurant_id`,
+  DROP `farm_id`,
+  DROP `manufacture_id`,
+  DROP `restaurant_chain_id`;
+

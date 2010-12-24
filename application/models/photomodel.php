@@ -2,6 +2,13 @@
 
 class PhotoModel extends Model{
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function getPhotosJson($type) {
 		global $PER_PAGE;
 		
@@ -28,8 +35,14 @@ class PhotoModel extends Model{
 				' FROM photo, user';
 		
 		
-		$where = '';
-		$where = ' WHERE photo.'.$type.'_id  = ' . $q;
+		$where = ' WHERE ';
+		if ($type == 'farmers_market') {
+			$where .= ' photo.farmers_market_id  = ' . $q;
+		} else if ($type == 'product') {
+			$where .= ' photo.product_id  = ' . $q;
+		} else {
+			$where .= ' photo.producer_id  = ' . $q;
+		}
 		
 		$where .= ' AND photo.status = \'live\'' .
 				' AND photo.user_id = user.user_id ';
@@ -130,6 +143,13 @@ class PhotoModel extends Model{
 	    return $arr;
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function addPhoto() {
 		global $UPLOAD_FOLDER;
 		$return = true;
@@ -213,13 +233,13 @@ class PhotoModel extends Model{
 				
 		            $query = 'INSERT INTO photo (photo_id, address_id, ';
 		            if (!empty($restaurantId)) {
-		                $query .= 'restaurant_id';
+		                $query .= 'producer_id';
 		            } else if (!empty($restaurantChainId)) {
-		                $query .= 'restaurant_chain_id';
+		                $query .= 'producer_id';
 		            } else if (!empty($manufactureId)) {
-		                $query .= 'manufacture_id';
+		                $query .= 'producer_id';
 		            } else if (!empty($farmId)) {
-		                $query .= 'farm_id';
+		                $query .= 'producer_id';
 		            } else if (!empty($farmersMarketId)) {
 		                $query .= 'farmers_market_id';
 		            } else if (!empty($productId)) {
@@ -245,7 +265,7 @@ class PhotoModel extends Model{
 		            
 		            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
 		            
-		            log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
+		            log_message('debug', 'PhotoModel.addPhoto : Insert Photo : ' . $query);
 		
 		            if ($this->db->query($query)) {
 		                $newPhotoId = $this->db->insert_id();
@@ -270,10 +290,15 @@ class PhotoModel extends Model{
 			}
 		}
         return $return;
-        
     }
     
-    
+    /**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
     function updatePhotoTitle() {
 		$return = true;
 		
