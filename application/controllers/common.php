@@ -91,6 +91,13 @@ class Common extends Controller {
 		}
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function comment_save_add() {
 		if ($this->session->userdata('isAuthenticated') == 1 ) {
 			$this->load->model('CommentModel', '', TRUE);
