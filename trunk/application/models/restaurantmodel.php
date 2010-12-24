@@ -592,10 +592,23 @@ class RestaurantModel extends Model{
 	function getCuisineIdsForRestaurant($restaurantId) {
 		$cuisines = array();
 
-		$query = "SELECT restaurant_cuisine.*" .
-				" FROM restaurant_cuisine" .
-				" WHERE " .
-				" restaurant_cuisine.restaurant_id = " . $restaurantId;
+//		$query = "SELECT restaurant_cuisine.*" .
+//				" FROM restaurant_cuisine" .
+//				" WHERE " .
+//				" restaurant_cuisine.restaurant_id = " . $restaurantId;
+//		
+		
+		$query = "SELECT
+				producer_category.cuisine_id
+				FROM
+				producer ,
+				producer_category ,
+				producer_category_member
+				WHERE
+				producer.producer_id =  producer_category_member.producer_id AND
+				producer_category_member.producer_category_id =  producer_category.producer_category_id AND
+				producer.is_restaurant =  '1' AND
+				producer.producer_id = " . $restaurantId;
 
 		log_message('debug', "RestaurantModel.getCuisineIdsForRestaurant : " . $query);
 		$result = $this->db->query($query);
@@ -603,7 +616,6 @@ class RestaurantModel extends Model{
 		foreach ($result->result_array() as $row) {
 			$cuisines[] = $row['cuisine_id'];
 		}
-
 		return $cuisines;
 	}
 
@@ -687,14 +699,16 @@ class RestaurantModel extends Model{
 	// Pulls the data from the database for a specific restaurant
 	function getRestaurantFromId($restaurantId) {
 
-		$query = "SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name" .
-				" FROM restaurant" .
-				" LEFT JOIN restaurant_chain" .
-				" ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id" .
-				" LEFT JOIN company" .
-				" ON restaurant.company_id = company.company_id" .
-				" WHERE restaurant.restaurant_id = " . $restaurantId;
+//	$query  =	"SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name" .
+//				" FROM restaurant" .
+//				" LEFT JOIN restaurant_chain" .
+//				" ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id" .
+//				" LEFT JOIN company" .
+//				" ON restaurant.company_id = company.company_id" .
+//				" WHERE restaurant.restaurant_id = ".$restaurantId;
 
+		$query = "select * from producer WHERE producer.restaurant_id = ".$restaurantId;
+		
 		log_message('debug', "RestaurantModel.getRestaurantFromId : " . $query);
 		$result = $this->db->query($query);
 
@@ -725,12 +739,12 @@ class RestaurantModel extends Model{
 			$geocodeArray = array();
 
 			$this->restaurantLib->restaurantId = $row->restaurant_id;
-			$this->restaurantLib->companyId = $row->company_id;
-			$this->restaurantLib->companyName = $row->company_name;
+			$this->restaurantLib->companyId = $row->producer_id;
+			$this->restaurantLib->companyName = $row->producer;
 			$this->restaurantLib->restaurantChainId = $row->restaurant_chain_id;
-			$this->restaurantLib->restaurantChain = $row->restaurant_chain;
-			$this->restaurantLib->restaurantTypeId = $row->restaurant_type_id;
-			$this->restaurantLib->restaurantName = $row->restaurant_name;
+			$this->restaurantLib->restaurantChain = $row->producer;
+			$this->restaurantLib->restaurantTypeId = $this->getRestaurantTypeId($row->producer_id);
+			$this->restaurantLib->restaurantName = $row->producer;
 			$this->restaurantLib->customURL = $row->custom_url;
 			$this->restaurantLib->phone = $row->phone;
 			$this->restaurantLib->fax = $row->fax;
@@ -773,7 +787,28 @@ class RestaurantModel extends Model{
 			return;
 		}
 	}
+	
+	function getRestaurantTypeId($restaurantId){
+	$query = "SELECT
+				producer_category.restaurant_type_id
+				FROM
+				producer ,
+				producer_category ,
+				producer_category_member
+				WHERE
+				producer.producer_id =  producer_category_member.producer_id AND
+				producer_category_member.producer_category_id =  producer_category.producer_category_id AND
+				producer.is_restaurant =  '1' AND
+				producer_category.restaurant_type_id is not null AND
+				producer.producer_id = " . $restaurantId;
 
+		log_message('debug', "RestaurantModel.getCuisineIdsForRestaurant : " . $query);
+		$result = $this->db->query($query)->result_array();
+		
+		return $result[0]['restaurant_type_id'];
+		
+	}
+	
 
 	// Pulls the data from the database for a specific restaurant
 	function getRestaurantChainFromId($restaurantChainId) {

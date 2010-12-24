@@ -100,14 +100,100 @@ class MobileRestaurantModel extends Model{
 			return FALSE;
 		}
 
+	}	
+	
+	function getRestaurantsByCityId($cityId, $start = 0, $stop = 10){
+		
+		$query = "SELECT
+				city.city,
+				address.address,
+				address.address_id,
+				producer.producer_id,
+				producer.producer
+				FROM
+				city ,
+				address ,
+				producer
+				WHERE
+				city.city_id =  address.city_id AND
+				address.producer_id =  producer.producer_id AND
+				producer.is_restaurant =  '1' AND
+				city.city_id =  '".$cityId."'
+				ORDER BY
+				producer.producer ASC
+				limit ".$start.",  ".$stop."
+				"; 
+		
+		$results = $this->db->query($query)->result_array(); 
+		
+		
+		$query2 = "SELECT
+				city.city,
+				address.address,
+				address.address_id,
+				producer.producer_id,
+				producer.producer
+				FROM
+				city ,
+				address ,
+				producer
+				WHERE
+				city.city_id =  address.city_id AND
+				address.producer_id =  producer.producer_id AND
+				producer.is_restaurant =  '1' AND
+				city.city_id =  '".$cityId."'
+				ORDER BY
+				producer.producer ASC"; 
+		
+		$numRows = $this->db->query($query2)->num_rows();
+		
+		$new_results = array();
+		$new_results['totalrecords'] = $numRows;		
+		
+		if(sizeof($results) > 0 ){
+			$i = 0;
+			foreach($results as $producer){
+				$new_results['data'][$i]['city'] = $producer['city'];
+				$new_results['data'][$i]['address_id'] = $producer['address_id'];
+				$new_results['data'][$i]['address'] = $producer['address'];
+				$new_results['data'][$i]['producer_id'] = $producer['producer_id'];
+				$new_results['data'][$i]['producer'] = $producer['producer'];
+				$new_results['data'][$i]['cuisine'] = $this->getCuisnesByProducerId($producer['producer_id']);
+				$i++;
+			}
+		}	
+		
+		return $new_results;
 	}
 	
-	function getRestaurantsByCityId($cityId){
+	
+	function getCuisnesByProducerId($producerId){
 		
+		$cuisine_query = "SELECT
+								producer_category.producer_category as cuisine_name
+									FROM
+										producer ,
+										producer_category ,
+										producer_category_member
+									WHERE
+									producer.producer_id =  producer_category_member.producer_id AND
+									producer_category_member.producer_category_id =  producer_category.producer_category_id AND
+									producer.producer_id =  '".$producerId."' AND
+									producer_category.cuisine_id IS NOT NULL  AND
+									producer.is_restaurant =  1";
 		
+		$cuisine_results  = $this->db->query($cuisine_query)->result_array();
 		
+		$cuisines = '';
+		if(sizeof($cuisine_results) > 0 ){
+			foreach($cuisine_results as  $cuisine){
+				
+				$cuisines .= $cuisine['cuisine_name'].",";
+
+			}
+			
+		}
 		
+		return $cuisines;
 	}
-
-
 }
