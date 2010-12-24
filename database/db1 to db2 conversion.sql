@@ -598,3 +598,10 @@ drop table `farm`;
 
 drop table `restaurant_photo`;
 
+
+
+-- -----------------------------------------------------
+-- Update Id to id in product table
+-- -----------------------------------------------------
+ALTER TABLE `product` CHANGE `producer_Id` `producer_id` INT( 11 ) NOT NULL;
+

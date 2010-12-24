@@ -3,7 +3,8 @@
 $(document).ready(function() {
 	
 	function findValueCallback(event, data, formatted) {
-		postAndRedrawContent(dataManufactures.param.firstPage, dataManufactures.param.perPage, dataManufactures.param.sort, dataManufactures.param.order, data[1], '');
+		//postAndRedrawContent(dataManufactures.param.firstPage, dataManufactures.param.perPage, dataManufactures.param.sort, dataManufactures.param.order, data[1], '');
+		window.location = '/manufacture?q=' + data[1];
 	}
 	
 	$(":text, textarea").result(findValueCallback).next().click(function() {
@@ -30,7 +31,7 @@ $(document).ready(function() {
 
 <div class="filterh">Search</div>
 <div class="filterb">
-	<input type="text" size="18" id="suggestion_box">
+	<input type="text" size="28" id="suggestion_box">
 </div>
 <br />
 <div class="filterh">More Options</div>

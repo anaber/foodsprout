@@ -1505,6 +1505,203 @@ class SupplierModel extends Model{
 	    return $arr;
 	}
 	
+	/**
+	 * Migration: 		Working
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
+	//function getSupplieeForSupplierJson($restaurantId, $farmId, $manufactureId, $distributorId) {
+	function getSupplieeForSupplierJson($farmId) {
+		global $SUPPLIER_TYPES_2, $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$tables = array();
+		
+		if ( !empty($farmId) ) {
+			$keyToSearch = 'farm';
+			$fieldValue = $farmId;
+		}
+		
+		$supplierFieldName = 'supplier_' . $keyToSearch . '_id';
+		
+		$companies = array();
+		
+		$arrQueryCount = array();
+		$arrQuery = array();
+		
+		$query_count = 'SELECT count(*) '
+				. ' FROM supplier, producer'
+				. ' WHERE supplier.supplier = ' . $fieldValue
+				. ' AND supplier.suppliee = producer.producer_id';
+		
+		$arrQueryCount[] = $query_count;
+		
+		$query_count = 'SELECT count(*) '
+				. ' FROM farmers_market_supplier, producer'
+				. ' WHERE farmers_market_supplier.producer_id = ' . $fieldValue
+				. ' AND farmers_market_supplier.producer_id = producer.producer_id';
+		
+		$arrQueryCount[] = $query_count;
+		
+		
+		$query = 'SELECT supplier_id as id, supplier, suppliee, producer_id, producer, '
+				. ' is_restaurant_chain, is_restaurant, is_farm, is_manufacture, is_distributor, NULL as is_farmers_market'
+				. ' FROM supplier, producer'
+				. ' WHERE supplier.supplier = ' . $fieldValue
+				. ' AND supplier.suppliee = producer.producer_id';
+		
+		$arrQuery[] = $query;
+		
+		$query = 'SELECT farmers_market_supplier_id as id, farmers_market_supplier.producer_id as supplier, farmers_market_id as suppliee, producer.producer_id, producer.producer, '
+				. ' NULL AS is_restaurant_chain, NULL AS is_restaurant, NULL AS is_farm, NULL AS is_manufacture, NULL AS is_distributor, 1 as is_farmers_market'
+				. ' FROM farmers_market_supplier, producer'
+				. ' WHERE farmers_market_supplier.producer_id = ' . $fieldValue
+				. ' AND farmers_market_supplier.producer_id = producer.producer_id';
+				
+		$arrQuery[] = $query;
+		
+		$query_count = 'SELECT';
+		$i = 0;
+		foreach ($arrQueryCount as $query) {
+			if ($i != 0) {
+				$query_count .= ' + (' . $query . ') ';
+			} else {
+				$query_count .= ' (' . $query . ') ';
+			}
+			
+			$i++;
+		}
+							
+		$query_count .= ' AS num_records';
+		
+		$result = $this->db->query($query_count);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		/*
+		 * this query may look weird, but there is no other option.
+		 * Using CONCAT to know if record belongs to rstaurant or restaurant_chain
+		 */
+		 
+		$query = '';
+		$i = 0;
+		foreach ($arrQuery as $qr) {
+			if ($i != 0) {
+				$query .= ' UNION (' . $qr . ') ';
+			} else {
+				$query .= ' (' . $qr . ') ';
+			}
+			$i++;
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "SupplierModel.getSupplieeForSupplierJson : " . $query);
+		
+		$result = $this->db->query($query);
+		
+		$companies = array();
+		$CI =& get_instance();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('CompanyLib');
+			unset($this->companyLib);
+			
+			$CI->load->model('AddressModel','',true);
+			
+			$this->companyLib->companyId = $row['producer_id'];
+			$this->companyLib->companyName = $row['producer'];
+			
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], '', '', '');
+			$this->companyLib->addresses = $addresses;
+			
+			if ( $row['is_restaurant'] == '1' ) {
+				$this->companyLib->type = 'restaurant';
+				
+			} else if ( $row['is_farm'] == '1' ) {
+				$this->companyLib->type = 'farm';
+				
+			} else if ( $row['is_manufacture'] == '1' ) {
+				$this->companyLib->type = 'manufacture';
+				
+			} else if ( $row['is_distributor'] == '1' ) {
+				$this->companyLib->type = 'distributor';
+				
+			} else if ( $row['is_farmers_market'] == '1' ) {
+				$this->companyLib->type = 'farmersmarket';
+				
+			} else if ( $row['is_restaurant_chain'] == '1' ) {
+				$this->companyLib->type = 'chain';
+				$this->companyLib->addresses = '';
+			} 
+			
+			$companies[] = $this->companyLib;
+			unset($this->companyLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $companies,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
 	function getQueueSuppliersJson() {
 		global $PER_PAGE;
 		

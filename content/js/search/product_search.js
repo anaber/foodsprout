@@ -66,11 +66,11 @@ function addResult(product, count) {
 
 	
 	if (product.restaurantName) {
-		html += '<div style="float:left; width:75px;font-size:13px;"><b>Restaurant:</b></div><div style="float:left; width:220px;font-size:13px;"><a href="/restaurant/view/' + product.restaurantId + '" style="font-size:13px;text-decoration:none;">' + product.restaurantName + '</a>';
+		html += '<div style="float:left; width:75px;font-size:13px;"><b>Restaurant:</b></div><div style="float:left; width:220px;font-size:13px;"><a href="/restaurant/view/' + product.producerId + '" style="font-size:13px;text-decoration:none;">' + product.restaurantName + '</a>';
 	} else if (product.restaurantChain) {
-		html += '<div style="float:left; width:115px;font-size:13px;"><b>Restaurant:</b></div><div style="float:left; width:180px;font-size:13px;"><a href = "/chain/view/'+product.restaurantChainId+'" style="font-size:13px;text-decoration:none;">' + product.restaurantChain + '</a>';
+		html += '<div style="float:left; width:115px;font-size:13px;"><b>Restaurant:</b></div><div style="float:left; width:180px;font-size:13px;"><a href = "/chain/view/'+product.producerId+'" style="font-size:13px;text-decoration:none;">' + product.restaurantChain + '</a>';
 	} else if (product.manufactureName) {
-		html += '<div style="float:left; width:85px;font-size:13px;"><b>Manufacture:</b></div><div style="float:left; width:215px;font-size:13px;"><a href="/manufacture/view/' + product.manufactureId + '" style="font-size:13px;text-decoration:none;">' + product.manufactureName + '</a>';
+		html += '<div style="float:left; width:85px;font-size:13px;"><b>Manufacture:</b></div><div style="float:left; width:215px;font-size:13px;"><a href="/manufacture/view/' + product.producerId + '" style="font-size:13px;text-decoration:none;">' + product.manufactureName + '</a>';
 	}
 	
 	html +=

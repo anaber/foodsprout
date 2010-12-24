@@ -33,7 +33,7 @@ $(document).ready(function() {
 	
 	<div class="filterh">Search</div>
 	<div class="filterb">
-		<input type="text" size="18" id="suggestion_box">
+		<input type="text" size="28" id="suggestion_box">
 	</div>
 	<br />
 	<div class="filterh">More Options</div>
