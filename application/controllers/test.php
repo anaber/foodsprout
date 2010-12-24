@@ -229,4 +229,85 @@ class Test extends Controller{
 		}
 		
 	}
+	
+	
+	function farmsmarket_slug(){
+		
+		//limiting result to 40000 to avoid memory limit error 
+		$results = $this->db->query("SELECT
+										farmers_market.farmers_market_id,
+										farmers_market.farmers_market_name,
+										city.city
+										FROM
+										farmers_market ,
+										city
+										WHERE
+										farmers_market.city_id =  city.city_id
+
+										"
+									 )->result_array(); 
+		
+		$firstArray= array();
+		$i = 0;
+			//put all results in a new multidimensional array with each slug as key 
+		foreach($results as $key=>$value){
+			
+			//remove white spaces
+			$slug = $this->_trimWhiteSpaces(trim($value['farmers_market_name'])); 
+			
+			if($value['city'] != ''){
+				$slug .= '-'.$this->_trimWhiteSpaces(trim($value['city']));
+			}
+			$slug  = strtolower(str_replace(' ', '-', str_replace("'", '',$slug))); 
+			$firstArray[$slug][$i]['market_id'] =  $value['farmers_market_id'];
+			$firstArray[$slug][$i]['value'] =  $slug;	
+			
+			
+			//unset to avoid memory exceed error
+			unset($results[$key]);
+			$i++;
+		}
+		
+		//print_r($firstArray);	
+		//create a new array with keys equal with address id and values equal with slug and position from first_array[slug] 
+		$finalArray = array();
+		$j = 0;
+		foreach($firstArray as $slugPack){
+				$k = 1 ; 
+				foreach($slugPack as $slug){
+
+				$finalArray[$slug['market_id']]['producer_id'] = $slug['market_id']; 
+					
+					if($k == 1 ){
+						$finalArray[$slug['market_id']]['slug'] = $slug['value'];
+					}else{
+						 
+						$finalArray[$slug['market_id']]['slug'] = $slug['value'].'-'.$k;
+						
+					}		
+					
+					$k++;
+					unset($slug);
+				}    
+				$j++;                                                   
+				unset($slugPack);
+			}
+
+				
+		// insert foreach array from final array in second temporary table: trif_custom_url 
+		foreach ($finalArray as $row){	
+			$this->db->insert('trif_custom_url', $row);	
+		}	
+		echo 'Done';
+		
+		
+		/*
+		 * 
+		 * 
+		 * 	
+		 	insert into custom_url (farmers_market_id, custom_url )
+			
+			SELECT producer_id, slug FROM `trif_custom_url`;
+		 * */
+	}
 }
