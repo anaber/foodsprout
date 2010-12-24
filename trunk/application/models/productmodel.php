@@ -271,6 +271,13 @@ class ProductModel extends Model {
         return $return;
     }
     
+    /**
+	 * Migration: 		Working
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function getProductJson() {
 		global $PER_PAGE;
 		
@@ -296,16 +303,14 @@ class ProductModel extends Model {
 		$page = 0;
 
         $base_query = 'SELECT product.*, product_type.product_type, ' .
-        		' manufacture.manufacture_name, restaurant.restaurant_name, restaurant_chain.restaurant_chain ' .
+        		' producer.producer, producer.is_restaurant, producer.is_restaurant_chain, producer.is_manufacture' .
 				' FROM product';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM product';
 		
 		$where = ' LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id)  ' .
-				' LEFT JOIN manufacture ON (product.manufacture_id =  manufacture.manufacture_id) ' .
-				' LEFT JOIN restaurant ON (product.restaurant_id =  restaurant.restaurant_id) ' .
-				' LEFT JOIN restaurant_chain ON (product.restaurant_chain_id =  restaurant_chain.restaurant_chain_id) ' .
+				' LEFT JOIN producer ON (product.producer_id =  producer.producer_id) ' .
 				' WHERE  ';
 				
 		if (!empty($filter) ) {
@@ -375,12 +380,16 @@ class ProductModel extends Model {
 
             $this->productLib->productId = $row->product_id;
             $this->productLib->productName = $row->product_name;
-            $this->productLib->manufactureId = $row->manufacture_id;
-            $this->productLib->manufactureName = $row->manufacture_name;
-            $this->productLib->restaurantId = $row->restaurant_id;
-            $this->productLib->restaurantName = $row->restaurant_name;
-            $this->productLib->restaurantChainId = $row->restaurant_chain_id;
-            $this->productLib->restaurantChain = $row->restaurant_chain;
+            $this->productLib->producerId = $row->producer_id;
+            
+            if ($row->is_manufacture) {
+            	$this->productLib->manufactureName = $row->producer;
+            } else if ($row->is_restaurant) {
+            	$this->productLib->restaurantName = $row->producer;
+            } else if ($row->is_restaurant_chain) {
+            	$this->productLib->restaurantChain = $row->producer;
+            }
+            
             $this->productLib->productTypeId = $row->product_type_id;
             $this->productLib->productType = $row->product_type;
             $this->productLib->ingredient = $row->ingredient_text;
@@ -410,6 +419,13 @@ class ProductModel extends Model {
 	    return $arr;
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	// For Auto suggest
 	function searchProducts($q) {
 		

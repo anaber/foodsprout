@@ -20,19 +20,27 @@ class ManufactureModel extends Model{
 		return $manufactures;
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function searchManufacturesForAutoSuggest($q) {
 		
-		$query = 'SELECT manufacture_id, manufacture_name
-					FROM manufacture
-					WHERE manufacture_name like "'.$q.'%"
-					ORDER BY manufacture_name ';
+		$query = 'SELECT producer_id, producer
+					FROM producer
+					WHERE is_manufacture = 1  
+					AND producer like "'.$q.'%"
+					ORDER BY producer ';
 		$manufactures = '';
 		log_message('debug', "ManufactureModel.searchManufacturesForAutoSuggest : " . $query);
 		$result = $this->db->query($query);
 		
 		if ( $result->num_rows() > 0) {
 			foreach ($result->result() as $row) {
-				$manufactures .= $row->manufacture_name . "|" . $row->manufacture_id ."\n";
+				$manufactures .= $row->producer . "|" . $row->producer_id ."\n";
 			}
 		} else {
 			$manufactures .= 'No Manufacture';
@@ -541,8 +549,14 @@ class ManufactureModel extends Model{
 	    return $arr;
 	}
 	
-	
-	function getManufactures($page,$perpage) {
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
+	function getManufactures($page, $perpage) {
 		global $PER_PAGE;
 		
 		$p = $page; // Page
@@ -555,7 +569,8 @@ class ManufactureModel extends Model{
 			$filter = '';
 		}
 		
-		$q = $this->input->post('q');
+		//$q = $this->input->post('q');
+		$q = $this->input->get('q');
 		
 		if ($q == '0') {
 			$q = '';
@@ -572,7 +587,7 @@ class ManufactureModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM producer, producer_category, producer_category_member';
 		
-		$where = ' WHERE is_manufacture IS NOT NULL'.
+		$where = ' WHERE is_manufacture = 1'.
 		         ' AND producer.producer_id = producer_category_member.producer_id AND producer_category_member.producer_category_id=producer_category.producer_category_id' .
 				 ' AND producer.status = \'live\' ';
 		
@@ -648,7 +663,7 @@ class ManufactureModel extends Model{
 			}
 		}
 		
-		log_message('debug', "ManufactureModel.getManufactureJson : " . $query);
+		log_message('debug', "ManufactureModel.getManufactures : " . $query);
 		$result = $this->db->query($query);
 		
 		$manufactures = array();

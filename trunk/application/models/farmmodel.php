@@ -94,11 +94,12 @@ class FarmModel extends Model{
 	// Get all the information about one specific farm from an ID
 	function getFarmFromId($farmId) {
 		
-		$query = "SELECT farm.*, company.company_name, farm_type.farm_type " .
-				" FROM farm, company, farm_type " .
-				" WHERE farm.farm_id = " . $farmId . 
-				" AND farm.company_id = company.company_id" .
-				" AND farm.farm_type_id = farm_type.farm_type_id ";
+		$query = "SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id " .
+				" FROM producer, producer_category, producer_category_member " .
+				" WHERE producer.producer_id = " . $farmId . 
+				" AND producer.producer_id = producer_category_member.producer_id " .
+		        " AND producer_category_member.producer_category_id = producer_category.producer_category_id";
+		
 		log_message('debug', "FarmModel.getFarmFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -109,13 +110,10 @@ class FarmModel extends Model{
 		if ($row) {
 			$geocodeArray = array();
 		
-			$this->FarmLib->farmId = $row->farm_id;
-			$this->FarmLib->companyId = $row->company_id;
-			$this->FarmLib->companyName = $row->company_name;
-			$this->FarmLib->farmTypeId = $row->farm_type_id;
-			$this->FarmLib->farmType = $row->farm_type;
-			$this->FarmLib->farmerType = $row->farmer_type;
-			$this->FarmLib->farmName = $row->farm_name;
+			$this->FarmLib->farmId = $row->producer_id;
+			$this->FarmLib->farmTypeId = $row->producer_category_id;
+			$this->FarmLib->farmType = $row->producer_category;
+			$this->FarmLib->farmName = $row->producer;
 			$this->FarmLib->customUrl = $row->custom_url;
 			$this->FarmLib->url = $row->url;
 			$this->FarmLib->facebook = $row->facebook;
@@ -125,7 +123,7 @@ class FarmModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row->farm_id, '', '', '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForProducer( $row->farm_id, '', '', '');
 			$this->FarmLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
@@ -578,7 +576,7 @@ class FarmModel extends Model{
 			$this->FarmLib->creationDate = $row['creation_date'];
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id']);
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], '', '', '');
 			$this->FarmLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {

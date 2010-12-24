@@ -103,6 +103,13 @@ class Product extends Controller {
 		$this->load->view('templates/center_right_template', $data);
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	// list of products with fructose
 	function fructose() {
 		$data = array();
@@ -127,12 +134,26 @@ class Product extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function ajaxSearchProducts() {
 		$this->load->model('ProductModel', '', TRUE);
 		$products = $this->ProductModel->getProductJson();
 		echo json_encode($products);
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function get_products_for_auto_suggest() {
 		$q = strtolower($_REQUEST['q']);
 		

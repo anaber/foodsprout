@@ -7,6 +7,13 @@ class Manufacture extends Controller {
 		checkUserLogin();
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function index() {
 		$data = array();
 		
@@ -17,6 +24,7 @@ class Manufacture extends Controller {
 		
 		// validate the data in the URL to make sure we don't have SQL injection
 		$urlpage = substr($this->uri->segment(2),4,5);
+		
 		if(is_numeric($urlpage))
 		{
 			$page = $urlpage-1;
@@ -38,9 +46,9 @@ class Manufacture extends Controller {
 		else{
 			$perpage = 10;
 		}
-			
+		
 		$this->load->model('ManufactureModel');
-		$manufactures = $this->ManufactureModel->getManufactures($page,$perpage);
+		$manufactures = $this->ManufactureModel->getManufactures($page, $perpage);
 		
 		// Views to include in the data array
 		$data['CENTER'] = array(
@@ -69,6 +77,14 @@ class Manufacture extends Controller {
 		echo $manufactures;
 	}
 	
+	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function get_manufactutes_for_auto_suggest() {
 		$q = strtolower($_REQUEST['q']);
 		$this->load->model('ManufactureModel', '', TRUE);

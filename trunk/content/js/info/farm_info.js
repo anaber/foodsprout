@@ -2,7 +2,7 @@
 function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 	var formAction;
 	if (type == 'supplier') {
-		formAction = '/farm/ajaxSearchFarmCompanies';
+		formAction = '/farm/ajaxSearchFarmSuppliee';
 	} else if (type == 'comment') {
 		formAction = '/farm/ajaxSearchFarmComments';
 	} else if (type == 'photo') {

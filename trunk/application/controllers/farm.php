@@ -202,6 +202,10 @@ class Farm extends Controller {
 		$this->load->view('templates/left_center_right_template', $data);
 	}
 	
+	/**
+	 * Not used any more
+	 * Can be removed
+	 */
 	function ajaxSearchFarmCompanies() {
 		$q = $this->input->post('q');
 		$this->load->model('SupplierModel');
@@ -209,6 +213,23 @@ class Farm extends Controller {
 			
 		echo json_encode($companies);
 	}
+	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
+	function ajaxSearchFarmSuppliee() {
+		$q = $this->input->post('q');
+		//$q = 176022;
+		$this->load->model('SupplierModel');
+		$suppliee = $this->SupplierModel->getSupplieeForSupplierJson($q);
+			
+		echo json_encode($suppliee);
+	}
+	
 	
 	function ajaxSearchFarmComments() {
 		$this->load->model('CommentModel', '', TRUE);
