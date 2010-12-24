@@ -24,7 +24,7 @@ $(document).ready(function() {
 		$(this).prev().search();
 	});
 	
-	$("#companyAjax").autocomplete("/company/get_companies_based_on_type", {
+	$("#companyAjax").autocomplete("/producer/get_producers_based_on_type", {
 		width: 203,
 		selectFirst: false,
 		cacheLength:0,

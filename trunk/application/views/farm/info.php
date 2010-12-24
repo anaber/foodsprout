@@ -98,7 +98,6 @@
 </script>
 
 
-
 <div id="alert"></div>
 <!-- center tabs -->
 	<div id="resultsContainer">

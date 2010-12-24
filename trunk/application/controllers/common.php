@@ -7,7 +7,15 @@ class Common extends Controller {
 		checkUserLogin();
 	}
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function supplier_save_add() {
+		
 		if ($this->session->userdata('isAuthenticated') == 1 ) {
 			$this->load->model('SupplierModel', '', TRUE);
 			

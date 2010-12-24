@@ -2,6 +2,13 @@
 
 class SupplierModel extends Model{
 	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function addSupplierIntermediate() {
 		global $GLOBALS;
 		$return = true;
@@ -15,7 +22,7 @@ class SupplierModel extends Model{
 		$restaurantChainId = $this->input->post('restaurantChainId');
 		$farmersMarketId = $this->input->post('farmersMarketId');
 		
-		$companyId = $this->input->post('companyId');
+		$supplierId = $this->input->post('companyId');
 		$companyName = $this->input->post('companyName');
 		
 		$supplierRestaurantId = '';
@@ -23,175 +30,141 @@ class SupplierModel extends Model{
 		$supplierManufactureId = '';
 		$supplierDistributorId = '';
 		
-		
 		if ( !empty($restaurantId) ) {
-			$tableName = 'restaurant_supplier';
-			$idFieldName = 'restaurant_supplier_id';
-			$fieldName = 'restaurant_id';
-			$fieldValue = $restaurantId;
+			$tableName = 'supplier';
+			$idFieldName = 'supplier_id';
+			
+			$supplierFieldName = 'supplier';
+			
+			$supplieeFieldName = 'suppliee';
+			$supplieeFieldValue = $restaurantId;
 		} else if ( !empty($farmId) ) {
-			$tableName = 'farm_supplier';
-			$idFieldName = 'farm_supplier_id';
-			$fieldName = 'farm_id';
-			$fieldValue = $farmId;
+			$tableName = 'supplier';
+			$idFieldName = 'supplier_id';
+			
+			$supplierFieldName = 'supplier';
+			
+			$supplieeFieldName = 'suppliee';
+			$supplieeFieldValue = $farmId;
 		} else if ( !empty($manufactureId) ) {
-			$tableName = 'manufacture_supplier';
-			$idFieldName = 'manufacture_supplier_id';
-			$fieldName = 'manufacture_id';
-			$fieldValue = $manufactureId;
+			$tableName = 'supplier';
+			$idFieldName = 'supplier_id';
+			
+			$supplierFieldName = 'supplier';
+			
+			$supplieeFieldName = 'suppliee';
+			$supplieeFieldValue = $manufactureId;
 		} else if ( !empty($distributorId) ) {
-			$tableName = 'distributor_supplier';
-			$idFieldName = 'distributor_supplier_id';
-			$fieldName = 'distributor_id';
-			$fieldValue = $distributorId;
+			$tableName = 'supplier';
+			$idFieldName = 'supplier_id';
+			
+			$supplierFieldName = 'supplier';
+			
+			$supplieeFieldName = 'suppliee';
+			$supplieeFieldValue = $distributorId;
 		} else if ( !empty($restaurantChainId) ) {
-			$tableName = 'restaurant_chain_supplier';
-			$idFieldName = 'restaurant_chain_supplier_id';
-			$fieldName = 'restaurant_chain_id';
-			$fieldValue = $restaurantChainId;
+			$tableName = 'supplier';
+			$idFieldName = 'supplier_id';
+			
+			$supplierFieldName = 'supplier';
+			
+			$supplieeFieldName = 'suppliee';
+			$supplieeFieldValue = $restaurantChainId;
 		} else if ( !empty($farmersMarketId) ) {
+			
 			$tableName = 'farmers_market_supplier';
 			$idFieldName = 'farmers_market_supplier_id';
-			$fieldName = 'farmers_market_id';
-			$fieldValue = $farmersMarketId;
+			
+			$supplierFieldName = 'producer_id';
+			
+			$supplieeFieldName = 'farmers_market_id';
+			$supplieeFieldValue = $farmersMarketId;
 		} 
 		
-		
-		if (empty($companyId) && empty($companyName) ) {
+		if (empty($supplierId) && empty($companyName) ) {
 			$GLOBALS['error'] = 'no_name';
 			$return = false;
 		} else {
 		
 			$CI =& get_instance();
-			
+			if (empty($supplierId) ) {
+				$CI->load->model('ProducerModel','',true);
+				$supplierId = $CI->ProducerModel->addProducerWithNameOnly($companyName, $supplierType);
+			}
+			/*
 			if ( $supplierType == 'restaurant' ) {
-				if (empty($companyId) ) {
+				if (empty($supplierId) ) {
 					$CI->load->model('RestaurantModel','',true);
-					$companyId = $CI->RestaurantModel->addRestaurantWithNameOnly($companyName);
-				}
-				
-				if ($companyId) {
-					$supplierRestaurantId = $companyId;
-				} else {
-					$return = false;
-				}
+					$supplierId = $CI->RestaurantModel->addRestaurantWithNameOnly($companyName);
+				} 
 			} else if ( $supplierType == 'farm' ) {
-				if (empty($companyId) ) {
-					$CI->load->model('FarmModel','',true);
-					$companyId = $CI->FarmModel->addFarmWithNameOnly($companyName);
-				}
-				
-				if ($companyId) {
-					$supplierFarmId = $companyId;
-				} else {
-					$return = false;
+				if (empty($supplierId) ) {
+					$CI->load->model('ProducerModel','',true);
+					$supplierId = $CI->ProducerModel->addProducerWithNameOnly($companyName, $supplierType);
 				}
 			} else if ( $supplierType == 'manufacture' ) {
-				if (empty($companyId) ) {
+				if (empty($supplierId) ) {
 					$CI->load->model('ManufactureModel','',true);
-					$companyId = $CI->ManufactureModel->addManufactureWithNameOnly($companyName);
-				}
-				
-				if ($companyId) {
-					$supplierManufactureId = $companyId;
-				} else {
-					$return = false;
-				}
+					$supplierId = $CI->ManufactureModel->addManufactureWithNameOnly($companyName);
+				} 
 			} else if ( $supplierType == 'distributor' ) {
-				if (empty($companyId) ) {
+				if (empty($supplierId) ) {
 					$CI->load->model('DistributorModel','',true);
-					$companyId = $CI->DistributorModel->addDistributorWithNameOnly($companyName);
+					$supplierId = $CI->DistributorModel->addDistributorWithNameOnly($companyName);
 				}
-				
-				if ($companyId) {
-					$supplierDistributorId = $companyId;
-				} else {
-					$return = false;
-				}
+			}
+			*/
+			if ( empty($supplierId) ) {
+				$return = false;
 			}
 			
 			if ( $return ) {
-				if ($this->addSuppluer($tableName, $idFieldName, $fieldName, $fieldValue, $supplierRestaurantId, $supplierFarmId, $supplierManufactureId, $supplierDistributorId) ) {
+				if ($this->addSuppluer($tableName, $idFieldName, $supplierFieldName, $supplierId, $supplieeFieldName, $supplieeFieldValue) ) {
 					$return = true;
 				} else {
 					$return = false;
 				}
+			} else {
+				die("ELSE");
 			}
 		}
 		
 		return $return;
-		
 	}
 	
-	function addSuppluer($tableName, $idFieldName, $fieldName, $fieldValue, $supplierRestaurantId, $supplierFarmId, $supplierManufactureId, $supplierDistributorId) {
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
+	function addSuppluer($tableName, $idFieldName, $supplierFieldName, $supplierId, $supplieeFieldName, $supplieeFieldValue) {
 		
 		$return = true;
 		
-		$query = "SELECT * FROM $tableName " .
-				" WHERE" .
-				" $fieldName = $fieldValue" .
-				" AND ";
-		if ( !empty($supplierRestaurantId) ) {
-			$query .= 'supplier_restaurant_id';
-		} else if ( !empty($supplierFarmId) ) {
-			$query .= 'supplier_farm_id';
-		} else if ( !empty($supplierManufactureId) ) {
-			$query .= 'supplier_manufacture_id';
-		} else if ( !empty($supplierDistributorId) ) {
-			$query .= 'supplier_distributor_id';
-		}
-		$query .= ' = ';
-		if ( !empty($supplierRestaurantId) ) {
-			$query .= $supplierRestaurantId;
-		} else if ( !empty($supplierFarmId) ) {
-			$query .= $supplierFarmId;
-		} else if ( !empty($supplierManufactureId) ) {
-			$query .= $supplierManufactureId;
-		} else if ( !empty($supplierDistributorId) ) {
-			$query .= $supplierDistributorId;
-		}
+		$query = 'SELECT * FROM ' . $tableName .
+				' WHERE ' .
+				$supplieeFieldName .' = ' .$supplieeFieldValue .
+				' AND '. $supplierFieldName . ' = ' . $supplierId;
+		
 		log_message('debug', 'SupplierModel.addSuppluer : Try to get duplicate supplier record : ' . $query);
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
-			$query = "INSERT INTO $tableName ($idFieldName, $fieldName, ";
-			if ( !empty($supplierRestaurantId) ) {
-				$query .= 'supplier_restaurant_id';
-			} else if ( !empty($supplierFarmId) ) {
-				$query .= 'supplier_farm_id';
-			} else if ( !empty($supplierManufactureId) ) {
-				$query .= 'supplier_manufacture_id';
-			} else if ( !empty($supplierDistributorId) ) {
-				$query .= 'supplier_distributor_id';
-			}
-			
 			$userGroup = $this->session->userdata['userGroup'];
-			//if ( $userGroup != 'admin') {
-				$query .= ', user_id';
-			//}
-			$query .= ', status, track_ip';
 			
-			$query .= ")" .
-					" values (NULL, '" . $fieldValue . "', ";
-			if ( !empty($supplierRestaurantId) ) {
-				$query .= $supplierRestaurantId;
-			} else if ( !empty($supplierFarmId) ) {
-				$query .= $supplierFarmId;
-			} else if ( !empty($supplierManufactureId) ) {
-				$query .= $supplierManufactureId;
-			} else if ( !empty($supplierDistributorId) ) {
-				$query .= $supplierDistributorId;
-			}
-			//if ( $userGroup != 'admin') {
-				$query .= ', ' . $this->session->userdata['userId'];
-			//}
+			$query = 'INSERT INTO '. $tableName . '('.$idFieldName .', '.$supplierFieldName . ', '.$supplieeFieldName . ', user_id, status, track_ip )';
+			$query .= ' values (NULL, ' . $supplierId . ', ' . $supplieeFieldValue;
+			
+			$query .= ', ' . $this->session->userdata['userId'];
 			
 			if ( $userGroup != 'admin') {
 				$query .= ', \'queue\'';
 			} else {
 				$query .= ', \'live\'';
 			}
-			$query .= ", '" . getRealIpAddr() . "' )";
+			$query .= ', \'' . getRealIpAddr() . '\' )';
 			
 			log_message('debug', 'SupplierModel.addSuppluer : Insert Suppluer : ' . $query);
 			

@@ -135,8 +135,31 @@ class Company extends Controller {
 		}
 		
 		echo $companies;
-		
 	}
+	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
+	function get_producers_based_on_type() {		
+		//$q = strtolower($_REQUEST['q']);
+		$q = $_REQUEST['q'];
+		$companyType = $_REQUEST['supplierType'];
+		
+		$this->load->model('CompanyModel', '', TRUE);
+		
+		if ($companyType != '') {
+			$companies = $this->CompanyModel->getCompanyBasedOnTypeFrontEnd( $companyType, $q );
+		} else {
+			$companies = 'No Match';
+		}
+		
+		echo $companies;
+	}
+	
 	
 }
 
