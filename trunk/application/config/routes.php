@@ -60,7 +60,8 @@ $route['^sustainable/(:any)'] 							= "restaurant/city/$1";
 $route['^chain/page(:num)']								= "chain/index/$1";
 $route['^manufacture/page(:num)']						= "manufacture/index/$1";
 $route['^restaurant/view-(:any)']						= "restaurant/custom_url/$1";
-
+$route['^farmersmarket/view-(:any)']					= "farmersmarket/custom_url/$1";
+ 
 // ADMINCP
 $route['^admincp'] 										= "admincp/dashboard";
 
