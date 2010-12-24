@@ -86,14 +86,45 @@ class FarmersMarket extends Controller {
 		echo json_encode($farmersMarket);
 	}
 	
+	
+	//farm custom url
+
+	function custom_url($customUrl){
+                                               		
+		$this->load->model('CustomUrlModel');
+     
+		if($this->CustomUrlModel->check($customUrl)){
+			//check if is restaurant custom url
+			if($this->CustomUrlModel->isFarmersMarket($customUrl)){
+				//echo $this->CustomUrlModel->urlID('restaurant_id');
+				$this->view($this->CustomUrlModel->urlID('farmers_market_id'));
+			}else{
+				//if custom url is found but is not farmers market
+				show_404('page');
+			}
+		}else{
+			show_404('page');
+		}
+	}
+
+	
+	
+	
 	// View the information on a single restaurant
-	function view() {
+	function view($farmersMarketId='') {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
 
-		$farmersMarketId = $this->uri->segment(3);
-
+		if($farmersMarketId != ""){
+			$farmersMarketId = $farmersMarketId;
+		}else{
+				
+			$farmersMarketId = $this->uri->segment(3);
+				
+		}
+		
+		
 		$this->load->model('PhotoModel');
 		$thumbPhotos = $this->PhotoModel->getThumbPhotos('farmers_market', $farmersMarketId);
 		
@@ -132,7 +163,7 @@ class FarmersMarket extends Controller {
 		$data['CENTER'] = array(
 				'info' => '/farmers_market/info',
 			);
-
+                                     
 		// Load all the views for the right column
 		$data['RIGHT'] = array(
 				//'ad' => 'includes/banners/sky',
