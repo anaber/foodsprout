@@ -93,13 +93,24 @@ class FarmModel extends Model{
 	
 	// Get all the information about one specific farm from an ID
 	function getFarmFromId($farmId) {
-		
+		/*
 		$query = "SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id " .
 				" FROM producer, producer_category, producer_category_member " .
 				" WHERE producer.producer_id = " . $farmId . 
 				" AND producer.producer_id = producer_category_member.producer_id " .
 		        " AND producer_category_member.producer_category_id = producer_category.producer_category_id";
-		
+		*/
+		$query = "SELECT 
+					producer.*, producer_category.producer_category, producer_category.producer_category_id
+				FROM 
+					producer
+				LEFT JOIN producer_category_member 
+					ON producer.producer_id = producer_category_member.producer_id 
+				LEFT JOIN producer_category
+					ON producer_category_member.producer_category_id = producer_category.producer_category_id
+				WHERE 
+					producer.producer_id = " . $farmId;
+					
 		log_message('debug', "FarmModel.getFarmFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -123,7 +134,7 @@ class FarmModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForProducer( $row->farm_id, '', '', '');
+			$addresses = $CI->AddressModel->getAddressForProducer( $row->producer_id, '', '', '');
 			$this->FarmLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
@@ -364,7 +375,7 @@ class FarmModel extends Model{
 	}
 	
 	/**
-	 * Migration: 		Working
+	 * Migration: 		Done
 	 * Migrated by: 	Deepak
 	 * 
 	 * Verified: 		Yes

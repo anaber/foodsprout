@@ -124,7 +124,7 @@ class Farm extends Controller {
 		// Getting information from models
 		$this->load->model('FarmModel');
 		$farm = $this->FarmModel->getFarmFromId($farmId);
-
+		
 		$this->load->model('ProductTypeModel');
 		$productTypes = $this->ProductTypeModel->listProductType();
 
