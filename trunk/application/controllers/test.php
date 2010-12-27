@@ -187,10 +187,7 @@ class Test extends Controller{
 	function getTypeOfSlug($slugResults){
 		
 		foreach($slugResults->result_array() as $slug){
-			
-			print_r($slug);
-			
-			
+
 			if($slug['company_id'] == ''){
 				
 				return array(
@@ -208,11 +205,10 @@ class Test extends Controller{
 	function _trimWhiteSpaces($string){
 		
 		$string = str_replace(" - ", " ", $string);
-		
+		$string = str_replace(".", "", $string);
+		$string = str_replace(",", "", $string);
 		$words = explode(" ", $string);
-		
 		$newString = ''; 
-		
 		if(sizeof($words) == 1 ){
 			
 			return $words[0];
@@ -222,12 +218,9 @@ class Test extends Controller{
 				if($word != ''){
 					$newString .= ' '.$word; 
 				}
-				
 			}
-			
 			return trim($newString);
 		}
-		
 	}
 	
 	
@@ -302,12 +295,11 @@ class Test extends Controller{
 		
 		
 		/*
-		 * 
-		 * 
-		 * 	
+		 *  	
 		 	insert into custom_url (farmers_market_id, custom_url )
 			
 			SELECT producer_id, slug FROM `trif_custom_url`;
+			
 		 * */
 	}
 }

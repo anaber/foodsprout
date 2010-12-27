@@ -39,6 +39,21 @@ class CustomUrlModel extends Model{
 		
 	}
 	
+	function isFarm(){
+		$result  = $this->customUrlResource->result_array();
+
+		if($result[0]['farm_id'] != ""){
+			
+			return true;
+			
+		}else{
+			
+			return false;
+			
+		}
+		
+	}
+	
 	
 	function isRestaurant(){
 		$result  = $this->customUrlResource->result_array();
