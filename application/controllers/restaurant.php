@@ -78,7 +78,7 @@ class Restaurant extends Controller {
 
 	//restaurant custom url
 
-	function custom_url($customUrl){
+	function _custom_url($customUrl){
 		
 		$this->load->model('CustomUrlModel');
 

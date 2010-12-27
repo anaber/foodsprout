@@ -108,15 +108,39 @@ class Farm extends Controller {
 		$farm = $this->FarmModel->getFarmFromId($farmId);
 		echo json_encode($farm);
 	}
+
+	
+	//farm custom url
+
+	function custom_url($customUrl){
+                                               		
+		$this->load->model('CustomUrlModel');
+     
+		if($this->CustomUrlModel->check($customUrl)){
+			//check if is restaurant custom url
+			if($this->CustomUrlModel->isFarm($customUrl)){
+				//echo $this->CustomUrlModel->urlID('restaurant_id');
+				$this->view($this->CustomUrlModel->urlID('farm_id'));
+			}else{
+				//if custom url is found but is not farmers market
+				show_404('page');
+			}
+		}else{
+			show_404('page');
+		}
+	}
+
 	
 	// View the information on a single farm
-	function view() {
+	function view($farmId = '') {
 		
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
-
-		$farmId = $this->uri->segment(3);
+		
+		if($farmId == ''){
+			$farmId = $this->uri->segment(3);
+		}
 
 		$this->load->model('PhotoModel');
 		$thumbPhotos = $this->PhotoModel->getThumbPhotos('producer', $farmId);
