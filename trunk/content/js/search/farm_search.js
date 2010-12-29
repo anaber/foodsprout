@@ -587,7 +587,7 @@ function drawNumRecords(params) {
 function addResult(farm, i) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/farm/view/' + farm.farmId + '" id = "'+ farm.farmId +'" style="text-decoration:none;">'+ farm.farmName +'</a></div><div style="float:left;width:300px;clear:left;padding-left:3px;padding-right:10px;font-size:13px;"><b>Type:</b> ' ;
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/farm/view-' + farm.customURL + '" id = "'+ farm.farmId +'" style="text-decoration:none;">'+ farm.farmName +'</a></div><div style="float:left;width:300px;clear:left;padding-left:3px;padding-right:10px;font-size:13px;"><b>Type:</b> ' ;
 	
 	if (farm.farmType == null) {
 		html += '';

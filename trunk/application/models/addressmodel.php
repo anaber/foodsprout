@@ -118,7 +118,7 @@ class AddressModel extends Model{
 	 * Verified: 		Yes
 	 * Verified By: 	Deepak
 	 */
-	function getAddressForProducer($producerId, $zipcode, $city, $citySearch) {
+	function getAddressForProducer($producerId, $zipcode='', $city='', $citySearch='') {
 		
 		$addresses = array();
 		

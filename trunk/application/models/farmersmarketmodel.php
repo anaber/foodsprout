@@ -57,7 +57,11 @@ class FarmersMarketModel extends Model{
 		
 			$this->FarmersMarketLib->farmersMarketId = $row->farmers_market_id;
 			$this->FarmersMarketLib->farmersMarketName = $row->farmers_market_name;
-			$this->FarmersMarketLib->customUrl = $row->custom_url;
+			
+			//$this->FarmersMarketLib->customUrl = $row->custom_url;
+			
+			$this->FarmersMarketLib->customUrl = $this->getCustomURL($row->farmers_market_id);
+			
 			$this->FarmersMarketLib->url = $row->url;
 			$this->FarmersMarketLib->facebook = $row->facebook;
 			$this->FarmersMarketLib->twitter = $row->twitter;
@@ -75,11 +79,9 @@ class FarmersMarketModel extends Model{
 				$arrLatLng['latitude'] = $address->latitude;
 				$arrLatLng['longitude'] = $address->longitude;
 				$arrLatLng['address'] = $address->completeAddress;
-				
 				$arrLatLng['addressLine1'] = $address->address;
 				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
 				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
-				
 				$arrLatLng['farmName'] = $this->FarmersMarketLib->farmersMarketName;
 				$arrLatLng['id'] = $address->addressId;
 				$geocodeArray[] = $arrLatLng;
@@ -442,6 +444,7 @@ class FarmersMarketModel extends Model{
 			
 			$this->FarmersMarketLib->farmersMarketId = $row['farmers_market_id'];
 			$this->FarmersMarketLib->farmersMarketName = $row['farmers_market_name'];
+			$this->FarmersMarketLib->customURL = $this->getCustomURL($row['farmers_market_id']);
 			
 			
 			$CI->load->model('AddressModel','',true);
@@ -491,6 +494,19 @@ class FarmersMarketModel extends Model{
 		
 	    return $arr;
 		
+	}
+	
+	function getCustomURL($farmersMarketId){
+		
+		$results = $this->db->get_where("custom_url", array('farmers_market_id'=>$farmersMarketId));
+		
+		if($results->num_rows() > 0){
+			
+			$results = $results->result_array();
+
+			return 	$results[0]['custom_url'];
+			
+		}
 	}
 	
 	function getQueueFarmersMarketJson() {

@@ -583,6 +583,7 @@ class FarmModel extends Model{
 			unset($this->FarmLib);
 			
 			$this->FarmLib->farmId = $row['producer_id'];
+			$this->FarmLib->customURL = $this->customURL($row['producer_id']);
 			$this->FarmLib->farmName = $row['producer'];
 			$this->FarmLib->farmType = $row['producer_category'];
 			
@@ -634,6 +635,19 @@ class FarmModel extends Model{
 		//die;
 	    return $arr;
 		
+	}
+	
+	function customURL($farmId){
+		
+		$results = $this->db->get_where("custom_url", array('farm_id'=>$farmId));
+		
+		if($results->num_rows() > 0){
+			
+			$results = $results->result_array();
+
+			return 	$results[0]['custom_url'];
+			
+		}
 	}
 	
 	function getDistinctUsedFarmType($c)

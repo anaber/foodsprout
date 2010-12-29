@@ -55,6 +55,22 @@ class CustomUrlModel extends Model{
 	}
 	
 	
+	function isManufacture(){
+		$result  = $this->customUrlResource->result_array();
+
+		if($result[0]['manufacture_id'] != ""){
+			
+			return true;
+			
+		}else{
+			
+			return false;
+			
+		}
+		
+	}
+	
+	
 	function isRestaurant(){
 		$result  = $this->customUrlResource->result_array();
 

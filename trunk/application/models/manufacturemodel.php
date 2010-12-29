@@ -676,6 +676,7 @@ class ManufactureModel extends Model{
 			unset($this->ManufactureLib);
 			
 			$this->ManufactureLib->manufactureId = $row['producer_id'];
+			$this->ManufactureLib->customURL = $this->customURL($row['producer_id']);
 			$this->ManufactureLib->manufactureName = $row['producer'];
 			$this->ManufactureLib->manufactureTypeId = $row['producer_category_id'];
 			$this->ManufactureLib->manufactureType = $row['producer_category'];
@@ -710,7 +711,22 @@ class ManufactureModel extends Model{
 	    
 	    return $arr;
 	}
-	
+	function customURL($manufactureId){
+		
+		$results = $this->db->get_where("custom_url", array('manufacture_id'=>$manufactureId));
+		
+		if($results->num_rows() > 0){
+			
+			$results = $results->result_array();
+
+			return 	$results[0]['custom_url'];
+			
+		}else{
+			
+			return "null";
+			
+		}
+	}
 	
 	// Get all the manufacture's products from the database
 	function getManufactureProducts($manufactureId) {
