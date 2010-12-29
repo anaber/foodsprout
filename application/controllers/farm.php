@@ -112,7 +112,7 @@ class Farm extends Controller {
 	
 	//farm custom url
 
-	function custom_url($customUrl){
+	function customURL($customUrl){
                                                		
 		$this->load->model('CustomUrlModel');
      
@@ -132,7 +132,7 @@ class Farm extends Controller {
 
 	
 	// View the information on a single farm
-	function view($farmId = '') {
+	private function view($farmId = '') {
 		
 		global $SUPPLIER_TYPES_2;
 		

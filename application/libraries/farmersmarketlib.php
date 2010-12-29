@@ -4,6 +4,7 @@ class FarmersMarketLib {
 	
 	var $farmersMarketId;
 	var $farmersMarketName;
+	var $customURL;
 	var $address;
 	var $cityId;
 	var $city;
@@ -17,6 +18,7 @@ class FarmersMarketLib {
 	function FarmersMarketLib() {
 		$this->farmersMarketId = '';
 		$this->farmersMarketName = '';
+		$this->customURL = '';
 		$this->address = '';
 		$this->cityId = '';
 		$this->city = '';

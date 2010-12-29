@@ -89,7 +89,7 @@ class FarmersMarket extends Controller {
 	
 	//farm custom url
 
-	function custom_url($customUrl){
+	function customURL($customUrl){
                                                		
 		$this->load->model('CustomUrlModel');
      
@@ -111,7 +111,7 @@ class FarmersMarket extends Controller {
 	
 	
 	// View the information on a single restaurant
-	function view($farmersMarketId='') {
+	private function view($farmersMarketId='') {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();

@@ -1,10 +1,18 @@
 <div id="mainarea">
 	<ul id="menu">
 		<li>
-			
-			<p><?php echo $results['totalrecords']; ?> results found</p>
+				<p><?php echo $results['totalrecords']; ?> results found</p>
+		</li>
+		<?php
+		
+		if(sizeof($pages) > 1){
+		
+		?>
+		
+		<li>
 			<p>you are now on page <?php echo $searched_page; ?> viewing results form <?php echo $start; ?> to <?php echo $stop; ?></p>
 		</li>
+		
 		<li>	
 			<form method="post" name="getNextPage" action="<?php echo base_url()?>mobile/restaurants/cityrestaurantlist/<?php echo $city_id; ?>">
 			<label for="page">jump to page: </label>
@@ -23,6 +31,9 @@
 			</form>	
 			<span></span>
 		</li>
+		
+		<?php }?>
+		
 	</ul>
 </div>	
 

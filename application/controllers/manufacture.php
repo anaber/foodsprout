@@ -100,13 +100,36 @@ class Manufacture extends Controller {
 		echo json_encode($manufacture);
 	}
 	
+	//farm custom url
+
+	function customURL($customUrl){
+                                               		
+		$this->load->model('CustomUrlModel');
+     
+		if($this->CustomUrlModel->check($customUrl)){
+			//check if is restaurant custom url
+			if($this->CustomUrlModel->isManufacture($customUrl)){
+				//echo $this->CustomUrlModel->urlID('restaurant_id');
+				$this->view($this->CustomUrlModel->urlID('manufacture_id'));
+			}else{
+				//if custom url is found but is not farmers market
+				show_404('page');
+			}
+		}else{
+			show_404('page');
+		}
+	}
+	
+	
 	// View all the information about a single manufacture
-	function view() {
+	private function view($manufactureId) {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
-
-		$manufactureId = $this->uri->segment(3);
+		
+		if($manufactureId == ''){
+			$manufactureId = $this->uri->segment(3);
+		}
 
 		$this->load->model('PhotoModel');
 		$thumbPhotos = $this->PhotoModel->getThumbPhotos('producer', $manufactureId);

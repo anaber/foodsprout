@@ -78,7 +78,7 @@ class Restaurant extends Controller {
 
 	//restaurant custom url
 
-	function _custom_url($customUrl){
+	function customURL($customUrl){
 		
 		$this->load->model('CustomUrlModel');
 
@@ -99,7 +99,7 @@ class Restaurant extends Controller {
 
 
 	// View the information on a single restaurant
-	function view($restaurant_id = "") {
+	private function view($restaurant_id = "") {
 		global $SUPPLIER_TYPES_2;
 
 		$data = array();

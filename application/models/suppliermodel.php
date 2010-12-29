@@ -1630,6 +1630,9 @@ class SupplierModel extends Model{
 				$this->companyLib->addresses = '';
 			} 
 			
+			
+			$this->companyLib->customURL = $this->customURL($row['producer_id'], $this->companyLib->type);
+			
 			$companies[] = $this->companyLib;
 			unset($this->companyLib);
 		}
@@ -1650,6 +1653,21 @@ class SupplierModel extends Model{
 	    
 	    return $arr;
 	}
+	
+		
+	function customURL($producerId, $type){
+		
+		$results = $this->db->get_where("custom_url", array($type.'_id'=>$producerId));
+		
+		if($results->num_rows() > 0){
+			
+			$results = $results->result_array();
+
+			return 	$results[0]['custom_url'];
+			
+		}
+	}
+	
 	
 	function getQueueSuppliersJson() {
 		global $PER_PAGE;

@@ -10,12 +10,14 @@ class CompanyLib {
 	var $state;
 	var $countryId;
 	var $country;
+	var $customURL;
 	var $zipcode;
 	var $creationDate;
 		
 	function CompanyLib() {
 		$this->companyId = '';
 		$this->companyName = '';
+		$this->customURL = '';
 		$this->address = '';
 		$this->city = '';
 		$this->stateId = '';
