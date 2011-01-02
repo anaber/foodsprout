@@ -45,6 +45,7 @@ class User extends Controller {
 		if ($this->session->userdata('isAuthenticated') != 1 ) {
 			redirect($LANDING_PAGE);
 		}
+		//	echo  $this->session->userdata('userId');
 		
 		// List of views to be included
 		$data['CENTER'] = array(
