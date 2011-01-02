@@ -111,22 +111,19 @@ class FarmersMarket extends Controller {
 	
 	
 	// View the information on a single restaurant
-	private function view($farmersMarketId='') {
+	function view($farmersMarketId='') {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
 
 		if($farmersMarketId != ""){
 			$farmersMarketId = $farmersMarketId;
-		}else{
-				
+		} else {
 			$farmersMarketId = $this->uri->segment(3);
-				
 		}
 		
-		
 		$this->load->model('PhotoModel');
-		$thumbPhotos = $this->PhotoModel->getThumbPhotos('farmers_market', $farmersMarketId);
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('producer', $farmersMarketId);
 		
 		// Getting information from models
 		$this->load->model('FarmersMarketModel');
@@ -211,7 +208,7 @@ class FarmersMarket extends Controller {
 	function ajaxSearchFarmersMarketSuppliers() {
 		$q = $this->input->post('q');
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForFarmersMarketJson($q);
+		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q);
 
 		echo json_encode($suppliers);
 	}

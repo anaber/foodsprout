@@ -39,6 +39,7 @@ CREATE  TABLE IF NOT EXISTS `producer` (
   `is_chain_restaurant` TINYINT NULL ,
   `is_restaurant` TINYINT NULL ,
   `is_farm` TINYINT NULL ,
+  `is_farmers_market` TINYINT NULL ,
   `is_manufacture` TINYINT NULL ,
   `is_distributor` TINYINT NULL ,
   PRIMARY KEY (`producer_id`) )
@@ -216,6 +217,7 @@ ALTER TABLE `producer` ADD INDEX `chain_id` (`restaurant_chain_id` ASC);
 ALTER TABLE `product` ADD INDEX `fk_product_chain1` (`restaurant_chain_id` ASC);
 ALTER TABLE `producer` ADD INDEX `restaurant_id` (`restaurant_id` ASC) ;
 ALTER TABLE `producer` ADD INDEX `farm_id` (`farm_id` ASC) ;
+ALTER TABLE `producer` ADD INDEX `farmers_market_id` (`farmers_market_id` ASC) ;
 ALTER TABLE `producer` ADD INDEX `manufacture_id` (`manufacture_id` ASC) ;
 
 -- -----------------------------------------------------
@@ -236,7 +238,7 @@ INSERT INTO producer_category (producer_category,manufacture_type_id) SELECT man
 -- Temp add IDs to the producer table for data integrity, we will later delete these
 -- -----------------------------------------------------
 
-ALTER TABLE `producer` ADD COLUMN `farm_id` INT NULL  AFTER `description` , ADD COLUMN `manufacture_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_chain_id` INT NULL  AFTER `description`;
+ALTER TABLE `producer` ADD COLUMN `farm_id` INT NULL  AFTER `description` , ADD COLUMN `farmers_market_id` INT NULL  AFTER `description`, ADD COLUMN `manufacture_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_chain_id` INT NULL  AFTER `description`;
 
 -- -----------------------------------------------------
 -- Alter various tables that need to reference new data
@@ -246,7 +248,7 @@ ALTER TABLE `comment` ADD COLUMN `producer_id` INT NULL  AFTER `address_id` ;
 
 
 -- -----------------------------------------------------
--- Insert all the restaurants/farms/manufactures/distributors into the producer table
+-- Insert all the restaurants/farms/farmers market/manufactures/distributors/chain into the producer table
 -- -----------------------------------------------------
 
 INSERT INTO `producer`
@@ -290,6 +292,27 @@ twitter,
 farm_id,
 track_ip FROM farm;
 
+INSERT INTO `producer`
+(`producer`,
+`creation_date`,
+`custom_url`,
+`user_id`,
+`url`,
+`status`,
+`facebook`,
+`twitter`,
+`farmers_market_id`,
+`track_ip`)
+SELECT farmers_market_name,
+now(),
+custom_url,
+user_id,
+url,
+status,
+facebook,
+twitter,
+farmers_market_id,
+track_ip FROM farmers_market;
 
 INSERT INTO `producer`
 (`producer`,
@@ -358,6 +381,7 @@ track_ip FROM restaurant_chain;
 
 UPDATE address, producer set address.producer_id = producer.producer_id WHERE address.restaurant_id = producer.restaurant_id;
 UPDATE address, producer set address.producer_id = producer.producer_id WHERE address.farm_id = producer.farm_id;
+UPDATE address, producer set address.producer_id = producer.producer_id WHERE address.farmers_market_id = producer.farmers_market_id;
 UPDATE address, producer set address.producer_id = producer.producer_id WHERE address.manufacture_id = producer.manufacture_id;
 UPDATE address, producer set address.producer_id = producer.producer_id WHERE address.distributor_id = producer.distributor_id;
 
@@ -373,6 +397,7 @@ UPDATE product, producer set product.producer_id = producer.producer_id WHERE pr
 -- -----------------------------------------------------
 
 UPDATE producer SET is_farm=1 WHERE farm_id IS NOT NULL;
+UPDATE producer SET is_farmers_market=1 WHERE farmers_market_id IS NOT NULL;
 UPDATE producer SET is_restaurant=1 WHERE restaurant_id IS NOT NULL;
 UPDATE producer SET is_restaurant_chain=1 WHERE restaurant_chain_id IS NOT NULL;
 UPDATE producer SET is_manufacture=1 WHERE manufacture_id IS NOT NULL;
@@ -385,9 +410,9 @@ UPDATE producer SET is_distributor=1 WHERE distributor_id IS NOT NULL;
 ALTER TABLE `producer` ADD INDEX `is_restaurant_chain` (`is_restaurant_chain` ASC);
 ALTER TABLE `producer` ADD INDEX `is_restaurant` (`is_restaurant` ASC);
 ALTER TABLE `producer` ADD INDEX `is_farm` (`is_farm` ASC);
+ALTER TABLE `producer` ADD INDEX `is_farmers_market` (`is_farmers_market` ASC);
 ALTER TABLE `producer` ADD INDEX `is_manufacture` (`is_manufacture` ASC);
 ALTER TABLE `producer` ADD INDEX `is_distributor` (`is_distributor` ASC);
-
 
 -- -----------------------------------------------------
 -- Populate the producer_category_member table to include all the categories
@@ -534,6 +559,7 @@ ALTER TABLE `restaurant` DROP FOREIGN KEY `fk_restaurant_city_area1` , DROP FORE
 ALTER TABLE `address` DROP FOREIGN KEY `address_ibfk_7` , DROP FOREIGN KEY `fk_address_restaurant1` ;
 ALTER TABLE `distributor_supplier` DROP FOREIGN KEY `fk_distributor_supplier_restaurant1` ;
 ALTER TABLE `farm_supplier` DROP FOREIGN KEY `fk_farm_supplier_restaurant1` ;
+ALTER TABLE `farmers_market_supplier` DROP FOREIGN KEY `fk_farmers_market_farms_farmers_market1`; -- Not working
 ALTER TABLE `manufacture_supplier` DROP FOREIGN KEY `fk_manufacture_supplier_restaurant1` ;
 ALTER TABLE `photo` DROP FOREIGN KEY `fk_photos_restaurant1` ;
 ALTER TABLE `product` DROP FOREIGN KEY `fk_product_restaurant1` ;
@@ -545,6 +571,7 @@ drop table `restaurant_supplier`;
 drop table `restaurant_cuisine`;
 drop table `restaurant_chain_supplier`;
 drop table `farm_supplier`;
+drop table `farmers_market_supplier`;
 drop table `manufacture_supplier`;
 drop table `biz_restaurants`;
 
@@ -555,7 +582,7 @@ ALTER TABLE `manufacture` DROP FOREIGN KEY `fk_manufacture_company1` , DROP FORE
 drop table `manufacture_type`;
 drop table `distributor_supplier`;
 
-ALTER TABLE `comment` DROP FOREIGN KEY `fk_comment_farm1` , DROP FOREIGN KEY `fk_comment_manufacture1` , DROP FOREIGN KEY `fk_comment_restaurant1` , DROP FOREIGN KEY `fk_comment_restaurant_chain1` ;
+ALTER TABLE `comment` DROP FOREIGN KEY `fk_comment_farm1` , DROP FOREIGN KEY `fk_comment_farmers_market1`, DROP FOREIGN KEY `fk_comment_manufacture1` , DROP FOREIGN KEY `fk_comment_restaurant1` , DROP FOREIGN KEY `fk_comment_restaurant_chain1` ;
 
 drop table `restaurant`;
 drop table `restaurant_chain`;
@@ -566,6 +593,7 @@ ALTER TABLE `custom_url` DROP FOREIGN KEY `fk_custom_url_company1` , DROP FOREIG
 
 drop table `cuisine`;
 ALTER TABLE `photo` DROP FOREIGN KEY `fk_photos_farm1` , DROP FOREIGN KEY `fk_photos_manufacture1` ;
+ALTER TABLE `photo` DROP `farmers_market_id`;
 
 ALTER TABLE `468258_food4`.`address` DROP FOREIGN KEY `address_ibfk_2` , DROP FOREIGN KEY `address_ibfk_4` , DROP FOREIGN KEY `address_ibfk_5` , DROP FOREIGN KEY `address_ibfk_6` , DROP FOREIGN KEY `address_ibfk_7` , DROP FOREIGN KEY `fk_address_company1` , DROP FOREIGN KEY `fk_address_distributor1` , DROP FOREIGN KEY `fk_address_farm1` , DROP FOREIGN KEY `fk_address_manufacture1` , DROP FOREIGN KEY `fk_address_restaurant1` , DROP FOREIGN KEY `address_ibfk_8` ;
 ALTER TABLE `468258_food4`.`address` 
@@ -576,7 +604,8 @@ ALTER TABLE `468258_food4`.`address`
   ON UPDATE NO ACTION
 , DROP INDEX `fk_address_company1` 
 , DROP INDEX `fk_address_distributor1` 
-, DROP INDEX `fk_address_farm1` 
+, DROP INDEX `fk_address_farm1`
+, DROP INDEX `fk_address_farmers_market1` 
 , DROP INDEX `fk_address_manufacture1` 
 , DROP INDEX `fk_address_restaurant1` ;
 
@@ -584,10 +613,16 @@ drop table `manufacture`;
 drop table `distributor`;
 drop table `super_market`;
 
+
 ALTER TABLE `farm` DROP FOREIGN KEY `fk_farm_company1` , DROP FOREIGN KEY `fk_farm_farm_type1` , DROP FOREIGN KEY `fk_farm_user1` ;
 
 drop table `company`;
 drop table `farm_type`;
+
+ALTER TABLE `farmers_market` DROP FOREIGN KEY `fk_farmers_market_city1` , DROP FOREIGN KEY `fk_farmers_market_user1`, DROP INDEX `fk_farmers_market_city1` ;
+ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_city1` ;
+ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_user1` ;
+drop table `farmers_market`;
 
 ALTER TABLE `farmers_market_supplier` ADD COLUMN `producer_id` INT NOT NULL  AFTER `farmers_market_id` ;
 ALTER TABLE `farmers_market_supplier` DROP FOREIGN KEY `fk_farmers_market_farms_farm1` , DROP FOREIGN KEY `fk_farmers_market_farms_farmers_market1` , DROP FOREIGN KEY `fk_farmers_market_farms_user1` ;
@@ -608,6 +643,59 @@ ALTER TABLE `product` CHANGE `producer_Id` `producer_id` INT( 11 ) NOT NULL;
 ALTER TABLE `comment`
   DROP `restaurant_id`,
   DROP `farm_id`,
+  DROP `farmers_market_id`,
   DROP `manufacture_id`,
   DROP `restaurant_chain_id`;
+
+
+
+-- -----------------------------------------------------
+-- Queries for Staging server to 
+-- merge farmers market with producer 
+-- ----------------------------------------------------- 
+ALTER TABLE `producer` ADD `is_farmers_market` TINYINT NULL AFTER `is_farm`;
+ALTER TABLE `producer` ADD INDEX `farmers_market_id` (`farm_id` ASC) ;
+ALTER TABLE `producer` ADD `farmers_market_id` INT NULL AFTER `farm_id`;
+
+INSERT INTO `producer`
+(`producer`,
+`creation_date`,
+`custom_url`,
+`user_id`,
+`url`,
+`status`,
+`facebook`,
+`twitter`,
+`farmers_market_id`,
+`track_ip`)
+SELECT farmers_market_name,
+now(),
+custom_url,
+user_id,
+url,
+status,
+facebook,
+twitter,
+farmers_market_id,
+track_ip FROM farmers_market;
+
+UPDATE address, producer set address.producer_id = producer.producer_id WHERE address.farmers_market_id = producer.farmers_market_id;
+
+UPDATE producer SET is_farmers_market=1 WHERE farmers_market_id IS NOT NULL;
+ALTER TABLE `producer` ADD INDEX `is_farmers_market` (`is_farmers_market` ASC);
+
+ALTER TABLE comment DROP FOREIGN KEY `fk_comment_farmers_market1`;
+ALTER TABLE `comment` DROP `farmers_market_id`;
+
+ALTER TABLE `farmers_market_supplier` DROP FOREIGN KEY `fk_farmers_market_farms_farmers_market1`;
+
+drop table `farmers_market_supplier`;
+
+ALTER TABLE `photo` DROP `farmers_market_id` ;
+
+ALTER TABLE `farmers_market` DROP FOREIGN KEY `fk_farmers_market_city1` , DROP FOREIGN KEY `fk_farmers_market_user1`, DROP INDEX `fk_farmers_market_city1` ;
+ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_city1` ;
+ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_user1` ;
+drop table `farmers_market`;
+
 

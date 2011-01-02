@@ -45,6 +45,12 @@ class FarmersMarketModel extends Model{
 		$query = "SELECT farmers_market.* " .
 				" FROM farmers_market" .
 				" WHERE farmers_market.farmers_market_id = " . $farmersMarketId;
+		$query = "SELECT 
+					producer.*
+				FROM 
+					producer
+				WHERE 
+					producer.producer_id = " . $farmersMarketId;
 		log_message('debug', "FarmersMarketModel.getFarmersMarketFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -55,12 +61,12 @@ class FarmersMarketModel extends Model{
 		if ($row) {
 			$geocodeArray = array();
 		
-			$this->FarmersMarketLib->farmersMarketId = $row->farmers_market_id;
-			$this->FarmersMarketLib->farmersMarketName = $row->farmers_market_name;
+			$this->FarmersMarketLib->farmersMarketId = $row->producer_id;
+			$this->FarmersMarketLib->farmersMarketName = $row->producer;
 			
 			//$this->FarmersMarketLib->customUrl = $row->custom_url;
 			
-			$this->FarmersMarketLib->customUrl = $this->getCustomURL($row->farmers_market_id);
+			//$this->FarmersMarketLib->customUrl = $this->getCustomURL($row->farmers_market_id);
 			
 			$this->FarmersMarketLib->url = $row->url;
 			$this->FarmersMarketLib->facebook = $row->facebook;
@@ -339,13 +345,15 @@ class FarmersMarketModel extends Model{
 	
 		$page = 0;
 		
-		$base_query = 'SELECT farmers_market.*' .
-				' FROM farmers_market';
+		$base_query = 'SELECT producer.*' .
+				' FROM producer';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM farmers_market';
+				' FROM producer';
 		
-		$where = ' WHERE farmers_market.status = \'live\' ';
+		$where = ' WHERE is_farmers_market = 1'.
+		         ' AND producer.status = \'live\' ';
+		
 		
 		//if ( !empty($q) || !empty($city) ) {
 		if ( $latLng ) {
@@ -371,7 +379,7 @@ class FarmersMarketModel extends Model{
 					*/
 					$where	.=  '	from address'
 					. '			WHERE' 
-					. '				address.farmers_market_id = farmers_market.farmers_market_id';
+					. '				address.producer_id = producer.producer_id';
 					
 					
 				if (count($latLng) > 0 ) {
@@ -396,7 +404,7 @@ class FarmersMarketModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY farmers_market_name';
+			$sort_query = ' ORDER BY producer';
 			$sort = 'farmers_market_name';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
@@ -442,14 +450,14 @@ class FarmersMarketModel extends Model{
 			$this->load->library('FarmersMarketLib');
 			unset($this->FarmersMarketLib);
 			
-			$this->FarmersMarketLib->farmersMarketId = $row['farmers_market_id'];
-			$this->FarmersMarketLib->farmersMarketName = $row['farmers_market_name'];
-			$this->FarmersMarketLib->customURL = $this->getCustomURL($row['farmers_market_id']);
+			$this->FarmersMarketLib->farmersMarketId = $row['producer_id'];
+			$this->FarmersMarketLib->farmersMarketName = $row['producer'];
+			//$this->FarmersMarketLib->customURL = $this->getCustomURL($row['farmers_market_id']);
 			
 			
 			$CI->load->model('AddressModel','',true);
 			//$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', $q, $city, '');
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', '', $row['farmers_market_id'], '', '', '');
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], '', '', '');
 			$this->FarmersMarketLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {

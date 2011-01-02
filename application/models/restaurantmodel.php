@@ -211,7 +211,7 @@ class RestaurantModel extends Model{
 		//		. ' AND restaurant_cuisine.cuisine_id = cuisine.cuisine_id '
 		//		. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
 
-
+		/*
 		$base_query = 'SELECT restaurant.*, restaurant_type.restaurant_type' .
 				' FROM restaurant, restaurant_type';
 
@@ -221,6 +221,20 @@ class RestaurantModel extends Model{
 
 		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
 				' AND restaurant.status = \'live\' ';
+		*/
+		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
+				' FROM producer';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM producer';
+		
+		$where = ' LEFT JOIN producer_category_member ' .
+				 '		ON producer.producer_id = producer_category_member.producer_id'.
+				 ' LEFT JOIN producer_category '.
+				 '		ON producer_category_member.producer_category_id = producer_category.producer_category_id' . 
+				 ' WHERE is_restaurant = 1'.
+		         ' AND producer.status = \'live\' ';
+		         
 		if ($sustainableWithZipcode || ( !empty($citySearch) ) ) {
 			$where	.= ' AND claims_sustainable = 1 ';
 		}
@@ -233,7 +247,7 @@ class RestaurantModel extends Model{
 			$where .= ' AND (';
 
 			if(count($arrRestaurantTypeId) > 0 ) {
-				$where .= ' restaurant.restaurant_type_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
 			}
 
 
@@ -277,7 +291,7 @@ class RestaurantModel extends Model{
 			$where	.= '		SELECT address.address_id'
 			. '			from address'
 			. '			WHERE'
-			. '				address.restaurant_id = restaurant.restaurant_id'
+			. '				address.producer_id = producer.producer_id'
 			. ' 			AND (';
 			if ( !empty($q) ) {
 				$where	.= '					address.zipcode = "' . $q . '"';
@@ -309,8 +323,8 @@ class RestaurantModel extends Model{
 		$query = $base_query . $where;
 
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY claims_sustainable DESC, restaurant_name';
-			$sort = 'claims_sustainable DESC, restaurant_name';
+			$sort_query = ' ORDER BY claims_sustainable DESC, producer';
+			$sort = 'claims_sustainable DESC, producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -354,18 +368,20 @@ class RestaurantModel extends Model{
 			$this->load->library('RestaurantLib');
 			unset($this->RestaurantLib);
 
-			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
-			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
+			$this->RestaurantLib->restaurantId = $row['producer_id'];
+			$this->RestaurantLib->restaurantName = $row['producer'];
 
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 			$this->RestaurantLib->claimsSustainable = $row['claims_sustainable'];
 
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', $q, $city, $citySearch);
+			//$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', $q, $city, $citySearch);
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], $q, $city, $citySearch);
 			$this->RestaurantLib->addresses = $addresses;
 
-			$cuisines = $this->getCuisinesForRestaurant( $row['restaurant_id']);
-			$this->RestaurantLib->cuisines = $cuisines;
+			//$cuisines = $this->getCuisinesForRestaurant( $row['restaurant_id']);
+			//$this->RestaurantLib->cuisines = $cuisines;
+			$this->RestaurantLib->cuisines = '';
 
 			foreach ($addresses as $key => $address) {
 				$arrLatLng = array();

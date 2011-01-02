@@ -71,13 +71,20 @@ class SupplierModel extends Model{
 			$supplieeFieldName = 'suppliee';
 			$supplieeFieldValue = $restaurantChainId;
 		} else if ( !empty($farmersMarketId) ) {
-			
+			/*
 			$tableName = 'farmers_market_supplier';
 			$idFieldName = 'farmers_market_supplier_id';
 			
 			$supplierFieldName = 'producer_id';
 			
 			$supplieeFieldName = 'farmers_market_id';
+			*/
+			$tableName = 'supplier';
+			$idFieldName = 'supplier_id';
+			
+			$supplierFieldName = 'supplier';
+			
+			$supplieeFieldName = 'suppliee';
 			$supplieeFieldValue = $farmersMarketId;
 		} 
 		
@@ -97,7 +104,7 @@ class SupplierModel extends Model{
 			}
 			
 			if ( $return ) {
-				if ($this->addSuppluer($tableName, $idFieldName, $supplierFieldName, $supplierId, $supplieeFieldName, $supplieeFieldValue) ) {
+				if ($this->addSupplier($tableName, $idFieldName, $supplierFieldName, $supplierId, $supplieeFieldName, $supplieeFieldValue) ) {
 					$return = true;
 				} else {
 					$return = false;
@@ -115,7 +122,7 @@ class SupplierModel extends Model{
 	 * Verified: 		Yes
 	 * Verified By: 	Deepak
 	 */
-	function addSuppluer($tableName, $idFieldName, $supplierFieldName, $supplierId, $supplieeFieldName, $supplieeFieldValue) {
+	function addSupplier($tableName, $idFieldName, $supplierFieldName, $supplierId, $supplieeFieldName, $supplieeFieldValue) {
 		
 		$return = true;
 		
@@ -124,7 +131,7 @@ class SupplierModel extends Model{
 				$supplieeFieldName .' = ' .$supplieeFieldValue .
 				' AND '. $supplierFieldName . ' = ' . $supplierId;
 		
-		log_message('debug', 'SupplierModel.addSuppluer : Try to get duplicate supplier record : ' . $query);
+		log_message('debug', 'SupplierModel.addSupplier : Try to get duplicate supplier record : ' . $query);
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
@@ -142,7 +149,7 @@ class SupplierModel extends Model{
 			}
 			$query .= ', \'' . getRealIpAddr() . '\' )';
 			
-			log_message('debug', 'SupplierModel.addSuppluer : Insert Suppluer : ' . $query);
+			log_message('debug', 'SupplierModel.addSupplier : Insert Supplier : ' . $query);
 			
 			if ( $this->db->query($query) ) {
 				$return = true;
@@ -789,11 +796,12 @@ class SupplierModel extends Model{
 		$base_query_count .= ' WHERE suppliee='.$producerId;
 		
 		/** $base_query*/
-		$base_query = 'SELECT supplier.*, producer, producer_id';
+		$base_query = 'SELECT supplier.*, producer.producer, producer.producer_id, ' 
+					. ' is_restaurant, is_farm, is_manufacture, is_distributor ';
 		$base_query .= ' FROM supplier, producer';
 		
-		$where = ' WHERE suppliee='.$producerId; 
-				 ' AND supplier.supplier = producer.producer_id';
+		$where = ' WHERE supplier.suppliee = '.$producerId   
+			   . ' AND supplier.supplier = producer.producer_id';
 		
 		$query = $base_query_count;
 		
@@ -802,7 +810,7 @@ class SupplierModel extends Model{
 		$numResults = $row->num_records;
 		
 		$query = $base_query . $where;	
-		$sort_query = ' ORDER BY producer';	
+		$sort_query = ' ORDER BY producer.producer';
 		
 		if ( empty($order) ) {
 			$order = 'ASC';
@@ -830,6 +838,7 @@ class SupplierModel extends Model{
 		}
 		
 		log_message('debug', "SupplierModel.getSupplierForCompanyJson : " . $query);
+		//echo $query;
 		$result = $this->db->query($query);
 		
 		$suppliers = array();
@@ -850,6 +859,17 @@ class SupplierModel extends Model{
 			$addresses = $CI->AddressModel->getAddressForProducer($row['supplier']);
 			$this->supplierLib->addresses = $addresses;
 			
+			
+			if ( $row['is_restaurant'] == '1' ) {
+				$this->supplierLib->supplierType = 'restaurant';
+			} else if ( $row['is_farm'] == '1' ) {
+				$this->supplierLib->supplierType = 'farm';
+			} else if ( $row['is_manufacture'] == '1' ) {
+				$this->supplierLib->supplierType = 'manufacture';
+			} else if ( $row['is_distributor'] == '1' ) {
+				$this->supplierLib->supplierType = 'distributor';
+			}
+			
 			$suppliers[] = $this->supplierLib;
 			unset($this->supplierLib);
 		}
@@ -863,7 +883,7 @@ class SupplierModel extends Model{
 		$first = 0;
 		$last = $totalPages - 1;		
 		
-		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $fieldValue, '', '');
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, '', '', '');
 		$arr = array(
 			'results'    => $suppliers,
 			'param'      => $params,
@@ -886,7 +906,7 @@ class SupplierModel extends Model{
 		$fieldName = '';
 		$fieldValue = '';
 		
-		$tableName = 'farmers_market_supplier';
+		$tableName = 'producer_supplier';
 		$idFieldName = 'producer_id';    			// supplier
 		$fieldName = 'farmers_market_id';			// suppliee
 		$fieldValue = $farmersMarketId; 
@@ -1497,30 +1517,31 @@ class SupplierModel extends Model{
 		
 		$arrQueryCount[] = $query_count;
 		
+		/*
 		$query_count = 'SELECT count(*) '
 				. ' FROM farmers_market_supplier, producer'
 				. ' WHERE farmers_market_supplier.producer_id = ' . $fieldValue
 				. ' AND farmers_market_supplier.producer_id = producer.producer_id';
 		
 		$arrQueryCount[] = $query_count;
-		
+		*/
 		
 		$query = 'SELECT supplier_id as id, supplier, suppliee, producer_id, producer, '
-				. ' is_restaurant_chain, is_restaurant, is_farm, is_manufacture, is_distributor, NULL as is_farmers_market'
+				. ' is_restaurant_chain, is_restaurant, is_farm, is_manufacture, is_distributor, is_farmers_market'
 				. ' FROM supplier, producer'
 				. ' WHERE supplier.supplier = ' . $fieldValue
 				. ' AND supplier.suppliee = producer.producer_id';
 		
 		$arrQuery[] = $query;
-		
+		/*
 		$query = 'SELECT farmers_market_supplier_id as id, farmers_market_supplier.producer_id as supplier, farmers_market_id as suppliee, producer.producer_id, producer.producer, '
 				. ' NULL AS is_restaurant_chain, NULL AS is_restaurant, NULL AS is_farm, NULL AS is_manufacture, NULL AS is_distributor, 1 as is_farmers_market'
 				. ' FROM farmers_market_supplier, producer'
 				. ' WHERE farmers_market_supplier.producer_id = ' . $fieldValue
 				. ' AND farmers_market_supplier.producer_id = producer.producer_id';
-				
+			
 		$arrQuery[] = $query;
-		
+		*/
 		$query_count = 'SELECT';
 		$i = 0;
 		foreach ($arrQueryCount as $query) {

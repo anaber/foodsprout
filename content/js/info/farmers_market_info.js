@@ -1,9 +1,7 @@
 
 function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 	var formAction;
-	if (type == 'menu') {
-		formAction = '/farmersmarket/ajaxSearchFarmersMarketMenus';
-	} else if (type == 'supplier') {
+	if (type == 'supplier') {
 		formAction = '/farmersmarket/ajaxSearchFarmersMarketSuppliers';
 	} else if (type == 'comment') {
 		formAction = '/farmersmarket/ajaxSearchFarmersMarketComments';
@@ -187,8 +185,8 @@ function addSupplierResult(supplier, count) {
 	
 	var html =
 	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:220px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '">'+ supplier.supplierName +'</a><br>Type: '+ supplier.supplierType + '</div>' +
-	'	<div style="float:right; width:300px;">Address:<br />';
+	'	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br>Type: '+ supplier.supplierType + '</div>' +
+	'	<div style="float:right; width:300px;font-size:13px;">Address:<br />';
 	
 	$.each(supplier.addresses, function(j, address) {
 		if (j == 0) {

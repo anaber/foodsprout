@@ -39,11 +39,7 @@ class CommentModel extends Model{
 				' FROM comment, user';
 				
 		$where = ' WHERE ';
-		if ($type == 'farmers_market') {
-			$where .= ' comment.farmers_market_id  = ' . $q;
-		} else {
-			$where .= ' comment.producer_id  = ' . $q;
-		}
+		$where .= ' comment.producer_id  = ' . $q;
 		
 		$where .= ' AND comment.status = \'live\'' .
 				' AND comment.user_id = user.user_id ';
@@ -167,7 +163,7 @@ class CommentModel extends Model{
         } else if (!empty($farmId)) {
             $query .= 'producer_id ';
         } else if (!empty($farmersMarketId)) {
-            $query .= 'farmers_market_id';
+            $query .= 'producer_id';
         }
         $query .= ' = ';
         if (!empty($restaurantId)) {
@@ -198,7 +194,7 @@ class CommentModel extends Model{
             } else if (!empty($farmId)) {
                 $query .= 'producer_id';
             } else if (!empty($farmersMarketId)) {
-                $query .= 'farmers_market_id';
+                $query .= 'producer_id';
             }
             
             $query .= ', comment, user_id, status, track_ip, added_on)' .

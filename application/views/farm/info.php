@@ -35,7 +35,6 @@
 	$(document).ready(function() {
 		$('#bottomPaging').hide();
 		
-		//$.post("/farm/ajaxSearchFarmCompanies", { q: farmId },
 		$.post("/farm/ajaxSearchFarmSuppliee", { q: farmId },
 		function(data){
 			currentContent = 'supplier';
