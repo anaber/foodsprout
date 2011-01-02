@@ -132,7 +132,7 @@ class Farm extends Controller {
 
 	
 	// View the information on a single farm
-	private function view($farmId = '') {
+	function view($farmId = '') {
 		
 		global $SUPPLIER_TYPES_2;
 		

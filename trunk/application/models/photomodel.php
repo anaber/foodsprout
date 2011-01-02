@@ -36,9 +36,7 @@ class PhotoModel extends Model{
 		
 		
 		$where = ' WHERE ';
-		if ($type == 'farmers_market') {
-			$where .= ' photo.farmers_market_id  = ' . $q;
-		} else if ($type == 'product') {
+		if ($type == 'product') {
 			$where .= ' photo.product_id  = ' . $q;
 		} else {
 			$where .= ' photo.producer_id  = ' . $q;
@@ -241,7 +239,7 @@ class PhotoModel extends Model{
 		            } else if (!empty($farmId)) {
 		                $query .= 'producer_id';
 		            } else if (!empty($farmersMarketId)) {
-		                $query .= 'farmers_market_id';
+		                $query .= 'producer_id';
 		            } else if (!empty($productId)) {
 		                $query .= 'product_id';
 		            }

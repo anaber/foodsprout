@@ -62,12 +62,24 @@
     <li><img src="/images/galleria/pier.jpg" alt="Pier"></li> 
     <li><img src="/images/galleria/sea-mist.jpg" alt="Sea Mist"></li>
     <?php
-    */	
+    */
+    	
     	$i = 0;
     	foreach ($PHOTOS as $photo) {
    	?>
    		<li<?php echo ($i == 0) ? ' class="active"' : '' ?>><img src="<?php echo $photo->thumbPhoto; ?>" alt="<?php echo $photo->title; ?>"></li>
    	<?php
+   			/**
+   			 * Problem: When only one image is available, next button shows a blank slide.
+   			 * Solution: In case of only one image, create one more slide with same image.
+   			 * This is not the right solution but it does not make sense to waste time on 
+   			 * debugging any third party script.
+   			 */ 
+   			if ( count($PHOTOS) == 1) {
+   	?>
+   		<li><img src="<?php echo $photo->thumbPhoto; ?>" alt="<?php echo $photo->title; ?>"></li>
+   	<?php
+   			}
    			$i++;
     	}
     	
