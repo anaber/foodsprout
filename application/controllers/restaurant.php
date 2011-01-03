@@ -99,17 +99,15 @@ class Restaurant extends Controller {
 
 
 	// View the information on a single restaurant
-	private function view($restaurant_id = "") {
+	function view($restaurant_id = "") {
 		global $SUPPLIER_TYPES_2;
 
 		$data = array();
 
 		if($restaurant_id != ""){
 			$restaurantId = $restaurant_id;
-		}else{
-				
+		} else {
 			$restaurantId = $this->uri->segment(3);
-				
 		}
 
 		$this->load->model('PhotoModel');
@@ -194,7 +192,7 @@ class Restaurant extends Controller {
 						'floating_messages'
 						);
 
-						$this->load->view('templates/left_center_right_template', $data);
+		$this->load->view('templates/left_center_right_template', $data);
 	}
 
 
@@ -235,14 +233,22 @@ class Restaurant extends Controller {
 	}
 
 	function ajaxGetAllCuisine() {
-		$this->load->model('CuisineModel');
-		$cusines = $this->CuisineModel->listCuisine();
+		//$this->load->model('CuisineModel');
+		//$cusines = $this->CuisineModel->listCuisine();
+		//echo json_encode($cusines);
+		
+		$this->load->model('ProducerCategoryModel');
+		$cusines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
 		echo json_encode($cusines);
 	}
 
 	function ajaxGetAllRestaurantType() {
-		$this->load->model('RestaurantTypeModel');
-		$restaurantType = $this->RestaurantTypeModel->listRestaurantType();
+		//$this->load->model('RestaurantTypeModel');
+		//$restaurantType = $this->RestaurantTypeModel->listRestaurantType();
+		//echo json_encode($restaurantType);
+		
+		$this->load->model('ProducerCategoryModel');
+		$restaurantType = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
 		echo json_encode($restaurantType);
 	}
 
@@ -252,11 +258,11 @@ class Restaurant extends Controller {
 
 	function ajaxSearchRestaurantSuppliers() {
 		$q = $this->input->post('q');
-
+		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($q);
 		$restaurantChainId = $restaurant->restaurantChainId;
-
+		/*
 		if( !empty($restaurantChainId) ){
 			$this->load->model('SupplierModel');
 			$suppliers = $this->SupplierModel->getSupplierForRestaurantAndChainJson($q, $restaurantChainId);
@@ -264,6 +270,10 @@ class Restaurant extends Controller {
 			$this->load->model('SupplierModel');
 			$suppliers = $this->SupplierModel->getSupplierForCompanyJson($q, '', '', '', '', '');
 		}
+		*/
+		
+		$this->load->model('SupplierModel');
+		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q);
 
 		echo json_encode($suppliers);
 	}

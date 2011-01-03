@@ -204,24 +204,6 @@ class RestaurantModel extends Model{
 
 		$page = 0;
 
-		//$base_query = 'SELECT restaurant.*, restaurant_cuisine.*, cuisine.cuisine_name, restaurant_type.restaurant_type' .
-		//		' FROM restaurant, restaurant_cuisine, cuisine, restaurant_type';
-
-		//$where = ' WHERE restaurant.restaurant_id = restaurant_cuisine.restaurant_id '
-		//		. ' AND restaurant_cuisine.cuisine_id = cuisine.cuisine_id '
-		//		. ' AND restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
-
-		/*
-		$base_query = 'SELECT restaurant.*, restaurant_type.restaurant_type' .
-				' FROM restaurant, restaurant_type';
-
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM restaurant, restaurant_type';
-
-
-		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
-				' AND restaurant.status = \'live\' ';
-		*/
 		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
 				' FROM producer';
 		
@@ -239,10 +221,6 @@ class RestaurantModel extends Model{
 			$where	.= ' AND claims_sustainable = 1 ';
 		}
 
-		//$where .= 'restaurant.restaurant_name like "%' .$q . '%"'
-		//		. ' OR restaurant.restaurant_id like "%' . $q . '%"';
-
-
 		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
 			$where .= ' AND (';
 
@@ -258,13 +236,7 @@ class RestaurantModel extends Model{
 				} else {
 					$where	.= ' ( ';
 				}
-
-				$where	.= '		SELECT restaurant_cuisine.restaurant_cuisine_id '
-				. '			FROM restaurant_cuisine'
-				. '			WHERE'
-				. '				restaurant_cuisine.restaurant_id = restaurant.restaurant_id'
-				. ' 			AND restaurant_cuisine.cuisine_id IN (' . implode(',', $arrCuisineId) . ')'
-				. '				LIMIT 0, 1'
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrCuisineId) . ')'
 				. '		)';
 			}
 
@@ -379,9 +351,10 @@ class RestaurantModel extends Model{
 			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], $q, $city, $citySearch);
 			$this->RestaurantLib->addresses = $addresses;
 
-			//$cuisines = $this->getCuisinesForRestaurant( $row['restaurant_id']);
-			//$this->RestaurantLib->cuisines = $cuisines;
-			$this->RestaurantLib->cuisines = '';
+			$CI->load->model('ProducerCategoryModel','',true);
+			$cuisines = $CI->ProducerCategoryModel->getCuisinesForRestaurant( $row['producer_id']);
+			$this->RestaurantLib->cuisines = $cuisines;
+			
 
 			foreach ($addresses as $key => $address) {
 				$arrLatLng = array();
@@ -976,12 +949,16 @@ class RestaurantModel extends Model{
 		return $return;
 	}
 
-	function getDistinctUsedRestaurantType($c)
-	{
-		$query = "SELECT DISTINCT restaurant.restaurant_type_id, restaurant_type.restaurant_type
-					FROM restaurant, restaurant_type
-					WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id LIMIT 0, $c";
-
+	function getDistinctUsedRestaurantType($c) {
+		$query = "SELECT 
+					DISTINCT producer_category.producer_category_id, 
+					producer_category.producer_category 
+				FROM 
+					producer_category, producer_category_member 
+				WHERE 
+					producer_category_member.producer_category_id = producer_category.producer_category_id 
+					AND producer_category.category_group1 = 2  LIMIT 0, $c";
+		
 		log_message('debug', "RestaurantModel.getDistinctUsedRestaurantType : " . $query);
 		$result = $this->db->query($query);
 
@@ -992,8 +969,8 @@ class RestaurantModel extends Model{
 			$this->load->library('RestaurantTypeLib');
 			unset($this->RestaurantTypeLib);
 
-			$this->RestaurantTypeLib->restaurantTypeId = $row['restaurant_type_id'];
-			$this->RestaurantTypeLib->restaurantType = $row['restaurant_type'];
+			$this->RestaurantTypeLib->restaurantTypeId = $row['producer_category_id'];
+			$this->RestaurantTypeLib->restaurantType = $row['producer_category'];
 
 			$restaurantTypes[] = $this->RestaurantTypeLib;
 			unset($this->RestaurantTypeLib);
@@ -1002,12 +979,15 @@ class RestaurantModel extends Model{
 		return $restaurantTypes;
 	}
 
-	function getDistinctUsedCuisine($c)
-	{
-		$query = "SELECT DISTINCT restaurant_cuisine.cuisine_id, cuisine.cuisine_name
-					FROM restaurant_cuisine, cuisine
-					WHERE restaurant_cuisine.cuisine_id = cuisine.cuisine_id LIMIT 0, $c";
-
+	function getDistinctUsedCuisine($c) {
+		$query = "SELECT 
+					DISTINCT producer_category.producer_category_id, 
+					producer_category.producer_category 
+				FROM 
+					producer_category, producer_category_member 
+				WHERE 
+					producer_category_member.producer_category_id = producer_category.producer_category_id 
+					AND producer_category.category_group1 = 1  LIMIT 0, $c";
 		log_message('debug', "RestaurantModel.getDistinctUsedCuisine : " . $query);
 		$result = $this->db->query($query);
 
@@ -1018,8 +998,8 @@ class RestaurantModel extends Model{
 			$this->load->library('CuisineLib');
 			unset($this->CuisineLib);
 
-			$this->CuisineLib->cuisineId = $row['cuisine_id'];
-			$this->CuisineLib->cuisineName = $row['cuisine_name'];
+			$this->CuisineLib->cuisineId = $row['producer_category_id'];
+			$this->CuisineLib->cuisineName = $row['producer_category'];
 
 			$cuisine[] = $this->CuisineLib;
 			unset($this->CuisineLib);
