@@ -26,9 +26,23 @@ class ProducerCategoryModel extends Model{
 		
 		foreach ($result->result_array() as $row) {
 			if ($categotyType == 'CUISINE') {
+				$this->load->library('CuisineLib');
+				unset($this->CuisineLib);
 				
+				$this->CuisineLib->cuisineId = $row['producer_category_id'];
+				$this->CuisineLib->cuisineName = $row['producer_category'];
+				
+				$producerCategories[] = $this->CuisineLib;
+				unset($this->CuisineLib);
 			} else if ($categotyType == 'RESTAURANT') {
+				$this->load->library('RestaurantTypeLib');
+				unset($this->restaurantTypeLib);
 				
+				$this->restaurantTypeLib->restaurantTypeId = $row['producer_category_id'];
+				$this->restaurantTypeLib->restaurantTypeName = $row['producer_category'];
+				
+				$producerCategories[] = $this->restaurantTypeLib;
+			unset($this->restaurantTypeLib);
 			} else if ($categotyType == 'FARM') {
 				$this->load->library('FarmTypeLib');
 				unset($this->farmTypeLib);
@@ -43,6 +57,37 @@ class ProducerCategoryModel extends Model{
 			}
 		}
 		return $producerCategories;
+	}
+	
+	function getCuisinesForRestaurant($producerId) {
+		$query = "SELECT 
+					producer_category.producer_category_id, 
+					producer_category.producer_category 
+				FROM 
+					producer_category, producer_category_member 
+				WHERE 
+					producer_category_member.producer_category_id = producer_category.producer_category_id 
+					AND producer_category.category_group1 = 1 
+					AND producer_category_member.producer_id = $producerId";
+		
+		log_message('debug', "ProducerCategoryModel.getCuisinesForRestaurant : " . $query);
+		$result = $this->db->query($query);
+
+		$cuisines = array();
+
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('CuisineLib');
+			unset($this->cuisineLib);
+
+			$this->cuisineLib->cuisineId = $row['producer_category_id'];
+			$this->cuisineLib->cuisine = $row['producer_category'];
+
+			$cuisines[] = $this->cuisineLib;
+			unset($this->cuisineLib);
+		}
+
+		return $cuisines;
 	}
 	
 }
