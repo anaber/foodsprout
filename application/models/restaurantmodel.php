@@ -205,16 +205,23 @@ class RestaurantModel extends Model{
 		$page = 0;
 
 		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
-				' FROM producer';
-		
+				' FROM producer' . 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+				 
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM producer';
+		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
+			$base_query_count .= 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+		}
 		
-		$where = ' LEFT JOIN producer_category_member ' .
-				 '		ON producer.producer_id = producer_category_member.producer_id'.
-				 ' LEFT JOIN producer_category '.
-				 '		ON producer_category_member.producer_category_id = producer_category.producer_category_id' . 
-				 ' WHERE is_restaurant = 1'.
+		$where = ' WHERE is_restaurant = 1'.
 		         ' AND producer.status = \'live\' ';
 		         
 		if ($sustainableWithZipcode || ( !empty($citySearch) ) ) {
@@ -280,20 +287,17 @@ class RestaurantModel extends Model{
 
 		}
 
-		$base_query_count = $base_query_count . $where;
-
-		//echo $base_query_count;
+		$query = $base_query_count . $where;
+		//echo $query;
 		//die;
-
-		//$query = $base_query_count . " ORDER BY restaurant_name ";
-		$query = $base_query_count;
 
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;
 
 		$query = $base_query . $where;
-
+		$query .= ' GROUP BY producer.producer_id ';
+		
 		if ( empty($sort) ) {
 			$sort_query = ' ORDER BY claims_sustainable DESC, producer';
 			$sort = 'claims_sustainable DESC, producer';
@@ -328,6 +332,7 @@ class RestaurantModel extends Model{
 		//print_r_pre($_REQUEST);
 		//echo $query . "<br />";
 		//die;
+		
 		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
 		$result = $this->db->query($query);
 
