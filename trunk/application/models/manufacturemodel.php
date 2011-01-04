@@ -581,6 +581,8 @@ class ManufactureModel extends Model{
 		$start = 0;
 		$page = 0;
 		
+		
+		/*
 		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
 				' FROM producer, producer_category, producer_category_member';
 		
@@ -590,6 +592,30 @@ class ManufactureModel extends Model{
 		$where = ' WHERE is_manufacture = 1'.
 		         ' AND producer.producer_id = producer_category_member.producer_id AND producer_category_member.producer_category_id=producer_category.producer_category_id' .
 				 ' AND producer.status = \'live\' ';
+		*/
+		
+		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
+				' FROM producer' . 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+				 
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM producer';
+		/*
+		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
+			$base_query_count .= 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+		}
+		*/
+		
+		$where = ' WHERE is_manufacture = 1'.
+		         ' AND producer.status = \'live\' ';
+		
 		
 		if (!empty($q) ) {
 		$where .= ' AND (' 
@@ -618,15 +644,14 @@ class ManufactureModel extends Model{
 		}
 		
 		
-		$base_query_count = $base_query_count . $where;
-		
-		$query = $base_query_count;
+		$query = $base_query_count . $where;
 		
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;
 		
 		$query = $base_query . $where;
+		$query .= ' GROUP BY producer.producer_id ';
 		
 		if ( empty($sort) ) {
 			$sort_query = ' ORDER BY producer';

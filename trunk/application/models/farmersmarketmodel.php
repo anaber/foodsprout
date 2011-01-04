@@ -405,7 +405,7 @@ class FarmersMarketModel extends Model{
 		
 		if ( empty($sort) ) {
 			$sort_query = ' ORDER BY producer';
-			$sort = 'farmers_market_name';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}

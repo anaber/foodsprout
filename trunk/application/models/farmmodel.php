@@ -466,16 +466,23 @@ class FarmModel extends Model{
 		
 		
 		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
-				' FROM producer';
-		
+				' FROM producer' . 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+				 
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM producer';
+		if ( count($arrFarmTypeId) > 0 ) {
+			$base_query_count .= 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+		}
 		
-		$where = ' LEFT JOIN producer_category_member ' .
-				 '		ON producer.producer_id = producer_category_member.producer_id'.
-				 ' LEFT JOIN producer_category '.
-				 '		ON producer_category_member.producer_category_id = producer_category.producer_category_id' . 
-				 ' WHERE is_farm = 1'.
+		$where = ' WHERE is_farm = 1'.
 		         ' AND producer.status = \'live\' ';
 
 		//if ( count($arrFarmTypeId) > 0  || count($arrCuisineId) > 0 ) {
@@ -527,15 +534,14 @@ class FarmModel extends Model{
 			
 		}
 		
-		$base_query_count = $base_query_count . $where;
-				
-		$query = $base_query_count;
+		$query = $base_query_count . $where;
 		
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;
 		
 		$query = $base_query . $where;
+		$query .= ' GROUP BY producer.producer_id ';
 		
 		if ( empty($sort) ) {
 			$sort_query = ' ORDER BY producer';
