@@ -20,54 +20,40 @@ class Tab extends Controller {
     }
 
     // The default goes to the about page
-    function index() {
+	function index() {
 		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('tab_index');
 		$data['SEO'] = $seo;
-
+		
+		$cityId = $this->input->get('city');
+		$lotteryId = $this->input->get('id');
+		
 		$this->load->model('LotteryModel', '', TRUE);
-		$lotteries = $this->LotteryModel->getLotteries();
+		
+		if ($lotteryId) {
+			$lottery = $this->LotteryModel->getLotteryFromId($lotteryId);
+			$cityId = $lottery->cityId;
+		}
+		
+		$cities = $this->LotteryModel->getApplicableCitiesForLottery();
+		
+		$lotteries = $this->LotteryModel->getLotteries($cities, $cityId);
 		
 		//print_r_pre($lotteries);
 		
 		$data['CENTER'] = array(
             'content' => 'tab/info',
         );
-
 		// Data to send to the views
-		$data['BREADCRUMB'] = array(
-							'Tab\'s on Us' => '/tab',
-						);
-
+		
 		$data['data']['center']['content']['LOTTRIES'] = $lotteries;
+		$data['data']['center']['content']['FACEBOOK'] = $this->facebook;
+		$data['data']['center']['content']['CITIES'] = $cities;
 
         $this->load->view('/templates/center_template', $data);
     }
-
-    // Lottery Detail
-    function detail($id) {
-		// SEO
-		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('tab_detail');
-		$data['SEO'] = $seo;
-
-		$this->load->model('LotteryModel', '', TRUE);
-		$lottery = $this->LotteryModel->getLotteryFromId($id);
-
-        $data['CENTER'] = array(
-            'content' => 'tab/detail',
-        );
-
-        // Data to send to the views
-        $data['BREADCRUMB'] = array(
-							'Tab\'s on Us' => '/tab',
-							'This Week\'s Restaurant' => '',
-						);
-        $data['data']['center']['content']['LOTTERY'] = $lottery;
-        $data['data']['center']['content']['FACEBOOK'] = $this->facebook;
-        $this->load->view('/templates/center_template', $data);
-    }
+    
 
 	function enroll() {
 		$this->load->model('LotteryModel', '', TRUE);
@@ -85,6 +71,8 @@ class Tab extends Controller {
 		}
 		
     }
+    
+    
 		
 
 }

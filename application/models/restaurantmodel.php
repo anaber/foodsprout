@@ -118,7 +118,13 @@ class RestaurantModel extends Model{
 		}
 	}
 
-
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function getRestaurantsJson() {
 
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
@@ -1311,17 +1317,25 @@ class RestaurantModel extends Model{
 
 		return $return;
 	}
-
+	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function searchRestaurants($q) {
-		$query = "SELECT restaurant_id, restaurant_name
-					FROM restaurant
-					WHERE restaurant_name like '$q%'
-					ORDER BY restaurant_name ";
+		$query = "SELECT producer_id, producer
+					FROM producer
+					WHERE producer like '$q%'
+					AND  is_restaurant = 1
+					ORDER BY producer ";
 		$restaurants = '';
 		log_message('debug', "RestaurantModel.searchRestaurants : " . $query);
 		$result = $this->db->query($query);
 		foreach ($result->result_array() as $row) {
-			$restaurants .= $row['restaurant_name']."|".$row['restaurant_id']."\n";
+			$restaurants .= $row['producer']."|".$row['producer_id']."\n";
 		}
 
 		return $restaurants;

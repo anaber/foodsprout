@@ -72,6 +72,44 @@ class GoogleMapModel extends Model{
 		}
 	}
 	
+	function geoCodeZipV3($address) {
+		global $GEOCODE_URL;
+		
+		$json = '';
+		$a = array();
+		
+		if (!empty($GEOCODE_URL) ) {
+			$url = $GEOCODE_URL . "?address=".urlencode($address);
+		} else {	
+			$url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false";
+		}
+		
+		$ch = curl_init ();
+		curl_setopt ($ch, CURLOPT_URL, $url);
+		curl_setopt ($ch, CURLOPT_POST, 1); 
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt ($ch, CURLOPT_VERBOSE, 1);
+		$json = curl_exec ($ch);
+		curl_close($ch);
+		
+		if ( $json ) {
+			$arr = json_decode($json);
+			
+			if ($arr->status != 'OK') {
+				return false;
+			} else {
+				
+				$a['city'] = $arr->results[0]->address_components[3]->long_name;
+				$a['state'] = $arr->results[0]->address_components[4]->long_name;
+				$a['state_code'] = $arr->results[0]->address_components[4]->short_name;
+				
+				return $a;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 }
 
 
