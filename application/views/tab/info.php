@@ -80,6 +80,7 @@ if ($me) {
 			// whenever the user logs in, we refresh the page
 			FB.Event.subscribe('auth.login', function() {
 				window.location.reload();
+				//$("#linkEnrollFacebook2").click();
 			});
 		};
       
@@ -138,8 +139,6 @@ $(document).ready(function() {
 		return false; //not to post the  form physically
 		
 	});
-	
-	
 	
 	$("#linkEnrollFacebook").click(function(e) {
 		e.preventDefault();
@@ -203,11 +202,13 @@ $(document).ready(function() {
 			<a href="/restaurant/view/<?php echo $LOTTRIES['results'][$currentIndex]->producerId; ?>">View Restaurant Details</a>
 			<div class="enternow">
 				<div class="flt"><a title="click here to login" href="" id = "linkEnroll" class="button_img"><span>Enter Now</span></a></div>
-				<div class="flt fbconnect">
+				
 <?php 
 	if ($me) { 	
 ?>
-	    <a href="#" id = "linkEnrollFacebook"><img src="/img/fbconnect.png" alt="Facebook Users" title="Facebook Users" border="0" /></a>
+		<div class="flt fbconnect">
+	    	<a href="#" id = "linkEnrollFacebook"><img src="/img/fbconnect.png" alt="Facebook Users" title="Facebook Users" border="0" /></a>
+	    </div>
 	    <?php
 	    /*
 	    ?>
@@ -222,13 +223,16 @@ $(document).ready(function() {
 <?php 
 	} else { 
 ?>
-	      <fb:login-button></fb:login-button>
+		<div class="flt fbconnect2">
+			<fb:login-button size="large">Login</fb:login-button>
+		</div>
+		<a href="#" id = "linkEnrollFacebook2"></a>
 <?php 
 	} 
 ?>
 					
 					
-				</div>
+				
 				<div class="clear"></div>
 			</div>
 			<div class="clear"></div>
