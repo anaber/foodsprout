@@ -3,7 +3,13 @@
 class LotteryModel extends Model{
 	
 	
-	
+	/**
+	 * Migration: 		Done
+	 * Migrated by: 	Deepak
+	 * 
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function getLotteriesJsonAdmin() {
 		global $PER_PAGE;
 		
@@ -21,20 +27,20 @@ class LotteryModel extends Model{
 		$start = 0;
 		$page = 0;
 		
-		$base_query = 'SELECT lottery.*, restaurant.restaurant_name, city.city, state.state_code ' .
-				' FROM lottery, restaurant, city, state';
+		$base_query = 'SELECT lottery.*, producer.producer, city.city, state.state_code ' .
+				' FROM lottery, producer, city, state';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM lottery, restaurant, city, state';
+				' FROM lottery, producer, city, state';
 		
-		$where = ' WHERE lottery.restaurant_id = restaurant.restaurant_id' .
+		$where = ' WHERE lottery.producer_id = producer.producer_id' .
 				' AND lottery.city_id = city.city_id' .
 				' AND city.state_id = state.state_id';
 		
 		if (! empty ($q) ) {
 		$where .= ' AND (' 
 				. '	lottery.lottery_name like "%' .$q . '%"'
-				. ' OR restaurant.restaurant_name like "%' . $q . '%"'
+				. ' OR producer.producer like "%' . $q . '%"'
 				. ' OR state.state_code like "%' . $q . '%"'
 				. ' OR city.city like "%' . $q . '%"'
 				. ' )';
@@ -97,8 +103,8 @@ class LotteryModel extends Model{
 			
 			$this->LotteryLib->lotteryId = $row['lottery_id'];
 			$this->LotteryLib->lotteryName = $row['lottery_name'];
-			$this->LotteryLib->restaurantId = $row['restaurant_id'];
-			$this->LotteryLib->restaurantName = $row['restaurant_name'];
+			$this->LotteryLib->producerId = $row['producer_id'];
+			$this->LotteryLib->producer = $row['producer'];
 			$this->LotteryLib->cityId = $row['city_id'];
 			$this->LotteryLib->city = $row['city'];
 			$this->LotteryLib->stateCode = $row['state_code'];
@@ -139,13 +145,13 @@ class LotteryModel extends Model{
 	function addLottery() {
 		$return = true;
 		
-		$restaurantId = $this->input->post('restaurantId');
+		$producerId = $this->input->post('producerId');
 		$lotteryName = $this->input->post('lotteryName');
 		$mainPhotoName = $this->input->post('mainPhotoName');
 		
 		$CI =& get_instance();
 		
-		$query = "SELECT * FROM lottery WHERE lottery_name = \"" . $lotteryName . "\" AND restaurant_id = '" . $restaurantId . "'";
+		$query = "SELECT * FROM lottery WHERE lottery_name = \"" . $lotteryName . "\" AND producer_id = '" . $producerId . "'";
 		log_message('debug', 'LotteryModel.addLottery : Try to get duplicate Lottery record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -157,8 +163,8 @@ class LotteryModel extends Model{
 			$drawDate = $this->input->post('drawDate');
 			$resultDate = $this->input->post('resultDate');
 			
-			$query = "INSERT INTO lottery (lottery_id, lottery_name, restaurant_id, city_id, info, start_date, end_date, draw_date, result_date)" .
-					" values (NULL, \"". $this->input->post('lotteryName') ."\", " . $this->input->post('restaurantId') . ", " . $this->input->post('cityId') . ", \"". $this->input->post('info') ."\", " . ($startDate ? "'". date("Y-m-d 00:00:00", strtotime($startDate)) ."'" : 'NULL'). ", " . ($endDate ? "'". date("Y-m-d 23:59:59", strtotime($endDate)) ."'" : 'NULL'). ", " . ($drawDate ? "'". date("Y-m-d 00:00:00", strtotime($drawDate)) ."'" : 'NULL'). ", " . ($resultDate ? "'". date("Y-m-d 00:00:00", strtotime($resultDate)) ."'" : 'NULL'). " )";
+			$query = "INSERT INTO lottery (lottery_id, lottery_name, producer_id, city_id, info, start_date, end_date, draw_date, result_date)" .
+					" values (NULL, \"". $this->input->post('lotteryName') ."\", " . $this->input->post('producerId') . ", " . $this->input->post('cityId') . ", \"". $this->input->post('info') ."\", " . ($startDate ? "'". date("Y-m-d 00:00:00", strtotime($startDate)) ."'" : 'NULL'). ", " . ($endDate ? "'". date("Y-m-d 23:59:59", strtotime($endDate)) ."'" : 'NULL'). ", " . ($drawDate ? "'". date("Y-m-d 00:00:00", strtotime($drawDate)) ."'" : 'NULL'). ", " . ($resultDate ? "'". date("Y-m-d 00:00:00", strtotime($resultDate)) ."'" : 'NULL'). " )";
 			
 			log_message('debug', 'LotteryModel.addLottery : Insert Lottery : ' . $query);
 			$return = true;
@@ -183,10 +189,10 @@ class LotteryModel extends Model{
 	
 	function getLotteryFromId($lotteryId) {
 		
-		$query = 'SELECT lottery.*, restaurant.restaurant_name, city.city, state.state_code ' .
-				' FROM lottery, restaurant, city, state' .
+		$query = 'SELECT lottery.*, producer.producer, city.city, state.state_code ' .
+				' FROM lottery, producer, city, state' .
 				' WHERE lottery.lottery_id = ' . $lotteryId . 
-				' AND lottery.restaurant_id = restaurant.restaurant_id' .
+				' AND lottery.producer_id = producer.producer_id' .
 				' AND lottery.city_id = city.city_id' .
 				' AND city.state_id = state.state_id';
 		
@@ -200,8 +206,8 @@ class LotteryModel extends Model{
 		if ($row) {
 			$this->LotteryLib->lotteryId = $row->lottery_id;
 			$this->LotteryLib->lotteryName = $row->lottery_name;
-			$this->LotteryLib->restaurantId = $row->restaurant_id;
-			$this->LotteryLib->restaurantName = $row->restaurant_name;
+			$this->LotteryLib->producerId = $row->producer_id;
+			$this->LotteryLib->producer = $row->producer;
 			$this->LotteryLib->cityId = $row->city_id;
 			$this->LotteryLib->city = $row->city;
 			$this->LotteryLib->stateCode = $row->state_code;
@@ -232,7 +238,7 @@ class LotteryModel extends Model{
 	function updateLottery() {
 		$return = true;
 		
-		$query = "SELECT * FROM lottery WHERE lottery_name = \"" . $this->input->post('lotteryName') . "\" AND restaurant_id = " . $this->input->post('restaurantId') . " AND lottery_id <> " . $this->input->post('lotteryId');
+		$query = "SELECT * FROM lottery WHERE lottery_name = \"" . $this->input->post('lotteryName') . "\" AND producer_id = " . $this->input->post('producerId') . " AND lottery_id <> " . $this->input->post('lotteryId');
 		log_message('debug', 'LotteryModel.updateLottery : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -247,7 +253,7 @@ class LotteryModel extends Model{
 			$query = "UPDATE lottery " .
 					" SET " .
 					" lottery_name = \"" . $this->input->post('lotteryName') . "\", " .
-					" restaurant_id = " . $this->input->post('restaurantId') . ", " .
+					" producer_id = " . $this->input->post('producerId') . ", " .
 					" city_id = " . $this->input->post('cityId') . ", " .
 					" info = \"" . $this->input->post('info') . "\", " .
 					" start_date = " . ($startDate ? "'". date("Y-m-d 00:00:00", strtotime($startDate)) ."'" : 'NULL') . ", " . 
@@ -272,8 +278,9 @@ class LotteryModel extends Model{
 		return $return;
 	}
 	
-	function getLotteries() {
+	function getLotteries($cities, $cityId) {
 		global $PER_PAGE;
+		$CI =& get_instance();
 		
 		$p = $this->input->post('p'); // Page
 		$pp = $this->input->post('pp'); // Per Page
@@ -286,30 +293,49 @@ class LotteryModel extends Model{
 			$q = '';
 		}
 		
+		$defaultCity = '';
+		if ($cityId) {
+			$defaultCity = $cityId;	
+		} else {
+			if (count($cities) > 0 ) {
+				if ($this->session->userdata('isAuthenticated') != 1 ) {
+					//$city = '41,6009,13721'; // San Francisco
+					foreach($cities as $city) {
+						if ($city->cityId == '41') {
+							$defaultCity = 41;
+							break;
+						}
+					}
+				} else {
+					$q = $this->session->userdata['zipcode'];
+					$CI->load->model('GoogleMapModel','',true);
+					$zipDetails = $CI->GoogleMapModel->geoCodeZipV3($q);
+					
+					$CI->load->model('CityModel','',true);
+					$city = $CI->CityModel->getCityFromZipDetails($zipDetails);
+					if ($city) {
+						$defaultCity = $city->cityId;
+					}
+				}
+			}
+		}
+		
 		$start = 0;
 		$page = 0;
 		
-		$base_query = 'SELECT lottery.*, restaurant.restaurant_name, city.city, state.state_code ' .
-				' FROM lottery, restaurant, city, state';
+		$base_query = 'SELECT lottery.*, producer.producer, city.city, state.state_code ' .
+				' FROM lottery, producer, city, state';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM lottery, restaurant, city, state';
+				' FROM lottery, producer, city, state';
 		
-		$where = ' WHERE lottery.restaurant_id = restaurant.restaurant_id' .
+		$where = ' WHERE lottery.producer_id = producer.producer_id' .
 				' AND lottery.city_id = city.city_id' .
-				' AND city.state_id = state.state_id' .
-				' AND (start_date <= \''.date('Y-m-d').'\' AND end_date >= \''.date('Y-m-d').'\' )';
-		
-		/*
-		if (! empty ($q) ) {
-		$where .= ' AND (' 
-				. '	lottery.lottery_name like "%' .$q . '%"'
-				. ' OR restaurant.restaurant_name like "%' . $q . '%"'
-				. ' OR state.state_code like "%' . $q . '%"'
-				. ' OR city.city like "%' . $q . '%"'
-				. ' )';
-		}
-		*/
+				' AND city.state_id = state.state_id';
+		if ($defaultCity != '') {
+			$where .= ' AND city.city_id = ' . $defaultCity;
+		}		
+		$where .= ' AND (start_date <= \''.date('Y-m-d').'\' AND end_date >= \''.date('Y-m-d').'\' )';
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -353,12 +379,10 @@ class LotteryModel extends Model{
 			}
 		}
 		
-		log_message('debug', "LotteryModel.getLotteriesJsonAdmin : " . $query);
+		log_message('debug', "LotteryModel.getLotteries : " . $query);
 		$result = $this->db->query($query);
 		
 		$lotteries = array();
-		
-		$CI =& get_instance();
 		
 		$geocodeArray = array();
 		foreach ($result->result_array() as $row) {
@@ -368,17 +392,18 @@ class LotteryModel extends Model{
 			
 			$this->LotteryLib->lotteryId = $row['lottery_id'];
 			$this->LotteryLib->lotteryName = $row['lottery_name'];
-			$this->LotteryLib->restaurantId = $row['restaurant_id'];
-			$this->LotteryLib->restaurantName = $row['restaurant_name'];
+			$this->LotteryLib->producerId = $row['producer_id'];
+			$this->LotteryLib->producer = $row['producer'];
 			$this->LotteryLib->cityId = $row['city_id'];
 			$this->LotteryLib->city = $row['city'];
 			$this->LotteryLib->stateCode = $row['state_code'];
+			$this->LotteryLib->info = $row['info'];
 			
 			
-			$this->LotteryLib->startDate = ( $row['start_date'] ? date('m-d-Y', strtotime($row['start_date']) ) : '');
-			$this->LotteryLib->endDate = ( $row['end_date'] ? date('m-d-Y', strtotime($row['end_date']) ) : '');
-			$this->LotteryLib->drawDate = ( $row['draw_date'] ? date('m-d-Y', strtotime($row['draw_date']) ) : '');
-			$this->LotteryLib->resultDate = ( $row['result_date'] ? date('m-d-Y', strtotime($row['result_date']) ) : '');
+			$this->LotteryLib->startDate = ( $row['start_date'] ? date('m/d/Y', strtotime($row['start_date']) ) : '');
+			$this->LotteryLib->endDate = ( $row['end_date'] ? date('m/d/Y', strtotime($row['end_date']) ) : '');
+			$this->LotteryLib->drawDate = ( $row['draw_date'] ? date('m/d/Y', strtotime($row['draw_date']) ) : '');
+			$this->LotteryLib->resultDate = ( $row['result_date'] ? date('m/d/Y', strtotime($row['result_date']) ) : '');
 			
 			$CI->load->model('PrizeModel','',true);
 			$prizes = $CI->PrizeModel->getPrizesForLottery($row['lottery_id']);
@@ -470,6 +495,37 @@ class LotteryModel extends Model{
 		
 		return $return;
 	}
+	
+	function getApplicableCitiesForLottery() {
+		$query = 'SELECT DISTINCT lottery.city_id, city.city, state.state_id, state.state_code ' .
+				' FROM lottery, city, state' .
+				' WHERE lottery.city_id = city.city_id' .
+				' AND city.state_id = state.state_id' .
+				' AND (start_date <= \''.date('Y-m-d').'\' AND end_date >= \''.date('Y-m-d').'\' )' .
+				' ORDER BY state_code, city';
+		$result = $this->db->query($query);
+		
+		$cities = array();
+		
+		$CI =& get_instance();
+		
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row) {
+			$this->load->library('CityLib');
+			unset($this->CityLib);
+			
+			$this->CityLib->cityId = $row['city_id'];
+			$this->CityLib->city = $row['city'];
+			$this->CityLib->stateId = $row['state_id'];
+			$this->CityLib->stateCode = $row['state_code'];
+						
+			$cities[$row['city_id']] = $this->CityLib;
+			unset($this->CityLib);
+		}
+		
+		return $cities;
+	}
+	
 	
 	
 }

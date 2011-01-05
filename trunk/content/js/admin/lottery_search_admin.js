@@ -60,10 +60,10 @@ function reinitializeTableHeadingEvent(data) {
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'lottery_name', order, data.param.q);
 	});
 	
-	$("#heading_restaurant").click(function(e) {
+	$("#heading_producer").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'restaurant_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'restaurant_name', order, data.param.q);
+		order = getOrder(data, 'producer');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
 	});
 	
 	$("#heading_city").click(function(e) {
@@ -90,7 +90,7 @@ function addResult(lottery, i) {
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/lottery/update/'+ lottery.lotteryId +'">'+ lottery.lotteryId +'</a></td>' +
 	'	<td valign="top"><a href="/admincp/lottery/update/'+ lottery.lotteryId +'">'+ lottery.lotteryName +'</a></td>' +
-	'	<td valign="top">'+ lottery.restaurantName +'</td>' +
+	'	<td valign="top">'+ lottery.producer +'</td>' +
 	'	<td valign="top">'+ lottery.city + ', ' + lottery.stateCode +'</td>' +
 	'	<td valign="top">'+ lottery.startDate +'</td>' +
 	'	<td valign="top">'+ lottery.endDate +'</td>' +
@@ -125,7 +125,7 @@ function getResultTableHeader() {
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 	'		<th id = "heading_lottery"><a href = "#" style = "color:#FFFFFF">Lottery Name</a></th>' +
-	'		<th id = "heading_restaurant"><a href = "#" style = "color:#FFFFFF">Restaurant</a></th>' +
+	'		<th id = "heading_producer"><a href = "#" style = "color:#FFFFFF">Restaurant</a></th>' +
 	'		<th id = "heading_city"><a href = "#" style = "color:#FFFFFF">City</a></th>' +
 	'		<th id = "heading_start_date"><a href = "#" style = "color:#FFFFFF">Start Date</a></th>' +
 	'		<th id = "heading_end_date"><a href = "#" style = "color:#FFFFFF">End Date</a></th>' +

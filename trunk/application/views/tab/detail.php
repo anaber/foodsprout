@@ -167,7 +167,7 @@ $(document).ready(function() {
 	?>
 	</div>
 
-Restaurant Name: <?php echo $LOTTERY->restaurantName; ?><br />
+Restaurant Name: <?php echo $LOTTERY->producer; ?><br />
 City Name: <?php echo $LOTTERY->city; ?><br />
 Info: <?php echo $LOTTERY->info; ?><br />
 Start Date: <?php echo date('m-d-Y', strtotime($LOTTERY->startDate) ); ?><br />

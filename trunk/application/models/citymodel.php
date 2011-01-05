@@ -206,13 +206,13 @@ class CityModel extends Model{
 	    return $arr;
 	}
 	
-	function getCityBasedOnRestaurant ($restaurantId, $q) {
+	function getCitiesForProducer ($producerId, $q) {
 		$originalQ = $q;
 		$q = strtolower($q);
 		
 		$query = 'SELECT DISTINCT (address.city_id), city.city, city.state_id, state.state_code' .
 				' FROM address, city, state' .
-				' WHERE address.restaurant_id = ' . $restaurantId .
+				' WHERE address.producer_id = ' . $producerId .
 				' AND address.city_id = city.city_id' .
 				' AND city.state_id = state.state_id' .
 				' AND city.city like "%'.$q.'%"';
@@ -231,6 +231,33 @@ class CityModel extends Model{
 		}
 		
 		return $cities;
+	}
+	
+	function getCityFromZipDetails ($zipDetails) {
+		
+		$query = 'SELECT city_id, city.city, city.state_id, state.state_code, state.state_name' .
+				' FROM city, state' .
+				' WHERE city.state_id = state.state_id' .
+				' AND city.city = "'.$zipDetails['city'] .'"' .
+				' AND state.state_code = "'.$zipDetails['state_code'] .'"';
+		
+		log_message('debug', "CityModel.getCityFromZipDetails : " . $query);
+		$result = $this->db->query($query);
+		
+		$this->load->library('CityLib');
+		$row = $result->row();
+		
+		if ($row) {
+			$this->cityLib->cityId = $row->city_id;
+			$this->cityLib->city = $row->city;
+			$this->cityLib->stateId = $row->state_id;
+			$this->cityLib->stateCode = $row->state_code;
+			$this->cityLib->stateName = $row->state_name;
+			
+			return $this->cityLib;
+		} else {
+			return false;
+		}
 	}
 	
 	

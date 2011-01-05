@@ -698,4 +698,8 @@ ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_city1` ;
 ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_user1` ;
 drop table `farmers_market`;
 
-
+-- -----------------------------------------------------
+-- Lottery 
+-- ----------------------------------------------------- 
+ALTER TABLE `lottery_photo` CHANGE `photo_id` `photo_id` INT( 11 ) NOT NULL AUTO_INCREMENT; 
+ALTER TABLE `lottery_entry` CHANGE `user_id` `user_id` INT( 11 ) NULL 

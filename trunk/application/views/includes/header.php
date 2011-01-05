@@ -93,3 +93,13 @@ var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_tr
 <!-- main active tab area -->
 <?php /* ?><div id="mainimg"><?php */ ?>
 <div id="mainimg">
+<?php
+	/*
+	$module = $this->uri->segment(1);
+	if ($module == 'tab') {
+?>
+		<div class="tell_friend">Tell a Friend</div>
+<?php	
+	}
+	*/
+?>

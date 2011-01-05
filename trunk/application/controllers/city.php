@@ -25,12 +25,12 @@ class City extends Controller {
 	function get_cities_based_on_restaurant() {		
 		//$q = strtolower($_REQUEST['q']);
 		$q = $_REQUEST['q'];
-		$restaurantId = $_REQUEST['restaurantId'];
+		$producerId = $_REQUEST['producerId'];
 		
 		$this->load->model('CityModel', '', TRUE);
 		
-		if ($restaurantId != '') {
-			$cities = $this->CityModel->getCityBasedOnRestaurant ( $restaurantId, $q );
+		if ($producerId != '') {
+			$cities = $this->CityModel->getCitiesForProducer ( $producerId, $q );
 		} else {
 			$cities = 'No Match';
 		}

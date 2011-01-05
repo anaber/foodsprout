@@ -63,6 +63,7 @@ h3{font-size:14px;}
 .porffoilo_content{padding:5px 0px; height:50px;}
 .mar_rt_45{margin-right:45px;}
 .flt{float:left;}
+.frt{float:right;}
 #breadcrumb{padding-top:10px;font-size:18px;}
 #breadcrumb a{font-size:18px; text-decoration:none;}
 #breadcrumb h1{display:inline;}
@@ -76,3 +77,57 @@ h3{font-size:14px;}
 .productlisth a{text-decoration:none;}
 .productlist_type{float:left; width:270px;clear:left;padding-left:3px;padding-right:10px;font-size:13px;}
 .product_addr{float:right;width:240px;font-size:13px;}
+
+/* css added by naveen*/
+ol, ul { list-style-image:none; list-style-position:outside; list-style-type:none; }
+#lottery{ padding:30px 20px 0px; position:relative;}
+#lottery h1{ font:normal 27px/20px Helvetica, Arial; color:#333;}
+#lottery h1 span{ font:bold 27px/20px Helvetica, Arial; color:#333;}
+#lottery h2 {font:normal 18px/25px Helvetica, Arial; color:#666;}
+#lottery h3 {font:normal 20px/20px Helvetica, Arial; color:#000;}
+#lottery h3 span{font:normal 15px/20px Helvetica, Arial; color:#333;}
+#lottery h4 {font:bold 15px/20px Helvetica, Arial; color:#000; margin-bottom:10px;}
+#lottery a{ text-decoration:none;}
+#lottery a:hover{ text-decoration:underline;}
+
+img{ border:0px;}
+.changecity{ background:#f1f1f1; font:normal 12px Helvetica, Arial; color:#666; padding:5px 7px; margin-left:10px; position:relative;}
+.changecity ul { position:absolute; border:1px solid #dfdfdf; z-index:999; top:25px; background:#f1f1f1; margin:0px; padding:0px; left:0px;}
+.changecity ul li { position:relative; float:left;}
+.changecity ul a { display:block; padding:0 10px 0 4px; min-width:150px; height:20px;}
+.changecity ul a:hover { background:#e1d5bb; text-decoration:none; color:#2076b9; }
+
+.no_underline{ text-decoration:none; }
+.lottery_content_area{ background:#f1f1f1; padding:20px; margin:15px 0px; font:normal 12px Helvetica, Arial; color:#666;}
+.lottery_contentlt{width:368px; margin-right:15px;}
+.lottery_contentrt{width:500px; background:#dfdfdf; border:1px solid #cfced3; padding:5px;}
+.enternow{padding:20px 0px;}
+.fbconnect{ margin:0px 20px;}
+.prizedate{ border:1px solid #cfced3; border-left:0px; border-right:0px; padding:10px 0px;}
+.prizedate ul{ margin:0px; padding:0px; list-style-type:none; list-style:none;}
+.prizedate li{ float:left; padding:0px; margin:0px;}
+.prizedate li span{ color:#000; font-weight:bold;}
+.prizedate li.marginrt{ margin-right:10px;}
+.prize{font:bold 15px Helvetica, Arial; color:#f05a25; margin-top:10px;}
+.deals_head{ background:#666; font:normal 15px Helvetica, Arial; color:#fff; padding:6px 0px 6px 10px;}
+.deal_firstrow{ background:#f1f1f1; font:normal 12px Helvetica, Arial; color:#666; padding:6px 0px 6px 10px; border-bottom:1px solid #cfced3;}
+.deal_secrow{ background:#f8f8f8; font:normal 12px Helvetica, Arial; color:#666; padding:6px 0px 6px 10px; border-bottom:1px solid #cfced3;}
+.deals_pic{ padding:5px; border:1px solid #cfced3; background:#dfdfdf;}
+.black{ color:#000;}
+.sustainable_icons{font:bold 12px Helvetica, Arial; color:#000;}
+.marginrt{ margin-right:10px;}
+.tell_friend{ background:#f2e6cd url(/img/tell_friend.png) no-repeat 20px 7px; padding:10px 20px 10px 60px; font:bold 15px Helvetica, Arial; color:#000; position:absolute; right:33px; height:15px; cursor:pointer;}
+
+/* css for button by naveen*/
+
+.button_img { cursor:pointer; line-height:29px; background: url(/img/button.png) no-repeat right top; padding-right:15px; vertical-align:top; display:block; /*opera*/ display:inline-block; /*ie*/ display:-moz-inline-box;/*ff*/ text-decoration:none; }
+.button_img span { background:url(/img/button.png) no-repeat left top; height:29px; display: block; display:inline-block; padding-left:15px; line-height:29px; font-family: Helvetica,Arial,"Myriad Pro"; color:#2076b9; font-size:18px; text-decoration:none; font-weight:normal; outline:none; }
+a.button_img:hover { background-position:right -29px; text-decoration:none; }
+a.button_img:hover span { background-position:left -29px; text-decoration:none; }
+
+.input_img { cursor:pointer; margin:0; padding:0; background: url(/img/button.png) no-repeat right top; padding-right:10px; height:29px; line-height:29px; display:block; /*opera*/ display:inline-block; /*ie*/ display:-moz-inline-box;/*ff*/ text-decoration:none; }
+.input_img input[type=submit] { font-family: Helvetica,Arial,"Myriad Pro"; font-size:18px; color:#2076b9; font-weight: normal; background: url(/img/button.png) no-repeat left top; margin:0 0 0 0; padding:0px 0 0px 10px; height:29px; text-transform:uppercase; line-height:29px; cursor:pointer; display:block; /*opera*/ display:inline-block; /*ie*/ display:-moz-inline-box;/*ff*/ text-decoration:none; outline:none; }
+/* margin set to zero uipb 168 ie 7 rendering issue */
+
+span.input_img:hover { background-position:right -29px; text-decoration:none; }
+span.input_img:hover input[type=submit] { background-position:left -29px; text-decoration:none; }

@@ -19,15 +19,7 @@ $(document).ready(function() {
 	 * ----------------------------------------------------*/
 	 
 	function findValueCallbackCompany(event, data, formatted) {
-		document.getElementById('restaurantId').value = data[1];
-		//174538
-		/*
-		alert($('#restaurantId').val());
-		var formAction = '/admincp/restaurant/getCities';
-		postArray = {
-						restaurantId:$('#restaurantId').val(),
-				};
-		*/		
+		$("#producerId").val(data[1]);
 	}
 	
 	$("#companyAjax").result(findValueCallbackCompany).next().click(function() {
@@ -37,10 +29,7 @@ $(document).ready(function() {
 	$("#companyAjax").autocomplete("/admincp/restaurant/searchRestaurants", {
 		width: 260,
 		selectFirst: false,
-		cacheLength:0,
-		extraParams: {
-	       stateId: function() { return $("#stateId").val(); }
-	   	}
+		cacheLength:0
 	});
 	
 	$("#companyAjax").result(function(event, data, formatted) {
@@ -65,7 +54,7 @@ $(document).ready(function() {
 		selectFirst: false,
 		cacheLength:0,
 		extraParams: {
-	       restaurantId: function() { return $("#restaurantId").val(); }
+	       producerId: function() { return $("#producerId").val(); }
 	   	}
 	});
 	
@@ -113,7 +102,7 @@ $(document).ready(function() {
 			if ($('#lotteryId').val() != '' ) {
 				var formAction = '/admincp/lottery/save_update';
 				postArray = {
-							  restaurantId:$('#restaurantId').val(),
+							  producerId:$('#producerId').val(),
 							  lotteryName:$('#lotteryName').val(),
 							  cityId:$('#cityId').val(),
 							  info:$('#info').val(),
@@ -129,7 +118,7 @@ $(document).ready(function() {
 			} else {
 				formAction = '/admincp/lottery/save_add';
 				postArray = { 
-							  restaurantId:$('#restaurantId').val(),
+							  producerId:$('#producerId').val(),
 							  lotteryName:$('#lotteryName').val(),
 							  cityId:$('#cityId').val(),
 							  info:$('#info').val(),
@@ -291,7 +280,7 @@ function redrawPhotoTitleForm(response) {
 	<tr>
 		<td width = "25%" nowrap>Restaurant</td>
 		<td width = "75%">
-			<input type="text" id="companyAjax" value="<?php echo (isset($LOTTERY) ? $LOTTERY->restaurantName : '') ?>" style="width: 200px;" class="validate[required]" /> 
+			<input type="text" id="companyAjax" value="<?php echo (isset($LOTTERY) ? $LOTTERY->producer : '') ?>" style="width: 200px;" class="validate[required]" /> 
 		</td>
 	</tr>
 	
@@ -371,7 +360,7 @@ function redrawPhotoTitleForm(response) {
 			<input type = "hidden" name = "lotteryId" id = "lotteryId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->lotteryId : '') ?>">
 			<input type = "hidden" name = "photoId" id = "photoId" value = "<?php echo ( (isset($LOTTERY) && isset($LOTTERY->photos[0]) ) ? $LOTTERY->photos[0]->photoId : '') ?>">
 			<input type = "hidden" name = "mainPhotoName" id = "mainPhotoName" value = "">
-			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->restaurantId : '') ?>">
+			<input type = "hidden" name = "producerId" id = "producerId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->producerId : '') ?>">
 			<input type = "hidden" name = "cityId" id = "cityId" value = "<?php echo (isset($LOTTERY) ? $LOTTERY->cityId : '') ?>">
 		</td>
 	</tr>
