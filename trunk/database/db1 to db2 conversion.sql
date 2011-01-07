@@ -30,13 +30,13 @@ CREATE  TABLE IF NOT EXISTS `producer` (
   `fax` VARCHAR(20) NULL ,
   `email` VARCHAR(100) NULL ,
   `url` VARCHAR(255) NULL ,
-  `status` ENUM('live','queue','hide') NOT NULL DEFAULT queue ,
+  `status` ENUM('live','queue','hide') NOT NULL DEFAULT 'queue' ,
   `facebook` VARCHAR(255) NULL DEFAULT NULL ,
   `twitter` VARCHAR(255) NULL DEFAULT NULL ,
   `description` TEXT NULL ,
   `track_ip` VARCHAR(18) NULL ,
   `claims_sustainable` INT NULL ,
-  `is_chain_restaurant` TINYINT NULL ,
+  `is_restaurant_chain` TINYINT NULL ,
   `is_restaurant` TINYINT NULL ,
   `is_farm` TINYINT NULL ,
   `is_farmers_market` TINYINT NULL ,
@@ -208,17 +208,23 @@ CREATE TABLE `lottery_prize` (
 -- -----------------------------------------------------
 
 ALTER TABLE `address` ADD COLUMN `producer_id` INT NOT NULL  AFTER `address_id` , ADD COLUMN `track_ip` VARCHAR(18) NULL  AFTER `claims_sustainable` , ADD COLUMN `user_id` INT NULL  AFTER `claims_sustainable` ;
-ALTER TABLE `product` ADD COLUMN `producer_Id` INT NOT NULL  AFTER `product_id` ;
+ALTER TABLE `product` ADD COLUMN `producer_id` INT NOT NULL  AFTER `product_id` ;
+
+-- -----------------------------------------------------
+-- Temp add IDs to the producer table for data integrity, we will later delete these
+-- -----------------------------------------------------
+
+ALTER TABLE `producer` ADD COLUMN `farm_id` INT NULL  AFTER `description` , ADD COLUMN `farmers_market_id` INT NULL  AFTER `description`, ADD COLUMN `manufacture_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_chain_id` INT NULL  AFTER `description` , ADD COLUMN `distributor_id` INT NULL  AFTER `description` ;
 
 -- -----------------------------------------------------
 -- Update the producer and product table to index for faster update below
 -- -----------------------------------------------------
 ALTER TABLE `producer` ADD INDEX `chain_id` (`restaurant_chain_id` ASC);
-ALTER TABLE `product` ADD INDEX `fk_product_chain1` (`restaurant_chain_id` ASC);
 ALTER TABLE `producer` ADD INDEX `restaurant_id` (`restaurant_id` ASC) ;
 ALTER TABLE `producer` ADD INDEX `farm_id` (`farm_id` ASC) ;
 ALTER TABLE `producer` ADD INDEX `farmers_market_id` (`farmers_market_id` ASC) ;
 ALTER TABLE `producer` ADD INDEX `manufacture_id` (`manufacture_id` ASC) ;
+ALTER TABLE `product`  ADD INDEX `producer_id` (`producer_id` ASC) ;
 
 -- -----------------------------------------------------
 -- These are temp columns to maintain data integrity and will be removed once all IDs are fixed in new db structure
@@ -234,11 +240,7 @@ INSERT INTO producer_category (producer_category,restaurant_type_id) SELECT rest
 INSERT INTO producer_category (producer_category,farm_type_id) SELECT farm_type,farm_type_id FROM farm_type;
 INSERT INTO producer_category (producer_category,manufacture_type_id) SELECT manufacture_type,manufacture_type_id FROM manufacture_type;
 
--- -----------------------------------------------------
--- Temp add IDs to the producer table for data integrity, we will later delete these
--- -----------------------------------------------------
 
-ALTER TABLE `producer` ADD COLUMN `farm_id` INT NULL  AFTER `description` , ADD COLUMN `farmers_market_id` INT NULL  AFTER `description`, ADD COLUMN `manufacture_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_id` INT NULL  AFTER `description` , ADD COLUMN `restaurant_chain_id` INT NULL  AFTER `description`;
 
 -- -----------------------------------------------------
 -- Alter various tables that need to reference new data
@@ -633,12 +635,9 @@ drop table `farm`;
 
 drop table `restaurant_photo`;
 
-
-
 -- -----------------------------------------------------
--- Update Id to id in product table
+-- drop the old ids from the comment table
 -- -----------------------------------------------------
-ALTER TABLE `product` CHANGE `producer_Id` `producer_id` INT( 11 ) NOT NULL;
 
 ALTER TABLE `comment`
   DROP `restaurant_id`,
@@ -647,10 +646,7 @@ ALTER TABLE `comment`
   DROP `manufacture_id`,
   DROP `restaurant_chain_id`;
 
-
-
--- -----------------------------------------------------
--- Queries for Staging server to 
+-- ----------------------------------------------------- 
 -- merge farmers market with producer 
 -- ----------------------------------------------------- 
 ALTER TABLE `producer` ADD `is_farmers_market` TINYINT NULL AFTER `is_farm`;
@@ -684,22 +680,23 @@ UPDATE address, producer set address.producer_id = producer.producer_id WHERE ad
 UPDATE producer SET is_farmers_market=1 WHERE farmers_market_id IS NOT NULL;
 ALTER TABLE `producer` ADD INDEX `is_farmers_market` (`is_farmers_market` ASC);
 
-ALTER TABLE comment DROP FOREIGN KEY `fk_comment_farmers_market1`;
+-- ----------------------------------------------------- 
+-- drop farmers market data from the db 
+-- -----------------------------------------------------
+
+ALTER TABLE `comment` DROP FOREIGN KEY `fk_comment_farmers_market1`;
 ALTER TABLE `comment` DROP `farmers_market_id`;
-
 ALTER TABLE `farmers_market_supplier` DROP FOREIGN KEY `fk_farmers_market_farms_farmers_market1`;
-
-drop table `farmers_market_supplier`;
-
+ALTER TABLE `address` DROP FOREIGN KEY `fk_address_farmers_market1` ;
 ALTER TABLE `photo` DROP `farmers_market_id` ;
-
 ALTER TABLE `farmers_market` DROP FOREIGN KEY `fk_farmers_market_city1` , DROP FOREIGN KEY `fk_farmers_market_user1`, DROP INDEX `fk_farmers_market_city1` ;
 ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_city1` ;
 ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_user1` ;
+drop table `farmers_market_supplier`;
 drop table `farmers_market`;
 
 -- -----------------------------------------------------
--- Lottery 
+-- Lottery table changes
 -- ----------------------------------------------------- 
 ALTER TABLE `lottery_photo` CHANGE `photo_id` `photo_id` INT( 11 ) NOT NULL AUTO_INCREMENT; 
-ALTER TABLE `lottery_entry` CHANGE `user_id` `user_id` INT( 11 ) NULL 
+ALTER TABLE `lottery_entry` CHANGE `user_id` `user_id` INT( 11 ) NULL;
