@@ -1,42 +1,136 @@
 <?php
 class Test extends Controller{
 	
+	
+	private $queryLimit = 50000; 
+
+	
 	function Test(){
 		
 		parent::Controller(); 
 		
 	}
 	
-	
-	function slug_names($start){
+	function index(){
 		
-		/*
-		 * trif_custom_url table 
-		 * 
-			 CREATE TABLE `trif_custom_url` (
+		
+		echo 'add column address_id to custom_url table !!!!!!!!!!';
+		
+		echo '<a href="'.base_url().'test/create_temp_tables" target="_blank">Step1: Create temp tables</a> <br />';
+		echo '<a href="'.base_url().'test/dump_data_to_trif_temp/farm" target="_blank">Step2: Dump farm data to temp table </a> <br />';
+		echo '<a href="'.base_url().'test/links" target="_blank">Step3: Create slugs </a> <br />';
+		echo '<a href="'.base_url().'test/move_data_to_custom_url/farm" target="_blank">Step4: move farm data to custom_url </a> <br />';
+		echo '<a href="'.base_url().'test/drop_temp_tables" target="_blank">Drop temp tables</a> <br />';
+		echo '<br />';
+		echo '<a href="'.base_url().'test/create_temp_tables" target="_blank">Step1: Create temp tables</a> <br />';
+		echo '<a href="'.base_url().'test/dump_data_to_trif_temp/restaurant" target="_blank">Step2: Dump restaurant data to temp table </a> <br />';
+		echo '<a href="'.base_url().'test/links" target="_blank">Step3: Create slugs </a> <br />';
+		echo '<a href="'.base_url().'test/move_data_to_custom_url/restaurant" target="_blank">Step4: move restaurant data to custom_url </a> <br />';
+		echo '<a href="'.base_url().'test/drop_temp_tables" target="_blank">Drop temp tables</a> <br />';
+		echo '<br />';
+	
+		echo '<a href="'.base_url().'test/create_temp_tables" target="_blank">Step1: Create temp tables</a> <br />';
+		echo '<a href="'.base_url().'test/dump_data_to_trif_temp/manufacture" target="_blank">Step2-c: Dump manufacture data to temp table </a> <br />';
+		echo '<a href="'.base_url().'test/links" target="_blank">Step3: Create slugs </a> <br />';
+		echo '<a href="'.base_url().'test/move_data_to_custom_url/manufacture" target="_blank">Step4: manufacture move data to custom_url </a> <br />';
+		echo '<a href="'.base_url().'test/drop_temp_tables" target="_blank">Drop temp tables</a> <br />';
+			
+	}
+	
+	
+	//custom url script 
+	function create_temp_tables(){
+		
+		$query = "CREATE TABLE `trif_custom_url` (
 				  `address_id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
 				  `producer_id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-				  `slug` varchar(255) COLLATE utf8_bin DEFAULT NULL
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-		 * 
-		 */
+				  `slug` varchar(255) COLLATE utf8_bin DEFAULT NULL UNIQUE
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin"; 
+		$this->db->query($query); 
+		echo 'Table trif_custom_url created<br />'; 
 		
-		 /*
-		  * trif_temp table
-		  * 
-				CREATE TABLE `trif_temp` (
+		$query = "CREATE TABLE `trif_temp` (
 					  `producer_id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
 					  `address_id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
 					  `producer_name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
 					  `city_name` varchar(255) COLLATE utf8_bin DEFAULT NULL
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin		  
-		  * 
-		  */
+					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin"; 
+		$this->db->query($query); 
+		echo 'Table trif_temp created'; 
+		
+	}
+	
+	
+	function drop_temp_tables(){
+		
+		$query = "DROP TABLE `trif_custom_url`";
+		$this->db->query($query); 
+		echo 'Table trif_custom_url droped<br />'; 
+		$query = "DROP TABLE `trif_temp`";
+		$this->db->query($query); 
+		echo 'Table trif_temp droped<br />'; 
 		
 		
+	}
+	
+	function dump_data_to_trif_temp($producerType){
 		
+		$query = "
+				insert into trif_temp (producer_id, address_id, producer_name, city_name)
+				SELECT
+				address.producer_id,
+				address.address_id,
+				producer.producer,
+				address.city
+				FROM
+				address ,
+				producer
+				WHERE
+				address.producer_id =  producer.producer_id AND
+				producer.is_".$producerType." =  '1'		
+		"; 
+		$this->db->query($query); 
+		echo $producerType.' data dumped from producer and address to trif_temp'; 
 		
+	}
+	
+	
+	function links(){
 		
+		$query = "select count(producer_id) as counter from trif_temp";
+		
+		$results = $this->db->query($query);
+		
+		$num_rows = $results->row_array();
+		$num_rows = $num_rows['counter'];
+		
+		if($num_rows > $this->queryLimit){
+			
+			$links = $num_rows/$this->queryLimit;	
+			
+		}else{
+			
+			$links = 1; 
+			
+		}
+		
+		$i = 0; 
+		
+		for($i = 0; $i < $links; $i++){
+			
+			$start = (int) $this->queryLimit * $i ;
+			
+			echo '<a href="'.base_url().'test/slug_names/'.$start.'" >link '.$i.'</a><br />'; 
+		}
+		
+	}
+	
+	
+	
+	
+	function slug_names($start){
+		
+	
 		/*
 			sql query for copying data to trif_temp table 
 			-------------------------------------------------------
@@ -61,10 +155,10 @@ class Test extends Controller{
 		//trif_temp   - first table with data dumped from address and producer
 		
 		
-		//limiting result to 40000 to avoid memory limit error 
-		$results = $this->db->query("select * from trif_temp limit ".$start.", 39999" )->result_array(); 
+		//limiting result to avoid memory limit error 
+		$results = $this->db->query("select * from trif_temp limit ".$start.", ".$this->queryLimit )->result_array(); 
 		
-		echo sizeof($results);
+		$total = sizeof($results);
 		
 		$firstArray= array();
 		$i = 0;
@@ -115,72 +209,36 @@ class Test extends Controller{
 		foreach ($finalArray as $row){	
 			$this->db->insert('trif_custom_url', $row);	
 		}	
-		echo 'Done';
+		echo 'Done ';
 		
+		echo $total;
+		
+		echo ' slugs was added to trif_custom_url ';
 		
 		//if everything looks fine we can do a insert into ... select  to custom_url table. 
 		
 		/*
 		 * 
 		 -------------------------------------------------------------
-			
-			insert into custom_url (address_id, restaurant_id, custom_url )
-			
-			SELECT * FROM `trif_custom_url`;
-			
+
 		---------------------------------------------------------------
 		 * 
 		 */
 	}
 	
-	function show_links(){
-		
-		
-		//cause of memory limitation we can generate only 20 000  slugs at once
-		
-		echo '<a href=http://food.local/test/slug_names/0/ >link1</a><br />
-		
-				<a href=http://food.local/test/slug_names/40000/ >link3</a><br />
-				
-				<a href=http://food.local/test/slug_names/80000/ >link5</a><br />
-				
-				<a href=http://food.local/test/slug_names/120000/ >link7</a><br />
-				
-				<a href=http://food.local/test/slug_names/160000/ >link9</a><br />
+	function move_data_to_custom_url($producerType){
+					
 			
-				<a href=http://food.local/test/slug_names/200000/ >link11</a><br />
-				
-				<a href=http://food.local/test/slug_names/240000/ >link13</a><br />
-				
-				<a href=http://food.local/test/slug_names/280000/ >link15</a><br />
-				<br />
-						';
-	
-	}
-	
-	
-	function slug_view($slug){
-		
-		echo "test successfully<br />";
-		
-		echo 'Slug found: ';
-		echo $slug;
-
-		
-		$custom_url_table = "custom_url";
-		
-		$slugResults = $this->db->get_where($custom_url_table, array('custom_url' => $slug));
-		
-		if($slugResults->num_rows() > 0){
 			
-			//redirect to slug page
-			
-		}else{		
-			//redirect to page not found
-			echo 'redirect to page not found';
-		}
+				$query = "
+				
+				insert into custom_url (address_id, ".$producerType."_id, custom_url )
+				SELECT * FROM `trif_custom_url`;
+						
+			"; 
+		$this->db->query($query); 
+		echo 'Data dumped from trif_custom_url to custom url'; 
 		
-		$this->getTypeOfSlug($slugResults);
 	}
 	
 	
@@ -223,83 +281,5 @@ class Test extends Controller{
 		}
 	}
 	
-	
-	function farmsmarket_slug(){
-		
-		//limiting result to 40000 to avoid memory limit error 
-		$results = $this->db->query("SELECT
-										farmers_market.farmers_market_id,
-										farmers_market.farmers_market_name,
-										city.city
-										FROM
-										farmers_market ,
-										city
-										WHERE
-										farmers_market.city_id =  city.city_id
 
-										"
-									 )->result_array(); 
-		
-		$firstArray= array();
-		$i = 0;
-			//put all results in a new multidimensional array with each slug as key 
-		foreach($results as $key=>$value){
-			
-			//remove white spaces
-			$slug = $this->_trimWhiteSpaces(trim($value['farmers_market_name'])); 
-			
-			if($value['city'] != ''){
-				$slug .= '-'.$this->_trimWhiteSpaces(trim($value['city']));
-			}
-			$slug  = strtolower(str_replace(' ', '-', str_replace("'", '',$slug))); 
-			$firstArray[$slug][$i]['market_id'] =  $value['farmers_market_id'];
-			$firstArray[$slug][$i]['value'] =  $slug;	
-			
-			
-			//unset to avoid memory exceed error
-			unset($results[$key]);
-			$i++;
-		}
-		
-		//print_r($firstArray);	
-		//create a new array with keys equal with address id and values equal with slug and position from first_array[slug] 
-		$finalArray = array();
-		$j = 0;
-		foreach($firstArray as $slugPack){
-				$k = 1 ; 
-				foreach($slugPack as $slug){
-
-				$finalArray[$slug['market_id']]['producer_id'] = $slug['market_id']; 
-					
-					if($k == 1 ){
-						$finalArray[$slug['market_id']]['slug'] = $slug['value'];
-					}else{
-						 
-						$finalArray[$slug['market_id']]['slug'] = $slug['value'].'-'.$k;
-						
-					}		
-					
-					$k++;
-					unset($slug);
-				}    
-				$j++;                                                   
-				unset($slugPack);
-			}
-
-				
-		// insert foreach array from final array in second temporary table: trif_custom_url 
-		foreach ($finalArray as $row){	
-			$this->db->insert('trif_custom_url', $row);	
-		}	
-		echo 'Done';
-		
-		
-		/*
-		 *  	
-		 	insert into custom_url (farmers_market_id, custom_url )
-			
-			SELECT producer_id, slug FROM `trif_custom_url`;
-			
-		 * */
-	}
 }
