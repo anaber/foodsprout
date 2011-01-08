@@ -11,7 +11,7 @@
 */
 set_time_limit(0);
 
-	error_reporting(E_ALL);
+error_reporting(E_ALL);
 	
 $defines_file = '../includes/properties.php';
 if (file_exists($defines_file))
