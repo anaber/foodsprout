@@ -581,6 +581,16 @@ ALTER TABLE `lottery_entry` CHANGE `user_id` `user_id` INT( 11 ) NULL;
 ALTER TABLE `photo` ADD COLUMN `producer_id` INT NULL  AFTER `address_id`;
 ALTER TABLE `custom_url` ADD COLUMN `producer_id` INT NULL  AFTER `custom_url`;
 
+-- -----------------------------------------------------
+-- Temp Custom URL - No NEED to trigger
+-- ----------------------------------------------------- 
+ALTER TABLE `temp_custom_url` 
+ADD `producer_slug` VARCHAR( 255 ) DEFAULT NULL AFTER `address_id` , 
+ADD `city_counter` INT DEFAULT NULL AFTER `city`;
+
+ALTER TABLE `temp_custom_url` CHANGE `custom_url` `custom_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
+
+UPDATE temp_custom_url SET custom_url = NULL;
 
 -- -----------------------------------------------------
 -- Delate all the old columns and data
