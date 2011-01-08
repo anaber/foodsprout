@@ -136,8 +136,8 @@ ENGINE = InnoDB;
 -- Table `lottery`
 -- -----------------------------------------------------
 
-CREATE TABLE `lottery` (
-  `lottery_id` int(11) NOT NULL auto_increment,
+CREATE TABLE IF NOT EXISTS `lottery` (
+  `lottery_id` int(11) NOT NULL AUTO_INCREMENT,
   `lottery_name` varchar(45) NOT NULL,
   `producer_id` int(11) NOT NULL,
   `info` text,
@@ -146,59 +146,47 @@ CREATE TABLE `lottery` (
   `draw_date` datetime NOT NULL,
   `result_date` datetime NOT NULL,
   `city_id` int(11) NOT NULL,
-  PRIMARY KEY  (`lottery_id`)
-) ENGINE=InnoDB;
+  PRIMARY KEY (`lottery_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
 
 
--- -----------------------------------------------------
--- Table `lottery_entry`
--- -----------------------------------------------------
-
-CREATE TABLE `lottery_entry` (
-  `entry_id` int(11) NOT NULL auto_increment,
-  `user_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `lottery_entry` (
+  `lottery_entry_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
   `lottery_id` int(11) NOT NULL,
   `enrolled_on` datetime NOT NULL,
-  `facebook_user_id` bigint(20) default NULL,
-  `facebook_token` varchar(255) default NULL,
-  PRIMARY KEY  (`entry_id`)
-) ENGINE=InnoDB;
+  `facebook_user_id` bigint(20) DEFAULT NULL,
+  `facebook_token` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`lottery_entry_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
 
 
--- -----------------------------------------------------
--- Table `lottery_photo`
--- -----------------------------------------------------
-
-CREATE TABLE `lottery_photo` (
-  `photo_id` int(11) NOT NULL,
-  `lottery_id` int(11) default NULL,
-  `path` varchar(255) default NULL,
-  `thumb_photo_name` varchar(255) default NULL,
-  `photo_name` varchar(255) default NULL,
-  `original_photo_name` varchar(255) default NULL,
-  `extension` varchar(45) default NULL,
-  `mime_type` varchar(45) default NULL,
-  `thumb_height` int(11) default NULL,
-  `thumb_width` int(11) default NULL,
-  `height` int(11) default NULL,
-  `width` int(11) default NULL,
-  `added_on` datetime default NULL,
-  PRIMARY KEY  (`photo_id`)
-) ENGINE=InnoDB;
+CREATE TABLE IF NOT EXISTS `lottery_photo` (
+  `lottery_photo_id` int(11) NOT NULL AUTO_INCREMENT,
+  `lottery_id` int(11) DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `thumb_photo_name` varchar(255) DEFAULT NULL,
+  `photo_name` varchar(255) DEFAULT NULL,
+  `original_photo_name` varchar(255) DEFAULT NULL,
+  `extension` varchar(45) DEFAULT NULL,
+  `mime_type` varchar(45) DEFAULT NULL,
+  `thumb_height` int(11) DEFAULT NULL,
+  `thumb_width` int(11) DEFAULT NULL,
+  `height` int(11) DEFAULT NULL,
+  `width` int(11) DEFAULT NULL,
+  `added_on` datetime DEFAULT NULL,
+  PRIMARY KEY (`lottery_photo_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
 
 
--- -----------------------------------------------------
--- Table `lottery_prize`
--- -----------------------------------------------------
-
-CREATE TABLE `lottery_prize` (
-  `lottery_prize_id` int(11) NOT NULL auto_increment,
+CREATE TABLE IF NOT EXISTS `lottery_prize` (
+  `lottery_prize_id` int(11) NOT NULL AUTO_INCREMENT,
   `lottery_id` int(11) NOT NULL,
   `dollar_amount` int(11) NOT NULL,
-  `winner` int(11) default NULL,
-  `prize` varchar(45) default NULL,
-  PRIMARY KEY  (`lottery_prize_id`)
-) ENGINE=InnoDB;
+  `winner` int(11) DEFAULT NULL,
+  `prize` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`lottery_prize_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
 
 
 
@@ -230,6 +218,16 @@ ALTER TABLE `producer` ADD INDEX `is_farm` (`is_farm` ASC) ;
 ALTER TABLE `producer` ADD INDEX `is_farmers_market` (`is_farmers_market` ASC) ;
 ALTER TABLE `producer` ADD INDEX `is_manufacture_id` (`is_manufacture` ASC) ;
 ALTER TABLE `product`  ADD INDEX `producer_id` (`producer_id` ASC) ;
+ALTER TABLE `address`  ADD INDEX `producer_id` (`producer_id` ASC) ;
+
+-- -----------------------------------------------------
+-- Add producer_id to a few more tables
+-- ----------------------------------------------------- 
+
+ALTER TABLE `photo` ADD COLUMN `producer_id` INT NULL  AFTER `address_id`;
+ALTER TABLE `custom_url` ADD COLUMN `producer_id` INT NULL  AFTER `custom_url`;
+ALTER TABLE `photo`  ADD INDEX `producer_id` (`producer_id` ASC) ;
+ALTER TABLE `custom_url`  ADD INDEX `producer_id` (`producer_id` ASC) ;
 
 -- -----------------------------------------------------
 -- These are temp columns to maintain data integrity and will be removed once all IDs are fixed in new db structure
@@ -245,14 +243,11 @@ INSERT INTO producer_category (producer_category,restaurant_type_id) SELECT rest
 INSERT INTO producer_category (producer_category,farm_type_id) SELECT farm_type,farm_type_id FROM farm_type;
 INSERT INTO producer_category (producer_category,manufacture_type_id) SELECT manufacture_type,manufacture_type_id FROM manufacture_type;
 
-
-
 -- -----------------------------------------------------
 -- Alter various tables that need to reference new data
 -- -----------------------------------------------------
 
 ALTER TABLE `comment` ADD COLUMN `producer_id` INT NULL  AFTER `address_id` ;
-
 
 -- -----------------------------------------------------
 -- Insert all the restaurants/farms/farmers market/manufactures/distributors/chain into the producer table
@@ -450,8 +445,6 @@ INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SE
 
 -- INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM farm LEFT JOIN producer ab ON farm.farm_id = ab.farm_id LEFT JOIN farm_type xy ON farm.farm_type_id = xy.farm_type_id LEFT JOIN producer_category yz ON xy.farm_type_id = yz.farm_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
 
-
-
 -- -----------------------------------------------------
 -- Put the categories into groups
 -- -----------------------------------------------------
@@ -573,23 +566,14 @@ UPDATE address, producer set address.producer_id = producer.producer_id WHERE ad
 UPDATE producer SET is_farmers_market=1 WHERE farmers_market_id IS NOT NULL;
 
 -- -----------------------------------------------------
--- Lottery table changes
--- ----------------------------------------------------- 
-
-ALTER TABLE `lottery_photo` CHANGE `photo_id` `photo_id` INT( 11 ) NOT NULL AUTO_INCREMENT; 
-ALTER TABLE `lottery_entry` CHANGE `user_id` `user_id` INT( 11 ) NULL;
-ALTER TABLE `photo` ADD COLUMN `producer_id` INT NULL  AFTER `address_id`;
-ALTER TABLE `custom_url` ADD COLUMN `producer_id` INT NULL  AFTER `custom_url`;
-
--- -----------------------------------------------------
 -- Temp Custom URL - No NEED to trigger
 -- ----------------------------------------------------- 
-ALTER TABLE `temp_custom_url` 
-ADD `producer_slug` VARCHAR( 255 ) DEFAULT NULL AFTER `address_id` , 
-ADD `city_counter` INT DEFAULT NULL AFTER `city`;
-ALTER TABLE `temp_custom_url` CHANGE `custom_url` `custom_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
-ALTER TABLE `temp_custom_url` ADD INDEX `fk_producer_slug` ( `producer_slug` ); 
-UPDATE temp_custom_url SET custom_url = NULL;
+-- ALTER TABLE `temp_custom_url` 
+-- ADD `producer_slug` VARCHAR( 255 ) DEFAULT NULL AFTER `address_id` , 
+-- ADD `city_counter` INT DEFAULT NULL AFTER `city`;
+-- ALTER TABLE `temp_custom_url` CHANGE `custom_url` `custom_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
+-- ALTER TABLE `temp_custom_url` ADD INDEX `fk_producer_slug` ( `producer_slug` ); 
+-- UPDATE temp_custom_url SET custom_url = NULL;
 
 -- -----------------------------------------------------
 -- Delate all the old columns and data
@@ -644,3 +628,41 @@ drop table `farm`;
 drop table `restaurant`;
 drop table `manufacture`;
 drop table `company`;
+
+-- -----------------------------------------------------
+-- Drop all the old ids like restaurant_id etc
+-- -----------------------------------------------------
+
+ALTER TABLE `address` DROP COLUMN `company_id` , DROP COLUMN `distributor_id` , DROP COLUMN `farmers_market_id` , DROP COLUMN `farm_id` , DROP COLUMN `manufacture_id` , DROP COLUMN `restaurant_id` 
+, DROP INDEX `fk_address_company1` 
+, DROP INDEX `fk_address_distributor1` 
+, DROP INDEX `fk_address_farm1` 
+, DROP INDEX `fk_address_farmers_market1` 
+, DROP INDEX `fk_address_manufacture1` 
+, DROP INDEX `fk_address_restaurant1` ;
+
+-- To be run after custom_url PHP script is run
+-- ALTER TABLE `custom_url` DROP COLUMN `company_id` , DROP COLUMN `distributor_id` , DROP COLUMN `farm_id` , DROP COLUMN `manufacture_id` , DROP COLUMN `restaurant_id` 
+-- , DROP INDEX `fk_custom_url_company1` 
+-- , DROP INDEX `fk_custom_url_distributor1` 
+-- , DROP INDEX `fk_custom_url_farm1` 
+-- , DROP INDEX `fk_custom_url_manufacture1` 
+-- , DROP INDEX `fk_custom_url_restaurant1` ;
+
+ALTER TABLE `producer` DROP COLUMN `distributor_id` , DROP COLUMN `farmers_market_id` , DROP COLUMN `farm_id` , DROP COLUMN `manufacture_id` , DROP COLUMN `restaurant_chain_id` , DROP COLUMN `restaurant_id` 
+, DROP INDEX `chain_id` 
+, DROP INDEX `farmers_market_id` 
+, DROP INDEX `farm_id` 
+, DROP INDEX `manufacture_id` 
+, DROP INDEX `restaurant_id` ;
+
+ALTER TABLE `product` DROP COLUMN `company_id` , DROP COLUMN `manufacture_id` , DROP COLUMN `restaurant_chain_id` , DROP COLUMN `restaurant_id` 
+, DROP INDEX `fk_product_company1` 
+, DROP INDEX `fk_product_manufacture1` 
+, DROP INDEX `fk_product_restaurant1` ;
+
+ALTER TABLE `photo` DROP COLUMN `farmers_market_id` , DROP COLUMN `farm_id` , DROP COLUMN `manufacture_id` , DROP COLUMN `restaurant_chain_id` , DROP COLUMN `restaurant_id` 
+, DROP INDEX `fk_photos_farm1` 
+, DROP INDEX `fk_photos_farmers_market1` 
+, DROP INDEX `fk_photos_manufacture1` 
+, DROP INDEX `fk_photos_restaurant1` ;

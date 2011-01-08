@@ -110,7 +110,7 @@ class Manufacture extends Controller {
 			//check if is restaurant custom url
 			if($this->CustomUrlModel->isManufacture($customUrl)){
 				//echo $this->CustomUrlModel->urlID('restaurant_id');
-				$this->view($this->CustomUrlModel->urlID('manufacture_id'));
+				$this->view($this->CustomUrlModel->urlID('producer_id'));
 			}else{
 				//if custom url is found but is not farmers market
 				show_404('page');
