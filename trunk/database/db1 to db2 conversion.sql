@@ -7,7 +7,7 @@ CREATE  TABLE IF NOT EXISTS `supplier` (
   `suppliee` INT NULL ,
   `user_id` INT NULL DEFAULT NULL ,
   `status` ENUM('live','queue','hide') NULL DEFAULT NULL ,
-  `record_ip` VARCHAR(18) NULL ,
+  `track_ip` VARCHAR(18) NULL ,
   PRIMARY KEY (`supplier_id`) )
 ENGINE = InnoDB;
 
@@ -62,12 +62,12 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `category_group`
+-- Table `producer_category_group`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `category_group` (
-  `category_group_id` INT NOT NULL AUTO_INCREMENT ,
-  `category_group` VARCHAR(45) NULL ,
-  PRIMARY KEY (`category_group_id`) )
+CREATE  TABLE IF NOT EXISTS `producer_category_group` (
+  `producer_category_group_id` INT NOT NULL AUTO_INCREMENT ,
+  `producer_category_group` VARCHAR(45) NULL ,
+  PRIMARY KEY (`producer_category_group_id`) )
 ENGINE = InnoDB;
 
 
@@ -88,10 +88,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `producer_category_member` (
-  `producer_id` int(11) default NULL,
+  `producer_category_member_id` int(11) NOT NULL auto_increment,  
   `producer_category_id` int(11) NOT NULL,
-  `address_id` int(11) default NULL,
-  `producer_category_member_id` int(11) NOT NULL auto_increment,
+  `producer_id` int(11) default NULL,
+  `address_id` int(11) default NULL, 
   PRIMARY KEY  (`producer_category_member_id`),
   KEY `address_id` (`address_id`),
   KEY `producer_category_id` (`producer_category_id`),
@@ -224,6 +224,11 @@ ALTER TABLE `producer` ADD INDEX `restaurant_id` (`restaurant_id` ASC) ;
 ALTER TABLE `producer` ADD INDEX `farm_id` (`farm_id` ASC) ;
 ALTER TABLE `producer` ADD INDEX `farmers_market_id` (`farmers_market_id` ASC) ;
 ALTER TABLE `producer` ADD INDEX `manufacture_id` (`manufacture_id` ASC) ;
+ALTER TABLE `producer` ADD INDEX `is_restaurant_chain` (`is_restaurant_chain` ASC);
+ALTER TABLE `producer` ADD INDEX `is_restaurant` (`is_restaurant` ASC) ;
+ALTER TABLE `producer` ADD INDEX `is_farm` (`is_farm` ASC) ;
+ALTER TABLE `producer` ADD INDEX `is_farmers_market` (`is_farmers_market` ASC) ;
+ALTER TABLE `producer` ADD INDEX `is_manufacture_id` (`is_manufacture` ASC) ;
 ALTER TABLE `product`  ADD INDEX `producer_id` (`producer_id` ASC) ;
 
 -- -----------------------------------------------------
@@ -405,59 +410,47 @@ UPDATE producer SET is_restaurant_chain=1 WHERE restaurant_chain_id IS NOT NULL;
 UPDATE producer SET is_manufacture=1 WHERE manufacture_id IS NOT NULL;
 UPDATE producer SET is_distributor=1 WHERE distributor_id IS NOT NULL;
 
-
--- -----------------------------------------------------
--- Update the product table to add indexes in is_ columns
--- -----------------------------------------------------
-ALTER TABLE `producer` ADD INDEX `is_restaurant_chain` (`is_restaurant_chain` ASC);
-ALTER TABLE `producer` ADD INDEX `is_restaurant` (`is_restaurant` ASC);
-ALTER TABLE `producer` ADD INDEX `is_farm` (`is_farm` ASC);
-ALTER TABLE `producer` ADD INDEX `is_farmers_market` (`is_farmers_market` ASC);
-ALTER TABLE `producer` ADD INDEX `is_manufacture` (`is_manufacture` ASC);
-ALTER TABLE `producer` ADD INDEX `is_distributor` (`is_distributor` ASC);
-
 -- -----------------------------------------------------
 -- Populate the producer_category_member table to include all the categories
 -- -----------------------------------------------------
 
--- Cuisine data first
+-- Cuisine data for producer
 INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SELECT ab.producer_id, xy.producer_category_id FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id;
-
--- saving for reference
--- SELECT ab.producer_id, xy.producer_category_id, ac.cuisine_id, ac.cuisine_name, ab.producer, xy.producer_category FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id;
--- -------
-
--- Cuisine data for address
-
-INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, xy.producer_category_id FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
-
--- for reference
--- SELECT xz.address_id, xy.producer_category_id, ac.cuisine_id, ac.cuisine_name, ab.producer, xy.producer_category, ab.producer_id FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
--- -------
 
 -- Restaurant Type for producer
 
 INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SELECT ab.producer_id, yz.producer_category_id FROM restaurant LEFT JOIN producer ab ON restaurant.restaurant_id = ab.restaurant_id LEFT JOIN restaurant_type xy ON restaurant.restaurant_type_id = xy.restaurant_type_id LEFT JOIN producer_category yz ON xy.restaurant_type_id = yz.restaurant_type_id;
 
--- Restaurant type for addresses
-
-INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM restaurant LEFT JOIN producer ab ON restaurant.restaurant_id = ab.restaurant_id LEFT JOIN restaurant_type xy ON restaurant.restaurant_type_id = xy.restaurant_type_id LEFT JOIN producer_category yz ON xy.restaurant_type_id = yz.restaurant_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
-
 -- Farm Type for producer
 
 INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SELECT ab.producer_id, yz.producer_category_id FROM farm LEFT JOIN producer ab ON farm.farm_id = ab.farm_id LEFT JOIN farm_type xy ON farm.farm_type_id = xy.farm_type_id LEFT JOIN producer_category yz ON xy.farm_type_id = yz.farm_type_id;
-
--- Farm type for addresses
-
-INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM farm LEFT JOIN producer ab ON farm.farm_id = ab.farm_id LEFT JOIN farm_type xy ON farm.farm_type_id = xy.farm_type_id LEFT JOIN producer_category yz ON xy.farm_type_id = yz.farm_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
 
 -- Manufacture Type for producer
 
 INSERT INTO `producer_category_member` (`producer_id`,`producer_category_id`) SELECT ab.producer_id, yz.producer_category_id FROM manufacture LEFT JOIN producer ab ON manufacture.manufacture_id = ab.manufacture_id LEFT JOIN manufacture_type xy ON manufacture.manufacture_type_id = xy.manufacture_type_id LEFT JOIN producer_category yz ON xy.manufacture_type_id = yz.manufacture_type_id;
 
+-- -----------------------------------------------------
+-- Populate the producer_category_member table so we know information about a specific address
+-- NOTE: QUERY IS TAKING TOO LONG FOR THESE, DID NOT BEFORE, WILL INVESTIGATE PROBLEM LATER
+-- -----------------------------------------------------
+
 -- Manufacture type for addresses
 
-INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM manufacture LEFT JOIN producer ab ON manufacture.manufacture_id = ab.manufacture_id LEFT JOIN manufacture_type xy ON manufacture.manufacture_type_id = xy.manufacture_type_id LEFT JOIN producer_category yz ON xy.manufacture_type_id = yz.manufacture_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+-- INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM manufacture LEFT JOIN producer ab ON manufacture.manufacture_id = ab.manufacture_id LEFT JOIN manufacture_type xy ON manufacture.manufacture_type_id = xy.manufacture_type_id LEFT JOIN producer_category yz ON xy.manufacture_type_id = yz.manufacture_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+
+-- Cuisine data for addresses
+
+-- INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, xy.producer_category_id FROM restaurant_cuisine LEFT JOIN producer ab ON restaurant_cuisine.restaurant_id = ab.restaurant_id LEFT JOIN cuisine ac ON restaurant_cuisine.cuisine_id = ac.cuisine_id LEFT JOIN producer_category xy ON ac.cuisine_id = xy.cuisine_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+
+-- Restaurant type for addresses
+
+-- INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM restaurant LEFT JOIN producer ab ON restaurant.restaurant_id = ab.restaurant_id LEFT JOIN restaurant_type xy ON restaurant.restaurant_type_id = xy.restaurant_type_id LEFT JOIN producer_category yz ON xy.restaurant_type_id = yz.restaurant_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+
+-- Farm type for addresses
+
+-- INSERT INTO `producer_category_member` (`address_id`,`producer_category_id`) SELECT xz.address_id, yz.producer_category_id FROM farm LEFT JOIN producer ab ON farm.farm_id = ab.farm_id LEFT JOIN farm_type xy ON farm.farm_type_id = xy.farm_type_id LEFT JOIN producer_category yz ON xy.farm_type_id = yz.farm_type_id LEFT JOIN address xz ON ab.producer_id = xz.producer_id;
+
+
 
 -- -----------------------------------------------------
 -- Put the categories into groups
@@ -550,108 +543,9 @@ LEFT JOIN
 		producer a_d ON manufacture_supplier.supplier_farm_id = a_d.farm_id;
 
 
--- -----------------------------------------------------
--- Delate all the old columns and data
--- -----------------------------------------------------
-
--- Manually do this after backups and testing.
-
--- Remove all the foreign keys for restaurant
-ALTER TABLE `restaurant` DROP FOREIGN KEY `fk_restaurant_city_area1` , DROP FOREIGN KEY `fk_restaurant_company1` , DROP FOREIGN KEY `fk_restaurant_restaurant_chain1` , DROP FOREIGN KEY `fk_restaurant_restaurant_type1` , DROP FOREIGN KEY `fk_restaurant_user1`;
-ALTER TABLE `address` DROP FOREIGN KEY `address_ibfk_7` , DROP FOREIGN KEY `fk_address_restaurant1` ;
-ALTER TABLE `distributor_supplier` DROP FOREIGN KEY `fk_distributor_supplier_restaurant1` ;
-ALTER TABLE `farm_supplier` DROP FOREIGN KEY `fk_farm_supplier_restaurant1` ;
-ALTER TABLE `farmers_market_supplier` DROP FOREIGN KEY `fk_farmers_market_farms_farmers_market1`; -- Not working
-ALTER TABLE `manufacture_supplier` DROP FOREIGN KEY `fk_manufacture_supplier_restaurant1` ;
-ALTER TABLE `photo` DROP FOREIGN KEY `fk_photos_restaurant1` ;
-ALTER TABLE `product` DROP FOREIGN KEY `fk_product_restaurant1` ;
-ALTER TABLE `restaurant_photo` DROP FOREIGN KEY `fk_restaurant_photo_restaurant1` ;
-ALTER TABLE `custom_url` DROP FOREIGN KEY `fk_custom_url_restaurant1` ;
-
-
-drop table `restaurant_supplier`;
-drop table `restaurant_cuisine`;
-drop table `restaurant_chain_supplier`;
-drop table `farm_supplier`;
-drop table `farmers_market_supplier`;
-drop table `manufacture_supplier`;
-drop table `biz_restaurants`;
-
-ALTER TABLE `restaurant_chain` DROP FOREIGN KEY `fk_restaurant_chain_restaurant_type1` , DROP FOREIGN KEY `fk_restaurant_chain_user` ;
-
-drop table `restaurant_type`;
-ALTER TABLE `manufacture` DROP FOREIGN KEY `fk_manufacture_company1` , DROP FOREIGN KEY `fk_manufacture_manufacture_type1` , DROP FOREIGN KEY `fk_manufacture_user1` ;
-drop table `manufacture_type`;
-drop table `distributor_supplier`;
-
-ALTER TABLE `comment` DROP FOREIGN KEY `fk_comment_farm1` , DROP FOREIGN KEY `fk_comment_farmers_market1`, DROP FOREIGN KEY `fk_comment_manufacture1` , DROP FOREIGN KEY `fk_comment_restaurant1` , DROP FOREIGN KEY `fk_comment_restaurant_chain1` ;
-
-drop table `restaurant`;
-drop table `restaurant_chain`;
-
-ALTER TABLE `product` DROP FOREIGN KEY `fk_product_company1` , DROP FOREIGN KEY `fk_product_manufacture1` ;
-
-ALTER TABLE `custom_url` DROP FOREIGN KEY `fk_custom_url_company1` , DROP FOREIGN KEY `fk_custom_url_distributor1` , DROP FOREIGN KEY `fk_custom_url_farm1` , DROP FOREIGN KEY `fk_custom_url_manufacture1` ;
-
-drop table `cuisine`;
-ALTER TABLE `photo` DROP FOREIGN KEY `fk_photos_farm1` , DROP FOREIGN KEY `fk_photos_manufacture1` ;
-ALTER TABLE `photo` DROP `farmers_market_id`;
-
-ALTER TABLE `468258_food4`.`address` DROP FOREIGN KEY `address_ibfk_2` , DROP FOREIGN KEY `address_ibfk_4` , DROP FOREIGN KEY `address_ibfk_5` , DROP FOREIGN KEY `address_ibfk_6` , DROP FOREIGN KEY `address_ibfk_7` , DROP FOREIGN KEY `fk_address_company1` , DROP FOREIGN KEY `fk_address_distributor1` , DROP FOREIGN KEY `fk_address_farm1` , DROP FOREIGN KEY `fk_address_manufacture1` , DROP FOREIGN KEY `fk_address_restaurant1` , DROP FOREIGN KEY `address_ibfk_8` ;
-ALTER TABLE `468258_food4`.`address` 
-  ADD CONSTRAINT `address_ibfk_7`
-  FOREIGN KEY (`state_id` )
-  REFERENCES `468258_food4`.`state` (`state_id` )
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION
-, DROP INDEX `fk_address_company1` 
-, DROP INDEX `fk_address_distributor1` 
-, DROP INDEX `fk_address_farm1`
-, DROP INDEX `fk_address_farmers_market1` 
-, DROP INDEX `fk_address_manufacture1` 
-, DROP INDEX `fk_address_restaurant1` ;
-
-drop table `manufacture`;
-drop table `distributor`;
-drop table `super_market`;
-
-
-ALTER TABLE `farm` DROP FOREIGN KEY `fk_farm_company1` , DROP FOREIGN KEY `fk_farm_farm_type1` , DROP FOREIGN KEY `fk_farm_user1` ;
-
-drop table `company`;
-drop table `farm_type`;
-
-ALTER TABLE `farmers_market` DROP FOREIGN KEY `fk_farmers_market_city1` , DROP FOREIGN KEY `fk_farmers_market_user1`, DROP INDEX `fk_farmers_market_city1` ;
-ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_city1` ;
-ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_user1` ;
-drop table `farmers_market`;
-
-ALTER TABLE `farmers_market_supplier` ADD COLUMN `producer_id` INT NOT NULL  AFTER `farmers_market_id` ;
-ALTER TABLE `farmers_market_supplier` DROP FOREIGN KEY `fk_farmers_market_farms_farm1` , DROP FOREIGN KEY `fk_farmers_market_farms_farmers_market1` , DROP FOREIGN KEY `fk_farmers_market_farms_user1` ;
-ALTER TABLE `farmers_market_supplier` DROP COLUMN `supplier_farm_id` 
-, DROP INDEX `fk_farmers_market_farms_farm1` ;
-
-drop table `farm`;
-
-drop table `restaurant_photo`;
-
--- -----------------------------------------------------
--- drop the old ids from the comment table
--- -----------------------------------------------------
-
-ALTER TABLE `comment`
-  DROP `restaurant_id`,
-  DROP `farm_id`,
-  DROP `farmers_market_id`,
-  DROP `manufacture_id`,
-  DROP `restaurant_chain_id`;
-
 -- ----------------------------------------------------- 
 -- merge farmers market with producer 
 -- ----------------------------------------------------- 
-ALTER TABLE `producer` ADD `is_farmers_market` TINYINT NULL AFTER `is_farm`;
-ALTER TABLE `producer` ADD INDEX `farmers_market_id` (`farm_id` ASC) ;
-ALTER TABLE `producer` ADD `farmers_market_id` INT NULL AFTER `farm_id`;
 
 INSERT INTO `producer`
 (`producer`,
@@ -676,37 +570,68 @@ farmers_market_id,
 track_ip FROM farmers_market;
 
 UPDATE address, producer set address.producer_id = producer.producer_id WHERE address.farmers_market_id = producer.farmers_market_id;
-
 UPDATE producer SET is_farmers_market=1 WHERE farmers_market_id IS NOT NULL;
-ALTER TABLE `producer` ADD INDEX `is_farmers_market` (`is_farmers_market` ASC);
-
--- ----------------------------------------------------- 
--- drop farmers market data from the db 
--- -----------------------------------------------------
-
-ALTER TABLE `comment` DROP FOREIGN KEY `fk_comment_farmers_market1`;
-ALTER TABLE `comment` DROP `farmers_market_id`;
-ALTER TABLE `farmers_market_supplier` DROP FOREIGN KEY `fk_farmers_market_farms_farmers_market1`;
-ALTER TABLE `address` DROP FOREIGN KEY `fk_address_farmers_market1` ;
-ALTER TABLE `photo` DROP `farmers_market_id` ;
-ALTER TABLE `farmers_market` DROP FOREIGN KEY `fk_farmers_market_city1` , DROP FOREIGN KEY `fk_farmers_market_user1`, DROP INDEX `fk_farmers_market_city1` ;
-ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_city1` ;
-ALTER TABLE `farmers_market` DROP INDEX `fk_farmers_market_user1` ;
-drop table `farmers_market_supplier`;
-drop table `farmers_market`;
 
 -- -----------------------------------------------------
 -- Lottery table changes
 -- ----------------------------------------------------- 
+
 ALTER TABLE `lottery_photo` CHANGE `photo_id` `photo_id` INT( 11 ) NOT NULL AUTO_INCREMENT; 
 ALTER TABLE `lottery_entry` CHANGE `user_id` `user_id` INT( 11 ) NULL;
+ALTER TABLE `photo` ADD COLUMN `producer_id` INT NULL  AFTER `address_id`;
+ALTER TABLE `custom_url` ADD COLUMN `producer_id` INT NULL  AFTER `custom_url`;
+
 
 -- -----------------------------------------------------
--- Custom URL table chnages
--- ----------------------------------------------------- 
-ALTER TABLE `custom_url` CHANGE `company_id` `producer_id` INT( 11 ) NULL DEFAULT NULL;
-ALTER TABLE `custom_url` ADD `address_id` INT NOT NULL AFTER `producer_id`;
-ALTER TABLE `custom_url` ADD `farmers_market_id` INT NULL AFTER `restaurant_id`;
-ALTER TABLE `custom_url` ADD `city` VARCHAR( 100 ) NULL AFTER `address_id` , ADD `city_counter` INT NULL AFTER `city`; 
+-- Delate all the old columns and data
+-- -----------------------------------------------------
 
+-- Manually do this after backups and testing.
 
+-- Remove all the foreign keys
+
+ALTER TABLE `address` DROP FOREIGN KEY `address_ibfk_2` , DROP FOREIGN KEY `address_ibfk_4` , DROP FOREIGN KEY `address_ibfk_5` , DROP FOREIGN KEY `address_ibfk_6` , DROP FOREIGN KEY `address_ibfk_7` , DROP FOREIGN KEY `fk_address_city_area1` , DROP FOREIGN KEY `fk_address_company1` , DROP FOREIGN KEY `fk_address_country1` , DROP FOREIGN KEY `fk_address_distributor1` , DROP FOREIGN KEY `fk_address_farm1` , DROP FOREIGN KEY `fk_address_farmers_market1` , DROP FOREIGN KEY `fk_address_manufacture1` , DROP FOREIGN KEY `fk_address_restaurant1` , DROP FOREIGN KEY `fk_address_state1` ;
+
+ALTER TABLE `comment` DROP FOREIGN KEY `fk_comment_farm1` , DROP FOREIGN KEY `fk_comment_farmers_market1` , DROP FOREIGN KEY `fk_comment_manufacture1` , DROP FOREIGN KEY `fk_comment_restaurant1` , DROP FOREIGN KEY `fk_comment_restaurant_chain1` ; 
+
+ALTER TABLE `custom_url` DROP FOREIGN KEY `fk_custom_url_company1` , DROP FOREIGN KEY `fk_custom_url_distributor1` , DROP FOREIGN KEY `fk_custom_url_farm1` , DROP FOREIGN KEY `fk_custom_url_manufacture1` , DROP FOREIGN KEY `fk_custom_url_restaurant1` ;
+
+ALTER TABLE `distributor` DROP FOREIGN KEY `fk_distributor_company1`;
+
+ALTER TABLE `manufacture` DROP FOREIGN KEY `fk_manufacture_manufacture_type1` ;
+
+ALTER TABLE `restaurant` DROP FOREIGN KEY `fk_restaurant_company1` , DROP FOREIGN KEY `fk_restaurant_restaurant_chain1` , DROP FOREIGN KEY `fk_restaurant_restaurant_type1` ;
+
+ALTER TABLE `restaurant_chain` DROP FOREIGN KEY `fk_restaurant_chain_restaurant_type1` ;
+
+ALTER TABLE `farm` DROP FOREIGN KEY `fk_farm_company1` , DROP FOREIGN KEY `fk_farm_farm_type1` ; 
+
+ALTER TABLE `photo` DROP FOREIGN KEY `fk_photos_farm1` , DROP FOREIGN KEY `fk_photos_farmers_market1` , DROP FOREIGN KEY `fk_photos_manufacture1` , DROP FOREIGN KEY `fk_photos_restaurant1` ;
+
+ALTER TABLE `product` DROP FOREIGN KEY `fk_product_company1` , DROP FOREIGN KEY `fk_product_manufacture1` , DROP FOREIGN KEY `fk_product_restaurant1` ;
+ 
+-- -----------------------------------------------------
+-- Drop all the tables
+-- -----------------------------------------------------
+
+drop table `distributor_supplier`;
+drop table `farm_supplier`;
+drop table `farmers_market_supplier`;
+drop table `manufacture_supplier`;
+drop table `manufacture_type`;
+drop table `restaurant_chain_supplier`;
+drop table `restaurant_cuisine`;
+drop table `restaurant_photo`;
+drop table `restaurant_supplier`;
+drop table `restaurant_type`;
+drop table `super_market`;
+drop table `biz_restaurants`;
+drop table `cuisine`;
+drop table `restaurant_chain`;
+drop table `distributor`;
+drop table `farm_type`;
+drop table `farmers_market`;
+drop table `farm`;
+drop table `restaurant`;
+drop table `manufacture`;
+drop table `company`;
