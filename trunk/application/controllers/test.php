@@ -1,12 +1,13 @@
 <?php
+set_time_limit(0);
+error_reporting(E_ALL);
 class Test extends Controller{
 	
 	
-	private $queryLimit = 50000; 
+	private $queryLimit = 7000; 
 
 	
 	function Test(){
-		
 		parent::Controller(); 
 		
 	}
@@ -14,26 +15,63 @@ class Test extends Controller{
 	function index(){
 		
 		
-		echo 'add column address_id to custom_url table !!!!!!!!!!';
+		echo 'Trigger below mentioned SQL query<br />-------------------------------------------<br />';
+		echo 'ALTER TABLE `custom_url` CHANGE `company_id` `producer_id` INT( 11 ) NULL DEFAULT NULL;<br />';
+		echo 'ALTER TABLE `custom_url` ADD `address_id` INT NOT NULL AFTER `producer_id`;<br />';
+		echo 'ALTER TABLE `custom_url` ADD `farmers_market_id` INT NULL AFTER `restaurant_id`;<br />';
+		echo '<br />-------------------------------------------<br />';
 		
+		echo '<strong>Farms</strong><br />';
 		echo '<a href="'.base_url().'test/create_temp_tables" target="_blank">Step1: Create temp tables</a> <br />';
 		echo '<a href="'.base_url().'test/dump_data_to_trif_temp/farm" target="_blank">Step2: Dump farm data to temp table </a> <br />';
 		echo '<a href="'.base_url().'test/links" target="_blank">Step3: Create slugs </a> <br />';
 		echo '<a href="'.base_url().'test/move_data_to_custom_url/farm" target="_blank">Step4: move farm data to custom_url </a> <br />';
 		echo '<a href="'.base_url().'test/drop_temp_tables" target="_blank">Drop temp tables</a> <br />';
-		echo '<br />';
+		echo 'Trigger below mentioned SQL query<br />-------------------------------------------<br />';
+		echo 'UPDATE custom_url SET producer_id = farm_id WHERE farm_id IS NOT NULL;';
+		echo '<br />-------------------------------------------<br />';
+		
+		echo '<br /><strong>Restaurants</strong><br />';
+		
 		echo '<a href="'.base_url().'test/create_temp_tables" target="_blank">Step1: Create temp tables</a> <br />';
 		echo '<a href="'.base_url().'test/dump_data_to_trif_temp/restaurant" target="_blank">Step2: Dump restaurant data to temp table </a> <br />';
 		echo '<a href="'.base_url().'test/links" target="_blank">Step3: Create slugs </a> <br />';
 		echo '<a href="'.base_url().'test/move_data_to_custom_url/restaurant" target="_blank">Step4: move restaurant data to custom_url </a> <br />';
 		echo '<a href="'.base_url().'test/drop_temp_tables" target="_blank">Drop temp tables</a> <br />';
-		echo '<br />';
-	
+		echo 'Trigger below mentioned SQL query<br />-------------------------------------------<br />';
+		echo 'UPDATE custom_url SET producer_id = restaurant_id WHERE restaurant_id IS NOT NULL;';
+		echo '<br />-------------------------------------------<br />';
+		
+		echo '<br /><strong>Manufacture</strong><br />';
 		echo '<a href="'.base_url().'test/create_temp_tables" target="_blank">Step1: Create temp tables</a> <br />';
 		echo '<a href="'.base_url().'test/dump_data_to_trif_temp/manufacture" target="_blank">Step2-c: Dump manufacture data to temp table </a> <br />';
 		echo '<a href="'.base_url().'test/links" target="_blank">Step3: Create slugs </a> <br />';
 		echo '<a href="'.base_url().'test/move_data_to_custom_url/manufacture" target="_blank">Step4: manufacture move data to custom_url </a> <br />';
 		echo '<a href="'.base_url().'test/drop_temp_tables" target="_blank">Drop temp tables</a> <br />';
+		echo 'Trigger below mentioned SQL query<br />-------------------------------------------<br />';
+		echo 'UPDATE custom_url SET producer_id = manufacture_id WHERE manufacture_id IS NOT NULL;';
+		echo '<br />-------------------------------------------<br />';
+
+		echo '<br /><strong>Distributor</strong><br />';
+		echo '<a href="'.base_url().'test/create_temp_tables" target="_blank">Step1: Create temp tables</a> <br />';
+		echo '<a href="'.base_url().'test/dump_data_to_trif_temp/distributor" target="_blank">Step2-c: Dump manufacture data to temp table </a> <br />';
+		echo '<a href="'.base_url().'test/links" target="_blank">Step3: Create slugs </a> <br />';
+		echo '<a href="'.base_url().'test/move_data_to_custom_url/distributor" target="_blank">Step4: distributor move data to custom_url </a> <br />';
+		echo '<a href="'.base_url().'test/drop_temp_tables" target="_blank">Drop temp tables</a> <br />';
+		echo 'Trigger below mentioned SQL query<br />-------------------------------------------<br />';
+		echo 'UPDATE custom_url SET producer_id = distributor_id WHERE distributor_id IS NOT NULL;';
+		echo '<br />-------------------------------------------<br />';
+		
+		echo '<br /><strong>Farmers Market</strong><br />';
+		echo '<a href="'.base_url().'test/create_temp_tables" target="_blank">Step1: Create temp tables</a> <br />';
+		echo '<a href="'.base_url().'test/dump_data_to_trif_temp/farmers_market" target="_blank">Step2-c: Dump manufacture data to temp table </a> <br />';
+		echo '<a href="'.base_url().'test/links" target="_blank">Step3: Create slugs </a> <br />';
+		echo '<a href="'.base_url().'test/move_data_to_custom_url/farmers_market" target="_blank">Step4: farmers market move data to custom_url </a> <br />';
+		echo '<a href="'.base_url().'test/drop_temp_tables" target="_blank">Drop temp tables</a> <br />';
+		echo 'Trigger below mentioned SQL query<br />-------------------------------------------<br />';
+		echo 'UPDATE custom_url SET producer_id = farmers_market_id WHERE farmers_market_id IS NOT NULL;';
+		echo '<br />-------------------------------------------<br />';
+		
 			
 	}
 	
@@ -104,14 +142,13 @@ class Test extends Controller{
 		$num_rows = $results->row_array();
 		$num_rows = $num_rows['counter'];
 		
+		
 		if($num_rows > $this->queryLimit){
 			
 			$links = $num_rows/$this->queryLimit;	
 			
 		}else{
-			
 			$links = 1; 
-			
 		}
 		
 		$i = 0; 
@@ -153,7 +190,6 @@ class Test extends Controller{
 		
 		
 		//trif_temp   - first table with data dumped from address and producer
-		
 		
 		//limiting result to avoid memory limit error 
 		$results = $this->db->query("select * from trif_temp limit ".$start.", ".$this->queryLimit )->result_array(); 

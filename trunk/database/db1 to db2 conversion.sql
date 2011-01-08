@@ -700,3 +700,13 @@ drop table `farmers_market`;
 -- ----------------------------------------------------- 
 ALTER TABLE `lottery_photo` CHANGE `photo_id` `photo_id` INT( 11 ) NOT NULL AUTO_INCREMENT; 
 ALTER TABLE `lottery_entry` CHANGE `user_id` `user_id` INT( 11 ) NULL;
+
+-- -----------------------------------------------------
+-- Custom URL table chnages
+-- ----------------------------------------------------- 
+ALTER TABLE `custom_url` CHANGE `company_id` `producer_id` INT( 11 ) NULL DEFAULT NULL;
+ALTER TABLE `custom_url` ADD `address_id` INT NOT NULL AFTER `producer_id`;
+ALTER TABLE `custom_url` ADD `farmers_market_id` INT NULL AFTER `restaurant_id`;
+ALTER TABLE `custom_url` ADD `city` VARCHAR( 100 ) NULL AFTER `address_id` , ADD `city_counter` INT NULL AFTER `city`; 
+
+
