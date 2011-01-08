@@ -11,9 +11,6 @@ if (file_exists($defines_file)) {
 $sustainable = new CustomUrl();
 
 $sustainable->index();
-//$geocode->geocodeZip();
-
-
 
 
 class CustomUrl {
@@ -48,13 +45,22 @@ class CustomUrl {
 	
 	function generateCustomUrl() {
 		
-		$query = "SELECT * FROM temp_custom_url WHERE custom_url IS NULL limit 0, 50000";
+		$query = "SELECT * FROM temp_custom_url WHERE custom_url IS NULL limit 0, 100000";
 		$result = mysql_query($query);
 		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 			echo $row['custom_url_id'];
 			
 			if (!$row['custom_url']) {
 				$producer_without_spaces = $this->_trimWhiteSpaces(trim($row['producer']));
+				
+				$producer_slug = strtolower(str_replace(' ', '-', str_replace("'", '',$producer_without_spaces))); 
+				
+				$query = 'UPDATE temp_custom_url' .
+					' SET ' .
+					' producer_slug = \''.$producer_slug.'\' ' .
+					' WHERE custom_url_id = ' . $row['custom_url_id'];
+				//echo $query . "<br />";
+				mysql_query($query);
 				
 				$producer_with_city = $producer_without_spaces;
 				
@@ -67,12 +73,20 @@ class CustomUrl {
 				
 				echo '##' . $row['producer'] . '##' . $row['city'] . '##' . $slug . '## Correct Slug : ';
 				
+				/*
 				$query = 'SELECT * ' .
 					' FROM temp_custom_url' .
 					' WHERE ' .
 					' producer_id = ' . $row['producer_id'] .
 					' AND city = \''.$row['city'].'\'' .
 					' AND custom_url = \''.$slug.'\'';
+				*/
+				$query = 'SELECT * ' .
+					' FROM temp_custom_url' .
+					' WHERE ' .
+					' producer_slug = \'' . $producer_slug . '\'' . 
+					' AND custom_url = \''.$slug.'\'';
+				
 				//echo $query . "<br />";
 				$result1 = mysql_query($query);
 				if (mysql_num_rows($result1) == 0) {
@@ -86,6 +100,8 @@ class CustomUrl {
 					mysql_query($query);
 					echo $slug;
 				} else {
+					
+					/*
 					$query = 'SELECT * ' .
 						' FROM temp_custom_url' .
 						' WHERE ' .
@@ -93,6 +109,15 @@ class CustomUrl {
 						' AND city = \''.$row['city'].'\'' .
 						' AND custom_url != \'\'' .
 						' ORDER BY city_counter DESC ';
+					*/
+					$query = 'SELECT * ' .
+						' FROM temp_custom_url' .
+						' WHERE ' .
+						' producer_slug = \'' . $producer_slug . '\'' . 
+						' AND city = \''.$row['city'].'\'' .
+						' AND custom_url != \'\'' .
+						' ORDER BY city_counter DESC ';
+					
 					//echo $query;
 					
 					$result1 = mysql_query($query);
@@ -102,14 +127,22 @@ class CustomUrl {
 					$city_counter_next = $city_counter +1;
 					$slug = $slug . '-' . $city_counter_next;
 					//echo $slug;
-					
+					/*
 					$query = 'SELECT * ' .
 						' FROM temp_custom_url' .
 						' WHERE ' .
 						' producer_id = ' . $row['producer_id'] .
 						' AND city = \''.$row['city'].'\'' .
 						' AND custom_url = \''.$slug.'\'';
-					//echo $query . "<br />";
+					*/
+					$query = 'SELECT * ' .
+						' FROM temp_custom_url' .
+						' WHERE ' .
+						' producer_slug = \'' . $producer_slug . '\'' . 
+						' AND city = \''.$row['city'].'\'' .
+						' AND custom_url = \''.$slug.'\'';
+					
+					//echo $query . "\n";
 					$result1 = mysql_query($query);
 					if (mysql_num_rows($result1) == 0) {
 						//echo "Update Custom URL <br />";
@@ -134,28 +167,12 @@ class CustomUrl {
 		}
 	}
 	
-	function updateRestaurantWithSustainableAddress() {
-		$query = 'SELECT restaurant_id FROM address WHERE claims_sustainable =1';
-		
-		$result = mysql_query($query);
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-			$query = 'UPDATE restaurant SET claims_sustainable = 1 WHERE restaurant_id 	 = ' . $row['restaurant_id'];
-			echo $row['restaurant_id'] . ' : ';
-			if ( mysql_query($query) ) {
-				echo "DONE \n";
-			} else {
-				echo "FAILED \n";
-			}
-		}
-	}
-	
-	
-	
 	function createTempTable(){
 		$query = "CREATE TABLE IF NOT EXISTS `temp_custom_url` (
 				  `custom_url_id` int(11) NOT NULL AUTO_INCREMENT,
 				  `producer_id` int(11) NOT NULL,
 				  `producer` varchar(255) NOT NULL,
+				  `producer_slug` varchar(255) DEFAULT NULL,
 				  `address_id` int(11) NOT NULL,
 				  `city` varchar(95) NOT NULL,
 				  `city_counter` int(11) NULL,
@@ -175,7 +192,7 @@ class CustomUrl {
 				  KEY `producer_id` (`producer_id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=latin1;"; 
 		mysql_query($query); 
-		echo "Table temp_custom_url created \n"; 
+		echo "Table temp_custom_url created \n";
 	}
 	
 	function dropTempTable(){
@@ -187,10 +204,11 @@ class CustomUrl {
 	
 	function dumpDataToTempTable(){
 		$query = "
-				insert into temp_custom_url (producer_id, producer, address_id, city, city_counter, custom_url, farm_id, manufacture_id, distributor_id, restaurant_id, farmers_market_id)
+				insert into temp_custom_url (producer_id, producer, producer_slug, address_id, city, city_counter, custom_url, farm_id, manufacture_id, distributor_id, restaurant_id, farmers_market_id)
 				SELECT
 				address.producer_id,
 				producer.producer,
+				NULL,
 				address.address_id,
 				address.city,
 				NULL,
