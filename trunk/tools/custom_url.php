@@ -189,7 +189,8 @@ class CustomUrl {
 				  KEY `fk_address_distributor1` (`distributor_id`),
 				  KEY `fk_address_farmers_market1` (`farmers_market_id`),
 				  KEY `fk_address_manufacture1` (`manufacture_id`),
-				  KEY `producer_id` (`producer_id`)
+				  KEY `fk_producer_id` (`producer_id`),
+				  KEY `fk_producer_slug` (`producer_slug`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=latin1;"; 
 		mysql_query($query); 
 		echo "Table temp_custom_url created \n";
