@@ -14,10 +14,10 @@
  * Database Setup
  * ======================================================
  */
-$DB_HOST  = "mysql50-82.wc1.dfw1.stabletransit.com";
-$DB_USER  = "468258_fooduser";
-$DB_PASSWORD  = "R3alF00d";
-$DATABSE  = "468258_foodnew";
+$DB_HOST  = "mysql50-91.wc1.dfw1.stabletransit.com";
+$DB_USER  = "468258_testuser5";
+$DB_PASSWORD  = "Realf00d";
+$DATABSE  = "468258_livetest5";
 
 $BASE_URL = "http://www.sproutchain.com/";
 
