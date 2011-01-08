@@ -26,10 +26,21 @@ class CustomUrl {
 	}
 	
 	function index() {
+		/** 
+		 * One time activity
+		 */
 		//$this->createTempTable();
 		//$this->dumpDataToTempTable();
 		//$this->verifyNumRecords();
+		
+		/** 
+		 * Triger again and again to generate URL for records which are not processed yet 
+		 */
 		$this->generateCustomUrl();
+		
+		/** 
+		 * One time activity
+		 */
 		//$this->dumpDataToCustomUrlTable();	
 		//$this->dropTempTable();
 	}
