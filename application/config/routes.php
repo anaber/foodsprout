@@ -59,6 +59,7 @@ $route['^restaurant'] 									= "restaurant/index";
 $route['^sustainable/(:any)'] 							= "restaurant/city/$1";
 $route['^chain/page(:num)']								= "chain/index/$1";
 $route['^manufacture/page(:num)']						= "manufacture/index/$1";
+
 $route['^restaurant/view-(:any)']						= "restaurant/customURL/$1";
 $route['^farm/view-(:any)']								= "farm/customURL/$1";
 $route['^farmersmarket/view-(:any)']					= "farmersmarket/customURL/$1";

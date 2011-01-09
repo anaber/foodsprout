@@ -15,7 +15,7 @@
 			
 			echo '<div style="padding:0px; margin-right:10px; padding-bottom:10px;">';
 			echo '<div class="productlisth">';
-			echo anchor('/manufacture/view-'.$r->customURL, $r->manufactureName).'</div>';
+			echo anchor('/manufacture/view/'.$r->manufactureId, $r->manufactureName).'</div>';
 			echo '<div class="productlist_type">';
 			echo '<strong>Categories:</strong> '.$r->manufactureType;
 			echo '</div>';

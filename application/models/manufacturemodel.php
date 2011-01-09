@@ -136,7 +136,7 @@ class ManufactureModel extends Model{
 			$CI =& get_instance();
 				
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id);
+			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '');
 			$this->manufactureLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {

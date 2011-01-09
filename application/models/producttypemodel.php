@@ -23,6 +23,7 @@ class ProductTypeModel extends Model{
 			$productTypes[] = $this->ProductTypeLib;
 			unset($this->ProductTypeLib);
 		}
+		
 		return $productTypes;
 	}
 	

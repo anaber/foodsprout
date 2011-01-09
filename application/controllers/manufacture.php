@@ -122,7 +122,7 @@ class Manufacture extends Controller {
 	
 	
 	// View all the information about a single manufacture
-	private function view($manufactureId) {
+	function view($manufactureId) {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();

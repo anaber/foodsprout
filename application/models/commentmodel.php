@@ -97,7 +97,7 @@ class CommentModel extends Model{
 			unset($this->CommentLib);
 			
 			$this->CommentLib->commentId = $row['comment_id'];
-			$this->CommentLib->comment = $row['comment'];
+			$this->CommentLib->comment = nl2br($row['comment']);
 			$this->CommentLib->userId = $row['user_id'];
 			
 			$firstName = $row['first_name'];
@@ -257,7 +257,7 @@ class CommentModel extends Model{
 		$row = $result->row();
 		
 		$this->CommentLib->commentId = $row->comment_id;
-		$this->CommentLib->comment = $row->comment;
+		$this->CommentLib->comment = nl2br($row->comment);
 		$this->CommentLib->userId = $row->user_id;
 		
 		$firstName = $row->first_name;

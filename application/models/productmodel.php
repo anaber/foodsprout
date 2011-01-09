@@ -66,23 +66,19 @@ class ProductModel extends Model {
         $restaurantChainId = $this->input->post('restaurantChainId');
         $manufactureId = $this->input->post('manufactureId');
 
-        $companyId = '';
-
         $CI = & get_instance();
-
+		
+		$producerId = '';
+		
         if (!empty($restaurantId)) {
-            $CI->load->model('RestaurantModel', '', true);
-            $restaurant = $CI->RestaurantModel->getRestaurantFromId($restaurantId);
-            $companyId = $restaurant->companyId;
+            $producerId = $restaurantId;
         } else if (!empty($restaurantChainId)) {
-            $companyId = '';
+            $producerId = $restaurantChainId;
         } else if (!empty($manufactureId)) {
-            $CI->load->model('ManufactureModel', '', true);
-            $manufature = $CI->ManufactureModel->getManufactureFromId($manufactureId);
-            $companyId = $manufature->companyId;
+            $producerId = $manufactureId;
         }
 
-        if ($this->addProduct($restaurantId, $restaurantChainId, $manufactureId, $companyId)) {
+        if ($this->addProduct($producerId) ) {
             $return = true;
         } else {
             $return = false;
@@ -91,55 +87,23 @@ class ProductModel extends Model {
         return $return;
     }
 
-    function addProduct($restaurantId, $restaurantChainId, $manufactureId, $companyId) {
+    function addProduct( $producerId ) {
         $return = true;
         $CI = & get_instance();
 
         $query = 'SELECT * FROM product ' .
                 ' WHERE' .
                 ' product_name = "' . $this->input->post('productName') . '"' .
-                ' AND ';
-        if (!empty($restaurantId)) {
-            $query .= 'restaurant_id';
-        } else if (!empty($restaurantChainId)) {
-            $query .= 'restaurant_chain_id';
-        } else if (!empty($manufactureId)) {
-            $query .= 'manufacture_id';
-        }
-        $query .= ' = ';
-        if (!empty($restaurantId)) {
-            $query .= $restaurantId;
-        } else if (!empty($restaurantChainId)) {
-            $query .= $restaurantChainId;
-        } else if (!empty($manufactureId)) {
-            $query .= $manufactureId;
-        }
+                ' AND producer_id = ' . $producerId;
+        
         log_message('debug', 'ProductModel.addProduct : Try to get duplicate product record : ' . $query);
         $result = $this->db->query($query);	
 			
         if ($result->num_rows() == 0) {
-            
-		
-            $query = 'INSERT INTO product (product_id, company_id, ';
-            if (!empty($restaurantId)) {
-                $query .= 'restaurant_id';
-            } else if (!empty($restaurantChainId)) {
-                $query .= 'restaurant_chain_id';
-            } else if (!empty($manufactureId)) {
-                $query .= 'manufacture_id';
-            }
-            
-            $query .= ', product_type_id, product_name, ingredient_text, brand, upc, status, has_fructose, user_id, creation_date, track_ip)' .
-                    ' values (NULL, ' . (!empty($companyId) ? $companyId : 'NULL' ) . ', ';
-
-            if (!empty($restaurantId)) {
-                $query .= $restaurantId;
-            } else if (!empty($restaurantChainId)) {
-                $query .= $restaurantChainId;
-            } else if (!empty($manufactureId)) {
-                $query .= $manufactureId;
-            }
-            
+        
+            $query = 'INSERT INTO product (product_id, producer_id, product_type_id, product_name, ingredient_text, brand, upc, status, has_fructose, user_id, creation_date, track_ip)' .
+                    ' values (NULL, ' . $producerId;
+			
             $userGroup = $this->session->userdata['userGroup'];
             
             if ( $userGroup != 'admin') {

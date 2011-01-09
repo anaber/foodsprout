@@ -261,7 +261,7 @@ class Restaurant extends Controller {
 		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($q);
-		$restaurantChainId = $restaurant->restaurantChainId;
+		//$restaurantChainId = $restaurant->restaurantChainId;
 		/*
 		if( !empty($restaurantChainId) ){
 			$this->load->model('SupplierModel');
