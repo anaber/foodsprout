@@ -177,18 +177,8 @@ class CustomUrl {
 				  `city` varchar(95) NOT NULL,
 				  `city_counter` int(11) NULL,
 				  `custom_url` varchar(255) DEFAULT NULL,
-				  `farm_id` int(11) DEFAULT NULL,
-				  `manufacture_id` int(11) DEFAULT NULL,
-				  `distributor_id` int(11) DEFAULT NULL,
-				  `restaurant_id` int(11) DEFAULT NULL,
-				  `farmers_market_id` int(11) DEFAULT NULL,
 				  PRIMARY KEY (`custom_url_id`),
 				  KEY `fk_address_custom_url1` (`custom_url`),
-				  KEY `fk_address_restaurant1` (`restaurant_id`),
-				  KEY `fk_address_farm1` (`farm_id`),
-				  KEY `fk_address_distributor1` (`distributor_id`),
-				  KEY `fk_address_farmers_market1` (`farmers_market_id`),
-				  KEY `fk_address_manufacture1` (`manufacture_id`),
 				  KEY `fk_producer_id` (`producer_id`),
 				  KEY `fk_producer_slug` (`producer_slug`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=latin1;"; 
@@ -205,7 +195,7 @@ class CustomUrl {
 	
 	function dumpDataToTempTable(){
 		$query = "
-				insert into temp_custom_url (producer_id, producer, producer_slug, address_id, city, city_counter, custom_url, farm_id, manufacture_id, distributor_id, restaurant_id, farmers_market_id)
+				insert into temp_custom_url (producer_id, producer, producer_slug, address_id, city, city_counter, custom_url)
 				SELECT
 				address.producer_id,
 				producer.producer,
@@ -213,12 +203,7 @@ class CustomUrl {
 				address.address_id,
 				address.city,
 				NULL,
-				NULL,
-				address.farm_id,
-				address.manufacture_id,
-				address.distributor_id,
-				address.restaurant_id,
-				address.farmers_market_id
+				NULL
 				FROM
 				address ,
 				producer
@@ -273,8 +258,8 @@ class CustomUrl {
 	
 	function dumpDataToCustomUrlTable(){
 		$query = "
-				insert into custom_url (custom_url_id, custom_url, producer_id, address_id, city, city_counter, farm_id, manufacture_id, distributor_id, restaurant_id, farmers_market_id, product_id, user_id)
-				SELECT custom_url_id, custom_url, producer_id, address_id, city, city_counter, farm_id, manufacture_id, distributor_id, restaurant_id, farmers_market_id, NULL, NULL
+				insert into custom_url (custom_url_id, custom_url, producer_id, address_id, city, city_counter, product_id, user_id)
+				SELECT custom_url_id, custom_url, producer_id, address_id, city, city_counter, NULL, NULL
 				FROM
 				temp_custom_url"; 
 		mysql_query($query); 
