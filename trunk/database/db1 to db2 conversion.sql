@@ -578,8 +578,8 @@ UPDATE producer SET is_farmers_market=1 WHERE farmers_market_id IS NOT NULL;
 -- -----------------------------------------------------
 -- Alter Custom URL
 -- ----------------------------------------------------- 
-ALTER TABLE `custom_url` ADD `address_id` INT NOT NULL AFTER `producer_id`;
-ALTER TABLE `custom_url` ADD `city` VARCHAR( 255 ) NULL AFTER `address_id`;
+ALTER TABLE `custom_url` ADD `address_id` INT DEFAULT NULL AFTER `producer_id`;
+ALTER TABLE `custom_url` ADD `city` VARCHAR( 255 ) DEFAULT NULL AFTER `address_id`;
 ALTER TABLE `custom_url` ADD `city_counter` INT DEFAULT NULL AFTER `city`;
 
 -- -----------------------------------------------------
