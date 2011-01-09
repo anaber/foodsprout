@@ -1631,28 +1631,7 @@ class SupplierModel extends Model{
 			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], '', '', '');
 			$this->companyLib->addresses = $addresses;
 			
-			if ( $row['is_restaurant'] == '1' ) {
-				$this->companyLib->type = 'restaurant';
-				
-			} else if ( $row['is_farm'] == '1' ) {
-				$this->companyLib->type = 'farm';
-				
-			} else if ( $row['is_manufacture'] == '1' ) {
-				$this->companyLib->type = 'manufacture';
-				
-			} else if ( $row['is_distributor'] == '1' ) {
-				$this->companyLib->type = 'distributor';
-				
-			} else if ( $row['is_farmers_market'] == '1' ) {
-				$this->companyLib->type = 'farmersmarket';
-				
-			} else if ( $row['is_restaurant_chain'] == '1' ) {
-				$this->companyLib->type = 'chain';
-				$this->companyLib->addresses = '';
-			} 
-			
-			
-			$this->companyLib->customURL = $this->customURL($row['producer_id'], $this->companyLib->type);
+			$this->companyLib->customURL = $this->customURL($row['producer_id']);
 			
 			$companies[] = $this->companyLib;
 			unset($this->companyLib);
@@ -1676,9 +1655,9 @@ class SupplierModel extends Model{
 	}
 	
 		
-	function customURL($producerId, $type){
+	function customURL($producerId){
 		
-		$results = $this->db->get_where("custom_url", array($type.'_id'=>$producerId));
+		$results = $this->db->get_where("custom_url", array('producer_id'=>$producerId));
 		
 		if($results->num_rows() > 0){
 			

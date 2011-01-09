@@ -50,7 +50,7 @@ class Tab extends Controller {
 		$data['data']['center']['content']['LOTTRIES'] = $lotteries;
 		$data['data']['center']['content']['FACEBOOK'] = $this->facebook;
 		$data['data']['center']['content']['CITIES'] = $cities;
-
+		
         $this->load->view('/templates/center_template', $data);
     }
     

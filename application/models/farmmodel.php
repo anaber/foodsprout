@@ -645,7 +645,7 @@ class FarmModel extends Model{
 	
 	function customURL($farmId){
 		
-		$results = $this->db->get_where("custom_url", array('farm_id'=>$farmId));
+		$results = $this->db->get_where("custom_url", array('producer_id'=>$farmId));
 		
 		if($results->num_rows() > 0){
 			
