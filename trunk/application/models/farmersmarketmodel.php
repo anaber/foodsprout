@@ -76,7 +76,7 @@ class FarmersMarketModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', '', $row->farmers_market_id, '', '', '');
+			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '');
 			$this->FarmersMarketLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {

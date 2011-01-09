@@ -17,7 +17,7 @@
 $DB_HOST  = "localhost";
 $DB_USER  = "root";
 $DB_PASSWORD  = "";
-$DATABSE  = "foodsprout3";
+$DATABSE  = "foodsprout4";
 // 468258_staging
 
 $BASE_URL = "http://foodsprout.local/";

@@ -707,7 +707,7 @@ class RestaurantModel extends Model{
 //				" ON restaurant.company_id = company.company_id" .
 //				" WHERE restaurant.restaurant_id = ".$restaurantId;
 
-		$query = "select * from producer WHERE producer.restaurant_id = ".$restaurantId;
+		$query = "select * from producer WHERE producer.producer_id = ".$restaurantId;
 		
 		log_message('debug', "RestaurantModel.getRestaurantFromId : " . $query);
 		$result = $this->db->query($query);
@@ -738,11 +738,11 @@ class RestaurantModel extends Model{
 		if ($row) {
 			$geocodeArray = array();
 
-			$this->restaurantLib->restaurantId = $row->restaurant_id;
-			$this->restaurantLib->companyId = $row->producer_id;
-			$this->restaurantLib->companyName = $row->producer;
-			$this->restaurantLib->restaurantChainId = $row->restaurant_chain_id;
-			$this->restaurantLib->restaurantChain = $row->producer;
+			$this->restaurantLib->restaurantId = $row->producer_id;
+			//$this->restaurantLib->companyId = $row->producer_id;
+			//$this->restaurantLib->companyName = $row->producer;
+			//$this->restaurantLib->restaurantChainId = $row->restaurant_chain_id;
+			//$this->restaurantLib->restaurantChain = $row->producer;
 			$this->restaurantLib->restaurantTypeId = $this->getRestaurantTypeId($row->producer_id);
 			$this->restaurantLib->restaurantName = $row->producer;
 			$this->restaurantLib->customURL = $row->custom_url;
@@ -754,14 +754,14 @@ class RestaurantModel extends Model{
 			$this->restaurantLib->twitter = $row->twitter;
 			$this->restaurantLib->status = $row->status;
 
-			$cuisines = $this->getCuisineIdsForRestaurant( $row->restaurant_id);
+			$cuisines = $this->getCuisineIdsForRestaurant( $row->producer_id);
 			$this->restaurantLib->cuisines = $cuisines;
 
 			$CI =& get_instance();
 
 			$CI->load->model('AddressModel','',true);
 
-			$addresses = $CI->AddressModel->getAddressForCompany( $row->restaurant_id, '', '', '', '', $q, $city, '');
+			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, $q, $city, '');
 			$this->restaurantLib->addresses = $addresses;
 
 			foreach ($addresses as $key => $address) {
@@ -1061,7 +1061,8 @@ class RestaurantModel extends Model{
 
 		$CI->load->model('RestaurantModel');
 		$restaurant = $CI->RestaurantModel->getRestaurantFromId($q);
-		$restaurantChainId = $restaurant->restaurantChainId;
+		//$restaurantChainId = $restaurant->restaurantChainId;
+		$restaurantChainId = '';
 
 		$start = 0;
 		$page = 0;
@@ -1077,7 +1078,7 @@ class RestaurantModel extends Model{
 		if( !empty($restaurantChainId) ){
 			$where = ' WHERE (restaurant_id  = ' . $q . ' OR restaurant_chain_id = ' . $q . ') ';
 		} else {
-			$where = ' WHERE restaurant_id  = ' . $q;
+			$where = ' WHERE producer_id  = ' . $q;
 		}
 
 		$where .= ' AND product.status = \'live\'';
