@@ -295,7 +295,7 @@ class LotteryModel extends Model{
 		
 		$defaultCity = '';
 		if ($cityId) {
-			$defaultCity = $cityId;	
+			$defaultCity = $cityId;
 		} else {
 			if (count($cities) > 0 ) {
 				if ($this->session->userdata('isAuthenticated') != 1 ) {
@@ -303,6 +303,7 @@ class LotteryModel extends Model{
 					foreach($cities as $city) {
 						if ($city->cityId == '41') {
 							$defaultCity = 41;
+							
 							break;
 						}
 					}
@@ -317,6 +318,41 @@ class LotteryModel extends Model{
 						$defaultCity = $city->cityId;
 					}
 				}
+			} else {
+				if ($this->session->userdata('isAuthenticated') != 1 ) {
+					$defaultCity = 41;
+				} else {
+					$q = $this->session->userdata['zipcode'];
+					$CI->load->model('GoogleMapModel','',true);
+					$zipDetails = $CI->GoogleMapModel->geoCodeZipV3($q);
+					
+					$CI->load->model('CityModel','',true);
+					$city = $CI->CityModel->getCityFromZipDetails($zipDetails);
+					if ($city) {
+						$defaultCity = $city->cityId;
+					}
+				}
+			}
+		}
+		
+		$query = 'SELECT count(*) as num_records FROM lottery' .
+				' WHERE city_id = ' . $defaultCity;
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		if ($numResults == 0) {
+			$query = 'SELECT city_id FROM lottery' .
+				' ORDER BY lottery_id DESC';
+			$result = $this->db->query($query);
+			
+			if ($result->num_rows() == 0) {
+				
+			} else {
+				$row = $result->row();
+				$cityId = $row->city_id;
+				
+				$defaultCity = $cityId;
 			}
 		}
 		
@@ -378,7 +414,7 @@ class LotteryModel extends Model{
 				$query .= " LIMIT 0, " . $PER_PAGE;
 			}
 		}
-		
+		//echo $query;die;
 		log_message('debug', "LotteryModel.getLotteries : " . $query);
 		$result = $this->db->query($query);
 		
@@ -451,7 +487,7 @@ class LotteryModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO lottery_entry (entry_id, user_id, lottery_id, enrolled_on, facebook_user_id, facebook_token)" .
+				$query = "INSERT INTO lottery_entry (lottery_entry_id, user_id, lottery_id, enrolled_on, facebook_user_id, facebook_token)" .
 						" values (NULL, NULL, " . $lotteryId . ", NOW(), ".$fbUserId.",  '".$fbToken."')";
 				
 				log_message('debug', 'LotteryModel.enroll : Enroll : ' . $query);
@@ -475,7 +511,7 @@ class LotteryModel extends Model{
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO lottery_entry (entry_id, user_id, lottery_id, enrolled_on, facebook_user_id, facebook_token)" .
+				$query = "INSERT INTO lottery_entry (lottery_entry_id, user_id, lottery_id, enrolled_on, facebook_user_id, facebook_token)" .
 						" values (NULL, ".$userId.", " . $lotteryId . ", NOW(), NULL, NULL )";
 				
 				log_message('debug', 'LotteryModel.enroll : Enroll : ' . $query);

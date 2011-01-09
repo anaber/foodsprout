@@ -1,25 +1,27 @@
 <!-- Lottery section starts here -->
 <?php
 	$currentCity = '';
-	if ( $LOTTRIES['param']['numResults'] > 0 ) {
-		$currentCity = $LOTTRIES['results'][0]->cityId;
-	}
 	$currentIndex = 0;
 	$lotteryId = '';
 	
-	$id = $this->input->get('id');
+	if ( $LOTTRIES['param']['numResults'] > 0 ) {
+		$currentCity = $LOTTRIES['results'][0]->cityId;
+		
+		$id = $this->input->get('id');
 	
-	if ($id) {
-		$i = 0;
-		foreach ($LOTTRIES['results'] as $lottery) {
-			if ($id == $lottery->lotteryId) {
-				$currentIndex = $i;
-				$lotteryId = $lottery->lotteryId;
+		if ($id) {
+			$i = 0;
+			foreach ($LOTTRIES['results'] as $lottery) {
+				if ($id == $lottery->lotteryId) {
+					$currentIndex = $i;
+					$lotteryId = $lottery->lotteryId;
+				}
+				$i++;
 			}
-			$i++;
+		} else {
+			$lotteryId = $LOTTRIES['results'][$currentIndex]->lotteryId;
 		}
-	} else {
-		$lotteryId = $LOTTRIES['results'][$currentIndex]->lotteryId;
+		
 	}
 	
 	//print_r_pre($LOTTRIES);
@@ -102,7 +104,7 @@ if ($me) {
 		echo 'var isAuthenticated = false;';
 	}
 ?>
-var lotteryId = <?php echo $lotteryId; ?>;
+var lotteryId = "<?php echo $lotteryId; ?>";
 
 $(document).ready(function() {
 	
@@ -175,6 +177,10 @@ $(document).ready(function() {
 <div id="alert"></div>
 
 <div id="lottery">
+<?php
+	if ($lotteryId != "") {
+?>
+	
 	<!-- Lottery header starts here -->
 	<div>
 		<h1 class="flt">The Tab's on us in <span><?php echo $CITIES[$currentCity]->city . ', ' . $CITIES[$currentCity]->stateCode;?></span></h1>
@@ -279,7 +285,19 @@ $(document).ready(function() {
 		<div class="clear"></div>
 	</div>
 	<!-- Lottery content area ends here -->
-	
+<?php
+	} else {
+?>
+	<!-- Lottery header starts here -->
+	<div>
+		<h1 class="flt">The Tab's on us</h1>
+		<div class="clear"></div>
+	</div>
+	<h2>No deals available for this week in any of the cities.</h2>
+	<!-- Lottery header ends here -->
+<?php
+	}
+?>
 	<?php
 		if (count($LOTTRIES['results']) > 1) {
 	?>

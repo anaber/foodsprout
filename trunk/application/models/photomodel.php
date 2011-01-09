@@ -419,7 +419,7 @@ class PhotoModel extends Model{
 		$thumbHeight = $arr[1];
 		
 		
-		$query = 'INSERT INTO lottery_photo (photo_id, ';
+		$query = 'INSERT INTO lottery_photo (lottery_photo_id, ';
         if (!empty($lotteryId)) {
             $query .= 'lottery_id';
         } 
@@ -565,7 +565,7 @@ class PhotoModel extends Model{
 				                $return = false;
 				            }
 						} else {
-							$query = 'INSERT INTO lottery_photo (photo_id, ';
+							$query = 'INSERT INTO lottery_photo (lottery_photo_id, ';
 				            if (!empty($lotteryId)) {
 				                $query .= 'lottery_id';
 				            } 
@@ -621,7 +621,7 @@ class PhotoModel extends Model{
     
     function getLotteryPhotos($lotteryId) {
     	$query = "SELECT * FROM lottery_photo WHERE lottery_id = " . $lotteryId .
-				" ORDER BY photo_id DESC";
+				" ORDER BY lottery_photo_id DESC";
 		
 		log_message('debug', "PhotoModel.getLotteryPhotos : " . $query);
 		$result = $this->db->query($query);
@@ -633,7 +633,7 @@ class PhotoModel extends Model{
 			$this->load->library('PhotoLib');
 			unset($this->PhotoLib);
 			$path = '/uploads' . $row['path'];
-			$this->PhotoLib->photoId = $row['photo_id'];
+			$this->PhotoLib->photoId = $row['lottery_photo_id'];
 			$this->PhotoLib->path = $path;
 			
 			$this->PhotoLib->thumbPhoto = $path . 'thumb/' . $row['thumb_photo_name'];

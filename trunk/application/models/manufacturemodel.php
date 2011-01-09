@@ -738,7 +738,7 @@ class ManufactureModel extends Model{
 	}
 	function customURL($manufactureId){
 		
-		$results = $this->db->get_where("custom_url", array('manufacture_id'=>$manufactureId));
+		$results = $this->db->get_where("custom_url", array('producer_id'=>$manufactureId));
 		
 		if($results->num_rows() > 0){
 			
