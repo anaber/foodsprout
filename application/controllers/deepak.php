@@ -10,15 +10,7 @@ class Deepak extends Controller{
 	
 	function index(){
 		
-		
-		echo 'Trigger below mentioned SQL query<br />-------------------------------------------<br />';
-		echo 'ALTER TABLE `custom_url` CHANGE `company_id` `producer_id` INT( 11 ) NULL DEFAULT NULL;<br />';
-		echo 'ALTER TABLE `custom_url` ADD `address_id` INT NOT NULL AFTER `producer_id`;<br />';
-		echo 'ALTER TABLE `custom_url` ADD `farmers_market_id` INT NULL AFTER `restaurant_id`;<br />';
-		echo '<br />-------------------------------------------<br />';
-		
-		
-		echo '<strong>Farms</strong><br />';
+		echo '<strong>All Producers</strong><br />';
 		echo '<a href="/deepak/create_temp_table" target="_blank">Step1: Create temp tables</a> <br />';
 		echo '<a href="/deepak/dump_data_to_temp_custom_url" target="_blank">Step2: Dump all address data to producer table</a> <br />';
 		echo '<a href="/deepak/verify_num_records" target="_blank">Step3: Verify Number of records from address and temp_custom_url table</a> <br />';
@@ -30,29 +22,19 @@ class Deepak extends Controller{
 	
 	//custom url script 
 	function create_temp_table(){
-		
-		
 		$query = "CREATE TABLE IF NOT EXISTS `temp_custom_url` (
 				  `custom_url_id` int(11) NOT NULL AUTO_INCREMENT,
 				  `producer_id` int(11) NOT NULL,
 				  `producer` varchar(255) NOT NULL,
+				  `producer_slug` varchar(255) DEFAULT NULL,
 				  `address_id` int(11) NOT NULL,
 				  `city` varchar(95) NOT NULL,
 				  `city_counter` int(11) NULL,
 				  `custom_url` varchar(255) DEFAULT NULL,
-				  `farm_id` int(11) DEFAULT NULL,
-				  `manufacture_id` int(11) DEFAULT NULL,
-				  `distributor_id` int(11) DEFAULT NULL,
-				  `restaurant_id` int(11) DEFAULT NULL,
-				  `farmers_market_id` int(11) DEFAULT NULL,
 				  PRIMARY KEY (`custom_url_id`),
 				  KEY `fk_address_custom_url1` (`custom_url`),
-				  KEY `fk_address_restaurant1` (`restaurant_id`),
-				  KEY `fk_address_farm1` (`farm_id`),
-				  KEY `fk_address_distributor1` (`distributor_id`),
-				  KEY `fk_address_farmers_market1` (`farmers_market_id`),
-				  KEY `fk_address_manufacture1` (`manufacture_id`),
-				  KEY `producer_id` (`producer_id`)
+				  KEY `fk_producer_id` (`producer_id`),
+				  KEY `fk_producer_slug` (`producer_slug`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=latin1;"; 
 		$this->db->query($query); 
 		echo 'Table temp_custom_url created'; 
@@ -61,29 +43,22 @@ class Deepak extends Controller{
 	
 	
 	function drop_temp_table(){
-		
 		$query = "DROP TABLE `temp_custom_url`";
 		$this->db->query($query); 
 		echo 'Table temp_custom_url droped<br />'; 
-		
 	}
 	
 	function dump_data_to_temp_custom_url(){
-		
 		$query = "
-				insert into temp_custom_url (producer_id, producer, address_id, city, city_counter, custom_url, farm_id, manufacture_id, distributor_id, restaurant_id, farmers_market_id)
+				insert into temp_custom_url (producer_id, producer, producer_slug, address_id, city, city_counter, custom_url)
 				SELECT
 				address.producer_id,
 				producer.producer,
+				NULL,
 				address.address_id,
 				address.city,
 				NULL,
-				NULL,
-				address.farm_id,
-				address.manufacture_id,
-				address.distributor_id,
-				address.restaurant_id,
-				address.farmers_market_id
+				NULL
 				FROM
 				address ,
 				producer

@@ -576,6 +576,18 @@ UPDATE producer SET is_farmers_market=1 WHERE farmers_market_id IS NOT NULL;
 -- UPDATE temp_custom_url SET custom_url = NULL;
 
 -- -----------------------------------------------------
+-- Alter Custom URL
+-- ----------------------------------------------------- 
+ALTER TABLE `custom_url` ADD `address_id` INT NOT NULL AFTER `producer_id`;
+ALTER TABLE `custom_url` ADD `city` VARCHAR( 255 ) NULL AFTER `address_id`;
+ALTER TABLE `custom_url` ADD `city_counter` INT DEFAULT NULL AFTER `city`;
+
+-- ALTER TABLE `temp_custom_url` CHANGE `custom_url` `custom_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
+-- ALTER TABLE `temp_custom_url` ADD INDEX `fk_producer_slug` ( `producer_slug` ); 
+-- UPDATE temp_custom_url SET custom_url = NULL;
+
+
+-- -----------------------------------------------------
 -- Delate all the old columns and data
 -- -----------------------------------------------------
 
@@ -641,13 +653,14 @@ ALTER TABLE `address` DROP COLUMN `company_id` , DROP COLUMN `distributor_id` , 
 , DROP INDEX `fk_address_manufacture1` 
 , DROP INDEX `fk_address_restaurant1` ;
 
+-- These fields can be DROPPED before running script
 -- To be run after custom_url PHP script is run
--- ALTER TABLE `custom_url` DROP COLUMN `company_id` , DROP COLUMN `distributor_id` , DROP COLUMN `farm_id` , DROP COLUMN `manufacture_id` , DROP COLUMN `restaurant_id` 
--- , DROP INDEX `fk_custom_url_company1` 
--- , DROP INDEX `fk_custom_url_distributor1` 
--- , DROP INDEX `fk_custom_url_farm1` 
--- , DROP INDEX `fk_custom_url_manufacture1` 
--- , DROP INDEX `fk_custom_url_restaurant1` ;
+ALTER TABLE `custom_url` DROP COLUMN `company_id` , DROP COLUMN `distributor_id` , DROP COLUMN `farm_id` , DROP COLUMN `manufacture_id` , DROP COLUMN `restaurant_id` 
+, DROP INDEX `fk_custom_url_company1` 
+, DROP INDEX `fk_custom_url_distributor1` 
+, DROP INDEX `fk_custom_url_farm1` 
+, DROP INDEX `fk_custom_url_manufacture1` 
+, DROP INDEX `fk_custom_url_restaurant1` ;
 
 ALTER TABLE `producer` DROP COLUMN `distributor_id` , DROP COLUMN `farmers_market_id` , DROP COLUMN `farm_id` , DROP COLUMN `manufacture_id` , DROP COLUMN `restaurant_chain_id` , DROP COLUMN `restaurant_id` 
 , DROP INDEX `chain_id` 
