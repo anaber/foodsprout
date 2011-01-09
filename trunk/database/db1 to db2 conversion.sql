@@ -582,11 +582,6 @@ ALTER TABLE `custom_url` ADD `address_id` INT NOT NULL AFTER `producer_id`;
 ALTER TABLE `custom_url` ADD `city` VARCHAR( 255 ) NULL AFTER `address_id`;
 ALTER TABLE `custom_url` ADD `city_counter` INT DEFAULT NULL AFTER `city`;
 
--- ALTER TABLE `temp_custom_url` CHANGE `custom_url` `custom_url` VARCHAR( 255 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL ;
--- ALTER TABLE `temp_custom_url` ADD INDEX `fk_producer_slug` ( `producer_slug` ); 
--- UPDATE temp_custom_url SET custom_url = NULL;
-
-
 -- -----------------------------------------------------
 -- Delate all the old columns and data
 -- -----------------------------------------------------
