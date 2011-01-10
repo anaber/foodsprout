@@ -174,8 +174,15 @@ function drawAddItem() {
 function addCompanyResult(company, count) {
 	
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:220px;font-size:13px;"><a href="/' + company.type + '/view/' + company.companyId + '" style="font-size:13px;text-decoration:none;">'+ company.companyName +'</a><br><b>Type:</b> '+ company.type + '</div>' +
+	'<div style="overflow:auto; padding:5px;">';
+	
+	if (company.customUrl) {
+		html += '	<div style="float:left; width:220px;font-size:13px;"><a href="/' + company.type + '/' + company.customUrl + '" style="font-size:13px;text-decoration:none;">'+ company.companyName +'</a><br><b>Type:</b> '+ company.type + '</div>';
+	} else {
+		html += '	<div style="float:left; width:220px;font-size:13px;"><a href="/' + company.type + '/view/' + company.companyId + '" style="font-size:13px;text-decoration:none;">'+ company.companyName +'</a><br><b>Type:</b> '+ company.type + '</div>';
+	}
+	
+	html +=
 	'	<div style="float:left; width:60px;font-size:13px;"><b>Address: </b></div><div style="float:left; width:240px;font-size:13px;">';
 	
 	$.each(company.addresses, function(j, address) {

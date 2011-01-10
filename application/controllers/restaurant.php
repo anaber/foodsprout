@@ -77,26 +77,16 @@ class Restaurant extends Controller {
 	}
 
 	//restaurant custom url
-
-	function customURL($customUrl){
-		
+	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
-
-		if($this->CustomUrlModel->check($customUrl)){
-			//check if is restaurant custom url
-			if($this->CustomUrlModel->isRestaurant($customUrl)){
-				//echo $this->CustomUrlModel->urlID('restaurant_id');
-				$this->view($this->CustomUrlModel->urlID('restaurant_id'));
-			}else{
-				
-				echo 'custom error page for non restaurants';
-				
-			}
-		}else{
+		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant');
+		
+		if ($producerId) {
+			$this->view($producerId);
+		} else {
 			show_404('page');
 		}
 	}
-
 
 	// View the information on a single restaurant
 	function view($restaurant_id = "") {

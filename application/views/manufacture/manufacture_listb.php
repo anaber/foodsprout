@@ -15,7 +15,13 @@
 			
 			echo '<div style="padding:0px; margin-right:10px; padding-bottom:10px;">';
 			echo '<div class="productlisth">';
-			echo anchor('/manufacture/view/'.$r->manufactureId, $r->manufactureName).'</div>';
+			
+			if ($r->customUrl) {
+				echo anchor('/manufacture/'.$r->customUrl, $r->manufactureName).'</div>';
+			} else {
+				echo anchor('/manufacture/view/'.$r->manufactureId, $r->manufactureName).'</div>';
+			}
+			
 			echo '<div class="productlist_type">';
 			echo '<strong>Categories:</strong> '.$r->manufactureType;
 			echo '</div>';

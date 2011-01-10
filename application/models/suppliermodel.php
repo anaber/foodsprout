@@ -855,10 +855,12 @@ class SupplierModel extends Model{
 			
 			$this->supplierLib->supplierName = $row['producer'];
 			$this->supplierLib->supplierReferenceId = $row['suppliee'];
-				
+			
 			$addresses = $CI->AddressModel->getAddressForProducer($row['supplier']);
 			$this->supplierLib->addresses = $addresses;
 			
+			$this->supplierLib->customUrl = '';
+			$firstAddressId = '';
 			
 			if ( $row['is_restaurant'] == '1' ) {
 				$this->supplierLib->supplierType = 'restaurant';
@@ -869,6 +871,18 @@ class SupplierModel extends Model{
 			} else if ( $row['is_distributor'] == '1' ) {
 				$this->supplierLib->supplierType = 'distributor';
 			}
+			
+			foreach ($addresses as $key => $address) {
+				$firstAddressId = $address->addressId;
+				break;
+			}
+			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['supplier'], $firstAddressId);
+				$this->supplierLib->customUrl = $customUrl;
+			}
+			
 			
 			$suppliers[] = $this->supplierLib;
 			unset($this->supplierLib);
@@ -1631,7 +1645,39 @@ class SupplierModel extends Model{
 			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], '', '', '');
 			$this->companyLib->addresses = $addresses;
 			
-			$this->companyLib->customURL = $this->customURL($row['producer_id']);
+			$this->companyLib->customUrl = '';
+			$firstAddressId = '';
+			
+			if ( $row['is_restaurant'] == '1' ) {
+				$this->companyLib->type = 'restaurant';
+				
+			} else if ( $row['is_farm'] == '1' ) {
+				$this->companyLib->type = 'farm';
+				
+			} else if ( $row['is_manufacture'] == '1' ) {
+				$this->companyLib->type = 'manufacture';
+				
+			} else if ( $row['is_distributor'] == '1' ) {
+				$this->companyLib->type = 'distributor';
+				
+			} else if ( $row['is_farmers_market'] == '1' ) {
+				$this->companyLib->type = 'farmersmarket';
+				
+			} else if ( $row['is_restaurant_chain'] == '1' ) {
+				$this->companyLib->type = 'chain';
+				$this->companyLib->addresses = '';
+			} 
+			
+			foreach ($addresses as $key => $address) {
+				$firstAddressId = $address->addressId;
+				break;
+			}
+			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['producer_id'], $firstAddressId);
+				$this->companyLib->customUrl = $customUrl;
+			}
 			
 			$companies[] = $this->companyLib;
 			unset($this->companyLib);
@@ -1653,21 +1699,6 @@ class SupplierModel extends Model{
 	    
 	    return $arr;
 	}
-	
-		
-	function customURL($producerId){
-		
-		$results = $this->db->get_where("custom_url", array('producer_id'=>$producerId));
-		
-		if($results->num_rows() > 0){
-			
-			$results = $results->result_array();
-
-			return 	$results[0]['custom_url'];
-			
-		}
-	}
-	
 	
 	function getQueueSuppliersJson() {
 		global $PER_PAGE;

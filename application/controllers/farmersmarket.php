@@ -88,27 +88,16 @@ class FarmersMarket extends Controller {
 	
 	
 	//farm custom url
-
-	function customURL($customUrl){
-                                               		
+	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
-     
-		if($this->CustomUrlModel->check($customUrl)){
-			//check if is restaurant custom url
-			if($this->CustomUrlModel->isFarmersMarket($customUrl)){
-				//echo $this->CustomUrlModel->urlID('restaurant_id');
-				$this->view($this->CustomUrlModel->urlID('farmers_market_id'));
-			}else{
-				//if custom url is found but is not farmers market
-				show_404('page');
-			}
-		}else{
+		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'farmers_market');
+		
+		if ($producerId) {
+			$this->view($producerId);
+		} else {
 			show_404('page');
 		}
 	}
-
-	
-	
 	
 	// View the information on a single restaurant
 	function view($farmersMarketId='') {

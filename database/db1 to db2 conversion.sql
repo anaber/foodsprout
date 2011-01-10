@@ -581,6 +581,7 @@ UPDATE producer SET is_farmers_market=1 WHERE farmers_market_id IS NOT NULL;
 ALTER TABLE `custom_url` ADD `address_id` INT DEFAULT NULL AFTER `producer_id`;
 ALTER TABLE `custom_url` ADD `city` VARCHAR( 255 ) DEFAULT NULL AFTER `address_id`;
 ALTER TABLE `custom_url` ADD `city_counter` INT DEFAULT NULL AFTER `city`;
+ALTER TABLE `custom_url` ADD INDEX `fk_custom_url_custom_url1` (`custom_url` ASC);
 
 -- -----------------------------------------------------
 -- Delate all the old columns and data

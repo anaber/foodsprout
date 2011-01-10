@@ -366,7 +366,9 @@ class RestaurantModel extends Model{
 			$cuisines = $CI->ProducerCategoryModel->getCuisinesForRestaurant( $row['producer_id']);
 			$this->RestaurantLib->cuisines = $cuisines;
 			
-
+			$this->RestaurantLib->customUrl = '';
+			$firstAddressId = '';
+			
 			foreach ($addresses as $key => $address) {
 				$arrLatLng = array();
 
@@ -387,7 +389,15 @@ class RestaurantModel extends Model{
 				$arrLatLng['id'] = $address->addressId;
 				$geocodeArray[] = $arrLatLng;
 
-
+				if ($firstAddressId == '') {
+					$firstAddressId = $address->addressId;
+				}
+			}
+			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['producer_id'], $firstAddressId);
+				$this->RestaurantLib->customUrl = $customUrl;
 			}
 
 			$restaurants[] = $this->RestaurantLib;

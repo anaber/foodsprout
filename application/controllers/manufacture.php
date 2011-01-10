@@ -100,22 +100,14 @@ class Manufacture extends Controller {
 		echo json_encode($manufacture);
 	}
 	
-	//farm custom url
-
-	function customURL($customUrl){
-                                               		
+	//manufacture custom url
+	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
-     
-		if($this->CustomUrlModel->check($customUrl)){
-			//check if is restaurant custom url
-			if($this->CustomUrlModel->isManufacture($customUrl)){
-				//echo $this->CustomUrlModel->urlID('restaurant_id');
-				$this->view($this->CustomUrlModel->urlID('producer_id'));
-			}else{
-				//if custom url is found but is not farmers market
-				show_404('page');
-			}
-		}else{
+		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'manufacture');
+		
+		if ($producerId) {
+			$this->view($producerId);
+		} else {
 			show_404('page');
 		}
 	}
