@@ -2,95 +2,34 @@
 
 class CustomUrlModel extends Model{
 	
-	private $customUrlResource; 
-	
-	function check($customUrl){
+	function getCustomUrlForProducerAddress($producer_id, $address_id) {
+		$query = 'SELECT * ' .
+				' FROM custom_url ' .
+				' WHERE producer_id = ' . $producer_id .
+				' AND address_id = ' . $address_id;
+		$result = $this->db->query($query);
 		
-		$results = $this->db->query("select * from custom_url where `custom_url` = '".$customUrl."' limit 1"); 
-		
-		
-		if($results->num_rows() > 0 ){
-			
-			$this->customUrlResource = $results;
-			return true;
-			
-		}else{
-			
-			return false;
-			
+		if ($result->num_rows() > 0) {
+			$row = $result->row();
+			return $row->custom_url;
+		} else {
+			return '';
 		}
-		
 	}
 	
-	
-	
-	function isFarmersMarket(){
-		$result  = $this->customUrlResource->result_array();
-
-		if($result[0]['farmers_market_id'] != ""){
-			
-			return true;
-			
-		}else{
-			
-			return false;
-			
+	function getProducerIdFromCustomUrl($customUrl, $producer_type) {
+		$query = 'SELECT custom_url.producer_id ' .
+				' FROM custom_url, producer ' .
+				' WHERE custom_url.custom_url = "' . $customUrl . '"' .
+				' AND custom_url.producer_id = producer.producer_id ' .
+				' AND producer.is_' . $producer_type . ' = 1';
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() > 0) {
+			$row = $result->row();
+			return $row->producer_id;
+		} else {
+			return '';
 		}
-		
-	}
-	
-	function isFarm(){
-		$result  = $this->customUrlResource->result_array();
-
-		if($result[0]['farm_id'] != ""){
-			
-			return true;
-			
-		}else{
-			
-			return false;
-			
-		}
-		
-	}
-	
-	
-	function isManufacture(){
-		$result  = $this->customUrlResource->result_array();
-
-		if($result[0]['manufacture_id'] != ""){
-			
-			return true;
-			
-		}else{
-			
-			return false;
-			
-		}
-		
-	}
-	
-	
-	function isRestaurant(){
-		$result  = $this->customUrlResource->result_array();
-
-		if($result[0]['restaurant_id'] != ""){
-			
-			return true;
-			
-		}else{
-			
-			return false;
-			
-		}
-		
-	}
-	
-	function urlID($producerType){
-		
-		$result  = $this->customUrlResource->result_array();
-		
-		return $result[0][$producerType];
-
 	}
 }

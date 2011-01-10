@@ -460,6 +460,9 @@ class FarmersMarketModel extends Model{
 			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], '', '', '');
 			$this->FarmersMarketLib->addresses = $addresses;
 			
+			$this->FarmersMarketLib->customUrl = '';
+			$firstAddressId = '';
+			
 			foreach ($addresses as $key => $address) {
 				$arrLatLng = array();
 				
@@ -474,8 +477,17 @@ class FarmersMarketModel extends Model{
 				$arrLatLng['farmersMarketName'] = $this->FarmersMarketLib->farmersMarketName;
 				$arrLatLng['id'] = $address->addressId;
 				$geocodeArray[] = $arrLatLng;
+				
+				if ($firstAddressId == '') {
+					$firstAddressId = $address->addressId;
+				}
 			}
 			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['producer_id'], $firstAddressId);
+				$this->FarmersMarketLib->customUrl = $customUrl;
+			}
 			
 			$farms[] = $this->FarmersMarketLib;
 			unset($this->FarmersMarketLib);

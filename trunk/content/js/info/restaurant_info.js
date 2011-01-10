@@ -178,8 +178,16 @@ function drawAddItem() {
 
 function addSupplierResult(supplier, count) {
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>' +
+	'<div style="overflow:auto; padding:5px;">';
+	
+	if (supplier.customUrl) {
+		html += '	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/' + supplier.customUrl + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>';
+	} else {
+		html += '	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>';
+	}
+	
+
+	html +=
 	'	<div style="float:left;width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left;width:240px;font-size:13px;">';
 	
 	$.each(supplier.addresses, function(j, address) {

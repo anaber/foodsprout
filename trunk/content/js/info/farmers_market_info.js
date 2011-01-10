@@ -171,21 +171,16 @@ function drawAddItem() {
 }
 
 function addSupplierResult(supplier, count) {
-	/*
-	var html = '';
-	html +=	'<div class="menuitem">';
-	
-	supplierType = supplier.supplierType
-	supplierType = supplierType.substring(0, 1);
-
-	html +=	'	<div class="menuitemname">' + supplier.supplierName + ' (' + supplierType.toUpperCase() + ')' + '</div>';
-	html +=	'</div>';
-	
-	*/
-	
 	var html =
-	'<div style="overflow:auto; padding:5px;">' +
-	'	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br>Type: '+ supplier.supplierType + '</div>' +
+	'<div style="overflow:auto; padding:5px;">';
+	
+	if (supplier.customUrl) {
+		html += '	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/' + supplier.customUrl + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br>Type: '+ supplier.supplierType + '</div>';
+	} else {
+		html += '	<div style="float:left; width:220px;font-size:13px;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br>Type: '+ supplier.supplierType + '</div>';
+	}
+	
+	html +=
 	'	<div style="float:right; width:300px;font-size:13px;">Address:<br />';
 	
 	$.each(supplier.addresses, function(j, address) {

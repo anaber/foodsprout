@@ -48,22 +48,54 @@ $route['^restaurant/ajaxGetAllCuisine'] 				= "restaurant/ajaxGetAllCuisine";
 $route['^restaurant/ajaxGetAllRestaurantType'] 			= "restaurant/ajaxGetAllRestaurantType";
 $route['^restaurant/ajaxGetDistinctUsedCuisine'] 		= "restaurant/ajaxGetDistinctUsedCuisine";
 $route['^restaurant/ajaxGetDistinctUsedRestaurantType'] = "restaurant/ajaxGetDistinctUsedRestaurantType";
+$route['^restaurant/ajaxSearchRestaurantComments'] 		= "restaurant/ajaxSearchRestaurantComments";
 $route['^restaurant/ajaxSearchRestaurantInfo'] 			= "restaurant/ajaxSearchRestaurantInfo";
 $route['^restaurant/ajaxSearchRestaurantMenus'] 		= "restaurant/ajaxSearchRestaurantMenus";
+$route['^restaurant/ajaxSearchRestaurantPhotos'] 		= "restaurant/ajaxSearchRestaurantPhotos";
 $route['^restaurant/ajaxSearchRestaurants'] 			= "restaurant/ajaxSearchRestaurants";
 $route['^restaurant/ajaxSearchRestaurantSuppliers'] 	= "restaurant/ajaxSearchRestaurantSuppliers";
 $route['^restaurant/map'] 								= "restaurant/map";
 $route['^restaurant/view/(:num)'] 						= "restaurant/view/$1";
 $route['^restaurant'] 									= "restaurant/index";
-//$route['^restaurant/(:any)'] 							= "restaurant/city/$1";
 $route['^sustainable/(:any)'] 							= "restaurant/city/$1";
-$route['^chain/page(:num)']								= "chain/index/$1";
-$route['^manufacture/page(:num)']						= "manufacture/index/$1";
+$route['^restaurant/(:any)']							= "restaurant/customUrl/$1";
 
-$route['^restaurant/view-(:any)']						= "restaurant/customURL/$1";
-$route['^farm/view-(:any)']								= "farm/customURL/$1";
-$route['^farmersmarket/view-(:any)']					= "farmersmarket/customURL/$1";
-$route['^manufacture/view-(:any)']						= "manufacture/customURL/$1";
+// Farm
+$route['^farm/ajaxGetAllFarmType'] 						= "farm/ajaxGetAllFarmType";
+$route['^farm/ajaxGetDistinctUsedFarmType'] 			= "farm/ajaxGetDistinctUsedFarmType";
+$route['^farm/ajaxSearchFarmComments'] 					= "farm/ajaxSearchFarmComments";
+$route['^farm/ajaxSearchFarmCompanies'] 				= "farm/ajaxSearchFarmCompanies";
+$route['^farm/ajaxSearchFarmInfo'] 						= "farm/ajaxSearchFarmInfo";
+$route['^farm/ajaxSearchFarmPhotos'] 					= "farm/ajaxSearchFarmPhotos";
+$route['^farm/ajaxSearchFarms'] 						= "farm/ajaxSearchFarms";
+$route['^farm/ajaxSearchFarmSuppliee'] 					= "farm/ajaxSearchFarmSuppliee";
+$route['^farm/view/(:num)'] 							= "farm/view/$1";
+$route['^farm/(:any)']									= "farm/customUrl/$1";
+
+// Farmers Market
+$route['^farmersmarket/ajaxSearchFarmersMarket'] 				= "farmersmarket/ajaxSearchFarmersMarket";
+$route['^farmersmarket/ajaxSearchFarmersMarketComments'] 		= "farmersmarket/ajaxSearchFarmersMarketComments";
+$route['^farmersmarket/ajaxSearchFarmersMarketInfo'] 			= "farmersmarket/ajaxSearchFarmersMarketInfo";
+$route['^farmersmarket/ajaxSearchFarmersMarketPhotos'] 			= "farmersmarket/ajaxSearchFarmersMarketPhotos";
+$route['^farmersmarket/ajaxSearchFarmersMarketSuppliers'] 		= "farmersmarket/ajaxSearchFarmersMarketSuppliers";
+$route['^farmersmarket/view/(:num)'] 							= "farmersmarket/view/$1";
+$route['^farmersmarket/(:any)']									= "farmersmarket/customUrl/$1";
+
+// Manufacture
+$route['^manufacture/page(:num)']							= "manufacture/index/$1";
+$route['^manufacture/ajaxSearchManufactureComments'] 		= "manufacture/ajaxSearchManufactureComments";
+$route['^manufacture/ajaxSearchManufactureInfo'] 			= "manufacture/ajaxSearchManufactureInfo";
+$route['^manufacture/ajaxSearchManufactureMenus'] 			= "manufacture/ajaxSearchManufactureMenus";
+$route['^manufacture/ajaxSearchManufacturePhotos'] 			= "manufacture/ajaxSearchManufacturePhotos";
+$route['^manufacture/ajaxSearchManufactures'] 				= "manufacture/ajaxSearchManufactures";
+$route['^manufacture/ajaxSearchManufactureSuppliers'] 		= "manufacture/ajaxSearchManufactureSuppliers";
+$route['^manufacture/get_manufactutes_for_auto_suggest'] 	= "manufacture/get_manufactutes_for_auto_suggest";
+$route['^manufacture/searchManufactures'] 					= "manufacture/searchManufactures";
+$route['^manufacture/view/(:num)'] 							= "manufacture/view/$1";
+$route['^manufacture/(:any)']								= "manufacture/customUrl/$1";
+
+// Chain
+$route['^chain/page(:num)']								= "chain/index/$1";
  
 // ADMINCP
 $route['^admincp'] 										= "admincp/dashboard";

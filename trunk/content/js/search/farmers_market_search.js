@@ -285,7 +285,13 @@ function drawNumRecords(params) {
 function addResult(farmersMarket, i) {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; width:610px; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;"><a href="/farmersmarket/view/' + farmersMarket.farmersMarketId + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
+	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;">';
+	
+	if (farmersMarket.customUrl) {
+		html += '<a href="/farmersmarket/' + farmersMarket.customUrl + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
+	} else {
+		html += '<a href="/farmersmarket/view/' + farmersMarket.farmersMarketId + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
+	}
 	
 	html += '</div>' + 
 	'	<div style="float:left; width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left; width:340px;font-size:13px;">';

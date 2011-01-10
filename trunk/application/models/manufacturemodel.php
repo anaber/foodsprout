@@ -701,7 +701,6 @@ class ManufactureModel extends Model{
 			unset($this->ManufactureLib);
 			
 			$this->ManufactureLib->manufactureId = $row['producer_id'];
-			$this->ManufactureLib->customURL = $this->customURL($row['producer_id']);
 			$this->ManufactureLib->manufactureName = $row['producer'];
 			$this->ManufactureLib->manufactureTypeId = $row['producer_category_id'];
 			$this->ManufactureLib->manufactureType = $row['producer_category'];
@@ -714,6 +713,20 @@ class ManufactureModel extends Model{
 			$CI->load->model('AddressModel','',true);
 			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id']);
 			$this->ManufactureLib->addresses = $addresses;
+			
+			$this->ManufactureLib->customUrl = '';
+			$firstAddressId = '';
+			
+			foreach ($addresses as $key => $address) {
+				$firstAddressId = $address->addressId;
+				break;
+			}
+			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['producer_id'], $firstAddressId);
+				$this->ManufactureLib->customUrl = $customUrl;
+			}
 			
 			$manufactures[] = $this->ManufactureLib;
 			unset($this->ManufactureLib);
@@ -735,22 +748,6 @@ class ManufactureModel extends Model{
 	    );
 	    
 	    return $arr;
-	}
-	function customURL($manufactureId){
-		
-		$results = $this->db->get_where("custom_url", array('producer_id'=>$manufactureId));
-		
-		if($results->num_rows() > 0){
-			
-			$results = $results->result_array();
-
-			return 	$results[0]['custom_url'];
-			
-		}else{
-			
-			return "null";
-			
-		}
 	}
 	
 	// Get all the manufacture's products from the database
