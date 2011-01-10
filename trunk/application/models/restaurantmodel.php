@@ -823,7 +823,7 @@ class RestaurantModel extends Model{
 	// Pulls the data from the database for a specific restaurant
 	function getRestaurantChainFromId($restaurantChainId) {
 
-		$query = "SELECT * FROM restaurant_chain WHERE restaurant_chain_id = " . $restaurantChainId;
+		$query = "SELECT * FROM producer WHERE producer_id = " . $restaurantChainId;
 
 		log_message('debug', "RestaurantModel.getRestaurantChainFromId : " . $query);
 		$result = $this->db->query($query);
@@ -834,8 +834,8 @@ class RestaurantModel extends Model{
 
 		$row = $result->row();
 
-		$this->restaurantChainLib->restaurantChainId = $row->restaurant_chain_id;
-		$this->restaurantChainLib->restaurantChain = $row->restaurant_chain;
+		$this->restaurantChainLib->restaurantChainId = $row->producer_id;
+		$this->restaurantChainLib->restaurantChain = $row->producer;
 
 		return $this->restaurantChainLib;
 	}

@@ -28,11 +28,25 @@ class Chain extends Controller {
 		} else {
 			$page = 0;
 		}
-		$perpage = 60;
+		
+		if($this->input->get('pp'))
+		{
+			$number_perpage = $this->input->get('pp');
+			if($number_perpage > 60)
+			{
+				$perpage = 60;
+			}
+			else{
+				$perpage = $number_perpage;
+			}
+		}
+		else{
+			$perpage = 60;
+		}
 		
 		$this->load->model('RestaurantChainModel');
-		$chains = $this->RestaurantChainModel->getRestaurantChains($page,$perpage);
-
+		$chains = $this->RestaurantChainModel->getRestaurantChains($page, $perpage);
+		
 		// Views to include in the data array
 		$data['CENTER'] = array(
 				'list' => '/restaurant/fastfood_list',
@@ -82,7 +96,7 @@ class Chain extends Controller {
 		$restaurantChainId = $this->uri->segment(3);
 		
 		$this->load->model('PhotoModel');
-		$thumbPhotos = $this->PhotoModel->getThumbPhotos('restaurant_chain', $restaurantChainId);
+		$thumbPhotos = $this->PhotoModel->getThumbPhotos('producer', $restaurantChainId);
 		
 		// Getting information from models
 		$this->load->model('RestaurantModel');
@@ -162,7 +176,7 @@ class Chain extends Controller {
 	function ajaxSearchRestaurantChainSuppliers() {
 		$q = $this->input->post('q');
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForCompanyJson('', '', '', '', $q, '');
+		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q);
 
 		echo json_encode($suppliers);
 	}

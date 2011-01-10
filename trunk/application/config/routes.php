@@ -95,7 +95,16 @@ $route['^manufacture/view/(:num)'] 							= "manufacture/view/$1";
 $route['^manufacture/(:any)']								= "manufacture/customUrl/$1";
 
 // Chain
+$route['^chain/ajaxSearchRestaurantChainComments'] 		= "chain/ajaxSearchRestaurantChainComments";
+$route['^chain/ajaxSearchRestaurantChainMenus'] 		= "chain/ajaxSearchRestaurantChainMenus";
+$route['^chain/ajaxSearchRestaurantChainPhotos'] 		= "chain/ajaxSearchRestaurantChainPhotos";
+$route['^chain/ajaxSearchRestaurantChains'] 			= "chain/ajaxSearchRestaurantChains";
+$route['^chain/ajaxSearchRestaurantChainSuppliers'] 	= "chain/ajaxSearchRestaurantChainSuppliers";
+$route['^chain/fastfood'] 								= "chain/fastfood";
+$route['^chain/view/(:num)'] 							= "chain/view/$1";
 $route['^chain/page(:num)']								= "chain/index/$1";
+$route['^chain/(:any)']									= "farm/customUrl/$1";
+
  
 // ADMINCP
 $route['^admincp'] 										= "admincp/dashboard";

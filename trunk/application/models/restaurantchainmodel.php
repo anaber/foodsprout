@@ -339,6 +339,11 @@ class RestaurantChainModel extends Model{
 		$pp = $perpage; // Per Page
 		$sort = $this->input->post('sort');
 		$order = $this->input->post('order');
+		$filter = $this->input->post('f');
+		
+		if ($filter == false) {
+			$filter = '';
+		}
 		
 		$q = $this->input->post('q');
 		
@@ -350,12 +355,13 @@ class RestaurantChainModel extends Model{
 		$page = 0;
 		
 		$base_query = 'SELECT *' .
-				' FROM restaurant_chain';
+				' FROM producer';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM restaurant_chain';
+				' FROM producer';
 		
-		$where = ' WHERE restaurant_chain.status = \'live\' ';
+		$where = ' WHERE is_restaurant_chain = 1' .
+				' AND producer.status = \'live\' ';
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -368,8 +374,8 @@ class RestaurantChainModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY restaurant_chain';
-			$sort = 'restaurant_chain';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -409,14 +415,29 @@ class RestaurantChainModel extends Model{
 			$this->load->library('RestaurantChainLib');
 			unset($this->RestaurantChainLib);
 			
-			$this->RestaurantChainLib->restaurantChainId = $row['restaurant_chain_id'];
-			$this->RestaurantChainLib->restaurantChain = $row['restaurant_chain'];
+			$this->RestaurantChainLib->restaurantChainId = $row['producer_id'];
+			$this->RestaurantChainLib->restaurantChain = $row['producer'];
 			
 			$restaurantChains[] = $this->RestaurantChainLib;
 			unset($this->RestaurantChainLib);
 		}
 	    
-	    return $restaurantChains;
+	    if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE_2 = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE_2);
+		$first = 0;
+		$last = $totalPages - 1;
+		
+		
+		$params = requestToParams2($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, '');
+		$arr = array(
+			'results'    => $restaurantChains,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
 	}
 	
 	// Get Restaurant Chain Menu
@@ -466,7 +487,7 @@ class RestaurantChainModel extends Model{
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM product';
 		
-		$where = ' WHERE restaurant_chain_id  = ' . $q . 
+		$where = ' WHERE producer_id  = ' . $q . 
 				 ' AND product.status = \'live\' ';
 		
 		$base_query_count = $base_query_count . $where;
