@@ -103,7 +103,7 @@ $route['^chain/ajaxSearchRestaurantChainSuppliers'] 	= "chain/ajaxSearchRestaura
 $route['^chain/fastfood'] 								= "chain/fastfood";
 $route['^chain/view/(:num)'] 							= "chain/view/$1";
 $route['^chain/page(:num)']								= "chain/index/$1";
-$route['^chain/(:any)']									= "farm/customUrl/$1";
+$route['^chain/(:any)']									= "chain/customUrl/$1";
 
  
 // ADMINCP

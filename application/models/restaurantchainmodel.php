@@ -335,6 +335,8 @@ class RestaurantChainModel extends Model{
 	function getRestaurantChains($page,$perpage) {
 		global $PER_PAGE_2;
 		
+		$CI =& get_instance();
+		
 		$p = $page; // Page
 		$pp = $perpage; // Per Page
 		$sort = $this->input->post('sort');
@@ -417,6 +419,11 @@ class RestaurantChainModel extends Model{
 			
 			$this->RestaurantChainLib->restaurantChainId = $row['producer_id'];
 			$this->RestaurantChainLib->restaurantChain = $row['producer'];
+			
+			$CI->load->model('CustomUrlModel','',true);
+			$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['producer_id'], '');
+			$this->RestaurantChainLib->customUrl = $customUrl;
+			
 			
 			$restaurantChains[] = $this->RestaurantChainLib;
 			unset($this->RestaurantChainLib);

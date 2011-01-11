@@ -88,12 +88,14 @@ class Chain extends Controller {
 	}
 
 	// View info about a chain restaurant
-	function view() {
+	function view($restaurantChainId) {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
 
-		$restaurantChainId = $this->uri->segment(3);
+		if($restaurantChainId == ''){
+			$restaurantChainId = $this->uri->segment(3);
+		}
 		
 		$this->load->model('PhotoModel');
 		$thumbPhotos = $this->PhotoModel->getThumbPhotos('producer', $restaurantChainId);
@@ -192,6 +194,18 @@ class Chain extends Controller {
 		$comments = $this->PhotoModel->getPhotosJson('restaurant_chain');
 		echo json_encode($comments);
 	}
+	
+	function customUrl($customUrl){
+		$this->load->model('CustomUrlModel');
+		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant_chain');
+		
+		if ($producerId) {
+			$this->view($producerId);
+		} else {
+			show_404('page');
+		}
+	}
+	
 	
 }
 
