@@ -6,6 +6,12 @@ class Restaurants extends Controller {
 	{
 		global $LANDING_PAGE;
 		parent::Controller();
+		
+		$this->load->plugin('Visits');
+		
+		$visits = new Visits();
+		
+		$visits->addVisit();
 	}
 	
 	// Homepage

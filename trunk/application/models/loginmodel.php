@@ -36,7 +36,11 @@ class LoginModel extends Model{
 				$this->user->isAuthenticated = 1;
 				$this->user->userGroup = $row->user_group;
 				
-				$this->session->set_userdata($this->user );
+				$this->session->set_userdata($this->user );			
+				
+				//update last login field with current value
+				$this->db->query("update user set `last_login` = NOW() where `user_id` = '".$this->user->userId."'");
+				
 				$return = true;
 			} else {
 				$userArray = array(
@@ -106,7 +110,11 @@ class LoginModel extends Model{
 					set_cookie($cookie);
 				}
 				
-				$this->session->set_userdata($this->user );
+				$this->session->set_userdata($this->user);
+				
+				//update last login field with current value
+				$this->db->query("update user set `last_login` = NOW() where `user_id` = '".$this->user->userId."'");
+				
 				$return = true;
 			} else {
 				$userArray = array(
