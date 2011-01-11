@@ -26,20 +26,107 @@ class CustomUrl {
 		/** 
 		 * One time activity
 		 */
+		//$this->updateBlankCityInAddressTable();
 		//$this->createTempTable();
 		//$this->dumpDataToTempTable();
 		//$this->verifyNumRecords();
 		
+		// Fix proder id = 6704 - Change name from "Kentucky Fried Chicken - North" to "Kentucky Fried Chicken"
+		//$query = "UPDATE `producer` SET `producer` = 'Kentucky Fried Chicken' WHERE `producer`.`producer_id` = 6704";
+		//mysql_query($query);
+		
 		/** 
 		 * Triger again and again to generate URL for records which are not processed yet 
 		 */
-		$this->generateCustomUrl();
+		//$this->generateCustomUrl();
+		
+		/** 
+		 * Restaurant Chain
+		 * One time activity
+		 */
+		//$this->dumpChainDataToTempTable();
+		//$this->generateCustomUrlForChain();
 		
 		/** 
 		 * One time activity
 		 */
 		//$this->dumpDataToCustomUrlTable();	
 		//$this->dropTempTable();
+		
+		
+	}
+	
+	function updateBlankCityInAddressTable() {
+		$query = "SELECT address.*, city.city FROM address, city
+					WHERE address.city_id = city.city_id
+					AND address.city = ''";
+		$result = mysql_query($query);
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			echo $row['address_id'] . "\n";
+			
+			$query = 'UPDATE address SET city = "'.$row['city'].'" WHERE address_id = ' . $row['address_id'];
+			mysql_query($query);
+		}
+	}
+	
+	function generateCustomUrlForChain() {
+		$query = "SELECT * FROM temp_custom_url WHERE custom_url IS NULL limit 0, 100000";
+		$result = mysql_query($query);
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			echo $row['custom_url_id'];
+			
+			if (!$row['custom_url']) {
+				$producer_without_spaces = $this->_trimWhiteSpaces(trim($row['producer']));
+				
+				$producer_slug = strtolower(str_replace(' ', '-', str_replace("'", '',$producer_without_spaces))); 
+				
+				$query = 'UPDATE temp_custom_url' .
+					' SET ' .
+					' producer_slug = \''.$producer_slug.'\' ' .
+					' WHERE custom_url_id = ' . $row['custom_url_id'];
+				//echo $query . "<br />";
+				mysql_query($query);
+				
+				$slug = $producer_slug;
+				
+				echo '##' . $row['producer'] . '##' . $slug . '## Correct Slug : ';
+				
+				/*
+				$query = 'SELECT * ' .
+					' FROM temp_custom_url' .
+					' WHERE ' .
+					' producer_id = ' . $row['producer_id'] .
+					' AND city = \''.$row['city'].'\'' .
+					' AND custom_url = \''.$slug.'\'';
+				*/
+				$query = 'SELECT * ' .
+					' FROM temp_custom_url' .
+					' WHERE ' .
+					' producer_slug = \'' . $producer_slug . '\'' . 
+					' AND custom_url = \''.$slug.'\'';
+				
+				echo $query . "<br />";
+				$result1 = mysql_query($query);
+				if (mysql_num_rows($result1) == 0) {
+					//echo "Update Custom URL <br />";
+					
+					$query = 'UPDATE temp_custom_url' .
+						' SET ' .
+						' custom_url = \''.$slug.'\' ' .
+						' WHERE custom_url_id = ' . $row['custom_url_id'];
+					//echo $query . "<br />";
+					mysql_query($query);
+					echo $slug;
+				} else {
+					die("ELSE - Found duplicate");
+				}
+			} else {
+				echo '## Already generated custom_url'; 
+			}
+			
+			echo "\n";
+			
+		}
 	}
 	
 	
@@ -173,8 +260,8 @@ class CustomUrl {
 				  `producer_id` int(11) NOT NULL,
 				  `producer` varchar(255) NOT NULL,
 				  `producer_slug` varchar(255) DEFAULT NULL,
-				  `address_id` int(11) NOT NULL,
-				  `city` varchar(95) NOT NULL,
+				  `address_id` int(11) DEFAULT NULL,
+				  `city` varchar(95) DEFAULT NULL,
 				  `city_counter` int(11) NULL,
 				  `custom_url` varchar(255) DEFAULT NULL,
 				  PRIMARY KEY (`custom_url_id`),
@@ -212,6 +299,26 @@ class CustomUrl {
 		"; 
 		mysql_query($query); 
 		echo "address data dumped from producer and address to temp_custom_url \n"; 
+	}
+	
+	function dumpChainDataToTempTable(){
+		$query = "
+				insert into temp_custom_url (producer_id, producer, producer_slug, address_id, city, city_counter, custom_url)
+				SELECT
+				producer.producer_id,
+				producer.producer,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				NULL
+				FROM
+				producer
+				WHERE
+				producer.is_restaurant_chain = 1		
+		"; 
+		mysql_query($query); 
+		echo "Chain dumped from producer to temp_custom_url \n"; 
 	}
 	
 	function verifyNumRecords() {

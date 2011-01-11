@@ -8,7 +8,12 @@
 		echo '<div class="chainlist">';
 		foreach($CHAINS['results'] as $r) :
 			
-			echo anchor('/chain/view/'.$r->restaurantChainId, $r->restaurantChain).'<br />';
+			if ($r->customUrl) {
+				echo anchor('/chain/'.$r->customUrl, $r->restaurantChain).'<br />';
+			} else {
+				echo anchor('/chain/view/'.$r->restaurantChainId, $r->restaurantChain).'<br />';
+			}
+			
 			if($i == 30)
 			{
 				echo '</div>';

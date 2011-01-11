@@ -5,8 +5,10 @@ class CustomUrlModel extends Model{
 	function getCustomUrlForProducerAddress($producer_id, $address_id) {
 		$query = 'SELECT * ' .
 				' FROM custom_url ' .
-				' WHERE producer_id = ' . $producer_id .
-				' AND address_id = ' . $address_id;
+				' WHERE producer_id = ' . $producer_id;
+		if ($address_id != '') {
+			$query .= ' AND address_id = ' . $address_id;
+		}
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() > 0) {

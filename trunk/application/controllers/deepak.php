@@ -11,14 +11,29 @@ class Deepak extends Controller{
 	function index(){
 		
 		echo '<strong>All Producers</strong><br />';
-		echo '<a href="/deepak/create_temp_table" target="_blank">Step1: Create temp tables</a> <br />';
-		echo '<a href="/deepak/dump_data_to_temp_custom_url" target="_blank">Step2: Dump all address data to producer table</a> <br />';
-		echo '<a href="/deepak/verify_num_records" target="_blank">Step3: Verify Number of records from address and temp_custom_url table</a> <br />';
-		echo '<a href="/deepak/generate_custom_url" target="_blank">Step3: Generate Custom URL</a> <br />';
+		echo '<a href="/deepak/update_blank_city" target="_blank">Step1: Correct City Records in Address table</a> <br />';
+		echo '<a href="/deepak/create_temp_table" target="_blank">Step2: Create temp tables</a> <br />';
+		echo '<a href="/deepak/dump_data_to_temp_custom_url" target="_blank">Step3: Dump all address data to producer table</a> <br />';
+		echo '<a href="/deepak/verify_num_records" target="_blank">Step4: Verify Number of records from address and temp_custom_url table</a> <br />';
+		echo '<a href="/deepak/generate_custom_url" target="_blank">Ste5: Generate Custom URL</a> <br />';
+		
+		
 		echo '<br /><br /><br /><a href="/deepak/drop_temp_table" target="_blank">Drop temp tables</a> <br />';
 			
 	}
 	
+	function update_blank_city() {
+		$query = "SELECT address.*, city.city FROM address, city
+					WHERE address.city_id = city.city_id
+					AND address.city = ''";
+		$result = $this->db->query($query);
+		foreach ($result->result_array() as $row) {
+			echo $row['address_id'];
+			
+			$query = 'UPDATE address SET city = "'.$row['city'].'" WHERE address_id = ' . $row['address_id'];
+			$this->db->query($query); 
+		}
+	}
 	
 	//custom url script 
 	function create_temp_table(){
@@ -27,8 +42,8 @@ class Deepak extends Controller{
 				  `producer_id` int(11) NOT NULL,
 				  `producer` varchar(255) NOT NULL,
 				  `producer_slug` varchar(255) DEFAULT NULL,
-				  `address_id` int(11) NOT NULL,
-				  `city` varchar(95) NOT NULL,
+				  `address_id` int(11) DEFAULT NULL,
+				  `city` varchar(95) DEFAULT NULL,
 				  `city_counter` int(11) NULL,
 				  `custom_url` varchar(255) DEFAULT NULL,
 				  PRIMARY KEY (`custom_url_id`),
