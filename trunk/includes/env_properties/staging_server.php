@@ -15,9 +15,9 @@
  * ======================================================
  */
 $DB_HOST  = "mysql50-91.wc1.dfw1.stabletransit.com";
-$DB_USER  = "492717_fsuser7";
-$DB_PASSWORD  = "R3alF00dPlease";
-$DATABSE  = "492717_livedb";
+$DB_USER  = "468258_testuser5";
+$DB_PASSWORD  = "Realf00d";
+$DATABSE  = "468258_livetest4";
 
 $BASE_URL = "http://www.sproutchain.com/";
 
