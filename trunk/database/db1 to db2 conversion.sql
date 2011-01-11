@@ -582,6 +582,7 @@ ALTER TABLE `custom_url` ADD `address_id` INT DEFAULT NULL AFTER `producer_id`;
 ALTER TABLE `custom_url` ADD `city` VARCHAR( 255 ) DEFAULT NULL AFTER `address_id`;
 ALTER TABLE `custom_url` ADD `city_counter` INT DEFAULT NULL AFTER `city`;
 ALTER TABLE `custom_url` ADD INDEX `fk_custom_url_custom_url1` (`custom_url` ASC);
+ALTER TABLE `custom_url` CHANGE `custom_url` `custom_url` VARCHAR( 255 ) DEFAULT NULL ;
 
 -- -----------------------------------------------------
 -- Delate all the old columns and data
