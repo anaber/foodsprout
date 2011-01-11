@@ -5,7 +5,7 @@
  
 /*
  * ======================================================
- * Application Configurations for Deepak's Box
+ * Application Configurations for Live Server
  * ======================================================
  */
  
@@ -14,10 +14,10 @@
  * Database Setup
  * ======================================================
  */
-$DB_HOST  = "mysql50-79.wc1.dfw1.stabletransit.com";
-$DB_USER  = "492717_foodie";
-$DB_PASSWORD  = "R3alF00dRulz";
-$DATABSE  = "492717_livefood";
+$DB_HOST  = "mysql50-91.wc1.dfw1.stabletransit.com";
+$DB_USER  = "492717_fsuser7";
+$DB_PASSWORD  = "R3alF00dPlease";
+$DATABSE  = "492717_livedb";
 
 $BASE_URL = "http://www.foodsprout.com/";
 

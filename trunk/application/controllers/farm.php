@@ -173,7 +173,7 @@ class Farm extends Controller {
 
 		// Load all the views for the right column
 		$data['RIGHT'] = array(
-				'ad' => 'includes/banners/sky',
+				//'ad' => 'includes/banners/sky',
 			);
 
 		// Data to be passed to the views
