@@ -37,6 +37,8 @@ class Login extends Controller {
 			
 			$authenticated = $this->LoginModel->validateUser();
 			
+		
+			
 			if ($authenticated ==  false) {
 				$data = array();
 				$validation_error  = FALSE;
