@@ -1,10 +1,74 @@
 User-agent: *
-Disallow: /farm/ajaxGetDistinctUsedFarmType
-Disallow: /farm/ajaxSearchFarmInfo
+
+# Restaurants
+Disallow: /restaurant/ajaxGetAllCuisine
+Disallow: /restaurant/ajaxGetAllRestaurantType
 Disallow: /restaurant/ajaxGetDistinctUsedCuisine
 Disallow: /restaurant/ajaxGetDistinctUsedRestaurantType
+Disallow: /restaurant/ajaxSearchRestaurantComments
 Disallow: /restaurant/ajaxSearchRestaurantInfo
+Disallow: /restaurant/ajaxSearchRestaurantMenus
+Disallow: /restaurant/ajaxSearchRestaurantPhotos
+Disallow: /restaurant/ajaxSearchRestaurants
 Disallow: /restaurant/ajaxSearchRestaurantSuppliers
+
+# Farms
+Disallow: /farm/ajaxGetAllFarmType
+Disallow: /farm/ajaxGetDistinctUsedFarmType
+Disallow: /farm/ajaxSearchFarmComments
+Disallow: /farm/ajaxSearchFarmCompanies
+Disallow: /farm/ajaxSearchFarmInfo
+Disallow: /farm/ajaxSearchFarmPhotos
+Disallow: /farm/ajaxSearchFarms
+Disallow: /farm/ajaxSearchFarmSuppliee
+
+# Farmers Market
+Disallow: /farmersmarket/ajaxSearchFarmersMarket
+Disallow: /farmersmarket/ajaxSearchFarmersMarketComments
+Disallow: /farmersmarket/ajaxSearchFarmersMarketInfo
+Disallow: /farmersmarket/ajaxSearchFarmersMarketPhotos
+Disallow: /farmersmarket/ajaxSearchFarmersMarketSuppliers
+
+# Manufacture
+Disallow: /manufacture/ajaxSearchManufactureComments
+Disallow: /manufacture/ajaxSearchManufactureInfo
+Disallow: /manufacture/ajaxSearchManufactureMenus
+Disallow: /manufacture/ajaxSearchManufacturePhotos
+Disallow: /manufacture/ajaxSearchManufactures
+Disallow: /manufacture/ajaxSearchManufactureSuppliers
+Disallow: /manufacture/get_manufactutes_for_auto_suggest
+Disallow: /manufacture/searchManufactures
+
+# Chain
+Disallow: /chain/ajaxSearchRestaurantChainComments
+Disallow: /chain/ajaxSearchRestaurantChainMenus
+Disallow: /chain/ajaxSearchRestaurantChainPhotos
+Disallow: /chain/ajaxSearchRestaurantChains
+Disallow: /chain/ajaxSearchRestaurantChainSuppliers
+
+# Product
+Disallow: /product/ajaxSearchProducts
+Disallow: /product/get_products_for_auto_suggest
+
+# Producer
+Disallow: /producer/get_producers_based_on_type
+
+# User
+Disallow: /user/updateSettings
+Disallow: /user/updatePassword
+Disallow: /user/ajaxSuppliersByUser
+Disallow: /user/ajaxMenuByUser
+
+# Misc
+Disallow: /about/create_user_no_ajax
+Disallow: /about/sendMail
+Disallow: /city/get_cities_based_on_state
+Disallow: /city/get_cities_based_on_restaurant
+Disallow: /login/create_user
+Disallow: /state/ajaxSearchStates
+
 Disallow: /common/
-Disallow: /company/
+Disallow: /distributor/
+Disallow: /search/
+Disallow: /common/
 Allow: /
