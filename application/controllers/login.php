@@ -32,20 +32,26 @@ class Login extends Controller {
 		//email
 		if($this->input->post('login_email') == "Email"){
 			$data['ERROR'] = 'empty_email';
+			$params[] = 'Please enter email address.';
+			$data['flashdata'] = $params;
 			$this->load->view('login', $data);
 		}else{
 			
 			$authenticated = $this->LoginModel->validateUser();
-			
-		
-			
+                      
 			if ($authenticated ==  false) {
 				$data = array();
-				$validation_error  = FALSE;
 				
+				$params[] = 'Login incorect! Please check user and password!';
+				$data['flashdata'] = $params;
+				
+				$validation_error  = FALSE;
+ 
 				if($this->session->userdata('accessBlocked') == 'yes') {
 					$data['ERROR'] = 'blocked';
-				}else {
+					$params[] = 'Access blocked!';
+					$data['flashdata'] = $params;
+				}else {                                          
 					$data['ERROR'] = 'login_failed';
 				}
 				
@@ -148,6 +154,8 @@ class Login extends Controller {
 			if ( isset ($GLOBALS['error']) && $GLOBALS['error']) {
 				$data['ERROR'] = $GLOBALS['error'];
 			} else {
+				$params[] = 'Registration failed';
+				$data['flashdata'] = $params;
 				$data['ERROR'] = 'registration_failed';
 			}
 			
@@ -172,6 +180,8 @@ class Login extends Controller {
 
 				session_start();
 				
+				$params[] = 'Registration Success!';
+				$data['flashdata'] = $params;
 				$_SESSION['ERROR'] = 'registration_success';
 				
 				//echo $this->email->print_debugger();
