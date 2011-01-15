@@ -101,49 +101,39 @@ class MobileRestaurantModel extends Model{
 		}
 
 	}	
-	
-	function getRestaurantsByCityId($cityId, $start = 0, $stop = 10){
+    
+	function getRestaurantsByCityId($cityId, $start = 0, $stop = 2){
 		
-		$query = "SELECT
-				city.city,
-				address.address,
-				address.address_id,
-				producer.producer_id,
-				producer.producer
-				FROM
-				city ,
-				address ,
-				producer
-				WHERE
-				city.city_id =  address.city_id AND
-				address.producer_id =  producer.producer_id AND
-				producer.is_restaurant =  '1' AND
-				city.city_id =  '".$cityId."'
-				ORDER BY
-				producer.producer ASC
-				limit ".$start.",  ".$stop."
+	echo $query = "SELECT
+					address.address,
+					address.address_id,
+					producer.producer,
+					producer.producer_id
+					FROM
+					address ,
+					custom_url ,
+					producer
+					WHERE
+					address.producer_id =  producer.producer_id AND
+					address.city_id =  '".$cityId."' AND
+					producer.is_restaurant =  '1' AND
+					producer.status =  'live'
+					limit ".$start.",  ".$stop."
 				"; 
 		
 		$results = $this->db->query($query)->result_array(); 
 		
 		
-		$query2 = "SELECT
-				city.city,
-				address.address,
-				address.address_id,
-				producer.producer_id,
-				producer.producer
-				FROM
-				city ,
-				address ,
-				producer
-				WHERE
-				city.city_id =  address.city_id AND
-				address.producer_id =  producer.producer_id AND
-				producer.is_restaurant =  '1' AND
-				city.city_id =  '".$cityId."'
-				ORDER BY
-				producer.producer ASC"; 
+	$query2 = "SELECT
+					count(address)
+					FROM
+					address,
+					producer
+					WHERE
+					address.producer_id =  producer.producer_id AND
+					address.city_id =  '".$cityId."' AND
+					producer.is_restaurant =  '1' AND
+					producer.status =  'live'"; 
 		
 		$numRows = $this->db->query($query2)->num_rows();
 		
@@ -153,8 +143,11 @@ class MobileRestaurantModel extends Model{
 		if(sizeof($results) > 0 ){
 			$i = 0;
 			foreach($results as $producer){
-				$new_results['data'][$i]['city'] = $producer['city'];
-				$new_results['data'][$i]['address_id'] = $producer['address_id'];
+				
+				$custom_url = $this->getCustomUrlByAddressId($producer['address_id']);
+				
+				$new_results['data'][$i]['city'] = $custom_url[0]['city'];
+				$new_results['data'][$i]['custom_url'] = $custom_url[0]['custom_url'];
 				$new_results['data'][$i]['address'] = $producer['address'];
 				$new_results['data'][$i]['producer_id'] = $producer['producer_id'];
 				$new_results['data'][$i]['producer'] = $producer['producer'];
@@ -166,6 +159,18 @@ class MobileRestaurantModel extends Model{
 		return $new_results;
 	}
 	
+	
+	function getCustomUrlByAddressId($addressId){
+		
+		$query = "SELECT
+					custom_url.custom_url,
+					custom_url.city
+					FROM
+					custom_url
+					WHERE
+					custom_url.address_id =  '".$addressId."'";
+		return  $this->db->query($query)->result_array();
+	}
 	
 	function getCuisnesByProducerId($producerId){
 		
