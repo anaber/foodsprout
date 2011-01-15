@@ -30,8 +30,8 @@
 					foreach ($search_results as $result ){
 						
 						echo '<li>';
-							echo 	'<a href="'.base_url().'/mobile/restaurants/viewrestaurant/'.$result['address_id'].'/'.$result['restaurant_id'].'">
-									'.$result['restaurant_name'].'<span>City: <strong>'.$result['city'].'</strong>, address: <strong>
+							echo 	'<a href="'.base_url().'mobile/restaurants/view-'.$result['custom_url'].'">
+									'.$result['producer'].'<span>City: <strong>'.$result['city'].'</strong>, address: <strong>
 									'.$result['address'].', </strong>
 									cuisine: '.$result['cuisine'].'</span></a>';	
 						echo '</li>'; 	              

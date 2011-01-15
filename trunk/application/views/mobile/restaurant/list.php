@@ -5,6 +5,7 @@
 		</li>
 		<?php
 		
+		
 		if(sizeof($pages) > 1){
 		
 		?>
@@ -42,26 +43,27 @@
 <div id="mainarea">
 	<div id="search_by_zip_code_results" >
 		<?php 
-			if(sizeof($results['data']) >0){
+			if(isset($results['data']) && sizeof($results['data']) >0){
 				echo '<ul  id="menu">';
 					foreach ($results['data'] as $result ){
 						
 						echo '<li>';
-							echo 	'<a href="'.base_url().'/mobile/restaurants/viewrestaurant/'.$result['address_id'].'/'.$result['producer_id'].'">
+							echo 	'<a href="'.base_url().'mobile/restaurants/view-'.$result['custom_url'].'">
 									'.$result['producer'].'<span>City: <strong>'.$result['city'].'</strong>, address: <strong>
 									'.$result['address'].', </strong>
 									cuisine: '.$result['cuisine'].'</span></a>';	
 						echo '</li>'; 	              
 					}
 				echo '</ul>';
-			}else{
-				
-				echo '
-					<ul  id="menu">
-						<li>no results found</li>
-					</ul>';
- 
-			}
+				}
+//		else{
+//				
+//				echo '
+//					<ul  id="menu">
+//						<li>no results found</li>
+//					</ul>';
+// 
+//			}
 			?>
 	</div>
 </div>

@@ -59,7 +59,8 @@ $route['^restaurant/view/(:num)'] 						= "restaurant/view/$1";
 $route['^restaurant'] 									= "restaurant/index";
 $route['^sustainable/(:any)'] 							= "restaurant/city/$1";
 $route['^restaurant/(:any)']							= "restaurant/customUrl/$1";
-
+$route['^mobile/restaurants/view-(:any)']				= "mobile/restaurants/customUrl/$1";
+        
 // Farm
 $route['^farm/ajaxGetAllFarmType'] 						= "farm/ajaxGetAllFarmType";
 $route['^farm/ajaxGetDistinctUsedFarmType'] 			= "farm/ajaxGetDistinctUsedFarmType";

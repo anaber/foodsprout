@@ -64,7 +64,7 @@ class Visits {
 				";
 		$result = $this->CI->db->query($query);
 		if($result->num_rows > 0){
-				
+			 	
 			return $result->result_array();
 				
 		}else{
@@ -91,8 +91,9 @@ class Visits {
 				
 		}else{
 				
-			return true;
-				
+			return true; 
+
+	          
 		}
 
 	}

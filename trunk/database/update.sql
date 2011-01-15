@@ -367,4 +367,13 @@ DEFAULT CHARACTER SET = latin1
 COLLATE = latin1_swedish_ci;
 
 
-
+CREATE TABLE IF NOT EXISTS `visits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `visitedAddress` varchar(255) DEFAULT NULL,
+  `visitorIp` varchar(16) DEFAULT NULL,
+  `visitDate` datetime DEFAULT NULL,
+  `visitorId` varchar(15) DEFAULT NULL,
+  `visitorAgent` varchar(255) DEFAULT NULL,
+  `visitorOs` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=42 DEFAULT CHARSET=latin1

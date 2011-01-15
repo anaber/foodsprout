@@ -46,36 +46,54 @@ class RestaurantModel extends Model{
 			$latitude = $zip_code_info[0]['latitude'];
 			$longitude = $zip_code_info[0]['longitude'];;
 
-			echo $query_zips = 'SELECT address_id, producer_id, address, city, ( 3959 * acos( cos( radians("'.$latitude.'") ) * cos( radians( latitude ) ) *
+			$query_zips = 'SELECT address_id, ( 3959 * acos( cos( radians("'.$latitude.'") ) * cos( radians( latitude ) ) *
 								cos( radians( longitude ) - radians("'.$longitude.'") ) + sin( radians("'.$latitude.'") ) * 
 								sin( radians( latitude ) ) ) ) AS distance FROM address HAVING distance <= '.$distance.' ORDER BY distance LIMIT 0 , 50';
 
 			$proximity_zips = $this->db->query($query_zips)->result_array();
-
+			
 			if(sizeof($proximity_zips) > 0){
-					
-				//get address details
-				$restaurantNumber = 0;
-				$restaurantsArray = array();
 
+				$address_ids = array();
+				
 				foreach($proximity_zips as $zip){
-
-					$isRestaurant = $this->db->get_where('producer', array('restaurant_id' => $zip['restaurant_id']))->result_array();
 					
+					$address_ids[] = "'".$zip['address_id']."'";
 					
-					
-					
-					if( sizeof($isRestaurant) > 0){
-						foreach($isRestaurant as $restaurantData){
-
-							$restaurantsArray[$restaurantNumber]['restaurant_name'] = $restaurantData['producer'];
-							$restaurantsArray[$restaurantNumber]['address'] = $zip['address'];
-							$restaurantsArray[$restaurantNumber]['city'] = $zip['city'];
-							$restaurantsArray[$restaurantNumber]['address_id'] = $zip['address_id'];
-							$restaurantsArray[$restaurantNumber]['restaurant_id'] = $zip['restaurant_id'];
-								
-								
-							$cuisineQuery = "SELECT
+				}
+				
+				$ids = implode(",", $address_ids);
+				
+				$query = "SELECT
+							address.address_id,
+							address.producer_id,
+							address.address,
+							address.city,
+							address.zipcode,
+							producer.producer,
+							producer.phone,
+							producer.fax,
+							producer.email,
+							producer.url,
+							producer.facebook,
+							producer.twitter,
+							producer.description,
+							custom_url.custom_url
+							FROM
+							address ,
+							producer ,
+							custom_url
+							WHERE
+							address.producer_id =  producer.producer_id AND
+							producer.is_restaurant =  '1' AND
+							address.address_id IN  (".$ids.") AND
+							producer.status =  'live' AND
+							address.address_id =  custom_url.address_id";
+				
+				 $restaurants = $this->db->query($query)->result_array();
+				 
+				 foreach($restaurants as $key=>$restaurant){
+				 	 $cuisine_query = "SELECT
 												producer_category.producer_category as cuisine_name
 												FROM
 												producer ,
@@ -84,30 +102,21 @@ class RestaurantModel extends Model{
 												WHERE
 												producer.producer_id =  producer_category_member.producer_id AND
 												producer_category_member.producer_category_id =  producer_category.producer_category_id AND
-												producer.restaurant_id =  '".$zip['restaurant_id']."' AND
-												producer_category.cuisine_id IS NOT NULL 
-												AND producer.is_restaurant = 1";
-											
-								
-							$cuisineResults = $this->db->query($cuisineQuery)->result_array();
-								
-							if(sizeof($cuisineResults) >0){
-								
-								$cuisines = '';
-								
-								foreach( $cuisineResults as $cuisine){
-
-									 $cuisines .= $cuisine['cuisine_name'].', ';									
-									
-								}
-							}
-							$restaurantsArray[$restaurantNumber]['cuisine'] = $cuisines;	
-						}
+												producer.producer_id =  '".$restaurant['producer_id']."' AND
+												producer_category.cuisine_id IS NOT NULL ";
+				 	
+				 	$quisine_results = $this->db->query($cuisine_query)->result_array();
+				 	$cuisines_id = array();
+					foreach($quisine_results as $cuisine){				
+						$cuisines_id[] = $cuisine['cuisine_name'];	
 					}
-					$restaurantNumber++;
-				}
-				return $restaurantsArray;	
-			}else{
+					$restaurants[$key]['cuisine'] = implode(",", $cuisines_id);
+				 }
+				 
+				 
+				return $restaurants;
+			}//end else initial zips 
+			else{
 				//no zip found in proximity
 				return false;
 			}

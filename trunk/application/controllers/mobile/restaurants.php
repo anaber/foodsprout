@@ -13,8 +13,8 @@ class Restaurants extends Controller {
 		
 		$visits->addVisit();
 	}
-	
-	// Homepage
+
+ 	// Homepage
 	function index() {
 		
 		$data = array();
@@ -29,6 +29,18 @@ class Restaurants extends Controller {
 			);
 		
 		$this->load->view('templates/mobile_template', $data);
+	}
+	
+	function customUrl($customUrl){
+		
+		$custom_url_data = $this->db->query("select * from custom_url where `custom_url` = '".$customUrl."' ")->result_array();
+		$this->_view($custom_url_data[0]['address_id']);
+	}
+	
+	function _view($address_id){
+		
+		echo $address_id;
+		
 	}
 	
 	
@@ -152,7 +164,7 @@ class Restaurants extends Controller {
 		$data['results'] = $this->MobileRestaurantModel->getRestaurantsByCityId($cityID, $start, $stop);
 		
 		//calculate page numbers
-		$pagesNumber = ceil($data['results']['totalrecords']/$perPage); 
+		echo $pagesNumber = ceil($data['results']['totalrecords']/$perPage); 
 		
 		//estabilishing values for display to users
 		$data['start']  = $start+1; 
@@ -165,7 +177,14 @@ class Restaurants extends Controller {
 		$data['city_id'] = $cityID;
 		
 		//getting all jump steps 
-		$data['pages'] = range(1, $pagesNumber);
+		
+		if($pagesNumber!=0){
+			$data['pages'] = range(1, $pagesNumber);
+		}else{
+			
+			$data['pages'] =  1;
+			
+		}
 
 		// List of views to be included
 		$data['CENTER'] = array(
