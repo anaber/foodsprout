@@ -46,7 +46,7 @@ class RestaurantModel extends Model{
 			$latitude = $zip_code_info[0]['latitude'];
 			$longitude = $zip_code_info[0]['longitude'];;
 
-			$query_zips = 'SELECT address_id, restaurant_id, address, city, ( 3959 * acos( cos( radians("'.$latitude.'") ) * cos( radians( latitude ) ) *
+			echo $query_zips = 'SELECT address_id, producer_id, address, city, ( 3959 * acos( cos( radians("'.$latitude.'") ) * cos( radians( latitude ) ) *
 								cos( radians( longitude ) - radians("'.$longitude.'") ) + sin( radians("'.$latitude.'") ) * 
 								sin( radians( latitude ) ) ) ) AS distance FROM address HAVING distance <= '.$distance.' ORDER BY distance LIMIT 0 , 50';
 
