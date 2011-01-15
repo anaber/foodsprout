@@ -4,12 +4,12 @@ function displayProcessingMessage($alert, message) {
 	$alert.removeClass().addClass('alertSuccess').text(message).animate({height: $alert.css('line-height') || '100px', top:$(window).scrollTop()+"px" }, 500);
 	alerttimer = window.setTimeout(function () {
 		$alert.trigger('click');
-	}, 1000);
+	}, 1200);
 	
 	//scroll the message box to the top offset of browser's scrool bar
 	$(window).scroll(function()
 	{
-	  $alert.animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 350});
+	  $alert.animate({top:$(window).scrollTop()+"px" },{queue: false, duration: 2000});
 	});
 }
 
@@ -21,7 +21,7 @@ function displayFailedMessage($alert, message) {
 		
 		alerttimer = window.setTimeout(function () {
 			$alert.trigger('dblclick');
-		}, 4000);
+		}, 1200);
 	});
 }
 
@@ -32,7 +32,7 @@ function displaySuccessMessage($alert, message) {
 		
 		alerttimer = window.setTimeout(function () {
 			$alert.trigger('dblclick');
-		}, 4000);
+		}, 1200);
 		
 	});
 }
@@ -61,7 +61,7 @@ function hideMessage($alert, location, method) {
 		
 		alerttimer = window.setTimeout(function () {
 			$alert.trigger('mouseover');
-		}, 200);
+		}, 2);
 	});
 	
 	$alert.mouseover(function () {

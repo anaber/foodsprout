@@ -244,3 +244,5 @@ code{-webkit-text-size-adjust:160%;}
 .skip,.hideme,.print,dfn{position:absolute;left:-1000em;/* LTR */
 top:-1000em;}
 .skip:focus,.skip:active{position:static;left:0;top:0;}
+
+.validation_error{color:#FF0000;text-align:right;padding-right:10px;}
