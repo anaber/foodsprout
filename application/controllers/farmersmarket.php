@@ -90,24 +90,22 @@ class FarmersMarket extends Controller {
 	//farm custom url
 	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
-		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'farmers_market');
+		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'farmers_market');
 		
-		if ($producerId) {
-			$this->view($producerId);
+		if ($producer) {
+			$this->view($producer->producerId, $producer->addressId);
 		} else {
 			show_404('page');
 		}
 	}
 	
 	// View the information on a single restaurant
-	function view($farmersMarketId='') {
+	function view($farmersMarketId = '', $asddressId = '') {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
 
-		if($farmersMarketId != ""){
-			$farmersMarketId = $farmersMarketId;
-		} else {
+		if($farmersMarketId == ""){
 			$farmersMarketId = $this->uri->segment(3);
 		}
 		

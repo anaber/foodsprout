@@ -30,20 +30,21 @@
 	
 	$(document).ready(function() {
 		
+		loadMapOnStartUp(38.41055825094609, -98, 3);
+		
 		$('#bottomPaging').hide();
 		
-		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId },
+		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:"<?php echo $ADDRESS_ID; ?>" },
 		function(data){
 			currentContent = 'supplier';
 			jsonData = data;
 			redrawContent(data, 'supplier');
 			reinitializeTabs();
+			reinitializeMap(data, 10, true);
 		},
 		"json");
 		
-		
-		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
-		
+		/*
 		$.post("/restaurant/ajaxSearchRestaurantInfo", { restaurantId:"<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '' ) ?>" },
 		function(data){
 			if (data.geocode != '') {
@@ -51,6 +52,7 @@
 			}
 		},
 		"json");
+		*/
 		
 		$('#divAddresses a').click(function(e) {
 			record_id = $(this).attr('id');
@@ -108,23 +110,10 @@
 		*/
 		
 	});
-		
-	function loadSmallMapOnStartUp(lat, lng, zoom) {
-		var myLatlng = new google.maps.LatLng(lat, lng);
-	    var myOptions = {
-	      zoom: zoom,
-	      center: myLatlng,
-	      disableDefaultUI: true,
-	      navigationControl: false,
-	      scrollwheel: false,
-	      draggable: false,
-	      mapTypeId: google.maps.MapTypeId.ROADMAP
-	    }
-	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-	}
+	
 	
 	function getMarkerHtml(o) {
-		html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
+		html = "<font size = '2'><b><i>" + o.supplierName + "</i></b></font><br /><font size = '1'>" +
 			  o.addressLine1 + ", " + o.addressLine2 + "<br />" + 
 			  o.addressLine3 + "</font><br />"
 			  ;
