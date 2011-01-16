@@ -20,7 +20,7 @@ function loadMapOnStartUp(lat, lng, zoom) {
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 }
 
-function reinitializeMap(data, zoomLevel) {
+function reinitializeMap(data, zoomLevel, showLines) {
 	
 	clearOverlays();
 	
@@ -45,6 +45,20 @@ function reinitializeMap(data, zoomLevel) {
 			
 	        var nMarker = createMarker(o, point, html);
 	        
+	        if (showLines == true) {
+		        var linesCoordinates = [
+				    new google.maps.LatLng(latitude, longitude),
+				    new google.maps.LatLng(o.latitude, o.longitude)
+				  ];
+			  	var linePath = new google.maps.Polyline({
+				    path: linesCoordinates,
+				    strokeColor: "#F05A25",
+				    strokeOpacity: 1.0,
+				    strokeWeight: 1
+			  	});
+	  			linePath.setMap(map);
+  			}
+  			
 	        gmarkers[o.id] = nMarker;
 			j++;
 		});

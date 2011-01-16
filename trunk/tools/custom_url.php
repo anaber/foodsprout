@@ -38,7 +38,7 @@ class CustomUrl {
 		/** 
 		 * Triger again and again to generate URL for records which are not processed yet 
 		 */
-		//$this->generateCustomUrl();
+		$this->generateCustomUrl();
 		
 		/** 
 		 * Restaurant Chain
@@ -52,8 +52,19 @@ class CustomUrl {
 		 */
 		//$this->dumpDataToCustomUrlTable();	
 		//$this->dropTempTable();
-		
-		
+		//$this->lookupDuplicateRecords();
+	}
+	
+	function lookupDuplicateRecords() {
+		$query = "SELECT `custom_url` , COUNT( * ) AS duplicates
+					FROM custom_url
+					GROUP BY `custom_url` 
+					HAVING duplicates >1
+					ORDER BY duplicates DESC ";
+		$result = mysql_query($query);
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			echo $row['duplicates'] . " ## " .$row['custom_url'] . "\n";			
+		}	
 	}
 	
 	function updateBlankCityInAddressTable() {

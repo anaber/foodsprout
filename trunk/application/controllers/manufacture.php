@@ -103,10 +103,10 @@ class Manufacture extends Controller {
 	//manufacture custom url
 	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
-		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'manufacture');
+		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'manufacture');
 		
-		if ($producerId) {
-			$this->view($producerId);
+		if ($producer) {
+			$this->view($producer->producerId, $producer->addressId);
 		} else {
 			show_404('page');
 		}
@@ -114,7 +114,7 @@ class Manufacture extends Controller {
 	
 	
 	// View all the information about a single manufacture
-	function view($manufactureId) {
+	function view($manufactureId = '', $addressId = '') {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();

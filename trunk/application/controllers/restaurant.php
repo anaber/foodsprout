@@ -79,24 +79,22 @@ class Restaurant extends Controller {
 	//restaurant custom url
 	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
-		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant');
+		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant');
 		
-		if ($producerId) {
-			$this->view($producerId);
+		if ($producer) {
+			$this->view($producer->producerId, $producer->addressId);
 		} else {
 			show_404('page');
 		}
 	}
 
 	// View the information on a single restaurant
-	function view($restaurant_id = "") {
+	function view($restaurantId = "", $addressId = "") {
 		global $SUPPLIER_TYPES_2;
 
 		$data = array();
 
-		if($restaurant_id != ""){
-			$restaurantId = $restaurant_id;
-		} else {
+		if($restaurantId == ""){
 			$restaurantId = $this->uri->segment(3);
 		}
 
@@ -106,7 +104,7 @@ class Restaurant extends Controller {
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
-
+		
 		$this->load->model('ProductTypeModel');
 		$productTypes = $this->ProductTypeModel->listProductType();
 
@@ -130,11 +128,12 @@ class Restaurant extends Controller {
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
 				'info' => 'includes/left/info',
-				'map' => 'includes/right/map',
+				//'map' => 'includes/right/map',
 		);
 
 		// Load all the views for the center column
 		$data['CENTER'] = array(
+				'map' => 'includes/map',
 				'info' => '/restaurant/info',
 		);
 
@@ -148,12 +147,17 @@ class Restaurant extends Controller {
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
 		$data['data']['center']['info']['RESTAURANT_ID'] = $restaurant->restaurantId;
+		$data['data']['center']['info']['ADDRESS_ID'] = $addressId;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
 
 		// Left -> Map
-		$data['data']['left']['map']['width'] = '220';
-		$data['data']['left']['map']['height'] = '180';
-		$data['data']['left']['map']['hide_map'] = 'no';
+		//$data['data']['left']['map']['width'] = '220';
+		//$data['data']['left']['map']['height'] = '180';
+		//$data['data']['left']['map']['hide_map'] = 'no';
+
+		// Center -> Map
+		$data['data']['center']['map']['width'] = '750';
+		$data['data']['center']['map']['height'] = '250';
 
 		// Left -> Images
 		$data['data']['left']['img']['PHOTOS'] = $thumbPhotos;
@@ -248,11 +252,15 @@ class Restaurant extends Controller {
 
 	function ajaxSearchRestaurantSuppliers() {
 		$q = $this->input->post('q');
+		$addressId = $this->input->post('addressId');
 		
+		//$q = 174538;
+		//$addressId = 489269;
 		$this->load->model('RestaurantModel');
+		/*
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($q);
 		//$restaurantChainId = $restaurant->restaurantChainId;
-		/*
+		
 		if( !empty($restaurantChainId) ){
 			$this->load->model('SupplierModel');
 			$suppliers = $this->SupplierModel->getSupplierForRestaurantAndChainJson($q, $restaurantChainId);
@@ -263,7 +271,7 @@ class Restaurant extends Controller {
 		*/
 		
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q);
+		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
 		echo json_encode($suppliers);
 	}

@@ -20,7 +20,7 @@ class CustomUrlModel extends Model{
 	}
 	
 	function getProducerIdFromCustomUrl($customUrl, $producer_type) {
-		$query = 'SELECT custom_url.producer_id ' .
+		$query = 'SELECT custom_url.producer_id, custom_url.address_id ' .
 				' FROM custom_url, producer ' .
 				' WHERE custom_url.custom_url = "' . $customUrl . '"' .
 				' AND custom_url.producer_id = producer.producer_id ' .
@@ -29,7 +29,14 @@ class CustomUrlModel extends Model{
 		
 		if ($result->num_rows() > 0) {
 			$row = $result->row();
-			return $row->producer_id;
+			
+			$this->load->library('CustomUrlLib');
+			unset($this->CustomUrlLib);
+			
+			$this->CustomUrlLib->producerId = $row->producer_id;
+			$this->CustomUrlLib->addressId = $row->address_id;
+			
+			return $this->CustomUrlLib;
 		} else {
 			return '';
 		}

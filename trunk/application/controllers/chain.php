@@ -88,7 +88,7 @@ class Chain extends Controller {
 	}
 
 	// View info about a chain restaurant
-	function view($restaurantChainId) {
+	function view($restaurantChainId = '', $addressId = '') {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
@@ -197,10 +197,10 @@ class Chain extends Controller {
 	
 	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
-		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant_chain');
+		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant_chain');
 		
-		if ($producerId) {
-			$this->view($producerId);
+		if ($producer) {
+			$this->view($producer->producerId, $producer->addressId);
 		} else {
 			show_404('page');
 		}

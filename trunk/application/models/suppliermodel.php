@@ -779,7 +779,7 @@ class SupplierModel extends Model{
 	
 	// Get the suppliers for a producer
 	
-	function getSupplierForProducerJson($producerId) {
+	function getSupplierForProducerJson($producerId, $addressId = '') {
 		global $SUPPLIER_TYPES_2, $PER_PAGE;
 		
 		$p = $this->input->post('p'); // Page
@@ -841,8 +841,29 @@ class SupplierModel extends Model{
 		//echo $query;
 		$result = $this->db->query($query);
 		
+		$geocodeArray = array();
 		$suppliers = array();
 		$CI =& get_instance();
+		$i = 1;
+		
+		$CI->load->model('ProducerModel','',true);
+		$producer = $CI->ProducerModel->getProducerFromIdAndAddressId($producerId, $addressId);
+		if ($producer) {
+			$arrLatLng = array();
+			
+			$arrLatLng['latitude'] = $producer->latitude;
+			$arrLatLng['longitude'] = $producer->longitude;
+			$arrLatLng['address'] = ''; //$producer->completeAddress;
+			
+			$arrLatLng['addressLine1'] = $producer->address;
+			$arrLatLng['addressLine2'] = $producer->city . ' ' . $producer->state;
+			$arrLatLng['addressLine3'] = $producer->country . ' ' . $producer->zipcode;
+				
+			$arrLatLng['supplierName'] = $producer->producer;
+			$arrLatLng['id'] = $producer->addressId;
+			$geocodeArray['suppliee'] = $arrLatLng;
+		}
+		//print_r_pre($geocodeArray);
 		
 		foreach ($result->result_array() as $row) {
 			
@@ -872,8 +893,24 @@ class SupplierModel extends Model{
 				$this->supplierLib->supplierType = 'distributor';
 			}
 			
+			
 			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+				
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+				
+				$arrLatLng['addressLine1'] = $address->address;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+					
+				$arrLatLng['supplierName'] = $this->supplierLib->supplierName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[$i] = $arrLatLng;
+				
 				$firstAddressId = $address->addressId;
+				$i++;
 				break;
 			}
 			
@@ -901,8 +938,9 @@ class SupplierModel extends Model{
 		$arr = array(
 			'results'    => $suppliers,
 			'param'      => $params,
+			'geocode'	 => $geocodeArray,
 	    );
-	    
+	    //print_r_pre($arr);
 	    return $arr;
 	}
 	

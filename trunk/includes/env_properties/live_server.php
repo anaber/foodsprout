@@ -15,9 +15,9 @@
  * ======================================================
  */
 $DB_HOST  = "mysql50-91.wc1.dfw1.stabletransit.com";
-$DB_USER  = "492717_fsuser7";
+$DB_USER  = "492717_v2user";
 $DB_PASSWORD  = "R3alF00dPlease";
-$DATABSE  = "492717_livedb";
+$DATABSE  = "492717_version2";
 
 $BASE_URL = "http://www.foodsprout.com/";
 

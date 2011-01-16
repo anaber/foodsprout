@@ -113,17 +113,17 @@ class Farm extends Controller {
 	//farm custom url
 	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
-		$producerId = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'farm');
+		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'farm');
 		
-		if ($producerId) {
-			$this->view($producerId);
+		if ($producer) {
+			$this->view($producer->producerId, $producer->addressId);
 		} else {
 			show_404('page');
 		}
 	}
 	
 	// View the information on a single farm
-	function view($farmId = '') {
+	function view($farmId = '', $addressId = '') {
 		
 		global $SUPPLIER_TYPES_2;
 		
