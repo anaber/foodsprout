@@ -1,12 +1,17 @@
 var mapCenterAddress;
 var map;
 var gmarkers = [];
-var htmls = [];
-var infowindows = [];
+var gmarkers2 = [];
 
+var htmls = [];
+var htmls2 = [];
+
+var infowindows = [];
+var infowindows2 = [];
+
+var lines = [];
 
 function loadMapOnStartUp(lat, lng, zoom) {
-	
 	
 	var myLatlng = new google.maps.LatLng(lat, lng);
     var myOptions = {
@@ -20,9 +25,11 @@ function loadMapOnStartUp(lat, lng, zoom) {
     map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 }
 
-function reinitializeMap(data, zoomLevel, showLines) {
+function reinitializeMap(mapObject, data, zoomLevel, showLines) {
+	a = mapObject.getDiv();
+	divId = a.id;
 	
-	clearOverlays();
+	clearOverlays(mapObject);
 	
 	latitude = '';
 	longitude = '';
@@ -41,9 +48,24 @@ function reinitializeMap(data, zoomLevel, showLines) {
 			var point = new google.maps.LatLng(o.latitude, o.longitude);
 			
 			html = getMarkerHtml(o);
-			htmls[o.id] = html;
+			if (divId == 'small_map_canvas') {
+				htmls2[o.id] = html;
+			} else {
+				htmls[o.id] = html;
+			}
 			
-	        var nMarker = createMarker(o, point, html);
+	        
+	        if (divId == 'small_map_canvas') {
+	        	var nMarker = createMarker(mapObject, o, point, html);
+	        	gmarkers2[o.id] = nMarker;
+	        } else {
+	        	if (showLines == true && j == 0) {
+	        		var nMarker = createMarker(mapObject, o, point, html, 'king');
+	        	} else {
+	        		var nMarker = createMarker(mapObject, o, point, html);
+	        	}
+	        	gmarkers[o.id] = nMarker;
+	        }
 	        
 	        if (showLines == true) {
 		        var linesCoordinates = [
@@ -56,68 +78,133 @@ function reinitializeMap(data, zoomLevel, showLines) {
 				    strokeOpacity: 1.0,
 				    strokeWeight: 1
 			  	});
-	  			linePath.setMap(map);
+	  			linePath.setMap(mapObject);
+	  			lines[o.id] = linePath;
   			}
   			
-	        gmarkers[o.id] = nMarker;
 			j++;
 		});
 	}
 	
 	var point = new google.maps.LatLng(latitude, longitude);
-	map.setCenter(point);
-	map.setZoom(zoomLevel);
-	
+	mapObject.setCenter(point);
+	mapObject.setZoom(zoomLevel);
 }
 
-function createMarker(o, point, html) {
+function createMarker(mapObject, o, point, html, king) {
+	a = mapObject.getDiv();
+	divId = a.id;
 	
-	var marker = new google.maps.Marker({
-        position: point, 
-        map: map
-    });
+	if (king == 'king') {
+		var image = '/images/icons/restaurant.png';
+	
+		var marker = new google.maps.Marker({
+	        position: point, 
+	        map: mapObject,
+	        icon: image
+	    });
+	} else {
+		var marker = new google.maps.Marker({
+	        position: point, 
+	        map: mapObject
+	    });
+	}
 	
 	var infowindow = new google.maps.InfoWindow({ 
   		content: html
   		//maxWidth: 50
   	});
-     
-	google.maps.event.addListener(marker, 'click', function() {
-	    clearInfoWindow();
-	    infowindow.open(map, marker);
-	    infowindows[0] = infowindow;
-	});
-	
+    
+    if (divId == 'small_map_canvas') {
+    	google.maps.event.addListener(marker, 'click', function() {
+		    clearInfoWindow(mapObject);
+		    infowindow.open(mapObject, marker);
+		    infowindows2[0] = infowindow;
+		});
+    } else {
+    	google.maps.event.addListener(marker, 'click', function() {
+		    clearInfoWindow(mapObject);
+		    infowindow.open(mapObject, marker);
+		    infowindows[0] = infowindow;
+		});
+    }
+    	
 	return marker;
 }
 
-function viewMarker(record_id, viewBubble) {
-	clearInfoWindow();
+function viewMarker(mapObject, record_id, viewBubble) {
+	clearInfoWindow(mapObject);
 	
-	var marker = gmarkers[record_id];
+	a = mapObject.getDiv();
+	divId = a.id;
 	
-	var infowindow = new google.maps.InfoWindow({ 
-  		content: htmls[record_id]
-  		//maxWidth: 50
-    });
-    
-    infowindow.open(map, marker);
-    
-    infowindows[0] = infowindow;
-}
-
-function clearOverlays() {
-	if (gmarkers) {
-	    for (i in gmarkers) {
-			gmarkers[i].setMap(null);
-	    }
+	if (divId == 'small_map_canvas') {
+		var marker = gmarkers2[record_id];
+	
+		var infowindow = new google.maps.InfoWindow({ 
+	  		content: htmls2[record_id]
+	  		//maxWidth: 50
+	    });
+	    
+	    infowindow.open(mapObject, marker);
+	    
+	    infowindows2[0] = infowindow;
+	} else {
+		var marker = gmarkers[record_id];
+	
+		var infowindow = new google.maps.InfoWindow({ 
+	  		content: htmls[record_id]
+	  		//maxWidth: 50
+	    });
+	    
+	    infowindow.open(mapObject, marker);
+	    
+	    infowindows[0] = infowindow;
 	}
-	clearInfoWindow();
+	
 }
 
-function clearInfoWindow() {
-	if (infowindows[0]) {
-		infowindow = infowindows[0];
-		infowindow.close();
+function clearOverlays(mapObject) {
+	a = mapObject.getDiv();
+	divId = a.id;
+	//alert(divId);
+	if (divId == 'small_map_canvas') {
+		if (gmarkers2) {
+		    for (i in gmarkers2) {
+				gmarkers2[i].setMap(null);
+		    }
+		}
+	} else {
+		if (gmarkers) {
+		    for (i in gmarkers) {
+				gmarkers[i].setMap(null);
+		    }
+		}
+		
+		if (lines) {
+		    for (i in lines) {
+				lines[i].setMap(null);
+		    }
+		}
+	}
+	
+	
+	
+	clearInfoWindow(mapObject);
+}
+
+function clearInfoWindow(mapObject) {
+	a = mapObject.getDiv();
+	divId = a.id;
+	if (divId == 'small_map_canvas') {
+		if (infowindows2[0]) {
+			infowindow = infowindows2[0];
+			infowindow.close();
+		}
+	} else {
+		if (infowindows[0]) {
+			infowindow = infowindows[0];
+			infowindow.close();
+		}
 	}
 }

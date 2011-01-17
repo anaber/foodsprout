@@ -861,7 +861,8 @@ class SupplierModel extends Model{
 				
 			$arrLatLng['supplierName'] = $producer->producer;
 			$arrLatLng['id'] = $producer->addressId;
-			$geocodeArray['suppliee'] = $arrLatLng;
+			//$geocodeArray['suppliee'] = $arrLatLng;
+			$geocodeArray[0] = $arrLatLng;
 		}
 		//print_r_pre($geocodeArray);
 		

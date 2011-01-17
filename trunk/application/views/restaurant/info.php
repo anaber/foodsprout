@@ -16,6 +16,7 @@
 
 <script>
 	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
+	var addressId = <?php echo $ADDRESS_ID; ?>;
 	var name = "<?php echo $RESTAURANT->restaurantName; ?>";
 	var userGroup = "<?php echo $userGroup; ?>";
 	var userId = "<?php echo $userId; ?>";
@@ -34,25 +35,27 @@
 		
 		$('#bottomPaging').hide();
 		
-		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:"<?php echo $ADDRESS_ID; ?>" },
+		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId },
 		function(data){
 			currentContent = 'supplier';
 			jsonData = data;
 			redrawContent(data, 'supplier');
 			reinitializeTabs();
-			reinitializeMap(data, 10, true);
+			reinitializeMap(map, data, 8, true);
 		},
 		"json");
 		
-		/*
+		
+		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
+		
 		$.post("/restaurant/ajaxSearchRestaurantInfo", { restaurantId:"<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '' ) ?>" },
 		function(data){
 			if (data.geocode != '') {
-				reinitializeMap(data, 13);
+				reinitializeMap(map2, data, 13);
 			}
 		},
 		"json");
-		*/
+		
 		
 		$('#divAddresses a').click(function(e) {
 			record_id = $(this).attr('id');
@@ -63,7 +66,7 @@
 					var arr = record_id.split('_');
 					record_id = arr[1];
 					
-					viewMarker(record_id, 0);
+					viewMarker(map2, record_id, 0);
 					//$('html, body').animate({scrollTop:2000}, 'slow');
 					$('html, body').scrollTop(2000);
 				}
@@ -110,7 +113,20 @@
 		*/
 		
 	});
-	
+		
+	function loadSmallMapOnStartUp(lat, lng, zoom) {
+		var myLatlng = new google.maps.LatLng(lat, lng);
+	    var myOptions = {
+	      zoom: zoom,
+	      center: myLatlng,
+	      disableDefaultUI: true,
+	      navigationControl: false,
+	      scrollwheel: false,
+	      draggable: false,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    }
+	    map2 = new google.maps.Map(document.getElementById("small_map_canvas"), myOptions);
+	}
 	
 	function getMarkerHtml(o) {
 		html = "<font size = '2'><b><i>" + o.supplierName + "</i></b></font><br /><font size = '1'>" +
@@ -176,6 +192,17 @@
 				?>
 			</div>
 			
+		</div>
+		
+		<div id = "supplyChartMap">
+			<?php
+				$param = array(
+								'width' => 539, 
+								'height' => 250,
+								'type' => 'supplier',
+							);
+				$this->load->view('includes/map', $param);
+			?>
 		</div>
 		
 		<div style="overflow:auto; padding:5px;"></div>

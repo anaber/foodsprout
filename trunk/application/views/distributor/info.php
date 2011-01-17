@@ -4,7 +4,7 @@
 		
 		$.post("/distributor/ajaxSearchDistributorInfo", { distributorId:"<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->distributorId : '' ) ?>" },
 		function(data){
-			reinitializeMap(data, 13);
+			reinitializeMap(map2, data, 13);
 		},
 		"json");
 		
@@ -17,7 +17,7 @@
 					var arr = record_id.split('_');
 					record_id = arr[1];
 					
-					viewMarker(record_id, 0);
+					viewMarker(map2, record_id, 0);
 					//$('html, body').animate({scrollTop:2000}, 'slow');
 					$('html, body').scrollTop(2000);
 				}
@@ -37,7 +37,7 @@
 	      draggable: false,
 	      mapTypeId: google.maps.MapTypeId.ROADMAP
 	    }
-	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	    map2 = new google.maps.Map(document.getElementById("small_map_canvas"), myOptions);
 	}
 	
 	function getMarkerHtml(o) {
