@@ -9,13 +9,14 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 		formAction = '/farmersmarket/ajaxSearchFarmersMarketPhotos';
 	}
 	
-	postArray = { p:page, pp:perPage, sort:s, order:o, q:farmersMarketId, f:filter };
+	postArray = { p:page, pp:perPage, sort:s, order:o, q:farmersMarketId, f:filter, addressId:addressId };
 	
 	$.post(formAction, postArray,function(data) {		
 		jsonData = data;
 		currentContent = type;
 		
 		redrawContent(data, type);
+		reinitializeMap(map, data, 8, true);
 	},
 	"json");
 }
