@@ -17,7 +17,11 @@
 	});
 	</script>
 
-<h1>Explore Your Food's Impact</h1><br/>
+<h1>Food Sprout</h1><hr size="1">
+<div style="vertical-align:middle;">
+<img src="/img/icon_gift_certificate.jpg"> Enter to win FREE gift certificates and other offers from Sustainable Restaurants in your area.
+</div>
+<br/>
 <div id="tabs">
 <div id="homevtabs">
 	<br/><ul>
@@ -29,7 +33,7 @@
 	</ul>
 </div>
 
-<div style="float:left; width:490px;" class="ui-tabs">
+<div style="float:left; width:520px;" class="ui-tabs">
 	
 		<?php		
 			$this->load->view('home/restaurant');
@@ -48,15 +52,12 @@
 		?>
 	
 </div>
+
 </div>
 <div style="float:right; width:300px;">
-	<div style="padding:5px; border-bottom:1px solid #000;">
-	<img src="/img/news-twitter-bird.png" align="left"><h3>Food Sprout on Twitter</h3>
-	<?php
-		foreach ($TWITTERDATA as $r) {
-			echo '<a href="'.$r['link'].'" style="text-decoration:none;"><span style="font-size:12px;">'.$r['description'].'</span></a><br/><br/>';
-		}
-	?>
+	<div style="padding:5px;">
+	<img src="/img/home-banner.jpg">
+	
 	</div><br/>
 	<!-- div style="border-top:1px solid #000; padding:5px;">
 	<h3>Food Sprout Blog</h3>
@@ -68,7 +69,9 @@
 	?>
 	</div><br/ -->
 	<?php $this->load->view('includes/banners/medrec'); ?>
-	<br/><!-- div id="homeleftbox">
+	<br/>
+	
+	<!-- div id="homeleftbox">
 		<a href="/map"><img src="/img/map-home.jpg" border="0" width="300"></a><span class="redtxt"><br/><b>Food Sources in Your Area</b></span><br><br><span style="font-size:14px;">Start using <a href="/map">our interactive map</a> to learn where your food comes from AND what's in it...</span><br><br -->		
 	</div>
 </div>
