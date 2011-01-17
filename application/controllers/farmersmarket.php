@@ -100,7 +100,7 @@ class FarmersMarket extends Controller {
 	}
 	
 	// View the information on a single restaurant
-	function view($farmersMarketId = '', $asddressId = '') {
+	function view($farmersMarketId = '', $addressId = '') {
 		global $SUPPLIER_TYPES_2;
 		
 		$data = array();
@@ -157,6 +157,7 @@ class FarmersMarket extends Controller {
 		// Center -> Info
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['info']['ADDRESS_ID'] = $addressId;
 		$data['data']['center']['info']['TABLE'] = 'farmers_market_supplier';
 		
 		// Left -> Map
@@ -194,8 +195,9 @@ class FarmersMarket extends Controller {
 	
 	function ajaxSearchFarmersMarketSuppliers() {
 		$q = $this->input->post('q');
+		$addressId = $this->input->post('addressId');
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q);
+		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
 		echo json_encode($suppliers);
 	}

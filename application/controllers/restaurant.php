@@ -128,12 +128,11 @@ class Restaurant extends Controller {
 		$data['LEFT'] = array(
 				'img' => '/includes/left/images',
 				'info' => 'includes/left/info',
-				//'map' => 'includes/right/map',
+				'map' => 'includes/right/map',
 		);
 
 		// Load all the views for the center column
 		$data['CENTER'] = array(
-				'map' => 'includes/map',
 				'info' => '/restaurant/info',
 		);
 
@@ -151,13 +150,9 @@ class Restaurant extends Controller {
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
 
 		// Left -> Map
-		//$data['data']['left']['map']['width'] = '220';
-		//$data['data']['left']['map']['height'] = '180';
-		//$data['data']['left']['map']['hide_map'] = 'no';
-
-		// Center -> Map
-		$data['data']['center']['map']['width'] = '750';
-		$data['data']['center']['map']['height'] = '250';
+		$data['data']['left']['map']['width'] = '220';
+		$data['data']['left']['map']['height'] = '180';
+		$data['data']['left']['map']['hide_map'] = 'no';
 
 		// Left -> Images
 		$data['data']['left']['img']['PHOTOS'] = $thumbPhotos;

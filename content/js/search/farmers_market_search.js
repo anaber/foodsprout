@@ -80,7 +80,7 @@ function redrawContent(data) {
 				var arr = record_id.split('_');
 				record_id = arr[1];
 				
-				viewMarker(record_id, 1);
+				viewMarker(map, record_id, 1);
 				//$('html, body').animate({scrollTop:0}, 'slow');
 				$('html, body').scrollTop(0);
 			} else {
@@ -91,7 +91,7 @@ function redrawContent(data) {
 	});
 	
 	if (showMap ==  true) { 
-		reinitializeMap(data, data.param.zoomLevel);
+		reinitializeMap(map, data, data.param.zoomLevel);
 	}
 	
 	reinitializePagingEvent(data);

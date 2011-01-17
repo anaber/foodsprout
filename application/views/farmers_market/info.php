@@ -17,6 +17,7 @@
 <script>
 	
 	var farmersMarketId = <?php echo $FARMERS_MARKET->farmersMarketId; ?>;
+	var addressId = <?php echo $ADDRESS_ID; ?>;
 	var name = "<?php echo $FARMERS_MARKET->farmersMarketName; ?>";
 	var userGroup = "<?php echo $userGroup; ?>";
 	var userId = "<?php echo $userId; ?>";
@@ -33,14 +34,16 @@
 	var isLoginMessageVisible = false;
 	
 	$(document).ready(function() {
+		loadMapOnStartUp(38.41055825094609, -98, 3);
 		$('#bottomPaging').hide();
 		
-		$.post("/farmersmarket/ajaxSearchFarmersMarketSuppliers", { q: farmersMarketId },
+		$.post("/farmersmarket/ajaxSearchFarmersMarketSuppliers", { q: farmersMarketId, addressId:addressId },
 		function(data){
 			currentContent = 'supplier';
 			jsonData = data;
 			redrawContent(data, 'supplier');
 			reinitializeTabs();
+			reinitializeMap(map, data, 8, true);
 		},
 		"json");
 		
@@ -49,7 +52,7 @@
 		$.post("/farmersmarket/ajaxSearchFarmersMarketInfo", { farmersMarketId:"<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->farmersMarketId : '' ) ?>" },
 		function(data){
 			if (data.geocode != '') {
-				reinitializeMap(data, 13);
+				reinitializeMap(map2, data, 13);
 			}
 		},
 		"json");
@@ -63,7 +66,7 @@
 					var arr = record_id.split('_');
 					record_id = arr[1];
 					
-					viewMarker(record_id, 0);
+					viewMarker(map2, record_id, 0);
 					//$('html, body').animate({scrollTop:2000}, 'slow');
 					$('html, body').scrollTop(2000);
 				}
@@ -84,7 +87,7 @@
 	      draggable: false,
 	      mapTypeId: google.maps.MapTypeId.ROADMAP
 	    }
-	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	    map2 = new google.maps.Map(document.getElementById("small_map_canvas"), myOptions);
 	}
 	
 	function getMarkerHtml(o) {
@@ -132,6 +135,17 @@
 				?>
 			</div>
 			
+		</div>
+		
+		<div id = "supplyChartMap">
+			<?php
+				$param = array(
+								'width' => 539, 
+								'height' => 250,
+								'type' => 'supplier',
+							);
+				$this->load->view('includes/map', $param);
+			?>
 		</div>
 		
 		<div style="overflow:auto; padding:5px;"></div>

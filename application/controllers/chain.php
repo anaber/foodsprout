@@ -142,6 +142,7 @@ class Chain extends Controller {
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
 		$data['data']['center']['info']['RESTAURANT_CHAIN_ID'] = $restaurantChain->restaurantChainId;
+		$data['data']['center']['info']['ADDRESS_ID'] = $addressId;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_chain_supplier';
 		
 		// Left -> Images
@@ -177,8 +178,9 @@ class Chain extends Controller {
 
 	function ajaxSearchRestaurantChainSuppliers() {
 		$q = $this->input->post('q');
+		$addressId = $this->input->post('addressId');
 		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q);
+		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
 		echo json_encode($suppliers);
 	}

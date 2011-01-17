@@ -7,6 +7,7 @@
 #leafimg #mainimg #rest-main-details #rest-dec #description-details{height:50px;width:205px;font-size:11px;color:#FFF;text-align:justify;font-family:"Myriad Pro";padding-top:5px;padding-right:3px;padding-left:3px;}
 #leafimg #mainimg #rest-main-details #location-icon{height:23px;width:89px;padding-top:15px;padding-left:8px;float:left;}
 #leafimg #mainimg #rest-main-details #map{float:left;height:100px;width:210px;padding-top:8px;}
+#leafimg #mainimg #rest-main-details #small_map{float:left;height:100px;width:210px;padding-top:8px;}
 #leafimg #mainimg #resultsContainer #menu-bar .selected a{color:#F05A25;text-decoration:none;}
 #leafimg #mainimg #resultsContainer #menu-bar .add-item a{color:#FFF;text-decoration:none;}
 #leafimg #mainimg #resultsContainer #menu-bar .add-item-selected a{color:#F05A25;text-decoration:none;}

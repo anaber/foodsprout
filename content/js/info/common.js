@@ -34,6 +34,9 @@ function reinitializeTabs() {
 		
 		$('#bottomPaging').hide();
 		
+		var $map = $('#map');
+		$map.show(800);
+		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'supplier');
 	});
 	
@@ -65,6 +68,9 @@ function reinitializeTabs() {
 		isLoginMessageVisible = false;
 		
 		$('#bottomPaging').hide();
+		
+		var $map = $('#map');
+		$map.hide(800);
 		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'menu');
 	});
@@ -99,6 +105,9 @@ function reinitializeTabs() {
 		
 		$('#bottomPaging').hide();
 		
+		var $map = $('#map');
+		$map.hide(800);
+		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
 	});
 	
@@ -130,6 +139,9 @@ function reinitializeTabs() {
 		isLoginMessageVisible = false;
 		
 		$('#bottomPaging').hide();
+		
+		var $map = $('#map');
+		$map.hide(800);
 		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'photo');
 	});
