@@ -30,8 +30,9 @@ padding-left:20px;background:#413225;overflow:hidden;padding-top:5px;-moz-border
 .greencolor{color:#496829;}
 h1,h2,h3,h4,h5,h6{margin:0;}
 h1{font-family:Helvetica,Arial;font-size:18px;color:#F05A25;font-weight:normal;}
-h2{font-size:14px;}
-h3{font-size:14px;}
+h2{font-size:15px;color:#286e13;}
+h3{font-size:15px;color:#286e13;}
+H4{font-size:15px;color:#286e13;}
 .greentxt{color:#0A7414;font-weight:bold;font-size:14px;margin:0px;}
 .redtxt{color:#90171E;font-size:14px;}
 #settings td{vertical-align:top;}

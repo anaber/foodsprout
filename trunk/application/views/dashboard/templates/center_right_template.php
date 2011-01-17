@@ -34,7 +34,7 @@
 ?>
 
 	<!-- right ads -->
-	<div id="add-designs">
+	<div style="float:right;width:160px;">
 
     <?php
 		foreach($RIGHT as $key => $view) {
