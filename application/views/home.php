@@ -17,12 +17,15 @@
 	});
 	</script>
 
-<h1>Food Sprout</h1><hr size="1">
-<div style="vertical-align:middle;">
-<img src="/img/icon_gift_certificate.jpg"> Enter to win FREE gift certificates and other offers from Sustainable Restaurants in your area.
-</div>
+<h1>Food Sprout - Your Sustainable Food Guide</h1>
+<hr size="1">
+	<div>
+		<div style="text-align:right;padding-right:15px;">
+			<img src="/img/icon_gift_certificate.jpg" alt="Sustainable Food Gift Certificates" width="59" height="50" style="float:left;clear:left;"><div style="-moz-border-radius: 4px; -webkit-border-radius: 4px; background: #e5e5e5; color: #000; -moz-box-shadow: 0 1px 0 #CCCCCC;-webkit-box-shadow: 0 1px 0 #CCCCCC; padding:5px;overflow:auto;width:680px;float:left;margin-top:10px;margin-left:2px;clear:right;"><a href="/tab">Enter</a> to win FREE gift certificates and other <a href="/tab">offers from Sustainable Restaurants</a> in your area.</div>
+		</div>
+	</div>
 <br/>
-<div id="tabs">
+<div id="tabs" style="clear:left;">
 <div id="homevtabs">
 	<br/><ul>
 		<li><a href="#tabs-1" style="text-decoration:none;">Near Me</a></li>
@@ -56,22 +59,15 @@
 </div>
 <div style="float:right; width:300px;">
 	<div style="padding:5px;">
-	<img src="/img/home-banner.jpg">
+	<a href="/about"><img src="/img/home-banner.jpg" alt="Explore Your Food's Impact" width="300" height="250" border="0"></a>
 	
 	</div><br/>
-	<!-- div style="border-top:1px solid #000; padding:5px;">
-	<h3>Food Sprout Blog</h3>
-	<?php
-		foreach ($BLOGDATA as $key) {
-			echo $key['title'];
-			echo '<br><span style="font-size:11px;">'.$key['description'].'</span>';
-		}
-	?>
-	</div><br/ -->
+	<div class="add-data">
+		<a href="/user/dashboard"><img src="/img/icon-add.gif" width="60" height="60" alt="Adding Data" align="left" style="padding-right:3px;" border="0"></a>Are we missing your favorite place?  <a href="/user/dashboard">Add it now</a> and other data easily.
+	</div>
+	<br/>
 	<?php $this->load->view('includes/banners/medrec'); ?>
 	<br/>
-	
-	<!-- div id="homeleftbox">
-		<a href="/map"><img src="/img/map-home.jpg" border="0" width="300"></a><span class="redtxt"><br/><b>Food Sources in Your Area</b></span><br><br><span style="font-size:14px;">Start using <a href="/map">our interactive map</a> to learn where your food comes from AND what's in it...</span><br><br -->		
+			
 	</div>
 </div>
