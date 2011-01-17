@@ -181,7 +181,7 @@ class Restaurant extends Controller {
 						'floating_messages'
 						);
 
-		$this->load->view('templates/left_center_right_template', $data);
+		$this->load->view('templates/left_center_detail_template', $data);
 	}
 
 

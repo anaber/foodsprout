@@ -1,13 +1,13 @@
 .ui-tabs .ui-tabs-hide{display:none;}
-#tabs #homevtabs{float:left;width:170px;margin-left:10px;}
+#tabs #homevtabs{float:left;width:145px;margin-left:0px;}
 #tabs #homevtabs ul{list-style-type:none;margin:0;text-align:right;}
 .ui-tabs-nav{padding:0px;margin:0px;}
-.ui-tabs-panel{-moz-border-radius:6px;-webkit-border-radius:6px;padding:20px;min-height:440px;border:solid 2px #E5E5E5;}
+.ui-tabs-panel{-moz-border-radius:6px;-webkit-border-radius:6px;padding:20px;min-height:500px;border:solid 2px #E5E5E5;}
 .ui-tabs-selected{background:#E5E5E5;text-decoration:none;color:#2076B9;padding:5px;}
 .ui-state-default{text-decoration:none;color:#2076B9;padding:5px;}
 .ui-state-default a{text-decoration:none;color:#2076B9;padding:5px;border:0px;}
 .ui-state-active a{background:#E5E5E5;text-decoration:none;color:#2076B9;padding:5px;border:0px;}
 
 .graybox{
-	-moz-border-radius: 4px; -webkit-border-radius: 4px; background: #e5e5e5; color: #000; -moz-box-shadow: 0 1px 0 #CCCCCC;-webkit-box-shadow: 0 1px 0 #CCCCCC; padding:10px;overflow:auto;width:400px;
+	-moz-border-radius: 4px; -webkit-border-radius: 4px; background: #e5e5e5; color: #000; -moz-box-shadow: 0 1px 0 #CCCCCC;-webkit-box-shadow: 0 1px 0 #CCCCCC; padding:10px;overflow:auto;width:420px;
 }
