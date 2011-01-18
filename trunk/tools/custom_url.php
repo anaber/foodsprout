@@ -38,7 +38,7 @@ class CustomUrl {
 		/** 
 		 * Triger again and again to generate URL for records which are not processed yet 
 		 */
-		$this->generateCustomUrl();
+		//$this->generateCustomUrl();
 		
 		/** 
 		 * Restaurant Chain
@@ -53,6 +53,76 @@ class CustomUrl {
 		//$this->dumpDataToCustomUrlTable();	
 		//$this->dropTempTable();
 		//$this->lookupDuplicateRecords();
+		
+		/** 
+		 * Triger again and again to generate URL for records which are not processed yet 
+		 */
+		$this->generateCustomUrlForCity();
+	}
+	
+	function generateCustomUrlForCity() {
+		
+		$query = "SELECT city.*, state.state_code " .
+				" FROM city, state " .
+				" WHERE city.state_id = state.state_id " .
+				" AND city.custom_url IS NULL " .
+				" limit 0, 20000";
+		
+		$result = mysql_query($query);
+		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			echo $row['city_id'];
+			
+			if (!$row['custom_url']) {
+				$city_without_spaces = $this->_trimWhiteSpaces(trim($row['city']));
+				
+				//$city_slug = strtolower(str_replace(' ', '-', str_replace("'", '',$city_without_spaces))); 
+				
+				$city_with_state = $city_without_spaces;
+				
+				if($row['city'] != ''){
+					$city_with_state .= '-'.$this->_trimWhiteSpaces(trim($row['state_code']));
+				}
+				
+				$slug = $city_with_state;
+				$slug = strtolower(str_replace(' ', '-', str_replace("'", '',$slug))); 
+				
+				echo '##' . $row['city'] . '##' . $row['state_code'] . '##' . $slug . '## Correct Slug : ';
+				
+				/*
+				$query = 'SELECT * ' .
+					' FROM temp_custom_url' .
+					' WHERE ' .
+					' producer_id = ' . $row['producer_id'] .
+					' AND city = \''.$row['city'].'\'' .
+					' AND custom_url = \''.$slug.'\'';
+				*/
+				$query = 'SELECT * ' .
+					' FROM city' .
+					' WHERE ' .
+					' custom_url = \''.$slug.'\'';
+				
+				//echo $query . "<br />";
+				$result1 = mysql_query($query);
+				if (mysql_num_rows($result1) == 0) {
+					//echo "Update Custom URL <br />";
+					$query = 'UPDATE city' .
+						' SET ' .
+						' custom_url = \''.$slug.'\' ' .
+						' WHERE city_id = ' . $row['city_id'];
+					//echo $query . "<br />";
+					mysql_query($query);
+					echo $slug;
+				} else {
+					$row1 = mysql_fetch_array($result1, MYSQL_ASSOC);
+					echo ("Duplicate : " . $row1['city_id'] . " : " . $row1['city']);
+				}
+			} else {
+				echo '## Already generated custom_url'; 
+			}
+			
+			echo "\n";
+			
+		}
 	}
 	
 	function lookupDuplicateRecords() {
