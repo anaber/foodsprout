@@ -102,7 +102,7 @@ img{ border:0px;}
 .lottery_content_area{ background:#f1f1f1; padding:20px; margin:15px 0px; font:normal 12px Helvetica, Arial; color:#666;}
 .lottery_contentlt{width:368px; margin-right:15px;}
 .lottery_contentrt{width:500px; background:#dfdfdf; border:1px solid #cfced3; padding:5px;}
-.enternow{padding:20px 0px;}
+.enternow{padding:10px 0px;}
 .fbconnect{ margin:0px 20px;}
 .fbconnect2{ margin:3px 20px;}
 .prizedate{ border:1px solid #cfced3; border-left:0px; border-right:0px; padding:10px 0px;}
@@ -112,8 +112,8 @@ img{ border:0px;}
 .prizedate li.marginrt{ margin-right:10px;}
 .prize{font:bold 15px Helvetica, Arial; color:#f05a25; margin-top:10px;}
 .deals_head{ background:#666; font:normal 15px Helvetica, Arial; color:#fff; padding:6px 0px 6px 10px;}
-.deal_firstrow{ background:#f1f1f1; font:normal 12px Helvetica, Arial; color:#666; padding:6px 0px 6px 10px; border-bottom:1px solid #cfced3;}
-.deal_secrow{ background:#f8f8f8; font:normal 12px Helvetica, Arial; color:#666; padding:6px 0px 6px 10px; border-bottom:1px solid #cfced3;}
+.deal_firstrow{ background:#f1f1f1; font:normal 20px Helvetica, Arial; color:#666; padding:6px 0px 6px 10px; border-bottom:1px solid #cfced3;}
+.deal_secrow{ background:#f8f8f8; font:normal 20px Helvetica, Arial; color:#666; padding:6px 0px 6px 10px; border-bottom:1px solid #cfced3;}
 .deals_pic{ padding:5px; border:1px solid #cfced3; background:#dfdfdf;}
 .black{ color:#000;}
 .sustainable_icons{font:bold 12px Helvetica, Arial; color:#000;}
@@ -123,7 +123,7 @@ img{ border:0px;}
 /* css for button by naveen*/
 
 .button_img { cursor:pointer; line-height:29px; background: url(/img/button.png) no-repeat right top; padding-right:15px; vertical-align:top; display:block; /*opera*/ display:inline-block; /*ie*/ display:-moz-inline-box;/*ff*/ text-decoration:none; }
-.button_img span { background:url(/img/button.png) no-repeat left top; height:29px; display: block; display:inline-block; padding-left:15px; line-height:29px; font-family: Helvetica,Arial,"Myriad Pro"; color:#2076b9; font-size:18px; text-decoration:none; font-weight:normal; outline:none; }
+.button_img span { background:url(/img/button.png) no-repeat left top; height:29px; display: block; display:inline-block; padding-left:15px; line-height:29px; font-family: Helvetica,Arial,"Myriad Pro"; color:#29447e; font-size:18px; text-decoration:none; font-weight:normal; outline:none;}
 a.button_img:hover { background-position:right -29px; text-decoration:none; }
 a.button_img:hover span { background-position:left -29px; text-decoration:none; }
 

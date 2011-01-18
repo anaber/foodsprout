@@ -18,11 +18,11 @@ class ProductLib {
 	var $brand;
 	var $upc;
 	var $status;
-        var $hasFructose;
+    var $hasFructose;
 	var $userId;
 	var $creationDate;
 	var $modifyDate;
-	
+	var $customURL;
 		
 	function ProductLib() {
 		$this->productId = '';
@@ -45,6 +45,7 @@ class ProductLib {
 		$this->userId = '';
 		$this->creationDate = '';
 		$this->modifyDate = '';
+		$this->customURL = '';
 	}
 }
 ?>
