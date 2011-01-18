@@ -1360,6 +1360,41 @@ class RestaurantModel extends Model{
 
 		return $restaurants;
 	}
+	
+	// Used to build the sitemap.  Returns all the slugs
+	function getRestaurantsSitemap($start,$end) {
+		$query = "SELECT creation_date,custom_url.custom_url
+					FROM producer, custom_url WHERE is_restaurant = 1 AND producer.producer_id=custom_url.producer_id LIMIT ".$start.", ".$end;
+
+		log_message('debug', "RestaurantModel.getRestaurantsSitemap : " . $query);
+		$result = $this->db->query($query);
+
+		$restaurants = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('RestaurantLib');
+			unset($this->RestaurantLib);
+
+			$this->RestaurantLib->customURL = $row['custom_url'];
+			$this->RestaurantLib->creationDate = $row['creation_date'];
+
+			$restaurants[] = $this->RestaurantLib;
+			unset($this->RestaurantLib);
+		}
+
+		return $restaurants;	
+	}
+	
+	// Used to build the sitemap.  Returns all the slugs
+	function getRestaurantCount() {
+		$query = "SELECT count(*) as total FROM producer WHERE is_restaurant = 1";
+		$result = $this->db->query($query);
+		
+		$row = $result->row(); 
+		return $row->total;
+	}
+	
 
 }
 
