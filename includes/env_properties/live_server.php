@@ -47,4 +47,13 @@ $APPLICATION_FOLDER = "/mnt/stor2-wc1-dfw1/404946/492717/www.foodsprout.com/web/
 $UPLOAD_FOLDER = "/mnt/stor2-wc1-dfw1/404946/492717/www.foodsprout.com/web/content/uploads";
 
 $IMAGEMAGICK_PATH = "/usr/bin/convert";
+
+/*
+ * ======================================================
+ * Facebook Connect
+ * ======================================================
+ */
+$FB_APP_ID = '115773521821327';
+$FB_SECRET_KEY = '34abf8fc24ad02a6f239e91965394d2f';
+
 ?>

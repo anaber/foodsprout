@@ -133,3 +133,5 @@ a.button_img:hover span { background-position:left -29px; text-decoration:none; 
 
 span.input_img:hover { background-position:right -29px; text-decoration:none; }
 span.input_img:hover input[type=submit] { background-position:left -29px; text-decoration:none; }
+.city{float:left; width:190px;font-size:120%;}
+.city a{font-size:18px;text-decoration:none;line-height:140%;}

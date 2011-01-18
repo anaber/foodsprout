@@ -49,7 +49,7 @@ class Home extends Controller {
 	  	
 		$twitterdata = array();
 		//Get 1 items from the feed
-	  	$twitterdata = $this->rssparser->getFeed(2);
+	  	$twitterdata = $this->rssparser->getFeed(1);
 	
 		$data['TWITTERDATA'] = $twitterdata;
 			
