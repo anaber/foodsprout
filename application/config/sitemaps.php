@@ -18,7 +18,7 @@ $config['sitemaps_search_engines'] = array(
     // array("host" => "search.yahooapis.com", "url" => "/SiteExplorerService/V1/ping?sitemap="),
     // array("host" => "submissions.ask.com"),
     // array("host" => "www.bing.com", "url" => "/webmaster/ping.aspx?siteMap="),
-    array("host" => "www.sitemapwriter.com", "url" => "/notify.php?crawler=all&url=")
+    //array("host" => "www.sitemapwriter.com", "url" => "/notify.php?crawler=all&url=")
 );
 
 /**
