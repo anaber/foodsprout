@@ -5,7 +5,7 @@ class ProductModel extends Model {
 	// List the recent products
 	function listNewProducts() {
         
-        $query = "SELECT * FROM product WHERE product_type_id <> 1 ORDER BY product_id DESC LIMIT 5";
+        $query = "SELECT product.*, custom_url.custom_url AS slug FROM product, producer, custom_url WHERE product_type_id <> 1 AND producer.producer_id = product.producer_id AND custom_url.producer_id = producer.producer_id ORDER BY product.product_id DESC LIMIT 10";
 
         log_message('debug', "ProductModel.listNewProducts : " . $query);
         $result = $this->db->query($query);
@@ -19,6 +19,8 @@ class ProductModel extends Model {
 
             $this->productLib->productId = $row['product_id'];
             $this->productLib->productName = $row['product_name'];
+			$this->productLib->producerId = $row['producer_id'];
+			$this->productLib->customURL = $row['slug'];
 
             $products[] = $this->productLib;
             unset($this->productLib);

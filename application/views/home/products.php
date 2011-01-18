@@ -17,7 +17,7 @@
 	<br/><br/>Recently Added Products<br>
 	<?php
 		foreach ($NEWPRODUCTS as $key1) {
-			echo '<a href="/product/view/'.$key1->productId.'" style="text-decoration:none;font-size:13px;">'.$key1->productName.'</span></a>, ';
+			echo '<a href="/manufacture/'.$key1->customURL.'" style="text-decoration:none;font-size:13px;">'.$key1->productName.'</span></a><br> ';
 		}
 	?><br><br>
 </div>

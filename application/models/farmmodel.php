@@ -8,9 +8,9 @@ class FarmModel extends Model{
 	 */
 	// list new farms
 	function listNewFarms() {
-		$query = "SELECT producer.* " .
-				" FROM producer WHERE is_farm = 1" .
-				" ORDER BY producer_id DESC LIMIT 5";
+		$query = "SELECT producer.*, custom_url.custom_url" .
+				" FROM producer, custom_url WHERE is_farm = 1 AND custom_url.producer_id=producer.producer_id" .
+				" ORDER BY producer.producer_id DESC LIMIT 10";
 		
 		log_message('debug', "FarmModel.listNewFarms : " . $query);
 		$result = $this->db->query($query);
@@ -24,6 +24,7 @@ class FarmModel extends Model{
 			
 			$this->FarmLib->farmId = $row['producer_id'];
 			$this->FarmLib->farmName = $row['producer'];
+			$this->FarmLib->customURL = $row['custom_url'];
 			
 			$farms[] = $this->FarmLib;
 			unset($this->FarmLib);
