@@ -47,10 +47,12 @@ function reinitializeMap(mapObject, data, zoomLevel, showLines) {
 			
 			var point = new google.maps.LatLng(o.latitude, o.longitude);
 			
-			html = getMarkerHtml(o);
+			//html = getMarkerHtml(o);
 			if (divId == 'small_map_canvas') {
+				html = getMarkerHtml2(o);
 				htmls2[o.id] = html;
 			} else {
+				html = getMarkerHtml(o);
 				htmls[o.id] = html;
 			}
 			

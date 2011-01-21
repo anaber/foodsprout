@@ -89,7 +89,7 @@
 	    map2 = new google.maps.Map(document.getElementById("small_map_canvas"), myOptions);
 	}
 	
-	function getMarkerHtml(o) {
+	function getMarkerHtml2(o) {
 		html = "<font size = '2'><b><i>" + o.manufactureName + "</i></b></font><br /><font size = '1'>" +
 			  o.addressLine1 + ", " + o.addressLine2 + "<br />" + 
 			  o.addressLine3 + "</font><br />"

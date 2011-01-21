@@ -91,6 +91,14 @@
 	}
 	
 	function getMarkerHtml(o) {
+		html = "<font size = '2'><b><i>" + o.supplierName + "</i></b></font><br /><font size = '1'>" +
+			  o.addressLine1 + ", " + o.addressLine2 + "<br />" + 
+			  o.addressLine3 + "</font><br />"
+			  ;
+		return html;
+	}
+	
+	function getMarkerHtml2(o) {
 		html = "<font size = '2'><b><i>" + o.farmersMarketName + "</i></b></font><br /><font size = '1'>" +
 			  o.addressLine1 + ", " + o.addressLine2 + "<br />" + 
 			  o.addressLine3 + "</font><br />"

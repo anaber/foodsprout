@@ -88,7 +88,7 @@ class FarmersMarketModel extends Model{
 				$arrLatLng['addressLine1'] = $address->address;
 				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
 				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
-				$arrLatLng['farmName'] = $this->FarmersMarketLib->farmersMarketName;
+				$arrLatLng['farmersMarketName'] = $this->FarmersMarketLib->farmersMarketName;
 				$arrLatLng['id'] = $address->addressId;
 				$geocodeArray[] = $arrLatLng;
 			}
