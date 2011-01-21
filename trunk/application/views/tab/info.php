@@ -205,7 +205,7 @@ $(document).ready(function() {
 		<!-- Lottery content area left starts here -->
 		<div class="lottery_contentlt flt">
 			<h3><?php echo $LOTTRIES['results'][$currentIndex]->producer; ?><br/><span><?php echo $LOTTRIES['results'][$currentIndex]->city . ', ' . $LOTTRIES['results'][$currentIndex]->stateCode; ?></span></h3>
-			<a href="/restaurant/view/<?php echo $LOTTRIES['results'][$currentIndex]->producerId; ?>">View Restaurant Details</a><br>
+			<a href="/restaurant/<?php echo $LOTTRIES['results'][$currentIndex]->customURL; ?>">View Restaurant Details</a><br>
 			
 			<?php
 			
@@ -343,7 +343,7 @@ $(document).ready(function() {
 			<tr>
 				<td class="deal_firstrow"><img src="<?php echo $lottery->photos[0]->thumbPhoto; ?>" alt="" width="100" height="67"class="deals_pic"/></td>
 				<td class="deal_firstrow"><div class="flt"><a title="click here to grab it" href="/tab?id=<?php echo $lottery->lotteryId; ?>" class="button_img"><span>View Details</span></a></div></td>
-				<td class="deal_firstrow"><a href="/restaurant/view/<?php echo $lottery->producerId; ?>"><?php echo $lottery->producer; ?></a></td>
+				<td class="deal_firstrow"><a href="/restaurant/<?php echo $lottery->customURL; ?>"><?php echo $lottery->producer; ?></a></td>
 				<td class="deal_firstrow"><?php echo $lottery->city . ', ' . $lottery->stateCode; ?></td>
 				<td class="deal_firstrow black">
 				<?php
