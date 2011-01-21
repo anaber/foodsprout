@@ -294,6 +294,7 @@ class LotteryModel extends Model{
 		}
 		
 		$defaultCity = '';
+		/*
 		if ($cityId) {
 			$defaultCity = $cityId;
 		} else {
@@ -334,6 +335,8 @@ class LotteryModel extends Model{
 				}
 			}
 		}
+		*/
+		$defaultCity = 41;
 		
 		$query = 'SELECT count(*) as num_records FROM lottery' .
 				' WHERE city_id = ' . $defaultCity;
