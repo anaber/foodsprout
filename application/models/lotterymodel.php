@@ -189,11 +189,12 @@ class LotteryModel extends Model{
 	
 	function getLotteryFromId($lotteryId) {
 		
-		$query = 'SELECT lottery.*, producer.producer, city.city, state.state_code ' .
-				' FROM lottery, producer, city, state' .
+		$query = 'SELECT lottery.*, producer.producer, custom_url.custom_url, city.city, state.state_code ' .
+				' FROM lottery, producer, city, state, custom_url' .
 				' WHERE lottery.lottery_id = ' . $lotteryId . 
 				' AND lottery.producer_id = producer.producer_id' .
 				' AND lottery.city_id = city.city_id' .
+				' AND lottery.producer_id = custom_url.producer_id' .
 				' AND city.state_id = state.state_id';
 		
 		log_message('debug', "LotteryModel.getLotteryFromId : " . $query);
@@ -212,6 +213,7 @@ class LotteryModel extends Model{
 			$this->LotteryLib->city = $row->city;
 			$this->LotteryLib->stateCode = $row->state_code;
 			$this->LotteryLib->info = $row->info;
+			$this->LotteryLib->customURL = $row->custom_url;
 			
 			$this->LotteryLib->startDate = ( $row->start_date ? date('m/d/Y', strtotime($row->start_date) ) : '');
 			$this->LotteryLib->endDate = ( $row->end_date ? date('m/d/Y', strtotime($row->end_date) ) : '');
@@ -365,14 +367,15 @@ class LotteryModel extends Model{
 		$start = 0;
 		$page = 0;
 		
-		$base_query = 'SELECT lottery.*, producer.producer, city.city, state.state_code ' .
-				' FROM lottery, producer, city, state';
+		$base_query = 'SELECT lottery.*, producer.producer, city.city, state.state_code, custom_url.custom_url ' .
+				' FROM lottery, producer, city, state, custom_url';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM lottery, producer, city, state';
+				' FROM lottery, producer, city, state, custom_url';
 		
 		$where = ' WHERE lottery.producer_id = producer.producer_id' .
 				' AND lottery.city_id = city.city_id' .
+				' AND lottery.producer_id = custom_url.producer_id' .
 				' AND city.state_id = state.state_id';
 		if ($defaultCity != '') {
 			$where .= ' AND city.city_id = ' . $defaultCity;
@@ -440,6 +443,7 @@ class LotteryModel extends Model{
 			$this->LotteryLib->city = $row['city'];
 			$this->LotteryLib->stateCode = $row['state_code'];
 			$this->LotteryLib->info = $row['info'];
+			$this->LotteryLib->customURL = $row['custom_url'];
 			
 			
 			$this->LotteryLib->startDate = ( $row['start_date'] ? date('m/d/Y', strtotime($row['start_date']) ) : '');
