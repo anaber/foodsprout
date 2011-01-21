@@ -294,10 +294,11 @@ class LotteryModel extends Model{
 		}
 		
 		$defaultCity = '';
-		/*
+		
 		if ($cityId) {
 			$defaultCity = $cityId;
 		} else {
+			/*
 			if (count($cities) > 0 ) {
 				if ($this->session->userdata('isAuthenticated') != 1 ) {
 					//$city = '41,6009,13721'; // San Francisco
@@ -334,9 +335,11 @@ class LotteryModel extends Model{
 					}
 				}
 			}
+			*/
+			$defaultCity = 41;
 		}
-		*/
-		$defaultCity = 41;
+		
+		
 		
 		$query = 'SELECT count(*) as num_records FROM lottery' .
 				' WHERE city_id = ' . $defaultCity;
