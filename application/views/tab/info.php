@@ -213,12 +213,20 @@ $(document).ready(function() {
 			//  Check for session, if no, show login info
 			//
 			
-			if ($this->session->userdata('isAuthenticated') == 1 || $me)
-			{
+			if ($this->session->userdata('isAuthenticated') == 1 ) {
+			?>
+				<div class="enternow">
+				<div class="flt"><a title="click here to login" href="" id = "linkEnroll" class="button_img"><span>Enter Now</span></a></div>
+				</div>
+				<br /><br />
+			<?php
+			} else if ( $me ) {
 			
 			?>
-				<div class="flt fbconnect">
-			    	<a href="#" id = "linkEnrollFacebook"><img src="/img/fbconnect.png" alt="Facebook Users" title="Facebook Users" border="0" /></a>
+				<div class="enternow">
+					<div class="flt fbconnect">
+				    	<a href="#" id = "linkEnrollFacebook"><img src="/img/fb-button-enter.gif" alt="Facebook Users" title="Facebook Users" border="0" /></a>
+				    </div>
 			    </div>
 			    <?php
 			    /*
@@ -231,6 +239,7 @@ $(document).ready(function() {
 			    ?>
 			    <input type = "hidden" name = "fbUserId" id = "fbUserId" value = "<?php echo $session['uid']; ?>">
 				<input type = "hidden" name = "fbToken" id = "fbToken" value = "<?php echo $session['access_token']; ?>">
+				<br /><br />
 			<?php	
 			
 			}
