@@ -377,3 +377,124 @@ CREATE TABLE IF NOT EXISTS `visits` (
   `visitorOs` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=42 DEFAULT CHARSET=latin1
+
+-- 
+-- City
+-- 
+ALTER TABLE `city` ADD `custom_url` VARCHAR( 125 ) NULL DEFAULT NULL;
+
+-- 17789##St. Clairsville##OH##st-clairsville-oh## Correct Slug : Duplicate of : 14197 : St Clairsville : 3(17789)
+-- Keep 17789
+UPDATE address SET city_id = 17789 WHERE city_id = 14197;
+DELETE FROM city WHERE city_id = 14197;
+
+-- 7696##Croton On Hudson##NY##croton-on-hudson-ny## Correct Slug : Duplicate of : 4025 : Croton-on-hudson : 7(7696)
+-- Keep 7696
+UPDATE address SET city_id = 7696 WHERE city_id = 4025;
+DELETE FROM city WHERE city_id = 4025;
+
+-- 18128##Chandler,##AZ##chandler-az## Correct Slug : Duplicate of : 1033 : Chandler : 1(18128)
+-- Keep 1033
+UPDATE address SET city_id = 1033 WHERE city_id = 18128;
+DELETE FROM city WHERE city_id = 18128;
+
+-- 18211##St. Augustine##FL##st-augustine-fl## Correct Slug : Duplicate of : 11424 : St Augustine : 3(18211)
+-- Keep 18211
+UPDATE address SET city_id = 18211 WHERE city_id = 11424;
+DELETE FROM city WHERE city_id = 11424;
+
+-- 18213##St. Petersburg##FL##st-petersburg-fl## Correct Slug : Duplicate of : 7400 : St Petersburg : 1(18213)
+-- Keep 18213
+UPDATE address SET city_id = 18213 WHERE city_id = 7400;
+DELETE FROM city WHERE city_id = 7400;
+
+-- 18264##Kailua-Kona##HI##kailua-kona-hi## Correct Slug : Duplicate of : 358 : Kailua Kona : 1(18264)
+-- Keep 358
+UPDATE address SET city_id = 358 WHERE city_id = 18264;
+DELETE FROM city WHERE city_id = 18264;
+
+-- 17993##Spring Lake,##MI##spring-lake-mi## Correct Slug : Duplicate of : 1595 : Spring Lake : 1(17993)
+-- Keep 1595
+UPDATE address SET city_id = 1595 WHERE city_id = 17993;
+DELETE FROM city WHERE city_id = 17993;
+
+-- 18476##East Tawas,##MI##east-tawas-mi## Correct Slug : Duplicate of : 6391 : East Tawas : 1(18476)
+-- Keep 6391
+UPDATE address SET city_id = 6391 WHERE city_id = 18476;
+DELETE FROM city WHERE city_id = 18476;
+
+-- 18482##Mt. Pleasant##MI##mt-pleasant-mi## Correct Slug : Duplicate of : 8109 : Mt Pleasant : 1(18482)
+-- Keep 18482
+UPDATE address SET city_id = 18482 WHERE city_id = 8109;
+DELETE FROM city WHERE city_id = 8109;
+
+-- 18485##Rockford,##MI##rockford-mi## Correct Slug : Duplicate of : 11461 : Rockford : 1(18485)
+-- Keep 11461
+UPDATE address SET city_id = 11461 WHERE city_id = 18485;
+DELETE FROM city WHERE city_id = 18485;
+
+-- 16578##St. Louis Park##MN##st-louis-park-mn## Correct Slug : Duplicate of : 16366 : St Louis Park : 2(16578)
+-- Keep 16578
+UPDATE address SET city_id = 16578 WHERE city_id = 16366;
+DELETE FROM city WHERE city_id = 16366;
+
+-- 18470##St. Cloud##MN##st-cloud-mn## Correct Slug : Duplicate of : 5885 : St Cloud : 1(18470)
+-- Keep 18470
+UPDATE address SET city_id = 18470 WHERE city_id = 5885;
+DELETE FROM city WHERE city_id = 5885;
+
+-- 18471##St. James##MN##st-james-mn## Correct Slug : Duplicate of : 8588 : St James : 1(18471)
+-- Keep 18471
+UPDATE address SET city_id = 18471 WHERE city_id = 8588;
+DELETE FROM city WHERE city_id = 8588;
+
+-- 18472##St. Joseph##MN##st-joseph-mn## Correct Slug : Duplicate of : 9270 : St Joseph : 1(18472)
+-- Keep 18472
+UPDATE address SET city_id = 18472 WHERE city_id = 9270;
+DELETE FROM city WHERE city_id = 9270;
+
+-- 18473##St. Paul##MN##st-paul-mn## Correct Slug : Duplicate of : 7870 : St Paul : 3(18473)
+-- Keep 18473
+UPDATE address SET city_id = 18473 WHERE city_id = 7870;
+DELETE FROM city WHERE city_id = 7870;
+
+-- 18461##D'Iberville##MS##diberville-ms## Correct Slug : Duplicate of : 5771 : Diberville : 1(18461)
+-- Keep 18461
+UPDATE address SET city_id = 18461 WHERE city_id = 5771;
+DELETE FROM city WHERE city_id = 5771;
+
+-- 12298##St. Louis##MO##st-louis-mo## Correct Slug : Duplicate of : 4021 : St Louis : 6(12298)
+-- Keep 12298
+UPDATE address SET city_id = 12298 WHERE city_id = 4021;
+DELETE FROM city WHERE city_id = 4021;
+
+-- 18452##Lee's Summit##MO##lees-summit-mo## Correct Slug : Duplicate of : 2107 : Lees Summit : 1(18452)
+-- Keep 18452
+UPDATE address SET city_id = 18452 WHERE city_id = 2107;
+DELETE FROM city WHERE city_id = 2107;
+
+-- 18458##St. Joseph##MO##st-joseph-mo## Correct Slug : Duplicate of : 16898 : St Joseph : 3(18458)
+-- Keep 18458
+UPDATE address SET city_id = 18458 WHERE city_id = 16898;
+DELETE FROM city WHERE city_id = 16898;
+
+-- 18376##Winston-Salem##NC##winston-salem-nc## Correct Slug : Duplicate of : 383 : Winston Salem : 2(18376)
+-- Keep 383
+UPDATE address SET city_id = 383 WHERE city_id = 18376;
+DELETE FROM city WHERE city_id = 18376;
+
+-- 18325##Lincoln City,##OR##lincoln-city-or## Correct Slug : Duplicate of : 3716 : Lincoln City : 1(18325)
+-- Keep 3716
+UPDATE address SET city_id = 3716 WHERE city_id = 18325;
+DELETE FROM city WHERE city_id = 18325;
+
+-- 18300##Bird-in-Hand##PA##bird-in-hand-pa## Correct Slug : Duplicate of : 11988 : Bird In Hand : 1(18300)
+-- Keep 11988
+UPDATE address SET city_id = 11988 WHERE city_id = 18300;
+DELETE FROM city WHERE city_id = 18300;
+
+-- 18205##Manakin-Sabot##VA##manakin-sabot-va## Correct Slug : Duplicate of : 1189 : Manakin Sabot : 1(18205)
+-- Keep 1189
+UPDATE address SET city_id = 1189 WHERE city_id = 18205;
+DELETE FROM city WHERE city_id = 18205;
+

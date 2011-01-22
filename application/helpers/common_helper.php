@@ -262,4 +262,24 @@ function createThumb($source,$destination,$new_w,$new_h, $old_x, $old_y) {
 	return $return;
 }
 
+function trimWhiteSpaces($string){
+	$string = str_replace(" - ", " ", $string);
+	$string = str_replace(".", "", $string);
+	$string = str_replace(",", "", $string);
+	$words = explode(" ", $string);
+	$newString = ''; 
+	if(sizeof($words) == 1 ){
+		
+		return $words[0];
+		
+	}else{
+		foreach($words as $word){
+			if($word != ''){
+				$newString .= ' '.$word; 
+			}
+		}
+		return trim($newString);
+	}
+}
+
 ?>

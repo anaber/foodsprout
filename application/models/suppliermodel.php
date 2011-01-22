@@ -846,6 +846,10 @@ class SupplierModel extends Model{
 		$CI =& get_instance();
 		$i = 1;
 		
+		/**
+		 * If we decide to add bigger map on farm page, 
+		 * We will need similar piece of code in get suppliee method  
+		 */
 		$CI->load->model('ProducerModel','',true);
 		$producer = $CI->ProducerModel->getProducerFromIdAndAddressId($producerId, $addressId);
 		if ($producer) {

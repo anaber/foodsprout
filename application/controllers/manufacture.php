@@ -104,7 +104,6 @@ class Manufacture extends Controller {
 	function customUrl($customUrl){
 		$this->load->model('CustomUrlModel');
 		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'manufacture');
-		
 		if ($producer) {
 			$this->view($producer->producerId, $producer->addressId);
 		} else {

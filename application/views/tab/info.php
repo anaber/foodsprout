@@ -224,9 +224,11 @@ $(document).ready(function() {
 			
 			?>
 				<div class="enternow">
-					<div class="flt fbconnect">
-				    	<a href="#" id = "linkEnrollFacebook"><img src="/img/fb-button-enter.gif" alt="Facebook Users" title="Facebook Users" border="0" /></a>
-				    </div>
+				
+					<div style="margin-bottom:4px;"><a title="click here to login" href="" id = "linkEnroll" class="button_img"><span>Login to Enter</span></a></div>
+					<div>
+						<span style="font-size:18px;vertical-align:bottom;">&nbsp;Or use: <a href="#" id = "linkEnrollFacebook"><img src="/img/fb-button-enter.gif" alt="Facebook Users" title="Facebook Users" border="0" /></a>
+					</div>
 			    </div>
 			    <?php
 			    /*

@@ -213,6 +213,13 @@ class FarmersMarket extends Controller {
 		$comments = $this->PhotoModel->getPhotosJson('farmers_market');
 		echo json_encode($comments);
 	}
+	
+	function city($c) {
+		$this->load->model('CityModel', '', TRUE);
+		$city = $this->CityModel->getCityFromCustomUrl($c);
+		
+		print_r_pre($city);
+	}
 }
 
 /* End of file farm.php */

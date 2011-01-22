@@ -30,7 +30,82 @@ class City extends Controller {
 		$this->load->model('CityModel', '', TRUE);
 		$cities = $this->CityModel->getCityJsonAdmin();
 		echo json_encode($cities);
-	}	
+	}
+	
+	function add() {
+		$data = array();
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'form' => 'admincp/city_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['center']['form']['VIEW_HEADER'] = "Add City";
+		$data['data']['center']['form']['STATES'] = $states;
+		
+		$this->load->view('admincp/templates/center_template', $data);
+	}
+	
+	function update($id) {
+		$data = array();
+		
+		$this->load->model('CityModel');
+		$city = $this->CityModel->getCityFromId($id);
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'form' => 'admincp/city_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['center']['form']['VIEW_HEADER'] = "Update City";
+		$data['data']['center']['form']['CITY'] = $city;
+		$data['data']['center']['form']['STATES'] = $states;
+		
+		$this->load->view('admincp/templates/center_template', $data);
+	}
+	
+	function save_add() {
+		$this->load->model('CityModel', '', TRUE);
+		
+		$city = $this->input->post('city');
+		$stateId = $this->input->post('stateId');
+		
+		$GLOBALS = array();
+		if ( $this->CityModel->addCity($city, $stateId) ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	}
+	
+	function save_update() {
+		$this->load->model('CityModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->CityModel->updateCity() ) {
+			echo "yes";
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	}
+	
+	
 }
 
 
