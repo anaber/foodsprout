@@ -334,7 +334,7 @@ class Restaurant extends Controller {
 						'listing'
 						);
 
-						$this->load->view('templates/left_center_template', $data);
+		$this->load->view('templates/left_center_template', $data);
 
 	}
 

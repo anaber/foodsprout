@@ -17,7 +17,7 @@ class RestaurantModel extends Model{
 		$result = $this->db->query($query);
 
 		$restaurants = array();
-		$CI =& get_instance();
+		
 		foreach ($result->result_array() as $row) {
 
 			$this->load->library('RestaurantLib');

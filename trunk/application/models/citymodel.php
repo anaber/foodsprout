@@ -47,35 +47,6 @@ class CityModel extends Model{
 		return $cities;
 	}
 	
-	function addCity($cityName, $stateId) {
-		$return = true;
-		
-		$query = "SELECT * FROM city WHERE city = \"" . $cityName . "\" AND state_id = " . $stateId;
-		log_message('debug', 'CityModel.addCity : Try to get duplicate City record : ' . $query);
-		
-		$result = $this->db->query($query);
-		
-		if ($result->num_rows() == 0) {
-			
-			$query = "INSERT INTO city (city_id, city, state_id)" .
-					" values (NULL, \"" . $cityName . "\", $stateId )";
-			log_message('debug', 'CityModel.addCity : Insert City : ' . $query);
-			
-			if ( $this->db->query($query) ) {
-				$new_city_id = $this->db->insert_id();
-
-				$return = $new_city_id;
-			} else {
-				$return = false;
-			}
-		} else {
-			$GLOBALS['error'] = 'duplicate_city';
-			$return = false;
-		}
-		
-		return $return;	
-	}
-	
 	function getCityFromId($cityId) {
 		
 		$query = 'SELECT * FROM city WHERE city_id = "'. $cityId . '"';
@@ -89,6 +60,7 @@ class CityModel extends Model{
 			$this->cityLib->cityId = $row->city_id;
 			$this->cityLib->stateId = $row->state_id;
 			$this->cityLib->city = $row->city;
+			$this->cityLib->customUrl = $row->custom_url;
 			
 			return $this->cityLib;
 		} else {
@@ -258,6 +230,145 @@ class CityModel extends Model{
 		} else {
 			return false;
 		}
+	}
+	
+	function getCityFromCustomUrl($customUrl) {
+		
+		$query = 'SELECT * FROM city WHERE custom_url = "'. $customUrl . '"';
+		log_message('debug', "CityModel.getCityFromCustomUrl : " . $query);
+		$result = $this->db->query($query);
+		
+		$this->load->library('CityLib');
+		$row = $result->row();
+		
+		if ($row) {
+			$this->cityLib->cityId = $row->city_id;
+			$this->cityLib->stateId = $row->state_id;
+			$this->cityLib->city = $row->city;
+			
+			return $this->cityLib;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	function addCity($city, $stateId) {
+		$return = true;
+		
+		$customUrl = $this->input->post('customUrl');
+		
+		if (!$customUrl) {
+			$city_without_spaces = trimWhiteSpaces(trim($city));
+			$city_with_state = $city_without_spaces;
+			
+			$CI =& get_instance();
+			$CI->load->model('StateModel','',true);
+			$state = $CI->StateModel->getStateFromId($stateId);
+			
+			$city_with_state .= '-'.trimWhiteSpaces(trim($state->stateCode));
+			
+			$customUrl = $city_with_state;
+			$customUrl = strtolower(str_replace(' ', '-', str_replace("'", '',$customUrl))); 
+		}
+		
+		
+		$query = "SELECT * FROM city WHERE city = \"" . $city . "\" AND state_id = " . $stateId;
+		log_message('debug', 'CityModel.addCity : Try to get duplicate City record : ' . $query);
+		
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			
+			$query = "SELECT * FROM city WHERE custom_url = \"" . $customUrl . "\"";
+			log_message('debug', 'CityModel.updateCity : Try to get Duplicate custom url : ' . $query);
+			
+			$result = $this->db->query($query);
+			
+			if ($result->num_rows() == 0) {
+			
+				$query = "INSERT INTO city (city_id, city, state_id, custom_url)" .
+						" values (NULL, \"" . $city . "\", $stateId, '".$customUrl."' )";
+				log_message('debug', 'CityModel.addCity : Insert City : ' . $query);
+				
+				if ( $this->db->query($query) ) {
+					$new_city_id = $this->db->insert_id();
+	
+					$return = $new_city_id;
+				} else {
+					$return = false;
+				}
+			} else {
+				$GLOBALS['error'] = 'duplicate_url';
+				$return = false;
+			}
+		} else {
+			$GLOBALS['error'] = 'duplicate_city';
+			$return = false;
+		}
+		
+		return $return;	
+	}
+	
+	function updateCity() {
+		$return = true;
+		
+		$customUrl = $this->input->post('customUrl');
+		$city = $this->input->post('city');
+		$stateId = $this->input->post('stateId');
+		
+		if (!$customUrl) {
+			$city_without_spaces = trimWhiteSpaces(trim($city));
+			$city_with_state = $city_without_spaces;
+			
+			$CI =& get_instance();
+			$CI->load->model('StateModel','',true);
+			$state = $CI->StateModel->getStateFromId($stateId);
+			
+			$city_with_state .= '-'.trimWhiteSpaces(trim($state->stateCode));
+			
+			$customUrl = $city_with_state;
+			$customUrl = strtolower(str_replace(' ', '-', str_replace("'", '',$customUrl))); 
+		}
+		
+		$query = "SELECT * FROM city WHERE city = \"" . $city . "\" AND state_id = " . $stateId . " AND city_id <> " . $this->input->post('cityId');
+		log_message('debug', 'CityModel.updateCity : Try to get Duplicate record : ' . $query);
+		
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			
+			$query = "SELECT * FROM city WHERE custom_url = \"" . $customUrl . "\" AND city_id <> " . $this->input->post('cityId');
+			log_message('debug', 'CityModel.updateCity : Try to get Duplicate custom url : ' . $query);
+			
+			$result = $this->db->query($query);
+			
+			if ($result->num_rows() == 0) {
+			
+				$data = array(
+							'city' => $city,
+							'state_id' => $stateId,  
+							'custom_url' => $customUrl,
+						);
+				$where = "city_id = " . $this->input->post('cityId');
+				$query = $this->db->update_string('city', $data, $where);
+				
+				log_message('debug', 'CityModel.updateCity : ' . $query);
+				if ( $this->db->query($query) ) {
+					$return = true;
+				} else {
+					$return = false;
+				}
+			} else {
+				$GLOBALS['error'] = 'duplicate_url';
+				$return = false;
+			}
+		} else {
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
+		}
+		
+		return $return;
 	}
 	
 	

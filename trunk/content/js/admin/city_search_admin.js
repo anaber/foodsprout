@@ -72,12 +72,12 @@ function addResult(city, i) {
 	var html =
 	'<tr>' +
 	'	<td valign="top">'+ city.cityId +'</td>' +
-	'	<td valign="top">'+ city.city +'</td>' +
+	'	<td valign="top"><a href = "/admincp/city/update/' + city.cityId + '">'+ city.city +'</a></td>' +
 	'	<td valign="top">';
 	
-	$.each(city.states, function(j, state) {
-		html += state.stateName;
-	});
+	//$.each(city.states.stateName, function(j, state) {
+		html += city.states.stateCode;
+	//});
 	
 	html += '</td>';
 	

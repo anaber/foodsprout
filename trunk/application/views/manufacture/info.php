@@ -17,6 +17,7 @@
 <script>
 	
 	var manufactureId = <?php echo $MANUFACTURE->manufactureId; ?>;
+	var addressId = <?php echo $ADDRESS_ID; ?>;
 	var name = "<?php echo $MANUFACTURE->manufactureName; ?>";
 	var userGroup = "<?php echo $userGroup; ?>";
 	var userId = "<?php echo $userId; ?>";
@@ -36,7 +37,7 @@
 		
 		$('#bottomPaging').hide();
 		
-		$.post("/manufacture/ajaxSearchManufactureSuppliers", { q: manufactureId },
+		$.post("/manufacture/ajaxSearchManufactureSuppliers", { q: manufactureId, addressId:addressId },
 		function(data){
 			currentContent = 'supplier';
 			jsonData = data;

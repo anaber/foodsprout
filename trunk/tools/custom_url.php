@@ -114,7 +114,19 @@ class CustomUrl {
 					echo $slug;
 				} else {
 					$row1 = mysql_fetch_array($result1, MYSQL_ASSOC);
-					echo ("Duplicate : " . $row1['city_id'] . " : " . $row1['city']);
+					echo ("Duplicate of : " . $row1['city_id'] . " : " . $row1['city']);
+					
+					$query = "SELECT count(*) as num_records " .
+							" FROM ADDRESS " .
+							" WHERE city_id = " . $row['city_id'];
+					$result1 = mysql_query($query);
+					$row1 = mysql_fetch_array($result1, MYSQL_ASSOC);
+					
+					if ($row1){
+						echo " : " . $row1['num_records'] . '('.$row['city_id'].')';
+					}
+					//print_r($row1 );
+					
 				}
 			} else {
 				echo '## Already generated custom_url'; 

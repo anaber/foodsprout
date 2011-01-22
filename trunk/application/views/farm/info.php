@@ -17,6 +17,7 @@
 <script>
 	
 	var farmId = <?php echo $FARM->farmId; ?>;
+	var addressId = <?php echo $ADDRESS_ID; ?>;
 	var name = "<?php echo $FARM->farmName; ?>";
 	var userGroup = "<?php echo $userGroup; ?>";
 	var userId = "<?php echo $userId; ?>";
@@ -35,7 +36,7 @@
 	$(document).ready(function() {
 		$('#bottomPaging').hide();
 		
-		$.post("/farm/ajaxSearchFarmSuppliee", { q: farmId },
+		$.post("/farm/ajaxSearchFarmSuppliee", { q: farmId, addressId:addressId },
 		function(data){
 			currentContent = 'supplier';
 			jsonData = data;
