@@ -15,7 +15,7 @@ class Sitemap extends Controller
 		// Get the number of restaurants and the times to loop
 		$restaurant_count = $this->RestaurantModel->getRestaurantCount();
 		
-		$limit_per_file = 20000;
+		$limit_per_file = 30000;
 		$files = ceil($restaurant_count / $limit_per_file);
         
 		$i = 1;
@@ -43,15 +43,16 @@ class Sitemap extends Controller
             	);
             
             	$this->sitemaps->add_item($item);
+				unset($item);
         	}
 
 			// file name may change due to compression
 	        $file_name = $this->sitemaps->build("sitemap_restaurants_$i.xml");
-	
+			unset($file_name);
 			$i++;
 		}
 
-		exit;
+		redirect('home');
     }
 
 	function farms()
