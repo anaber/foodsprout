@@ -215,10 +215,79 @@ class FarmersMarket extends Controller {
 	}
 	
 	function city($c) {
+		global $FARMERS_MARKET_RADIUS, $FARMERS_MARKET_DEFAULT_RADIUS,
+				$RECOMMENDED_CITIES;
+		
 		$this->load->model('CityModel', '', TRUE);
 		$city = $this->CityModel->getCityFromCustomUrl($c);
 		
-		print_r_pre($city);
+		$data = array();
+		
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('farmers_market_list');
+		$data['SEO'] = $seo;
+		
+		$q = $this->input->post('q');
+		$f = $this->input->post('f');
+
+		if ( !empty($f) ) {
+			$data['CENTER'] = array(
+				'list' => '/farmers_market/farmers_market_list',
+			);
+		} else {
+			// List of views to be included
+			$data['CENTER'] = array(
+					'map' => 'includes/map',
+					'list' => '/farmers_market/farmers_market_list',
+				);
+		}
+		
+		if ( !empty($f) ) {
+			$data['LEFT'] = array(
+					
+				);
+		} else {
+			$data['LEFT'] = array(
+					'filter' => 'includes/left/farmers_market_filter',
+					
+				);
+		}
+		
+		// Data to be passed to the views
+		$data['data']['left']['filter']['FARMERS_MARKET_RADIUS'] = $FARMERS_MARKET_RADIUS;
+		$data['data']['left']['filter']['FARMERS_MARKET_DEFAULT_RADIUS'] = $FARMERS_MARKET_DEFAULT_RADIUS;
+		
+		if ( empty($f) ) {
+		//$data['data']['center']['map']['VIEW_HEADER'] = "Map";
+		$data['data']['center']['map']['width'] = '795';
+		$data['data']['center']['map']['height'] = '250';
+		}
+		
+		//$data['data']['center']['list']['VIEW_HEADER'] = "Farmers Market";
+		$data['data']['center']['list']['CITY'] = $city;
+		$data['data']['center']['list']['q'] = $q;
+		$data['data']['center']['list']['f'] = $f;
+		if ( !empty($f) ) {
+			$data['data']['center']['list']['hide_map'] = 'yes';
+			$data['data']['center']['list']['hide_filters'] = 'yes';
+		} else {
+			$data['data']['center']['list']['hide_map'] = 'no';
+			$data['data']['center']['list']['hide_filters'] = 'no';
+		}
+		
+		$data['data']['left']['filter']['CITY'] = $city;
+		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
+		
+		// CSS files to use
+		$data['CSS'] = array(
+			'listing',
+			'jquery-ui/jquery.ui.slider',
+			'jquery-ui/jquery.ui.theme',
+		);
+		
+		$this->load->view('templates/left_center_template', $data);
+		
 	}
 }
 

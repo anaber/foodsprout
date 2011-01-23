@@ -307,22 +307,30 @@ class FarmersMarketModel extends Model{
 		$city = '';
 		//$city = '41,6009,13721';
 		
-		$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
+		$citySearch =  $this->input->post('city');
 		
-		if ($q == '') {
-			if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
-				$q = $_COOKIE['seachedZip'];
-				$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
-			} else {
-				if ($this->session->userdata('isAuthenticated') == 1 ) { // Authenticated
-					$q = $this->session->userdata['zipcode'];
-					$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
-					setcookie('seachedZip', $q, time()+60*60*24*30*365);
-				}
-			}
-		} else {
-			setcookie('seachedZip', $q, time()+60*60*24*30*365);
+		if ($citySearch == '') {
 			$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
+			
+			if ($q == '') {
+				if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
+					$q = $_COOKIE['seachedZip'];
+					$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
+				} else {
+					if ($this->session->userdata('isAuthenticated') == 1 ) { // Authenticated
+						$q = $this->session->userdata['zipcode'];
+						$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
+						setcookie('seachedZip', $q, time()+60*60*24*30*365);
+					}
+				}
+			} else {
+				setcookie('seachedZip', $q, time()+60*60*24*30*365);
+				$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
+			}
+			
+		} else {
+			$mapZoomLevel = $CITY_ZOOM_LEVEL;
+			
 		}
 		
 		$latLng = array();
@@ -356,7 +364,7 @@ class FarmersMarketModel extends Model{
 		
 		
 		//if ( !empty($q) || !empty($city) ) {
-		if ( $latLng ) {
+		if ( $latLng || $citySearch ) {
 			if (!empty($where) ) {
 				$where .= ' AND (';  
 			} else {
@@ -368,6 +376,8 @@ class FarmersMarketModel extends Model{
 			if (count($latLng) > 0 ) {
 				$where .= ' 			( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance ';
 			} else if ( !empty($q) ) {
+				$where	.= '		address.address_id';
+			} elseif ($citySearch) {
 				$where	.= '		address.address_id';
 			}
 					/*
@@ -386,7 +396,9 @@ class FarmersMarketModel extends Model{
 					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
 				} else if ( !empty($q) ) {	 
 					$where	.= ' 			HAVING ( address.zipcode = "' . $q . '") ';
-				} 
+				} elseif ($citySearch) {
+					$where	.= '			AND address.city_id = ' . $citySearch;
+				}
 					
 			$where	.= '				LIMIT 0, 1'
 					. '		)';

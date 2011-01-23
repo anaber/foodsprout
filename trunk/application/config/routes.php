@@ -80,7 +80,7 @@ $route['^farmersmarket/ajaxSearchFarmersMarketInfo'] 			= "farmersmarket/ajaxSea
 $route['^farmersmarket/ajaxSearchFarmersMarketPhotos'] 			= "farmersmarket/ajaxSearchFarmersMarketPhotos";
 $route['^farmersmarket/ajaxSearchFarmersMarketSuppliers'] 		= "farmersmarket/ajaxSearchFarmersMarketSuppliers";
 $route['^farmersmarket/view/(:num)'] 							= "farmersmarket/view/$1";
-$route['^farmersmarket/city/(:any)'] 							= "farmersmarket/city/$1";
+$route['^city/(:any)'] 											= "farmersmarket/city/$1";
 $route['^farmersmarket/(:any)']									= "farmersmarket/customUrl/$1";
 
 // Manufacture
