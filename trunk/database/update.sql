@@ -498,3 +498,22 @@ DELETE FROM city WHERE city_id = 18300;
 UPDATE address SET city_id = 1189 WHERE city_id = 18205;
 DELETE FROM city WHERE city_id = 18205;
 
+-- cristi update 23-ian-2011
+
+CREATE TABLE `visitor_page` (
+  `visitor_page_id` int(11) NOT NULL AUTO_INCREMENT,
+  `visitor_id` int(11) DEFAULT NULL,
+  `page_url` varchar(255) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`visitor_page_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1
+
+CREATE TABLE `visitor` (
+  `visitor_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `visitor_agent` varchar(255) DEFAULT NULL,
+  `visitor_os` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`visitor_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1
