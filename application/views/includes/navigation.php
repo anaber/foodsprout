@@ -26,7 +26,7 @@ $tab = $this->uri->segment(1);
 	?>
 	<?php
 		$marketclass=NULL;
-		if($tab == "farmersmarket") { 
+		if($tab == "farmersmarket" || $tab == "city") { 
 			$marketclass = 'class="tabon"';
 		}
 		echo anchor('farmersmarket', 'Farmers Market', $marketclass);

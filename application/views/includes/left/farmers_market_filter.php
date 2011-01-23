@@ -3,6 +3,12 @@
 <script type="text/javascript" src="<?php echo base_url()?>js/jquery-ui/jquery.ui.mouse.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>js/jquery-ui/jquery.ui.slider.js"></script>
 
+<?php
+	$city = $this->uri->segment(2);
+	
+	if (!$city) {
+?>
+
 <style type="text/css">
 	#demo-frame > div.demo { padding: 10px !important; };
 </style>
@@ -35,3 +41,11 @@ $(function() {
 	<div id="radius" style="border:0; color:#F05A25; font-weight:bold;"></div>
 </div>
 <br />
+<?php
+	}
+?>
+<div class="filterh">Recommended Cities:</div>
+<div id="" class="filterb">
+	<a href="/city/san-francisco-ca" style="font-size:13px;text-decoration:none;"><?php echo ($city == 'san-francisco-ca') ? '<b>San Francisco</b>' : 'San Francisco' ?></a><br />
+	<a href="/city/berkeley-ca" style="font-size:13px;text-decoration:none;"><?php echo ($city == 'berkeley-ca') ? '<b>Berkeley</b>' : 'Berkeley' ?></a><br />
+</div><br />

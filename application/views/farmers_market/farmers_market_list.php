@@ -17,7 +17,7 @@ var farmersMarketData;
 		
 		//loadPopupFadeIn();
 		
-		$.post("/farmersmarket/ajaxSearchFarmersMarket", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
+		$.post("/farmersmarket/ajaxSearchFarmersMarket", { city:"<?php echo (isset($CITY) ? $CITY->cityId : '' ) ?>", q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
 		function(data){
 			
 			if (showMap ==  true) {
