@@ -38,7 +38,7 @@ var farmersMarketData;
 	?>
 </div>
 <div id="resultsContainer" style="display:none" class="pd_tp1">
-	<div style="float:left;width:300px;"><h1>Farmers Markets</h1></div><div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:30px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
+	<div style="float:left;width:300px;"><h1><?php echo ( isset($CITY) ? $CITY->city .' Farmers Markets' : 'Farmers Markets' ) ?></h1></div><div style="float:right; width:200px; text-align:right; font-size:12px; margin-right:30px;" id="divHideMap"><a href="#" id="linkHideMap">Show/Hide Map</a></div>
 	<div id="resultTableContainer"></div>
 </div>
 

@@ -225,7 +225,14 @@ class FarmersMarket extends Controller {
 		
 		// SEO
 		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('farmers_market_list');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('farmers_market_city_list');
+		
+		$seo_data_array = array(
+			'city' => $city->city,
+		);
+		
+		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
+		
 		$data['SEO'] = $seo;
 		
 		$q = $this->input->post('q');
