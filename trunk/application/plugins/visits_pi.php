@@ -14,6 +14,69 @@ class Visits {
 
 	}
 
+	function addProducer($producerId){
+
+		$data['visitedAddress'] = $this->visitedAddress();
+		$data['visitorIp'] = $this->visitorIp();
+		$data['producer_id'] = $producerId	;
+		$data['visitDate'] = $this->visitDate();
+		$data['visitorId'] = $this->visitorId();
+		$data['visitorAgent'] = $this->visitorAgent();
+		$data['visitorOS'] = $this->visitorOS();
+
+		//load database
+		$this->CI->load->database();
+
+		//check if user is already in visitor table
+		$visitorDetails =  $this->CI->db->query("select * from visitor where `user_id` = '".$this->visitorId()."' and `ip_address` = '".$this->visitorIp()."' order by visitor_id desc limit 1 ");
+			
+		//if visitor is not in table 
+		if($visitorDetails->num_rows() == 0){
+			//insert it to database
+			$insertResults = $this->CI->db->insert('visitor', array(
+				'ip_address' => $this->visitorIp(), 
+				'user_id' => $this->visitorId(),
+				'visitor_agent' => $this->visitorAgent(),
+				'vsitor_os' => $this->visitorOS()
+			)); 
+				
+			$visitorPageId =  $this->CI->db->insert_id();
+		
+		}else{
+			
+			$visitorDetails = $visitorDetails->result_array();
+			$visitorId = $visitorDetails[0]['visitor_id'];
+			
+		}
+			
+			
+		//check if page is in visitor page table in last minim time
+		$visitsTableResults = $this->CI->db->query("select * from visitor_page where `visitor_id` = '".$visitorId."' and `date` >= '".date('Y-m-d H:i:s', strtotime( $this->minimLogTime ,strtotime($this->visitDate())))."' and `producer_id` = '".$producerId."' order by visitor_page_id desc limit 1 "); 
+		
+		if($visitsTableResults->num_rows() > 0 ){
+			
+			$visitsTableResults = $visitsTableResults->result_array();
+ 		
+			//update record
+			$updateParams['count'] = $visitsTableResults[0]['count'] +  1; 
+			$this->CI->db->where('visitor_page_id', $visitsTableResults[0]['visitor_page_id']);
+			$this->CI->db->update('visitor_page', $updateParams); 
+     
+		}else{
+			
+			//insert record
+			$insertParams['visitor_id'] = $visitorId;
+			$insertParams['producer_id'] 	= $producerId;
+			$insertParams['date']		= $this->visitDate(); 
+			$insertParams['count']		= 1;
+				
+			$this->CI->db->insert('visitor_page', $insertParams); 
+			
+			
+		}
+		
+	}
+	
 
 	function addVisit(){
 
