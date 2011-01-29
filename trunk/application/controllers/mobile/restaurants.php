@@ -56,6 +56,25 @@ class Restaurants extends Controller {
 		$data['CENTER'] = array(
 				'mainarea' => 'mobile/restaurant/nearme',
 			);
+			
+		if(isset($_POST['latitude_input']) && isset($_POST['longitude_input']) && $_POST['latitude_input'] !='' && $_POST['longitude_input'] !='' )	{
+			$this->load->model('RestaurantModel');
+			
+			$results = $this->RestaurantModel->getRestaurantsMobileByCoordinates($this->input->post('latitude_input'), $this->input->post('longitude_input'), $this->input->post('distance'));
+			
+			if($results != false ){
+				
+				$data['search_results'] = $results;
+				
+			}else{
+				
+				$data['search_results'] = array();
+ 				
+			}
+			
+		}	
+			
+			
 		
 		$this->load->view('templates/mobile_template', $data);
 		
@@ -164,7 +183,7 @@ class Restaurants extends Controller {
 		$data['results'] = $this->MobileRestaurantModel->getRestaurantsByCityId($cityID, $start, $stop);
 		
 		//calculate page numbers
-		echo $pagesNumber = ceil($data['results']['totalrecords']/$perPage); 
+		$pagesNumber = ceil($data['results']['totalrecords']/$perPage); 
 		
 		//estabilishing values for display to users
 		$data['start']  = $start+1; 
