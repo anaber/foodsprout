@@ -104,14 +104,13 @@ class MobileRestaurantModel extends Model{
     
 	function getRestaurantsByCityId($cityId, $start = 0, $stop = 2){
 		
-	echo $query = "SELECT
+		$query = "SELECT
 					address.address,
 					address.address_id,
 					producer.producer,
 					producer.producer_id
 					FROM
 					address ,
-					custom_url ,
 					producer
 					WHERE
 					address.producer_id =  producer.producer_id AND
@@ -124,8 +123,8 @@ class MobileRestaurantModel extends Model{
 		$results = $this->db->query($query)->result_array(); 
 		
 		
-	$query2 = "SELECT
-					count(address)
+		$query2 = "SELECT
+					count(address) as numrows
 					FROM
 					address,
 					producer
@@ -135,10 +134,10 @@ class MobileRestaurantModel extends Model{
 					producer.is_restaurant =  '1' AND
 					producer.status =  'live'"; 
 		
-		$numRows = $this->db->query($query2)->num_rows();
-		
+		$numRows = $this->db->query($query2)->result_array();
 		$new_results = array();
-		$new_results['totalrecords'] = $numRows;		
+		
+		$new_results['totalrecords'] = $numRows['0']['numrows'];		
 		
 		if(sizeof($results) > 0 ){
 			$i = 0;
