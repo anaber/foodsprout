@@ -2,6 +2,8 @@
 
 class CityModel extends Model{
 	
+	public $custom_url = '';
+	
 	function getCityFromName($city) {
 		
 		$query = 'SELECT * FROM city WHERE city = "'. $city . '"';
