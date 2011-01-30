@@ -60,7 +60,7 @@ function redrawContent(data) {
 	
 	if (showMap ==  true) { 
 		$('#divHideMap').empty();
-		showHideMapContent = '<a href = "#" id = "linkHideMap">Show/Hide Map</a>';
+		showHideMapContent = '<a href = "#" id = "linkHideMap" style="font-size:13px;text-decoration:none;">Show/Hide Map</a>';
 		$('#divHideMap').append(showHideMapContent);
 	}
 	
@@ -284,8 +284,8 @@ function drawNumRecords(params) {
 
 function addResult(farmersMarket, i) {
 	var html =
-	'<div style="overflow:auto; padding:0px; clear:left; width:610px; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;">';
+	'<div style="overflow:auto; padding-bottom:10px;">' +
+	'	<div class = "listing-header">';
 	
 	if (farmersMarket.customUrl) {
 		html += '<a href="/farmersmarket/' + farmersMarket.customUrl + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
@@ -293,8 +293,14 @@ function addResult(farmersMarket, i) {
 		html += '<a href="/farmersmarket/view/' + farmersMarket.farmersMarketId + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
 	}
 	
-	html += '</div>' + 
-	'	<div style="float:left; width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left; width:340px;font-size:13px;">';
+	html +=
+	'	</div>' +
+	'	<div class = "clear"></div>';
+	html +=
+	'	<div class = "listing-address-title">'+
+	'		<b>Address:</b>'+
+	'	</div>' +
+	'	<div class = "listing-address">';
 	$.each(farmersMarket.addresses, function(j, address) {
 		if (j == 0) {
 			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
@@ -303,9 +309,12 @@ function addResult(farmersMarket, i) {
 		}
 	});
 	
-	html += '</div>';
+	html += 
+	'	</div>' +
+	'	<div class = "clear"></div>';
 	html +=
-	'</div>'
+	'</div>' +
+	'<div class = "clear"></div>'
 	;
 	
 	return html;
