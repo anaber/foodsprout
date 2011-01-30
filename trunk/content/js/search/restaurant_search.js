@@ -939,8 +939,8 @@ function drawNumRecords(params) {
 
 function addResult(restaurant, i) {
 	var html =
-	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;font-size:13px;">';
+	'<div style="overflow:auto; padding-bottom:10px;">' +
+	'	<div class = "listing-header">';
 	
 	if (restaurant.customUrl) {
 		html += '<div style = "float:left;"><a href="/restaurant/' + restaurant.customUrl + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div>';
@@ -952,10 +952,12 @@ function addResult(restaurant, i) {
 		html += '<div style = "float:right;"><img src = "/img/leaf-small.png"></div>';
 	}
 	
-	html += '</div>';
-	
-	
-	html += '<div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Cuisine:</b> ';
+	html +=
+	'	</div>' +
+	'	<div class = "clear"></div>';
+	html +=
+	'	<div class = "listing-information">' + 
+	'		<b>Cuisine:</b> ' ;
 	
 	$.each(restaurant.cuisines, function(j, cuisine) {
 		if (j == 0) {
@@ -965,8 +967,12 @@ function addResult(restaurant, i) {
 		}
 	});
 	
-	html += '</div>' + 
-	'	<div style="float:left; width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left; width:235px;font-size:13px;">';
+	html += 
+	'	</div>' + 
+	'	<div class = "listing-address-title">'+
+	'		<b>Address:</b>'+
+	'	</div>' +
+	'	<div class = "listing-address">';
 	$.each(restaurant.addresses, function(j, address) {
 		if (j == 0) {
 			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
@@ -974,9 +980,12 @@ function addResult(restaurant, i) {
 			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
 		}
 	});
-	html += '</div>';
+	html += 
+	'	</div>' +
+	'	<div class = "clear"></div>';
 	html +=
-	'</div>'
+	'</div>' +
+	'<div class = "clear"></div>'
 	;
 	
 	return html;
