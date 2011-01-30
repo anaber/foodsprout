@@ -953,6 +953,7 @@ function addResult(restaurant, i) {
 	}
 	
 	html +=
+	'		<div class = "clear"></div>'+
 	'	</div>' +
 	'	<div class = "clear"></div>';
 	html +=
