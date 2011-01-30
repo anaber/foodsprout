@@ -11,7 +11,7 @@
  * ======================================================
  */
 
-$ENV_PROPERTY_FILE = "env_properties/cristi.php"; 
+$ENV_PROPERTY_FILE = "env_properties/staging_server.php"; 
 
 include($ENV_PROPERTY_FILE);
 
@@ -114,12 +114,11 @@ $SUPPLIER_TYPES_2 = array (
 									'manufacture' 	=> 'Manufacture',
 							),
 					'farmers_market_supplier' => 	array(
-									'producer' 			=> 'Farm',
+									'farm' 			=> 'Farm',
 							),
 					
 				);
-
-
+				
 $FARMER_TYPES = array(
 					'natural' 			=> 'Natural',
 					'organic' 			=> 'Organic',
@@ -143,5 +142,5 @@ $PRODUCER_CATEGORY_GROUP = array(
 					'FARM' 			=> 3,
 					'MANUFACTURE' 	=> 4,
 				);
-			
+
 ?>
