@@ -21,7 +21,7 @@ var topRestaurantTypes;
 ?>
 	
 	$(document).ready(function() {
-		/*
+		
 		//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		loadPopupFadeIn();
 		
@@ -55,7 +55,7 @@ var topRestaurantTypes;
 		
 		},
 		"json");
-		*/
+		
 	});
 	
 </script>
