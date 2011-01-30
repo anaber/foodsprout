@@ -72,6 +72,8 @@ class Farm extends Controller {
 						'jquery-ui/jquery.ui.theme',
 					);
 		
+		$data['data']['center']['list']['LIST_DATA'] = 'Deepak here';
+		
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
