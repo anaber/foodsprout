@@ -586,8 +586,8 @@ function drawNumRecords(params) {
 
 function addResult(farm, i) {
 	var html =
-	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;">' +
-	'	<div style="float:left; clear:both; padding:3px; width:600px; background:#e5e5e5; font-weight:bold;">';
+	'<div style="overflow:auto; padding-bottom:10px;">' +
+	'	<div class = "listing-header">';
 	
 	if (farm.customUrl) {
 		html += '<a href="/farm/' + farm.customUrl + '" id = "'+ farm.farmId +'" style="text-decoration:none;">'+ farm.farmName +'</a>';
@@ -596,7 +596,11 @@ function addResult(farm, i) {
 	}
 	
 	html +=
-	'</div><div style="float:left;width:300px;clear:left;padding-left:3px;padding-right:10px;font-size:13px;"><b>Type:</b> ' ;
+	'	</div>' +
+	'	<div class = "clear"></div>';
+	html +=
+	'	<div class = "listing-information">' + 
+	'		<b>Type:</b> ' ;
 	
 	if (farm.farmType == null) {
 		html += '';
@@ -604,8 +608,12 @@ function addResult(farm, i) {
 		html += farm.farmType;
 	}
 	
-	html += '</div>' + 
-	'	<div style="float:left; width:60px;font-size:13px;"><b>Address:</b></div><div style="float:left; width:235px;font-size:13px;">';
+	html += 
+	'	</div>' + 
+	'	<div class = "listing-address-title">'+
+	'		<b>Address:</b>'+
+	'	</div>' +
+	'	<div class = "listing-address">';
 	$.each(farm.addresses, function(j, address) {
 		if (j == 0) {
 			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
@@ -613,9 +621,12 @@ function addResult(farm, i) {
 			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
 		}
 	});
-	html += '</div>';
+	html += 
+	'	</div>' +
+	'	<div class = "clear"></div>';
 	html +=
-	'</div>'
+	'</div>' +
+	'<div class = "clear"></div>'
 	;
 	
 	return html;

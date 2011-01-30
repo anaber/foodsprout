@@ -135,3 +135,19 @@ span.input_img:hover { background-position:right -29px; text-decoration:none; }
 span.input_img:hover input[type=submit] { background-position:left -29px; text-decoration:none; }
 .city{float:left; width:190px;font-size:120%;}
 .city a{font-size:18px;text-decoration:none;line-height:140%;}
+
+/* Border */
+.border-red-1 {border: red 1px solid;}
+.border-blue-1 {border: blue 1px solid;}
+.border-green-1 {border: green 1px solid;}
+
+.border-red-0 {border: red 0px solid;}
+.border-blue-0 {border: blue 0px solid;}
+.border-green-0 {border: green 0px solid;}
+
+
+/* Listing */
+.listing-header {padding:3px 0px 3px 3px; width:627px; background:#e5e5e5; font-weight:bold;}
+.listing-address-title {float:left; font-size:13px; padding:3px 0 5px 3px; width:60px;}
+.listing-address       {float:left; font-size:13px; padding:3px 0 5px 3px; width:235px;}
+.listing-information   {float:left; font-size:13px; padding:3px 0 5px 3px; width:300px;}
