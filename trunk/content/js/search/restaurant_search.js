@@ -949,7 +949,7 @@ function addResult(restaurant, i) {
 	}	
 	
 	if (restaurant.claimsSustainable == 1) {
-		html += '<div style = "float:right;"><img src = "/img/leaf-small.png"></div>';
+		html += '<div style = "float:right;padding-right:5px;"><img src = "/img/leaf-small.png"></div>';
 	}
 	
 	html +=
