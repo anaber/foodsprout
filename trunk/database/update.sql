@@ -500,14 +500,14 @@ DELETE FROM city WHERE city_id = 18205;
 
 -- cristi update 23-ian-2011
 
-CREATE TABLE `visitor_page` (
-  `visitor_page_id` int(11) NOT NULL AUTO_INCREMENT,
-  `visitor_id` int(11) DEFAULT NULL,
-  `page_url` varchar(255) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `count` int(11) DEFAULT NULL,
-  PRIMARY KEY (`visitor_page_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+CREATE TABLE `visitor` (
+  `visitor_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(15) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `visitor_agent` varchar(255) DEFAULT NULL,
+  `visitor_os` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`visitor_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
 
 CREATE TABLE `visitor_page` (
   `visitor_page_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -517,4 +517,4 @@ CREATE TABLE `visitor_page` (
   `date` date DEFAULT NULL,
   `count` int(11) DEFAULT NULL,
   PRIMARY KEY (`visitor_page_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1
+) ENGINE=MyISAM DEFAULT CHARSET=latin1
