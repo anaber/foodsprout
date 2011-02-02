@@ -93,6 +93,7 @@ class FarmersMarket extends Controller {
 		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'farmers_market');
 		
 		if ($producer) {
+					
 			$this->view($producer->producerId, $producer->addressId);
 		} else {
 			show_404('page');
@@ -102,6 +103,12 @@ class FarmersMarket extends Controller {
 	// View the information on a single restaurant
 	function view($farmersMarketId = '', $addressId = '') {
 		global $SUPPLIER_TYPES_2;
+		
+		$this->load->plugin('Visits');
+		
+		$visits = new Visits();
+		
+		$visits->addProducer($farmersMarketId);
 		
 		$data = array();
 

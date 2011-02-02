@@ -92,6 +92,9 @@ class Restaurant extends Controller {
 	function view($restaurantId = "", $addressId = "") {
 		global $SUPPLIER_TYPES_2;
 
+		$this->load->plugin('Visits');
+		$visits = new Visits();
+		$visits->addProducer($restaurantId);
 		$data = array();
 
 		if($restaurantId == ""){

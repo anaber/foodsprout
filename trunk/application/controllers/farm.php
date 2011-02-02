@@ -129,6 +129,9 @@ class Farm extends Controller {
 		
 		global $SUPPLIER_TYPES_2;
 		
+		$this->load->plugin('Visits');
+		$visits = new Visits();
+		$visits->addProducer($farmId);
 		$data = array();
 		
 		if($farmId == ''){
