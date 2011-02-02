@@ -37,7 +37,7 @@ class Visits {
 				'ip_address' => $this->visitorIp(), 
 				'user_id' => $this->visitorId(),
 				'visitor_agent' => $this->visitorAgent(),
-				'vsitor_os' => $this->visitorOS()
+				'visitor_os' => $this->visitorOS()
 			)); 
 				
 			$visitorPageId =  $this->CI->db->insert_id();
@@ -100,7 +100,7 @@ class Visits {
 				'ip_address' => $this->visitorIp(), 
 				'user_id' => $this->visitorId(),
 				'visitor_agent' => $this->visitorAgent(),
-				'vsitor_os' => $this->visitorOS()
+				'visitor_os' => $this->visitorOS()
 			)); 
 				
 			$visitorPageId =  $this->CI->db->insert_id();
