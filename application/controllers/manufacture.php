@@ -92,7 +92,7 @@ class Manufacture extends Controller {
 		echo $manufactures;
 	}
 	
-	
+		
 	function ajaxSearchManufactureInfo() {
 		$manufactureId = $this->input->post('manufactureId');
 		$this->load->model('ManufactureModel', '', TRUE);
@@ -115,6 +115,10 @@ class Manufacture extends Controller {
 	// View all the information about a single manufacture
 	function view($manufactureId = '', $addressId = '') {
 		global $SUPPLIER_TYPES_2;
+					
+		$this->load->plugin('Visits');
+		$visits = new Visits();
+		$visits->addProducer($manufactureId);
 		
 		$data = array();
 		
@@ -163,7 +167,7 @@ class Manufacture extends Controller {
 		// Load all the views for the right column
 		$data['RIGHT'] = array(
 				//'ad' => 'includes/banners/sky',
-			);
+			); 
 
 		// Data to be passed to the views
 		// Center -> Info
