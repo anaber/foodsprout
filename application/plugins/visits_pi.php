@@ -15,7 +15,10 @@ class Visits {
 	}
 
 	function addProducer($producerId){
-
+		
+		
+		$visitorId = $this->visitorId();
+		
 		$data['visitedAddress'] = $this->visitedAddress();
 		$data['visitorIp'] = $this->visitorIp();
 		$data['producer_id'] = $producerId	;
@@ -40,7 +43,7 @@ class Visits {
 				'visitor_os' => $this->visitorOS()
 			)); 
 				
-			$visitorPageId =  $this->CI->db->insert_id();
+			$visitorId =  $this->CI->db->insert_id();
 		
 		}else{
 			
@@ -79,7 +82,9 @@ class Visits {
 	
 
 	function addVisit(){
-
+		
+		$visitorId = $this->visitorId();
+		
 		$data['visitedAddress'] = $this->visitedAddress();
 		$data['visitorIp'] = $this->visitorIp();
 		$data['visitDate'] = $this->visitDate();
@@ -103,8 +108,8 @@ class Visits {
 				'visitor_os' => $this->visitorOS()
 			)); 
 				
-			$visitorPageId =  $this->CI->db->insert_id();
-		
+			$visitorId =  $this->CI->db->insert_id();
+			
 		}else{
 			
 			$visitorDetails = $visitorDetails->result_array();
