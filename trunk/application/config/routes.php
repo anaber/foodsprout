@@ -82,6 +82,8 @@ $route['^farmersmarket/ajaxSearchFarmersMarketSuppliers'] 		= "farmersmarket/aja
 $route['^farmersmarket/view/(:num)'] 							= "farmersmarket/view/$1";
 $route['^farmersmarket/city/(:any)'] 							= "farmersmarket/city/$1";
 $route['^farmersmarket/(:any)']									= "farmersmarket/customUrl/$1";
+$route['^mobile/farmersmarket/view-(:any)']						= "mobile/farmersmarket/customUrl/$1";
+
 
 // Manufacture
 $route['^manufacture/page(:num)']							= "manufacture/index/$1";
