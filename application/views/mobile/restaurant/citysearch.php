@@ -16,8 +16,11 @@
 <div id="mainarea">
 	<ul id="menu">
 		<li>
-			<p>More that one city has been found for your search. Please select the city from where you want to see results</p>
-			
+			<?php
+				if(sizeof($cities) > 1){
+					echo '<p>More that one city has been found for your search. Please select the city from where you want to see results</p>'; 
+				}
+			?>
 			<?php
 				foreach($cities as $city){
 					

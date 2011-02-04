@@ -71,6 +71,7 @@ $route['^farm/ajaxSearchFarmPhotos'] 					= "farm/ajaxSearchFarmPhotos";
 $route['^farm/ajaxSearchFarms'] 						= "farm/ajaxSearchFarms";
 $route['^farm/ajaxSearchFarmSuppliee'] 					= "farm/ajaxSearchFarmSuppliee";
 $route['^farm/view/(:num)'] 							= "farm/view/$1";
+$route['^mobile/farms/view-(:any)'] 					= "mobile/farms/customUrl/$1";
 $route['^farm/(:any)']									= "farm/customUrl/$1";
 
 // Farmers Market

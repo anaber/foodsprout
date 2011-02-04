@@ -26,13 +26,4 @@
 	}
 ?>
 
-
-<br />
-
-<div id="mainarea">
-
-	<br /><br /><br /><br />
-
-</div>
-
 <?php $this->load->view('mobile/includes/footer'); ?>
