@@ -79,6 +79,26 @@ class Restaurants extends Controller {
 		$this->load->view('templates/mobile_template', $data);
 		
 	}
+	
+	
+	function findnearme(){
+		
+		$data = array();
+		
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('index');
+		$data['SEO'] = $seo;
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'mainarea' => 'mobile/restaurant/findnearme',
+			);
+						
+		
+		$this->load->view('templates/mobile_template', $data);
+	}
+	
+	
 	function zipcode(){
 		
 		$data = array();
@@ -113,11 +133,17 @@ class Restaurants extends Controller {
 				
 				$this->load->model('RestaurantModel');
 				
-				
 				$results = $this->RestaurantModel->getRestaurantsMobileByZipCode($this->input->post('zip_code'), $this->input->post('distance'));
 				
-				$data['search_results'] = $results;
-				
+				if($results != false){
+						
+					$data['search_results'] = $results;
+
+				}else{
+					
+					$data['search_results'] = array();
+					
+				}
 	
 			}else{
 				$data['search_results'] = array();

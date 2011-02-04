@@ -1,6 +1,6 @@
 <div id="mainarea">
 	<ul id="menu">
-		<li><a href="/mobile/restaurants/nearme">Sustainable Restaurants Near Me<span>Find sustainable restaurants near you</span></a></li>
+		<li><a href="/mobile/restaurants/findnearme">Sustainable Restaurants Near Me<span>Find sustainable restaurants near you</span></a></li>
 		<li>
 		
 		<a href="#">Enter Zip Code</a>
@@ -16,8 +16,7 @@
 						<option>20</option>
 						<option>50</option>
 					</select>(miles)
-					<input type="submit" name="zip_code_btn" value="Go" />
-					
+					<input type="submit" name="zip_code_btn" value="Go" />	
 				</form>
 				
 			</span>

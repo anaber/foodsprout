@@ -1,12 +1,12 @@
 <div id="mainarea">
 	<ul id="menu">
-		<li><a href="/mobile/farmersmarket/findnearme">Sustainable Farmers Market Near Me<span>Find sustainable farmers market near you</span></a></li>
-		<li>
+		<li><a href="/mobile/farms/findnearme">Sustainable Farms Near Me<span>Find sustainable farms near you</span></a></li>
+				<li>
 			<a href="#">Enter Zip Code</a>
 			<span>
-				<form method="post" name="find_farmersmarket_by_zip_code" action="<?php echo base_url()?>mobile/farmersmarket/zipcode">
+				<form method="post" name="find_farms_by_zip_code" action="<?php echo base_url()?>mobile/farms/zipcode">
 					<label for="zip_code">Zip Code: </label>
-					<input type="text" name="zip_code" id="zip_code" value="" size="6" />
+					<input type="text" name="zipcode" id="zipcode" value="" size="6" />
 					<label for="distance">Distance: </label>
 					<select name="distance" id="distance">
 						<option>2</option>
@@ -20,8 +20,6 @@
 				
 			</span>
 		</li>
-		
-		
-		<li><a href="/mobile/farmersmarket/bycity">Browse by City<span>Browse Farmers Market by City</span></a></li>
+		<li><a href="/mobile/farms/bycity">Browse by City<span>Browse farms by City</span></a></li>
 	</ul>
 </div>
