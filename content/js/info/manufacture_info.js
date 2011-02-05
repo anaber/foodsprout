@@ -84,7 +84,7 @@ function redrawContent(data, type) {
 				resultTableHtml += addPhotoResult(a, i);
 			});
 			resultTableHtml += '</div>';
-			resultTableHtml += '<hr size = "1" class="flt" style="width:530px;border: none 0;border-top: 1px dashed #ccc;height: 1px;">'
+			resultTableHtml += '<hr size = "1" class = "flt listing-dash-line">'
 		}
 	}
 	
