@@ -38,7 +38,7 @@
 		}
     ?>
 
-
+		<div class = "clear"></div>
 	</div>
 	<!-- end left column -->
 

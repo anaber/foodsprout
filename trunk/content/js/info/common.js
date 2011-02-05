@@ -554,8 +554,13 @@ function drawNumRecords(params) {
 
 function addCommentResult(comment, count) {
 	var html =
-	'	<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;" align = "justify"><strong>' + comment.firstName + ':</strong>&nbsp;'+comment.comment+'<br /><div style="font-size:11px;font-weight:bold;">On '+comment.addedOn+'</div></div>' +
-	'<hr size = "1" style="width:530px;border: none 0;border-top: 1px dashed #ccc;height: 1px;">';
+	'	<div class = "listing-comment"><strong>' + comment.firstName + ':</strong>' + 
+	'		&nbsp;'+comment.comment + 
+	'		<br /><div style="font-size:11px;font-weight:bold;">On '+comment.addedOn+'</div>' +
+	'	</div>' +
+	'	<div class = "clear"></div>' + 
+	'	<hr size = "1" class = "listing-dash-line">' + 
+	'	<div class = "clear"></div>';
 	return html;
 }
 
@@ -563,25 +568,36 @@ function addCommentForm() {
 	var html = '';
 	
 	if (isAuthenticated == true) {
-		html = '<form id="commentForm" method="post">' + 
-				'	<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;">' +
-				'		<textarea class="limited validate[required]" maxlength="300" style = "width:520px;height:40px;" id = "txtComment"></textarea>' +
-				'	</div>' +
-				'	<div style="width:320px;font-size:11px;border: red 0px solid;float:left;padding-left:7px;" align = "left" id = "charsRemaining">' +
-				'		<div class="charsLeft" style = "float:left">300</div><div style = "float:left">&nbsp;characters remaining</div>' +
-				'	</div>' +
-				'	<div style="width:205px;font-size:13px;border: red 0px solid;float:left;" align = "right">' +
-				'		<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "Post Comment" style = "width:140px;">' +
-				'	</div>' +
-				'	<input type = "hidden" name = "manufactureId" id = "manufactureId" value = "">' +
-				'	<input type = "hidden" name = "farmId" id = "farmId" value = "">' +
-				'	<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "">' +
-				'	<input type = "hidden" name = "distributorId" id = "distributorId" value = "">' +
-				'	<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "">' +
-				'	<input type = "hidden" name = "farmersMarketId" id = "farmersMarketId" value = "">' +
-				'</form>';
+		html = 
+			'<div style="width:581px;padding:3px;" class = "border-red-0">' +
+			'	<form id="commentForm" method="post">' + 
+			'	<textarea class="limited validate[required]" maxlength="300" style = "width:575px;height:40px;" id = "txtComment"></textarea><br />'+
+			'	<div style = "height:5px;"></div>' +
+			'	<div class = "clear"></div>' + 
+			'	<div class = "characters-remaining border-green-0" id = "charsRemaining">' +
+			'		<div class="charsLeft" style = "float:left">300</div><div style = "float:left">&nbsp;characters remaining</div>' +
+			'	</div>' +
+			'	<div style="float:right;"  class = "border-green-0" align = "right">' +
+			'		<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "Post Comment" style = "width:140px;">' +
+			'	</div>' +
+			'	<div class = "clear"></div>' + 
+			'	<input type = "hidden" name = "manufactureId" id = "manufactureId" value = "">' +
+			'	<input type = "hidden" name = "farmId" id = "farmId" value = "">' +
+			'	<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "">' +
+			'	<input type = "hidden" name = "distributorId" id = "distributorId" value = "">' +
+			'	<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "">' +
+			'	<input type = "hidden" name = "farmersMarketId" id = "farmersMarketId" value = "">' +
+			'	</form>' +
+			'</div>'+
+			'<div class = "clear"></div>';
+				
 	} else {
-		html = '<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;height:30px;"><div style="font-size:13px;border: #ccc 1px solid;width:520px;height:30px;padding-top:15px;float:left" align = "center">You are not logged in. Please <a href = "/login" style="font-size:13px;text-decoration:none;">sign-in</a> or <a href = "/login" style="font-size:13px;text-decoration:none;">register</a> to post comment.</div></div>';
+		html = 
+			'	<div class = "non-logged-in-box">' +
+			'		You are not logged in. Please <a href = "/login" style="font-size:13px;text-decoration:none;">sign-in</a>'+ 
+			'		or <a href = "/login" style="font-size:13px;text-decoration:none;">register</a> to post comment.'+
+			'	</div>'+
+			'<div class = "clear"></div>';
 	}
 	return html;
 }
@@ -689,8 +705,13 @@ function reinitializeSubmitCommentForm(data) {
 
 function drawNewComment(comment) {
 	var html =
-	'	<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;" align = "justify"><strong>' + comment.firstName + ':</strong>&nbsp;'+comment.comment+'<br /><div style="font-size:11px;font-weight:bold;">On '+comment.addedOn+'</div></div>' +
-	'<hr size = "1" style="width:530px;border: none 0;border-top: 1px dashed #ccc;height: 1px;">';
+	'	<div class = "listing-comment"><strong>' + comment.firstName + ':</strong>' + 
+	'		&nbsp;'+comment.comment + 
+	'		<br /><div style="font-size:11px;font-weight:bold;">On '+comment.addedOn+'</div>' +
+	'	</div>' +
+	'	<div class = "clear"></div>' + 
+	'	<hr size = "1" class = "listing-dash-line">' + 
+	'	<div class = "clear"></div>';
 	$('#divNewComment').append(html);
 	return html;
 }
@@ -702,10 +723,10 @@ function addPhotoResult(photo, count) {
 	
 	if (i%3 == 0) {
 	html += 
-		'<div class="portfolio_sites flt">';
+		'<div class="portfolio_sites flt"  style = "margin-left:14px;">';
 	} else {
 	html += 
-		'<div class="portfolio_sites mar_rt_45 flt">'
+		'<div class="portfolio_sites mar_rt_45 flt"  style = "margin-left:14px;">'
 	}
 	html +=
 	'	<div class="porffoilo_img" align = "center">' +
@@ -734,7 +755,12 @@ function addPhotoForm() {
 				'	<input id="fileInput" name="fileInput" type="file" /><div id = "photoTitleContent"></div></div>' +
 				'</div>';
 	} else {
-		html = '<div style="width:520px;font-size:13px;border: red 0px solid;padding:5px;height:30px;"><div style="font-size:13px;border: #ccc 1px solid;width:520px;height:30px;padding-top:15px;float:left" align = "center">You are not logged in. Please <a href = "/login" style="font-size:13px;text-decoration:none;">sign-in</a> or <a href = "/login" style="font-size:13px;text-decoration:none;">register</a> to upload photos.</div></div>';
+		html = 
+			'	<div class = "non-logged-in-box">' +
+			'		You are not logged in. Please <a href = "/login" style="font-size:13px;text-decoration:none;">sign-in</a>'+ 
+			'		or <a href = "/login" style="font-size:13px;text-decoration:none;">register</a> to upload photos.'+
+			'	</div>'+
+			'<div class = "clear"></div>';
 	}
 	
 	return html;

@@ -178,7 +178,7 @@ class Manufacture extends Controller {
 		$data['data']['center']['info']['TABLE'] = 'manufacture_supplier';
 		
 		// Left -> Map
-		$data['data']['left']['map']['width'] = '225';
+		$data['data']['left']['map']['width'] = '220';
 		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
 		

@@ -7,15 +7,23 @@
 ?>
 
 <?php
+	if (isset($NAME) ) {
+		$this->load->view('includes/name', array('BREADCRUMB' => $NAME ) );
+	}
+	else{
+	}
+	
 	if (isset($BREADCRUMB) ) {
 		$this->load->view('includes/breadcrumb', array('BREADCRUMB' => $BREADCRUMB ) );
 	} else {
-		echo '<br>';
+		if (!isset($NAME) ) {
+			echo "<br />";
+		}
 	}
 ?>
 <table width = "980" border = "0" cellpadding = "0" cellspacing = "0">
 	<tr>
-		<td width="180" valign="top">
+		<td width="180" valign="top" id="column-left">
 		<?php
 			foreach($LEFT as $key => $view) {
 				if (isset($data['left'][$key]['VIEW_HEADER']) ) {
@@ -27,7 +35,6 @@
 				} else {
 					$this->load->view($view);
 				}
-				
 			}
 		?>
 		</td>

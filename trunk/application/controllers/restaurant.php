@@ -154,7 +154,7 @@ class Restaurant extends Controller {
 
 		// Left -> Map
 		$data['data']['left']['map']['width'] = '220';
-		$data['data']['left']['map']['height'] = '180';
+		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
 
 		// Left -> Images

@@ -102,6 +102,7 @@ var topRestaurantTypes;
 		<div class="clear"></div>
 	</div>
 	<div class = "clear"></div>
+	
 </div>
 <div style="float:right; width:160px;">
 	<?php
