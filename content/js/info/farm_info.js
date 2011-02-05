@@ -23,8 +23,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 
 function addZeroResult(type) {
 	var html =
-	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:500px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">';
+	'	<div class = "zero-result-box">';
 	
 	html += 'We are currently working on adding ';
 	
@@ -50,9 +49,10 @@ function addZeroResult(type) {
 		html += 'photos';
 	}
 	
-	html +='</div>' + 
-	'</div>'
-	;	
+	html +=
+	'	</div>'+
+	'	<div class = "clear"></div>';
+	
 	return html;
 }
 
@@ -174,49 +174,43 @@ function drawAddItem() {
 function addCompanyResult(company, count) {
 	
 	var html =
-	'<div style="overflow:auto; padding:5px;">';
+	'<div style="overflow:auto; padding-bottom:10px;">' + 
+	'	<div class = "listing-supplier-header">';
 	
 	if (company.customUrl) {
-		html += '	<div style="float:left; width:220px;font-size:13px;"><a href="/' + company.type + '/' + company.customUrl + '" style="font-size:13px;text-decoration:none;">'+ company.companyName +'</a><br><b>Type:</b> '+ company.type + '</div>';
+		html += '	<a href="/' + company.type + '/' + company.customUrl + '" style="font-size:13px;text-decoration:none;">'+ company.companyName +'</a>';
 	} else {
-		html += '	<div style="float:left; width:220px;font-size:13px;"><a href="/' + company.type + '/view/' + company.companyId + '" style="font-size:13px;text-decoration:none;">'+ company.companyName +'</a><br><b>Type:</b> '+ company.type + '</div>';
+		html += '	<a href="/' + company.type + '/view/' + company.companyId + '" style="font-size:13px;text-decoration:none;">'+ company.companyName +'</a>';
 	}
-	
 	html +=
-	'	<div style="float:left; width:60px;font-size:13px;"><b>Address: </b></div><div style="float:left; width:240px;font-size:13px;">';
+	'		<div class = "clear"></div>'+
+	'	</div>' +
+	'	<div class = "clear"></div>';
+		
+	html += 
+	'	<div class = "listing-supplier-information">';
+	html += '<b>Type:</b> '+ company.type;
+	html += 
+	'	</div>' + 
+	'	<div class = "listing-address-title">'+
+	'		<b>Address:</b>'+
+	'	</div>' +
+	'	<div class = "listing-address">';
 	
 	$.each(company.addresses, function(j, address) {
 		if (j == 0) {
-			html += address.displayAddress;
+			html += address.displayAddress ;
 		} else {
-			html += "<br /><br />" + address.displayAddress;
+			html += "<br /><br />" + address.displayAddress ;
 		}
 	});
 	
-	
-	html += '</div>';
+	html += 
+	'	</div>';
 	html +=
-	'</div><div style="font-size:13px;height:5px;">&nbsp;</div>'
+	'</div>' +
+	'<div class = "clear"></div>'
 	;
-	
-	return html;
-}
-
-function addMenuResult(menu, count) {
-	var html = '';
-	
-	html +=	'<div class="menuitem">';
-	//html +=	'	<div class="menuitemimg"><img src="/img/img1.jpg" width="132" height="107" alt="receipe" />';
-	
-	html +=	'	<div class="menuitemimg">';
-	if (menu.image) {
-		html +=	'<img src="' + menu.image + '" width="132" height="107" alt="receipe" />';
-	}
-	
-	html += '	</div>';
-	html +=	'	<div class="menuitemname">' + menu.productName + '</div>';
-	html +=	'	<div class="menuitemdetails">' + menu.ingredient + '</div>';
-	html +=	'</div>';
 	
 	return html;
 }

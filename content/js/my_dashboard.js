@@ -292,9 +292,9 @@ function addSupplierResult(supplier, count) {
 	
 	var html =
 	'<div style="overflow:auto; padding:5px;width:770px;">' +
-	'	<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#FF0000;"><a href="/' + supplier.supplierType + '/view/' + supplier.supplierReferenceId + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>' +
+	'	<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#FF0000;"><a href="/' + supplier.supplierType + '/' + supplier.supplierCustomUrl + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>' +
 	'	<div style="float:left; width:60px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;"><b>Parent:</b><br /><b>Type:</b></div>' + 
-	'	<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#0000FF;"><a href="/' + supplier.parentType + '/view/' + supplier.parentId + '" style="font-size:13px;text-decoration:none;">'+ supplier.parentName +'</a><br>'+ supplier.parentType + '</div>' + 
+	'	<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#0000FF;"><a href="/' + supplier.parentType + '/' + supplier.supplieeCustomUrl + '" style="font-size:13px;text-decoration:none;">'+ supplier.parentName +'</a><br>'+ supplier.parentType + '</div>' + 
 	'	<div style="float:left; width:60px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;">' + supplier.status + '</div>' +
 	'	<div style="float:right; width:100px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;">' + supplier.ip + '</div>';
 	html +=
@@ -320,13 +320,15 @@ function addMenuResult(product, count) {
 	html +=	'	<div class="menuitemdetails">' + product.ingredient + '</div>';
 	html +=	'	<div class="menuitemdetails">';
 	html += '		<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#FF0000;">';
-	if (product.restaurantName) {
-		html += '<b>Restaurant: </b><a href = "/restaurant/view/'+product.restaurantId+'" style="font-size:13px;text-decoration:none;">' + product.restaurantName + '</a>';
-	} else if (product.restaurantChain) {
-		html += '<b>Chain: </b><a href = "/chain/view/'+product.restaurantChainId+'" style="font-size:13px;text-decoration:none;">' + product.restaurantChain + '</a>';
-	} else if (product.manufactureName) {
-		html += '<b>Manufacture: </b><a href = "/manufacture/view/'+product.manufactureId+'" style="font-size:13px;text-decoration:none;">' + product.manufactureName + '</a>';
+	if (product.producerType == 'restaurant') {
+		html += '<b>Restaurant: </b>';
+	} else if (product.producerType == 'chain') {
+		html += '<b>Chain: </b>';
+	} else if (product.producerType == 'manufacture') {
+		html += '<b>Manufacture: </b>';
 	}
+	html += '			<a href = "/' + product.producerType + '/'+product.customUrl+'" style="font-size:13px;text-decoration:none;">' + product.producer + '</a>';
+	
 	html += '		</div>';
 	html += '		<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;"><b>Status: </b>' + product.status + '</div>';
 	html += '	</div>';

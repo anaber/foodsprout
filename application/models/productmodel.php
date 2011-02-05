@@ -722,7 +722,7 @@ class ProductModel extends Model {
 		//$status = 'queue';
 		
         $base_query = 'SELECT product.*, product_type.product_type, ' .
-        		' manufacture.manufacture_name, restaurant.restaurant_name, restaurant_chain.restaurant_chain, ' .
+        		' producer.producer, is_restaurant, is_manufacture, is_restaurant_chain, ' .
         		' user.email, user.first_name ' .
 				' FROM product';
 		
@@ -730,9 +730,7 @@ class ProductModel extends Model {
 				' FROM product';
 		
 		$where = ' LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id)  ' .
-				' LEFT JOIN manufacture ON (product.manufacture_id =  manufacture.manufacture_id) ' .
-				' LEFT JOIN restaurant ON (product.restaurant_id =  restaurant.restaurant_id) ' .
-				' LEFT JOIN restaurant_chain ON (product.restaurant_chain_id =  restaurant_chain.restaurant_chain_id) ' .
+				' LEFT JOIN producer ON (product.producer_id =  producer.producer_id) ' .
 				' LEFT JOIN user ON product.user_id = user.user_id' .  
 				' WHERE  ';
 				
@@ -790,6 +788,10 @@ class ProductModel extends Model {
 		log_message('debug', "ProductModel.getProductJson : " . $query);
 		$result = $this->db->query($query);
 		
+		$CI =& get_instance();
+		$CI->load->model('CustomUrlModel','',true);
+		$CI->load->model('AddressModel','',true);
+		
 		$products = array();
 		
 		$geocodeArray = array();
@@ -800,12 +802,32 @@ class ProductModel extends Model {
 
             $this->productLib->productId = $row->product_id;
             $this->productLib->productName = $row->product_name;
-            $this->productLib->manufactureId = $row->manufacture_id;
-            $this->productLib->manufactureName = $row->manufacture_name;
-            $this->productLib->restaurantId = $row->restaurant_id;
-            $this->productLib->restaurantName = $row->restaurant_name;
-            $this->productLib->restaurantChainId = $row->restaurant_chain_id;
-            $this->productLib->restaurantChain = $row->restaurant_chain;
+            
+            if ( $row->is_restaurant == '1' ) {
+				$this->productLib->producerType = 'restaurant';
+			} else if ( $row->is_manufacture == '1' ) {
+				$this->productLib->producerType = 'manufacture';
+			} else if ( $row->is_restaurant_chain == '1' ) {
+				$this->productLib->producerType = 'chain';
+			}
+            $this->productLib->producer = $row->producer;
+            
+            $addresses = $CI->AddressModel->getAddressForProducer($row->producer_id);
+			//$this->productLib->addresses = $addresses;
+			
+			$this->productLib->customUrl = '';
+			$firstAddressId = '';
+			
+			foreach ($addresses as $key => $address) {
+				$firstAddressId = $address->addressId;
+				break;
+			}
+			
+			if ($firstAddressId != '') {
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row->producer_id, $firstAddressId);
+				$this->productLib->customUrl = $customUrl;
+			}
+            
             $this->productLib->productTypeId = $row->product_type_id;
             $this->productLib->productType = $row->product_type;
             $this->productLib->ingredient = $row->ingredient_text;

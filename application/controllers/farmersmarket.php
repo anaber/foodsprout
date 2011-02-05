@@ -168,7 +168,7 @@ class FarmersMarket extends Controller {
 		$data['data']['center']['info']['TABLE'] = 'farmers_market_supplier';
 		
 		// Left -> Map
-		$data['data']['left']['map']['width'] = '225';
+		$data['data']['left']['map']['width'] = '220';
 		$data['data']['left']['map']['height'] = '225';
 		$data['data']['left']['map']['hide_map'] = 'no';
 		

@@ -178,6 +178,7 @@ class Chain extends Controller {
 
 	function ajaxSearchRestaurantChainSuppliers() {
 		$q = $this->input->post('q');
+		$q = 181176;
 		$addressId = $this->input->post('addressId');
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
