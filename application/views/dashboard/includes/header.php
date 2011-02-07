@@ -8,6 +8,10 @@
 <meta name="robots" content="index,follow" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <link href="/css/mainstyle.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<?php echo base_url()?>js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.autocomplete.frontend.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo base_url()?>css/jquery.validationEngine.css" type="text/css" />
+
 <?php 
 if (isset ($CSS) ) {
 	foreach ($CSS as $key => $css_file) {

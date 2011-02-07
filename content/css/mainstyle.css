@@ -161,3 +161,17 @@ span.input_img:hover input[type=submit] { background-position:left -29px; text-d
 .characters-remaining {width:320px;font-size:11px;float:left;padding-left:7px;}
 .non-logged-in-box {font-size:13px;border: #ccc 1px solid;width:583px;height:30px;padding-top:15px;margin-left:2px;text-align:center;}
 .zero-result-box {font-size:13px;border: #ccc 0px solid;width:565px;padding:15px 10px 15px 10px;margin-left:2px;text-align:center;}
+
+
+
+
+
+
+input[type="submit"]{color:#4D4D4D;font-weight:bold;text-shadow:0 1px 0 #888;text-shadow:0 1px 0 rgba(255,255,255,.5);border:4px solid #D2D2D2;cursor:pointer;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;background:#BFBFBF;background:-moz-linear-gradient(top,#EBEBEB,#929292);background:-webkit-gradient(linear,left top,left bottom,
+from(#EBEBEB),to(#929292));background:-o-linear-gradient(top,#EBEBEB,#929292);background:linear-gradient(top,#EBEBEB,#929292);}
+input[type="submit"]:hover{background:#71CE2F;background:-moz-linear-gradient(top,#71CE2F,#229500);background:-webkit-gradient(linear,left top,left bottom,
+from(#71CE2F),to(#229500));background:-o-linear-gradient(top,#71CE2F,#229500);background:linear-gradient(top,#71CE2F,#229500);color:white;text-shadow:0 -1px 0 #257703;}
+input[type="submit"]:active,
+input[type="submit"].active{background:#229500;background:-moz-linear-gradient(top,#229500,#48B117);background:-webkit-gradient(linear,left top,left bottom,
+from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);background:linear-gradient(top,#229500,#48B117);color:#277200;text-shadow:none;}
+#signup-form input[type='submit']{font-size:28px;height:60px;width:788px;}

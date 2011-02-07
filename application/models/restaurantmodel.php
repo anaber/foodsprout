@@ -716,75 +716,69 @@ class RestaurantModel extends Model{
 	function addRestaurant() {
 		$return = true;
 
-		$companyId = $this->input->post('companyId');
+		//$companyId = $this->input->post('companyId');
 		$restaurantName = $this->input->post('restaurantName');
 
 		$CI =& get_instance();
 
-		//echo "Company Id:" . $companyId . ":Name:" . $restaurantName . ":";
+		$query = "SELECT * FROM producer WHERE producer = \"" . $restaurantName . "\" AND is_restaurant = 1";
+		log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
 
-		if (empty($companyId) && empty($restaurantName) ) {
-			$GLOBALS['error'] = 'no_name';
-			$return = false;
-		} else {
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			
+			
+			$query = "INSERT INTO producer (producer_id, producer, creation_date, custom_url, city_area_id, phone, fax, email, url, status, track_ip, user_id, facebook, twitter, is_restaurant)" .
+					" values (NULL, \"" . $restaurantName . "\", NOW(), NULL, NULL, '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', 'queue', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
 
-			if ( empty($companyId) ) {
-				// Enter manufacture into company
-				$CI->load->model('CompanyModel','',true);
-				$companyId = $CI->CompanyModel->addCompany($this->input->post('restaurantName'));
-				if ( !$companyId) {
-					//$return = false;
-					return false;
-				}
-			} else {
-				if (empty($restaurantName) ) {
-					// Consider company name as manufacture name
-					$CI->load->model('CompanyModel','',true);
-					$company = $CI->CompanyModel->getCompanyFromId($companyId);
-					$restaurantName = $company->companyName;
-				}
-			}
+			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
+			$return = true;
 
-			$query = "SELECT * FROM restaurant WHERE restaurant_name = \"" . $restaurantName . "\" AND company_id = '" . $companyId . "'";
-			log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
+			
+			if ( $this->db->query($query) ) {
+				$newRestaurantId = $this->db->insert_id();
+				
+				$arrCuisineId = explode(',', $this->input->post('cuisineId'));
+				
+				for($i = 0; $i < count($arrCuisineId); $i++) {
+					$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
+					" values (NULL, " . $arrCuisineId[$i] . ", " . $newRestaurantId . ", NULL )";
 
-			$result = $this->db->query($query);
-			$restaurantChainId = $this->input->post('restaurantChainId');
-
-			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO restaurant (restaurant_id, company_id, restaurant_chain_id, restaurant_type_id, restaurant_name, creation_date, custom_url, phone, fax, email, url, status, track_ip, user_id, facebook, twitter)" .
-						" values (NULL, '".$companyId."', " . ( !empty ( $restaurantChainId ) ? $restaurantChainId : 'NULL' ) . ", " . $this->input->post('restaurantTypeId') . ", \"" . $restaurantName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
-
-				log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
-				$return = true;
-
-				if ( $this->db->query($query) ) {
-					$newRestaurantId = $this->db->insert_id();
-
-					$arrCuisineId = explode(',', $this->input->post('cuisineId'));
-
-
-					for($i = 0; $i < count($arrCuisineId); $i++) {
-						$query = "INSERT INTO restaurant_cuisine (restaurant_cuisine_id, restaurant_id, cuisine_id)" .
-						" values (NULL, " . $newRestaurantId . ", " . $arrCuisineId[$i] . " )";
-
-						if ( mysql_query($query) ) {
-							$restaurantCuisineId = mysql_insert_id();
-						}
+					if ( $this->db->query($query) ) {
+						$restaurantCuisineId = mysql_insert_id();
+						//$restaurantCuisineId = 418558;
 					}
-
-					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress($newRestaurantId, '', '', '', '', $companyId);
-				} else {
-					$return = false;
 				}
+				
+				$restaurantTypeId = $this->input->post('restaurantTypeId');
+				if ($restaurantTypeId) {
+					$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
+					" values (NULL, " . $restaurantTypeId . ", " . $newRestaurantId . ", NULL )";
 
+					if ( $this->db->query($query) ) {
+						$restaurantTypeId = mysql_insert_id();
+						//$restaurantTypeId = 418559;
+					}
+				}
+				
+				$CI->load->model('AddressModel','',true);
+				$addressId = $CI->AddressModel->addAddress($newRestaurantId);
+				
+				if ($addressId) {
+					$CI->load->model('CustomUrlModel','',true);
+					$customUrlId = $CI->CustomUrlModel->generateCustomUrl($addressId);
+				}
+				
 			} else {
-				$GLOBALS['error'] = 'duplicate';
 				$return = false;
 			}
-
+			
+		} else {
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
 		}
+
 
 		return $return;
 	}

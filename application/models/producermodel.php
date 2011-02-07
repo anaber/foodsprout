@@ -112,6 +112,147 @@ class ProducerModel extends Model{
 		}
 	}
 	
+	
+	function getProducersByUserJson($producerType) {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q'); // User ID
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		//$status = 'queue';
+		$userId  = $this->session->userdata['userId'];
+		
+		/** $base_query_count */
+		$query = 'SELECT count(*) AS num_records' 
+				. ' FROM producer' 
+				. ' WHERE user_id = '.$userId
+				.' AND is_' . $producerType . ' = 1';
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		/** $base_query*/
+		$base_query = 'SELECT * ' .
+				' FROM producer'; 
+		
+		$where = ' WHERE is_'.$producerType.' = 1' .
+				' AND producer.user_id = '. $userId;
+		
+		$query = $base_query . $where;	
+		
+		$start = 0;
+		$page = 0;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY producer.producer_id';
+			
+			$sort = 'producer_id';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "ProducerModel.getProducersByUserJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$producers = array();
+		$CI =& get_instance();
+		$CI->load->model('CustomUrlModel','',true);
+		$CI->load->model('AddressModel','',true);
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('ProducerLib');
+			unset($this->ProducerLib);
+			
+			
+			
+			
+			$this->ProducerLib->producerId = $row['producer_id'];
+			$this->ProducerLib->producer = $row['producer'];
+			
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id']);
+			$this->ProducerLib->addresses = $addresses;
+			
+			$this->ProducerLib->customUrl = '';
+			$firstAddressId = '';
+			
+			foreach ($addresses as $key => $address) {
+				$firstAddressId = $address->addressId;
+				break;
+			}
+			
+			if ($firstAddressId != '') {
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['producer_id'], $firstAddressId);
+				$this->ProducerLib->customUrl = $customUrl;
+			}
+			
+			
+			if ( $row['is_' . $producerType] == '1' ) {
+				$this->ProducerLib->type = $producerType;
+			} 
+			
+			
+			$this->ProducerLib->userId = $row['user_id'];
+			$this->ProducerLib->email = $row['email'];
+			$this->ProducerLib->ip = $row['track_ip'];
+			$this->ProducerLib->status = $row['status'];
+			
+			$producers[] = $this->ProducerLib;
+			unset($this->ProducerLib);
+		}
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $producers,
+			'param'      => $params,
+	    );
+	    return $arr;
+	    
+	}
+	
 }
 
 

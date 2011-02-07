@@ -44,12 +44,9 @@ class Restaurant extends Controller {
 		$this->load->model('CountryModel');
 		$countries = $this->CountryModel->listCountry();
 		
-		$this->load->model('RestauranttypeModel');
-		$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
-		
-		$this->load->model('CuisineModel');
-		$cuisines = $this->CuisineModel->listCuisine();
-		
+		$this->load->model('ProducerCategoryModel');
+		$restaurantTypes = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
+		$cuisines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
 		
 		// List of views to be included
 		$data['CENTER'] = array(

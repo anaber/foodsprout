@@ -78,6 +78,7 @@ class Restaurant extends Controller {
 
 	//restaurant custom url
 	function customUrl($customUrl){
+		
 		$this->load->model('CustomUrlModel');
 		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant');
 		
@@ -351,6 +352,27 @@ class Restaurant extends Controller {
 		$this->load->model('PhotoModel', '', TRUE);
 		$comments = $this->PhotoModel->getPhotosJson('restaurant');
 		echo json_encode($comments);
+	}
+	
+	function save_add() {
+		$this->load->model('RestaurantModel', '', TRUE);
+		
+		$GLOBALS = array();
+		
+		if ( $this->RestaurantModel->addRestaurant() ) {
+			// TO DO: IF THE USER DOES NOT HAVE JAVASCRIPT WE NEED TO USE SERVER SIDE REDIRECT.  BELOW CODE WILL DO THIS, HOWEVER THE echo 'yes' IS REQUIRED TO PASS TO THE JAVASCRIPT.  CONSIDER A BETTER WAY TO NOTIFY THE JQUERY JAVASCRIPT THAT THE EVENT WAS SUCCESSFUL SO AS TO ALLOW THE PROPER REDIRECT FOR NON JAVASCRIPT
+			// Added the new restaurant successfully, send user to index
+			//$this->index();
+			echo 'yes';
+			
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+		
 	}
 
 }

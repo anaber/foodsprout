@@ -1,8 +1,161 @@
 <script src="<?php echo base_url()?>js/my_dashboard.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="<?php echo base_url()?>js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="<?php echo base_url()?>js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+<script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
+
+<script src="<?php echo base_url()?>js/jquery.validationEngine.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/jquery.validationEngine-en.js" type="text/javascript"></script>
+
+<?php
+	$addRestaurantFormHtml = '';
+	$addRestaurantFormHtml .= 
+'<form id="restaurantForm" method="post" action = "">'. "'+\n" .
+'\'<table class="formTable" border = "0" width = "300">'. "'+\n" .
+'\'	<tr>'. "'+\n" .
+'\'		<td>'. "'+\n" .
+'\'			<table class="formTable" border = "0" width = "300">'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" nowrap style = "font-size:13px;">Restaurant Name</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<input value="" class="validate[required]" type="text" name="restaurantName" id="restaurantName"/><br />'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+				
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" style = "font-size:13px;">Restaurant Type</td>'. "'+\n" .
+'\'					<td width = "75%">'. "'+\n" .
+'\'						<select name="restaurantTypeId" id="restaurantTypeId"  class="validate[required]">'. "'+\n" .
+'\'						<option value = "">--Restaurant Type--</option>' . "'+\n" ;
+							foreach($RESTAURANT_TYPES as $key => $value) {
+$addRestaurantFormHtml .= 		'\'<option value="'.$value->restaurantTypeId.'"' . (  ( isset($RESTAURANT) && ( $value->restaurantTypeId == $RESTAURANT->restaurantTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->restaurantTypeName.'</option>'. "'+\n" ;
+							}
+$addRestaurantFormHtml .= 
+'\'						</select>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+				
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" style = "font-size:13px;">Cuisine</td>'. "'+\n" .
+'\'					<td width = "75%">'. "'+\n" .
+'\'						<select name="cuisineId" id="cuisineId"  class="validate[required]" multiple size = "4">'. "'+\n" .
+'\'						<option value = "">--Cuisine--</option>'. "'+\n" .
+'\'						<option value = "NULL">--Unknown--</option>'. "'+\n" ;
+							foreach($CUISINES as $key => $value) {
+$addRestaurantFormHtml .= 		'\'<option value="'.$value->cuisineId.'"' . (  ( isset($RESTAURANT) && in_array($value->cuisineId, $RESTAURANT->cuisines) ) ? ' SELECTED' : '' ) . '>'.$value->cuisineName.'</option>'. "'+\n" ;
+							}
+$addRestaurantFormHtml .= 
+'\'						</select>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" nowrap style = "font-size:13px;">Phone</td>'. "'+\n" .
+'\'					<td width = "75%">'. "'+\n" .
+'\'						<input value="" class="validate[optional]" type="text" name="phone" id="phone"/>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" nowrap style = "font-size:13px;">Fax</td>'. "'+\n" .
+'\'					<td width = "75%">'. "'+\n" .
+'\'						<input value="" class="validate[optional]" type="text" name="fax" id="fax"/>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" nowrap style = "font-size:13px;">E-Mail</td>'. "'+\n" .
+'\'					<td width = "75%">'. "'+\n" .
+'\'						<input value="" class="validate[optional,custom[email]]" type="text" name="email" id="email"/>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+				
+'\'			</table>'. "'+\n" .
+'\'		</td>'. "'+\n" .
+'\'		<td valign = "top">'. "'+\n" .
+'\'			<table class="formTable" border = "0" width = "300">'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" style = "font-size:13px;">Address</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<input value="" class="validate[required]" type="text" name="address" id="address"/><br />'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+				
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" style = "font-size:13px;">State</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<select name="stateId" id="stateId"  class="validate[required]">'. "'+\n" .
+'\'						<option value = "">--State--</option>' . "'+\n";
+							foreach($STATES as $key => $value) {
+$addRestaurantFormHtml .= 		'\'<option value="'.$value->stateId.'"' . (  ( isset($RESTAURANT) && ( $value->stateId == $RESTAURANT->stateId )  ) ? ' SELECTED' : '' ) . '>'.$value->stateName.'</option>'. "'+\n" ;
+							}
+$addRestaurantFormHtml .= 
+'\'						</select>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+				
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" style = "font-size:13px;">City</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<input type="text" id="cityAjax" value="" class="validate[required]" />'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+				
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" style = "font-size:13px;">Country</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<select name="countryId" id="countryId"  class="validate[required]">'. "'+\n" .
+'\'						<option value = "">--Country--</option>' . "'+\n";
+							foreach($COUNTRIES as $key => $value) {
+$addRestaurantFormHtml .= 		'\'<option value="'.$value->countryId.'"' . (  ( isset($RESTAURANT) && ( $value->countryId == $RESTAURANT->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>'. "'+\n" ;
+							}
+$addRestaurantFormHtml .= 
+'\'						</select>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" style = "font-size:13px;">Zip</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<input value="" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" nowrap style = "font-size:13px;">Website</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<input value="" class="validate[optional]" type="text" name="website" id="website"/>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" nowrap style = "font-size:13px;">Facebook</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<input value="" class="validate[optional]" type="text" name="facebook" id="facebook"/>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+'\'				<tr>'. "'+\n" .
+'\'					<td width = "25%" nowrap style = "font-size:13px;">Twitter</td>'. "'+\n" .
+'\'					<td width = "25%">'. "'+\n" .
+'\'						<input value="" class="validate[optional]" type="text" name="twitter" id="twitter"/>'. "'+\n" .
+'\'					</td>'. "'+\n" .
+'\'				</tr>'. "'+\n" .
+				
+'\'			</table>'. "'+\n" .
+'\'		</td>'. "'+\n" .
+'\'	</tr>'. "'+\n" .
+'\'	<tr>'. "'+\n" .
+'\'		<td colspan = "2" align = "right">'. "'+\n" .
+'\'			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "Add Restaurant">'. "'+\n" .
+'\'		</td>'. "'+\n" .
+'\'	</tr>'. "'+\n" .
+'\'</table>'. "'+\n" .
+'\'<input type = "hidden" name = "cityId" id = "cityId" value = "">'. "'+\n" .
+'\'</form>';
+
+//$addRestaurantFormHtml = 'Deepak here';
+?>
+
 <script>
 	
 	var userId = <?php echo $this->session->userdata('userId'); ?>;
-	var name = "<?php echo $RESTAURANT->restaurantName; ?>";
+	var addRestaurantFormHtml = '<?php echo $addRestaurantFormHtml; ?>';
+	
 	var jsonData;
 	var currentContent;
 	
@@ -14,11 +167,12 @@
 	$(document).ready(function() {
 		$('#bottomPaging').hide();
 		
-		$.post("/user/ajaxSuppliersByUser", { q: userId },
+		//$.post("/user/ajaxSuppliersByUser", { q: userId },
+		$.post("/user/ajaxRestaurantsByUser", { q: userId },
 		function(data){
-			currentContent = 'supplier';
+			currentContent = 'restaurants';
 			jsonData = data;
-			redrawContent(data, 'supplier');
+			redrawContent(data, 'restaurants');
 			reinitializeTabs();
 		},
 		"json");
@@ -30,10 +184,10 @@
 <!-- center tabs -->
 	<div id="resultsContainer" style = "border-style:solid;border-width:0px;border-color:#FF0000;">
 		<div id="menu-bar"> 
-			<div id="suppliers" class = "selected"><a href="#">My Suppliers</a></div>
+			<div id="restaurants" class = "selected"><a href="#">My Restaurants</a></div>
+			<div id="suppliers" class = "non-selected"><a href="#">My Suppliers</a></div>
 			<div id="menu" class = "non-selected"><a href="#">My Menu</a></div>
 			<div id="comments" class = "non-selected" style = "display:none;"><a href="#">My Comments</a></div>
-			<div id="restaurants" class = "non-selected" style = "display:none;"><a href="#">My Restaurants</a></div>
 			<div id="farms" class = "non-selected" style = "display:none;"><a href="#">My Farms</a></div>
 		</div>
 		
@@ -59,7 +213,8 @@
 			<div class="clear"></div>
 		</div>
 		
-		<div id="resultTableContainer" class="menus"></div>
+		<div id="resultTableContainer" class="menus" style = "width:790px; padding:0px;"></div>
+		<div class = "clear"></div>
 		<?php
 			/*
 		?>
