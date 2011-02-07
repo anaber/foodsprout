@@ -142,8 +142,8 @@ $(document).ready(function() {
 			if ($('#restaurantId').val() != '' ) {
 				var formAction = '/admincp/restaurant/save_update';
 				postArray = {
-							  companyId:$('#companyId').val(),
-							  restaurantChainId:$('#restaurantChainId').val(),
+							  //companyId:$('#companyId').val(),
+							  //restaurantChainId:$('#restaurantChainId').val(),
 							  restaurantName:$('#restaurantName').val(),
 							  customUrl:$('#customUrl').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
@@ -164,8 +164,8 @@ $(document).ready(function() {
 			} else {
 				formAction = '/admincp/restaurant/save_add';
 				postArray = { 
-							  companyId:$('#companyId').val(),
-							  restaurantChainId:$('#restaurantChainId').val(),
+							  //companyId:$('#companyId').val(),
+							  //restaurantChainId:$('#restaurantChainId').val(),
 							  restaurantName:$('#restaurantName').val(),
 							  customUrl:$('#customUrl').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
@@ -280,18 +280,21 @@ $(document).ready(function() {
 
 <form id="restaurantForm" method="post" <?php echo (isset($RESTAURANT)) ? 'action="/admincp/restaurant/save_update"' : 'action="/admincp/restaurant/save_add"' ?>>
 <table class="formTable">
+	<!--
 	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->companyName : '') ?>" style="width: 200px;" /> 
 		</td>
 	</tr>
+	-->
 	<tr>
 		<td width = "25%" nowrap>Restaurant Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantName : '') ?>" class="validate[optional]" type="text" name="restaurantName" id="restaurantName"/><br />
 		</td>
 	</tr>
+	<!--
 	<tr>
 		<td colspan = "2" style = "font-size:10px;">
 			<ul>
@@ -301,6 +304,7 @@ $(document).ready(function() {
 			</ul>
 		</td>
 	</tr>
+	-->
 	<tr>
 		<td width = "25%">Restaurant Type</td>
 		<td width = "75%">
@@ -314,12 +318,14 @@ $(document).ready(function() {
 			</select>
 		</td>
 	</tr>
+	<!--
 	<tr>
 		<td width = "25%" nowrap>Restaurant Chain</td>
 		<td width = "75%">
 			<input type="text" id="restaurantChainAjax" value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantChain : '') ?>" style="width: 200px;" /> 
 		</td>
 	</tr>
+	-->
 	<tr>
 		<td width = "25%">Cuisine</td>
 		<td width = "75%">
@@ -334,14 +340,14 @@ $(document).ready(function() {
 			</select>
 		</td>
 	</tr>	
-	
+	<!--
 	<tr>
 		<td width = "25%" nowrap>Custom URL</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->customURL : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
 		</td>
 	</tr>
-	
+	-->
 	<tr>
 		<td width = "25%" nowrap>Phone</td>
 		<td width = "75%">

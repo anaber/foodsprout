@@ -221,17 +221,14 @@ class AddressModel extends Model{
 		$this->addressLib->cityId = $row->city_id;
 		$this->addressLib->cityName = $row->city_name;
 		
-		$this->addressLib->farmId = $row->farm_id;
-		$this->addressLib->restaurantId = $row->restaurant_id;
-		$this->addressLib->manufactureId = $row->manufacture_id;
-		$this->addressLib->distributorId = $row->distributor_id;
-		$this->addressLib->farmersMarketId = $row->farmers_market_id;
+		$this->addressLib->producerId = $row->producer_id;
+		
 		$this->addressLib->claimsSustainable = $row->claims_sustainable;
 		
 		return $this->addressLib;
 	}
 	
-	function addAddress($restaurantId, $farmId, $manufactureId, $distributorId, $farmersMarketId, $companyId) {
+	function addAddress($producerId) {
 		global $ACTIVITY_LEVEL_DB;
 		$return = true;
 		$CI =& get_instance();
@@ -251,58 +248,33 @@ class AddressModel extends Model{
 		
 		$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 		
-		$claimsSustainable = $this->input->post('claimsSustainable');
+		//$claimsSustainable = $this->input->post('claimsSustainable');
+		$claimsSustainable = '0';
 		
-		$query = "INSERT INTO address (address_id, address, city, city_id, state_id, zipcode, country_id, latitude , longitude, ";
-		if ( !empty($restaurantId) ) {
-			$query .= 'restaurant_id';
-		} else if ( !empty($farmId) ) {
-			$query .= 'farm_id';
-		} else if ( !empty($manufactureId) ) {
-			$query .= 'manufacture_id';
-		} else if ( !empty($distributorId) ) {
-			$query .= 'distributor_id';
-		} else if ( !empty($farmersMarketId) ) {
-			$query .= 'farmers_market_id';
-		}
-		$query .= ", company_id, geocoded, claims_sustainable)" .
-				" values (NULL, \"" . $this->input->post('address') . "\", \"" . $this->input->post('city') . "\", '" . $cityId . "', '" . $stateId . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "', ";
-		if ( !empty($restaurantId) ) {
-			$query .= $restaurantId;
-		} else if ( !empty($farmId) ) {
-			$query .= $farmId;
-		} else if ( !empty($manufactureId) ) {
-			$query .= $manufactureId;
-		} else if ( !empty($distributorId) ) {
-			$query .= $distributorId;
-		} else if ( !empty($farmersMarketId) ) {
-			$query .= $farmersMarketId;
-		}
-		
-		if (!empty ($companyId) ) {
-			$query .= ", '$companyId'";
-		} else {
-			$query .= ", NULL ";
-		}
+		$query = "INSERT INTO address (address_id, producer_id, address, city, city_id, state_id, zipcode, country_id, latitude , longitude, geocoded, claims_sustainable, track_ip, user_id)" .
+				" values (NULL, " . $producerId . ", \"" . $this->input->post('address') . "\", \"" . $this->input->post('city') . "\", '" . $cityId . "', '" . $stateId . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "' ";
 		
 		if ( isset($latLng['latitude']) && isset($latLng['longitude']) ) {
 			$query .= ", 1";
 		} else {
 			$query .= ", 0";
 		}
-		$query .= ", '". (!empty ($claimsSustainable) ? $ACTIVITY_LEVEL_DB[$claimsSustainable] : '0') ."')";
+		$query .= ", '". (!empty ($claimsSustainable) ? $ACTIVITY_LEVEL_DB[$claimsSustainable] : '0') ."', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ")";
 		
 		log_message('debug', 'AddressModel.addAddress : Insert Address : ' . $query);
 		
 		if ( $this->db->query($query) ) {
+			$addressId = mysql_insert_id();
 			
+			//echo $addressId;
+			/*
 			if ( !empty($restaurantId) ) {
 				if ( $claimsSustainable == 'active') {
 					$CI->RestaurantModel->updateRestaurantSustainable($restaurantId, 1);
 				}
 			}
-			
-			$return = true;
+			*/
+			$return = $addressId;
 		} else {
 			$return = false;
 		}

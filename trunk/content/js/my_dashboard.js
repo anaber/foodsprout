@@ -7,6 +7,8 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 		formAction = '/user/ajaxSuppliersByUser';
 	} else if (type == 'comment') {
 		formAction = '/user/ajaxCommentByUser';
+	} else if (type == 'restaurants') {
+		formAction = '/user/ajaxRestaurantsByUser';
 	}
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:userId, f:filter };
@@ -22,6 +24,13 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 
 function reinitializeTabs() {
 	data = jsonData;
+	$("#restaurants").click(function(e) {
+		e.preventDefault();
+		
+		$('#bottomPaging').hide();
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'restaurants');
+	});
+	
 	$("#suppliers").click(function(e) {
 		e.preventDefault();
 		
@@ -56,6 +65,8 @@ function addZeroResult(type) {
 		html += 'suppliers';
 	} else if (type == 'menu') {
 		html += 'products';
+	} else if (type == 'restaurants') {
+		html += 'restaurants';
 	}
 	html += '.';
 	html +='</div>' + 
@@ -84,10 +95,18 @@ function redrawContent(data, type) {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addCommentResult(a, i);
 			});
-		} else if (type == 'restaurant') {
+		} else if (type == 'restaurants') {
+			resultTableHtml += 
+			'<div id="signup-form">'+
+			//'	<form action="" method="post" name="frmAccount" id="frmAccount">'+								
+			'		<input type="submit" name="submit" value="Add Restaurant" id = "addRestaurantButton">'+
+			//'	</form>'+
+			'</div>';
+			
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addRestaurantResult(a, i);
 			});
+		
 		} else if (type == 'farm') {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addFarmResult(a, i);
@@ -117,11 +136,11 @@ function redrawContent(data, type) {
 	$('#pagingLinks').empty();
 	pagingLinksContent = drawPagingLinks(data.param);
 	$('#pagingLinks').append(pagingLinksContent);
-	
+	/*
 	$('#addItem').empty();
 	addItemContent = drawAddItem();
 	$('#addItem').append(addItemContent);
-	
+	*/
 	reinitializePagingEvent(data);
 	
 	reinitializePageCountEvent(data);
@@ -149,7 +168,7 @@ function redrawContent(data, type) {
 	
 	//disablePopupFadeIn();
 }
-
+/*
 function drawAddItem() {
 	html = "";
 	if (currentContent == 'supplier') {
@@ -161,9 +180,145 @@ function drawAddItem() {
 	}
 	return html;
 }
+*/
 
 function reinitializeAddItemEvent(data) {
 	
+	$("#addRestaurantButton").click(function(e) {
+		e.preventDefault();
+		
+		$.fancybox(
+			addRestaurantFormHtml,
+			{
+	        	'hideOnOverlayClick': false,	
+	        	'modal'				: false,
+	        	'enableEscapeButton' : false,
+	        	'autoDimensions'	: false,
+				'width'         	: 620,
+				'height'        	: 'auto',
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				onComplete	:	function() {
+            		
+            		reinitializeCityAutoSuggest();
+            		reinitializeAddRestaurantSubmit();
+				}
+			}
+		);
+		
+	});
+
+}
+
+function findValueCallbackCity(event, data, formatted) {
+	document.getElementById('cityId').value = data[1];
+}
+
+function reinitializeCityAutoSuggest() {
+	
+	$("#cityAjax").result(findValueCallbackCity).next().click(function() {
+		$(this).prev().search();
+	});
+	
+	$("#cityAjax").autocomplete("/city/get_cities_based_on_state", {
+		width: 220,
+		selectFirst: false,
+		cacheLength:0,
+		extraParams: {
+	       stateId: function() { return $("#stateId").val(); }
+	   	}
+	});
+	
+	$("#cityAjax").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+}
+function reinitializeAddRestaurantSubmit() {
+	//$("#restaurantForm").submit(function(e) {
+	//	e.preventDefault();
+		
+		
+		var formValidated = true;
+	
+		// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
+		
+		$("#restaurantForm").validationEngine({
+			scroll:false,
+			unbindEngine:false,
+			success :  function() {formValidated = true;},
+			failure : function() {formValidated = false; }
+		});
+	
+		$("#restaurantForm").submit(function(e) {
+			if (formValidated == false) {
+				//alert("Validation failed");
+			} else {
+				
+				var selectedCuisines = '';
+				var j = 0;
+			    $('#cuisineId' + ' :selected').each(function(i, selected){
+				    if (j == 0) {
+				    	selectedCuisines += $(selected).val();
+				    } else {
+				    	selectedCuisines += ',' + $(selected).val();
+				    }
+				    j++;
+				});
+				
+				var cityId = $('#cityId').val();
+				var cityName;
+				
+				if (isNaN( cityId ) ) {
+					cityName = cityId;
+					cityId = '';
+				}
+				
+				formAction = '/restaurant/save_add';
+				postArray = { 
+							  restaurantName:$('#restaurantName').val(),
+							  restaurantTypeId:$('#restaurantTypeId').val(),
+							  cuisineId:selectedCuisines,
+							  
+							  phone:$('#phone').val(),
+							  fax:$('#fax').val(),
+							  email:$('#email').val(),
+							  url:$('#website').val(),
+							  facebook:$('#facebook').val(),
+							  twitter:$('#twitter').val(),
+							  
+							  address:$('#address').val(),
+							  
+							  cityId:cityId,
+							  cityName:cityName,
+							  
+							  stateId:$('#stateId').val(),
+							  countryId:$('#countryId').val(),
+							  zipcode:$('#zipcode').val()
+							};
+				$.post(formAction, postArray,function(data) {
+					
+					if(data=='yes') {
+						//echo "";
+						
+						//resetInsuranceCompanyAddressFields();
+						$("#restaurants").click();
+						
+						$.fancybox.close();
+					} else if(data == 'duplicate') {
+						//alert("Duplicate Restaurant");
+					}
+				});
+				
+			}
+		});
+		
+		
+		
+	//});
+}
+
+/*	
 	$("#addSupplier").click(function(e) {
 		e.preventDefault();
 		
@@ -259,46 +414,90 @@ function reinitializeAddItemEvent(data) {
 	});
 	
 }
-
+*/
 function changeSelectedTab() {
 	if (currentContent == 'supplier') {
 		$("#suppliers").removeClass().addClass('selected');
 		$("#menu").removeClass().addClass('non-selected');
 		//$("#comments").removeClass().addClass('non-selected');
+		$("#restaurants").removeClass().addClass('non-selected');
 	} else if (currentContent == 'menu') {
 		$("#suppliers").removeClass().addClass('non-selected');
 		$("#menu").removeClass().addClass('selected');
 		//$("#comments").removeClass().addClass('non-selected');
+		$("#restaurants").removeClass().addClass('non-selected');
 	} else if (currentContent == 'comment') {
 		$("#suppliers").removeClass().addClass('non-selected');
 		$("#menu").removeClass().addClass('non-selected');
 		$("#comments").removeClass().addClass('selected');
+		$("#restaurants").removeClass().addClass('non-selected');
+	} else if (currentContent == 'restaurants') {
+		$("#suppliers").removeClass().addClass('non-selected');
+		$("#menu").removeClass().addClass('non-selected');
+		//$("#comments").removeClass().addClass('non-selected');
+		$("#restaurants").removeClass().addClass('selected');
 	}
 	$("#add-item").removeClass().addClass('add-item');
 }
 
 function addSupplierResult(supplier, count) {
-	/*
-	var html = '';
-	html +=	'<div class="menuitem">';
-	
-	supplierType = supplier.supplierType
-	supplierType = supplierType.substring(0, 1);
-
-	html +=	'	<div class="menuitemname">' + supplier.supplierName + ' (' + supplierType.toUpperCase() + ')' + '</div>';
-	html +=	'</div>';
-	
-	*/
-	
 	var html =
-	'<div style="overflow:auto; padding:5px;width:770px;">' +
-	'	<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#FF0000;"><a href="/' + supplier.supplierType + '/' + supplier.supplierCustomUrl + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + '</div>' +
-	'	<div style="float:left; width:60px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;"><b>Parent:</b><br /><b>Type:</b></div>' + 
-	'	<div style="float:left; width:270px;font-size:13px;border-style:solid;border-width:0px;border-color:#0000FF;"><a href="/' + supplier.parentType + '/' + supplier.supplieeCustomUrl + '" style="font-size:13px;text-decoration:none;">'+ supplier.parentName +'</a><br>'+ supplier.parentType + '</div>' + 
-	'	<div style="float:left; width:60px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;">' + supplier.status + '</div>' +
-	'	<div style="float:right; width:100px;font-size:13px;border-style:solid;border-width:0px;border-color:#00FF00;">' + supplier.ip + '</div>';
+	'<div style="overflow:auto; padding-bottom:10px;">'; 
+	
+	html += 
+	'	<div class = "listing-supplier-information">'+
+	'		<a href="/' + supplier.supplierType + '/' + supplier.supplierCustomUrl + '" style="font-size:13px;text-decoration:none;">'+ supplier.supplierName +'</a><br><b>Type:</b> '+ supplier.supplierType + 
+	'	</div>' + 
+	'	<div class = "listing-address-title">' + 
+	'		<b>Parent:</b><br /><b>Type:</b>'+
+	'	</div>'+
+	'	<div class = "listing-address">'+
+	'		<a href="/' + supplier.parentType + '/' + supplier.supplieeCustomUrl + '" style="font-size:13px;text-decoration:none;">'+ supplier.parentName +'</a><br>'+ supplier.parentType + 
+	'	</div>'+
+	'	<div class = "listing-address-title">' + supplier.status + '</div>' +
+	'	<div class = "listing-address-title">&nbsp;</div>' +
+	'	<div class = "listing-address-title">' + supplier.ip + '</div>' +
+	'	<div class = "clear"></div>';
+	
 	html +=
-	'</div>'
+	'</div>' +
+	'<div class = "clear"></div>'
+	;
+	
+	return html;
+}
+
+function addRestaurantResult(producer, count) {
+	var html =
+	'<div style="overflow:auto; padding-bottom:10px;">'; 
+	
+	html += 
+	'	<div class = "listing-supplier-information">'+
+	'		<a href="/' + producer.type + '/' + producer.customUrl + '" style="font-size:13px;text-decoration:none;">'+ producer.producer +'</a>'+ 
+	'	</div>' + 
+	'	<div class = "listing-address-title">' + 
+	'		<b>Address</b>'+
+	'	</div>'+
+	'	<div class = "listing-address">';
+	 
+	$.each(producer.addresses, function(j, address) {
+		if (j == 0) {
+			html += address.displayAddress ;
+		} else {
+			html += "<br /><br />" + address.displayAddress ;
+		}
+	});
+	
+	html +=
+	'	</div>'+
+	'	<div class = "listing-address-title">' + producer.status + '</div>' +
+	'	<div class = "listing-address-title">&nbsp;</div>' +
+	'	<div class = "listing-address-title">' + producer.ip + '</div>' +
+	'	<div class = "clear"></div>';
+	
+	html +=
+	'</div>' +
+	'<div class = "clear"></div>'
 	;
 	
 	return html;

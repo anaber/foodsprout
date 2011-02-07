@@ -47,6 +47,16 @@ class User extends Controller {
 		}
 		//	echo  $this->session->userdata('userId');
 		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('ProducerCategoryModel');
+		$restaurantTypes = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
+		$cuisines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
+		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'user/dashboard',
@@ -57,11 +67,16 @@ class User extends Controller {
 				'ad' => 'includes/banners/sky',
 			);
 		
-		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId(43);
+		//$this->load->model('RestaurantModel');
+		//$restaurant = $this->RestaurantModel->getRestaurantFromId(43);
 		
 		//$data['data']['center']['list']['VIEW_HEADER'] = "My Dashboard";
-		$data['RESTAURANT'] = $restaurant;
+		//$data['RESTAURANT'] = $restaurant;
+		
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['RESTAURANT_TYPES'] = $restaurantTypes;
+		$data['data']['center']['list']['CUISINES'] = $cuisines;
 		
 		// Custom CSS
 		$data['CSS'] = array(
@@ -174,6 +189,13 @@ class User extends Controller {
 		echo json_encode($suppliers);
 	}
 	*/
+	
+	function ajaxRestaurantsByUser() {
+		$this->load->model('ProducerModel');
+		$restaurants = $this->ProducerModel->getProducersByUserJson('restaurant');
+		
+		echo json_encode($restaurants);
+	}
 	
 }
 
