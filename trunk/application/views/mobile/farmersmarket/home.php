@@ -6,7 +6,7 @@
 			<span>
 				<form method="post" name="find_farmersmarket_by_zip_code" action="<?php echo base_url()?>mobile/farmersmarket/zipcode">
 					<label for="zip_code">Zip Code: </label>
-					<input type="text" name="zip_code" id="zip_code" value="" size="6" />
+					<input type="text" name="zipcode" id="zipcode" value="" size="6" />
 					<label for="distance">Distance: </label>
 					<select name="distance" id="distance">
 						<option>2</option>

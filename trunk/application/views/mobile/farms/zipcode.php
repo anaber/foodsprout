@@ -11,7 +11,6 @@
 				<option>10</option>
 				<option>20</option>
 				<option>50</option>
-				<option>5000</option>
 			</select>(miles)
 			
 			<input type="submit" name="search_zipcode" value="Go" />
