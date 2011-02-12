@@ -7,6 +7,11 @@
 			<!-- blackberry -->
 			<meta name="HandheldFriendly" content="true" > 
 <title><?php echo (isset($SEO->titleTag)? $SEO->titleTag: 'Food Sprout'); ?></title>
+<?php 
+	if(isset($map['js'])){
+		echo $map['js'];
+	}
+ ?>
 <meta name="description" content="<?php echo (isset($SEO->metaDescription)? $SEO->metaDescription: 'Mapping our Food\'s Impact'); ?>" />
 <meta name="keywords" content="<?php echo (isset($SEO->metaKeywords)? $SEO->metaKeywords: 'food source, food location'); ?>" />
 <meta name="robots" content="index,follow" />
