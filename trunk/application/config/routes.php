@@ -61,7 +61,12 @@ $route['^restaurant/view/(:num)'] 						= "restaurant/view/$1";
 $route['^restaurant'] 									= "restaurant/index";
 $route['^sustainable/(:any)'] 							= "restaurant/city/$1";
 $route['^restaurant/(:any)']							= "restaurant/customUrl/$1";
-$route['^mobile/restaurants/view-(:any)']				= "mobile/restaurants/customUrl/$1";
+$route['^mobile/restaurants/findnearme']				= "mobile/restaurants/findnearme";
+$route['^mobile/restaurants/nearme']					= "mobile/restaurants/nearme";
+$route['^mobile/restaurants/browsebycity']				= "mobile/restaurants/browsebycity";
+$route['^mobile/restaurants/findzipcode']				= "mobile/restaurants/findzipcode";
+$route['^mobile/restaurants/cityrestaurantlist/(:any)']	= "mobile/restaurants/cityrestaurantlist/$1";
+$route['^mobile/restaurants/(:any)']					= "mobile/restaurants/customUrl/$1";
         
 // Farm
 $route['^farm/ajaxGetAllFarmType'] 						= "farm/ajaxGetAllFarmType";
@@ -73,7 +78,12 @@ $route['^farm/ajaxSearchFarmPhotos'] 					= "farm/ajaxSearchFarmPhotos";
 $route['^farm/ajaxSearchFarms'] 						= "farm/ajaxSearchFarms";
 $route['^farm/ajaxSearchFarmSuppliee'] 					= "farm/ajaxSearchFarmSuppliee";
 $route['^farm/view/(:num)'] 							= "farm/view/$1";
-$route['^mobile/farms/view-(:any)'] 					= "mobile/farms/customUrl/$1";
+$route['^mobile/farms/findnearme']						= "mobile/farms/findnearme";
+$route['^mobile/farms/nearme']							= "mobile/farms/nearme";
+$route['^mobile/farms/zipcode']							= "mobile/farms/zipcode";
+$route['^mobile/farms/bycity']							= "mobile/farms/bycity";
+$route['^mobile/farms/by_city/(:any)']					= "mobile/farms/by_city/$1";
+$route['^mobile/farms/(:any)'] 							= "mobile/farms/customUrl/$1";
 $route['^farm/(:any)']									= "farm/customUrl/$1";
 
 // Farmers Market
@@ -85,7 +95,12 @@ $route['^farmersmarket/ajaxSearchFarmersMarketSuppliers'] 		= "farmersmarket/aja
 $route['^farmersmarket/view/(:num)'] 							= "farmersmarket/view/$1";
 $route['^farmersmarket/city/(:any)'] 							= "farmersmarket/city/$1";
 $route['^farmersmarket/(:any)']									= "farmersmarket/customUrl/$1";
-$route['^mobile/farmersmarkets/view-(:any)']					= "mobile/farmersmarkets/customUrl/$1";
+$route['^mobile/farmersmarkets/findnearme']						= "mobile/farmersmarkets/findnearme";
+$route['^mobile/farmersmarkets/nearme']							= "mobile/farmersmarkets/nearme";
+$route['^mobile/farmersmarkets/zipcode']						= "mobile/farmersmarkets/zipcode";
+$route['^mobile/farmersmarkets/bycity']							= "mobile/farmersmarkets/bycity";
+$route['^mobile/farmersmarkets/by_city/(:any)']					= "mobile/farmersmarkets/by_city/$1";
+$route['^mobile/farmersmarkets/(:any)']							= "mobile/farmersmarkets/customUrl/$1";
 
 
 // Manufacture
