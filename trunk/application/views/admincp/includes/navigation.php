@@ -37,17 +37,18 @@ document.onclick = jsddm_close;
 <div>
 
 	<ul id="jsddm">
-		<li><?php echo anchor('admincp/dashboard', 'Dashboard'); ?></li>
+		<li><?php echo anchor('admincp/queue', 'Dashboard'); ?></li>
 		<li><a href="#">Food Producers</a>
 			<ul>
-				<li><?php echo anchor('admincp/company', 'Company'); ?></li>
+				<li><?php echo anchor('admincp/distributor', 'Distributor'); ?></li>
 				<li><?php echo anchor('admincp/farm', 'Farm'); ?></li>
 				<li><?php echo anchor('admincp/farmersmarket', 'Farmers Market'); ?></li>
-				<li><?php echo anchor('admincp/manufacture', 'Manufacture'); ?></li>
+				<li><?php echo anchor('admincp/manufacture', 'Manufacturer'); ?></li>
 				<li><?php echo anchor('admincp/restaurant', 'Restaurant'); ?></li>
 				<li><?php echo anchor('admincp/restaurantchain', 'Restaurant Chain'); ?></li>
-				<li><?php echo anchor('admincp/distributor', 'Distributor'); ?></li>
-				<li><?php echo anchor('admincp/queue', 'Queue'); ?></li>
+				<li><a>---------------</a></li>
+				<li><?php echo anchor('admincp/company', 'Conglomerates'); ?></li>
+				<li><?php echo anchor('admincp/company', 'Producer Groups'); ?></li>
 			</ul>
 		</li>
 		<li><a href="#">Food Web</a>
@@ -71,9 +72,8 @@ document.onclick = jsddm_close;
 		<li><a href="#">Types</a>
 			<ul>
 				<li><?php echo anchor('admincp/farmtype', 'Farm Type'); ?></li>
-				<li><?php echo anchor('admincp/manufacturetype', 'Manufacture Type'); ?></li>
-				<li><?php echo anchor('admincp/restauranttype', 'Restaurant Type'); ?></li>
-				<li><?php echo anchor('admincp/cuisine', 'Cuisines'); ?></li>
+				<li><?php echo anchor('admincp/producercategory', 'Producer Category'); ?></li>
+				<li><?php echo anchor('admincp/producercategorygroup', 'Producer Category Group'); ?></li>
 				<li><a>---------------</a></li>
 				<li><?php echo anchor('admincp/producttype', 'Product Type'); ?></li>
 				<li><?php echo anchor('admincp/ingredienttype', 'Ingredient Type'); ?></li>

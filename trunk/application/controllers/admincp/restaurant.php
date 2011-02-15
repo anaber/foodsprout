@@ -71,11 +71,11 @@ class Restaurant extends Controller {
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
 		
-		$this->load->model('RestauranttypeModel');
-		$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
+		//$this->load->model('RestauranttypeModel');
+		//$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
 		
-		$this->load->model('CuisineModel');
-		$cuisines = $this->CuisineModel->listCuisine();
+		//$this->load->model('CuisineModel');
+		//$cuisines = $this->CuisineModel->listCuisine();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
