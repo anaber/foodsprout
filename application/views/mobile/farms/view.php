@@ -17,10 +17,15 @@ if(sizeof($supliers) > 0 ){ ?>
 	<div id="mainarea">
 			<?php 
 					echo '<ul  id="menu">';
+					
+						
+						echo '<li><div id="supliersLabelDiv">Suppliers</div></li>';
+						
+					
 						foreach ($supliers as $suplier ){
 							
 							echo '<li>';
-								echo '<a href="'.base_url().'mobile/'.$suplier->type.'s/view-'.$suplier->customUrl.'">'.$suplier->companyName.'<span>';
+								echo '<a href="'.base_url().'mobile/'.$suplier->type.'s/'.$suplier->customUrl.'">'.$suplier->companyName.'<span>';
 								echo '<strong>Type:</strong>'.$suplier->type.', <strong>Address:</strong> '.$suplier->addresses[0]->completeAddress. '</span></a>';
 							echo '</li>'; 	              
 						}

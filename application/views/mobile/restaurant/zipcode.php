@@ -4,7 +4,7 @@
 			<form method="post" name="find_restaurant_by_zip_code" action="<?php echo base_url()?>mobile/restaurants/findzipcode">
 			<label for="zip_code">Zip Code: </label>
 			<input type="text" name="zip_code" id="zip_code" value="" />
-			<label for="distance">Distance: </label>
+			<br /><label for="distance">Distance: </label>
 			<select name="distance" id="distance">
 				<option>2</option>
 				<option>7</option>

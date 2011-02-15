@@ -27,6 +27,8 @@ class Restaurants extends Controller {
 		$data['CENTER'] = array(
 				'mainarea' => 'mobile/restaurant/home',
 			);
+			
+		$data['BREADCRUMB'] = array('Home' => '/mobile'); 
 		
 		$this->load->view('templates/mobile_template', $data);
 	}
@@ -38,7 +40,6 @@ class Restaurants extends Controller {
 	}
 
 	function _view($producerId ='', $addressId = '' ){
-		
 		
 		$data = array();
 			
@@ -93,8 +94,8 @@ class Restaurants extends Controller {
 		
 	}
 	
-	
 	function nearme(){
+		
 		
 		$data = array();
 		
@@ -123,8 +124,8 @@ class Restaurants extends Controller {
 			}
 			
 		}	
-			
-			
+		//$data['BREADCRUMB'] = array('Home' => '/mobile'); 	
+		//$data['BREADCRUMB'] = array('>> restaurants' => '/mobile/restaurants'); 	
 		
 		$this->load->view('templates/mobile_template', $data);
 		
