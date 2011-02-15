@@ -7,25 +7,24 @@
 				$url = isset($producer[0]['url']) ? $producer[0]['url']: ''; 
 				echo '<a href="'.$url.'" >'.$url.'</a>';
 			?>
-		</div>
-		
-		<?php 
-			if(sizeof($supliers) > 0 ){ 
-				echo '<div id="supliers" >';
-				foreach($supliers as $suplier){
-					
-					echo '<div id ="suplier>'; 
-							
-						print_r($suplier);
-					
-					echo '</div>"'; 
-					
-				}	
-				echo '</div>';
-			}
-		?>
-			
-			
+		</div>			
 		
 	</div>
 </div>	
+<?php 
+		
+if(sizeof($supliers) > 0 ){ ?>		
+	<div id="mainarea">
+			<?php 
+					echo '<ul  id="menu">';
+						foreach ($supliers as $suplier ){				
+							echo '<li>';
+								echo '<a href="'.base_url().'mobile/'.$suplier->supplierType.'s/view-'.$suplier->customUrl.'">'.$suplier->supplierName.'<span>';
+								echo '<strong>Type:</strong>'.$suplier->supplierType.', <strong>Address:</strong> '.$suplier->addresses[0]->completeAddress. '</span></a>';
+							echo '</li>'; 	              
+						}
+					echo '</ul>';
+				?>
+	</div>	
+
+<?php } ?>

@@ -1,6 +1,6 @@
 <?php
 
-class Farmersmarket extends Controller {
+class Farmersmarkets extends Controller {
 
 	function __construct()
 	{
@@ -71,19 +71,11 @@ class Farmersmarket extends Controller {
 		$data['map'] = $this->googlemaps->create_map(); 
 		// Load our view, passing the map data
 				
+		//load supliers model
+		$this->load->model('SupplierModel');
 		
-		$data['supliers'] = $this->db->query("SELECT *
-													FROM
-													producer ,
-													supplier
-													WHERE
-													producer.is_farmers_market =  '1' AND
-													producer.producer_id =  supplier.supplier AND
-													producer.producer_id = '".$producerId."'
-															")->result_array(); 
-		
-		
-		
+		$supliers = $this->SupplierModel->getSupplierForProducerJson($producerId, $addressId);
+		$data['supliers'] = (array) $supliers['results'];
 		
 		// List of views to be included
 

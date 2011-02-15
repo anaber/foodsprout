@@ -1,7 +1,7 @@
 <div id="mainarea">
 	<ul id="menu">
 		<li>
-			<form method="post" name="find_by_zip_code" action="<?php echo base_url()?>mobile/farmersmarket/zipcode">
+			<form method="post" name="find_by_zip_code" action="<?php echo base_url()?>mobile/farmersmarkets/zipcode">
 			<label for="zip_code">Zip Code: </label>
 			<input type="text" name="zipcode" id="zipcode" value="" />
 			<label for="distance">Distance: </label>
@@ -28,7 +28,7 @@
 					foreach ($search_results as $result ){
 								
 						echo '<li>';
-							echo 	'<a href="'.base_url().'mobile/farmersmarket/view-'.$result['custom_url'].'">
+							echo 	'<a href="'.base_url().'mobile/farmersmarkets/view-'.$result['custom_url'].'">
 									'.$result['producer'].'<span>City: <strong>'.$result['city'].'</strong>, address: <strong>
 									'.$result['address'].'</strong>';	
 						echo '</li>'; 	              

@@ -1,4 +1,4 @@
-<form method="post" name="findNearMe" action="<?php echo base_url()?>mobile/farmersmarket/nearme/">
+<form method="post" name="findNearMe" action="<?php echo base_url()?>mobile/farmersmarkets/nearme/">
 	<input name="latitude_input" id="latitude_input" type="hidden" value="" />
 	<input name="longitude_input" id="longitude_input" type="hidden"  value="" />
 	<input name="distance" id="distance" type="hidden"  value="50" />
