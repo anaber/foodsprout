@@ -5,7 +5,7 @@
 			<br />
 		</li>
 		<li>	
-			<form method="post" name="findCity" action="<?php echo base_url()?>mobile/farmersmarket/bycity/">
+			<form method="post" name="findCity" action="<?php echo base_url()?>mobile/farmersmarkets/bycity/">
 				<label>City </label>
 				 <input name="city" id="city" value="" />
 				<br />
@@ -30,7 +30,7 @@
 			<?php
 				foreach($cities as $city){
 					
-					echo '<span><a href="'.base_url().'mobile/farmersmarket/by_city/'.$city['city_id'].'" >'.$city['city'].'</a></span><br />';
+					echo '<span><a href="'.base_url().'mobile/farmersmarkets/by_city/'.$city['city_id'].'" >'.$city['city'].'</a></span><br />';
 					
 				}
 			?>

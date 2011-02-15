@@ -71,33 +71,10 @@ class Farms extends Controller {
 		$data['map'] = $this->googlemaps->create_map(); 
 		// Load our view, passing the map data
 				
-		
-		$data['supliers'] = $this->db->query("SELECT *
-													FROM
-													producer ,
-													supplier, 
-													address, 
-													custom_url
-													
-													WHERE
-													producer.producer_id =  supplier.supplier AND
-													producer.producer_id =  address.producer_id AND
-													producer.producer_id =  custom_url.producer_id AND
-													address.address_id =  custom_url.address_id AND
-													
-													producer.producer_id = '".$producerId."'
-															")->result_array(); 
-		echo "SELECT *
-													FROM
-													producer ,
-													supplier, 
-													address
-													WHERE
-													producer.is_farm =  '1' AND
-													producer.producer_id =  supplier.supplier AND
-													producer.producer_id =  address.producer_id AND
-													producer.producer_id = '".$producerId."'
-															";
+		$this->load->model('SupplierModel');
+		$supliers  =  $this->SupplierModel->getSupplieeForSupplierJson($producerId);
+		$data['supliers'] = (array) $supliers['results'];
+
 		// List of views to be included
 
 		$data['CENTER'] = array(
