@@ -104,7 +104,8 @@ $addRestaurantFormHtml .=
 '\'						<select name="countryId" id="countryId"  class="validate[required]">'. "'+\n" .
 '\'						<option value = "">--Country--</option>' . "'+\n";
 							foreach($COUNTRIES as $key => $value) {
-$addRestaurantFormHtml .= 		'\'<option value="'.$value->countryId.'"' . (  ( isset($RESTAURANT) && ( $value->countryId == $RESTAURANT->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>'. "'+\n" ;
+//$addRestaurantFormHtml .= 		'\'<option value="' . $value->countryId . '"' . (  ( isset($RESTAURANT) && ( $value->countryId == $RESTAURANT->countryId )  ) ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>'. "'+\n" ;
+$addRestaurantFormHtml .= 		'\'<option value="' . $value->countryId . '"' . (  $value->countryId == 1 ? ' SELECTED' : '' ) . '>'.$value->countryName.'</option>'. "'+\n" ;
 							}
 $addRestaurantFormHtml .= 
 '\'						</select>'. "'+\n" .
