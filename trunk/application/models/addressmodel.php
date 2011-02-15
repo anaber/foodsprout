@@ -142,7 +142,7 @@ class AddressModel extends Model{
 					
 		$query .= " AND address.state_id = state.state_id" .
 				  " AND address.country_id = country.country_id" .
-				  " ORDER BY address_id";
+				  " ORDER BY address_id limit 0, 5";
 		
 		log_message('debug', "AddressModel.getAddressForProducer : " . $query);
 		$result = $this->db->query($query);

@@ -198,9 +198,6 @@ class ProducerModel extends Model{
 			$this->load->library('ProducerLib');
 			unset($this->ProducerLib);
 			
-			
-			
-			
 			$this->ProducerLib->producerId = $row['producer_id'];
 			$this->ProducerLib->producer = $row['producer'];
 			
