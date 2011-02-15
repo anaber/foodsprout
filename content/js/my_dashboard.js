@@ -81,6 +81,13 @@ function redrawContent(data, type) {
 	var resultTableHtml = '';
 	
 	if (data.param.numResults == 0) {
+		
+		if (type == 'restaurants') {
+			resultTableHtml += 
+			'<div id="signup-form">'+
+			'		<input type="submit" name="submit" value="Add Restaurant" id = "addRestaurantButton">'+
+			'</div>';
+		}
 		resultTableHtml += addZeroResult(type);
 	} else {
 		if (type == 'supplier') {
@@ -98,9 +105,7 @@ function redrawContent(data, type) {
 		} else if (type == 'restaurants') {
 			resultTableHtml += 
 			'<div id="signup-form">'+
-			//'	<form action="" method="post" name="frmAccount" id="frmAccount">'+								
 			'		<input type="submit" name="submit" value="Add Restaurant" id = "addRestaurantButton">'+
-			//'	</form>'+
 			'</div>';
 			
 			$.each(data.results, function(i, a) {

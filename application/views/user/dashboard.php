@@ -40,8 +40,7 @@ $addRestaurantFormHtml .=
 '\'					<td width = "25%" style = "font-size:13px;">Cuisine</td>'. "'+\n" .
 '\'					<td width = "75%">'. "'+\n" .
 '\'						<select name="cuisineId" id="cuisineId"  class="validate[required]" multiple size = "4">'. "'+\n" .
-'\'						<option value = "">--Cuisine--</option>'. "'+\n" .
-'\'						<option value = "NULL">--Unknown--</option>'. "'+\n" ;
+'\'						<option value = "">--Cuisine--</option>'. "'+\n";
 							foreach($CUISINES as $key => $value) {
 $addRestaurantFormHtml .= 		'\'<option value="'.$value->cuisineId.'"' . (  ( isset($RESTAURANT) && in_array($value->cuisineId, $RESTAURANT->cuisines) ) ? ' SELECTED' : '' ) . '>'.$value->cuisineName.'</option>'. "'+\n" ;
 							}
