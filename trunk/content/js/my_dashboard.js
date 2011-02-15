@@ -207,6 +207,9 @@ function reinitializeAddItemEvent(data) {
             		
             		reinitializeCityAutoSuggest();
             		reinitializeAddRestaurantSubmit();
+				},
+				onClosed: function() {
+					$.validationEngine.closePrompt('.formError',true);
 				}
 			}
 		);
