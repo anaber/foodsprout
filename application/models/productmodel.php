@@ -446,16 +446,14 @@ class ProductModel extends Model {
 		$page = 0;
 
         $base_query = 'SELECT product.*, product_type.product_type, ' .
-        		' manufacture.manufacture_name, restaurant.restaurant_name, restaurant_chain.restaurant_chain ' .
+        		' producer.producer ' .
 				' FROM product';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM product';
 		
 		$where = ' LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id)  ' .
-				' LEFT JOIN manufacture ON (product.manufacture_id =  manufacture.manufacture_id) ' .
-				' LEFT JOIN restaurant ON (product.restaurant_id =  restaurant.restaurant_id) ' .
-				' LEFT JOIN restaurant_chain ON (product.restaurant_chain_id =  restaurant_chain.restaurant_chain_id) ' .
+				' LEFT JOIN producer ON (product.producer_id =  producer.producer_id) ' .
 				' WHERE  ';
 				
 		if (!empty($filter) ) {
@@ -463,7 +461,7 @@ class ProductModel extends Model {
 		}
 		
 		$where .= ' (' 
-				. '	product.product_name like "%' .$q . '%"';		
+				. '	product.product_name like "' .$q . '%"';		
 		$where .= ' )';
 		
 		$base_query_count = $base_query_count . $where;
@@ -521,12 +519,8 @@ class ProductModel extends Model {
 
             $this->productLib->productId = $row->product_id;
             $this->productLib->productName = $row->product_name;
-            $this->productLib->manufactureId = $row->manufacture_id;
-            $this->productLib->manufactureName = $row->manufacture_name;
-            $this->productLib->restaurantId = $row->restaurant_id;
-            $this->productLib->restaurantName = $row->restaurant_name;
-            $this->productLib->restaurantChainId = $row->restaurant_chain_id;
-            $this->productLib->restaurantChain = $row->restaurant_chain;
+            $this->productLib->producderId = $row->producer_id;
+            $this->productLib->producerName = $row->producer;
             $this->productLib->productTypeId = $row->product_type_id;
             $this->productLib->productType = $row->product_type;
             $this->productLib->ingredient = $row->ingredient_text;
@@ -550,7 +544,6 @@ class ProductModel extends Model {
 		$arr = array(
 			'results'    => $products,
 			'param'      => $params,
-			'geocode'	 => $geocodeArray,
 	    );
 	    
 	    return $arr;

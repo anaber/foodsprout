@@ -268,22 +268,17 @@ class FarmModel extends Model{
 		$page = 0;
 		
 		
-		$base_query = 'SELECT farm.*, farm_type.farm_type' .
-				' FROM farm, farm_type';
-		
+		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
+				' FROM producer' . 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+				 
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM farm, farm_type';
+				' FROM producer';
 		
-		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id';
-		
-		if (! empty ($q) ) {
-		$where .= ' AND (' 
-				. '	farm.farm_name like "%' .$q . '%"'
-				. ' OR farm.farm_id like "%' . $q . '%"'
-				. ' OR farm_type.farm_type like "%' . $q . '%"'		
-				. ' )';
-		}
-		$base_query_count = $base_query_count . $where;
+		$where = ' WHERE is_farm = 1';
 		
 		$query = $base_query_count;
 		
@@ -294,8 +289,8 @@ class FarmModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY farm_name';
-			$sort = 'farm_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -338,19 +333,11 @@ class FarmModel extends Model{
 			$this->load->library('FarmLib');
 			unset($this->FarmLib);
 			
-			$this->FarmLib->farmId = $row['farm_id'];
-			$this->FarmLib->farmName = $row['farm_name'];
-			$this->FarmLib->farmTypeId = $row['farm_type_id'];
-			$this->FarmLib->farmType = $row['farm_type'];
-			$this->FarmLib->farmerType = ( !empty($row['farmer_type']) ? $FARMER_TYPES[$row['farmer_type']] : '');
-			
-			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', $row['farm_id'], '', '', '', '');
-			$this->FarmLib->suppliers = $suppliers;
-			
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', $row['farm_id'], '', '', '', '', '', '');
-			$this->FarmLib->addresses = $addresses;
+			$this->FarmLib->farmId = $row['producer_id'];
+			$this->FarmLib->farmName = $row['producer'];
+			//$this->FarmLib->farmTypeId = $row['farm_type_id'];
+			//$this->FarmLib->farmType = $row['farm_type'];
+			//$this->FarmLib->farmerType = ( !empty($row['farmer_type']) ? $FARMER_TYPES[$row['farmer_type']] : '');
 			
 			$farms[] = $this->FarmLib;
 			unset($this->FarmLib);

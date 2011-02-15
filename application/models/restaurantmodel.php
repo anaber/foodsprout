@@ -535,32 +535,31 @@ class RestaurantModel extends Model{
 		if ($q == '0') {
 			$q = '';
 		}
-
+		
+		// we don't need map in admin area, why do we have this?
 		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 
 		$start = 0;
 
 		$page = 0;
 
-		$base_query = 'SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name, restaurant_type.restaurant_type' .
-				' FROM restaurant' .
-				' LEFT JOIN restaurant_chain' .
-				' ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id' .
-				' LEFT JOIN company' .
-				' ON restaurant.company_id = company.company_id' . 
-				' LEFT JOIN restaurant_type' .
-				' ON restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
+		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
+				' FROM producer' . 
+				' LEFT JOIN producer_category_member ' .
+				' ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				' ON producer_category_member.producer_category_id = producer_category.producer_category_id';
 
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM restaurant, restaurant_type';
+				' FROM producer';
 
-		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id';
-
+		$where = ' WHERE is_restaurant = 1';
+		
 		if ( !empty($q) ) {
 
-			$where  .= ' AND (restaurant.restaurant_name like "' .$q . '%"'
+			$where  .= ' AND (producer.producer like "' .$q . '%"'
 			
-			. ' OR restaurant.restaurant_id like "' . $q . '%"';
+			. ' OR producer.producer_id like "' . $q . '%"';
 
 			$where .= ' )';
 
@@ -577,8 +576,8 @@ class RestaurantModel extends Model{
 		$query = $base_query . $where;
 
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY restaurant_name';
-			$sort = 'restaurant_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -621,10 +620,10 @@ class RestaurantModel extends Model{
 			$this->load->library('RestaurantLib');
 			unset($this->RestaurantLib);
 
-			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
-			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
-			$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
-			$this->RestaurantLib->companyName = $row['company_name'];
+			$this->RestaurantLib->restaurantId = $row['producer_id'];
+			$this->RestaurantLib->restaurantName = $row['producer'];
+			//$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
+			//$this->RestaurantLib->companyName = $row['company_name'];
 			$this->RestaurantLib->creationDate = $row['creation_date'];
 
 			$restaurants[] = $this->RestaurantLib;

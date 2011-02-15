@@ -59,6 +59,18 @@ class ProducerCategoryModel extends Model{
 		return $producerCategories;
 	}
 	
+	function listProducerCategoryAdmin() {
+		
+		$query = "SELECT * FROM producer_category ORDER BY producer_category";
+		
+		log_message('debug', "ProducerCategoryModel.listProducerCategoryAdmin : " . $query);
+		$result = $this->db->query($query);
+		
+		$producerCategories = array();
+		
+		return $producerCategories;
+	}
+	
 	function getCuisinesForRestaurant($producerId) {
 		$query = "SELECT 
 					producer_category.producer_category_id, 
