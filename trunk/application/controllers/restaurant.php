@@ -70,9 +70,9 @@ class Restaurant extends Controller {
 
 	function ajaxSearchRestaurantInfo() {
 		$restaurantId = $this->input->post('restaurantId');
-
+		$addressId = $this->input->post('addressId');
 		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId, $addressId);
 		echo json_encode($restaurant);
 	}
 

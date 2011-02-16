@@ -108,7 +108,7 @@ class ManufactureModel extends Model{
 	}
 	
 	// Get all the information about one specific manufacture from an ID
-	function getManufactureFromId($producerId) {
+	function getManufactureFromId($producerId, $addressId ='') {
 		
 		$query = "SELECT producer.* " .
 				" FROM producer" .
@@ -136,7 +136,14 @@ class ManufactureModel extends Model{
 			$CI =& get_instance();
 				
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '');
+			
+			if(isset($addressId) && $addressId !=''){
+				
+				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '', $addressId);
+				
+			}else{
+				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '');
+			}
 			$this->manufactureLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
