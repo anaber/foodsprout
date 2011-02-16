@@ -847,7 +847,7 @@ class RestaurantModel extends Model{
 
 			$CI->load->model('AddressModel','',true);
 			
-			if(isset($adressId) && $addressId !=''){
+			if(isset($addressId) && $addressId !=''){
 				
 				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '', $addressId);
 				
