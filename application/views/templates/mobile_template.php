@@ -5,7 +5,7 @@
 		$this->load->view('mobile/includes/header');
 	}
 ?>
-
+<?php $this->load->view('mobile/includes/menu'); ?>
 <?php
 	if (isset($BREADCRUMB)) {
 		

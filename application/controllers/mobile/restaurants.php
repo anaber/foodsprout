@@ -28,8 +28,6 @@ class Restaurants extends Controller {
 				'mainarea' => 'mobile/restaurant/home',
 			);
 			
-		$data['BREADCRUMB'] = array('Home' => '/mobile'); 
-		
 		$this->load->view('templates/mobile_template', $data);
 	}
 	
@@ -124,8 +122,6 @@ class Restaurants extends Controller {
 			}
 			
 		}	
-		//$data['BREADCRUMB'] = array('Home' => '/mobile'); 	
-		//$data['BREADCRUMB'] = array('>> restaurants' => '/mobile/restaurants'); 	
 		
 		$this->load->view('templates/mobile_template', $data);
 		
