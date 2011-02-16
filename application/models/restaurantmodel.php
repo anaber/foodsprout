@@ -783,7 +783,7 @@ class RestaurantModel extends Model{
 	}
 
 	// Pulls the data from the database for a specific restaurant
-	function getRestaurantFromId($restaurantId) {
+	function getRestaurantFromId($restaurantId, $addressId='') {
 
 //	$query  =	"SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name" .
 //				" FROM restaurant" .
@@ -846,8 +846,17 @@ class RestaurantModel extends Model{
 			$CI =& get_instance();
 
 			$CI->load->model('AddressModel','',true);
-
-			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, $q, $city, '');
+			
+			if(isset($adressId) && $addressId !=''){
+				
+				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '', $addressId);
+				
+			}else{
+				
+				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, $q, $city, '', $addressId);
+				
+			}
+			
 			$this->restaurantLib->addresses = $addresses;
 
 			foreach ($addresses as $key => $address) {

@@ -118,7 +118,7 @@ class AddressModel extends Model{
 	 * Verified: 		Yes
 	 * Verified By: 	Deepak
 	 */
-	function getAddressForProducer($producerId, $zipcode='', $city='', $citySearch='') {
+	function getAddressForProducer($producerId, $zipcode='', $city='', $citySearch='', $addressId='') {
 		
 		$addresses = array();
 		
@@ -126,7 +126,13 @@ class AddressModel extends Model{
 				" FROM address, state, country " .
 				" WHERE ";
 		
-		$query .= "producer_id = " . $producerId;
+		$query .= "producer_id = '".$producerId."' ";
+		
+		if(!empty($addressId)){
+			
+			$query.= " and address_id ='".$addressId."' ";
+			
+		}
 		 
 		if (!empty($zipcode) ) {
 			$city = $this->getCityFromZipcode($zipcode);

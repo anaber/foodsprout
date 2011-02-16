@@ -107,7 +107,7 @@ class Restaurant extends Controller {
 
 		// Getting information from models
 		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId);
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId, $addressId);
 		
 		$this->load->model('ProductTypeModel');
 		$productTypes = $this->ProductTypeModel->listProductType();
@@ -149,6 +149,7 @@ class Restaurant extends Controller {
 		// Center -> Info
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
+		$data['data']['center']['info']['RESTAURANT_ID'] = $restaurant->restaurantId;
 		$data['data']['center']['info']['RESTAURANT_ID'] = $restaurant->restaurantId;
 		$data['data']['center']['info']['ADDRESS_ID'] = $addressId;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
