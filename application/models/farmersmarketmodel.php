@@ -40,7 +40,7 @@ class FarmersMarketModel extends Model{
 	}
 	
 	// Get all the information about one specific farm from an ID
-	function getFarmersMarketFromId($farmersMarketId) {
+	function getFarmersMarketFromId($farmersMarketId ,$addressId='') {
 		
 		$query = "SELECT farmers_market.* " .
 				" FROM farmers_market" .
@@ -76,7 +76,12 @@ class FarmersMarketModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '');
+			if(isset($addressId) && $addressId !=''){
+				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '', $addressId);
+			}else{
+				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '');
+			}			
+			
 			$this->FarmersMarketLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {

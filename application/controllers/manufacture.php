@@ -95,8 +95,9 @@ class Manufacture extends Controller {
 		
 	function ajaxSearchManufactureInfo() {
 		$manufactureId = $this->input->post('manufactureId');
+		$addressId = $this->input->post('addressId');
 		$this->load->model('ManufactureModel', '', TRUE);
-		$manufacture = $this->ManufactureModel->getManufactureFromId($manufactureId);
+		$manufacture = $this->ManufactureModel->getManufactureFromId($manufactureId, $addressId);
 		echo json_encode($manufacture);
 	}
 	

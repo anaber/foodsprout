@@ -81,8 +81,9 @@ class FarmersMarket extends Controller {
 	
 	function ajaxSearchFarmersMarketInfo() {
 		$farmersMarketId = $this->input->post('farmersMarketId');
+		$addressId = $this->input->post('addressId');
 		$this->load->model('FarmersMarketModel', '', TRUE);
-		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($farmersMarketId);
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($farmersMarketId,$addressId);
 		echo json_encode($farmersMarket);
 	}
 	

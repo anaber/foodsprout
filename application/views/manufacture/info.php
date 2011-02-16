@@ -49,7 +49,7 @@
 		
 		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
 		
-		$.post("/manufacture/ajaxSearchManufactureInfo", { manufactureId:"<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureId : '' ) ?>" },
+		$.post("/manufacture/ajaxSearchManufactureInfo", { manufactureId:"<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureId : '' ) ?>", addressId:"<?php echo (isset($ADDRESS_ID) ? $ADDRESS_ID : '' ); ?>"  },
 		function(data){
 			if (data.geocode != '') {
 				reinitializeMap(map2, data, 13);

@@ -20,8 +20,34 @@ class Product extends Controller {
 				'filter' => 'includes/left/product_filter',
 			);
 		
+		
+			
 		$this->load->view('templates/left_center_template', $data);
 	}
+	
+	
+	function newIndex(){
+		
+		$data = array();
+		
+		// Views to include in the data array
+		$data['CENTER'] = array(
+				'list' => '/product/center',
+			);
+		
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/product_filter',
+			);
+			
+		$this->load->model('ProductModel', '', TRUE);
+		$data['latestItems'] = $this->ProductModel->listNewProducts();
+		
+		
+		$data['search_view'] = "product/advanced_search";
+		$this->load->view('templates/left_center_template', $data);
+		
+	}
+	
 	
 	function newProducts() {
 		global $GOOGLE_MAP_KEY;

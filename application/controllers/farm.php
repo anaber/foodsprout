@@ -106,8 +106,9 @@ class Farm extends Controller {
 	
 	function ajaxSearchFarmInfo() {
 		$farmId = $this->input->post('farmId');
+		$addressId = $this->input->post('addressId');
 		$this->load->model('FarmModel', '', TRUE);
-		$farm = $this->FarmModel->getFarmFromId($farmId);
+		$farm = $this->FarmModel->getFarmFromId($farmId,$addressId);
 		echo json_encode($farm);
 	}
 

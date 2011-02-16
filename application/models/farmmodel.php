@@ -93,7 +93,7 @@ class FarmModel extends Model{
 	}
 	
 	// Get all the information about one specific farm from an ID
-	function getFarmFromId($farmId) {
+	function getFarmFromId($farmId, $addressId='') {
 		/*
 		$query = "SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id " .
 				" FROM producer, producer_category, producer_category_member " .
@@ -135,7 +135,12 @@ class FarmModel extends Model{
 			$CI =& get_instance();
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForProducer( $row->producer_id, '', '', '');
+			
+			if(isset($addressId) && $addressId !=''){
+				$addresses = $CI->AddressModel->getAddressForProducer( $row->producer_id, '', '', '', $addressId);
+			}else{
+				$addresses = $CI->AddressModel->getAddressForProducer( $row->producer_id, '', '', '');
+			}
 			$this->FarmLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
