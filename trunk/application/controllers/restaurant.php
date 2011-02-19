@@ -60,7 +60,26 @@ class Restaurant extends Controller {
 		}
 
 		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
-
+		/*
+		$params = array(
+			'page' => 0,
+		    'totalPages' => 2,
+		    'perPage' => 20,
+		    'start' => 1,
+		    'end' => 20,
+		    'firstPage' => 0,
+		    'lastPage' => 1,
+		    'numResults' => 86,
+		    'sort' => "claims_sustainable DESC, producer",
+		    'order' => "ASC",
+		    'q' => 98004,
+		    'filter' => '',
+		    'city' => '',
+		    'zoomLevel' => 13
+		);
+		print_r_pre($params);
+		*/
+		
 		$this->load->model('RestaurantModel', '', TRUE);
 		$restaurants = $this->RestaurantModel->getRestaurantsJson2();
 		
@@ -70,11 +89,10 @@ class Restaurant extends Controller {
 
 		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
 		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
-		/*$data['CSS'] = array(
-		 ''
-		 );*/
+		
 
 		$this->load->view('templates/left_center_template', $data);
+		
 	}
 
 	function ajaxSearchRestaurantInfo() {

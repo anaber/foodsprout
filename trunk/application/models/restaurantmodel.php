@@ -1477,10 +1477,29 @@ class RestaurantModel extends Model{
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 
 		$p = $this->input->post('p'); // Page
+		if (!$p) {
+			$p = $this->input->get('p'); // Per Page
+		}
+		
 		$pp = $this->input->post('pp'); // Per Page
+		if (!$pp) {
+			$pp = $this->input->get('pp'); // Per Page
+		}
 		$sort = $this->input->post('sort');
+		if (!$sort) {
+			$sort = $this->input->get('sort'); // Per Page
+		}
+		
 		$order = $this->input->post('order');
+		if (!$order) {
+			$order = $this->input->get('order'); // Per Page
+		}
+		
 		$filter = $this->input->post('f');
+		if (!$filter) {
+			$filter = $this->input->get('f'); // Per Page
+		}
+		
 
 		//$filter = 'r_10,c_6';
 
