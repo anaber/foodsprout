@@ -61,6 +61,15 @@ class Restaurant extends Controller {
 
 		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
 
+		$this->load->model('RestaurantModel', '', TRUE);
+		$restaurants = $this->RestaurantModel->getRestaurantsJson2();
+		
+		$this->load->model('ListModel', '', TRUE);
+		$restaurantListHtml = $this->ListModel->buildRestaurantList($restaurants);
+		$data['data']['center']['list']['LIST_DATA'] = $restaurantListHtml;
+
+		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
+		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
 		/*$data['CSS'] = array(
 		 ''
 		 );*/
@@ -200,7 +209,7 @@ class Restaurant extends Controller {
 		 */
 
 		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantsJson();
+		$restaurants = $this->RestaurantModel->getRestaurantsJson2();
 		echo json_encode($restaurants);
 		/*
 		 $mtime = microtime();

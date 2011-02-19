@@ -19,6 +19,9 @@ class FarmersMarket extends Controller {
 		$q = $this->input->post('q');
 		$f = $this->input->post('f');
 
+		//$this->load->model('FarmersMarketModel', '', TRUE);
+		//$farmersMarket = $this->FarmersMarketModel->getFarmersMarketJson();
+		
 		if ( !empty($f) ) {
 			$data['CENTER'] = array(
 				'list' => '/farmers_market/farmers_market_list',
@@ -62,6 +65,11 @@ class FarmersMarket extends Controller {
 			$data['data']['center']['list']['hide_map'] = 'no';
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
+		
+		//$this->load->model('FarmersMarketModel', '', TRUE);
+		//$farmersMarketHtml = $this->FarmersMarketModel->getFarmersMarketJson();
+		
+		//$data['data']['center']['list']['FARMERS_MARKETS_HTML'] = $farmersMarketHtml;
 		
 		// CSS files to use
 		$data['CSS'] = array(
