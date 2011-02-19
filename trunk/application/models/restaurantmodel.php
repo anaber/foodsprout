@@ -1471,6 +1471,338 @@ class RestaurantModel extends Model{
 		return $row->total;
 	}
 	
+	
+	function getRestaurantsJson2() {
+
+		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
+
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		$filter = $this->input->post('f');
+
+		//$filter = 'r_10,c_6';
+
+		$CI =& get_instance();
+
+		$sustainableWithZipcode = false;
+
+		//echo $filter;
+		$arr_filter = explode(',', $filter);
+
+		$arrRestaurantTypeId = array();
+		$arrCuisineId = array();
+
+		foreach($arr_filter as $key => $value) {
+			if ($value == 's') {
+				$sustainableWithZipcode = true;
+			} else {
+				$arr_value = explode('_', $value) ;
+
+				if ($arr_value[0] == 'r') {
+					$arrRestaurantTypeId[] = $arr_value[1];
+				}
+
+				if ($arr_value[0] == 'c') {
+					$arrCuisineId[] = $arr_value[1];
+				}
+			}
+		}
+
+
+		$q = $this->input->post('q');
+		//$q = '94117';
+		//$filter = 'c_7';
+
+		if ($q == '0') {
+			$q = '';
+		}
+
+		$city = '';
+
+		$citySearch =  $this->input->post('city');
+		//$city = '41,6009,13721';
+
+		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+
+		if ($citySearch == '') {
+			if ($q == '') {
+
+				if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
+					$q = $_COOKIE['seachedZip'];
+					$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+				} else {
+
+					if ($this->session->userdata('isAuthenticated') != 1 ) {
+						// If user is NOT logged in, display restaurants from SFO
+						$city = '41,6009,13721';
+						$mapZoomLevel = $CITY_ZOOM_LEVEL;
+					} else {
+						// If user is LOGGED in, display restaurants near hiz zipcode
+						$q = $this->session->userdata['zipcode'];
+						$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+						setcookie('seachedZip', $q, time()+60*60*24*30*365);
+					}
+				}
+			} else {
+				setcookie('seachedZip', $q, time()+60*60*24*30*365);
+				$mapZoomLevel = $ZIPCODE_ZOOM_LEVEL;
+			}
+		} else {
+			$mapZoomLevel = $CITY_ZOOM_LEVEL;
+		}
+
+		$start = 0;
+
+		$page = 0;
+
+		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
+				' FROM producer' . 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+				 
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM producer';
+		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
+			$base_query_count .= 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+		}
+		
+		$where = ' WHERE is_restaurant = 1'.
+		         ' AND producer.status = \'live\' ';
+		         
+		if ($sustainableWithZipcode || ( !empty($citySearch) ) ) {
+			$where	.= ' AND claims_sustainable = 1 ';
+		}
+
+		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
+			$where .= ' AND (';
+
+			if(count($arrRestaurantTypeId) > 0 ) {
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrRestaurantTypeId) . ')';
+			}
+
+
+			if(count($arrCuisineId) > 0 ) {
+				// Cuisine
+				if(count($arrRestaurantTypeId) > 0 ) {
+					$where	.= ' OR ( ';
+				} else {
+					$where	.= ' ( ';
+				}
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrCuisineId) . ')'
+				. '		)';
+			}
+
+			$where .= ' )';
+		}
+
+		if ( !empty($q) || !empty($city) || !empty($citySearch) || $sustainableWithZipcode ) {
+			if (!empty($where) ) {
+				$where .= ' AND (';
+			} else {
+				$where .= ' WHERE (';
+			}
+
+			/*
+			 //$where	.= ' OR ( '
+			 $where	.= '		SELECT address.address_id'
+			 . '			from address, state, country'
+			 . '			WHERE'
+			 . '				address.restaurant_id = restaurant.restaurant_id'
+			 . '				AND address.state_id = state.state_id'
+			 . '				AND address.country_id = country.country_id'
+			 . ' 			AND (';
+			 */
+			$where	.= '		SELECT address.address_id'
+			. '			from address'
+			. '			WHERE'
+			. '				address.producer_id = producer.producer_id'
+			. ' 			AND (';
+			if ( !empty($q) ) {
+				$where	.= '					address.zipcode = "' . $q . '"';
+			} else if ( !empty($city) ) {
+				$where	.= '					address.city_id IN (' . $city . ') ';
+			} else if ( !empty($citySearch) ) {
+				//$where	.= '					address.city_id = ' . $citySearch . ' AND address.claims_sustainable = 1 ';
+				$where	.= '					address.city_id = ' . $citySearch;
+			}
+
+			$where	.= '				)'
+			. '				LIMIT 0, 1'
+			. '		)';
+
+		}
+
+		$query = $base_query_count . $where;
+		//echo $query;
+		//die;
+		
+		$query = 'SELECT count(*) AS num_records
+				FROM 
+					address, producer
+				LEFT JOIN producer_category_member 
+					ON producer.producer_id = producer_category_member.producer_id
+				LEFT JOIN producer_category
+					ON producer_category_member.producer_category_id = producer_category.producer_category_id
+				WHERE address.zipcode = 98004
+				AND address.producer_id = producer.producer_id
+				AND producer.is_restaurant = 1
+				AND producer.status = \'live\''
+				. 'AND producer_category_member.producer_category_id IN (13, 22)'
+				;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+
+		$query = $base_query . $where;
+		$query .= ' GROUP BY producer.producer_id ';
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY claims_sustainable DESC, producer';
+			$sort = 'claims_sustainable DESC, producer';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+
+		$query = 'SELECT address.*, producer.*, producer.producer, producer_category.producer_category, producer_category.producer_category_id 
+				FROM 
+					address, producer
+				LEFT JOIN producer_category_member 
+					ON producer.producer_id = producer_category_member.producer_id
+				LEFT JOIN producer_category
+					ON producer_category_member.producer_category_id = producer_category.producer_category_id
+				WHERE address.zipcode = 98004
+				AND address.producer_id = producer.producer_id
+				AND producer.is_restaurant = 1
+				AND producer.status = \'live\''
+				. 'AND producer_category_member.producer_category_id IN (13, 22)'
+				;
+
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		//print_r_pre($_REQUEST);
+		//echo $query . "<br />";
+		//die;
+		
+		
+		
+		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$restaurants = array();
+
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row) {
+
+
+			$this->load->library('RestaurantLib');
+			unset($this->RestaurantLib);
+			
+			$this->RestaurantLib->restaurantId = $row['producer_id'];
+			$this->RestaurantLib->restaurantName = $row['producer'];
+
+			$this->RestaurantLib->creationDate = $row['creation_date'];
+			$this->RestaurantLib->claimsSustainable = $row['claims_sustainable'];
+			
+			
+			$CI->load->model('AddressModel','',true);
+			//$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', $q, $city, $citySearch);
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], $q, $city, $citySearch);
+			
+			//$addresses = array();
+			$this->RestaurantLib->addresses = $addresses;
+			
+			//$addresses = array();
+			$CI->load->model('ProducerCategoryModel','',true);
+			$cuisines = $CI->ProducerCategoryModel->getCuisinesForRestaurant( $row['producer_id']);
+			$this->RestaurantLib->cuisines = $cuisines;
+			
+			$this->RestaurantLib->customUrl = '';
+			$firstAddressId = '';
+			
+			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+
+				$arrLatLng['addressLine1'] = $address->address;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+				$arrLatLng['claimsSustainable'] = $address->claimsSustainable;
+				
+				$arrLatLng['restaurantName'] = $this->RestaurantLib->restaurantName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[] = $arrLatLng;
+
+				if ($firstAddressId == '') {
+					$firstAddressId = $address->addressId;
+				}
+			}
+			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['producer_id'], $firstAddressId);
+				$this->RestaurantLib->customUrl = $customUrl;
+			}
+			
+			$restaurants[] = $this->RestaurantLib;
+			unset($this->RestaurantLib);
+		}
+
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+
+		if ($numResults == 0) {
+			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+		}
+
+		$params = requestToParamsCitySearch($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $citySearch);
+		$arr = array(
+			'results'    => $restaurants,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+		);
+		
+		return $arr;
+
+	}
 
 }
 

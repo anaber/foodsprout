@@ -22,7 +22,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, city) {
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter, city:city };
 	
-	$.post(formAction, postArray,function(data) {		
+	$.post(formAction, postArray,function(data) {	
 		
 		redrawContent(data, filter);
 		
@@ -485,6 +485,7 @@ function redrawContent(data, filter) {
 	redrawTopRestaurantTypes(data);
 	redrawTopCuisines(data);
 	
+	/*
 	$('#resultTableContainer').empty();
 	//var resultTableHtml = getResultTableHeader();
 	var resultTableHtml = '';
@@ -573,7 +574,7 @@ function redrawContent(data, filter) {
 	}
 	
 	reinitializeFilterEvent(data);
-	
+	*/
 	reinitializeQueryFilterEvent(data);
 	reinitializeShowHideMap(data);
 	

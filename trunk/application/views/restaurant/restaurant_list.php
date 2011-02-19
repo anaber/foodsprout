@@ -25,9 +25,10 @@ var topRestaurantTypes;
 		//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		loadPopupFadeIn();
 		
-		$.post("/restaurant/ajaxSearchRestaurants", { city:"<?php echo (isset($CITY) ? $CITY->cityId : '' ) ?>", q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
-		function(data){
+		//$.post("/restaurant/ajaxSearchRestaurants", { city:"<?php echo (isset($CITY) ? $CITY->cityId : '' ) ?>", q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
+		//function(data){
 		
+			var data = '';
 			
 			if (showMap ==  true) {
 				loadMapOnStartUp(38.41055825094609, -98, 3);
@@ -53,8 +54,8 @@ var topRestaurantTypes;
 			"json");
 			
 		
-		},
-		"json");
+		//},
+		//"json");
 		
 	});
 	
@@ -72,7 +73,9 @@ var topRestaurantTypes;
 	<div id="resultsContainer" class="pd_tp1">
 		<div id="resultTableContainer" style = "width:630px; padding:0px;">
 		<?php
-			//echo $LIST_DATA;
+			if ($LIST_DATA) {
+				echo $LIST_DATA;
+			}
 		?>
 		</div>
 		<div class = "clear"></div>
@@ -80,7 +83,12 @@ var topRestaurantTypes;
 	<div class = "clear"></div>
 	
 	<div style="overflow:auto; padding:5px; font-size:10px;">
-	
+		
+		<?php
+			if (isset($PAGING_HTML) ) {
+				echo $PAGING_HTML;
+			} else {
+		?>
 		<div style="float:left; width:172px;" id = 'numRecords'>Records 0-0 of 0</div>
 		
 		<div style="float:left; width:250px;" id = 'pagingLinks' align = "center">
@@ -98,7 +106,9 @@ var topRestaurantTypes;
 			<a href="#" id = "40PerPage">40</a> | 
 			<a href="#" id = "50PerPage">50</a>
 		</div>
-		
+		<?php
+			}
+		?>
 		<div class="clear"></div>
 	</div>
 	<div class = "clear"></div>
