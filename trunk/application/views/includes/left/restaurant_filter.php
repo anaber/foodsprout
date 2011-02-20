@@ -4,7 +4,23 @@
 	if ( isset($CITY) ) { }
 	else {
 ?>
-	<div id="divZipcode" class="filterh divZipcode"><form id="frmFilters">Zip Code <input type="text" size="6" maxlength="5" id = "q"></form></div>
+	<div id="divZipcode" class="filterh divZipcode">
+		<form id="frmFilters" method = "get" action = "/restaurant">
+			Zip Code <input type="text" size="6" maxlength="5" id = "q" name  = "q" value = "<?php echo ($PARAMS ? $PARAMS['q'] : '') ; ?>">
+			<?php
+				if ($PARAMS) {
+			?>
+				<input type = "hidden" name = "p" value = "<?php echo $PARAMS['page'];?>">
+				<input type = "hidden" name = "pp" value = "<?php echo $PARAMS['perPage'];?>">
+				<input type = "hidden" name = "sort" value = "<?php echo $PARAMS['sort'];?>">
+				<input type = "hidden" name = "order" value = "<?php echo $PARAMS['order'];?>">
+				<input type = "hidden" name = "f" value = "<?php echo $PARAMS['filter'];?>">
+				<input type = "hidden" name = "city" value = "<?php echo $PARAMS['city'];?>">
+			<?php
+				}
+			?>
+		</form>
+	</div>
 	<div id="divSustainableRestaurants" class="filterb"></div>
 	<br>
 	

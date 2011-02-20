@@ -104,6 +104,8 @@ class Restaurant extends Controller {
 		*/
 		$data['data']['center']['list']['PARAMS'] = $params;
 		
+		$data['data']['left']['filter']['PARAMS'] = $restaurants['param'];
+		
 		$this->load->view('templates/left_center_template', $data);
 		
 	}

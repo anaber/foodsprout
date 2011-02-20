@@ -149,20 +149,6 @@ function redrawTopCuisines(data) {
 		
 	} else {
 		
-		arrTopFilters = new Array();
-		j = 0;
-		if (filters != '') {
-			arrFilter = filters.split(',');
-			
-			for(i = 0; i < arrFilter.length; i++ ) {
-				arr = arrFilter[i].split('_');
-				if (arr[0] == 'c') {
-					arrTopFilters[j] = arr[1];
-					j++;
-				}
-			}
-		}
-		
 		/**
 		 * --------------------------------------
 		 * AJAX Crawling
@@ -187,6 +173,20 @@ function redrawTopCuisines(data) {
 				}
 			}
 			selectedCuisineId = strCuisineId;
+		} else {
+			//arrTopFilters = new Array();
+			//j = 0;
+			if (filters != '') {
+				arrFilter = filters.split(',');
+				
+				for(i = 0; i < arrFilter.length; i++ ) {
+					arr = arrFilter[i].split('_');
+					if (arr[0] == 'c') {
+						arrTopFilters[j] = arr[1];
+						j++;
+					}
+				}
+			}
 		}
 		//-----------------------------------
 		
@@ -340,7 +340,7 @@ function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
 		  }
 		);
 		//alert("From line 3682: " + strRestaurantTypeId);
-		
+		//alert("Line 343:" + strRestaurantTypeId + ":");
 		
 		if (selectedTopCuisineId != '') {
 			if (strRestaurantTypeId != '') {
@@ -362,7 +362,12 @@ function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
 		selectedTopRestaurantTypeId = "";
 		disablePopup();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
+		}
 	});
 	
 	$("#cancelRestaurantTypeFilter").click(function(e){
@@ -374,9 +379,10 @@ function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
 
 function redrawTopRestaurantTypes(data) {
 	$('#divRestaurantTypes').empty();
-	
+	//alert(selectedRestaurantTypeId);
 	var resultHtml = '';
 	if (selectedRestaurantTypeId != "") {
+		//alert("Filters:" + arrSelectedRestaurantTypes[j] + ":");
 		arrSelectedRestaurantTypes = new Array();
 		j = 0;
 		if (filters != '') {
@@ -386,35 +392,27 @@ function redrawTopRestaurantTypes(data) {
 				arr = arrFilter[i].split('_');
 				if (arr[0] == 'r') {
 					arrSelectedRestaurantTypes[j] = arr[1];
+					//alert("Here :" + arrSelectedRestaurantTypes[j] + ":");
 					j++;
 				}
 			}
 		}
 		//resultHtml += '<ul>';
+		//alert(allRestaurantTypes);
 		$.each(allRestaurantTypes, function(i, a) {
+			//alert(a.restaurantTypeId);
 			for(i = 0; i < arrSelectedRestaurantTypes.length; i++ ) {
+				//alert(arrSelectedRestaurantTypes[i]);return false;
 				if ( arrSelectedRestaurantTypes[i] ==  a.restaurantTypeId) {
 					resultHtml += '-' + a.restaurantTypeName + '<br />';
 					break;
 				}
 			}
 		});	
+		//alert(resultHtml);
 		//resultHtml += '</ul>';
 		
 	} else {
-		arrTopFilters = new Array();
-		j = 0;
-		if (filters != '') {
-			arrFilter = filters.split(',');
-			
-			for(i = 0; i < arrFilter.length; i++ ) {
-				arr = arrFilter[i].split('_');
-				if (arr[0] == 'r') {
-					arrTopFilters[j] = arr[1];
-					j++;
-				}
-			}
-		}
 		
 		/**
 		 * --------------------------------------
@@ -441,6 +439,20 @@ function redrawTopRestaurantTypes(data) {
 				}
 			}
 			selectedRestaurantTypeId = strRestaurantTypeId;
+		} else {
+			//arrTopFilters = new Array();
+			//j = 0;
+			if (filters != '') {
+				arrFilter = filters.split(',');
+				
+				for(i = 0; i < arrFilter.length; i++ ) {
+					arr = arrFilter[i].split('_');
+					if (arr[0] == 'r') {
+						arrTopFilters[j] = arr[1];
+						j++;
+					}
+				}
+			}
 		}
 		//-----------------------------------
 		
@@ -610,15 +622,32 @@ function redrawContent(data, filter) {
 	}
 	*/
 	if (data) {
-		if (data.param.city != false) {	
+		//alert("Deepak here 1");
+		//alert(":" + data.param.city + ":");
+		if (data.param.city != '') {	
+			//alert("Deepak here 2");
 			// Do nothing
 		} else {
 			redrawZipcodeBox();
 			$("#q").val(data.param.q);
-			
+			//alert("Deepak here 3");
+			redrawSustainableRestaurantsCheckbox();
+		}
+	} else {
+		//alert("Deepak here 4");
+		if (param.city != false) {	
+			// Do nothing
+			//alert("Deepak here 5");
+		} else {
+			//alert("Deepak here 6");
+			//redrawZipcodeBox();
+			// No need to set zipcode, 
+			// this done in restaurant_filter.php 
+			//$("#q").val(param.q); 
 			redrawSustainableRestaurantsCheckbox();
 		}
 	}
+	//alert("Deepak here 7");
 	/*
 	//$('#table_results tbody tr td a').click(function(e) {
 	$('#resultTableContainer div div a').click(function(e) {
@@ -698,7 +727,8 @@ function reinitializeFilterEvent (data) {
 		j = 0;
 		i = 0;
 		$('#divRestaurantTypes :checked').each(function() {
-		   if (j == 0 ) {
+		   	//alert("Condition 1");
+			if (j == 0 ) {
 	        	strFilters += $(this).val();
 	        } else {
 	        	strFilters += ',' + $(this).val();
@@ -716,7 +746,8 @@ function reinitializeFilterEvent (data) {
 
 		i = 0;
 		$('#divCuisines :checked').each(function() {
-		   if (j == 0 ) {
+			//alert("Condition 2");
+			if (j == 0 ) {
 	        	strFilters += $(this).val();
 	        } else {
 	        	strFilters += ',' + $(this).val();
@@ -733,6 +764,7 @@ function reinitializeFilterEvent (data) {
 		});
 		
 		$('#divSustainableRestaurants :checked').each(function() {
+		  	//alert("Condition 3");
 		  	strSustainableFilters = 's';
 		  	//alert("Sustainable restaurants clicked");
 		});
@@ -773,12 +805,12 @@ function reinitializeFilterEvent (data) {
 				strFilters = strSustainableFilters;
 			}
 		}
-		
+		//alert("Line : 808:" + strFilters);
 		// Don't remember why I had added this condition. But its causing bug, so removing this for now.
 		//if (strFilters != '') {
 			filters = strFilters;
 		//}
-		alert(strFilters);
+		//alert(strFilters);
 		
 		loadPopupFadeIn();
 		if (data) {
@@ -849,7 +881,11 @@ function reinitializeQueryFilterEvent (data) {
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.city);
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.city);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, $("#q").val(), param.filter, param.city);
+		}
 	});
 }
 
