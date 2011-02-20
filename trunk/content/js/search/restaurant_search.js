@@ -934,10 +934,12 @@ function reinitializePagingEvent(data) {
 		loadPopupFadeIn();
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, param.city);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, param.city);
 		}
-		
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgPrevious").click(function(e) {
@@ -950,13 +952,16 @@ function reinitializePagingEvent(data) {
 				previousPage = data.param.firstPage;
 			}
 			postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 		} else {
 			previousPage = parseInt(param.page)-1;
 			if (previousPage <= 0) {
 				previousPage = param.firstPage;
 			}
 			postAndRedrawContent(previousPage, param.perPage, param.sort, param.order, param.q, param.filter, param.city);
+			hashUrl = buildHashUrl(previousPage, param.perPage, param.sort, param.order, param.q, param.filter, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgNext").click(function(e) {
@@ -970,13 +975,16 @@ function reinitializePagingEvent(data) {
 				nextPage = data.param.lastPage;
 			}
 			postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 		} else {
 			nextPage = parseInt(param.page)+1;
 			if (nextPage >= param.totalPages) {
 				nextPage = param.lastPage;
 			}
 			postAndRedrawContent(nextPage, param.perPage, param.sort, param.order, param.q, param.filter, param.city);
+			hashUrl = buildHashUrl(nextPage, param.perPage, param.sort, param.order, param.q, param.filter, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgLast").click(function(e) {
@@ -984,9 +992,12 @@ function reinitializePagingEvent(data) {
 		loadPopupFadeIn();
 		if (data) {
 			postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 		} else {
 			postAndRedrawContent(param.lastPage, param.perPage, param.sort, param.order, param.q, param.filter, param.city);
+			hashUrl = buildHashUrl(param.lastPage, param.perPage, param.sort, param.order, param.q, param.filter, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 }
@@ -998,9 +1009,12 @@ function reinitializePageCountEvent(data) {
 		
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, 10, param.sort, param.order, param.q, param.filter, param.city);
+			hashUrl = buildHashUrl(param.firstPage, 10, param.sort, param.order, param.q, param.filter, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#20PerPage").click(function(e) {
@@ -1008,9 +1022,12 @@ function reinitializePageCountEvent(data) {
 		loadPopupFadeIn();
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, 20, param.sort, param.order, param.q, param.filter, param.city);
+			hashUrl = buildHashUrl(param.firstPage, 20, param.sort, param.order, param.q, param.filter, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#40PerPage").click(function(e) {
@@ -1018,9 +1035,12 @@ function reinitializePageCountEvent(data) {
 		loadPopupFadeIn();
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, 40, param.sort, param.order, param.q, param.filter, param.city);
+			hashUrl = buildHashUrl(param.firstPage, 40, param.sort, param.order, param.q, param.filter, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#50PerPage").click(function(e) {
@@ -1028,9 +1048,12 @@ function reinitializePageCountEvent(data) {
 		loadPopupFadeIn();
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, 50, param.sort, param.order, param.q, param.filter, param.city);
+			hashUrl = buildHashUrl(param.firstPage, 50, param.sort, param.order, param.q, param.filter, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	/*
@@ -1183,4 +1206,9 @@ function getMarkerHtml(o) {
 		  o.addressLine3 + "</font><br />"
 		  ;
 	return html;
+}
+
+function buildHashUrl(p, pp, sort, order, q, filter, city) {
+	str = 'p='+p+'&pp='+pp+'&sort='+sort+'&order='+order+'&f='+filter+'&q='+q+'&city='+city;
+	return str;
 }
