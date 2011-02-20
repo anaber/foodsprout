@@ -1,3 +1,6 @@
+<?php
+	$uri = $this->uri->uri_string();
+?>
 <script src="<?php echo base_url()?>js/search/restaurant_search.js" type="text/javascript"></script>
 <script>
 var showMap = true;
@@ -6,6 +9,8 @@ var topCuisines;
 var topRestaurantTypes;
 
 var param = <?php echo $PARAMS; ?>;
+var geocode = <?php echo $GEOCODE; ?>;
+var uri = '<?php echo $uri; ?>';
 
 //var param = {"page":0,"totalPages":2,"perPage":20,"start":1,"end":20,"firstPage":0,"lastPage":1,"numResults":"36","sort":"claims_sustainable DESC, producer","order":"ASC","q":"98004","filter":"r_13,r_22","city":false,"zoomLevel":13};
 

@@ -1472,7 +1472,7 @@ class RestaurantModel extends Model{
 	}
 	
 	
-	function getRestaurantsJson2() {
+	function getRestaurantsJson2($c = '') {
 
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 
@@ -1530,7 +1530,7 @@ class RestaurantModel extends Model{
 			}
 		}
 
-
+		
 		$q = $this->input->post('q');
 		if (!$q) {
 			$q = $this->input->get('q'); // Per Page
@@ -1544,21 +1544,25 @@ class RestaurantModel extends Model{
 
 		$city = '';
 
-		$citySearch =  $this->input->post('city');
-		if ($citySearch == false) {
-			$citySearch = '';
-		}
-		if (!$citySearch) {
-			$citySearch = $this->input->get('city');
-		}
-		if ($citySearch == false) {
-			$citySearch = '';
+		if ($c) {
+			$citySearch = $c;
+		} else {
+			$citySearch =  $this->input->post('city');
+			if ($citySearch == false) {
+				$citySearch = '';
+			}
+			if (!$citySearch) {
+				$citySearch = $this->input->get('city');
+			}
+			if ($citySearch == false) {
+				$citySearch = '';
+			}
 		}
 		
 		//$city = '41,6009,13721';
 
 		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
-
+		
 		if ($citySearch == '') {
 			if ($q == '') {
 
@@ -1585,7 +1589,7 @@ class RestaurantModel extends Model{
 		} else {
 			$mapZoomLevel = $CITY_ZOOM_LEVEL;
 		}
-
+		
 		$start = 0;
 
 		$page = 0;
@@ -1758,7 +1762,7 @@ class RestaurantModel extends Model{
 		//die;
 		
 		$CI->load->model('AddressModel','',true);
-		$zipCity = $CI->AddressModel->getCityFromZipcode($q);
+		//$zipCity = $CI->AddressModel->getCityFromZipcode($q);
 		
 		log_message('debug', "RestaurantModel.getRestaurantsJson : " . $query);
 		$result = $this->db->query($query);
@@ -1789,7 +1793,7 @@ class RestaurantModel extends Model{
 			
 			
 			//$addresses = $CI->AddressModel->getAddressForCompany( $row['restaurant_id'], '', '', '', '', $q, $city, $citySearch);
-			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, $q, $city, $citySearch, '', $zipCity);
+			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, $q, $city, $citySearch, '');
 			
 			//------------------------
 			/*

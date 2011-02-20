@@ -608,10 +608,10 @@ function redrawContent(data, filter) {
 	$('#pagingLinks').append(pagingLinksContent);
 	*/
 	
-	/*
+	
 	if (showFilters ==  true) {
 		$('#removeFilters').empty();
-		removeFilterContent = '<a id = "imgRemoveFilters" href = "#" style="font-size:13px;text-decoration:none;">Remove Filters</a>';
+		removeFilterContent = '<a id = "imgRemoveFilters" href = "' + uri + '" style="font-size:13px;text-decoration:none;">Remove Filters</a>';
 		$('#removeFilters').append(removeFilterContent);
 	}
 	
@@ -620,7 +620,7 @@ function redrawContent(data, filter) {
 		showHideMapContent = '<a href = "#" id = "linkHideMap" style="font-size:13px;text-decoration:none;">Show/Hide Map</a>';
 		$('#divHideMap').append(showHideMapContent);
 	}
-	*/
+	
 	if (data) {
 		//alert("Deepak here 1");
 		//alert(":" + data.param.city + ":");
@@ -648,8 +648,9 @@ function redrawContent(data, filter) {
 		}
 	}
 	//alert("Deepak here 7");
-	/*
+	
 	//$('#table_results tbody tr td a').click(function(e) {
+	
 	$('#resultTableContainer div div a').click(function(e) {
 		record_id = $(this).attr('id');
 		
@@ -669,10 +670,16 @@ function redrawContent(data, filter) {
 		
 	});
 	
+	
 	if (showMap ==  true) { 
-		reinitializeMap(map, data, data.param.zoomLevel);
+		if (data) {
+			reinitializeMap(map, data, data.param.zoomLevel);
+		} else {
+			reinitializeMap(map, '', param.zoomLevel);
+		}
+			
 	}
-	*/
+	
 	reinitializePagingEvent(data);
 	
 	reinitializePageCountEvent(data);
@@ -864,7 +871,12 @@ function reinitializePopupCuisineEvent (data, allCuisines) {
 		selectedTopCuisineId = "";
 		disablePopup();
 		loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
+		}
 	});
 	
 	$("#cancelCuisineFilter").click(function(e){
@@ -904,7 +916,12 @@ function reinitializeRemoveFilters(data) {
 		
 		filters = '';
 
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', data.param.city);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', data.param.city);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, '', '', param.city);
+		}
 		$('#frmFilters')[0].reset();
 	});
 }

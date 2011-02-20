@@ -60,28 +60,7 @@ class Restaurant extends Controller {
 		}
 
 		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
-		/*
-		$params = array(
-			'page' => 0,
-		    'totalPages' => 1,
-		    'perPage' => 20,
-		    'start' => 1,
-		    'end' => 20,
-		    'firstPage' => 0,
-		    'lastPage' => 0,
-		    'numResults' => 20,
-		    'sort' => "claims_sustainable DESC, producer",
-		    'order' => "ASC",
-		    'q' => 98004,
-		    'filter' => '',
-		    'city' => '',
-		    'zoomLevel' => 13
-		);
-		print_r_pre($params);
-		$this->load->model('ListModel', '', TRUE);
-		$pagingHtml = $this->ListModel->buildPagingLinks($params);
-		die;
-		*/
+		
 		$this->load->model('RestaurantModel', '', TRUE);
 		$restaurants = $this->RestaurantModel->getRestaurantsJson2();
 		
@@ -93,16 +72,10 @@ class Restaurant extends Controller {
 		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
 		
 		$params = json_encode($restaurants['param']);
-		/*
-		$params = array(
-			'data' => array(
-						'param' => $restaurants['param']
-					)
-		);
-		
-		$params = json_encode($params);
-		*/
 		$data['data']['center']['list']['PARAMS'] = $params;
+		
+		$geocode = json_encode($restaurants['geocode']);
+		$data['data']['center']['list']['GEOCODE'] = $geocode;
 		
 		$data['data']['left']['filter']['PARAMS'] = $restaurants['param'];
 		
@@ -254,6 +227,7 @@ class Restaurant extends Controller {
 			'listHtml' => $restaurantListHtml,
 			'pagingHtml' => $pagingHtml,
 			'param' => $restaurants['param'],
+			'geocode' => $restaurants['geocode'],
 		);
 		
 		echo json_encode($array);
@@ -396,6 +370,24 @@ class Restaurant extends Controller {
 		$data['CSS'] = array(
 						'listing'
 						);
+		
+		$this->load->model('RestaurantModel', '', TRUE);
+		$restaurants = $this->RestaurantModel->getRestaurantsJson2($city->cityId);
+		
+		$this->load->model('ListModel', '', TRUE);
+		$restaurantListHtml = $this->ListModel->buildRestaurantList($restaurants);
+		$data['data']['center']['list']['LIST_DATA'] = $restaurantListHtml;
+
+		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
+		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
+		
+		$params = json_encode($restaurants['param']);
+		$data['data']['center']['list']['PARAMS'] = $params;
+		
+		$geocode = json_encode($restaurants['geocode']);
+		$data['data']['center']['list']['GEOCODE'] = $geocode;
+		
+		$data['data']['left']['filter']['PARAMS'] = $restaurants['param'];
 
 		$this->load->view('templates/left_center_template', $data);
 

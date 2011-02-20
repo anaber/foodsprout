@@ -151,10 +151,15 @@ class ListModel extends Model{
 	}
 	
 	function buildUrl($params, $qs = null, $value = null) {
-		$uri1 = '/' . $this->uri->segment(1);
-		$uri2 = '';//$this->uri->segment(2);
-		$uri3 = '';//$this->uri->segment(3);
-		$url = $uri1 . ($uri2 ? '/' . $uri2 : '') . ($uri3 ? '/' . $uri3 : '');
+		$uri1 = $this->uri->segment(1);
+		if ($uri1 == 'sustainable') {
+			$uri2 = $this->uri->segment(2);
+			$uri3 = $this->uri->segment(3);
+		} else {
+			$uri2 = '';//$this->uri->segment(2);
+			$uri3 = '';//$this->uri->segment(3);
+		}
+		$url = '/' . $uri1 . ($uri2 ? '/' . $uri2 : '') . ($uri3 ? '/' . $uri3 : '');
 		
 		$queryString = $this->buildQueryString($params, $qs, $value);
 		
