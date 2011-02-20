@@ -126,11 +126,11 @@ class ListModel extends Model{
 	
 	function drawPagingLinks($params) {
 		
-		$lastPage = floor($params['numResults']/$params['perPage']);
+		$lastPage = $params['lastPage'];//floor($params['numResults']/$params['perPage']);
 		$currentPage = ($params['page'] > $lastPage ? $lastPage : $params['page']);
 		$firstPage = '0';
 		$previousPage = ( ($currentPage -1) < 0 ? 0 : ($currentPage -1));
-		$nextPage = ( ($currentPage + 1 ) >= $lastPage ? $lastPage : ($currentPage + 1) );
+		$nextPage = ( ($currentPage + 1 ) > $lastPage ? $lastPage : ($currentPage + 1) );
 		
 		$page = array (
 			'firstPage' => $firstPage,
@@ -139,7 +139,7 @@ class ListModel extends Model{
 			'nextPage' => $nextPage,
 			'lastPage' => $lastPage
 		);
-		
+		//print_r_pre($page);
 		$str = '';
 		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['firstPage']) . '" id = "imgFirst">First</a> &nbsp;&nbsp;';
 		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['previousPage']) . '" id = "imgPrevious">Previous</a> ';
@@ -152,8 +152,8 @@ class ListModel extends Model{
 	
 	function buildUrl($params, $qs = null, $value = null) {
 		$uri1 = '/' . $this->uri->segment(1);
-		$uri2 = $this->uri->segment(2);
-		$uri3 = $this->uri->segment(3);
+		$uri2 = '';//$this->uri->segment(2);
+		$uri3 = '';//$this->uri->segment(3);
 		$url = $uri1 . ($uri2 ? '/' . $uri2 : '') . ($uri3 ? '/' . $uri3 : '');
 		
 		$queryString = $this->buildQueryString($params, $qs, $value);
