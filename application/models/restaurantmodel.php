@@ -1532,6 +1532,9 @@ class RestaurantModel extends Model{
 
 
 		$q = $this->input->post('q');
+		if (!$q) {
+			$q = $this->input->get('q'); // Per Page
+		}
 		//$q = '94117';
 		//$filter = 'c_7';
 
@@ -1542,6 +1545,16 @@ class RestaurantModel extends Model{
 		$city = '';
 
 		$citySearch =  $this->input->post('city');
+		if ($citySearch == false) {
+			$citySearch = '';
+		}
+		if (!$citySearch) {
+			$citySearch = $this->input->get('city');
+		}
+		if ($citySearch == false) {
+			$citySearch = '';
+		}
+		
 		//$city = '41,6009,13721';
 
 		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
@@ -1607,11 +1620,11 @@ class RestaurantModel extends Model{
 		$where .= ' AND producer.is_restaurant = 1'.
 		         ' AND producer.status = \'live\' ';
 		
-		/*
+		
 		if ($sustainableWithZipcode || ( !empty($citySearch) ) ) {
-			$where	.= ' AND address.claims_sustainable = 1 ';
+			$where	.= ' AND producer.claims_sustainable = 1 ';
 		}
-		*/
+		
 
 		if ( count($arrRestaurantTypeId) > 0  || count($arrCuisineId) > 0 ) {
 			$where .= ' AND (';
@@ -1689,12 +1702,12 @@ class RestaurantModel extends Model{
 		$query .= ' GROUP BY producer.producer_id ';
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY address.claims_sustainable';
+			$sort_query = ' ORDER BY producer.claims_sustainable';
 			$sort = 'cs';
 			//$sort = 'claims_sustainable';
 		} else {
 			if ($sort == 'cs') {
-				$sort_query = ' ORDER BY address.claims_sustainable';
+				$sort_query = ' ORDER BY producer.claims_sustainable';
 			} else {
 				$sort_query = ' ORDER BY ' . $sort;
 			}
