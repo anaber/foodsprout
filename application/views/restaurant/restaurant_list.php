@@ -5,6 +5,10 @@ var showFilters = true;
 var topCuisines;
 var topRestaurantTypes;
 
+var param = <?php echo $PARAMS; ?>;
+
+//var param = {"page":0,"totalPages":2,"perPage":20,"start":1,"end":20,"firstPage":0,"lastPage":1,"numResults":"36","sort":"claims_sustainable DESC, producer","order":"ASC","q":"98004","filter":"r_13,r_22","city":false,"zoomLevel":13};
+
 <?php	
 	if ($hide_map == 'yes') {
 ?>
@@ -82,7 +86,7 @@ var topRestaurantTypes;
 	</div>
 	<div class = "clear"></div>
 	
-	<div style="overflow:auto; padding:5px; font-size:10px;">
+	<div style="overflow:auto; padding:5px; font-size:10px;" id = "pagingDiv">
 		
 		<?php
 			if (isset($PAGING_HTML) ) {

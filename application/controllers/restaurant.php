@@ -63,13 +63,13 @@ class Restaurant extends Controller {
 		/*
 		$params = array(
 			'page' => 0,
-		    'totalPages' => 2,
+		    'totalPages' => 1,
 		    'perPage' => 20,
 		    'start' => 1,
 		    'end' => 20,
 		    'firstPage' => 0,
-		    'lastPage' => 1,
-		    'numResults' => 86,
+		    'lastPage' => 0,
+		    'numResults' => 20,
 		    'sort' => "claims_sustainable DESC, producer",
 		    'order' => "ASC",
 		    'q' => 98004,
@@ -78,8 +78,10 @@ class Restaurant extends Controller {
 		    'zoomLevel' => 13
 		);
 		print_r_pre($params);
+		$this->load->model('ListModel', '', TRUE);
+		$pagingHtml = $this->ListModel->buildPagingLinks($params);
+		die;
 		*/
-		
 		$this->load->model('RestaurantModel', '', TRUE);
 		$restaurants = $this->RestaurantModel->getRestaurantsJson2();
 		
@@ -90,7 +92,18 @@ class Restaurant extends Controller {
 		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
 		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
 		
-
+		$params = json_encode($restaurants['param']);
+		/*
+		$params = array(
+			'data' => array(
+						'param' => $restaurants['param']
+					)
+		);
+		
+		$params = json_encode($params);
+		*/
+		$data['data']['center']['list']['PARAMS'] = $params;
+		
 		$this->load->view('templates/left_center_template', $data);
 		
 	}
@@ -228,7 +241,23 @@ class Restaurant extends Controller {
 
 		$this->load->model('RestaurantModel', '', TRUE);
 		$restaurants = $this->RestaurantModel->getRestaurantsJson2();
-		echo json_encode($restaurants);
+		//echo json_encode($restaurants);
+		
+		$this->load->model('ListModel', '', TRUE);
+		$restaurantListHtml = $this->ListModel->buildRestaurantList($restaurants);
+		
+		//$data['data']['center']['list']['LIST_DATA'] = $restaurantListHtml;
+		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
+		$array = array(
+			'listHtml' => $restaurantListHtml,
+			'pagingHtml' => $pagingHtml,
+			'param' => $restaurants['param'],
+		);
+		
+		echo json_encode($array);
+		//$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
+		
+		
 		/*
 		 $mtime = microtime();
 		 $mtime = explode(" ",$mtime);

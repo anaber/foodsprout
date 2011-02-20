@@ -118,7 +118,7 @@ class AddressModel extends Model{
 	 * Verified: 		Yes
 	 * Verified By: 	Deepak
 	 */
-	function getAddressForProducer($producerId, $zipcode='', $city='', $citySearch='', $addressId='') {
+	function getAddressForProducer($producerId, $zipcode='', $city='', $citySearch='', $addressId='', $zipCity='') {
 		
 		$addresses = array();
 		
@@ -126,7 +126,7 @@ class AddressModel extends Model{
 				" FROM address, state, country " .
 				" WHERE ";
 		
-		$query .= "producer_id = '".$producerId."' ";
+		$query .= "address.producer_id = '".$producerId."' ";
 		
 		if(!empty($addressId)){
 			
@@ -149,7 +149,7 @@ class AddressModel extends Model{
 		$query .= " AND address.state_id = state.state_id" .
 				  " AND address.country_id = country.country_id" .
 				  " ORDER BY address_id limit 0, 5";
-		
+		//echo $query . "<br />";
 		log_message('debug', "AddressModel.getAddressForProducer : " . $query);
 		$result = $this->db->query($query);
 		
