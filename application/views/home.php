@@ -68,7 +68,7 @@
 	<br/>
 	<?php $this->load->view('includes/banners/medrec'); ?>
 	<br/>
-	< div style="padding:5px;>
+	<div style="padding:5px;">
 	<div style="padding:5px;">
 	<img src="/img/news-twitter-bird.png" align="left"><h3>Food Sprout on Twitter</h3>
 	<?php 
