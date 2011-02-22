@@ -10,7 +10,9 @@ class Restaurant extends Controller {
 	function index() {
 		global $RECOMMENDED_CITIES;
 		$data = array();
-
+		//print_r_pre($this->session->userdata);
+		//setcookie('seachedZip', 98004, time()+60*60*24*30*365);
+		
 		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_list');
@@ -71,7 +73,11 @@ class Restaurant extends Controller {
 		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
 		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
 		
+		if (! $restaurants['param']['filter']) {
+			$restaurants['param']['filter'] = '';
+		}
 		$params = json_encode($restaurants['param']);
+		
 		$data['data']['center']['list']['PARAMS'] = $params;
 		
 		$geocode = json_encode($restaurants['geocode']);
@@ -381,6 +387,9 @@ class Restaurant extends Controller {
 		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
 		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
 		
+		if (! $restaurants['param']['filter']) {
+			$restaurants['param']['filter'] = '';
+		}
 		$params = json_encode($restaurants['param']);
 		$data['data']['center']['list']['PARAMS'] = $params;
 		
