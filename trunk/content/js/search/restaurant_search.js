@@ -157,7 +157,23 @@ function redrawTopCuisines(data) {
 		arrTopFilters = new Array();
 		j = 0;
 		strCuisineId = '';
-		if (param && param.filter != false) {
+		
+		if (data) {
+			filters = data.param.filter;
+			
+			if (filters != '') {
+				arrFilter = filters.split(',');
+				
+				for(i = 0; i < arrFilter.length; i++ ) {
+					arr = arrFilter[i].split('_');
+					if (arr[0] == 'c') {
+						arrTopFilters[j] = arr[1];
+						j++;
+					}
+				}
+			}
+			
+		} else if (param) {
 			arrFilter = param.filter.split(',');
 			
 			for(i = 0; i < arrFilter.length; i++ ) {
@@ -173,21 +189,8 @@ function redrawTopCuisines(data) {
 				}
 			}
 			selectedCuisineId = strCuisineId;
-		} else {
-			//arrTopFilters = new Array();
-			//j = 0;
-			if (filters != '') {
-				arrFilter = filters.split(',');
-				
-				for(i = 0; i < arrFilter.length; i++ ) {
-					arr = arrFilter[i].split('_');
-					if (arr[0] == 'c') {
-						arrTopFilters[j] = arr[1];
-						j++;
-					}
-				}
-			}
 		}
+		
 		//-----------------------------------
 		
 		$.each(topCuisines, function(i, a) {
@@ -382,7 +385,7 @@ function redrawTopRestaurantTypes(data) {
 	//alert(selectedRestaurantTypeId);
 	var resultHtml = '';
 	if (selectedRestaurantTypeId != "") {
-		//alert("Filters:" + arrSelectedRestaurantTypes[j] + ":");
+		//alert("Filters:" + selectedRestaurantTypeId + ":");
 		arrSelectedRestaurantTypes = new Array();
 		j = 0;
 		if (filters != '') {
@@ -413,7 +416,6 @@ function redrawTopRestaurantTypes(data) {
 		//resultHtml += '</ul>';
 		
 	} else {
-		
 		/**
 		 * --------------------------------------
 		 * AJAX Crawling
@@ -422,11 +424,27 @@ function redrawTopRestaurantTypes(data) {
 		arrTopFilters = new Array();
 		j = 0;
 		strRestaurantTypeId = '';
-		if (param && param.filter != false) {
-			f = param.filter;
+		//if (param && param.filter != false) {
+		if (data) {
+			//alert(data.param.filter);
+			filters = data.param.filter;
+			if (filters != '') {
+				//alert("IF");
+				arrFilter = filters.split(',');
+				
+				for(i = 0; i < arrFilter.length; i++ ) {
+					arr = arrFilter[i].split('_');
+					if (arr[0] == 'r') {
+						arrTopFilters[j] = arr[1];
+						j++;
+					}
+				}
+			}
+		} else if (param) {
 			arrFilter = param.filter.split(',');
 			
 			for(i = 0; i < arrFilter.length; i++ ) {
+				//alert(arrFilter[i]);
 				arr = arrFilter[i].split('_');
 				if (arr[0] == 'r') {
 					if (strRestaurantTypeId == '') {
@@ -439,21 +457,8 @@ function redrawTopRestaurantTypes(data) {
 				}
 			}
 			selectedRestaurantTypeId = strRestaurantTypeId;
-		} else {
-			//arrTopFilters = new Array();
-			//j = 0;
-			if (filters != '') {
-				arrFilter = filters.split(',');
-				
-				for(i = 0; i < arrFilter.length; i++ ) {
-					arr = arrFilter[i].split('_');
-					if (arr[0] == 'r') {
-						arrTopFilters[j] = arr[1];
-						j++;
-					}
-				}
-			}
 		}
+		
 		//-----------------------------------
 		
 		$.each(topRestaurantTypes, function(i, a) {
@@ -694,7 +699,13 @@ function redrawContent(data, filter) {
 	reinitializeShowHideMap(data);
 	
 	//$("#table_results").colorize( { ignoreHeaders:true });
-	disablePopupFadeIn();
+	if(window.location.hash) {
+		if (disableFadein) {
+			disablePopupFadeIn();
+		}
+	} else {
+		disablePopupFadeIn();
+	}
 }
 
 function addZeroResult() {
