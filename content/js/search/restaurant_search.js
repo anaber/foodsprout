@@ -699,13 +699,7 @@ function redrawContent(data, filter) {
 	reinitializeShowHideMap(data);
 	
 	//$("#table_results").colorize( { ignoreHeaders:true });
-	if(window.location.hash) {
-		if (disableFadein) {
-			disablePopupFadeIn();
-		}
-	} else {
-		disablePopupFadeIn();
-	}
+	disablePopupFadeIn();
 }
 
 function addZeroResult() {

@@ -11,7 +11,6 @@ var topRestaurantTypes;
 var param = <?php echo $PARAMS; ?>;
 var geocode = <?php echo $GEOCODE; ?>;
 var uri = '<?php echo $uri; ?>';
-var disableFadein = false;
 
 //var param = {"page":0,"totalPages":2,"perPage":20,"start":1,"end":20,"firstPage":0,"lastPage":1,"numResults":"36","sort":"claims_sustainable DESC, producer","order":"ASC","q":"98004","filter":"r_13,r_22","city":false,"zoomLevel":13};
 
@@ -63,6 +62,7 @@ var disableFadein = false;
 					 * If users try to load url with HASH segment from address bar
 					 */
 					if(window.location.hash) {
+						loadPopupFadeIn();
 						str = window.location.hash;
 						str = str.substr(2);
 						arr = str.split('&');
@@ -99,7 +99,7 @@ var disableFadein = false;
 								city = arr2[1];
 							} 
 						}
-						disableFadein = true;
+						//disableFadein = true;
 						postAndRedrawContent(p, pp, sort, order, q, f, city);
 					}
 					
