@@ -56,7 +56,7 @@
 	
 	<br />
 	<div class="filterh">More Options</div>
-	<div class="filterb"><a href = "/chain/fastfood" style="font-size:13px;text-decoration:none;">Restaurant Chains</a></div>
+	<div class="filterb"><a href = "/chain" style="font-size:13px;text-decoration:none;">Restaurant Chains</a></div>
 
  
 <div id="popupContact"> 
