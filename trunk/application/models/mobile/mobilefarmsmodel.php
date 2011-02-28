@@ -45,7 +45,9 @@ class MobileFarmsModel extends Model{
 							producer.is_farm =  '1' AND
 							address.address_id IN  (".$ids.") AND
 							producer.status =  'live' AND
-							address.address_id =  custom_url.address_id";
+							address.address_id =  custom_url.address_id
+							 AND
+							producer.claims_sustainable=1";
 				
 				$farmersmarket = $this->db->query($query)->result_array();
 					

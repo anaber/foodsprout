@@ -7,7 +7,166 @@ class Product extends Controller {
 		checkUserLogin();
 	}
 	
-	function index() {
+
+	
+	function index(){
+		
+		$data = array();
+		
+		// Views to include in the data array
+		$data['CENTER'] = array(
+				'list' => '/product/center',
+				'search_view' => '/product/advanced_search',
+				'main_view' => '/product/top_list',
+			);
+		
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/product_filter',
+			);
+			
+		$this->load->model('ProductModel', '', TRUE);
+		
+		$data['recentlyAddedProducts'] = $this->ProductModel->recentlyAddedProducts();
+		$data['recentlyEatenProducts'] = $this->ProductModel->recentlyEatenProducts();
+		
+		$this->load->view('templates/left_center_template', $data);
+		
+	}
+	
+	function search(){
+		
+		$data = array();
+		
+		// Views to include in the data array
+		$data['CENTER'] = array(
+				'list' => '/product/center',
+				'search_view' => '/product/advanced_search',
+				'main_view' => '/product/search_results',
+			);
+		
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/product_filter',
+			);
+		
+		$startPage = 0;	
+			
+		//if isset post add search term to session
+		if(isset($_POST) && !empty($_POST['search_term'])){
+				
+			$this->session->set_userdata('search_term', $this->input->post('search_term', true));
+
+			$searchTerm = $this->input->post('search_term', true);
+				
+		}
+		//if isset uri segment 3 read search term from session 
+		if($this->uri->segment(3) != false && $this->uri->segment(3) != '' && is_numeric($this->uri->segment(3)) ){
+			
+			$startPage = $this->uri->segment(3);
+			
+			$searchTerm = $this->session->userdata('search_term');
+			
+		}
+
+		//if not isset post and uri then  try to find last search
+		if(!isset($_POST['search_term']) && !is_numeric($this->uri->segment(3))){
+			
+						
+			$startPage = 0;
+			
+			$searchTerm = $this->session->userdata('search_term')!= false ? $this->session->userdata('search_term') : "search keyword";
+			
+		}
+			//load product model
+			$this->load->model('ProductModel', '', TRUE);
+			
+			//load pagination library
+			$this->load->library('pagination');
+			
+			//disable query strings 
+			$this->config->set_item('enable_query_strings', 'false'); 
+			
+			
+			//pagination config
+			$config['base_url'] = base_url().'product/search/';
+			
+			$config['total_rows'] = $this->ProductModel->searchProductsByNameTotalRows($searchTerm);
+
+			$config['per_page'] = '20';
+			
+			$config['num_links'] = '3';
+			
+			$config['uri_segment'] = '3';
+						
+			$this->pagination->initialize($config); 
+			
+			
+		$data['searchResults'] = $this->ProductModel->searchProductsByName($searchTerm, $startPage, $config['per_page']);
+
+		$data['search_term'] = $searchTerm;
+		$data['totalRows'] = $config['total_rows'];
+		$this->load->view('templates/left_center_template', $data);
+		
+	}
+	
+	function customUrl($customUrl = ''){
+		
+		$this->load->model('CustomUrlModel');
+		
+		$producer = $this->CustomUrlModel->getProductIdFromCustomUrl($customUrl);
+		
+		if ($producer) {
+			
+			$this->view($producer[0]->product_id);
+			
+		} else {
+			show_404('page');
+		}
+	}
+	
+	
+	function view($productId = ''){
+		
+			
+		$data = array();
+		
+		// Views to include in the data array
+		$data['CENTER'] = array(
+				'list' => '/product/center',
+				'search_view' => '/product/advanced_search',
+				'main_view' => '/product/product_details',
+			);
+		
+		$data['LEFT'] = array(
+				'filter' => 'includes/left/product_filter',
+			);
+			
+				// Load all the views for the right column
+		$data['RIGHT'] = array(
+				//'ad' => 'includes/banners/sky',
+			); 
+			
+		//load product model
+		$this->load->model('ProductModel', '', TRUE);
+		
+		$data['productDetails'] = $this->ProductModel->getProductFromId($productId); 	
+			
+			
+		$this->load->view('templates/left_center_template', $data);
+	}
+	
+	
+	function eaten($productId=''){
+			
+		//find producer for product	
+		
+		
+		
+	}
+	
+	
+	// --------------------------- old methods ------------------------//
+	
+	function old_index() {
 		
 		$data = array();
 		
@@ -24,30 +183,7 @@ class Product extends Controller {
 			
 		$this->load->view('templates/left_center_template', $data);
 	}
-	
-	
-	function newIndex(){
-		
-		$data = array();
-		
-		// Views to include in the data array
-		$data['CENTER'] = array(
-				'list' => '/product/center',
-			);
-		
-		$data['LEFT'] = array(
-				'filter' => 'includes/left/product_filter',
-			);
-			
-		$this->load->model('ProductModel', '', TRUE);
-		$data['latestItems'] = $this->ProductModel->listNewProducts();
-		
-		
-		$data['search_view'] = "product/advanced_search";
-		$this->load->view('templates/left_center_template', $data);
-		
-	}
-	
+
 	
 	function newProducts() {
 		global $GOOGLE_MAP_KEY;
@@ -79,55 +215,55 @@ class Product extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	function view($id) {
-		global $GOOGLE_MAP_KEY;
-		
-		$data = array();
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'ingredients' => 'ingredients',
-				'map' => 'includes/map',
-				'topics' => 'topics',
-				'impact' => 'impact',
-			);
-		
-		$data['RIGHT'] = array(
-				'image' => 'includes/right/image',
-				'ad' => 'includes/right/ad',
-				'info' => 'includes/right/info',
-				'nutrition' => 'includes/right/info',
-			);
-		
-		$data['BREADCRUMB'] = array(
-				'Home' => '/home',
-				'McDonald' => '/company/detail/2',
-				'Meat' => '',
-			);
-		
-		// Data to be passed to the views
-		// Center -> Ingredients		
-		$data['data']['center']['ingredients']['INGREDIENTS'] = array('cheese', 'meat', 'pepper');
-		
-		// Center -> Map
-		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-		$data['data']['center']['map']['VIEW_HEADER'] = "Map showing where ingredients, items came from";
-		$data['data']['center']['map']['width'] = '650';
-		$data['data']['center']['map']['height'] = '200';
-		
-		
-		// Right -> Image
-		$data['data']['right']['image']['src'] = '/img/products/burger.jpg';
-		$data['data']['right']['image']['width'] = '300';
-		$data['data']['right']['image']['height'] = '200';
-		$data['data']['right']['image']['title'] = 'Burger Image';
-		
-		$data['data']['right']['info']['VIEW_HEADER'] = "Product Info";
-		
-		$data['data']['right']['nutrition']['VIEW_HEADER'] = "Nutritional Information";
-		
-		$this->load->view('templates/center_right_template', $data);
-	}
+//	function view($id) {
+//		global $GOOGLE_MAP_KEY;
+//		
+//		$data = array();
+//		
+//		// List of views to be included
+//		$data['CENTER'] = array(
+//				'ingredients' => 'ingredients',
+//				'map' => 'includes/map',
+//				'topics' => 'topics',
+//				'impact' => 'impact',
+//			);
+//		
+//		$data['RIGHT'] = array(
+//				'image' => 'includes/right/image',
+//				'ad' => 'includes/right/ad',
+//				'info' => 'includes/right/info',
+//				'nutrition' => 'includes/right/info',
+//			);
+//		
+//		$data['BREADCRUMB'] = array(
+//				'Home' => '/home',
+//				'McDonald' => '/company/detail/2',
+//				'Meat' => '',
+//			);
+//		
+//		// Data to be passed to the views
+//		// Center -> Ingredients		
+//		$data['data']['center']['ingredients']['INGREDIENTS'] = array('cheese', 'meat', 'pepper');
+//		
+//		// Center -> Map
+//		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
+//		$data['data']['center']['map']['VIEW_HEADER'] = "Map showing where ingredients, items came from";
+//		$data['data']['center']['map']['width'] = '650';
+//		$data['data']['center']['map']['height'] = '200';
+//		
+//		
+//		// Right -> Image
+//		$data['data']['right']['image']['src'] = '/img/products/burger.jpg';
+//		$data['data']['right']['image']['width'] = '300';
+//		$data['data']['right']['image']['height'] = '200';
+//		$data['data']['right']['image']['title'] = 'Burger Image';
+//		
+//		$data['data']['right']['info']['VIEW_HEADER'] = "Product Info";
+//		
+//		$data['data']['right']['nutrition']['VIEW_HEADER'] = "Nutritional Information";
+//		
+//		$this->load->view('templates/center_right_template', $data);
+//	}
 	
 	/**
 	 * Migration: 		Done

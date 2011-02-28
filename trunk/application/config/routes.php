@@ -127,6 +127,11 @@ $route['^chain/view/(:num)'] 							= "chain/view/$1";
 $route['^chain/page(:num)']								= "chain/index/$1";
 $route['^chain/(:any)']									= "chain/customUrl/$1";
 
+// Product
+$route['^product/']										= "product/index";
+$route['^product/search']								= "product/search";
+$route['^product/search/(:any)']						= "product/search/$1";
+$route['^product/(:any)']								= "product/customUrl/$1";
  
 // ADMINCP
 $route['^admincp'] 										= "admincp/dashboard";
