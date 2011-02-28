@@ -799,6 +799,330 @@ class FarmModel extends Model{
 	    return $arr;
 	}
 	
+	function getFarmsJson2() {
+		global $PER_PAGE, $FARM_DEFAULT_RADIUS, 
+		$DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL, $FARM_ZOOM_LEVEL;
+		
+		$CI =& get_instance();
+		
+		$p = $this->input->post('p'); // Page
+		if (!$p) {
+			$p = $this->input->get('p'); // Per Page
+		}
+		
+		$pp = $this->input->post('pp'); // Per Page
+		if (!$pp) {
+			$pp = $this->input->get('pp'); // Per Page
+		}
+		$sort = $this->input->post('sort');
+		if (!$sort) {
+			$sort = $this->input->get('sort'); // Per Page
+		}
+		
+		$order = $this->input->post('order');
+		if (!$order) {
+			$order = $this->input->get('order'); // Per Page
+		}
+		
+		$filter = $this->input->post('f');
+		if (!$filter) {
+			$filter = $this->input->get('f'); // Per Page
+		}
+		
+		$radius = $this->input->post('r');
+		if (!$radius) {
+			$radius = $this->input->get('r'); // Per Page
+		}
+		
+		if (empty  ($radius) ) {
+			$radius = $FARM_DEFAULT_RADIUS;
+		}
+		
+		//$filter = 'r_10,c_6';
+		
+		$arr_filter = explode(',', $filter);
+		/*
+		if ($filter) {
+			print_r_pre($arr_filter);
+			die;
+		}
+		*/
+		$arrFarmTypeId = array();
+		
+		foreach($arr_filter as $key => $value) {
+			$arr_value = explode('_', $value) ;
+			
+			if ($arr_value[0] == 'f') {
+				$arrFarmTypeId[] = $arr_value[1];
+			}
+		}
+		
+		$q = $this->input->post('q');
+		//$q = '80301';
+		//$filter = 'c_7';
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+		
+		if ($q == '') {
+			if (isset ($_COOKIE['seachedZip']) && !empty($_COOKIE['seachedZip']) ) {
+				$q = $_COOKIE['seachedZip'];
+				$mapZoomLevel = $FARM_ZOOM_LEVEL;
+			} else {
+				if ($this->session->userdata('isAuthenticated') == 1 ) { // Authenticated
+					$q = $this->session->userdata['zipcode'];
+					$mapZoomLevel = $FARM_ZOOM_LEVEL;
+					setcookie('seachedZip', $q, time()+60*60*24*30*365);
+				}
+			}
+		} else {
+			setcookie('seachedZip', $q, time()+60*60*24*30*365);
+			$mapZoomLevel = $FARM_ZOOM_LEVEL;
+		}
+		
+		$latLng = array();
+		if (! empty ($q) ) {
+			$CI->load->model('ZipcodeModel','',true);
+			$latLng = $CI->ZipcodeModel->getCoordinatesFromZipcode($q);
+			
+			if ( ! $latLng) {
+				
+				$address = $q. ', USA';
+				$CI->load->model('GoogleMapModel','',true);
+				$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
+				
+				if ( $latLng ) {
+					$CI->ZipcodeModel->addZipcode($q, $latLng);
+				}
+			}
+		}
+		
+		$start = 0;
+	
+		$page = 0;
+		
+		/*
+		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
+				' FROM producer' . 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+				 
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM producer';
+		if ( count($arrFarmTypeId) > 0 ) {
+			$base_query_count .= 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+		}
+		*/
+		
+		$base_query = 'SELECT address.*, producer.*, producer_category.producer_category, producer_category.producer_category_id ';
+		if ( $latLng ) {
+			$base_query .= ', ( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance ';
+		}
+		$base_query .= 	
+				' FROM address, producer' . 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+				 
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM address, producer ';
+		if ( count($arrFarmTypeId) > 0 ) {
+			$base_query_count .= 
+				' LEFT JOIN producer_category_member ' .
+				'		ON producer.producer_id = producer_category_member.producer_id'.
+				' LEFT JOIN producer_category '.
+				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+		}
+		
+		$where = ' WHERE ';
+		if ( $latLng ) {
+			
+		} else {
+			$where	.= ' address.zipcode = ' . $q . ' AND ';
+		}
+		
+		$where .= ' address.producer_id = producer.producer_id' .
+				 ' AND producer.is_farm = 1'.
+		         ' AND producer.status = \'live\' ';
+
+		if ( count($arrFarmTypeId) > 0 ) {
+			$where .= ' AND (';
+			
+			if(count($arrFarmTypeId) > 0 ) {
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrFarmTypeId) . ')';
+			}
+			
+			$where .= ' )';
+		}
+		$whereMainQuery = '';
+		$whereCountQuery = '';
+		if ( $latLng ) {
+			$whereMainQuery	.= ' HAVING ( distance <= ' . $radius . ') ';
+		}
+		
+		$whereCountQuery	.= ' AND ( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) <= ' . $radius . ' ';
+		
+		/*
+		if ( $latLng ) {
+			if (!empty($where) ) {
+				$where .= ' AND (';  
+			} else {
+				$where .= ' WHERE (';
+			}
+
+			$where	.= '		SELECT ';
+			if (count($latLng) > 0 ) {
+				$where .= ' 			( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance ';
+			} else if ( !empty($q) ) {
+				$where	.= '		address.address_id';
+			}
+					
+					$where	.=  '	from address'
+					. '			WHERE' 
+					. '				address.producer_id = producer.producer_id';
+					
+				if (count($latLng) > 0 ) {
+					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
+				} else if ( !empty($q) ) {
+					$where	.= ' 			AND ( address.zipcode = "' . $q . '") ';
+				} 
+
+			$where	.= '				LIMIT 0, 1'
+					. '		)';
+		}
+		*/
+		$query = $base_query_count . $where . $whereCountQuery;
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where . $whereMainQuery;
+		//$query .= ' GROUP BY producer.producer_id ';
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		//echo $query;die;
+		//print_r_pre($_REQUEST);
+		
+		log_message('debug', "FarmModel.getFarmsJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$farms = array();
+		
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row) {
+			
+			
+			$this->load->library('FarmLib');
+			unset($this->FarmLib);
+			
+			$this->FarmLib->farmId = $row['producer_id'];
+			
+			$this->FarmLib->farmName = $row['producer'];
+			$this->FarmLib->farmType = $row['producer_category'];
+			
+			$this->FarmLib->creationDate = $row['creation_date'];
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], '', '', '');
+			$this->FarmLib->addresses = $addresses;
+			
+			$this->FarmLib->customUrl = '';
+			$firstAddressId = '';
+			
+			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+				
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+				
+				$arrLatLng['addressLine1'] = $address->address;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+					
+				$arrLatLng['farmName'] = $this->FarmLib->farmName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[] = $arrLatLng;
+				
+				if ($firstAddressId == '') {
+					$firstAddressId = $address->addressId;
+				}
+			}
+			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row['producer_id'], $firstAddressId);
+				$this->FarmLib->customUrl = $customUrl;
+			}
+			
+			$farms[] = $this->FarmLib;
+			unset($this->FarmLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+		
+		if ($numResults == 0) {
+			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+		}
+		
+		$params = requestToParams3($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $radius);
+		$arr = array(
+			'results'    => $farms,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    //print_r_pre($arr);
+		//die;
+	    return $arr;
+		
+	}
+	
 }
 
 ?>

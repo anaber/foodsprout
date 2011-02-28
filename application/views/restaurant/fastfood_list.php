@@ -42,7 +42,7 @@
 	</div>
 	<div class = "clear"></div>
 	
-	<hr size="1" style = "width:628px;">
+	<hr size="1" style = "width:628px;"/>
 	<div style="overflow:auto; padding:5px; font-size:10px;">
 		<?php 
 			$currentpage = substr($this->uri->segment(2),4,5);
