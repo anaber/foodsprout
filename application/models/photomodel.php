@@ -317,13 +317,13 @@ class PhotoModel extends Model{
 		return $return;
 	}
 	
-	function getThumbPhotos($type, $id) {
+	function getThumbPhotos($type, $id = "") {
 		global $PER_PAGE;
 		
 		$query = 'SELECT photo.*' .
 				' FROM photo' .
-				' WHERE photo.'.$type.'_id  = ' . $id .
-				' AND photo.status = \'live\'';
+				' WHERE photo.'.$type.'_id  = \'' . $id .
+				'\' AND photo.status = \'live\'';
 		
 		$result = $this->db->query($query);
 		
