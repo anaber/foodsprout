@@ -79,7 +79,7 @@ class Farm extends Controller {
 	
 	function ajaxSearchFarms() {
 		$this->load->model('FarmModel', '', TRUE);
-		$restaurants = $this->FarmModel->getFarmsJson();
+		$restaurants = $this->FarmModel->getFarmsJson2();
 		echo json_encode($restaurants);
 	}
 	

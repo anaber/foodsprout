@@ -535,4 +535,4 @@ CREATE TABLE IF NOT EXISTS `product_consumed` (
   `address_id` int(11) NOT NULL,
   `comment` text NOT NULL,
   PRIMARY KEY (`product_consumed_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
