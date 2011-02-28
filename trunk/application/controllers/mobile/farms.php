@@ -28,7 +28,15 @@ class Farms extends Controller {
 	function customUrl($customUrl){
 
 		$custom_url_data = $this->db->query("select * from custom_url where `custom_url` = '".$customUrl."' ")->result_array();
-		$this->_view($custom_url_data[0]['producer_id'],  $custom_url_data[0]['address_id']);
+		
+		if ($custom_url_data) {
+			
+			$this->_view($custom_url_data[0]['producer_id'],  $custom_url_data[0]['address_id']);
+			
+		} else {
+			show_404('page');
+		}
+		
 	}
 
 	function _view($producerId ='', $addressId = '' ){
