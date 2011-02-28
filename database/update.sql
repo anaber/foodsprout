@@ -518,3 +518,21 @@ CREATE TABLE `visitor_page` (
   `count` int(11) DEFAULT NULL,
   PRIMARY KEY (`visitor_page_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+--
+-- Table structure for table `product_consumed` - 17 feb 2011
+--
+
+DROP TABLE IF EXISTS `product_consumed`;
+CREATE TABLE IF NOT EXISTS `product_consumed` (
+  `product_consumed_id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `rating` varchar(50) NOT NULL,
+  `rating_date` datetime NOT NULL,
+  `consumed_date` date NOT NULL,
+  `address_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  PRIMARY KEY (`product_consumed_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

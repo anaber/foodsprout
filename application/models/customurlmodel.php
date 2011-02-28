@@ -42,6 +42,20 @@ class CustomUrlModel extends Model{
 		}
 	}
 	
+	
+	function getProductIdFromCustomUrl($customUrl) {
+		$query = "SELECT product_id FROM custom_url WHERE custom_url = '".$customUrl."'";
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() > 0) {
+			
+			return $result->result();
+			
+		} else {
+			return false;
+		}
+	}
+	
 	function generateCustomUrl($addressId) {
 		$producer = $this->input->post('restaurantName');
 		

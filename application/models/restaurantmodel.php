@@ -52,7 +52,7 @@ class RestaurantModel extends Model{
 				
 				$ids = implode(",", $address_ids);
 				
-				$query = "SELECT
+			$query = "SELECT
 							address.address_id,
 							address.producer_id,
 							address.address,
@@ -76,7 +76,8 @@ class RestaurantModel extends Model{
 							producer.is_restaurant =  '1' AND
 							address.address_id IN  (".$ids.") AND
 							producer.status =  'live' AND
-							address.address_id =  custom_url.address_id";
+							address.address_id =  custom_url.address_id AND
+							producer.claims_sustainable=1";
 				
 				 $restaurants = $this->db->query($query)->result_array();
 				 

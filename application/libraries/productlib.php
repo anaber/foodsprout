@@ -20,6 +20,7 @@ class ProductLib {
 	var $status;
     var $hasFructose;
 	var $userId;
+	var $userName;
 	var $creationDate;
 	var $modifyDate;
 	var $customURL;
@@ -43,6 +44,7 @@ class ProductLib {
 		$this->status = '';
 		$this->hasFructose = '';
 		$this->userId = '';
+		$this->userName = '';
 		$this->creationDate = '';
 		$this->modifyDate = '';
 		$this->customURL = '';

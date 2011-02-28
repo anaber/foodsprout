@@ -301,6 +301,13 @@ class Test extends Controller{
 		$string = str_replace(" - ", " ", $string);
 		$string = str_replace(".", "", $string);
 		$string = str_replace(",", "", $string);
+		$string = str_replace("/", "-", $string);
+		$string = str_replace("&", "", $string);
+		$string = str_replace("*", "", $string);
+		$string = str_replace("'", "", $string);
+		$string = str_replace("®", "", $string);
+		$string = str_replace("(", "", $string);
+		$string = str_replace(")", "", $string);
 		$words = explode(" ", $string);
 		$newString = ''; 
 		if(sizeof($words) == 1 ){
@@ -316,6 +323,50 @@ class Test extends Controller{
 			return trim($newString);
 		}
 	}
+	
+	
+	function create_product_slug(){
+		
+		$products = $this->db->query("select product_id, product_name from product")->result_array();
+		
+		
+		$i = 0; 
+		foreach($products as $product){
+			
+			
+			
+	
+
+				$new_product = $this->_trimWhiteSpaces($product['product_name']); 
+				
+				$new_product = str_replace(' ', "-", $new_product);
+				
+				$params = array();
+				
+				$params['custom_url'] = strtolower($product['product_id'].'-'.$new_product);
+				$params['product_id'] = $product['product_id'];
+				
+				$this->db->insert('custom_url', $params);
+				
+		
+				echo $params['custom_url']."<br />";
+			
+			
+			$i++;
+			
+			
+			
+		}
+		
+		
+//		echo '<pre>';
+//		print_r($products);
+//		echo '</pre>';
+	}
+	
+	
+	
+	
 	
 
 }
