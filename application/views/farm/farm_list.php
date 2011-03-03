@@ -1,3 +1,6 @@
+<?php
+	$uri = $this->uri->uri_string();
+?>
 <script src="<?php echo base_url()?>js/search/farm_search.js" type="text/javascript"></script>
 <script>
 var showMap = true;
@@ -5,6 +8,10 @@ var showFilters = true;
 //var topCuisines;
 var topFarmTypes;
 var farmsData;
+
+var param = <?php echo $PARAMS; ?>;
+var geocode = <?php echo $GEOCODE; ?>;
+var uri = '<?php echo $uri; ?>';
 
 <?php
 	if ($hide_map == 'yes') {
@@ -25,9 +32,9 @@ var farmsData;
 		//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 		//loadPopupFadeIn();
 		
-		$.post("/farm/ajaxSearchFarms", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
-		function(data){
-			
+		//$.post("/farm/ajaxSearchFarms", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
+		//function(data){
+			var data = '';
 			if (showMap ==  true) {
 				loadMapOnStartUp(38.41055825094609, -98, 3);
 			}
@@ -46,8 +53,8 @@ var farmsData;
 			},
 			"json");
 			
-		},
-		"json");
+		//},
+		//"json");
 		
 	});
 	
@@ -65,15 +72,22 @@ var farmsData;
 	<div id="resultsContainer" class="pd_tp1">
 		<div id="resultTableContainer" style = "width:630px; padding:0px;">
 		<?php
-			//echo $LIST_DATA;
+			if ($LIST_DATA) {
+				echo $LIST_DATA;
+			}
 		?>
 		</div>
 		<div class = "clear"></div>
 	</div>
 	<div class = "clear"></div>
 	
-	<div style="overflow:auto; padding:5px; font-size:10px;">
-	
+	<div style="overflow:auto; padding:5px; font-size:10px;" id = "pagingDiv">
+		
+		<?php
+			if (isset($PAGING_HTML) ) {
+				echo $PAGING_HTML;
+			} else {
+		?>
 		<div style="float:left; width:172px;" id = 'numRecords'>Records 0-0 of 0</div>
 		
 		<div style="float:left; width:250px;" id = 'pagingLinks' align = "center">
@@ -91,10 +105,13 @@ var farmsData;
 			<a href="#" id = "40PerPage">40</a> | 
 			<a href="#" id = "50PerPage">50</a>
 		</div>
-		
+		<?php
+			}
+		?>
 		<div class="clear"></div>
 	</div>
 	<div class = "clear"></div>
+	
 </div>
 <div style="float:right; width:160px;">
 	<?php

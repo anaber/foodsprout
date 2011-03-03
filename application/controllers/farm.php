@@ -72,7 +72,27 @@ class Farm extends Controller {
 						'jquery-ui/jquery.ui.theme',
 					);
 		
-		$data['data']['center']['list']['LIST_DATA'] = 'Deepak here';
+		$this->load->model('FarmModel', '', TRUE);
+		$farms = $this->FarmModel->getFarmsJson2();
+		
+		$this->load->model('ListModel', '', TRUE);
+		$farmListHtml = $this->ListModel->buildFarmList($farms);
+		$data['data']['center']['list']['LIST_DATA'] = $farmListHtml;
+
+		$pagingHtml = $this->ListModel->buildPagingLinks($farms['param']);
+		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
+		
+		if (! $farms['param']['filter']) {
+			$farms['param']['filter'] = '';
+		}
+		$params = json_encode($farms['param']);
+		
+		$data['data']['center']['list']['PARAMS'] = $params;
+		
+		$geocode = json_encode($farms['geocode']);
+		$data['data']['center']['list']['GEOCODE'] = $geocode;
+		
+		$data['data']['left']['filter']['PARAMS'] = $farms['param'];
 		
 		$this->load->view('templates/left_center_template', $data);
 	}

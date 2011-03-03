@@ -239,23 +239,36 @@ function redrawContent(data, filter) {
 	
 	redrawTopFarmTypes(data);
 	
-	$('#resultTableContainer').empty();
-	//var resultTableHtml = getResultTableHeader();
-	var resultTableHtml = '';
-	
-	if (data.param.numResults == 0) {
-		resultTableHtml += addZeroResult();
-	} else {
-		$.each(data.results, function(i, a) {
-			resultTableHtml += addResult(a, i);
-		});
+	/**
+	 * --------------------------------------
+	 * AJAX Crawling
+	 * --------------------------------------
+	 */
+	if (data) {
+		$('#resultTableContainer').empty();
+		/*
+		//var resultTableHtml = getResultTableHeader();
+		var resultTableHtml = '';
+		
+		if (data.param.numResults == 0) {
+			resultTableHtml += addZeroResult();
+		} else {
+			$.each(data.results, function(i, a) {
+				resultTableHtml += addResult(a, i);
+			});
+		}
+		
+		//resultTableHtml += getResultTableFooter();
+		$('#resultTableContainer').append(resultTableHtml);
+		*/
+		$('#resultTableContainer').html(data.listHtml);
+		$('#pagingDiv').html(data.pagingHtml);
+		
 	}
-	
-	//resultTableHtml += getResultTableFooter();
-	$('#resultTableContainer').append(resultTableHtml);
+	//-----------------------------------
 	
 	//$('#messageContainer').hide();
-	$('#resultsContainer').show();
+	//$('#resultsContainer').show();
 	
 	// Move scroll to top of window.
 	//$('html, body').animate({scrollTop:0}, 'slow');
