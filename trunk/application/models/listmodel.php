@@ -227,13 +227,65 @@ class ListModel extends Model{
 			$queryString .= '&q=';
 		}
 		
-		if ($params['city'] ) {
+		if (isset($params['city']) ) {
 			$queryString .= '&city=' . $params['city'];
 		} else {
 			$queryString .= '&city=';
 		}
 		
 		return $queryString;
+	}
+	
+	function buildFarmList($farms) {
+		
+		$html = '';
+		foreach($farms['results'] as $key => $farm) {
+			
+			$html .=
+			'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
+			'	<div class = "listing-header">'. "\n";
+			
+			if ($farm->customUrl ) {
+				$html .= '<div style = "float:left;"><a href="/farm/' . $farm->customUrl . '" id = "'. $farm->farmId .'" style="text-decoration:none;">'. $farm->farmName .'</a></div>' . "\n";
+			} else {
+				$html .= '<div style = "float:left;"><a href="/farm/view/' . $farm->farmId . '" id = "'. $farm->farmId .'" style="text-decoration:none;">'. $farm->farmName .'</a></div>' . "\n";
+			}	
+			
+			$html .=
+			'		<div class = "clear"></div>'. "\n" .
+			'	</div>' . "\n" .
+			'	<div class = "clear"></div>' . "\n";
+			$html .=
+			'	<div class = "listing-information">' . "\n" .
+			'		<b>Type:</b> ' . "\n";
+			
+			$html .= $farm->farmType;
+			
+			$html .= 
+			'	</div>' . "\n" .
+			'	<div class = "listing-address-title">'. "\n" .
+			'		<b>Address:</b>'. "\n" .
+			'	</div>' .
+			'	<div class = "listing-address">' . "\n";
+
+			foreach ($farm->addresses as $j => $address) {
+				if ($j == 0) {
+					$html .= '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+				} else {
+					$html .= "<br /><br />" . '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+				}
+			}
+			
+			$html .= 
+			'	</div>' . "\n" .
+			'	<div class = "clear"></div>' . "\n";
+			$html .=
+			'</div>' . "\n".
+			'<div class = "clear"></div>' . "\n"
+			;
+		}
+		
+		return $html;
 	}
 	
 }

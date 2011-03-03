@@ -904,25 +904,6 @@ class FarmModel extends Model{
 	
 		$page = 0;
 		
-		/*
-		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
-				' FROM producer' . 
-				' LEFT JOIN producer_category_member ' .
-				'		ON producer.producer_id = producer_category_member.producer_id'.
-				' LEFT JOIN producer_category '.
-				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
-				 
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM producer';
-		if ( count($arrFarmTypeId) > 0 ) {
-			$base_query_count .= 
-				' LEFT JOIN producer_category_member ' .
-				'		ON producer.producer_id = producer_category_member.producer_id'.
-				' LEFT JOIN producer_category '.
-				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
-		}
-		*/
-		
 		$base_query = 'SELECT address.*, producer.*, producer_category.producer_category, producer_category.producer_category_id ';
 		if ( $latLng ) {
 			$base_query .= ', ( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance ';
@@ -945,12 +926,11 @@ class FarmModel extends Model{
 		}
 		
 		$where = ' WHERE ';
+		/*
 		if ( $latLng ) {
-			
-		} else {
 			$where	.= ' address.zipcode = ' . $q . ' AND ';
 		}
-		
+		*/
 		$where .= ' address.producer_id = producer.producer_id' .
 				 ' AND producer.is_farm = 1'.
 		         ' AND producer.status = \'live\' ';
@@ -968,45 +948,19 @@ class FarmModel extends Model{
 		$whereCountQuery = '';
 		if ( $latLng ) {
 			$whereMainQuery	.= ' HAVING ( distance <= ' . $radius . ') ';
+			
+			$whereCountQuery	.= ' AND ( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) <= ' . $radius . ' ';
 		}
 		
-		$whereCountQuery	.= ' AND ( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) <= ' . $radius . ' ';
 		
-		/*
-		if ( $latLng ) {
-			if (!empty($where) ) {
-				$where .= ' AND (';  
-			} else {
-				$where .= ' WHERE (';
-			}
-
-			$where	.= '		SELECT ';
-			if (count($latLng) > 0 ) {
-				$where .= ' 			( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) AS distance ';
-			} else if ( !empty($q) ) {
-				$where	.= '		address.address_id';
-			}
-					
-					$where	.=  '	from address'
-					. '			WHERE' 
-					. '				address.producer_id = producer.producer_id';
-					
-				if (count($latLng) > 0 ) {
-					$where	.= ' 			HAVING ( distance <= ' . $radius . ') ';
-				} else if ( !empty($q) ) {
-					$where	.= ' 			AND ( address.zipcode = "' . $q . '") ';
-				} 
-
-			$where	.= '				LIMIT 0, 1'
-					. '		)';
-		}
-		*/
+		
 		$query = $base_query_count . $where . $whereCountQuery;
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;
 		
 		$query = $base_query . $where . $whereMainQuery;
+		
 		//$query .= ' GROUP BY producer.producer_id ';
 		
 		if ( empty($sort) ) {
