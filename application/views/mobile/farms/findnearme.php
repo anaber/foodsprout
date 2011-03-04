@@ -1,7 +1,7 @@
 <form method="post" name="findNearMe" action="<?php echo base_url()?>mobile/farms/nearme/">
 	<input name="latitude_input" id="latitude_input" type="hidden" value="" />
 	<input name="longitude_input" id="longitude_input" type="hidden"  value="" />
-	<input name="distance" id="distance" type="hidden"  value="50" />
+	<input name="distance" id="distance" type="hidden"  value="150" />
 	<input type="hidden" name="search_near_me" value="Search" />
 </form>	
 

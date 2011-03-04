@@ -15,7 +15,7 @@
 						<option>10</option>
 						<option>20</option>
 						<option>50</option>
-					</select>(miles)
+					</select> (miles)<br/>
 					<input type="submit" name="zip_code_btn" value="Go" />	
 				</form>
 				

@@ -31,5 +31,5 @@ body{margin:0; background: #2C1A0F;}
 <body>
 <!-- header -->
 <div>
-	<img src="/img/foodsprout-logo.gif" width="198" height="50">
+	<a href="/mobile/"><img src="/img/foodsprout-logo.gif" width="198" height="50" alt="Food Sprout" border="0"></a>
 </div>
