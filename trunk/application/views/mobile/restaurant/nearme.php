@@ -8,7 +8,7 @@
 					foreach ($search_results as $result ){
 						
 						echo '<li>';
-							echo 	'<a href="'.base_url().'mobile/restaurants/view-'.$result['custom_url'].'">
+							echo 	'<a href="'.base_url().'mobile/restaurants/'.$result['custom_url'].'">
 									'.$result['producer'].'<span>City: <strong>'.$result['city'].'</strong>, address: <strong>
 									'.$result['address'].', </strong>
 									cuisine: '.$result['cuisine'].'</span></a>';	

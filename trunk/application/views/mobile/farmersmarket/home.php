@@ -1,6 +1,6 @@
 <div id="mainarea">
 	<ul id="menu">
-		<li><a href="/mobile/farmersmarkets/findnearme">Sustainable Farmers Market Near Me<span>Find sustainable farmers market near you</span></a></li>
+		<li><a href="/mobile/farmersmarkets/findnearme">Farmers Markets Near Me<span>Find farmers markets near you</span></a></li>
 		<li>
 			<a href="#">Enter Zip Code</a>
 			<span>
@@ -14,7 +14,7 @@
 						<option>10</option>
 						<option>20</option>
 						<option>50</option>
-					</select>(miles)
+					</select> (miles)<br/>
 					<input type="submit" name="search_zipcode" value="Go" />	
 				</form>
 				
