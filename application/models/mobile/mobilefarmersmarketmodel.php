@@ -80,10 +80,6 @@ class MobileFarmersMarketModel extends Model{
 								cos( radians( longitude ) - radians("'.$longitude.'") ) + sin( radians("'.$latitude.'") ) * 
 								sin( radians( latitude ) ) ) ) AS distance FROM address HAVING distance <= '.$distance.' ORDER BY distance';
 		
-		print_r($query_zips);
-		
-		
-		
 		$proximity_zips = $this->db->query($query_zips)->result_array();
 		
 		if(sizeof($proximity_zips) > 0){
