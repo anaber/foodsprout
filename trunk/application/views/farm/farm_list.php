@@ -44,7 +44,7 @@ var uri = '<?php echo $uri; ?>';
 			$.post(formAction, postArray,function(farmTypes) {
 				topFarmTypes = farmTypes;
 				farmsData = data;
-				redrawContent(data, '');
+				redrawContent(data);
 				
 				//reinitializeRadiusSearch();
 				
@@ -69,9 +69,6 @@ var uri = '<?php echo $uri; ?>';
 						if (arr2[1]) {
 							value = arr2[0];
 						}
-						
-						//alert(key + " : " + value);
-						//alert(arr2[0] + " : " + arr2[1]);
 						
 						if (arr2[0] == 'p') {
 							p = arr2[1];

@@ -288,6 +288,51 @@ class ListModel extends Model{
 		return $html;
 	}
 	
+	
+	function buildFarmersMarketList($farmersMarkets) {
+		
+		$html = '';
+		foreach($farmersMarkets['results'] as $key => $farmersMarket) {
+			
+			$html .=
+			'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
+			'	<div class = "listing-header">'. "\n";
+			
+			if ($farmersMarket->customUrl ) {
+				$html .= '<div style = "float:left;"><a href="/farmersmarket/' . $farmersMarket->customUrl . '" id = "'. $farmersMarket->farmersMarketId .'" style="text-decoration:none;">'. $farmersMarket->farmersMarketName .'</a></div>' . "\n";
+			} else {
+				$html .= '<div style = "float:left;"><a href="/farmersmarket/view/' . $farmersMarket->farmersMarketId . '" id = "'. $farmersMarket->farmersMarketId .'" style="text-decoration:none;">'. $farmersMarket->farmersMarketName .'</a></div>' . "\n";
+			}	
+			
+			$html .=
+			'		<div class = "clear"></div>'. "\n" .
+			'	</div>' . "\n" .
+			'	<div class = "clear"></div>' . "\n";
+			$html .=
+			'	<div class = "listing-address-title">'. "\n" .
+			'		<b>Address:</b>'. "\n" .
+			'	</div>' .
+			'	<div class = "listing-address">' . "\n";
+
+			foreach ($farmersMarket->addresses as $j => $address) {
+				if ($j == 0) {
+					$html .= '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+				} else {
+					$html .= "<br /><br />" . '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+				}
+			}
+
+			$html .= 
+			'	</div>' . "\n" .
+			'	<div class = "clear"></div>' . "\n";
+			$html .=
+			'</div>' . "\n".
+			'<div class = "clear"></div>' . "\n"
+			;
+		}
+		
+		return $html;
+	}
 }
 
 

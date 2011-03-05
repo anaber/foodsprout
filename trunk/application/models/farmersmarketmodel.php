@@ -262,26 +262,45 @@ class FarmersMarketModel extends Model{
 	    return $arr;
 	}
 	
-	function getFarmersMarketJson() {
+	function getFarmersMarketJson($c = '') {
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL, $FARM_ZOOM_LEVEL, $FARMERS_MARKET_ZOOM_LEVEL, $FARMERS_MARKET_DEFAULT_RADIUS;
 		
 		$CI =& get_instance();
 		
-		$p = $this->input->post('p'); // Page
-		$pp = $this->input->post('pp'); // Per Page
+		$p = $this->input->post('p'); 
+		if (!$p) {
+			$p = $this->input->get('p');
+		}
+		
+		$pp = $this->input->post('pp'); 
+		if (!$pp) {
+			$pp = $this->input->get('pp');
+		}
+		
 		$sort = $this->input->post('sort');
+		if (!$sort) {
+			$sort = $this->input->get('sort');
+		}
+		
 		$order = $this->input->post('order');
+		if (!$order) {
+			$order = $this->input->get('order');
+		}
+		
 		$filter = $this->input->post('f');
+		if (!$filter) {
+			$filter = $this->input->get('f');
+		}
+		
 		$radius = $this->input->post('r');
+		if (!$radius) {
+			$radius = $this->input->get('r'); // Per Page
+		}
 		
 		if (empty  ($radius) ) {
 			$radius = $FARMERS_MARKET_DEFAULT_RADIUS;
 		}
 		
-		//$filter = 'r_10,c_6';
-		
-		
-		//echo $filter;
 		$arr_filter = explode(',', $filter);
 		
 		$arrFarmTypeId = array();
@@ -302,8 +321,9 @@ class FarmersMarketModel extends Model{
 		
 		
 		$q = $this->input->post('q');
-		//$q = '80301';
-		//$filter = 'c_7';
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
 		
 		if ($q == '0') {
 			$q = '';
@@ -312,7 +332,20 @@ class FarmersMarketModel extends Model{
 		$city = '';
 		//$city = '41,6009,13721';
 		
-		$citySearch =  $this->input->post('city');
+		if ($c) {
+			$citySearch = $c;
+		} else {
+			$citySearch =  $this->input->post('city');
+			if ($citySearch == false) {
+				$citySearch = '';
+			}
+			if (!$citySearch) {
+				$citySearch = $this->input->get('city');
+			}
+			if ($citySearch == false) {
+				$citySearch = '';
+			}
+		}
 		
 		if ($citySearch == '') {
 			$mapZoomLevel = $FARMERS_MARKET_ZOOM_LEVEL;
@@ -452,9 +485,7 @@ class FarmersMarketModel extends Model{
 			}
 		}
 		
-		//echo $query;
-		//die;
-		
+		//echo $query;die;
 		log_message('debug', "FarmersMarketModel.getFarmersMarketJson : " . $query);
 		$result = $this->db->query($query);
 		
@@ -522,7 +553,7 @@ class FarmersMarketModel extends Model{
 			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
 		}
 		
-		$params = requestToParams3($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $radius);
+		$params = requestToParamsFarmersMarket($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, $mapZoomLevel, $radius, $citySearch);
 		$arr = array(
 			'results'    => $farms,
 			'param'      => $params,

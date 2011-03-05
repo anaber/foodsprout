@@ -805,48 +805,41 @@ class FarmModel extends Model{
 		
 		$CI =& get_instance();
 		
-		$p = $this->input->post('p'); // Page
+		$p = $this->input->post('p');
 		if (!$p) {
-			$p = $this->input->get('p'); // Per Page
+			$p = $this->input->get('p');
 		}
 		
-		$pp = $this->input->post('pp'); // Per Page
+		$pp = $this->input->post('pp');
 		if (!$pp) {
-			$pp = $this->input->get('pp'); // Per Page
+			$pp = $this->input->get('pp');
 		}
 		$sort = $this->input->post('sort');
 		if (!$sort) {
-			$sort = $this->input->get('sort'); // Per Page
+			$sort = $this->input->get('sort');
 		}
 		
 		$order = $this->input->post('order');
 		if (!$order) {
-			$order = $this->input->get('order'); // Per Page
+			$order = $this->input->get('order');
 		}
 		
 		$filter = $this->input->post('f');
 		if (!$filter) {
-			$filter = $this->input->get('f'); // Per Page
+			$filter = $this->input->get('f');
 		}
 		
 		$radius = $this->input->post('r');
 		if (!$radius) {
-			$radius = $this->input->get('r'); // Per Page
+			$radius = $this->input->get('r');
 		}
 		
 		if (empty  ($radius) ) {
 			$radius = $FARM_DEFAULT_RADIUS;
 		}
 		
-		//$filter = 'r_10,c_6';
-		
 		$arr_filter = explode(',', $filter);
-		/*
-		if ($filter) {
-			print_r_pre($arr_filter);
-			die;
-		}
-		*/
+		
 		$arrFarmTypeId = array();
 		
 		foreach($arr_filter as $key => $value) {
@@ -861,8 +854,6 @@ class FarmModel extends Model{
 		if (!$q) {
 			$q = $this->input->get('q'); // Per Page
 		}
-		//$q = '80301';
-		//$filter = 'c_7';
 		
 		if ($q == '0') {
 			$q = '';

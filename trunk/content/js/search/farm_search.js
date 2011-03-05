@@ -17,7 +17,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, radius) {
 	
 	$.post(formAction, postArray,function(data) {
 		farmsData = data;
-		redrawContent(data, filter);
+		redrawContent(data);
 	},
 	"json");
 	
@@ -238,7 +238,7 @@ function redrawZipcodeBox() {
 	$('#divZipcode').html(formFilterContent);
 }
 
-function redrawContent(data, filter) {
+function redrawContent(data) {
 	
 	redrawTopFarmTypes(data);
 	
@@ -467,7 +467,6 @@ function reinitializeRadiusSearch () {
 	$( "#slider" ).slider({
    		stop: function(event, ui) { 
    			data = farmsData;
-   			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value") );
    			if (data) {
 				postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value") );
 			} else {
