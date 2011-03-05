@@ -1,6 +1,8 @@
 <script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
 <script>
 $(document).ready(function() {
+
+	var hasFructose;
 	
 	function findValueCallback(event, data, formatted) {
 		postAndRedrawContent(dataProducts.param.firstPage, dataProducts.param.perPage, dataProducts.param.sort, dataProducts.param.order, data[1], '');

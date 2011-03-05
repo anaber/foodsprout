@@ -9,8 +9,8 @@
 			foreach($recentlyEatenProducts as $product){
 				
 				echo '<li>';
-					echo '<a href="'.base_url().'product/'.$product->customURL.'">'.$product->productName.'</a>';
-					echo '<br /><span >Recently added by: <a href="#">'.$product->userName.'</a>;</span>';
+					echo '<a href="'.base_url().'product/'.$product->custom_url.'">'.$product->product_name.'</a>';
+					echo '<br /><span >Recently added by: <a href="#">'.$product->user.'</a>;</span>';
 				echo '</li>';
 				
 			}
@@ -30,9 +30,10 @@
 			foreach($recentlyAddedProducts as $product){
 				
 				echo '<li>';
-					echo '<a href="'.base_url().'product/'.$product->customURL.'">'.$product->productName.'</a>';
-					echo '<br /><span >Recently added by: <a href="#">'.$product->userName.'</a>;</span>';
+					echo '<a href="'.base_url().'product/'.$product->custom_url.'">'.$product->product_name.'</a>';
+					echo '<br /><span >Recently added by: <a href="#">'.$product->user.'</a>;</span>';
 				echo '</li>';
+				
 					
 			}
 			echo '</ul>';

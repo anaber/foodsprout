@@ -6,7 +6,9 @@ if(isset($searchResults) && sizeof($searchResults) > 0){
 			echo $totalRows." results found";
 			echo '</div>';
 		}
-	
+		
+		echo '<br />'.$this->pagination->create_links().'<br />'; 
+		
 		echo '<ul id="searchResults">';
 		foreach($searchResults as $result){
 				

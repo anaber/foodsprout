@@ -8,7 +8,7 @@ class MobileFarmersMarketModel extends Model{
 		
 			$query_zips = 'SELECT address_id, ( 3959 * acos( cos( radians("'.$latitude.'") ) * cos( radians( latitude ) ) *
 								cos( radians( longitude ) - radians("'.$longitude.'") ) + sin( radians("'.$latitude.'") ) * 
-								sin( radians( latitude ) ) ) ) AS distance FROM address HAVING distance <= '.$distance.' ORDER BY distance LIMIT 0 , 50';
+								sin( radians( latitude ) ) ) ) AS distance FROM address HAVING distance <= '.$distance.' ORDER BY distance';
 
 			
 			$proximity_zips = $this->db->query($query_zips)->result_array();
@@ -65,8 +65,7 @@ class MobileFarmersMarketModel extends Model{
 		
 		$zip_query = 'select * from zipcode where `zipcode` = "'.$zipcode.'"';
 		$zip_code_info = $this->db->query($zip_query)->result_array();
-		
-		
+	
 		if(sizeof($zip_code_info) > 0 ){
 			//query to find all zips near this zip
 			$latitude = $zip_code_info[0]['latitude'];
@@ -79,8 +78,12 @@ class MobileFarmersMarketModel extends Model{
 		
 		$query_zips = 'SELECT address_id, ( 3959 * acos( cos( radians("'.$latitude.'") ) * cos( radians( latitude ) ) *
 								cos( radians( longitude ) - radians("'.$longitude.'") ) + sin( radians("'.$latitude.'") ) * 
-								sin( radians( latitude ) ) ) ) AS distance FROM address HAVING distance <= '.$distance.' ORDER BY distance LIMIT 0 , 50';
-
+								sin( radians( latitude ) ) ) ) AS distance FROM address HAVING distance <= '.$distance.' ORDER BY distance';
+		
+		print_r($query_zips);
+		
+		
+		
 		$proximity_zips = $this->db->query($query_zips)->result_array();
 		
 		if(sizeof($proximity_zips) > 0){

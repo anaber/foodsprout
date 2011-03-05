@@ -7,7 +7,7 @@
 			<br /><label for="distance">Distance: </label>
 			<select name="distance" id="distance">
 				<option>2</option>
-				<option>7</option>
+				<option>6</option>
 				<option>10</option>
 				<option>20</option>
 				<option>50</option>
@@ -28,7 +28,7 @@
 					foreach ($search_results as $result ){
 								
 						echo '<li>';
-							echo 	'<a href="'.base_url().'mobile/farmersmarkets/view-'.$result['custom_url'].'">
+							echo 	'<a href="'.base_url().'mobile/farmersmarkets/'.$result['custom_url'].'">
 									'.$result['producer'].'<span>City: <strong>'.$result['city'].'</strong>, address: <strong>
 									'.$result['address'].'</strong>';	
 						echo '</li>'; 	              

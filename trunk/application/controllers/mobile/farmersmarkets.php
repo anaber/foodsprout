@@ -160,7 +160,7 @@ class Farmersmarkets extends Controller {
 			if(isset($_POST['zipcode']) && $_POST['zipcode']!='' )	{
 
 				$this->load->model('mobile/MobileFarmersMarketModel');
-				 
+			
 				$results = $this->MobileFarmersMarketModel->getFarmersMarketByZipCode( $this->input->post('zipcode'), $this->input->post('distance') );
 
 				if($results != false){

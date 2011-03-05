@@ -130,6 +130,8 @@ $route['^chain/(:any)']									= "chain/customUrl/$1";
 // Product
 $route['^product/']										= "product/index";
 $route['^product/search']								= "product/search";
+$route['^product/addeaten']								= "product/addeaten";
+$route['^product/eaten/(:any)']							= "product/eaten/$1";
 $route['^product/search/(:any)']						= "product/search/$1";
 $route['^product/(:any)']								= "product/customUrl/$1";
  

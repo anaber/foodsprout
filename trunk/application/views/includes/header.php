@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="<?php echo base_url()?>css/uploadify.css" type="text/css" /> 
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.lightbox-0.5.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo base_url()?>css/floating_messages.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo base_url()?>css/thickbox.css" type="text/css" />
 <?php 
 if (isset ($CSS) ) {
 	foreach ($CSS as $key => $css_file) {
@@ -25,6 +26,7 @@ if (isset ($CSS) ) {
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.validationEngine.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.validationEngine-en.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/thickbox.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_trackPageview']);

@@ -34,79 +34,63 @@ class ProductModel extends Model {
 
 	function recentlyAddedProducts($limit = 5){
 
-		$query = "SELECT product.*, custom_url.custom_url AS slug FROM product, producer, custom_url WHERE product_type_id <> 1 AND producer.producer_id = product.producer_id AND custom_url.producer_id = producer.producer_id ORDER BY product.product_id DESC LIMIT ".$limit ;
+		$query = "SELECT
+					product.product_name,
+					custom_url.custom_url,
+					`user`.first_name as user
+					FROM
+					product ,
+					`user` ,
+					custom_url
+					WHERE
+					product.product_id = custom_url.product_id AND
+					product.user_id = `user`.user_id
+					ORDER BY
+					product.product_id DESC
+					LIMIT ".$limit ;
 
-		log_message('debug', "ProductModel.listNewProducts : " . $query);
+		log_message('debug', "ProductModel.recentlyAddedProducts : " . $query);
 		$result = $this->db->query($query);
 
-		$products = array();
-
-		foreach ($result->result_array() as $row) {
-
-			$this->load->library('ProductLib');
-			unset($this->productLib);
-
-			$CI =& get_instance();
-			$CI->load->model('UserModel');
-
-			$user = $CI->UserModel->getUserFromId($row['user_id']);
-
-			$this->productLib->productId = $row['product_id'];
-			$this->productLib->userId = $row['user_id'];
-			$this->productLib->userName = $user->firstName;
-			$this->productLib->productName = $row['product_name'];
-			$this->productLib->producerId = $row['producer_id'];
-			$this->productLib->customURL = $row['slug'];
-
-			$products[] = $this->productLib;
-			unset($this->productLib);
+		if ( $result->num_rows() > 0) {
+				
+			return $result->result();
+			
+		} else {
+			$products = false;
 		}
-		return $products;
 			
 	}
 
 	function recentlyEatenProducts($limit = 5){
 
-		$query = "SELECT product.*, custom_url.custom_url AS slug
+		$query = "SELECT
+						product.product_name,
+						custom_url.custom_url,
+						`user`.first_name as user
 						FROM
+						product_consumed ,
 						product ,
-						producer ,
-						custom_url ,
-						product_consumed
+						`user` ,
+						custom_url
 						WHERE
-						product.product_type_id <> 1 AND
-						producer.producer_id = product.producer_id AND
-						custom_url.producer_id = producer.producer_id AND
-						product.product_id = product_consumed.product_id
+						product_consumed.product_id = product.product_id AND
+						product_consumed.user_id = `user`.user_id AND
+						product_consumed.product_id = custom_url.product_id
 						ORDER BY
-						product_consumed.product_id DESC LIMIT ".$limit ;
+						product_consumed.product_consumed_id DESC
+						LIMIT ".$limit ;
 
-		log_message('debug', "ProductModel.listNewProducts : " . $query);
+		log_message('debug', "ProductModel.recentlyEatenProducts : " . $query);
 		$result = $this->db->query($query);
 
-		$products = array();
-
-		foreach ($result->result_array() as $row) {
-
-			$this->load->library('ProductLib');
-			unset($this->productLib);
-
-			$CI =& get_instance();
-			$CI->load->model('UserModel');
-
-			$user = $CI->UserModel->getUserFromId($row['user_id']);
-
-			$this->productLib->productId = $row['product_id'];
-			$this->productLib->userId = $row['user_id'];
-			$this->productLib->userName = $user->firstName;
-			$this->productLib->productName = $row['product_name'];
-			$this->productLib->producerId = $row['producer_id'];
-			$this->productLib->customURL = $row['slug'];
-
-			$products[] = $this->productLib;
-			unset($this->productLib);
+		if ( $result->num_rows() > 0) {
+				
+			return $result->result();
+			
+		} else {
+			$products = false;
 		}
-		return $products;
 			
 	}
 	
@@ -129,7 +113,7 @@ class ProductModel extends Model {
 		
 		
 		
-		log_message('debug', "ProductModel.searchProducts : " . $query);
+		log_message('debug', "ProductModel.searchProductsByName : " . $query);
 		$result = $this->db->query($query);
 
 		if ( $result->num_rows() > 0) {
@@ -137,7 +121,7 @@ class ProductModel extends Model {
 			return $result->result();
 			
 		} else {
-			$products = 'No Product';
+			$products = false;
 		}
 
 	}
@@ -155,7 +139,7 @@ class ProductModel extends Model {
 		
 		
 		
-		log_message('debug', "ProductModel.searchProducts : " . $query);
+		log_message('debug', "ProductModel.searchProductsByNameTotalRows : " . $query);
 		
 		$result = $this->db->query($query);
 
@@ -194,6 +178,30 @@ class ProductModel extends Model {
 			
 		} else {
 			return 0;
+		}
+	}	
+
+	function getAddressByProductId($productId ='') {
+
+		$query = "SELECT
+					address.*
+					FROM
+					product ,
+					address
+					WHERE
+					product.producer_id = address.producer_id AND
+					product.product_id = '" . $productId."'";
+		
+		
+		log_message('debug', "ProductModel.getAddressByProductId : " . $query);
+		$result = $this->db->query($query);
+
+		if ( $result->num_rows() > 0) {
+			
+			return $result->result();
+			
+		} else {
+			return false;
 		}
 		
 	}
