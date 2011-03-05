@@ -73,7 +73,7 @@ class Farm extends Controller {
 					);
 		
 		$this->load->model('FarmModel', '', TRUE);
-		$farms = $this->FarmModel->getFarmsJson2();
+		$farms = $this->FarmModel->getFarmsJson();
 		
 		$this->load->model('ListModel', '', TRUE);
 		$farmListHtml = $this->ListModel->buildFarmList($farms);
@@ -97,24 +97,14 @@ class Farm extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	/*
-	function ajaxSearchFarms() {
-		$this->load->model('FarmModel', '', TRUE);
-		$restaurants = $this->FarmModel->getFarmsJson2();
-		echo json_encode($restaurants);
-	}
-	*/
-	
 	function ajaxSearchFarms() {
 
 		$this->load->model('FarmModel', '', TRUE);
-		$farms = $this->FarmModel->getFarmsJson2();
-		//echo json_encode($restaurants);
+		$farms = $this->FarmModel->getFarmsJson();
 		
 		$this->load->model('ListModel', '', TRUE);
 		$farmListHtml = $this->ListModel->buildFarmList($farms);
 		
-		//$data['data']['center']['list']['LIST_DATA'] = $restaurantListHtml;
 		$pagingHtml = $this->ListModel->buildPagingLinks($farms['param']);
 		$array = array(
 			'listHtml' => $farmListHtml,
@@ -123,9 +113,7 @@ class Farm extends Controller {
 			'geocode' => $farms['geocode'],
 		);
 		
-		echo json_encode($array);
-		//$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
-		
+		echo json_encode($array);		
 	}
 	
 	function ajaxGetDistinctUsedFarmType() {

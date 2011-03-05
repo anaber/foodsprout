@@ -19,7 +19,7 @@ function redrawZipcodeBox() {
 	formFilterContent = '<form id = "frmFilters">Zip Code <input type="text" size="6" maxlength="5" id = "q"></form>';
 	$('#divZipcode').html(formFilterContent);
 }
-		
+
 function redrawContent(data) {
 	
 	/**
@@ -92,17 +92,6 @@ function redrawContent(data) {
 	
 	reinitializeShowHideMap(data);
 }
-
-/*
-function addZeroResult() {
-	var html =
-	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
-	'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">No results found. Please retry with some other filter options.</div>' + 
-	'</div>'
-	;	
-	return html;
-}
-*/
 
 function reinitializeShowHideMap(data) {
 	$("#linkHideMap").click(function(e) {
