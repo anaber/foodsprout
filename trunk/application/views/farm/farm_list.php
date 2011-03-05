@@ -29,71 +29,64 @@ var uri = '<?php echo $uri; ?>';
 	
 	$(document).ready(function() {
 		
+		var data = '';
+		if (showMap ==  true) {
+			loadMapOnStartUp(38.41055825094609, -98, 3);
+		}
+		//currentZoomLevel = defaultZoomLevel;
 		
-		//$.post("/farm/ajaxSearchFarms", { q:"<?php echo (isset($q) ? $q : '' ) ?>", p: "0", f:"<?php echo (isset($f) ? $f : '' ) ?>" },
-		//function(data){
-			var data = '';
-			if (showMap ==  true) {
-				loadMapOnStartUp(38.41055825094609, -98, 3);
-			}
-			//currentZoomLevel = defaultZoomLevel;
+		var formAction = '/farm/ajaxGetAllFarmType';
+		postArray = { c:10 };
+		
+		$.post(formAction, postArray,function(farmTypes) {
+			topFarmTypes = farmTypes;
+			farmsData = data;
+			redrawContent(data);
+			reinitializeRadiusSearch();
 			
-			var formAction = '/farm/ajaxGetAllFarmType';
-			postArray = { c:10 };
-			
-			$.post(formAction, postArray,function(farmTypes) {
-				topFarmTypes = farmTypes;
-				farmsData = data;
-				redrawContent(data);
+			/**
+			 * If users try to load url with HASH segment from address bar
+			 */
+			if(window.location.hash) {
+				str = window.location.hash;
+				str = str.substr(2);
+				arr = str.split('&');
+				postArray = {};
 				
-				//reinitializeRadiusSearch();
-				
-				/**
-				 * If users try to load url with HASH segment from address bar
-				 */
-				if(window.location.hash) {
-					str = window.location.hash;
-					str = str.substr(2);
-					arr = str.split('&');
-					postArray = {};
-					
-					var p = pp = sort = order = q = f = r = '';		
-					for(i = 0; i < arr.length; i++) {
-						queryString = arr[i];
-						arr2 = queryString.split('=');
-						var key = ''; 
-						var value = '';
-						if (arr2[0]) {
-							key = arr2[0];
-						}				
-						if (arr2[1]) {
-							value = arr2[0];
-						}
-						
-						if (arr2[0] == 'p') {
-							p = arr2[1];
-						} else if (arr2[0] == 'pp') {
-							pp = arr2[1];
-						}  else if (arr2[0] == 'sort') {
-							sort = arr2[1];
-						}  else if (arr2[0] == 'order') {
-							order = arr2[1];
-						}  else if (arr2[0] == 'f') {
-							f = arr2[1];
-						}  else if (arr2[0] == 'q') {
-							q = arr2[1];
-						}  else if (arr2[0] == 'r') {
-							r = arr2[1];
-						} 
+				var p = pp = sort = order = q = f = r = '';		
+				for(i = 0; i < arr.length; i++) {
+					queryString = arr[i];
+					arr2 = queryString.split('=');
+					var key = ''; 
+					var value = '';
+					if (arr2[0]) {
+						key = arr2[0];
+					}				
+					if (arr2[1]) {
+						value = arr2[0];
 					}
-					postAndRedrawContent(p, pp, sort, order, q, f, r);
+					
+					if (arr2[0] == 'p') {
+						p = arr2[1];
+					} else if (arr2[0] == 'pp') {
+						pp = arr2[1];
+					}  else if (arr2[0] == 'sort') {
+						sort = arr2[1];
+					}  else if (arr2[0] == 'order') {
+						order = arr2[1];
+					}  else if (arr2[0] == 'f') {
+						f = arr2[1];
+					}  else if (arr2[0] == 'q') {
+						q = arr2[1];
+					}  else if (arr2[0] == 'r') {
+						r = arr2[1];
+					} 
 				}
+				postAndRedrawContent(p, pp, sort, order, q, f, r);
+			}
 
-			},
-			"json");
-			
-		//},
-		//"json");
+		},
+		"json");
 		
 	});
 	

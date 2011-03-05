@@ -14,18 +14,13 @@ var allRestaurantTypes;
 
 function postAndRedrawContent(page, perPage, s, o, query, filter, city) {
 	
-	//$('#resultsContainer').hide();
-	//$('#messageContainer').show();
-	//$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	var formAction = '/restaurant/ajaxSearchRestaurants';
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter, city:city };
 	
 	$.post(formAction, postArray,function(data) {	
 		
-		redrawContent(data);
-		
-		//reinitializeRemoveFilters(data);
+		redrawContent(data);		
 	}
 	,"json"
 	);
@@ -325,8 +320,6 @@ function redrawAllRestaurantTypes(data, allRestaurantTypes) {
 
 function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
 	
-	
-	
 	//$(':checkbox').click(function () {
 	$('#btnApplyRestaurantTypes').click(function () {
 		var strRestaurantTypeId = '';	
@@ -342,8 +335,6 @@ function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
 	        j++;
 		  }
 		);
-		//alert("From line 3682: " + strRestaurantTypeId);
-		//alert("Line 343:" + strRestaurantTypeId + ":");
 		
 		if (selectedTopCuisineId != '') {
 			if (strRestaurantTypeId != '') {
@@ -368,9 +359,12 @@ function reinitializePopupRestaurantTypeEvent (data, allRestaurantTypes) {
 		
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#cancelRestaurantTypeFilter").click(function(e){
@@ -400,8 +394,7 @@ function redrawTopRestaurantTypes(data) {
 				}
 			}
 		}
-		//resultHtml += '<ul>';
-		//alert(allRestaurantTypes);
+		
 		$.each(allRestaurantTypes, function(i, a) {
 			//alert(a.restaurantTypeId);
 			for(i = 0; i < arrSelectedRestaurantTypes.length; i++ ) {
@@ -412,8 +405,6 @@ function redrawTopRestaurantTypes(data) {
 				}
 			}
 		});	
-		//alert(resultHtml);
-		//resultHtml += '</ul>';
 		
 	} else {
 		/**
@@ -512,7 +503,6 @@ function reinitializeMoreRestaurantType(data) {
 		disablePopup();
 	});
 	
-	
 	/*
 	//Click out event!
 	$("#backgroundPopup").click(function(){
@@ -562,7 +552,6 @@ function redrawContent(data) {
 	redrawTopRestaurantTypes(data);
 	redrawTopCuisines(data);
 	
-	
 	/**
 	 * --------------------------------------
 	 * AJAX Crawling
@@ -570,49 +559,14 @@ function redrawContent(data) {
 	 */
 	if (data) {
 		$('#resultTableContainer').empty();
-		/*
-		//var resultTableHtml = getResultTableHeader();
-		var resultTableHtml = '';
-		
-		if (data.param.numResults == 0) {
-			resultTableHtml += addZeroResult();
-		} else {
-			$.each(data.results, function(i, a) {
-				resultTableHtml += addResult(a, i);
-			});
-		}
-		
-		//resultTableHtml += getResultTableFooter();
-		$('#resultTableContainer').append(resultTableHtml);
-		*/
 		$('#resultTableContainer').html(data.listHtml);
 		$('#pagingDiv').html(data.pagingHtml);
 		
 	}
 	//-----------------------------------
 	
-	
-	//$('#messageContainer').hide();
-	//$('#resultsContainer').show();
-	
 	// Move scroll to top of window.
-	//$('html, body').animate({scrollTop:0}, 'slow');
 	$('html, body').scrollTop(0);
-	
-	/*
-	$('#numRecords').empty();
-	numRecordsContent = drawNumRecords(data.param);			
-	$('#numRecords').append(numRecordsContent);
-	
-	$('#recordsPerPage').empty();
-	recordsPerPageContent = drawRecordsPerPage(data.param);
-	$('#recordsPerPage').append(recordsPerPageContent);
-	
-	$('#pagingLinks').empty();
-	pagingLinksContent = drawPagingLinks(data.param);
-	$('#pagingLinks').append(pagingLinksContent);
-	*/
-	
 	
 	if (showFilters ==  true) {
 		$('#removeFilters').empty();
@@ -644,8 +598,6 @@ function redrawContent(data) {
 		}
 	}
 	
-	//$('#table_results tbody tr td a').click(function(e) {
-	
 	$('#resultTableContainer div div a').click(function(e) {
 		record_id = $(this).attr('id');
 		
@@ -658,11 +610,8 @@ function redrawContent(data) {
 				viewMarker(map, record_id, 1);
 				//$('html, body').animate({scrollTop:0}, 'slow');
 				$('html, body').scrollTop(0);
-			} else {
-				document.location='/restaurant/view/'+record_id;
 			}
 		}
-		
 	});
 	
 	
@@ -687,7 +636,6 @@ function redrawContent(data) {
 	reinitializeQueryFilterEvent(data);
 	reinitializeShowHideMap(data);
 	
-	//$("#table_results").colorize( { ignoreHeaders:true });
 	disablePopupFadeIn();
 }
 
@@ -818,16 +766,16 @@ function reinitializeFilterEvent (data) {
 		loadPopupFadeIn();
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
 		}
-		
+		window.location.hash = '!'+hashUrl;
 	});
 }
 
 function reinitializePopupCuisineEvent (data, allCuisines) {
-	
-	
 	
 	//$(':checkbox').click(function () {
 	$('#btnApplyCuisines').click(function () {
@@ -844,8 +792,6 @@ function reinitializePopupCuisineEvent (data, allCuisines) {
 	        j++;
 		  }
 		);
-		//alert("From line 368: " + strCuisineId);
-		
 		
 		if (selectedTopRestaurantTypeId != '') {
 			if (strCuisineId != '') {
@@ -870,9 +816,12 @@ function reinitializePopupCuisineEvent (data, allCuisines) {
 		
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#cancelCuisineFilter").click(function(e){
@@ -882,8 +831,6 @@ function reinitializePopupCuisineEvent (data, allCuisines) {
 	
 }
 
-
-
 function reinitializeQueryFilterEvent (data) {
 	
 	$("#frmFilters").submit(function(e) {
@@ -891,12 +838,14 @@ function reinitializeQueryFilterEvent (data) {
 		loadPopupFadeIn();
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, $("#q").val(), param.filter, param.city);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, $("#q").val(), param.filter, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 }
-
 
 function reinitializeRemoveFilters(data) {
 	
@@ -914,13 +863,15 @@ function reinitializeRemoveFilters(data) {
 		
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, '', '', param.city);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, '', '', param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 		$('#frmFilters')[0].reset();
 	});
 }
-
 
 function reinitializePagingEvent(data) {
 	
@@ -1049,130 +1000,6 @@ function reinitializePageCountEvent(data) {
 		window.location.hash = '!'+hashUrl;
 	});
 }
-
-/*
-function getOrder(data, field_name ) {
-	var order = 'ASC';
-	
-	if (data.param.sort == field_name) {
-		if (data.param.order == 'ASC') {
-			order = 'DESC';
-		} else {
-			order = 'ASC';
-		}
-	}
-	return order;
-}
-
-function drawRecordsPerPage(params) {
-	str = '';
-	str +=  'Items per page: ';
-	
-	if (params.perPage == 10) {
-		str += '<strong>10</strong> | ';
-	} else {
-		str += '<a href="#" id = "10PerPage">10</a> | ';
-	}
-	
-	if (params.perPage == 20) {
-		str += '<strong>20</strong> | ';
-	} else {
-		str += '<a href="#" id = "20PerPage">20</a> | ';
-	}
-	
-	if (params.perPage == 40) {
-		str += '<strong>40</strong> | ';
-	} else {
-		str += '<a href="#" id = "40PerPage">40</a> | ';
-	}
-	
-	if (params.perPage == 50) {
-		str += '<strong>50</strong>';
-	} else {
-		str += '<a href="#" id = "50PerPage">50</a>';
-	}
-	
-	return str;
-}
-
-function drawPagingLinks(params) {
-	str = '';
-	str += '<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;';
-	str += '<a href="#" id = "imgPrevious">Previous</a> ';
-	str += '&nbsp;&nbsp;&nbsp; Page ' + (parseInt(params.page)+1) + ' of ' + params.totalPages + '&nbsp;&nbsp;&nbsp;';
-	str += '<a href="#" id = "imgNext">Next</a> &nbsp;&nbsp;';
-	str += '<a href="#" id = "imgLast">Last</a>';
-	
-	return str;
-}
-
-function drawNumRecords(params) {
-	str = '';
-	
-	if (params.numResults == 0) {
-		str = 'Records 0' + '-' + params.end + ' of ' + params.numResults;
-	} else {
-		str = 'Records ' + params.start + '-' + params.end + ' of ' + params.numResults;
-	}
-	
-	return str;
-}
-
-function addResult(restaurant, i) {
-	var html =
-	'<div style="overflow:auto; padding-bottom:10px;">' +
-	'	<div class = "listing-header">';
-	
-	if (restaurant.customUrl) {
-		html += '<div style = "float:left;"><a href="/restaurant/' + restaurant.customUrl + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div>';
-	} else {
-		html += '<div style = "float:left;"><a href="/restaurant/view/' + restaurant.restaurantId + '" id = "'+ restaurant.restaurantId +'" style="text-decoration:none;">'+ restaurant.restaurantName +'</a></div>';
-	}	
-	
-	if (restaurant.claimsSustainable == 1) {
-		html += '<div style = "float:right;padding-right:5px;"><img src = "/img/leaf-small.png"></div>';
-	}
-	
-	html +=
-	'		<div class = "clear"></div>'+
-	'	</div>' +
-	'	<div class = "clear"></div>';
-	html +=
-	'	<div class = "listing-information">' + 
-	'		<b>Cuisine:</b> ' ;
-	
-	$.each(restaurant.cuisines, function(j, cuisine) {
-		if (j == 0) {
-			html += cuisine.cuisine;
-		} else {
-			html += ",&nbsp;" + cuisine.cuisine;
-		}
-	});
-	
-	html += 
-	'	</div>' + 
-	'	<div class = "listing-address-title">'+
-	'		<b>Address:</b>'+
-	'	</div>' +
-	'	<div class = "listing-address">';
-	$.each(restaurant.addresses, function(j, address) {
-		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
-		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
-		}
-	});
-	html += 
-	'	</div>' +
-	'	<div class = "clear"></div>';
-	html +=
-	'</div>' +
-	'<div class = "clear"></div>'
-	;
-	
-	return html;
-}
-*/
 
 function getMarkerHtml(o) {
 	html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
