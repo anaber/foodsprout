@@ -164,6 +164,7 @@ function redrawTopFarmTypes(data) {
 		//resultHtml += '</ul>';
 		
 	} else {
+		
 		//alert("ELSE");
 		arrTopFilters = new Array();
 		j = 0;
@@ -186,6 +187,8 @@ function redrawTopFarmTypes(data) {
 				if ( arrTopFilters[i] ==  a.farmTypeId) {
 					resultHtml += ' CHECKED';
 					break;
+				} else {
+					
 				}
 			}
 			resultHtml += '>';
@@ -265,6 +268,7 @@ function redrawContent(data, filter) {
 		$('#pagingDiv').html(data.pagingHtml);
 		
 	}
+	
 	//-----------------------------------
 	
 	//$('#messageContainer').hide();
@@ -274,6 +278,7 @@ function redrawContent(data, filter) {
 	//$('html, body').animate({scrollTop:0}, 'slow');
 	$('html, body').scrollTop(0);
 	
+	/*
 	$('#numRecords').empty();
 	numRecordsContent = drawNumRecords(data.param);			
 	$('#numRecords').append(numRecordsContent);
@@ -285,6 +290,7 @@ function redrawContent(data, filter) {
 	$('#pagingLinks').empty();
 	pagingLinksContent = drawPagingLinks(data.param);
 	$('#pagingLinks').append(pagingLinksContent);
+	*/
 	
 	if (showFilters ==  true) {
 		$('#removeFilters').empty();
@@ -298,11 +304,21 @@ function redrawContent(data, filter) {
 		$('#divHideMap').append(showHideMapContent);
 	}
 	
-	redrawZipcodeBox();
-	$( "#slider" ).slider( "value", data.param.radius );
-	$("#radius").html( $("#slider").slider("value") + ' miles' );
+	if (data) {
+		redrawZipcodeBox();
+		$("#q").val(data.param.q);
+	} else {
+		// No need to set zipcode, 
+		// this done in farm_filter.php 
+	}
 	
-	$("#q").val(data.param.q);
+	if (data) {
+		$( "#slider" ).slider( "value", data.param.radius );
+		$("#radius").html( $("#slider").slider("value") + ' miles' );
+	} else {
+		$( "#slider" ).slider( "value", param.radius );
+		$("#radius").html( $("#slider").slider("value") + ' miles' );
+	}
 	
 	//$('#table_results tbody tr td a').click(function(e) {
 	$('#resultTableContainer div div a').click(function(e) {
@@ -324,8 +340,13 @@ function redrawContent(data, filter) {
 		
 	});
 	
+	
 	if (showMap ==  true) { 
-		reinitializeMap(map, data, data.param.zoomLevel);
+		if (data) {
+			reinitializeMap(map, data, data.param.zoomLevel);
+		} else {
+			reinitializeMap(map, '', param.zoomLevel);
+		}		
 	}
 	
 	reinitializePagingEvent(data);
@@ -339,14 +360,11 @@ function redrawContent(data, filter) {
 	reinitializeFilterEvent(data);
 	
 	reinitializeQueryFilterEvent(data);
-	
 	reinitializeShowHideMap(data);
 	
-	//reinitializeRadiusSearch(data);
-	
-	//disablePopupFadeIn();
 }
 
+/*
 function addZeroResult() {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
@@ -355,6 +373,7 @@ function addZeroResult() {
 	;	
 	return html;
 }
+*/
 
 function reinitializeShowHideMap(data) {
 	$("#linkHideMap").click(function(e) {
@@ -421,7 +440,12 @@ function reinitializeFilterEvent (data) {
 		//}
 		
 		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.radius);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.radius);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.radius);
+		}
 	});
 }
 
@@ -430,8 +454,11 @@ function reinitializeQueryFilterEvent (data) {
 	
 	$("#frmFilters").submit(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.radius);
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.radius);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, $("#q").val(), param.filter, param.radius);
+		}
 	});
 }
 
@@ -441,6 +468,11 @@ function reinitializeRadiusSearch () {
    		stop: function(event, ui) { 
    			data = farmsData;
    			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value") );
+   			if (data) {
+				postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value") );
+			} else {
+				postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, $("#slider").slider("value") );
+			}
    		}
 	});
 }
@@ -459,7 +491,11 @@ function reinitializeRemoveFilters(data) {
 		
 		filters = '';
 
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', '');
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', data.param.radius);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, '', '', param.radius);
+		}
 		$('#frmFilters')[0].reset();
 	});
 }
@@ -469,65 +505,120 @@ function reinitializePagingEvent(data) {
 	
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, param.radius);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, param.radius);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgPrevious").click(function(e) {
 		e.preventDefault();
-		previousPage = parseInt(data.param.page)-1;
-		if (previousPage <= 0) {
-			previousPage = data.param.firstPage;
+		if (data) {
+			previousPage = parseInt(data.param.page)-1;
+			if (previousPage <= 0) {
+				previousPage = data.param.firstPage;
+			}
+			postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+			hashUrl = buildHashUrl(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		} else {
+			previousPage = parseInt(param.page)-1;
+			if (previousPage <= 0) {
+				previousPage = param.firstPage;
+			}
+			postAndRedrawContent(previousPage, param.perPage, param.sort, param.order, param.q, param.filter, param.radius);
+			hashUrl = buildHashUrl(previousPage, param.perPage, param.sort, param.order, param.q, param.filter, param.radius);
 		}
-		//loadPopupFadeIn();
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgNext").click(function(e) {
 		e.preventDefault();
-		nextPage = parseInt(data.param.page)+1;
-		if (nextPage >= data.param.totalPages) {
-			nextPage = data.param.lastPage;
+		if (data) {
+			nextPage = parseInt(data.param.page)+1;
+			if (nextPage >= data.param.totalPages) {
+				nextPage = data.param.lastPage;
+			}
+			postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+			hashUrl = buildHashUrl(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		} else {
+			nextPage = parseInt(param.page)+1;
+			if (nextPage >= param.totalPages) {
+				nextPage = param.lastPage;
+			}
+			postAndRedrawContent(nextPage, param.perPage, param.sort, param.order, param.q, param.filter, param.radius);
+			hashUrl = buildHashUrl(nextPage, param.perPage, param.sort, param.order, param.q, param.filter, param.radius);
 		}
-		//loadPopupFadeIn();
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		if (data) {
+			postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+			hashUrl = buildHashUrl(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		} else {
+			postAndRedrawContent(param.lastPage, param.perPage, param.sort, param.order, param.q, param.filter, param.radius);
+			hashUrl = buildHashUrl(param.lastPage, param.perPage, param.sort, param.order, param.q, param.filter, param.radius);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
-	
 }
 
 function reinitializePageCountEvent(data) {
 	$("#10PerPage").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+			hashUrl = buildHashUrl(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		} else {
+			postAndRedrawContent(param.firstPage, 10, param.sort, param.order, param.q, param.filter, param.radius);
+			hashUrl = buildHashUrl(param.firstPage, 10, param.sort, param.order, param.q, param.filter, param.radius);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#20PerPage").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+			hashUrl = buildHashUrl(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		} else {
+			postAndRedrawContent(param.firstPage, 20, param.sort, param.order, param.q, param.filter, param.radius);
+			hashUrl = buildHashUrl(param.firstPage, 20, param.sort, param.order, param.q, param.filter, param.radius);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#40PerPage").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+			hashUrl = buildHashUrl(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		} else {
+			postAndRedrawContent(param.firstPage, 40, param.sort, param.order, param.q, param.filter, param.radius);
+			hashUrl = buildHashUrl(param.firstPage, 40, param.sort, param.order, param.q, param.filter, param.radius);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#50PerPage").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+			hashUrl = buildHashUrl(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.radius);
+		} else {
+			postAndRedrawContent(param.firstPage, 50, param.sort, param.order, param.q, param.filter, param.radius);
+			hashUrl = buildHashUrl(param.firstPage, 50, param.sort, param.order, param.q, param.filter, param.radius);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
-	
 }
 
+/*
 function getOrder(data, field_name ) {
 	var order = 'ASC';
 	
@@ -570,7 +661,6 @@ function drawRecordsPerPage(params) {
 	}
 	
 	return str;
-	
 }
 
 function drawPagingLinks(params) {
@@ -596,30 +686,26 @@ function drawNumRecords(params) {
 	return str;
 }
 
-
 function addResult(farm, i) {
 	var html =
 	'<div style="overflow:auto; padding-bottom:10px;">' +
 	'	<div class = "listing-header">';
 	
 	if (farm.customUrl) {
-		html += '<a href="/farm/' + farm.customUrl + '" id = "'+ farm.farmId +'" style="text-decoration:none;">'+ farm.farmName +'</a>';
+		html += '<div style = "float:left;"><a href="/farm/' + farm.customUrl + '" id = "'+ farm.farmId +'" style="text-decoration:none;">'+ farm.farmName +'</a></div>';
 	} else {
-		html += '<a href="/farm/view/' + farm.farmId + '" id = "'+ farm.farmId +'" style="text-decoration:none;">'+ farm.farmName +'</a>';
-	}
+		html += '<div style = "float:left;"><a href="/farm/view/' + farm.farmId + '" id = "'+ farm.farmId +'" style="text-decoration:none;">'+ farm.farmName +'</a></div>';
+	}	
 	
 	html +=
+	'		<div class = "clear"></div>'+
 	'	</div>' +
 	'	<div class = "clear"></div>';
 	html +=
 	'	<div class = "listing-information">' + 
 	'		<b>Type:</b> ' ;
 	
-	if (farm.farmType == null) {
-		html += '';
-	} else {		
-		html += farm.farmType;
-	}
+	html += farm.farmType;
 	
 	html += 
 	'	</div>' + 
@@ -644,6 +730,7 @@ function addResult(farm, i) {
 	
 	return html;
 }
+*/
 
 function getMarkerHtml(o) {
 	html = "<font size = '2'><b><i>" + o.farmName + "</i></b></font><br /><font size = '1'>" +
@@ -652,4 +739,9 @@ function getMarkerHtml(o) {
 		  o.addressLine3 + "</font><br />"
 		  ;
 	return html;
+}
+
+function buildHashUrl(p, pp, sort, order, q, filter, radius) {
+	str = 'p='+p+'&pp='+pp+'&sort='+sort+'&order='+order+'&f='+filter+'&q='+q+'&r='+radius;
+	return str;
 }

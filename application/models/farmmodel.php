@@ -858,6 +858,9 @@ class FarmModel extends Model{
 		}
 		
 		$q = $this->input->post('q');
+		if (!$q) {
+			$q = $this->input->get('q'); // Per Page
+		}
 		//$q = '80301';
 		//$filter = 'c_7';
 		
