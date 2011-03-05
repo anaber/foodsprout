@@ -98,13 +98,6 @@ class FarmersMarket extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
-	/*
-	function ajaxSearchFarmersMarket() {
-		$this->load->model('FarmersMarketModel', '', TRUE);
-		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketJson();
-		echo json_encode($farmersMarket);
-	}
-	*/
 	function ajaxSearchFarmersMarket() {
 
 		$this->load->model('FarmersMarketModel', '', TRUE);
@@ -122,8 +115,6 @@ class FarmersMarket extends Controller {
 		);
 		
 		echo json_encode($array);
-		//$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
-		
 	}
 	
 	function ajaxSearchFarmersMarketInfo() {

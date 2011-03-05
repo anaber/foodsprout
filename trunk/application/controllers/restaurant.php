@@ -64,7 +64,7 @@ class Restaurant extends Controller {
 		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
 		
 		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantsJson2();
+		$restaurants = $this->RestaurantModel->getRestaurantsJson();
 		
 		$this->load->model('ListModel', '', TRUE);
 		$restaurantListHtml = $this->ListModel->buildRestaurantList($restaurants);
@@ -213,21 +213,12 @@ class Restaurant extends Controller {
 
 	function ajaxSearchRestaurants() {
 
-		/*
-		 $mtime = microtime();
-		 $mtime = explode(" ",$mtime);
-		 $mtime = $mtime[1] + $mtime[0];
-		 $starttime = $mtime;
-		 */
-
 		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantsJson2();
-		//echo json_encode($restaurants);
+		$restaurants = $this->RestaurantModel->getRestaurantsJson();
 		
 		$this->load->model('ListModel', '', TRUE);
 		$restaurantListHtml = $this->ListModel->buildRestaurantList($restaurants);
 		
-		//$data['data']['center']['list']['LIST_DATA'] = $restaurantListHtml;
 		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
 		$array = array(
 			'listHtml' => $restaurantListHtml,
@@ -237,17 +228,6 @@ class Restaurant extends Controller {
 		);
 		
 		echo json_encode($array);
-		//$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
-		
-		
-		/*
-		 $mtime = microtime();
-		 $mtime = explode(" ",$mtime);
-		 $mtime = $mtime[1] + $mtime[0];
-		 $endtime = $mtime;
-		 $totaltime = ($endtime - $starttime);
-		 echo "<br />This page was created in ".$totaltime." seconds";
-		 */
 	}
 
 	function ajaxGetDistinctUsedRestaurantType() {
@@ -378,7 +358,7 @@ class Restaurant extends Controller {
 						);
 		
 		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantsJson2($city->cityId);
+		$restaurants = $this->RestaurantModel->getRestaurantsJson($city->cityId);
 		
 		$this->load->model('ListModel', '', TRUE);
 		$restaurantListHtml = $this->ListModel->buildRestaurantList($restaurants);

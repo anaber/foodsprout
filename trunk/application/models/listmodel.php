@@ -4,63 +4,66 @@ class ListModel extends Model{
 
 	function buildRestaurantList($restaurants) {
 		$html = '';
-		foreach($restaurants['results'] as $key => $restaurant) {
-			
-			$html .=
-			'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
-			'	<div class = "listing-header">'. "\n";
-			
-			if ($restaurant->customUrl ) {
-				$html .= '<div style = "float:left;"><a href="/restaurant/' . $restaurant->customUrl . '" id = "'. $restaurant->restaurantId .'" style="text-decoration:none;">'. $restaurant->restaurantName .'</a></div>' . "\n";
-			} else {
-				$html .= '<div style = "float:left;"><a href="/restaurant/view/' . $restaurant->restaurantId . '" id = "'. $restaurant->restaurantId .'" style="text-decoration:none;">'. $restaurant->restaurantName .'</a></div>' . "\n";
-			}	
-			
-			if ($restaurant->claimsSustainable == 1) {
-				$html .= '<div style = "float:right;padding-right:5px;"><img src = "/img/leaf-small.png"></div>' . "\n";
-			}
-			
-			$html .=
-			'		<div class = "clear"></div>'. "\n" .
-			'	</div>' . "\n" .
-			'	<div class = "clear"></div>' . "\n";
-			$html .=
-			'	<div class = "listing-information">' . "\n" .
-			'		<b>Cuisine:</b> ' . "\n";
-			
-			
-			foreach ($restaurant->cuisines as $j => $cuisine) {
-				if ($j == 0) {
-					$html .= $cuisine->cuisine;
+		if ($restaurants['param']['numResults'] > 0) {
+			foreach($restaurants['results'] as $key => $restaurant) {
+				
+				$html .=
+				'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
+				'	<div class = "listing-header">'. "\n";
+				
+				if ($restaurant->customUrl ) {
+					$html .= '<div style = "float:left;"><a href="/restaurant/' . $restaurant->customUrl . '" id = "'. $restaurant->restaurantId .'" style="text-decoration:none;">'. $restaurant->restaurantName .'</a></div>' . "\n";
 				} else {
-					$html .= ",&nbsp;" . $cuisine->cuisine;
+					$html .= '<div style = "float:left;"><a href="/restaurant/view/' . $restaurant->restaurantId . '" id = "'. $restaurant->restaurantId .'" style="text-decoration:none;">'. $restaurant->restaurantName .'</a></div>' . "\n";
+				}	
+				
+				if ($restaurant->claimsSustainable == 1) {
+					$html .= '<div style = "float:right;padding-right:5px;"><img src = "/img/leaf-small.png"></div>' . "\n";
 				}
-			}
-			
-			$html .= 
-			'	</div>' . "\n" .
-			'	<div class = "listing-address-title">'. "\n" .
-			'		<b>Address:</b>'. "\n" .
-			'	</div>' .
-			'	<div class = "listing-address">' . "\n";
-
-			foreach ($restaurant->addresses as $j => $address) {
-				if ($j == 0) {
-					$html .= '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
-				} else {
-					$html .= "<br /><br />" . '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+				
+				$html .=
+				'		<div class = "clear"></div>'. "\n" .
+				'	</div>' . "\n" .
+				'	<div class = "clear"></div>' . "\n";
+				$html .=
+				'	<div class = "listing-information">' . "\n" .
+				'		<b>Cuisine:</b> ' . "\n";
+				
+				
+				foreach ($restaurant->cuisines as $j => $cuisine) {
+					if ($j == 0) {
+						$html .= $cuisine->cuisine;
+					} else {
+						$html .= ",&nbsp;" . $cuisine->cuisine;
+					}
 				}
+				
+				$html .= 
+				'	</div>' . "\n" .
+				'	<div class = "listing-address-title">'. "\n" .
+				'		<b>Address:</b>'. "\n" .
+				'	</div>' .
+				'	<div class = "listing-address">' . "\n";
+	
+				foreach ($restaurant->addresses as $j => $address) {
+					if ($j == 0) {
+						$html .= '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+					} else {
+						$html .= "<br /><br />" . '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+					}
+				}
+				
+				$html .= 
+				'	</div>' . "\n" .
+				'	<div class = "clear"></div>' . "\n";
+				$html .=
+				'</div>' . "\n".
+				'<div class = "clear"></div>' . "\n"
+				;
 			}
-			
-			$html .= 
-			'	</div>' . "\n" .
-			'	<div class = "clear"></div>' . "\n";
-			$html .=
-			'</div>' . "\n".
-			'<div class = "clear"></div>' . "\n"
-			;
+		} else {
+			$html = $this->zeroResults();
 		}
-		
 		return $html;
 	}
 	
@@ -239,52 +242,55 @@ class ListModel extends Model{
 	function buildFarmList($farms) {
 		
 		$html = '';
-		foreach($farms['results'] as $key => $farm) {
-			
-			$html .=
-			'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
-			'	<div class = "listing-header">'. "\n";
-			
-			if ($farm->customUrl ) {
-				$html .= '<div style = "float:left;"><a href="/farm/' . $farm->customUrl . '" id = "'. $farm->farmId .'" style="text-decoration:none;">'. $farm->farmName .'</a></div>' . "\n";
-			} else {
-				$html .= '<div style = "float:left;"><a href="/farm/view/' . $farm->farmId . '" id = "'. $farm->farmId .'" style="text-decoration:none;">'. $farm->farmName .'</a></div>' . "\n";
-			}	
-			
-			$html .=
-			'		<div class = "clear"></div>'. "\n" .
-			'	</div>' . "\n" .
-			'	<div class = "clear"></div>' . "\n";
-			$html .=
-			'	<div class = "listing-information">' . "\n" .
-			'		<b>Type:</b> ' . "\n";
-			
-			$html .= $farm->farmType;
-			
-			$html .= 
-			'	</div>' . "\n" .
-			'	<div class = "listing-address-title">'. "\n" .
-			'		<b>Address:</b>'. "\n" .
-			'	</div>' .
-			'	<div class = "listing-address">' . "\n";
-
-			foreach ($farm->addresses as $j => $address) {
-				if ($j == 0) {
-					$html .= '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+		if ($farms['param']['numResults'] > 0) {
+			foreach($farms['results'] as $key => $farm) {
+				
+				$html .=
+				'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
+				'	<div class = "listing-header">'. "\n";
+				
+				if ($farm->customUrl ) {
+					$html .= '<div style = "float:left;"><a href="/farm/' . $farm->customUrl . '" id = "'. $farm->farmId .'" style="text-decoration:none;">'. $farm->farmName .'</a></div>' . "\n";
 				} else {
-					$html .= "<br /><br />" . '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+					$html .= '<div style = "float:left;"><a href="/farm/view/' . $farm->farmId . '" id = "'. $farm->farmId .'" style="text-decoration:none;">'. $farm->farmName .'</a></div>' . "\n";
+				}	
+				
+				$html .=
+				'		<div class = "clear"></div>'. "\n" .
+				'	</div>' . "\n" .
+				'	<div class = "clear"></div>' . "\n";
+				$html .=
+				'	<div class = "listing-information">' . "\n" .
+				'		<b>Type:</b> ' . "\n";
+				
+				$html .= $farm->farmType;
+				
+				$html .= 
+				'	</div>' . "\n" .
+				'	<div class = "listing-address-title">'. "\n" .
+				'		<b>Address:</b>'. "\n" .
+				'	</div>' .
+				'	<div class = "listing-address">' . "\n";
+	
+				foreach ($farm->addresses as $j => $address) {
+					if ($j == 0) {
+						$html .= '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+					} else {
+						$html .= "<br /><br />" . '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+					}
 				}
+				
+				$html .= 
+				'	</div>' . "\n" .
+				'	<div class = "clear"></div>' . "\n";
+				$html .=
+				'</div>' . "\n".
+				'<div class = "clear"></div>' . "\n"
+				;
 			}
-			
-			$html .= 
-			'	</div>' . "\n" .
-			'	<div class = "clear"></div>' . "\n";
-			$html .=
-			'</div>' . "\n".
-			'<div class = "clear"></div>' . "\n"
-			;
+		} else {
+			$html = $this->zeroResults();
 		}
-		
 		return $html;
 	}
 	
@@ -292,45 +298,59 @@ class ListModel extends Model{
 	function buildFarmersMarketList($farmersMarkets) {
 		
 		$html = '';
-		foreach($farmersMarkets['results'] as $key => $farmersMarket) {
-			
-			$html .=
-			'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
-			'	<div class = "listing-header">'. "\n";
-			
-			if ($farmersMarket->customUrl ) {
-				$html .= '<div style = "float:left;"><a href="/farmersmarket/' . $farmersMarket->customUrl . '" id = "'. $farmersMarket->farmersMarketId .'" style="text-decoration:none;">'. $farmersMarket->farmersMarketName .'</a></div>' . "\n";
-			} else {
-				$html .= '<div style = "float:left;"><a href="/farmersmarket/view/' . $farmersMarket->farmersMarketId . '" id = "'. $farmersMarket->farmersMarketId .'" style="text-decoration:none;">'. $farmersMarket->farmersMarketName .'</a></div>' . "\n";
-			}	
-			
-			$html .=
-			'		<div class = "clear"></div>'. "\n" .
-			'	</div>' . "\n" .
-			'	<div class = "clear"></div>' . "\n";
-			$html .=
-			'	<div class = "listing-address-title">'. "\n" .
-			'		<b>Address:</b>'. "\n" .
-			'	</div>' .
-			'	<div class = "listing-address">' . "\n";
-
-			foreach ($farmersMarket->addresses as $j => $address) {
-				if ($j == 0) {
-					$html .= '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
-				} else {
-					$html .= "<br /><br />" . '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
-				}
-			}
-
-			$html .= 
-			'	</div>' . "\n" .
-			'	<div class = "clear"></div>' . "\n";
-			$html .=
-			'</div>' . "\n".
-			'<div class = "clear"></div>' . "\n"
-			;
-		}
 		
+		if ($farmersMarkets['param']['numResults'] > 0) {
+			foreach($farmersMarkets['results'] as $key => $farmersMarket) {
+				
+				$html .=
+				'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
+				'	<div class = "listing-header">'. "\n";
+				
+				if ($farmersMarket->customUrl ) {
+					$html .= '<div style = "float:left;"><a href="/farmersmarket/' . $farmersMarket->customUrl . '" id = "'. $farmersMarket->farmersMarketId .'" style="text-decoration:none;">'. $farmersMarket->farmersMarketName .'</a></div>' . "\n";
+				} else {
+					$html .= '<div style = "float:left;"><a href="/farmersmarket/view/' . $farmersMarket->farmersMarketId . '" id = "'. $farmersMarket->farmersMarketId .'" style="text-decoration:none;">'. $farmersMarket->farmersMarketName .'</a></div>' . "\n";
+				}	
+				
+				$html .=
+				'		<div class = "clear"></div>'. "\n" .
+				'	</div>' . "\n" .
+				'	<div class = "clear"></div>' . "\n";
+				$html .=
+				'	<div class = "listing-address-title">'. "\n" .
+				'		<b>Address:</b>'. "\n" .
+				'	</div>' .
+				'	<div class = "listing-address">' . "\n";
+	
+				foreach ($farmersMarket->addresses as $j => $address) {
+					if ($j == 0) {
+						$html .= '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+					} else {
+						$html .= "<br /><br />" . '<a href="#" id = "map_'. $address->addressId .'" style="font-size:13px;text-decoration:none;">' . $address->displayAddress . '</a>' . "\n";
+					}
+				}
+	
+				$html .= 
+				'	</div>' . "\n" .
+				'	<div class = "clear"></div>' . "\n";
+				$html .=
+				'</div>' . "\n".
+				'<div class = "clear"></div>' . "\n"
+				;
+			}
+			
+		} else {
+			$html = $this->zeroResults();
+		}
+		return $html;
+	}
+	
+	function zeroResults() {
+		$html =
+			'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' .
+			'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">No results found. Please retry with some other filter options.</div>' . 
+			'</div>'
+			;
 		return $html;
 	}
 }
