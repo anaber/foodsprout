@@ -7,6 +7,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, radius, city) 
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query, f:filter, r:radius , city:city };
 	
 	$.post(formAction, postArray,function(data) {		
+		farmersMarketData = data;
 		redrawContent(data);
 	},
 	"json");
@@ -21,11 +22,17 @@ function redrawZipcodeBox() {
 		
 function redrawContent(data) {
 	
+	/**
+	 * --------------------------------------
+	 * AJAX Crawling
+	 * --------------------------------------
+	 */
 	if (data) {
 		$('#resultTableContainer').empty();
 		$('#resultTableContainer').html(data.listHtml);
 		$('#pagingDiv').html(data.pagingHtml);
 	}
+	//-----------------------------------
 	
 	$('html, body').scrollTop(0);
 	
@@ -84,7 +91,6 @@ function redrawContent(data) {
 	reinitializeQueryFilterEvent(data);
 	
 	reinitializeShowHideMap(data);
-	
 }
 
 /*
@@ -121,21 +127,27 @@ function reinitializeQueryFilterEvent (data) {
 		e.preventDefault();
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.radius, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, $("#q").val(), data.param.filter, data.param.radius, data.param.city);
 		} else {
 			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, $("#q").val(), param.filter, param.radius, param.city);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, $("#q").val(), param.filter, param.radius, param.city);
 		}
+		window.location.hash = '!'+hashUrl;
 	});
 }
 
 function reinitializeRadiusSearch () {
 	$( "#slider" ).slider({
    		stop: function(event, ui) { 
-   			data = farmsData;
+   			data = farmersMarketData;
    			if (data) {
-				postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value"), data.param.city );
+				postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value"), data.param.city);
+				hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, $("#slider").slider("value"), data.param.city );
 			} else {
-				postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, $("#slider").slider("value"), param.city );
+				postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, $("#slider").slider("value"), param.city);
+				hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, $("#slider").slider("value"), param.city);
 			}
+			window.location.hash = '!'+hashUrl;
    		}
 	});
 }
@@ -256,114 +268,6 @@ function reinitializePageCountEvent(data) {
 		window.location.hash = '!'+hashUrl;
 	});
 }
-/*
-function getOrder(data, field_name ) {
-	var order = 'ASC';
-	
-	if (data.param.sort == field_name) {
-		if (data.param.order == 'ASC') {
-			order = 'DESC';
-		} else {
-			order = 'ASC';
-		}
-	}
-	return order;
-}
-
-function drawRecordsPerPage(params) {
-	str = '';
-	str +=  'Items per page: ';
-	
-	if (params.perPage == 10) {
-		str += '<strong>10</strong> | ';
-	} else {
-		str += '<a href="#" id = "10PerPage">10</a> | ';
-	}
-	
-	if (params.perPage == 20) {
-		str += '<strong>20</strong> | ';
-	} else {
-		str += '<a href="#" id = "20PerPage">20</a> | ';
-	}
-	
-	if (params.perPage == 40) {
-		str += '<strong>40</strong> | ';
-	} else {
-		str += '<a href="#" id = "40PerPage">40</a> | ';
-	}
-	
-	if (params.perPage == 50) {
-		str += '<strong>50</strong>';
-	} else {
-		str += '<a href="#" id = "50PerPage">50</a>';
-	}
-	
-	return str;
-	
-}
-
-function drawPagingLinks(params) {
-	str = '';
-	str += '<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;';
-	str += '<a href="#" id = "imgPrevious">Previous</a> ';
-	str += '&nbsp;&nbsp;&nbsp; Page ' + (parseInt(params.page)+1) + ' of ' + params.totalPages + '&nbsp;&nbsp;&nbsp;';
-	str += '<a href="#" id = "imgNext">Next</a> &nbsp;&nbsp;';
-	str += '<a href="#" id = "imgLast">Last</a>';
-	
-	return str;
-}
-
-function drawNumRecords(params) {
-	str = '';
-	
-	if (params.numResults == 0) {
-		str = 'Records 0' + '-' + params.end + ' of ' + params.numResults;
-	} else {
-		str = 'Records ' + params.start + '-' + params.end + ' of ' + params.numResults;
-	}
-	
-	return str;
-}
-
-
-function addResult(farmersMarket, i) {
-	var html =
-	'<div style="overflow:auto; padding-bottom:10px;">' +
-	'	<div class = "listing-header">';
-	
-	if (farmersMarket.customUrl) {
-		html += '<a href="/farmersmarket/' + farmersMarket.customUrl + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
-	} else {
-		html += '<a href="/farmersmarket/view/' + farmersMarket.farmersMarketId + '" id = "'+ farmersMarket.farmersMarketId +'" style="text-decoration:none;">'+ farmersMarket.farmersMarketName +'</a>';
-	}
-	
-	html +=
-	'	</div>' +
-	'	<div class = "clear"></div>';
-	html +=
-	'	<div class = "listing-address-title">'+
-	'		<b>Address:</b>'+
-	'	</div>' +
-	'	<div class = "listing-address">';
-	$.each(farmersMarket.addresses, function(j, address) {
-		if (j == 0) {
-			html += '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
-		} else {
-			html += "<br /><br />" + '<a href="#" id = "map_'+ address.addressId +'" style="font-size:13px;text-decoration:none;">' + address.displayAddress + '</a>';
-		}
-	});
-	
-	html += 
-	'	</div>' +
-	'	<div class = "clear"></div>';
-	html +=
-	'</div>' +
-	'<div class = "clear"></div>'
-	;
-	
-	return html;
-}
-*/
 
 function getMarkerHtml(o) {
 	html = "<font size = '2'><b><i>" + o.farmersMarketName + "</i></b></font><br /><font size = '1'>" +

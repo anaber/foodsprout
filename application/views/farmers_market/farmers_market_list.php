@@ -5,6 +5,8 @@
 <script>
 var showMap = true;
 
+var farmersMarketData;
+
 var param = <?php echo $PARAMS; ?>;
 var geocode = <?php echo $GEOCODE; ?>;
 var uri = '<?php echo $uri; ?>';
@@ -26,7 +28,9 @@ var uri = '<?php echo $uri; ?>';
 		}
 			
 		var data = '';
+		farmersMarketData = data;
 		redrawContent(data, '');
+		reinitializeRadiusSearch();
 		
 		/**
 		 * If users try to load url with HASH segment from address bar
@@ -95,7 +99,7 @@ var uri = '<?php echo $uri; ?>';
 	</div>
 	<div class = "clear"></div>
 	
-	<div style="overflow:auto; padding:5px; font-size:10px;">
+	<div style="overflow:auto; padding:5px; font-size:10px;" id = "pagingDiv">
 		<?php
 			if (isset($PAGING_HTML) ) {
 				echo $PAGING_HTML;
