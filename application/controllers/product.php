@@ -37,6 +37,8 @@ class Product extends Controller {
 		
 		$data = array();
 		
+		$searchTerm ="search keyword";
+		
 		// Views to include in the data array
 		$data['CENTER'] = array(
 				'list' => '/product/center',
@@ -108,6 +110,15 @@ class Product extends Controller {
 		
 	}
 	
+	function addeaten(){
+		
+		print_r($_POST);
+		
+		echo '<p>Thank you for your submission!</p>
+				<p><a href="#" onclick="window.parent.tb_remove(); return false">Continue</a>';
+		
+	}
+	
 	function customUrl($customUrl = ''){
 		
 		$this->load->model('CustomUrlModel');
@@ -157,9 +168,32 @@ class Product extends Controller {
 	
 	function eaten($productId=''){
 			
-		//find producer for product	
+		if($productId == ''){
+			return false;
+		}
 		
+		$data = array();
 		
+		//TODO - move this query to model
+		
+		//get producer type
+		$producerType = $this->db->query("SELECT product.product_type_id
+							FROM
+							product 
+							WHERE
+							product.product_id = '".$productId."'")->result(); 
+		
+		//if producer type = restaurant 
+		if($producerType[0]->product_type_id == 1){
+			
+			//load address list
+			$this->load->model('ProductModel');
+
+			$data['addressList'] = $this->ProductModel->getAddressByProductId($productId);
+			
+		}
+		
+		$this->load->view('product/ateadd', $data); 
 		
 	}
 	
