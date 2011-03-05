@@ -66,11 +66,6 @@ class FarmersMarket extends Controller {
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
 		
-		//$this->load->model('FarmersMarketModel', '', TRUE);
-		//$farmersMarketHtml = $this->FarmersMarketModel->getFarmersMarketJson();
-		
-		//$data['data']['center']['list']['FARMERS_MARKETS_HTML'] = $farmersMarketHtml;
-		
 		// CSS files to use
 		$data['CSS'] = array(
 			'listing',
@@ -78,13 +73,57 @@ class FarmersMarket extends Controller {
 			'jquery-ui/jquery.ui.theme',
 		);
 		
+		$this->load->model('FarmersMarketModel', '', TRUE);
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketJson();
+		
+		$this->load->model('ListModel', '', TRUE);
+		$farmersMarketListHtml = $this->ListModel->buildFarmersMarketList($farmersMarket);
+		$data['data']['center']['list']['LIST_DATA'] = $farmersMarketListHtml;
+
+		$pagingHtml = $this->ListModel->buildPagingLinks($farmersMarket['param']);
+		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
+		
+		if (! $farmersMarket['param']['filter']) {
+			$farmersMarket['param']['filter'] = '';
+		}
+		$params = json_encode($farmersMarket['param']);
+		
+		$data['data']['center']['list']['PARAMS'] = $params;
+		
+		$geocode = json_encode($farmersMarket['geocode']);
+		$data['data']['center']['list']['GEOCODE'] = $geocode;
+		
+		$data['data']['left']['filter']['PARAMS'] = $farmersMarket['param'];
+		
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
+	/*
 	function ajaxSearchFarmersMarket() {
 		$this->load->model('FarmersMarketModel', '', TRUE);
 		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketJson();
 		echo json_encode($farmersMarket);
+	}
+	*/
+	function ajaxSearchFarmersMarket() {
+
+		$this->load->model('FarmersMarketModel', '', TRUE);
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketJson();
+		
+		$this->load->model('ListModel', '', TRUE);
+		$farmersMarketListHtml = $this->ListModel->buildFarmersMarketList($farmersMarket);
+		
+		$pagingHtml = $this->ListModel->buildPagingLinks($farmersMarket['param']);
+		$array = array(
+			'listHtml' => $farmersMarketListHtml,
+			'pagingHtml' => $pagingHtml,
+			'param' => $farmersMarket['param'],
+			'geocode' => $farmersMarket['geocode'],
+		);
+		
+		echo json_encode($array);
+		//$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
+		
 	}
 	
 	function ajaxSearchFarmersMarketInfo() {
@@ -308,6 +347,28 @@ class FarmersMarket extends Controller {
 			'jquery-ui/jquery.ui.slider',
 			'jquery-ui/jquery.ui.theme',
 		);
+		
+		$this->load->model('FarmersMarketModel', '', TRUE);
+		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketJson($city->cityId);
+		
+		$this->load->model('ListModel', '', TRUE);
+		$farmersMarketListHtml = $this->ListModel->buildFarmersMarketList($farmersMarket);
+		$data['data']['center']['list']['LIST_DATA'] = $farmersMarketListHtml;
+
+		$pagingHtml = $this->ListModel->buildPagingLinks($farmersMarket['param']);
+		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
+		
+		if (! $farmersMarket['param']['filter']) {
+			$farmersMarket['param']['filter'] = '';
+		}
+		$params = json_encode($farmersMarket['param']);
+		
+		$data['data']['center']['list']['PARAMS'] = $params;
+		
+		$geocode = json_encode($farmersMarket['geocode']);
+		$data['data']['center']['list']['GEOCODE'] = $geocode;
+		
+		$data['data']['left']['filter']['PARAMS'] = $farmersMarket['param'];
 		
 		$this->load->view('templates/left_center_template', $data);
 		

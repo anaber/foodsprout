@@ -85,15 +85,15 @@ var uri = '<?php echo $uri; ?>';
 								p = arr2[1];
 							} else if (arr2[0] == 'pp') {
 								pp = arr2[1];
-							}  else if (arr2[0] == 'sort') {
+							} else if (arr2[0] == 'sort') {
 								sort = arr2[1];
-							}  else if (arr2[0] == 'order') {
+							} else if (arr2[0] == 'order') {
 								order = arr2[1];
-							}  else if (arr2[0] == 'f') {
+							} else if (arr2[0] == 'f') {
 								f = arr2[1];
-							}  else if (arr2[0] == 'q') {
+							} else if (arr2[0] == 'q') {
 								q = arr2[1];
-							}  else if (arr2[0] == 'city') {
+							} else if (arr2[0] == 'city') {
 								city = arr2[1];
 							} 
 						}

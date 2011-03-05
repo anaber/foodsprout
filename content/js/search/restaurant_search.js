@@ -23,7 +23,7 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, city) {
 	
 	$.post(formAction, postArray,function(data) {	
 		
-		redrawContent(data, filter);
+		redrawContent(data);
 		
 		//reinitializeRemoveFilters(data);
 	}
@@ -557,7 +557,7 @@ function redrawSustainableRestaurantsCheckbox() {
 	$('#divSustainableRestaurants').html(content);
 }
 
-function redrawContent(data, filter) {
+function redrawContent(data) {
 	
 	redrawTopRestaurantTypes(data);
 	redrawTopCuisines(data);

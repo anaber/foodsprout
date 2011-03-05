@@ -1477,28 +1477,25 @@ class RestaurantModel extends Model{
 
 		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
 
-		$p = $this->input->post('p'); // Page
+		$p = $this->input->post('p'); 
 		if (!$p) {
-			$p = $this->input->get('p'); // Per Page
+			$p = $this->input->get('p');
 		}
-		
-		$pp = $this->input->post('pp'); // Per Page
+		$pp = $this->input->post('pp'); 
 		if (!$pp) {
-			$pp = $this->input->get('pp'); // Per Page
+			$pp = $this->input->get('pp');
 		}
 		$sort = $this->input->post('sort');
 		if (!$sort) {
-			$sort = $this->input->get('sort'); // Per Page
+			$sort = $this->input->get('sort');
 		}
-		
 		$order = $this->input->post('order');
 		if (!$order) {
-			$order = $this->input->get('order'); // Per Page
+			$order = $this->input->get('order');
 		}
-		
 		$filter = $this->input->post('f');
 		if (!$filter) {
-			$filter = $this->input->get('f'); // Per Page
+			$filter = $this->input->get('f');
 		}
 		//$filter = 'r_58,r_51,c_1';
 		//$filter = 'r_58';
@@ -1534,11 +1531,9 @@ class RestaurantModel extends Model{
 		
 		$q = $this->input->post('q');
 		if (!$q) {
-			$q = $this->input->get('q'); // Per Page
+			$q = $this->input->get('q');
 		}
-		//$q = '94117';
-		//$filter = 'c_7';
-
+		
 		if ($q == '0') {
 			$q = '';
 		}
