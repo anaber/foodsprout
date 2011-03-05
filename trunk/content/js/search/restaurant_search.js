@@ -627,32 +627,22 @@ function redrawContent(data, filter) {
 	}
 	
 	if (data) {
-		//alert("Deepak here 1");
-		//alert(":" + data.param.city + ":");
 		if (data.param.city != '') {	
-			//alert("Deepak here 2");
 			// Do nothing
 		} else {
 			redrawZipcodeBox();
 			$("#q").val(data.param.q);
-			//alert("Deepak here 3");
 			redrawSustainableRestaurantsCheckbox();
 		}
 	} else {
-		//alert("Deepak here 4");
 		if (param.city != false) {	
 			// Do nothing
-			//alert("Deepak here 5");
 		} else {
-			//alert("Deepak here 6");
-			//redrawZipcodeBox();
 			// No need to set zipcode, 
 			// this done in restaurant_filter.php 
-			//$("#q").val(param.q); 
 			redrawSustainableRestaurantsCheckbox();
 		}
 	}
-	//alert("Deepak here 7");
 	
 	//$('#table_results tbody tr td a').click(function(e) {
 	
@@ -682,7 +672,6 @@ function redrawContent(data, filter) {
 		} else {
 			reinitializeMap(map, '', param.zoomLevel);
 		}
-			
 	}
 	
 	reinitializePagingEvent(data);
@@ -702,6 +691,7 @@ function redrawContent(data, filter) {
 	disablePopupFadeIn();
 }
 
+/*
 function addZeroResult() {
 	var html =
 	'<div style="overflow:auto; padding:0px; clear:left; margin-right:10px; padding-bottom:10px;" align = "center">' +
@@ -710,6 +700,7 @@ function addZeroResult() {
 	;	
 	return html;
 }
+*/
 
 function reinitializeShowHideMap(data) {
 	$("#linkHideMap").click(function(e) {
@@ -920,7 +911,6 @@ function reinitializeRemoveFilters(data) {
 		selectedTopRestaurantTypeId = "";
 		
 		filters = '';
-
 		
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, '', '', data.param.city);
@@ -1004,14 +994,12 @@ function reinitializePagingEvent(data) {
 		}
 		window.location.hash = '!'+hashUrl;
 	});
-	
 }
 
 function reinitializePageCountEvent(data) {
 	$("#10PerPage").click(function(e) {
 		e.preventDefault();
 		loadPopupFadeIn();
-		
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
 			hashUrl = buildHashUrl(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, data.param.city);
@@ -1060,14 +1048,9 @@ function reinitializePageCountEvent(data) {
 		}
 		window.location.hash = '!'+hashUrl;
 	});
-	
-	/*
-	$("#recordsPerPageList").change(function(e) {
-		postAndRedrawContent(data.param.firstPage, $("#recordsPerPageList").val(), data.param.sort, data.param.order, data.param.q, data.param.filter, restaurantTypes, cuisines);
-	});
-	*/
 }
 
+/*
 function getOrder(data, field_name ) {
 	var order = 'ASC';
 	
@@ -1109,20 +1092,7 @@ function drawRecordsPerPage(params) {
 		str += '<a href="#" id = "50PerPage">50</a>';
 	}
 	
-	/*
-	str += '<select id = "recordsPerPageList">';
-	str += '<option value = "">--Per Page--</option>';
-	for(i = 10; i <= 50; i+=10) {
-		str += '<option value = "' + i + '"';
-		if (i == params.perPage) {
-			str += ' SELECTED'
-		}
-		str += '>'+i+'</option>';
-	}
-	str += '</select>';
-	*/
 	return str;
-	
 }
 
 function drawPagingLinks(params) {
@@ -1147,7 +1117,6 @@ function drawNumRecords(params) {
 	
 	return str;
 }
-
 
 function addResult(restaurant, i) {
 	var html =
@@ -1203,6 +1172,7 @@ function addResult(restaurant, i) {
 	
 	return html;
 }
+*/
 
 function getMarkerHtml(o) {
 	html = "<font size = '2'><b><i>" + o.restaurantName + "</i></b></font><br /><font size = '1'>" +
