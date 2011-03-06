@@ -637,11 +637,7 @@ class FarmModel extends Model{
 		}
 		
 		$where = ' WHERE ';
-		/*
-		if ( $latLng ) {
-			$where	.= ' address.zipcode = ' . $q . ' AND ';
-		}
-		*/
+		
 		$where .= ' address.producer_id = producer.producer_id' .
 				 ' AND producer.is_farm = 1'.
 		         ' AND producer.status = \'live\' ';

@@ -724,6 +724,9 @@ class FarmersMarketModel extends Model{
 		if (!$filter) {
 			$filter = $this->input->get('f');
 		}
+		if ($filter == false) {
+			$filter = '';
+		}
 		
 		$radius = $this->input->post('r');
 		if (!$radius) {
