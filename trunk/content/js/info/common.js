@@ -38,6 +38,9 @@ function reinitializeTabs() {
 		$map.show(800);
 		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'supplier');
+		
+		hashUrl = buildHashUrl('supplier');
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#menu").click(function(e) {
@@ -73,6 +76,9 @@ function reinitializeTabs() {
 		$map.hide(800);
 		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'menu');
+		
+		hashUrl = buildHashUrl('menu');
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	
@@ -109,6 +115,9 @@ function reinitializeTabs() {
 		$map.hide(800);
 		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
+		
+		hashUrl = buildHashUrl('comment');
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#photos").click(function(e) {
@@ -144,7 +153,27 @@ function reinitializeTabs() {
 		$map.hide(800);
 		
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'photo');
+		
+		hashUrl = buildHashUrl('photo');
+		window.location.hash = '!'+hashUrl;
 	});
+	
+	$("#linkSupplier").click(function(e) {
+		e.preventDefault();
+	});
+	
+	$("#linkMenu").click(function(e) {
+		e.preventDefault();
+	});
+	
+	$("#linkComment").click(function(e) {
+		e.preventDefault();
+	});
+	
+	$("#linkPhoto").click(function(e) {
+		e.preventDefault();
+	});
+	
 	
 }
 
@@ -933,5 +962,10 @@ function reinitializeSubmitPhotoTitleForm() {
 function resetCommentForm() {
 	$('#txtComment').val('');
 	reinitializeCommentCharacterCount();
+}
+
+function buildHashUrl(tab) {
+	str = 'tab='+tab;
+	return str;
 }
 

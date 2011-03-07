@@ -14,6 +14,10 @@
 #leafimg #mainimg #resultsContainer{float:left;width:590px;margin-left:0px;}
 #leafimg #mainimg #resultsContainer #menu-bar{height:25px;width:572px;background-color:#F05A25;padding-left:19px;}
 #leafimg #mainimg #resultsContainer #menu-bar .non-selected{padding-right:9px;padding-left:9px;float:left;height:22px;margin-top:3px;margin-right:2px;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px;text-align:center;line-height:19px;color:#fff;}
+
+#leafimg #mainimg #resultsContainer #menu-bar a{text-decoration:none;color:#FFFFFF;}
+#leafimg #mainimg #resultsContainer #menu-bar a:hover{text-decoration:none;color:#F05A25;}
+
 #leafimg #mainimg #resultsContainer #menu-bar .non-selected:hover{background:#FFF;color:#F05A25;cursor:pointer;}
 #leafimg #mainimg #resultsContainer #menu-bar .selected{padding-right:9px;padding-left:9px;float:left;height:22px;margin-top:3px;margin-right:2px;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px;text-align:center;background-color:#fff;color:#F05A25;line-height:19px;}
 #leafimg #mainimg #resultsContainer #menu-bar .add-item-selected{float:right;margin-right:5px;padding-right:9px;padding-left:9px;height:22px;margin-top:3px;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px;text-align:center;/*background-color:#e5e5e5;*/

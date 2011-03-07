@@ -2,6 +2,9 @@
 	$isAuthenticated = $this->session->userdata('isAuthenticated');
 	$userGroup = $this->session->userdata('userGroup');
 	$userId = $this->session->userdata('userId');
+	
+	$module = $this->uri->segment(1);
+	$producer = $this->uri->segment(2);
 ?>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/info/restaurant_info.js" type="text/javascript"></script>
@@ -35,16 +38,123 @@
 		
 		$('#bottomPaging').hide();
 		
-		$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId },
+		/**
+		 * If users try to load url with HASH segment from address bar
+		 */
+		if(window.location.hash) {
+			
+			str = window.location.hash;
+			str = str.substr(2);
+			arr = str.split('&');
+			postArray = {};
+			var tab = p = pp = sort = order = q = f = city = '';		
+			for(i = 0; i < arr.length; i++) {
+				queryString = arr[i];
+				arr2 = queryString.split('=');
+				var key = ''; 
+				var value = '';
+				if (arr2[0]) {
+					key = arr2[0];
+				}				
+				if (arr2[1]) {
+					value = arr2[0];
+				}
+				
+				//alert(key + " : " + value);
+				//alert(arr2[0] + " : " + arr2[1]);
+				
+				if (arr2[0] == 'tab') {
+					tab = arr2[1];
+				} else if (arr2[0] == 'p') {
+					p = arr2[1];
+				} else if (arr2[0] == 'pp') {
+					pp = arr2[1];
+				} else if (arr2[0] == 'sort') {
+					sort = arr2[1];
+				} else if (arr2[0] == 'order') {
+					order = arr2[1];
+				} else if (arr2[0] == 'f') {
+					f = arr2[1];
+				} else if (arr2[0] == 'q') {
+					q = arr2[1];
+				} else if (arr2[0] == 'city') {
+					city = arr2[1];
+				} 
+			}
+			
+			if (tab == 'supplier') {
+								
+				$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId },
 		
-		function(data){
-			currentContent = 'supplier';
-			jsonData = data;
-			redrawContent(data, 'supplier');
-			reinitializeTabs();
-			reinitializeMap(map, data, 8, true);
-		},
-		"json");
+				function(data){
+					currentContent = 'supplier';
+					jsonData = data;
+					redrawContent(data, 'supplier');
+					reinitializeTabs();
+					reinitializeMap(map, data, 8, true);
+				},
+				"json");
+			} else if (tab == 'menu') {
+				
+				var $map = $('#map');
+				$map.hide(800);
+				
+				$.post("/restaurant/ajaxSearchRestaurantMenus", { q: restaurantId, addressId:addressId },
+		
+				function(data){
+					currentContent = 'menu';
+					jsonData = data;
+					redrawContent(data, 'menu');
+					reinitializeTabs();
+					reinitializeMap(map, data, 8, true);
+				},
+				"json");
+			} else if (tab == 'comment') {
+				
+				var $map = $('#map');
+				$map.hide(800);
+				
+				$.post("/restaurant/ajaxSearchRestaurantComments", { q: restaurantId, addressId:addressId },
+		
+				function(data){
+					currentContent = 'comment';
+					jsonData = data;
+					redrawContent(data, 'comment');
+					reinitializeTabs();
+					reinitializeMap(map, data, 8, true);
+				},
+				"json");
+			} else if (tab == 'photo') {
+				
+				var $map = $('#map');
+				$map.hide(800);
+				
+				$.post("/restaurant/ajaxSearchRestaurantPhotos", { q: restaurantId, addressId:addressId },
+		
+				function(data){
+					currentContent = 'photo';
+					jsonData = data;
+					redrawContent(data, 'photo');
+					reinitializeTabs();
+					reinitializeMap(map, data, 8, true);
+				},
+				"json");
+			}
+			
+		} else {
+		
+			$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId },
+			
+			function(data){
+				currentContent = 'supplier';
+				jsonData = data;
+				redrawContent(data, 'supplier');
+				reinitializeTabs();
+				reinitializeMap(map, data, 8, true);
+			},
+			"json");
+			
+		}
 		
 		
 		loadSmallMapOnStartUp(38.41055825094609, -98, 3);
@@ -74,44 +184,6 @@
 			}
 		});
 		
-		
-		/*
-		$(document).click( function(event) {
-			var clicked = $(this); // jQuery wrapper for clicked element
-			elementId = $(clicked).attr('id');
-			//alert(elementId);
-			if (elementId == 'addItem' || elementId == 'divAddSupplier') {
-				
-			} else {
-				$("#addSupplier").removeClass('active');
-				$('#divAddSupplier').stop(true, false).fadeOut(200);
-				isSupplierFormVisible = false;
-			}
-			
-			if (elementId == 'addItem' || elementId == 'divAddMenu') {
-				
-			} else {
-				$("#addMenu").removeClass('active');
-				$('#divAddMenu').stop(true, false).fadeOut(200);
-				isMenuFormVisible = false;
-			}
-			
-		});
-		*/
-		
-		/*
-		$(document).click(function(event) { 
-			var target = $(event.target);
-			if( target.parents("#login-form").length == 0 ){
-				
-				$("#addSupplier").removeClass('active');
-				$('#divAddComment').stop(true, false).fadeOut(200);
-				
-				$("#addMenu").removeClass('active');
-				$('#divAddMenu').stop(true, false).fadeOut(200);
-			}
-		});
-		*/
 		
 	});
 		
@@ -151,10 +223,10 @@
 <!-- center tabs -->
 	<div id="resultsContainer">
 		<div id="menu-bar">
-			<div id="suppliers" class = "selected">Suppliers</div>
-			<div id="menu" class = "non-selected">Menu</div>
-			<div id="comments" class = "non-selected">Comments</div>
-			<div id="photos" class = "non-selected">Photos</div>
+			<div id="suppliers" class = "non-selected"><a href = "<?php echo $module . '/' . $producer;?>?tab=supplier" id = "linkSupplier">Suppliers</a></div>
+			<div id="menu" class = "non-selected"><a href = "<?php echo $module . '/' . $producer;?>?tab=menu" id = "linkMenu">Menu</a></div>
+			<div id="comments" class = "non-selected"><a href = "<?php echo $module . '/' . $producer;?>?tab=comment" id = "linkComment">Comments</a></div>
+			<div id="photos" class = "non-selected"><a href = "<?php echo $module . '/' . $producer;?>?tab=photo" id = "linkPhoto">Photos</a></div>
 			<div id="addItem" class = "addItem">&nbsp;+ Supplier</div>
 			<div class = "clear"></div>
 			
