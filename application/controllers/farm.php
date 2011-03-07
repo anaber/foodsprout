@@ -281,7 +281,7 @@ class Farm extends Controller {
 		//$q = 176022;
 		$this->load->model('SupplierModel');
 		$suppliee = $this->SupplierModel->getSupplieeForSupplierJson($q);
-			
+
 		echo json_encode($suppliee);
 	}
 	

@@ -271,23 +271,6 @@ class Restaurant extends Controller {
 	function ajaxSearchRestaurantSuppliers() {
 		$q = $this->input->post('q');
 		$addressId = $this->input->post('addressId');
-		
-		//$q = 174538;
-		//$addressId = 489269;
-		$this->load->model('RestaurantModel');
-		/*
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($q);
-		//$restaurantChainId = $restaurant->restaurantChainId;
-		
-		if( !empty($restaurantChainId) ){
-			$this->load->model('SupplierModel');
-			$suppliers = $this->SupplierModel->getSupplierForRestaurantAndChainJson($q, $restaurantChainId);
-		} else {
-			$this->load->model('SupplierModel');
-			$suppliers = $this->SupplierModel->getSupplierForCompanyJson($q, '', '', '', '', '');
-		}
-		*/
-		
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
