@@ -28,8 +28,9 @@ class ProducerCategoryModel extends Model{
 			if ($categotyType == 'CUISINE') {
 				$this->load->library('CuisineLib');
 				unset($this->CuisineLib);
-				
-				$this->CuisineLib->cuisineId = $row['producer_category_id'];
+
+				$this->CuisineLib->cuisineProductCategoryId = $row['producer_category_id'];
+				$this->CuisineLib->cuisineId = $row['cuisine_id'];
 				$this->CuisineLib->cuisineName = $row['producer_category'];
 				
 				$producerCategories[] = $this->CuisineLib;
@@ -37,8 +38,9 @@ class ProducerCategoryModel extends Model{
 			} else if ($categotyType == 'RESTAURANT') {
 				$this->load->library('RestaurantTypeLib');
 				unset($this->restaurantTypeLib);
-				
-				$this->restaurantTypeLib->restaurantTypeId = $row['producer_category_id'];
+
+				$this->restaurantTypeLib->restaurantProductCategoryId = $row['producer_category_id'];
+				$this->restaurantTypeLib->restaurantTypeId = $row['restaurant_type_id'];
 				$this->restaurantTypeLib->restaurantTypeName = $row['producer_category'];
 				
 				$producerCategories[] = $this->restaurantTypeLib;
