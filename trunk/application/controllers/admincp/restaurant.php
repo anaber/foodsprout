@@ -15,7 +15,6 @@ class Restaurant extends Controller {
 	function index() {
 		$data = array();
 		$restaurants = array();
-		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'admincp/restaurant',
@@ -67,10 +66,14 @@ class Restaurant extends Controller {
 	function update($id) {
 		global $STATUS;
 		$data = array();
-		
+
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
-		
+
+		$this->load->model('ProducerCategoryModel');
+		$restaurantTypes = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
+		$cuisines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
+
 		//$this->load->model('RestauranttypeModel');
 		//$restaurantTypes = $this->RestauranttypeModel->listRestaurantType();
 		
