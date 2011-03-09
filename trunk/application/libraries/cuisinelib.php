@@ -4,10 +4,12 @@ class CuisineLib {
 	
 	var $cuisineId;
 	var $cuisineName;
+	var $cuisineProductCategoryId;
 		
 	function cuisineLib() {
 		$this->cuisineId = '';
 		$this->cuisineName = '';
+		$this->cuisineProductCategoryId = '';
 	}
 }
 ?>
