@@ -77,13 +77,15 @@ class CustomUrlModel extends Model{
 				' WHERE custom_url = "' . $slug . '"' .
 				' AND city = "' . $address->cityName . '"';
 		$result = $this->db->query($query);
-		
+
 		if ($result->num_rows() == 0) {
 			$cityCounter = 1;
 		} else {
-			$row = $result->result_array();
+			//$row = $result->result_array();
+			//GET RESULT NUM ROWS
+			$cityCounter = $result->num_rows();
 		}
-		
+
 		$query = 'INSERT INTO custom_url (custom_url_id, custom_url, producer_id, address_id, city, city_counter, product_id, user_id)' .
 				' VALUES (NULL, "'.$slug.'", '.$address->producerId.', '.$addressId.', "'.$address->cityName.'", '.$cityCounter.', NULL, NULL)';
 		if ( $this->db->query($query) ) {
