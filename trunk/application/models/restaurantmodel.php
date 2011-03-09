@@ -213,6 +213,9 @@ class RestaurantModel extends Model{
 
 		$arrRestaurantTypeId = array();
 		$arrCuisineId = array();
+		$producerIds=array();
+		$producers_temp=array();
+		$producers=array();
 
 		$q = $this->input->post('q');
 		//$q = 'fast';
@@ -229,6 +232,171 @@ class RestaurantModel extends Model{
 
 		$page = 0;
 
+		$base_query = 'SELECT * FROM producer ';
+
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM producer';
+
+		$where = ' WHERE is_restaurant = 1';
+		
+		if ( !empty($q) ) {
+
+			$where  .= ' AND (producer.producer like "' .$q . '%"'
+			
+			. ' OR producer.producer_id like "' . $q . '%"';
+
+			$where .= ' )';
+
+		}
+
+		$base_query_count = $base_query_count . $where;
+
+		$query = $base_query_count;
+
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+
+		$query = $base_query . $where;
+
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+
+		log_message('debug', "RestaurantModel.getRestaurantsJsonAdmin : " . $query);
+		$result = $this->db->query($query);
+		//fetch all producer id		
+		foreach($result->result_array() as $row){
+			$producerIds[] = $row['producer_id'];
+			$producers[] = $row;
+		}
+		
+		$producerIds = implode(',',$producerIds);
+
+		if(!empty($producerIds)) {
+			$prodCatQuery = "SELECT producer_category_member.producer_id, producer_category_member.producer_category_id, 
+									producer_category.producer_category 
+							FROM producer_category_member
+							LEFT JOIN producer_category
+							ON producer_category_member.producer_category_id=producer_category.producer_category_id
+							WHERE producer_id IN (".$producerIds.")
+							GROUP BY producer_id";
+			$prodCategories = $this->db->query($prodCatQuery)->result_array();
+
+			$i=0;
+			foreach($producers_temp as $producer_temp) {
+				foreach($prodCategories as $prodCategory) {
+					if( $producer_temp['producer_id'] == $prodCategory['producer_id']) {
+						$producers[]=$producer_temp;
+						$producers[$i]['producer_category_id'] = $prodCategory['producer_category_id'];
+						$producers[$i]['producer_category'] = $prodCategory['producer_category'];
+						break;
+					}
+				}
+				$i++;
+			}
+		}
+
+		$restaurants = array();
+
+		$CI =& get_instance();
+
+		$geocodeArray = array();
+		foreach ($producers as $row) {
+
+			$this->load->library('RestaurantLib');
+			unset($this->RestaurantLib);
+
+			$this->RestaurantLib->restaurantId = $row['producer_id'];
+			$this->RestaurantLib->restaurantName = $row['producer'];
+			//$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
+			//$this->RestaurantLib->companyName = $row['company_name'];
+			$this->RestaurantLib->creationDate = $row['creation_date'];
+
+			$restaurants[] = $this->RestaurantLib;
+			unset($this->RestaurantLib);
+		}
+
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;
+
+		if ($numResults == 0) {
+			$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+		}
+
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', $mapZoomLevel);
+		$arr = array(
+			'results'    => $restaurants,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+		);
+
+		return $arr;
+
+	}
+
+
+
+	function getRestaurantsJsonAdmin_old() {
+
+		global $PER_PAGE, $DEFAULT_ZOOM_LEVEL, $ZIPCODE_ZOOM_LEVEL, $CITY_ZOOM_LEVEL;
+
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+
+		$arrRestaurantTypeId = array();
+		$arrCuisineId = array();
+
+		$q = $this->input->post('q');
+		//$q = 'fast';
+		//$filter = 'c_7';
+
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		// we don't need map in admin area, why do we have this?
+		$mapZoomLevel = $DEFAULT_ZOOM_LEVEL;
+
+		$start = 0;
+
+		$page = 0;
+		
 		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
 				' FROM producer' . 
 				' LEFT JOIN producer_category_member ' .
@@ -301,6 +469,7 @@ class RestaurantModel extends Model{
 		$CI =& get_instance();
 
 		$geocodeArray = array();
+
 		foreach ($result->result_array() as $row) {
 
 			$this->load->library('RestaurantLib');
@@ -408,15 +577,13 @@ class RestaurantModel extends Model{
 
 		$query = "SELECT * FROM producer WHERE producer = \"" . $restaurantName . "\" AND is_restaurant = 1";
 		log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
-
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
-			
+
 			
 			$query = "INSERT INTO producer (producer_id, producer, creation_date, custom_url, city_area_id, phone, fax, email, url, status, track_ip, user_id, facebook, twitter, is_restaurant)" .
 					" values (NULL, \"" . $restaurantName . "\", NOW(), NULL, NULL, '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', 'queue', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
-
 			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 			$return = true;
 
@@ -424,8 +591,12 @@ class RestaurantModel extends Model{
 			if ( $this->db->query($query) ) {
 				$newRestaurantId = $this->db->insert_id();
 				
-				$arrCuisineId = explode(',', $this->input->post('cuisineId'));
-				
+				// CHECK IF USER SELECT A MULTIPLE CUISINE
+				if(strpos($this->input->post('cuisineId'),',') !== FALSE)
+					$arrCuisineId = explode(',', $this->input->post('cuisineId'));
+				else
+					$arrCuisineId[] = $this->input->post('cuisineId');
+
 				for($i = 0; $i < count($arrCuisineId); $i++) {
 					$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
 					" values (NULL, " . $arrCuisineId[$i] . ", " . $newRestaurantId . ", NULL )";
@@ -435,7 +606,7 @@ class RestaurantModel extends Model{
 						//$restaurantCuisineId = 418558;
 					}
 				}
-				
+
 				$restaurantTypeId = $this->input->post('restaurantTypeId');
 				if ($restaurantTypeId) {
 					$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
@@ -615,19 +786,19 @@ class RestaurantModel extends Model{
 	function updateRestaurant() {
 		$return = true;
 
-		$query = "SELECT * FROM restaurant WHERE restaurant_name = \"" . $this->input->post('restaurantName') . "\" AND restaurant_id <> " . $this->input->post('restaurantId');
+		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('restaurantName') . "\" AND producer_id <> " . $this->input->post('restaurantId');
 		log_message('debug', 'RestaurantModel.updateRestaurant : Try to get Duplicate record : ' . $query);
 
 		$result = $this->db->query($query);
 
 		if ($result->num_rows() == 0) {
-			$restaurantChainId = $this->input->post('restaurantChainId');
+//			$restaurantChainId = $this->input->post('restaurantChainId');
 			$data = array(
-						'restaurant_name' => $this->input->post('restaurantName'), 
+						'producer' => $this->input->post('restaurantName'), 
 						'custom_url' => $this->input->post('customUrl'),
-						'company_id' => $this->input->post('companyId'),
-						'restaurant_chain_id' => ( !empty($restaurantChainId) ? $restaurantChainId : NULL ) ,
-						'restaurant_type_id' => $this->input->post('restaurantTypeId'),
+//						'company_id' => $this->input->post('companyId'),
+//						'restaurant_chain_id' => ( !empty($restaurantChainId) ? $restaurantChainId : NULL ) ,
+//						'restaurant_type_id' => $this->input->post('restaurantTypeId'),
 						'phone' => $this->input->post('phone'),
 						'fax' => $this->input->post('fax'),
 						'email' => $this->input->post('email'),
@@ -636,13 +807,24 @@ class RestaurantModel extends Model{
 						'twitter' => $this->input->post('twitter'),
 						'status' => $this->input->post('status'),
 			);
-			$where = "restaurant_id = " . $this->input->post('restaurantId');
-			$query = $this->db->update_string('restaurant', $data, $where);
+			$where = "producer_id = " . $this->input->post('restaurantId');
+			$query = $this->db->update_string('producer', $data, $where);
 
 			log_message('debug', 'RestaurantModel.updateRestaurant : ' . $query);
 			if ( $this->db->query($query) ) {
 				//update cuisines
-				$this->updateCuisines($this->input->post('restaurantId'), explode(",", $this->input->post('cuisineId')));
+				
+				// CHECK IF USER SELECT A MULTIPLE CUISINE
+				if(strpos($this->input->post('cuisineId'),',') !== FALSE)
+					$arrCuisineId = explode(',', $this->input->post('cuisineId'));
+				else
+					$arrCuisineId[] = $this->input->post('cuisineId');
+
+				$this->updateCuisines($this->input->post('restaurantId'), $arrCuisineId);
+				
+				//update restaurant type
+				$this->updateRestaurantType($this->input->post('restaurantId'), $this->input->post('restaurantTypeId'));
+
 				$return = true;
 			} else {
 				$return = false;
@@ -656,34 +838,53 @@ class RestaurantModel extends Model{
 	}
 
 
+	function updateRestaurantType($restaurantId, $restaurantTypeId) {
+	
+		$query = "SELECT producer_category_id FROM producer_category WHERE producer_category_id IN (SELECT producer_category_id 
+				FROM producer_category_member WHERE producer_id=$restaurantId) AND restaurant_type_id IS NOT NULL";
+		log_message('debug', 'RestaurantModel.updateCuisines : get existing cuisines : ' . $query);
+
+		$result = $this->db->query($query)->result_array();
+		$oldRestaurantTypeId = $result[0]['producer_category_id'];
+	
+		$where = "producer_id = " . $this->input->post('restaurantId')." AND producer_category_id=".$oldRestaurantTypeId;
+	
+		$this->db->update('producer_category_member', array('producer_category_id'=>$this->input->post('restaurantTypeId')), $where);
+	}
+
 	function updateCuisines($restaurantId, $cuisineIds) {
-		$query = "SELECT cuisine_id FROM restaurant_cuisine WHERE restaurant_id = $restaurantId";
+		$query = "SELECT producer_category_id FROM producer_category WHERE producer_category_id IN (SELECT producer_category_id 
+				FROM producer_category_member WHERE producer_id=$restaurantId) AND cuisine_id IS NOT NULL";
 		log_message('debug', 'RestaurantModel.updateCuisines : get existing cuisines : ' . $query);
 
 		$result = $this->db->query($query);
 		$existingCuisineIds = array();
 		foreach ($result->result_array() as $row) {
-			$existingCuisineIds[] = $row['cuisine_id'];
+			$existingCuisineIds[] = $row['producer_category_id'];
 		}
 
 		$action = array();
 
 		foreach($cuisineIds as $cuisineId) {
 			$cuisineId = trim($cuisineId);
-			if (!(in_array($cuisineId, $existingCuisineIds) > 0)) {
-				$query = "INSERT INTO restaurant_cuisine (restaurant_id, cuisine_id) VALUE ( $restaurantId, $cuisineId)";
-				log_message('debug', 'RestaurantModel.updateCuisines : insert new cuisine : ' . $query);
-				$result = $this->db->query($query);
-			} else {
-				$action[$cuisineId] = 'update';
+			if(!empty($cuisineId)) {
+				if (!(in_array($cuisineId, $existingCuisineIds) > 0)) {
+					$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
+						" VALUES (NULL, " . $cuisineId . ", " . $restaurantId . ", NULL )";
+					log_message('debug', 'RestaurantModel.updateCuisines : insert new cuisine : ' . $query);
+					$result = $this->db->query($query);
+				} else {
+					$action[$cuisineId] = 'update';
+				}
 			}
 		}
+
 
 		foreach ($existingCuisineIds as $existingCuisineId) {
 			if (array_key_exists ($existingCuisineId, $action) ) {
 				// Do nothing...
 			} else {
-				$query = "DELETE FROM restaurant_cuisine WHERE restaurant_id = $restaurantId AND cuisine_id = $existingCuisineId";
+				$query = "DELETE FROM producer_category_member WHERE producer_id = $restaurantId AND producer_category_id = $existingCuisineId";
 				log_message('debug', 'RestaurantModel.updateCuisines : delete cuisine : ' . $query);
 				$result = $this->db->query($query);
 			}
