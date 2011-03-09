@@ -277,7 +277,6 @@ $(document).ready(function() {
 ?>
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
-
 <form id="restaurantForm" method="post" <?php echo (isset($RESTAURANT)) ? 'action="/admincp/restaurant/save_update"' : 'action="/admincp/restaurant/save_add"' ?>>
 <table class="formTable">
 	<!--
@@ -308,11 +307,13 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%">Restaurant Type</td>
 		<td width = "75%">
+
 			<select name="restaurantTypeId" id="restaurantTypeId"  class="validate[required]">
 			<option value = ''>--Restaurant Type--</option>
+
 			<?php
 				foreach($RESTAURANT_TYPES as $key => $value) {
-					echo '<option value="'.$value->restaurantTypeId.'"' . (  ( isset($RESTAURANT) && ( $value->restaurantTypeId == $RESTAURANT->restaurantTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->restaurantTypeName.'</option>';
+					echo '<option value="'.$value->restaurantProductCategoryId.'"' . (  ( isset($RESTAURANT) && ( $value->restaurantTypeId == $RESTAURANT->restaurantTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->restaurantTypeName.'</option>';
 				}
 			?>
 			</select>
@@ -330,11 +331,11 @@ $(document).ready(function() {
 		<td width = "25%">Cuisine</td>
 		<td width = "75%">
 			<select name="cuisineId" id="cuisineId"  class="validate[required]" multiple size = "6">
-			<option value = ''>--Cuisine--</option>
-			<option value = "NULL">--Unknown--</option>
+			<!--<option value="">--Cuisine--</option>-->
+			<option value="" >--Unknown--</option>
 			<?php
 				foreach($CUISINES as $key => $value) {
-					echo '<option value="'.$value->cuisineId.'"' . (  ( isset($RESTAURANT) && in_array($value->cuisineId, $RESTAURANT->cuisines) ) ? ' SELECTED' : '' ) . '>'.$value->cuisineName.'</option>';
+					echo '<option value="'.$value->cuisineProductCategoryId.'"' . (  ( isset($RESTAURANT) && in_array($value->cuisineId, $RESTAURANT->cuisines) ) ? ' SELECTED' : '' ) . '>'.$value->cuisineName.'</option>';
 				}
 			?>
 			</select>
@@ -469,9 +470,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($RESTAURANT)) ? 'Update Restaurant' : 'Add Restaurant' ?>">
-			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>">
-			<input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantChainId : '') ?>">
-			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->companyId : '') ?>">
+			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>"
 			<input type = "hidden" name = "companyId" id = "cityId" value = "">
 		</td>
 	</tr>
