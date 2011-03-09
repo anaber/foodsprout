@@ -16,7 +16,8 @@ class RestaurantLib {
 	var $zipcode;
 	var $creationDate;
 	var $restaurantURL;
-		
+	var $restaurantProductCategoryId;
+
 	function RestaurantLib() {
 		$this->restaurantId = '';
 		$this->restaurantName = '';
@@ -32,6 +33,7 @@ class RestaurantLib {
 		$this->zipcode = '';
 		$this->creationDate = '';
 		$this->restaurantURL = '';
+		$this->restaurantProductCategoryId ='';
 	}
 }
 ?>
