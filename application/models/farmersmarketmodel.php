@@ -595,20 +595,18 @@ class FarmersMarketModel extends Model{
 		$page = 0;
 		
 		
-		$base_query = 'SELECT farmers_market.*, user.email, user.first_name' .
-				' FROM farmers_market, user';
-		
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM farmers_market, user';
-		
-		$where = ' WHERE farmers_market.user_id = user.user_id ' .
-				' AND farmers_market.status = \'queue\'';
-		
-		if (!  empty($q) ) {
-			$where .= ' AND (' 
-					. '	farmers_market.farmers_market_name like "%' .$q . '%"'
-					. ' OR farmers_market.farmers_market_id like "%' . $q . '%"';
-			$where .= ' )';
+		$base_query = 'SELECT producer.*,user.email, user.first_name FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+
+		$base_query_count = 'SELECT count(*) AS num_records FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+		$where = ' WHERE producer.is_farmers_market=1 ' .
+				' AND producer.status = \'queue\' ';
+
+		if ( !empty($q) ) {
+
+			$where .= ' AND (producer.producer like "%' .$q . '%")';
+
 		}
 		
 		$base_query_count = $base_query_count . $where;
@@ -622,8 +620,8 @@ class FarmersMarketModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY farmers_market_name';
-			$sort = 'farmers_market_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -666,8 +664,8 @@ class FarmersMarketModel extends Model{
 			$this->load->library('FarmersMarketLib');
 			unset($this->FarmersMarketLib);
 			
-			$this->FarmersMarketLib->farmersMarketId = $row['farmers_market_id'];
-			$this->FarmersMarketLib->farmersMarketName = $row['farmers_market_name'];
+			$this->FarmersMarketLib->farmersMarketId = $row['producer_id'];
+			$this->FarmersMarketLib->farmersMarketName = $row['producer'];
 			$this->FarmersMarketLib->userId = $row['user_id'];
 			$this->FarmersMarketLib->email = $row['email'];
 			$this->FarmersMarketLib->ip = $row['track_ip'];

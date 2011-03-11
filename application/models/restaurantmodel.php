@@ -756,9 +756,11 @@ class RestaurantModel extends Model{
 
 		log_message('debug', "RestaurantModel.getCuisineIdsForRestaurant : " . $query);
 		$result = $this->db->query($query)->result_array();
-		
-		return $result[0]['restaurant_type_id'];
-		
+
+		if( !empty($result) )
+			return $result[0]['restaurant_type_id'];
+		else 
+			return array();
 	}
 	
 
@@ -1168,27 +1170,17 @@ class RestaurantModel extends Model{
 
 		$page = 0;
 
-		$base_query = 'SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name, restaurant_type.restaurant_type, user.email, user.first_name' .
-				' FROM restaurant' .
-				' LEFT JOIN restaurant_chain' .
-				' ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id' .
-				' LEFT JOIN company' .
-				' ON restaurant.company_id = company.company_id' . 
-				' LEFT JOIN restaurant_type' .
-				' ON restaurant.restaurant_type_id = restaurant_type.restaurant_type_id' .
-				' LEFT JOIN user' .
-				' ON restaurant.user_id = user.user_id';
-		;
+		$base_query = 'SELECT producer.*,user.email, user.first_name FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
 
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM restaurant, restaurant_type, user';
 
-		$where = ' WHERE restaurant.restaurant_type_id = restaurant_type.restaurant_type_id ' .
-				' AND restaurant.status = \'queue\' ';
+		$base_query_count = 'SELECT count(*) AS num_records FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+		$where = ' WHERE producer.is_restaurant=1 ' .
+				' AND producer.status = \'queue\' ';
 
 		if ( !empty($q) ) {
 
-			$where .= ' AND (restaurant.restaurant_name like "%' .$q . '%")';
+			$where .= ' AND (producer.producer like "%' .$q . '%")';
 
 		}
 
@@ -1205,8 +1197,8 @@ class RestaurantModel extends Model{
 		$query = $base_query . $where;
 
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY restaurant_name';
-			$sort = 'restaurant_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -1248,10 +1240,10 @@ class RestaurantModel extends Model{
 			$this->load->library('RestaurantLib');
 			unset($this->RestaurantLib);
 
-			$this->RestaurantLib->restaurantId = $row['restaurant_id'];
-			$this->RestaurantLib->restaurantName = $row['restaurant_name'];
-			$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
-			$this->RestaurantLib->companyName = $row['company_name'];
+			$this->RestaurantLib->restaurantId = $row['producer_id'];
+			$this->RestaurantLib->restaurantName = $row['producer'];
+			//$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
+			//$this->RestaurantLib->companyName = $row['company_name'];
 			$this->RestaurantLib->userId = $row['user_id'];
 			$this->RestaurantLib->email = $row['email'];
 			$this->RestaurantLib->ip = $row['track_ip'];
@@ -1288,8 +1280,8 @@ class RestaurantModel extends Model{
 		$data = array(
 					'claims_sustainable' => $claimsSustainable,
 		);
-		$where = "restaurant_id = " . $restaurantId;
-		$query = $this->db->update_string('restaurant', $data, $where);
+		$where = "producer_id = " . $restaurantId;
+		$query = $this->db->update_string('producer', $data, $where);
 
 		log_message('debug', 'RestaurantModel.updateRestaurant : ' . $query);
 		if ( $this->db->query($query) ) {

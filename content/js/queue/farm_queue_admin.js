@@ -50,17 +50,17 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_id', order, data.param.q);
+		order = getOrder(data, 'producer_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_id', order, data.param.q);
 	});
 	
 	$("#heading_farm").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_name', order, data.param.q);
+		order = getOrder(data, 'producer');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
 	});
 	
-	$("#heading_farm_type").click(function(e) {
+/*	$("#heading_farm_type").click(function(e) {
 		e.preventDefault();
 		order = getOrder(data, 'farm_type');
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_type', order, data.param.q);
@@ -71,11 +71,11 @@ function reinitializeTableHeadingEvent(data) {
 		order = getOrder(data, 'farmer_type');
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmer_type', order, data.param.q);
 	});
-	
+*/	
 	$("#heading_user").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'email');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'email', order, data.param.q);
+		order = getOrder(data, 'user.email');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'user.email', order, data.param.q);
 	});
 	
 	$("#heading_track_ip").click(function(e) {
@@ -96,8 +96,8 @@ function addResult(farm, i) {
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/farm/update/'+ farm.farmId +'">'+ farm.farmId +'</a></td>' +
 	'	<td valign="top"><a href="/admincp/farm/update/'+ farm.farmId +'">'+ farm.farmName +'</a></td>' +
-	'	<td valign="top">'+ farm.farmType +'</td>' +
-	'	<td valign="top">'+ farm.farmerType +'</td>' +  
+//	'	<td valign="top">'+ farm.farmType +'</td>' +
+//	'	<td valign="top">'+ farm.farmerType +'</td>' +  
 	'	<td valign="top">'+ farm.email +'</td>' +  
 	'	<td valign="top">'+ farm.ip +'</td>' +  
 	'	<td valign="top">'+ farm.dateAdded +'</td>' +
@@ -114,8 +114,8 @@ function getResultTableHeader() {
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 	'		<th id = "heading_farm"><a href = "#" style = "color:#FFFFFF">Farm Name</a></th>' +
-	'		<th id = "heading_farm_type"><a href = "#" style = "color:#FFFFFF">Farm Type</a></th>' +
-	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">Farmer Type</a></th>' +
+//	'		<th id = "heading_farm_type"><a href = "#" style = "color:#FFFFFF">Farm Type</a></th>' +
+//	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">Farmer Type</a></th>' +
 	'		<th id = "heading_user"><a href = "#" style = "color:#FFFFFF">User</a></th>' +
 	'		<th id = "heading_track_ip"><a href = "#" style = "color:#FFFFFF">IP</a></th>' +
 	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Date Added</a></th>' +

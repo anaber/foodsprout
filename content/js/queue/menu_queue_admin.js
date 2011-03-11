@@ -50,26 +50,26 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_id', order, data.param.q);
+		order = getOrder(data, 'product_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'product_id', order, data.param.q);
 	});
 	
-	$("#heading_farm").click(function(e) {
+	$("#heading_product").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_name', order, data.param.q);
+		order = getOrder(data, 'product_name');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'product_name', order, data.param.q);
 	});
 	
-	$("#heading_farm_type").click(function(e) {
+	$("#heading_product_type").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_type');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_type', order, data.param.q);
+		order = getOrder(data, 'product_type');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'product_type', order, data.param.q);
 	});
 	
-	$("#heading_farmer_type").click(function(e) {
+	$("#heading_restaurant_name").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farmer_type');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmer_type', order, data.param.q);
+		order = getOrder(data, 'producer');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
 	});
 	
 	$("#heading_user").click(function(e) {
@@ -129,7 +129,8 @@ function addResult(product, i) {
 	'	</td>' +
 	'	<td valign="top">'+ product.brand +'</td>' +
 	'	<td valign="top">'+ product.email +'</td>' +  
-	'	<td valign="top">'+ product.ip +'</td>'
+	'	<td valign="top">'+ product.ip +'</td>'	+
+	'	<td valign="top">'+ product.creationDate +'</td>'
 	;
 	html +=
 	'</tr>'
@@ -147,10 +148,11 @@ function getResultTableHeader() {
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 	'		<th id = "heading_product"><a href = "#" style = "color:#FFFFFF">Product Name</a></th>' +
 	'		<th id = "heading_product_type"><a href = "#" style = "color:#FFFFFF">Product Type</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
+	'		<th id = "heading_restaurant_name"><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
 	'		<th id = "heading_brand"><a href = "#" style = "color:#FFFFFF">Brand</a></th>' +
 	'		<th id = "heading_user"><a href = "#" style = "color:#FFFFFF">User</a></th>' +
 	'		<th id = "heading_track_ip"><a href = "#" style = "color:#FFFFFF">IP</a></th>' +
+	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Creation Date</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';

@@ -59,7 +59,7 @@ $(document).ready(function() {
 		"/admincp/company/get_companies_based_on_type",
 		{
 			delay:10,
-			minChars:3,
+			minChars:1,
 			matchSubset:1,
 			matchContains:1,
 			cacheLength:10,
@@ -339,7 +339,7 @@ function formatItem(row) {
 		<th>Supplier</th>
 	</tr>
 <?php
-	
+
 	$controller = $this->uri->segment(2);
 	$i = 0;
 	foreach($SUPPLIERS as $supplier) :

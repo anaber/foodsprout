@@ -440,20 +440,18 @@ class DistributorModel extends Model{
 		$page = 0;
 		
 				
-		$base_query = 'SELECT distributor.*, user.email, user.first_name' .
-				' FROM distributor, user';
-		
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM distributor, user';
-		
-		$where = ' WHERE distributor.user_id = user.user_id ' .
-				' AND distributor.status = \'queue\' ';
-		
-		if (!empty ($q) ) {
-			$where .= ' AND (' 
-					. '	distributor.distributor_name like "%' .$q . '%"'
-					. ' OR distributor.distributor_id like "%' . $q . '%"';
-			$where .= ' )';
+		$base_query = 'SELECT producer.*,user.email, user.first_name FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+
+		$base_query_count = 'SELECT count(*) AS num_records FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+		$where = ' WHERE producer.is_distributor=1 ' .
+				' AND producer.status = \'queue\' ';
+
+		if ( !empty($q) ) {
+
+			$where .= ' AND (producer.producer like "%' .$q . '%")';
+
 		}
 		
 		$base_query_count = $base_query_count . $where;
@@ -467,8 +465,8 @@ class DistributorModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY distributor_name';
-			$sort = 'distributor_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -511,8 +509,8 @@ class DistributorModel extends Model{
 			$this->load->library('DistributorLib');
 			unset($this->DistributorLib);
 			
-			$this->DistributorLib->distributorId = $row['distributor_id'];
-			$this->DistributorLib->distributorName = $row['distributor_name'];
+			$this->DistributorLib->distributorId = $row['producer_id'];
+			$this->DistributorLib->distributorName = $row['producer'];
 			$this->DistributorLib->userId = $row['user_id'];
 			$this->DistributorLib->email = $row['email'];
 			$this->DistributorLib->ip = $row['track_ip'];

@@ -155,7 +155,7 @@ class ProductModel extends Model {
 
 	function getProductFromId($productId) {
 
-		$query = "SELECT product.*, custom_url.*, producer.*, product_type.*
+/*		$query = "SELECT product.*, custom_url.*, producer.*, product_type.*
 						FROM
 						product ,
 						custom_url, 
@@ -166,8 +166,17 @@ class ProductModel extends Model {
 						product.product_type_id = product_type.product_type_id AND
 						product.producer_id = producer.producer_id AND
 						product.product_id = " . $productId;
-		
-		
+*/
+		$query = "SELECT product.*, producer.*, product_type.*
+						FROM
+						product ,
+						product_type, 
+						producer
+						WHERE
+						product.product_type_id = product_type.product_type_id AND
+						product.producer_id = producer.producer_id AND
+						product.product_id = " . $productId;
+
 		log_message('debug', "ProductModel.getProductFromId : " . $query);
 		$result = $this->db->query($query);
 
@@ -283,7 +292,7 @@ class ProductModel extends Model {
                 " FROM product, product_type" .
                 " WHERE ";
 		if (!empty($restaurantId)) {
-			$query .= "restaurant_id = " . $restaurantId;
+			$query .= "producer_id = " . $restaurantId;
 		} elseif (!empty($restaurantChainId)) {
 			$query .= "restaurant_chain_id = " . $restaurantChainId;
 		} elseif (!empty($manufactureId)) {
@@ -302,10 +311,10 @@ class ProductModel extends Model {
 			unset($this->productLib);
 
 			$this->productLib->productId = $row['product_id'];
-			$this->productLib->companyId = $row['company_id'];
-			$this->productLib->restaurantId = $row['restaurant_id'];
-			$this->productLib->restaurantChainId = $row['restaurant_chain_id'];
-			$this->productLib->manufactureId = $row['manufacture_id'];
+			//$this->productLib->companyId = $row['company_id'];
+			$this->productLib->restaurantId = $row['producer_id'];
+			//$this->productLib->restaurantChainId = $row['restaurant_chain_id'];
+			//$this->productLib->manufactureId = $row['manufacture_id'];
 			$this->productLib->productTypeId = $row['product_type_id'];
 			$this->productLib->productType = $row['product_type'];
 			$this->productLib->productName = $row['product_name'];
@@ -337,7 +346,7 @@ class ProductModel extends Model {
                 ' product_name = "' . $this->input->post('productName') . '"' .
                 ' AND ';
 		if (!empty($restaurantId)) {
-			$query .= 'restaurant_id';
+			$query .= 'producer_id';
 		} else if (!empty($restaurantChainId)) {
 			$query .= 'restaurant_chain_id';
 		} else if (!empty($manufactureId)) {
@@ -364,7 +373,7 @@ class ProductModel extends Model {
                 'upc' => $this->input->post('upc'),
                 'status' => $this->input->post('status'),
                 'has_fructose' => $this->input->post('hasFructose'),
-                'modify_date' => 'NOW()',
+                'modify_date' => date('Y-m-d')
 			);
 			$where = "product_id = " . $this->input->post('productId');
 			$query = $this->db->update_string('product', $data, $where);
@@ -722,33 +731,22 @@ class ProductModel extends Model {
 		$start = 0;
 		$page = 0;
 
-		$base_query = 'SELECT product.*, product_type.product_type, ' .
-        		' manufacture.manufacture_name, restaurant.restaurant_name, restaurant_chain.restaurant_chain, ' .
-        		' product.user_id, product.track_ip, user.email, user.first_name' .
-				' FROM product';
+		$base_query = "SELECT product.*, product_type.product_type,user.email,producer.producer 
+						FROM product, product_type, producer, user 
+						WHERE product.status ='queue' 
+						AND product.product_type_id = product_type.product_type_id 
+						AND product.user_id=user.user_id 
+						AND product.producer_id=producer.producer_id ";
 
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM product';
+		$base_query_count = "SELECT count(*) AS num_records FROM product WHERE product.status='queue'";
 
-		$where = ' LEFT JOIN product_type ' .
-				'		ON (product.product_type_id =  product_type.product_type_id)  ' .
-				' LEFT JOIN manufacture ON ' .
-				'		(product.manufacture_id =  manufacture.manufacture_id) ' .
-				' LEFT JOIN restaurant ON ' .
-				'		(product.restaurant_id =  restaurant.restaurant_id) ' .
-				' LEFT JOIN ' .
-				'		restaurant_chain ON (product.restaurant_chain_id =  restaurant_chain.restaurant_chain_id) ' .
-				' LEFT JOIN user ' .
-				'		ON product.user_id = user.user_id ' .
-				' WHERE ';
+		$where = "";
 
-		$where .= ' ('
-		. '	product.product_name like "%' .$q . '%"';
-		$where .= ' )';
+		if ( !empty($q) )
+			$where .= " AND product.product_name like '%".$q."%' ";
 
-		$where .= ' AND product.status = \'queue\'';
 
-		$base_query_count = $base_query_count . $where;
+		$base_query_count = $base_query_count;
 
 		$query = $base_query_count;
 
@@ -803,16 +801,17 @@ class ProductModel extends Model {
 
 			$this->productLib->productId = $row->product_id;
 			$this->productLib->productName = $row->product_name;
-			$this->productLib->manufactureId = $row->manufacture_id;
-			$this->productLib->manufactureName = $row->manufacture_name;
-			$this->productLib->restaurantId = $row->restaurant_id;
-			$this->productLib->restaurantName = $row->restaurant_name;
-			$this->productLib->restaurantChainId = $row->restaurant_chain_id;
-			$this->productLib->restaurantChain = $row->restaurant_chain;
+			//$this->productLib->manufactureId = $row->manufacture_id;
+			//$this->productLib->manufactureName = $row->manufacture_name;
+			$this->productLib->restaurantId = $row->producer_id;
+			$this->productLib->restaurantName = $row->producer;
+			//$this->productLib->restaurantChainId = $row->restaurant_chain_id;
+			//$this->productLib->restaurantChain = $row->restaurant_chain;
 			$this->productLib->productTypeId = $row->product_type_id;
 			$this->productLib->productType = $row->product_type;
 			$this->productLib->ingredient = $row->ingredient_text;
 			$this->productLib->brand = $row->brand;
+			$this->productLib->creationDate = $row->creation_date;
 
 			$this->productLib->userId = $row->user_id;
 			$this->productLib->email = $row->email;

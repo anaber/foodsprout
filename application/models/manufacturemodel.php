@@ -904,21 +904,19 @@ class ManufactureModel extends Model{
 		$start = 0;
 		$page = 0;
 		
-		$base_query = 'SELECT manufacture.*, manufacture_type.manufacture_type, user.email, user.first_name' .
-				' FROM manufacture, manufacture_type, user';
-		
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM manufacture, manufacture_type, user';
-		
-		$where = ' WHERE manufacture.manufacture_type_id = manufacture_type.manufacture_type_id'.
-				' AND manufacture.user_id = user.user_id ' .
-				' AND manufacture.status = \'queue\' ';
-		
-		$where .= ' AND (' 
-				. '	manufacture.manufacture_name like "%' .$q . '%"'
-				. ' OR manufacture.manufacture_id like "%' . $q . '%"'
-				. ' OR manufacture_type.manufacture_type like "%' . $q . '%"';		
-		$where .= ' )';
+		$base_query = 'SELECT producer.*,user.email, user.first_name FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+
+		$base_query_count = 'SELECT count(*) AS num_records FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+		$where = ' WHERE producer.is_manufacture=1 ' .
+				' AND producer.status = \'queue\' ';
+
+		if ( !empty($q) ) {
+
+			$where .= ' AND (producer.producer like "%' .$q . '%")';
+
+		}
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -931,8 +929,8 @@ class ManufactureModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY manufacture_name';
-			$sort = 'manufacture_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -975,10 +973,10 @@ class ManufactureModel extends Model{
 			$this->load->library('ManufactureLib');
 			unset($this->ManufactureLib);
 			
-			$this->ManufactureLib->manufactureId = $row['manufacture_id'];
-			$this->ManufactureLib->manufactureName = $row['manufacture_name'];
-			$this->ManufactureLib->manufactureTypeId = $row['manufacture_type_id'];
-			$this->ManufactureLib->manufactureType = $row['manufacture_type'];
+			$this->ManufactureLib->manufactureId = $row['producer_id'];
+			$this->ManufactureLib->manufactureName = $row['producer'];
+			//$this->ManufactureLib->manufactureTypeId = $row['manufacture_type_id'];
+			//$this->ManufactureLib->manufactureType = $row['manufacture_type'];
 			
 			$this->ManufactureLib->userId = $row['user_id'];
 			$this->ManufactureLib->email = $row['email'];
