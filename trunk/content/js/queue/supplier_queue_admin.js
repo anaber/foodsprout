@@ -48,22 +48,36 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 
 
 function reinitializeTableHeadingEvent(data) {
-	
+
+	$("#heading_supplier").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'producer');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
+	});
+
+	$("#heading_suppliee").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'suppliee');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'suppliee', order, data.param.q);
+	});
+
+
 	$("#heading_user").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'email');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'email', order, data.param.q);
+		order = getOrder(data, 'user.email');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'user.email', order, data.param.q);
 	});
 	
 	$("#heading_track_ip").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'track_ip');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'track_ip', order, data.param.q);
+		order = getOrder(data, 'supplier.track_ip');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'supplier.track_ip', order, data.param.q);
 	});
 		
 }
 
 function addResult(supplier, i) {
+/*
 	parentType = supplier.parentType
 	if (parentType == 'restaurantchain') {
 		parentType = 'C';
@@ -79,6 +93,19 @@ function addResult(supplier, i) {
 	supplierType = supplierType.substring(0, 1);
 	html +=
 	'	<td valign="top"><a href="/admincp/' + supplier.parentType + '/update_supplier/'+ supplier.supplierId +'">'+ supplier.supplierName + " <b>("+ supplierType.toUpperCase() +")</b>" +'</a></td>' +
+
+	'	<td valign="top">'+ supplier.supplierId +'</td>' +  
+	'	<td valign="top">'+ supplier.supplierName +'</td>' +  
+	'	<td valign="top">'+ supplier.email +'</td>' +  
+	'	<td valign="top">'+ supplier.ip +'</td>' +  
+	'</tr>'
+	;
+*/
+
+	var html =
+	'<tr>' +
+	'	<td valign="top">'+ supplier.supplierName +'</td>' +  
+	'	<td valign="top">'+ supplier.supplieeName +'</td>' +  
 	'	<td valign="top">'+ supplier.email +'</td>' +  
 	'	<td valign="top">'+ supplier.ip +'</td>' +  
 	'</tr>'
@@ -92,8 +119,8 @@ function getResultTableHeader() {
 	' <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "99%">' +
 	'	<thead>' +
 	'	<tr>' +
-	'		<th><a href = "#" style = "color:#FFFFFF">Parent Name</a></th>' +
-	'		<th><a href = "#" style = "color:#FFFFFF">Supplier Name</a></th>' +
+	'		<th id="heading_supplier"><a href = "#" style = "color:#FFFFFF">Supplier Name</a></th>' +
+	'		<th id="heading_suppliee"><a href = "#" style = "color:#FFFFFF">Suppliee Name</a></th>' +
 	'		<th id = "heading_user"><a href = "#" style = "color:#FFFFFF">User</a></th>' +
 	'		<th id = "heading_track_ip"><a href = "#" style = "color:#FFFFFF">IP</a></th>' +
 	'	</tr>' +

@@ -105,16 +105,16 @@ class Company extends Controller {
 	}
 	
 	function get_companies_based_on_type($q) {
-		$this->load->model('CompanyModel', '', TRUE);
+		$this->load->model('ProducerModel', '', TRUE);
 		$arr = explode('___' , $q);
-		$companyType = $arr[0];
+		$producerType = $arr[0];
 		$q = $arr[1];
-		if ($companyType != '') {
-			$companies = $this->CompanyModel->getCompanyBasedOnType( $companyType, $q );
+		if ($producerType != '') {
+			$producers = $this->ProducerModel->getProducersBasedOnType( $producerType, $q );
 		} else {
-			$companies = 'No Match';
+			$producers = 'No Match';
 		}
-		echo $companies;
+		echo $producers;
 	}
 	
 	function searchCompanies() {

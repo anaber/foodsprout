@@ -52,7 +52,7 @@ class AddressModel extends Model{
 				" FROM address, state, country " .
 				" WHERE ";
 		if (!empty($restaurantId) ) {
-			$query .= "restaurant_id = " . $restaurantId;
+			$query .= "producer_id = " . $restaurantId;
 		} elseif (!empty($farmId) ) {
 			$query .= "farm_id = " . $farmId;
 		} elseif (!empty($manufactureId) ) {
@@ -305,7 +305,7 @@ class AddressModel extends Model{
 		if ( !empty($restaurantId) ) {
 			$CI->load->model('RestaurantModel','',true);
 			$restaurant = $CI->RestaurantModel->getRestaurantFromId($restaurantId);
-			$companyId = $restaurant->companyId;
+			//$companyId = $restaurant->companyId;
 			
 		} else if ( !empty($farmId) ) {
 			$CI->load->model('FarmModel','',true);
@@ -421,12 +421,12 @@ class AddressModel extends Model{
 		
 		$row = $result->row();
 		
-		return $row->restaurant_id;
+		return $row->producer_id;
 	}
 	
 	function getSustainableAddressForRestaurantExceptGiven($restaurantId, $addressId) {
 		
-		$query = "SELECT count(*) as num_row FROM address WHERE restaurant_id = " . $restaurantId . " AND address_id <> " . $addressId . ' AND 	claims_sustainable = 1';
+		$query = "SELECT count(*) as num_row FROM address WHERE producer_id = " . $restaurantId . " AND address_id <> " . $addressId . ' AND 	claims_sustainable = 1';
 		log_message('debug', "AddressModel.getRestaurantFromAddressId : " . $query);
 		$result = $this->db->query($query);
 		

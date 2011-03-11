@@ -410,23 +410,20 @@ class FarmModel extends Model{
 		$page = 0;
 		
 		
-		$base_query = 'SELECT farm.*, farm_type.farm_type, user.email, user.first_name' .
-				' FROM farm, farm_type, user';
-		
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM farm, farm_type, user';
-		
-		$where = ' WHERE farm.farm_type_id = farm_type.farm_type_id' .
-				' AND farm.user_id = user.user_id ' .
-				' AND farm.status = \'queue\' ';
-		
-		if (!empty ($q) ) {
-			$where .= ' AND (' 
-					. '	farm.farm_name like "%' .$q . '%"'
-					. ' OR farm.farm_id like "%' . $q . '%"'
-					. ' OR farm_type.farm_type like "%' . $q . '%"';		
-			$where .= ' )';
+		$base_query = 'SELECT producer.*,user.email, user.first_name FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+
+		$base_query_count = 'SELECT count(*) AS num_records FROM producer LEFT JOIN user ON producer.user_id=user.user_id';
+
+		$where = ' WHERE producer.is_farm=1 ' .
+				' AND producer.status = \'queue\' ';
+
+		if ( !empty($q) ) {
+
+			$where .= ' AND (producer.producer like "%' .$q . '%")';
+
 		}
+
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -439,8 +436,8 @@ class FarmModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY farm_name';
-			$sort = 'farm_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -483,11 +480,11 @@ class FarmModel extends Model{
 			$this->load->library('FarmLib');
 			unset($this->FarmLib);
 			
-			$this->FarmLib->farmId = $row['farm_id'];
-			$this->FarmLib->farmName = $row['farm_name'];
-			$this->FarmLib->farmTypeId = $row['farm_type_id'];
-			$this->FarmLib->farmType = $row['farm_type'];
-			$this->FarmLib->farmerType = ( !empty($row['farmer_type']) ? $FARMER_TYPES[$row['farmer_type']] : '');
+			$this->FarmLib->farmId = $row['producer_id'];
+			$this->FarmLib->farmName = $row['producer'];
+			//$this->FarmLib->farmTypeId = $row['farm_type_id'];
+			//$this->FarmLib->farmType = $row['farm_type'];
+			//$this->FarmLib->farmerType = ( !empty($row['farmer_type']) ? $FARMER_TYPES[$row['farmer_type']] : '');
 			$this->FarmLib->userId = $row['user_id'];
 			$this->FarmLib->email = $row['email'];
 			$this->FarmLib->ip = $row['track_ip'];

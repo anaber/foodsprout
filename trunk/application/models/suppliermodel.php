@@ -168,6 +168,61 @@ class SupplierModel extends Model{
 	function getSupplierForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $restaurantChainId, $farmersMarketId) {
 		global $SUPPLIER_TYPES_2;
 		
+		$where = "WHERE ";
+		
+		if ( !empty($restaurantId) ) {
+			$where .= 'supplier.suppliee='.$restaurantId;
+		} else if ( !empty($farmId) ) {
+			$where .= 'supplier.suppliee='.$farmId;
+		} else if ( !empty($manufactureId) ) {
+			$where .= 'supplier.suppliee='.$manufactureId;
+		} else if ( !empty($distributorId) ) {
+			$where .= 'supplier.suppliee='.$distributorId;
+		} else if ( !empty($restaurantChainId) ) {
+			$where .= 'supplier.suppliee='.$restaurantChainId;			
+		} else if ( !empty($farmersMarketId) ) {
+			$where .= 'supplier.suppliee='.$farmersMarketId;
+		} 
+
+		$suppliers = array();
+
+		$query = "SELECT * FROM supplier LEFT JOIN producer ON supplier.supplier=producer.producer_id $where 
+					GROUP BY supplier.supplier ORDER BY producer ASC";
+		
+		
+		log_message('debug', "SupplierModel.getSupplierForCompany : " . $query);
+		$result = $this->db->query($query);
+
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('SupplierLib');
+			unset($this->supplierLib);
+			
+			$this->supplierLib->supplierId = $row['supplier'];
+			if (isset( $row['is_restaurant']) ) {
+				$this->supplierLib->supplierType = 'restaurant';
+				$this->supplierLib->supplierName = $row['producer'];
+			} else if ( isset($row['is_farm']) ) {
+				$this->supplierLib->supplierType = 'farm';
+				$this->supplierLib->supplierName = $row['producer'];
+			} else if ( isset($row['is_manufacture']) ) {
+				$this->supplierLib->supplierType = 'manufacture';
+				$this->supplierLib->supplierName = $row['producer'];
+			} else if ( isset($row['is_distributor']) ) {
+				$this->supplierLib->supplierType = 'distributor';
+				$this->supplierLib->supplierName = $row['producer'];
+			}
+			
+			$suppliers[] = $this->supplierLib;
+			unset($this->supplierLib);
+		}
+
+		return $suppliers;
+	}
+	
+	function getSupplierForCompany_old($restaurantId, $farmId, $manufactureId, $distributorId, $restaurantChainId, $farmersMarketId) {
+		global $SUPPLIER_TYPES_2;
+		
 		$fieldName = '';
 		$fieldValue = '';
 		
@@ -600,7 +655,7 @@ class SupplierModel extends Model{
 		$fieldValue = '';
 		
 		if ( !empty($restaurantId) ) {
-			$tableName = 'restaurant_supplier';
+			$tableName = 'supplier';
 			$idFieldName = 'restaurant_supplier_id';
 			$fieldName = 'restaurant_id';
 			$fieldValue = $restaurantId;
@@ -1746,6 +1801,150 @@ class SupplierModel extends Model{
 	}
 	
 	function getQueueSuppliersJson() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		$start = 0;
+		$page = 0;
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$query_count = 'SELECT count(*) AS num_records FROM supplier';
+		
+		$query = "SELECT supplier.*,producer.*,user.email AS email 
+					FROM supplier LEFT JOIN producer ON supplier.supplier=producer.producer_id 
+					LEFT JOIN user ON supplier.user_id=user.user_id ";		
+		
+		$where = ' WHERE supplier.status = \'queue\' ';
+
+		if ( !empty($q) ) {
+			$where .= ' AND (producer.producer like "%' .$q . '%")';
+		}
+
+		$query .= $where;
+		$query_count .= $where;
+		
+		$result = $this->db->query($query_count);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY producer.producer';
+			$sort = 'producer.producer';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+
+		log_message('debug', "SupplierModel.getQueueSuppliersJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$suppliers = array();
+		$CI =& get_instance();
+
+		$x=0;
+		$results = array();
+		foreach ($result->result_array() as $row) {
+			$query = "SELECT producer FROM producer WHERE producer_id=".$row['suppliee'];
+			$rs = $this->db->query($query)->result_array();
+			$results[] = $row;
+			$results[$x]['suppliee_name'] = $rs[0]['producer'];
+			$x++;
+		}
+		
+		foreach ($results as $row) {
+			
+			$this->load->library('SupplierLib');
+			unset($this->supplierLib);
+			
+			$CI->load->model('AddressModel','',true);
+			
+//			$this->supplierLib->supplierId = $row['supplier'];
+//			$this->supplierLib->parentType = $row['type'];
+//			$this->supplierLib->parentId = $row['id'];
+//			$this->supplierLib->parentName = $row['parent_name'];
+			$this->supplierLib->supplierName = $row['producer'];
+			$this->supplierLib->supplieeName = $row['suppliee_name'];
+
+			if (isset( $row['is_restaurant']) ) {
+				$this->supplierLib->supplierType = 'restaurant';
+//				$this->supplierLib->supplierReferenceId = $row['supplier_restaurant_id'];
+				
+			} else if ( isset($row['is_farm']) ) {
+				$this->supplierLib->supplierType = 'farm';
+
+//				$this->supplierLib->supplierReferenceId = $row['supplier_farm_id'];
+				
+			} else if ( isset($row['is_manufacture']) ) {
+				$this->supplierLib->supplierType = 'manufacture';
+//				$this->supplierLib->supplierReferenceId = $row['supplier_manufacture_id'];
+				
+			} else if ( isset($row['is_distributor']) ) {
+				$this->supplierLib->supplierType = 'distributor';
+//				$this->supplierLib->supplierReferenceId = $row['supplier_distributor_id'];
+				
+			}
+			$this->supplierLib->userId = $row['user_id'];
+			$this->supplierLib->email = $row['email'];
+			$this->supplierLib->ip = $row['track_ip'];
+			
+			$suppliers[] = $this->supplierLib;
+			unset($this->supplierLib);
+		}
+		
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		$last = $totalPages - 1;		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $suppliers,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
+	
+	function getQueueSuppliersJson_old() {
 		global $PER_PAGE;
 		
 		$p = $this->input->post('p'); // Page

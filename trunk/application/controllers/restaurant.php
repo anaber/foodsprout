@@ -99,7 +99,7 @@ class Restaurant extends Controller {
 
 	//restaurant custom url
 	function customUrl($customUrl){
-		
+
 		$this->load->model('CustomUrlModel');
 		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant');
 		

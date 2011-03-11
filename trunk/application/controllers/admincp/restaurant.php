@@ -152,11 +152,12 @@ class Restaurant extends Controller {
 	function add_supplier($id)
 	{
 		global $SUPPLIER_TYPES_2;
+
 		$data = array();
 		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
-		
+
 		$this->load->model('SupplierModel','',true);
 		$suppliers = $this->SupplierModel->getSupplierForCompany( $id, '', '', '', '', '' );
 		
@@ -243,7 +244,7 @@ class Restaurant extends Controller {
 		
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($id);
-		
+
 		$this->load->model('AddressModel','',true);
 		$addresses = $this->AddressModel->getAddressForCompany( $id, '', '', '', '', '', '', '');
 				
@@ -287,11 +288,11 @@ class Restaurant extends Controller {
 		
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
-		
-		$addresses = $this->AddressModel->getAddressForCompany( $address->restaurantId, '', '', '', '', '', '', '');
+
+		$addresses = $this->AddressModel->getAddressForCompany( $address->producerId, '', '', '', '', '', '', '');
 		
 		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($address->restaurantId);
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($address->producerId);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -305,18 +306,18 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['RESTAURANT_ID'] = $address->restaurantId;
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $address->producerId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = prepareHeading($restaurant->restaurantName, $id, 'address', 'update');
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['ADDRESS'] = $address;
-		$data['data']['center']['form']['RESTAURANT_ID'] = $address->restaurantId;
+		$data['data']['center']['form']['RESTAURANT_ID'] = $address->producerId;
 		$data['data']['center']['form']['ADDRESSES'] = $addresses;
 		
 		$data['BREADCRUMB'] = array(
 				'Restaurants' => '/admincp/restaurant',
-				$restaurant->restaurantName => '/admincp/restaurant/update/' . $address->restaurantId,
+				$restaurant->restaurantName => '/admincp/restaurant/update/' . $address->producerId,
 				'Address #' . $address->addressId => '/admincp/restaurant/update_address/' . $address->addressId,
 			);
 		
@@ -372,11 +373,11 @@ class Restaurant extends Controller {
 		
 		$this->load->model('ProductModel');
 		$product = $this->ProductModel->getProductFromId($id);
-		
-		$products = $this->ProductModel->getProductForCompany($product->restaurantId, '', '', '');
-		
+
+		$products = $this->ProductModel->getProductForCompany($product->producer_id, '', '', '');
+
 		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($product->restaurantId);
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($product->producer_id);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -390,7 +391,7 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['RESTAURANT_ID'] = $product->restaurantId;
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $product->producer_id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($restaurant->restaurantName, $id, 'menu item', 'update');
 		$data['data']['center']['list']['PRODUCT_TYPES'] = $productTypes;
@@ -399,8 +400,8 @@ class Restaurant extends Controller {
 		
 		$data['BREADCRUMB'] = array(
 				'Restaurants' => '/admincp/restaurant',
-				$restaurant->restaurantName => '/admincp/restaurant/update/' . $product->restaurantId,
-				'Menu Item #' . $product->productId => '/admincp/restaurant/update_address/' . $product->productId,
+				$restaurant->restaurantName => '/admincp/restaurant/update/' . $product->producer_id,
+				'Menu Item #' . $product->product_id => '/admincp/restaurant/update_address/' . $product->product_id,
 			);
 			
 		$this->load->view('admincp/templates/left_center_template', $data);

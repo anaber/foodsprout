@@ -50,20 +50,20 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farmers_market_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmers_market_id', order, data.param.q);
+		order = getOrder(data, 'producer_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_id', order, data.param.q);
 	});
 	
 	$("#heading_farmers_market").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farmers_market_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmers_market_name', order, data.param.q);
+		order = getOrder(data, 'producer');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
 	});
 	
 	$("#heading_user").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'email');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'email', order, data.param.q);
+		order = getOrder(data, 'user.email');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'user.email', order, data.param.q);
 	});
 	
 	$("#heading_track_ip").click(function(e) {
