@@ -14,7 +14,7 @@ var documentLocation = '';
 <?php
 	} else if ( isset($FARM_ID) ) {
 ?>
-		documentLocation = '/admincp/farm/add_supplier/<?php echo $FARM_ID; ?>';
+		documentLocation = '/admincp/farm/add_supplier/<?php echo !empty($TRID) ? $TRID : $FARM_ID; ?>';
 <?php
 	} else if ( isset($RESTAURANT_ID) ) {
 ?>
@@ -347,8 +347,8 @@ function formatItem(row) {
 	foreach($SUPPLIERS as $supplier) :
 		$i++;
 		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId.'/'.$RESTAURANT_ID, $supplier->supplierId).'</td>';
-		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId.'/'.$RESTAURANT_ID, $supplier->supplierName) . ' <b>(' . substr ( ucfirst($supplier->supplierType), 0, 1 ) . ')</b>' .'</td>';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId.'/'.$supplier->supplieeId, $supplier->supplierId).'</td>';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId.'/'.$supplier->supplieeId, $supplier->supplierName) . ' <b>(' . substr ( ucfirst($supplier->supplierType), 0, 1 ) . ')</b>' .'</td>';
 		echo '</tr>';
  	endforeach;
 ?>
