@@ -18,7 +18,7 @@ var documentLocation = '';
 <?php
 	} else if ( isset($RESTAURANT_ID) ) {
 ?>
-		documentLocation = '/admincp/restaurant/add_supplier/<?php echo $RESTAURANT_ID; ?>';
+		documentLocation = '/admincp/restaurant/add_supplier/<?php echo !empty($TRID) ? $TRID : $RESTAURANT_ID; ?>';
 <?php
 	} else if ( isset($DISTRIBUTOR_ID) ) {
 ?>
@@ -58,11 +58,9 @@ $(document).ready(function() {
 	$("#companyAjax").autocomplete(
 		"/admincp/company/get_companies_based_on_type",
 		{
-			delay:10,
-			minChars:1,
-			matchSubset:1,
-			matchContains:1,
-			cacheLength:10,
+			width: 203,
+			selectFirst: false,
+			cacheLength:0,
 			onItemSelect:selectItem,
 			onFindValue:findValue,
 			formatItem:formatItem,
@@ -113,7 +111,8 @@ $(document).ready(function() {
 				postArray = {
 							  supplierType:$('#supplierType').val(),
 							  companyId:$('#companyId').val(),
-							  companyName:$('#companyName').val(),
+//							  companyName:$('#companyName').val(),
+							  status:$('#status').val(),
 							  
 							  manufactureId: $('#manufactureId').val(),
 							  farmId: $('#farmId').val(),
@@ -130,8 +129,9 @@ $(document).ready(function() {
 				postArray = { 
 							  supplierType:$('#supplierType').val(),
 							  companyId:$('#companyId').val(),
-							  companyName:$('#companyName').val(),
-							  
+//							  companyName:$('#companyName').val(),
+							  status:$('#status').val(),
+
 							  manufactureId: $('#manufactureId').val(),
 							  farmId: $('#farmId').val(),
 							  restaurantId: $('#restaurantId').val(),
@@ -282,12 +282,12 @@ function formatItem(row) {
 	</tr>
 	
 	<tr>
-		<td width = "25%" nowrap>Company</td>
+		<td width = "25%" nowrap>New Supplier</td>
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($SUPPLIER) ? $SUPPLIER->companyName : '') ?>" style="width: 200px;" />
 		</td>
 	</tr>
-	<tr>
+<!--	<tr>
 		<td width = "25%" nowrap>New Supplier</td>
 		<td width = "75%">
 			<input value="" class="validate[optional]" type="text" name="companyName" id="companyName"/><br />
@@ -303,6 +303,7 @@ function formatItem(row) {
 			</ul>
 		</td>
 	</tr>
+-->
 	<tr>
         <td width = "25%" nowrap>Status</td>
         <td width = "75%">
@@ -320,6 +321,7 @@ function formatItem(row) {
 			<input type = "button" name = "btnReset" id = "btnReset" value = "Reset" class = "button">
 			
 			<input type = "hidden" name = "supplierId" id = "supplierId" value = "<?php echo (isset($SUPPLIER) ? $SUPPLIER->supplierId : '') ?>">
+			<input type = "hidden" name = "trid" id = "trid" value = "<?php echo (isset($TRID) ? $TRID: '') ?>">
 			
 			<input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE_ID) ? $MANUFACTURE_ID : '') ?>">
 			<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM_ID) ? $FARM_ID : '') ?>">
@@ -345,8 +347,8 @@ function formatItem(row) {
 	foreach($SUPPLIERS as $supplier) :
 		$i++;
 		echo '<tr class="d'.($i & 1).'">';
-		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId, $supplier->supplierId).'</td>';
-		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId, $supplier->supplierName) . ' <b>(' . substr ( ucfirst($supplier->supplierType), 0, 1 ) . ')</b>' .'</td>';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId.'/'.$RESTAURANT_ID, $supplier->supplierId).'</td>';
+		echo '	<td>'.anchor('/admincp/'.$controller.'/update_supplier/'.$supplier->supplierId.'/'.$RESTAURANT_ID, $supplier->supplierName) . ' <b>(' . substr ( ucfirst($supplier->supplierType), 0, 1 ) . ')</b>' .'</td>';
 		echo '</tr>';
  	endforeach;
 ?>

@@ -98,6 +98,7 @@ class Restaurant extends Controller {
 		
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
@@ -174,6 +175,7 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($restaurant->restaurantName, '', 'supplier', 'add');
 		$data['data']['center']['list']['RESTAURANT'] = $restaurant;
@@ -190,7 +192,7 @@ class Restaurant extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
-	function update_supplier($id)
+	function update_supplier($id, $trid)
 	{
 		global $SUPPLIER_TYPES_2;
 		$data = array();
@@ -198,10 +200,13 @@ class Restaurant extends Controller {
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'restaurant');
 		
-		$suppliers = $this->SupplierModel->getSupplierForCompany( $supplier->restaurantId, '', '', '', '', '');
+		$suppliers = $this->SupplierModel->getSupplierForCompany( $supplier->supplierId, '', '', '', '', '');
 		
 		$this->load->model('RestaurantModel');
-		$restaurant = $this->RestaurantModel->getRestaurantFromId($supplier->restaurantId);
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($supplier->supplierId);
+
+		// Parent Restaurant		
+		$p_restaurant = $this->RestaurantModel->getRestaurantFromId($trid);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -215,18 +220,20 @@ class Restaurant extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['RESTAURANT_ID'] = $supplier->restaurantId;
+		$data['data']['left']['navigation']['RESTAURANT_ID'] = $supplier->supplierId;
+		$data['data']['left']['navigation']['TRID'] = $trid;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($restaurant->restaurantName, $id, 'supplier', 'update'); 
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['list']['TABLE'] = 'restaurant_supplier';
 		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
+		$data['data']['center']['list']['TRID'] = $trid;
 		
 		$data['BREADCRUMB'] = array(
 				'Restaurants' => '/admincp/restaurant',
-				$restaurant->restaurantName => '/admincp/restaurant/update/' . $supplier->restaurantId,
-				'Supplier #' . $supplier->supplierId => '/admincp/restaurant/update_supplier/' . $supplier->supplierId,
+				$p_restaurant->restaurantName." Suppliers" => '/admincp/restaurant/add_supplier/' .$trid,
+				'Supplier #' . $supplier->supplierId => '/admincp/restaurant/update_supplier/' . $supplier->supplierId.'/'.$trid
 			);
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
@@ -261,6 +268,7 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($restaurant->restaurantName, '', 'address', 'add'); 
 		$data['data']['center']['list']['STATES'] = $states;
@@ -307,6 +315,7 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $address->producerId;
+		$data['data']['left']['navigation']['TRID'] = $address->producerId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = prepareHeading($restaurant->restaurantName, $id, 'address', 'update');
 		$data['data']['center']['form']['STATES'] = $states;
@@ -354,6 +363,7 @@ class Restaurant extends Controller {
 		
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['BREADCRUMB'] = array(
 				'Restaurants' => '/admincp/restaurant',
@@ -392,6 +402,7 @@ class Restaurant extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['RESTAURANT_ID'] = $product->producer_id;
+		$data['data']['left']['navigation']['TRID'] = $product->producer_id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($restaurant->restaurantName, $id, 'menu item', 'update');
 		$data['data']['center']['list']['PRODUCT_TYPES'] = $productTypes;

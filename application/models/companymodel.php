@@ -97,21 +97,42 @@ class CompanyModel extends Model{
 		}
 	}
 	
-	function getCompanyBasedOnType ($companyType, $q) {
+	function getCompanyBasedOnType ($producerType, $q) {
+
+		$originalQ = $q;
+		$q = strtolower($q);
+		$query = 'SELECT ' .
+				' producer_id, producer' .
+				' FROM producer' .
+				' WHERE ' .
+				' producer like "%'.$q.'%"';
+			if ($producerType == 'farm') {
+				$query .= ' AND is_farm = 1';
+			} else if ($producerType == 'restaurant') {
+				$query .= ' AND is_restaurant = 1';
+			} else if ($producerType == 'distributor') {
+				$query .= ' AND is_distributor = 1';
+			} else if ($producerType == 'manufacture') {
+				$query .= ' AND is_manufacture = 1';
+			} 
+				
+		$query .= ' ORDER BY producer';
 		
-		$query = 'SELECT ' . $companyType . '_id, ' . $companyType . '_name
-					FROM ' . $companyType .'
-					WHERE ' . $companyType.'_name like "'.$q.'%"
-					ORDER BY ' . $companyType.'_name ';
+		$producers = '';
 		
-		$companies = '';
-		log_message('debug', "CompanyModel.getCompanyBasedOnType : " . $query);
+		log_message('debug', "CompanyModel.getCompanyBasedOnTypeFrontEnd : " . $query);
 		$result = $this->db->query($query);
-		foreach ($result->result_array() as $row) {
-			$companies .= $row[$companyType . '_name']."|".$row[$companyType . '_id']."\n";
+		
+		if ( $result->num_rows() > 0) {
+			foreach ($result->result_array() as $row) {
+				$producers .= $row['producer']."|".$row['producer_id']."\n";
+			}
+		} else {
+			$producers .= 'Create "'.$originalQ.'"|' . $originalQ;
 		}
 		
-		return $companies;
+		return $producers;
+		
 	}
 	
 	function getCompanyBasedOnTypeFrontEnd ($companyType, $q) {

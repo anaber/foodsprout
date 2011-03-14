@@ -10,6 +10,7 @@ class SupplierLib {
 		$this->supplierId = '';
 		$this->supplierType = '';
 		$this->supplierName = '';
+		$this->status = '';
 	}
 }
 ?>
