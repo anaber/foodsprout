@@ -241,9 +241,9 @@ class RestaurantModel extends Model{
 		
 		if ( !empty($q) ) {
 
-			$where  .= ' AND (producer.producer like "' .$q . '%"'
+			$where  .= ' AND (producer.producer like "%' .$q . '%"'
 			
-			. ' OR producer.producer_id like "' . $q . '%"';
+			. ' OR producer.producer_id like "%' . $q . '%"';
 
 			$where .= ' )';
 
@@ -297,6 +297,7 @@ class RestaurantModel extends Model{
 		foreach($result->result_array() as $row){
 			$producerIds[] = $row['producer_id'];
 			$producers[] = $row;
+			$producers_temp[] = $row;
 		}
 		
 		$producerIds = implode(',',$producerIds);

@@ -12,6 +12,8 @@ class FarmLib {
 	var $country;
 	var $zipcode;
 	var $creationDate;
+	var $farmType;
+	var $farmTypeId;
 		
 	function FarmLib() {
 		$this->farmId = '';
@@ -24,6 +26,8 @@ class FarmLib {
 		$this->country = '';		
 		$this->zipcode = '';
 		$this->creationDate = '';
+		$this->farmType = '';
+		$this->farmTypeId = '';
 	}
 }
 ?>

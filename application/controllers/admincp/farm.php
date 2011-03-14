@@ -311,8 +311,8 @@ class Farm extends Controller {
 	
 	function ajaxSearchFarms() {
 		$this->load->model('FarmModel', '', TRUE);
-		$restaurants = $this->FarmModel->getFarmsJsonAdmin();
-		echo json_encode($restaurants);
+		$farm = $this->FarmModel->getFarmsJsonAdmin();
+		echo json_encode($farm);
 	}
 }
 
