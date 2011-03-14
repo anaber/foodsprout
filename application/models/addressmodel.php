@@ -254,8 +254,7 @@ class AddressModel extends Model{
 		
 		$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 		
-		//$claimsSustainable = $this->input->post('claimsSustainable');
-		$claimsSustainable = '0';
+		$claimsSustainable = $this->input->post('claimsSustainable');
 		
 		$query = "INSERT INTO address (address_id, producer_id, address, city, city_id, state_id, zipcode, country_id, latitude , longitude, geocoded, claims_sustainable, track_ip, user_id)" .
 				" values (NULL, " . $producerId . ", \"" . $this->input->post('address') . "\", \"" . $this->input->post('city') . "\", '" . $cityId . "', '" . $stateId . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "' ";
