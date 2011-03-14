@@ -273,25 +273,31 @@ class FarmModel extends Model{
 		$page = 0;
 		
 		
-		$base_query = 'SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id' .
-				' FROM producer' . 
-				' LEFT JOIN producer_category_member ' .
-				'		ON producer.producer_id = producer_category_member.producer_id'.
-				' LEFT JOIN producer_category '.
-				'		ON producer_category_member.producer_category_id = producer_category.producer_category_id';
+		$base_query = 'SELECT producer.*,producer_category.producer_category,producer_category.producer_category_id FROM producer
+				LEFT JOIN producer_category_member ON producer.producer_id=producer_category_member.producer_id
+				LEFT JOIN producer_category ON producer_category_member.producer_category_id=producer_category.producer_category_id';
 				 
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM producer';
+		$base_query_count = 'SELECT count(*) AS num_records FROM producer';
 		
 		$where = ' WHERE is_farm = 1';
 		
-		$query = $base_query_count;
+		if ( !empty($q) ) {
+
+			$where  .= ' AND (producer.producer like "%' .$q . '%"'
+			. ' OR producer.producer_id like "%' . $q . '%"';
+			$where .= ' )';
+
+		}
+		
+		$query = $base_query_count.$where;
 		
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;
 		
 		$query = $base_query . $where;
+		
+		$query .= " GROUP BY producer_id";
 		
 		if ( empty($sort) ) {
 			$sort_query = ' ORDER BY producer';
@@ -340,8 +346,8 @@ class FarmModel extends Model{
 			
 			$this->FarmLib->farmId = $row['producer_id'];
 			$this->FarmLib->farmName = $row['producer'];
-			//$this->FarmLib->farmTypeId = $row['farm_type_id'];
-			//$this->FarmLib->farmType = $row['farm_type'];
+			$this->FarmLib->farmTypeId = $row['producer_category_id'];
+			$this->FarmLib->farmType = $row['producer_category'];
 			//$this->FarmLib->farmerType = ( !empty($row['farmer_type']) ? $FARMER_TYPES[$row['farmer_type']] : '');
 			
 			$farms[] = $this->FarmLib;
