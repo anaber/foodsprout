@@ -215,19 +215,20 @@ $(document).ready(function() {
 
 <form id="farmForm" method="post" <?php echo (isset($FARM)) ? 'action="/admincp/farm/save_update"' : 'action="/admincp/farm/save_add"' ?>>
 <table class="formTable">
-	<tr>
-		<td width = "25%" nowrap>Company</td>
-		<td width = "75%">
+<!--	<tr>
+		<td width = "30%" nowrap>Company</td>
+		<td width = "70%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($FARM) ? $FARM->companyName : '') ?>" style="width: 200px;" /> 
 		</td>
 	</tr>
+-->
 	<tr>
-		<td width = "25%" nowrap>Farm Name</td>
-		<td width = "75%">
+		<td width = "30%" nowrap>Farm Name</td>
+		<td width = "70%">
 			<input value="<?php echo (isset($FARM) ? $FARM->farmName : '') ?>" class="validate[optional]" type="text" name="farmName" id="farmName"/><br />
 		</td>
 	</tr>
-	<tr>
+<!--	<tr>
 		<td colspan = "2" style = "font-size:10px;">
 			<ul>
 				<li>Existing companies selected and name entered, farm will be treated as the subsidery of selected company but with overridden name.</li>
@@ -236,9 +237,10 @@ $(document).ready(function() {
 			</ul>
 		</td>
 	</tr>
+-->
 	<tr>
-		<td width = "25%">Farm Type</td>
-		<td width = "75%">
+		<td width = "30%">Farm Type</td>
+		<td width = "70%">
 			<select name="farmTypeId" id="farmTypeId"  class="validate[required]">
 			<option value = ''>--Farm Type--</option>
 			<?php
@@ -250,8 +252,8 @@ $(document).ready(function() {
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%">Farmer Type</td>
-		<td width = "75%">
+		<td width = "30%">Farmer Type</td>
+		<td width = "70%">
 			<select name="farmerType" id="farmerType"  class="validate[optional]">
 			<option value = ''>--Farmer Type--</option>
 			<?php
@@ -263,32 +265,32 @@ $(document).ready(function() {
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%" nowrap>Custom URL</td>
-		<td width = "75%">
+		<td width = "30%" nowrap>Custom URL</td>
+		<td width = "70%">
 			<input value="<?php echo (isset($FARM) ? $FARM->customUrl : '') ?>" class="validate[optional]" type="text" name="customUrl" id="customUrl"/>
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%" nowrap>Website</td>
-		<td width = "75%">
+		<td width = "30%" nowrap>Website</td>
+		<td width = "70%">
 			<input value="<?php echo (isset($FARM) ? $FARM->url : '') ?>" class="validate[optional]" type="text" name="url" id="url"/>
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%" nowrap>Facebook</td>
-		<td width = "75%">
+		<td width = "30%" nowrap>Facebook</td>
+		<td width = "70%">
 			<input value="<?php echo (isset($FARM) ? $FARM->facebook : '') ?>" class="validate[optional]" type="text" name="facebook" id="facebook"/>
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%" nowrap>Twitter</td>
-		<td width = "75%">
+		<td width = "30%" nowrap>Twitter</td>
+		<td width = "70%">
 			<input value="<?php echo (isset($FARM) ? $FARM->twitter : '') ?>" class="validate[optional]" type="text" name="twitter" id="twitter"/>
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%" nowrap>Status</td>
-		<td width = "75%">
+		<td width = "30%" nowrap>Status</td>
+		<td width = "70%">
 			<select name="status" id="status"  class="validate[required]">
 				<option value="">--Choose Status--</option>
 			<?php
@@ -309,15 +311,15 @@ $(document).ready(function() {
 		<td colspan = "2"><b>Address</b></td>
 	</tr>
 	<tr>
-		<td width = "25%">Address</td>
-		<td width = "75%">
+		<td width = "30%">Address</td>
+		<td width = "70%">
 			<input value="<?php echo (isset($FARM) ? $FARM->address : '') ?>" class="validate[required]" type="text" name="address" id="address"/><br />
 		</td>
 	</tr>
 	
 	<tr>
-		<td width = "25%">State</td>
-		<td width = "75%">
+		<td width = "30%">State</td>
+		<td width = "70%">
 			<select name="stateId" id="stateId"  class="validate[required]">
 			<option value = ''>--State--</option>
 			<?php
@@ -330,15 +332,15 @@ $(document).ready(function() {
 	</tr>
 	
 	<tr>
-		<td width = "25%">City</td>
-		<td width = "75%">
+		<td width = "30%">City</td>
+		<td width = "70%">
 			<input type="text" id="cityAjax" value="<?php echo (isset($FARM) ? $FARM->cityName : '') ?>" class="validate[required]" />
 		</td>
 	</tr>
 	
 	<tr>
-		<td width = "25%">Country</td>
-		<td width = "75%">
+		<td width = "30%">Country</td>
+		<td width = "70%">
 			<select name="countryId" id="countryId"  class="validate[required]">
 			<option value = ''>--Country--</option>
 			<?php
@@ -350,8 +352,8 @@ $(document).ready(function() {
 		</td>
 	</tr>
 	<tr>
-		<td width = "25%">Zip</td>
-		<td width = "75%">
+		<td width = "30%">Zip</td>
+		<td width = "70%">
 			<input value="<?php echo (isset($FARM) ? $FARM->zipcode : '') ?>" class="validate[required,length[1,6]]" type="text" name="zipcode" id="zipcode" /><br />
 		</td>
 	</tr>
@@ -359,10 +361,10 @@ $(document).ready(function() {
 	}
 ?>
 	<tr>
-		<td width = "25%" colspan = "2">
+		<td width = "30%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FARM)) ? 'Update Farm' : 'Add Farm' ?>">
 			<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM) ? $FARM->farmId : '') ?>">
-			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($FARM) ? $FARM->companyId : '') ?>">
+			<!--<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($FARM) ? $FARM->companyId : '') ?>">-->
 			<input type = "hidden" name = "companyId" id = "cityId" value = "">
 		</td>
 	</tr>

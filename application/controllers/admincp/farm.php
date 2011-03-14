@@ -172,7 +172,7 @@ class Farm extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
-	function update_supplier($id)
+	function update_supplier($id, $trid)
 	{
 		global $SUPPLIER_TYPES_2;
 		$data = array();
@@ -180,10 +180,12 @@ class Farm extends Controller {
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'farm');
 		
-		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $supplier->farmId, '', '', '', '');
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $supplier->supplierId, '', '', '', '');
 		
 		$this->load->model('FarmModel');
-		$farm = $this->FarmModel->getFarmFromId($supplier->farmId);
+		$farm = $this->FarmModel->getFarmFromId($supplier->supplierId);
+
+		$p_farm = $this->FarmModel->getFarmFromId($trid);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -197,8 +199,9 @@ class Farm extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['FARM_ID'] = $supplier->farmId;
+		$data['data']['left']['navigation']['FARM_ID'] = $supplier->supplierId;
 		$data['data']['left']['navigation']['SUPPLIER_ID'] = $supplier->supplierId;
+		$data['data']['left']['navigation']['TRID'] = $trid;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($farm->farmName, $id, 'supplier', 'update');
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
@@ -206,10 +209,11 @@ class Farm extends Controller {
 		$data['data']['center']['list']['TABLE'] = 'farm_supplier';
 		$data['data']['center']['list']['SUPPLIERS'] = $suppliers;
 		
+
 		$data['BREADCRUMB'] = array(
-				'Farms' => '/admincp/farm',
-				$farm->farmName => '/admincp/farm/update/' . $supplier->farmId,
-				'Supplier #' . $supplier->supplierId => '/admincp/farm/update_supplier/' . $supplier->supplierId,
+				'Restaurants' => '/admincp/farm',
+				$p_farm->farmName." Suppliers" => '/admincp/farm/add_supplier/' .$trid,
+				'Supplier #' . $supplier->supplierId => '/admincp/farm/update_supplier/' . $supplier->supplierId.'/'.$trid
 			);
 			
 		$this->load->view('admincp/templates/left_center_template', $data);
@@ -249,6 +253,7 @@ class Farm extends Controller {
 		$data['data']['center']['list']['STATES'] = $states;
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['ADDRESSES'] = $addresses;
+		$data['data']['center']['list']['FARM_ID'] = $id;
 		
 		$data['BREADCRUMB'] = array(
 				'Farms' => '/admincp/farm',
@@ -271,11 +276,11 @@ class Farm extends Controller {
 		
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
-		
-		$addresses = $this->AddressModel->getAddressForCompany( '', $address->farmId, '', '', '', '', '', '');
+
+		$addresses = $this->AddressModel->getAddressForCompany( '', $address->producerId, '', '', '', '', '', '');
 		
 		$this->load->model('FarmModel');
-		$farm = $this->FarmModel->getFarmFromId($address->farmId);
+		$farm = $this->FarmModel->getFarmFromId($address->producerId);
 		 
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -289,19 +294,19 @@ class Farm extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['FARM_ID'] = $address->farmId;
+		$data['data']['left']['navigation']['FARM_ID'] = $address->producerId;
 		$data['data']['left']['navigation']['ADDRESS_ID'] = $address->addressId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = prepareHeading($farm->farmName, $id, 'address', 'update');
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['ADDRESS'] = $address;
-		$data['data']['center']['form']['FARM_ID'] = $address->farmId;
+		$data['data']['center']['form']['PRODUCER_ID'] = $address->producerId;
 		$data['data']['center']['form']['ADDRESSES'] = $addresses;
 		
 		$data['BREADCRUMB'] = array(
 				'Farms' => '/admincp/farm',
-				$farm->farmName => '/admincp/farm/update/' . $address->farmId,
+				$farm->farmName => '/admincp/farm/update/' . $address->producerId,
 				'Address #' . $address->addressId => '/admincp/farm/update_address/' . $address->addressId,
 			);
 		

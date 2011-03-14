@@ -167,23 +167,25 @@ class SupplierModel extends Model{
 	
 	function getSupplierForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $restaurantChainId, $farmersMarketId) {
 		global $SUPPLIER_TYPES_2;
-		
-		$where = "WHERE supplier.suppliee=".$restaurantId;
-		
-/*		if ( !empty($restaurantId) ) {
-			$where .= ;
+
+		if ( !empty($restaurantId) ) {
+			$supplie = $restaurantId;
 		} else if ( !empty($farmId) ) {
-			$where .= 'supplier.suppliee='.$farmId;
+			$supplie = $farmId;
 		} else if ( !empty($manufactureId) ) {
-			$where .= 'supplier.suppliee='.$manufactureId;
+			$supplie = $manufactureId;
 		} else if ( !empty($distributorId) ) {
-			$where .= 'supplier.suppliee='.$distributorId;
+			$supplie = $distributorId;
 		} else if ( !empty($restaurantChainId) ) {
-			$where .= 'supplier.suppliee='.$restaurantChainId;			
+			$supplie = $restaurantChainId;			
 		} else if ( !empty($farmersMarketId) ) {
-			$where .= 'supplier.suppliee='.$farmersMarketId;
+			$supplie = $farmersMarketId;
 		} 
-*/
+
+
+		
+		$where = "WHERE supplier.suppliee=".$supplie;
+
 		$suppliers = array();
 
 		$query = "SELECT * FROM supplier LEFT JOIN producer ON supplier.supplier=producer.producer_id $where 
@@ -199,6 +201,7 @@ class SupplierModel extends Model{
 			unset($this->supplierLib);
 			
 			$this->supplierLib->supplierId = $row['supplier'];
+			$this->supplierLib->supplieeId = $row['suppliee'];
 			if (isset( $row['is_restaurant']) ) {
 				$this->supplierLib->supplierType = 'restaurant';
 				$this->supplierLib->supplierName = $row['producer'];

@@ -51,16 +51,19 @@ class AddressModel extends Model{
 		$query = "SELECT address.*, state.state_code, state.state_name, country.country_name" .
 				" FROM address, state, country " .
 				" WHERE ";
+
+		$query .= "producer_id=";
+
 		if (!empty($restaurantId) ) {
-			$query .= "producer_id = " . $restaurantId;
+			$query .= $restaurantId;
 		} elseif (!empty($farmId) ) {
-			$query .= "farm_id = " . $farmId;
+			$query .= $farmId;
 		} elseif (!empty($manufactureId) ) {
-			$query .= "manufacture_id = " . $manufactureId;
+			$query .= $manufactureId;
 		} elseif (!empty($distributorId) ) {
-			$query .= "distributor_id = " . $distributorId;
+			$query .= $distributorId;
 		} elseif (!empty($farmersMarketId) ) {
-			$query .= "farmers_market_id = " . $farmersMarketId;
+			$query .= $farmersMarketId;
 		}
 		
 		if (!empty($zipcode) ) {

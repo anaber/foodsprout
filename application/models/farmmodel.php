@@ -170,7 +170,7 @@ class FarmModel extends Model{
 	function updateFarm() {
 		$return = true;
 		
-		$query = "SELECT * FROM farm WHERE farm_name = \"" . $this->input->post('farmName') . "\" AND farm_id <> " . $this->input->post('farmId');
+		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('farmName') . "\" AND producer_id <> " . $this->input->post('farmId');
 		log_message('debug', 'FarmModel.updateFarm : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -178,18 +178,18 @@ class FarmModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'company_id' => $this->input->post('companyId'), 
-						'farm_name' => $this->input->post('farmName'),
+						//'company_id' => $this->input->post('companyId'), 
+						'producer' => $this->input->post('farmName'),
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
 						'farm_type_id' => $this->input->post('farmTypeId'),
 						'farmer_type' => $this->input->post('farmerType'),
 						'facebook' => $this->input->post('facebook'),
 						'twitter' => $this->input->post('twitter'),
-						'status' => $this->input->post('status'),
+						'status' => $this->input->post('status')
 					);
-			$where = "farm_id = " . $this->input->post('farmId');
-			$query = $this->db->update_string('farm', $data, $where);
+			$where = "producer_id = " . $this->input->post('farmId');
+			$query = $this->db->update_string('producer', $data, $where);
 			
 			log_message('debug', 'FarmModel.updateFarm : ' . $query);
 			if ( $this->db->query($query) ) {
