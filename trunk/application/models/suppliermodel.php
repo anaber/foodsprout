@@ -168,10 +168,10 @@ class SupplierModel extends Model{
 	function getSupplierForCompany($restaurantId, $farmId, $manufactureId, $distributorId, $restaurantChainId, $farmersMarketId) {
 		global $SUPPLIER_TYPES_2;
 		
-		$where = "WHERE ";
+		$where = "WHERE supplier.suppliee=".$restaurantId;
 		
-		if ( !empty($restaurantId) ) {
-			$where .= 'supplier.suppliee='.$restaurantId;
+/*		if ( !empty($restaurantId) ) {
+			$where .= ;
 		} else if ( !empty($farmId) ) {
 			$where .= 'supplier.suppliee='.$farmId;
 		} else if ( !empty($manufactureId) ) {
@@ -183,7 +183,7 @@ class SupplierModel extends Model{
 		} else if ( !empty($farmersMarketId) ) {
 			$where .= 'supplier.suppliee='.$farmersMarketId;
 		} 
-
+*/
 		$suppliers = array();
 
 		$query = "SELECT * FROM supplier LEFT JOIN producer ON supplier.supplier=producer.producer_id $where 
@@ -308,11 +308,12 @@ class SupplierModel extends Model{
 	
 	function getSupplierFromId($supplierId, $supplierType) {
 		
-		$tableName = $supplierType . '_supplier';
-		$idFieldName = $supplierType . '_supplier_id';
-		$fieldName = $supplierType . '_id';
+		$tableName = 'supplier';//$supplierType . '_supplier';
+		$idFieldName = 'supplier';//$supplierType . '_supplier_id';
+		$fieldName = 'supplier';//$supplierType . '_id';
 		
-		$query = "SELECT * FROM $tableName WHERE $idFieldName = " . $supplierId;
+		$query = "SELECT * FROM producer, supplier WHERE supplier.supplier=".$supplierId." AND supplier.supplier=producer.producer_id GROUP BY supplier ORDER BY producer";
+
 		/*
 		$query = 'SELECT ' . $tableName . '.*, ' . $supplierType.'.'.$supplierType . '_name ' .
 				' FROM '.$tableName .', '. $supplierType .
@@ -328,57 +329,59 @@ class SupplierModel extends Model{
 		$row = $result->row();
 		
 		$this->supplierLib->supplierId = $row->$idFieldName;
-		
-		if ($row->$fieldName) {
-			if ($supplierType == 'manufacture') {
+
+/*		if ($row->supplier) {
+			if ( !empty($row->is_manufacture) ) {
 				$this->supplierLib->manufactureId = $row->$fieldName;
-			} else if ($supplierType == 'farm') {
+			} elseif ( !empty($row->is_farm) ) {
 				$this->supplierLib->farmId = $row->$fieldName;
-			} else if ($supplierType == 'restaurant') {
+			} elseif ( !empty($row->is_restaurant) ) {
 				$this->supplierLib->restaurantId = $row->$fieldName;
-			} else if ($supplierType == 'distributor') {
+			} elseif ( !empty($row->is_distributor) ) {
 				$this->supplierLib->distributorId = $row->$fieldName;
-			} else if ($supplierType == 'restaurant_chain') {
+			} elseif ( !empty($row->is_restaurant_chain) ) {
 				$this->supplierLib->restaurantChainId = $row->$fieldName;
-			} else if ($supplierType == 'farmers_market') {
+			} elseif (  !empty($row->is_farmers_market) ) {
 				$this->supplierLib->farmersMarketId = $row->$fieldName;
 			} 
 		}
-		
+*/
 		$CI =& get_instance();
 		
-		if ($row->supplier_farm_id ) {
-			$this->supplierLib->companyId = $row->supplier_farm_id;
+		if ($row->is_farm ) {
+			$this->supplierLib->companyId = $row->$fieldName;
 			$this->supplierLib->supplierType = 'farm';
 			
 			$CI->load->model('FarmModel','',true);
-			$farm = $CI->FarmModel->getFarmFromId( $row->supplier_farm_id );
+			$farm = $CI->FarmModel->getFarmFromId( $row->$fieldName );
 			$this->supplierLib->companyName = $farm->farmName;
 			
-		} else if ($row->supplier_manufacture_id ) {
-			$this->supplierLib->companyId = $row->supplier_manufacture_id;
+		} else if ($row->is_manufacture ) {
+			$this->supplierLib->companyId = $row->$fieldName;
 			$this->supplierLib->supplierType = 'manufacture';
 			
 			$CI->load->model('ManufactureModel','',true);
-			$farm = $CI->ManufactureModel->getManufactureFromId( $row->supplier_manufacture_id );
+			$farm = $CI->ManufactureModel->getManufactureFromId( $row->$fieldName );
 			$this->supplierLib->companyName = $farm->manufactureName;
 			
-		} else if ($row->supplier_distributor_id ) {
-			$this->supplierLib->companyId = $row->supplier_distributor_id;
+		} else if ($row->is_distributor ) {
+			$this->supplierLib->companyId = $row->$fieldName;
 			$this->supplierLib->supplierType = 'distributor';
 			
 			$CI->load->model('DistributorModel','',true);
-			$farm = $CI->DistributorModel->getDistributorFromId( $row->supplier_distributor_id );
+			$farm = $CI->DistributorModel->getDistributorFromId( $row->$fieldName );
 			$this->supplierLib->companyName = $farm->distributorName;
 			
-		} else if ($row->supplier_restaurant_id ) {
-			$this->supplierLib->companyId = $row->supplier_restaurant_id;
+		} else if ($row->is_restaurant ) {
+			$this->supplierLib->companyId = $row->$fieldName;
 			$this->supplierLib->supplierType = 'restaurant';
 			
 			$CI->load->model('RestaurantModel','',true);
-			$farm = $CI->RestaurantModel->getRestaurantFromId( $row->supplier_restaurant_id );
+			$farm = $CI->RestaurantModel->getRestaurantFromId( $row->$fieldName );
 			$this->supplierLib->companyName = $farm->restaurantName;
 		}
+
+		$this->supplierLib->status = $row->status;
 
 		return $this->supplierLib;
 		
@@ -390,6 +393,7 @@ class SupplierModel extends Model{
 		
 		$supplierType = $this->input->post('supplierType');
 		$supplierId = $this->input->post('supplierId');
+		$status = $this->input->post('status');
 		
 		$restaurantId = $this->input->post('restaurantId');
 		$farmId = $this->input->post('farmId');
@@ -405,37 +409,22 @@ class SupplierModel extends Model{
 		$supplierFarmId = '';
 		$supplierManufactureId = '';
 		$supplierDistributorId = '';
-		
+
+		$tableName = 'supplier';
+		$idFieldName = 'supplier';
+		$fieldName = 'supplier';
 		
 		if ( !empty($restaurantId) ) {
-			$tableName = 'restaurant_supplier';
-			$idFieldName = 'restaurant_supplier_id';
-			$fieldName = 'restaurant_id';
 			$fieldValue = $restaurantId;
 		} else if ( !empty($farmId) ) {
-			$tableName = 'farm_supplier';
-			$idFieldName = 'farm_supplier_id';
-			$fieldName = 'farm_id';
 			$fieldValue = $farmId;
 		} else if ( !empty($manufactureId) ) {
-			$tableName = 'manufacture_supplier';
-			$idFieldName = 'manufacture_supplier_id';
-			$fieldName = 'manufacture_id';
 			$fieldValue = $manufactureId;
 		} else if ( !empty($distributorId) ) {
-			$tableName = 'distributor_supplier';
-			$idFieldName = 'distributor_supplier_id';
-			$fieldName = 'distributor_id';
 			$fieldValue = $distributorId;
 		} else if ( !empty($restaurantChainId) ) {
-			$tableName = 'restaurant_chain_supplier';
-			$idFieldName = 'restaurant_chain_supplier_id';
-			$fieldName = 'restaurant_chain_id';
 			$fieldValue = $restaurantChainId;
 		} else if ( !empty($farmersMarketId) ) {
-			$tableName = 'farmers_market_supplier';
-			$idFieldName = 'farmers_market_supplier_id';
-			$fieldName = 'farmers_market_id';
 			$fieldValue = $farmersMarketId;
 		} 
 		
@@ -493,7 +482,7 @@ class SupplierModel extends Model{
 			}
 			
 			if ( $return ) {
-				if ($this->updateSuppluer($tableName, $idFieldName, $fieldName, $fieldValue, $supplierRestaurantId, $supplierFarmId, $supplierManufactureId, $supplierDistributorId, $supplierId ) ) {
+				if ($this->updateSuppluer($tableName, $idFieldName, $fieldName, $fieldValue, $supplierRestaurantId, $supplierFarmId, $supplierManufactureId, $supplierDistributorId, $supplierId, $status ) ) {
 					$return = true;
 				} else {
 					$return = false;
@@ -505,15 +494,14 @@ class SupplierModel extends Model{
 		
 	}
 	
-	function updateSuppluer($tableName, $idFieldName, $fieldName, $fieldValue, $supplierRestaurantId, $supplierFarmId, $supplierManufactureId, $supplierDistributorId, $supplierId) {
+	function updateSuppluer($tableName, $idFieldName, $fieldName, $fieldValue, $supplierRestaurantId, $supplierFarmId, $supplierManufactureId, $supplierDistributorId, $supplierId, $status) {
 		
 		$return = true;
 		
-		$query = "SELECT * FROM $tableName " .
-				" WHERE" .
-				" $fieldName = $fieldValue" .
-				" AND ";
-		if ( !empty($supplierRestaurantId) ) {
+		$query = "SELECT * FROM $tableName ".
+				" WHERE $fieldName = $fieldValue";
+
+/*		if ( !empty($supplierRestaurantId) ) {
 			$query .= 'supplier_restaurant_id';
 		} else if ( !empty($supplierFarmId) ) {
 			$query .= 'supplier_farm_id';
@@ -532,23 +520,26 @@ class SupplierModel extends Model{
 		} else if ( !empty($supplierDistributorId) ) {
 			$query .= $supplierDistributorId;
 		}
+*/
 		$query .= ' AND ' . $idFieldName . ' <> ' . $supplierId;
 		
 		log_message('debug', 'SupplierModel.updateSuppluer : Try to get duplicate supplier record : ' . $query);
 		$result = $this->db->query($query);
-		
+
 		if ($result->num_rows() == 0) {
-			$query = "UPDATE $tableName SET ";
-			if ( !empty($supplierRestaurantId) ) {
-				$query .= 'supplier_restaurant_id';
+			$query = "UPDATE $tableName SET supplier";
+/*			if ( !empty($supplierRestaurantId) ) {
+				$query .= 'supplier';
 			} else if ( !empty($supplierFarmId) ) {
-				$query .= 'supplier_farm_id';
+				$query .= 'supplier';
 			} else if ( !empty($supplierManufactureId) ) {
-				$query .= 'supplier_manufacture_id';
+				$query .= 'supplier';
 			} else if ( !empty($supplierDistributorId) ) {
-				$query .= 'supplier_distributor_id';
-			}		
+				$query .= 'supplier';
+			}
+*/
 			$query .= " = ";
+			
 			if ( !empty($supplierRestaurantId) ) {
 				$query .= $supplierRestaurantId;
 			} else if ( !empty($supplierFarmId) ) {
@@ -558,10 +549,13 @@ class SupplierModel extends Model{
 			} else if ( !empty($supplierDistributorId) ) {
 				$query .= $supplierDistributorId;
 			}
+			
+			$query .= ", status='$status'";
+			
 			$query .= " WHERE $idFieldName = $supplierId";
 			
 			log_message('debug', 'SupplierModel.updateSuppluer : Update Suppluer : ' . $query);
-		
+
 			if ( $this->db->query($query) ) {
 				$return = true;
 			} else {
@@ -572,7 +566,7 @@ class SupplierModel extends Model{
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-		
+
 		return $return;
 	}
 	
