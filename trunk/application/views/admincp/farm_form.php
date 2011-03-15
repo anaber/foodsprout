@@ -251,6 +251,7 @@ $(document).ready(function() {
 			</select>
 		</td>
 	</tr>
+<!--
 	<tr>
 		<td width = "30%">Farmer Type</td>
 		<td width = "70%">
@@ -264,6 +265,7 @@ $(document).ready(function() {
 			</select>
 		</td>
 	</tr>
+-->
 	<tr>
 		<td width = "30%" nowrap>Custom URL</td>
 		<td width = "70%">

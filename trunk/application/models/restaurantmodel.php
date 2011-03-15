@@ -850,9 +850,9 @@ class RestaurantModel extends Model{
 		$result = $this->db->query($query)->result_array();
 		$oldRestaurantTypeId = $result[0]['producer_category_id'];
 	
-		$where = "producer_id = " . $this->input->post('restaurantId')." AND producer_category_id=".$oldRestaurantTypeId;
+		$where = "producer_id = " . $restaurantId." AND producer_category_id=".$oldRestaurantTypeId;
 	
-		$this->db->update('producer_category_member', array('producer_category_id'=>$this->input->post('restaurantTypeId')), $where);
+		$this->db->update('producer_category_member', array('producer_category_id'=>$restaurantTypeId), $where);
 	}
 
 	function updateCuisines($restaurantId, $cuisineIds) {
