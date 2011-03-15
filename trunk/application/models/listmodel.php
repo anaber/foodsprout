@@ -67,19 +67,22 @@ class ListModel extends Model{
 		return $html;
 	}
 	
-	function buildInfoPagingLinks($params) {
+	function buildInfoPagingLinks($params, $count = '') {
+		if ( !isset($count) ) {
+			$count = '';
+		}
+		
 		$html = '';
 		
-		$html = '<div style="float:left; width:150px;" id = "numRecords">' . $this->drawNumRecords($params) . '</div>
+		$html = '<div style="float:left; width:150px;" id = "numRecords'.$count.'">' . $this->drawNumRecords($params) . '</div>
 		
-		<div style="float:left; width:250px;" id = "pagingLinks" align = "center">
-			' . $this->drawPagingLinks($params) . '
+		<div style="float:left; width:250px;" id = "pagingLinks'.$count.'" align = "center">
+			' . $this->drawPagingLinks($params, $count) . '
 		</div>
 		
-		<div style="float:left; width:175px;" id = "recordsPerPage" align = "right">
-			' . $this->drawRecordsPerPage($params) . '
+		<div style="float:left; width:175px;" id = "recordsPerPage'.$count.'" align = "right">
+			' . $this->drawRecordsPerPage($params, $count) . '
 		</div>';
-		$this->buildUrl($params);
 		
 		return $html;
 	}
@@ -96,7 +99,6 @@ class ListModel extends Model{
 		<div style="float:left; width:195px;" id = "recordsPerPage" align = "right">
 			' . $this->drawRecordsPerPage($params) . '
 		</div>';
-		$this->buildUrl($params);
 		
 		return $html;
 	}
@@ -113,38 +115,38 @@ class ListModel extends Model{
 		return $str;
 	}
 	
-	function drawRecordsPerPage($params) {
+	function drawRecordsPerPage($params, $count = '') {
 		$str = '';
 		$str .=  'Items per page: ';
 		
 		if ($params['perPage'] == 10) {
 			$str .= '<strong>10</strong> | ';
 		} else {
-			$str .= '<a href="' . $this->buildUrl($params, 'pp', '10') . '" id = "10PerPage">10</a> | ';
+			$str .= '<a href="' . $this->buildUrl($params, 'pp', '10') . '" id = "10PerPage'.$count.'">10</a> | ';
 		}
 		
 		if ($params['perPage'] == 20) {
 			$str .= '<strong>20</strong> | ';
 		} else {
-			$str .= '<a href="' . $this->buildUrl($params, 'pp', '20') . '" id = "20PerPage">20</a> | ';
+			$str .= '<a href="' . $this->buildUrl($params, 'pp', '20') . '" id = "20PerPage'.$count.'">20</a> | ';
 		}
 		
 		if ($params['perPage'] == 40) {
 			$str .= '<strong>40</strong> | ';
 		} else {
-			$str .= '<a href="' . $this->buildUrl($params, 'pp', '40') . '" id = "40PerPage">40</a> | ';
+			$str .= '<a href="' . $this->buildUrl($params, 'pp', '40') . '" id = "40PerPage'.$count.'">40</a> | ';
 		}
 		
 		if ($params['perPage'] == 50) {
 			$str .= '<strong>50</strong>';
 		} else {
-			$str .= '<a href="' . $this->buildUrl($params, 'pp', '50') . '" id = "50PerPage">50</a>';
+			$str .= '<a href="' . $this->buildUrl($params, 'pp', '50') . '" id = "50PerPage'.$count.'">50</a>';
 		}
 		
 		return $str;
 	}
 	
-	function drawPagingLinks($params) {
+	function drawPagingLinks($params, $count = '') {
 		
 		$lastPage = $params['lastPage'];//floor($params['numResults']/$params['perPage']);
 		$currentPage = ($params['page'] > $lastPage ? $lastPage : $params['page']);
@@ -161,11 +163,11 @@ class ListModel extends Model{
 		);
 		//print_r_pre($page);
 		$str = '';
-		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['firstPage']) . '" id = "imgFirst">First</a> &nbsp;&nbsp;';
-		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['previousPage']) . '" id = "imgPrevious">Previous</a> ';
+		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['firstPage']) . '" id = "imgFirst'.$count.'">First</a> &nbsp;&nbsp;';
+		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['previousPage']) . '" id = "imgPrevious'.$count.'">Previous</a> ';
 		$str .= '&nbsp;&nbsp;&nbsp; Page ' . ($page['currentPage']+1) . ' of ' . $params['totalPages'] . '&nbsp;&nbsp;&nbsp;';
-		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['nextPage']) . '" id = "imgNext">Next</a> &nbsp;&nbsp;';
-		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['lastPage']) . '" id = "imgLast">Last</a>';
+		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['nextPage']) . '" id = "imgNext'.$count.'">Next</a> &nbsp;&nbsp;';
+		$str .= '<a href="' . $this->buildUrl($params, 'p', $page['lastPage']) . '" id = "imgLast'.$count.'">Last</a>';
 		
 		return $str;
 	}
@@ -457,6 +459,92 @@ class ListModel extends Model{
 		
 		return $html;
 	}
+	
+	function buildMenuList($menus, $producerName) {
+		$html = '';
+		if ($menus['param']['numResults'] > 0) {
+			foreach($menus['results'] as $key => $menu) {
+				
+				
+				$html .=	
+				'<div class="menuitem">';
+				//html +=	'	<div class="menuitemimg"><img src="/img/products/burger.jpg" width="132" height="107" alt="receipe" /></div>';
+				
+				if ($menu->image) {
+					$html .=	'	<div class="menuitemimg">';
+					$html .=	'<img src="' . $menu->image . '" width="132" height="107" alt="receipe" />';
+					$html .= '	</div>';
+				}
+				
+				$html .=	'	<div class="menuitemname">' . $menu->productName . '</div>';
+				$html .=	'	<div class="menuitemdetails">' . $menu->ingredient . '</div>';
+				$html .=
+				'</div>' .
+				'<div class = "clear"></div>'
+				;
+			}
+		} else {
+			$html = $this->addZeroInfoResult('menu', $producerName);
+		}
+		return $html;
+	}
+	
+	function buildCommentList($comments, $producerName) {
+		$html = '';
+		if ($comments['param']['numResults'] > 0) {
+			foreach($comments['results'] as $key => $comment) {
+				
+				
+				$html .=
+				'	<div class = "listing-comment"><strong>' . $comment->firstName . ':</strong>' . 
+				'		&nbsp;' . $comment->comment . 
+				'		<br /><div style="font-size:11px;font-weight:bold;">On ' . $comment->addedOn . '</div>' .
+				'	</div>' .
+				'	<div class = "clear"></div>' . 
+				'	<hr size = "1" class = "listing-dash-line">' . 
+				'	<div class = "clear"></div>';
+			}
+		} else {
+			$html = $this->addZeroInfoResult('comment', $producerName);
+		}
+		return $html;
+	}
+	
+	function buildPhotoList($photos, $producerName) {
+		$html = '';
+		if ($photos['param']['numResults'] > 0) {
+			$i = 0;
+			foreach($photos['results'] as $key => $photo) {
+				
+				$i++;
+	
+				if ($i%3 == 0) {
+				$html .= 
+					'<div class="portfolio_sites flt"  style = "margin-left:14px;">';
+				} else {
+				$html .= 
+					'<div class="portfolio_sites mar_rt_45 flt"  style = "margin-left:14px;">';
+				}
+				
+				$html .=
+				'	<div class="porffoilo_img" align = "center">' .
+				'		<a href="' . $photo->photo . '" rel = "lightbox" title="' . ($photo->description ? $photo->description : '') . '" style = "text-decoration:none;">' . 
+				'	        <img src="' . $photo->thumbPhoto . '" width="137" height="92" alt="" border = "0" /> ' .
+				'	    </a>' .
+				'	</div> ' .
+				'	<div class="porffoilo_content" style = "font-size:11px;">' + 
+						($photo->title ? $photo->title . '<br />' : '') . 'By: <b>' . $photo->firstName . '</b><br />on ' . $photo->addedOn .
+				'	</div>' .
+				'</div>';
+				
+			}
+		} else {
+			$html = $this->addZeroInfoResult('photo', $producerName);
+		}
+		return $html;
+	}
+	
+	
 }
 
 

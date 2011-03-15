@@ -206,7 +206,6 @@ class Restaurant extends Controller {
 						'supplier',
 						'floating_messages'
 						);
-
 		
 		$q = $restaurantId;
 		$this->load->model('SupplierModel');
@@ -221,15 +220,18 @@ class Restaurant extends Controller {
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($suppliers['param']);
 		$data['data']['center']['info']['PAGING_HTML'] = $pagingHtml;
 		
+		$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($suppliers['param'], '2');
+		$data['data']['center']['info']['PAGING_HTML_2'] = $pagingHtml2;
+		
 		if (! $suppliers['param']['filter']) {
-			$restaurants['param']['filter'] = '';
+			$suppliers['param']['filter'] = '';
 		}
 		$params = json_encode($suppliers['param']);
 		
-		$data['data']['center']['list']['PARAMS'] = $params;
+		$data['data']['center']['info']['PARAMS'] = $params;
 		
 		$geocode = json_encode($suppliers['geocode']);
-		$data['data']['center']['list']['GEOCODE'] = $geocode;
+		$data['data']['center']['info']['GEOCODE'] = $geocode;
 		
 		$data['data']['left']['filter']['PARAMS'] = $suppliers['param'];
 		
@@ -296,18 +298,64 @@ class Restaurant extends Controller {
 	}
 
 	function ajaxSearchRestaurantSuppliers() {
-		$q = $this->input->post('q');
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
 		$addressId = $this->input->post('addressId');
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
-		echo json_encode($suppliers);
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($q, $addressId);
+		
+		$producerName = $restaurant->restaurantName;
+		$this->load->model('ListModel', '', TRUE);
+		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName);
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($suppliers['param']);
+		$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($suppliers['param'], '2');
+		
+		$array = array(
+			'listHtml' => $supplierListHtml,
+			'pagingHtml' => $pagingHtml,
+			'pagingHtml2' => $pagingHtml2,
+			'param' => $suppliers['param'],
+			'geocode' => $suppliers['geocode'],
+		);
+		
+		echo json_encode($array);
 	}
 
 	function ajaxSearchRestaurantMenus() {
 		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantMenusJson();
-		echo json_encode($restaurants);
+		$menus = $this->RestaurantModel->getRestaurantMenusJson();
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+		
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($q);
+		
+		$producerName = $restaurant->restaurantName;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$menuListHtml = $this->ListModel->buildMenuList($menus, $producerName);
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($menus['param']);
+		$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($menus['param'], '2');
+		
+		$array = array(
+			'listHtml' => $menuListHtml,
+			'pagingHtml' => $pagingHtml,
+			//'pagingHtml2' => $pagingHtml2,
+			'param' => $menus['param'],
+			//'geocode' => $suppliers['geocode'],
+		);
+		
+		echo json_encode($array);
+		
 	}
 
 	function city($c) {
@@ -395,13 +443,63 @@ class Restaurant extends Controller {
 	function ajaxSearchRestaurantComments() {
 		$this->load->model('CommentModel', '', TRUE);
 		$comments = $this->CommentModel->getCommentsJson('restaurant');
-		echo json_encode($comments);
+		
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+		
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($q);
+		
+		$producerName = $restaurant->restaurantName;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName);
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($comments['param']);
+		//$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($comments['param'], '2');
+		
+		$array = array(
+			'listHtml' => $menuListHtml,
+			'pagingHtml' => $pagingHtml,
+			//'pagingHtml2' => $pagingHtml2,
+			'param' => $comments['param'],
+			//'geocode' => $suppliers['geocode'],
+		);
+		
+		echo json_encode($array);
 	}
 
 	function ajaxSearchRestaurantPhotos() {
 		$this->load->model('PhotoModel', '', TRUE);
-		$comments = $this->PhotoModel->getPhotosJson('restaurant');
-		echo json_encode($comments);
+		$photos = $this->PhotoModel->getPhotosJson('restaurant');
+		
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+		
+		$this->load->model('RestaurantModel');
+		$restaurant = $this->RestaurantModel->getRestaurantFromId($q);
+		
+		$producerName = $restaurant->restaurantName;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($photos['param']);
+		//$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($photos['param'], '2');
+		
+		$array = array(
+			'listHtml' => $photoListHtml,
+			'pagingHtml' => $pagingHtml,
+			//'pagingHtml2' => $pagingHtml2,
+			'param' => $photos['param'],
+			//'geocode' => $suppliers['geocode'],
+		);
+		
+		echo json_encode($array);
 	}
 	
 	function save_add() {

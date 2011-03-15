@@ -561,7 +561,6 @@ function redrawContent(data) {
 		$('#resultTableContainer').empty();
 		$('#resultTableContainer').html(data.listHtml);
 		$('#pagingDiv').html(data.pagingHtml);
-		
 	}
 	//-----------------------------------
 	

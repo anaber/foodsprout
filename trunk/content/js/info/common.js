@@ -37,9 +37,13 @@ function reinitializeTabs() {
 		var $map = $('#map');
 		$map.show(800);
 		
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'supplier');
-		
-		hashUrl = buildHashUrl('supplier');
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'supplier');
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'supplier');
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, '', '', param.q, param.filter, 'supplier');
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, '', '', param.q, param.filter, 'supplier');
+		}
 		window.location.hash = '!'+hashUrl;
 	});
 	
@@ -75,9 +79,13 @@ function reinitializeTabs() {
 		var $map = $('#map');
 		$map.hide(800);
 		
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'menu');
-		
-		hashUrl = buildHashUrl('menu');
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'menu');
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'menu');
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, '', '', param.q, param.filter, 'menu');
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, '', '', param.q, param.filter, 'menu');
+		}
 		window.location.hash = '!'+hashUrl;
 	});
 	
@@ -114,9 +122,13 @@ function reinitializeTabs() {
 		var $map = $('#map');
 		$map.hide(800);
 		
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
-		
-		hashUrl = buildHashUrl('comment');
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, '', '', param.q, param.filter, 'comment');
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, '', '', param.q, param.filter, 'comment');
+		}
 		window.location.hash = '!'+hashUrl;
 	});
 	
@@ -152,9 +164,13 @@ function reinitializeTabs() {
 		var $map = $('#map');
 		$map.hide(800);
 		
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'photo');
-		
-		hashUrl = buildHashUrl('photo');
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'photo');
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'photo');
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, '', '', param.q, param.filter, 'photo');
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, '', '', param.q, param.filter, 'photo');
+		}
 		window.location.hash = '!'+hashUrl;
 	});
 	
@@ -367,120 +383,252 @@ function changeSelectedTab() {
 function reinitializePagingEvent(data) {
 	$("#imgFirst").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgPrevious").click(function(e) {
 		e.preventDefault();
-		previousPage = parseInt(data.param.page)-1;
-		if (previousPage <= 0) {
-			previousPage = data.param.firstPage;
+		
+		if (data) {
+			previousPage = parseInt(data.param.page)-1;
+			if (previousPage <= 0) {
+				previousPage = data.param.firstPage;
+			}
+			postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			previousPage = parseInt(param.page)-1;
+			if (previousPage <= 0) {
+				previousPage = param.firstPage;
+			}
+			postAndRedrawContent(previousPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(previousPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
 		}
-		//loadPopupFadeIn();
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgNext").click(function(e) {
 		e.preventDefault();
-		nextPage = parseInt(data.param.page)+1;
-		if (nextPage >= data.param.totalPages) {
-			nextPage = data.param.lastPage;
+		
+		
+		if (data) {
+			nextPage = parseInt(data.param.page)+1;
+			if (nextPage >= data.param.totalPages) {
+				nextPage = data.param.lastPage;
+			}
+			postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			nextPage = parseInt(param.page)+1;
+			if (nextPage >= param.totalPages) {
+				nextPage = param.lastPage;
+			}
+			postAndRedrawContent(nextPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(nextPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
 		}
-		//loadPopupFadeIn();
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgLast").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.lastPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.lastPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 }
 
 function reinitializePageCountEvent(data) {
 	$("#10PerPage").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, 10, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, 10, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#20PerPage").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, 20, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, 20, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#40PerPage").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, 40, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, 40, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#50PerPage").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, 50, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, 50, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 }
 
 function reinitializePagingEvent2(data) {
+	
 	$("#imgFirst2").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgPrevious2").click(function(e) {
 		e.preventDefault();
-		previousPage = parseInt(data.param.page)-1;
-		if (previousPage <= 0) {
-			previousPage = data.param.firstPage;
+		
+		if (data) {
+			previousPage = parseInt(data.param.page)-1;
+			if (previousPage <= 0) {
+				previousPage = data.param.firstPage;
+			}
+			
+			postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			previousPage = parseInt(param.page)-1;
+			if (previousPage <= 0) {
+				previousPage = param.firstPage;
+			}
+			
+			postAndRedrawContent(previousPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(previousPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
 		}
-		//loadPopupFadeIn();
-		postAndRedrawContent(previousPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgNext2").click(function(e) {
 		e.preventDefault();
-		nextPage = parseInt(data.param.page)+1;
-		if (nextPage >= data.param.totalPages) {
-			nextPage = data.param.lastPage;
+		
+		if (data) {
+			nextPage = parseInt(data.param.page)+1;
+			if (nextPage >= data.param.totalPages) {
+				nextPage = data.param.lastPage;
+			}
+			postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			nextPage = parseInt(param.page)+1;
+			if (nextPage >= param.totalPages) {
+				nextPage = param.lastPage;
+			}
+			postAndRedrawContent(nextPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(nextPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
 		}
-		//loadPopupFadeIn();
-		postAndRedrawContent(nextPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#imgLast2").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.lastPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.lastPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.lastPage, param.perPage, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 }
 
 function reinitializePageCountEvent2(data) {
 	$("#10PerPage2").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, 10, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, 10, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, 10, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#20PerPage2").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, 20, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, 20, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, 20, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#40PerPage2").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, 40, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, 40, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, 40, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 	
 	$("#50PerPage2").click(function(e) {
 		e.preventDefault();
-		//loadPopupFadeIn();
-		postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+			hashUrl = buildHashUrl(data.param.firstPage, 50, data.param.sort, data.param.order, data.param.q, data.param.filter, currentContent);
+		} else {
+			postAndRedrawContent(param.firstPage, 50, param.sort, param.order, param.q, param.filter, currentContent);
+			hashUrl = buildHashUrl(param.firstPage, 50, param.sort, param.order, param.q, param.filter, currentContent);
+		}
+		window.location.hash = '!'+hashUrl;
 	});
 }
 
@@ -964,8 +1112,13 @@ function resetCommentForm() {
 	reinitializeCommentCharacterCount();
 }
 
+/*
 function buildHashUrl(tab) {
 	str = 'tab='+tab;
 	return str;
 }
-
+*/
+function buildHashUrl(p, pp, sort, order, q, filter, tab) {
+	str = 'p='+p+'&pp='+pp+'&sort='+sort+'&order='+order+'&f='+filter+'&q='+q+'&tab='+tab;
+	return str;
+}
