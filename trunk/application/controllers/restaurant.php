@@ -99,7 +99,7 @@ class Restaurant extends Controller {
 
 	//restaurant custom url
 	function customUrl($customUrl){
-
+		
 		$this->load->model('CustomUrlModel');
 		$producer = $this->CustomUrlModel->getProducerIdFromCustomUrl($customUrl, 'restaurant');
 		
@@ -206,6 +206,33 @@ class Restaurant extends Controller {
 						'supplier',
 						'floating_messages'
 						);
+
+		
+		$q = $restaurantId;
+		$this->load->model('SupplierModel');
+		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
+		
+		$producerName = $restaurant->restaurantName;
+		$this->load->model('ListModel', '', TRUE);
+		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName);
+		$data['data']['center']['info']['LIST_DATA'] = $supplierListHtml;
+		
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($suppliers['param']);
+		$data['data']['center']['info']['PAGING_HTML'] = $pagingHtml;
+		
+		if (! $suppliers['param']['filter']) {
+			$restaurants['param']['filter'] = '';
+		}
+		$params = json_encode($suppliers['param']);
+		
+		$data['data']['center']['list']['PARAMS'] = $params;
+		
+		$geocode = json_encode($suppliers['geocode']);
+		$data['data']['center']['list']['GEOCODE'] = $geocode;
+		
+		$data['data']['left']['filter']['PARAMS'] = $suppliers['param'];
+		
 
 		$this->load->view('templates/left_center_detail_template', $data);
 	}
@@ -401,5 +428,4 @@ class Restaurant extends Controller {
 }
 
 /* End of file restaurant.php */
-
 ?>
