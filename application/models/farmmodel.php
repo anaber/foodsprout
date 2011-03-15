@@ -50,34 +50,53 @@ class FarmModel extends Model{
 		} else {
 			if ( empty($companyId) ) {
 				// Enter manufacture into company
-				$CI->load->model('CompanyModel','',true);
-				$companyId = $CI->CompanyModel->addCompany($this->input->post('farmName'));
+				//$CI->load->model('CompanyModel','',true);
+				//$companyId = $CI->CompanyModel->addCompany($this->input->post('farmName'));
 			} else {
 				if (empty($farmName) ) {
 					// Consider company name as manufacture name
-					$CI->load->model('CompanyModel','',true);
-					$company = $CI->CompanyModel->getCompanyFromId($companyId);
-					$farmName = $company->companyName;
+					//$CI->load->model('CompanyModel','',true);
+					//$company = $CI->CompanyModel->getCompanyFromId($companyId);
+					//$farmName = $company->companyName;
 				}
 			}
 			
-			$query = "SELECT * FROM farm WHERE farm_name = \"" . $farmName . "\"";
+			$query = "SELECT * FROM producer WHERE producer = \"" . $farmName . "\"";
 			log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
 			
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO farm (farm_id, company_id, farm_type_id, farmer_type, farm_name, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('farmTypeId') . ", '" . $this->input->post('farmerType') . "', \"" . $farmName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
+				$query = "INSERT INTO producer ( producer, creation_date, custom_url, city_area_id, phone, fax, email, url, status, track_ip, user_id, facebook, twitter, is_farm)" .
+						" values ( \"" . $farmName . "\", NOW(), NULL, NULL, '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', 'queue', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
 				
 				log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
 				$return = true;
 				
 				if ( $this->db->query($query) ) {
 					$newFarmId = $this->db->insert_id();
+
+					// SOME CODE HERE FOR FARMER TYPE...
+
+					//SAVE FARM TYPE
+					$farmTypeId = $this->input->post('farmTypeId');
+					if ($farmTypeId) {
+						$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
+						" values (NULL, " . $farmTypeId . ", " . $newFarmId . ", NULL )";
+	
+						if ( $this->db->query($query) ) {
+							$farmTypeId = mysql_insert_id();
+						}
+					}
 					
 					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress('', $newFarmId, '', '', '', $companyId);
+					$addressId = $CI->AddressModel->addAddress($newFarmId);
+					
+					if ($addressId) {
+						$CI->load->model('CustomUrlModel','',true);
+						$customUrlId = $CI->CustomUrlModel->generateCustomUrl($addressId);
+					}
+
 				} else {
 					$return = false;
 				}
@@ -182,8 +201,8 @@ class FarmModel extends Model{
 						'producer' => $this->input->post('farmName'),
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
-						'farm_type_id' => $this->input->post('farmTypeId'),
-						'farmer_type' => $this->input->post('farmerType'),
+						//'farm_type_id' => $this->input->post('farmTypeId'),
+						//'farmer_type' => $this->input->post('farmerType'),
 						'facebook' => $this->input->post('facebook'),
 						'twitter' => $this->input->post('twitter'),
 						'status' => $this->input->post('status')
@@ -193,6 +212,10 @@ class FarmModel extends Model{
 			
 			log_message('debug', 'FarmModel.updateFarm : ' . $query);
 			if ( $this->db->query($query) ) {
+			
+				//UPDATE FARM TYPE
+				$this->updateFarmType($this->input->post('farmId'), $this->input->post('farmTypeId'));
+
 				$return = true;
 			} else {
 				$return = false;
@@ -204,6 +227,20 @@ class FarmModel extends Model{
 		}
 		
 		return $return;
+	}
+	
+	function updateFarmType($farmId, $farmTypeId) {
+	
+		$query = "SELECT producer_category_id FROM producer_category WHERE producer_category_id IN (SELECT producer_category_id 
+				FROM producer_category_member WHERE producer_id=$farmId) AND farm_type_id IS NOT NULL";
+		log_message('debug', 'FarmModel.updateFarmType : get existing cuisines : ' . $query);
+
+		$result = $this->db->query($query)->result_array();
+		$oldFarmTypeId = $result[0]['producer_category_id'];
+	
+		$where = "producer_id = " . $farmId ." AND producer_category_id=".$oldFarmTypeId;
+	
+		$this->db->update('producer_category_member', array('producer_category_id'=>$farmTypeId), $where);
 	}
 	
 	function addFarmWithNameOnly($farmName) {
