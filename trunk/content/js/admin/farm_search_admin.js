@@ -63,15 +63,16 @@ function reinitializeTableHeadingEvent(data) {
 	
 	$("#heading_farm_type").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'farm_type');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farm_type', order, data.param.q);
+		order = getOrder(data, 'producer_category');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_category', order, data.param.q);
 	});
 	
-	$("#heading_farmer_type").click(function(e) {
+/*	$("#heading_farmer_type").click(function(e) {
 		e.preventDefault();
 		order = getOrder(data, 'farmer_name');
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmer_name', order, data.param.q);
 	});
+*/
 }
 
 function addResult(farm, i) {
