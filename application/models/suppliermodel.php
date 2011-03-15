@@ -834,10 +834,22 @@ class SupplierModel extends Model{
 	function getSupplierForProducerJson($producerId, $addressId = '') {
 		global $SUPPLIER_TYPES_2, $PER_PAGE;
 		
-		$p = $this->input->post('p'); // Page
-		$pp = $this->input->post('pp'); // Per Page
+		$p = $this->input->post('p'); 
+		if (!$p) {
+			$p = $this->input->get('p');
+		}
+		$pp = $this->input->post('pp'); 
+		if (!$pp) {
+			$pp = $this->input->get('pp');
+		}
 		$sort = $this->input->post('sort');
+		if (!$sort) {
+			$sort = $this->input->get('sort');
+		}
 		$order = $this->input->post('order');
+		if (!$order) {
+			$order = $this->input->get('order');
+		}
 		
 		$start = 0;
 		$page = 0;

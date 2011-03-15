@@ -67,6 +67,23 @@ class ListModel extends Model{
 		return $html;
 	}
 	
+	function buildInfoPagingLinks($params) {
+		$html = '';
+		
+		$html = '<div style="float:left; width:150px;" id = "numRecords">' . $this->drawNumRecords($params) . '</div>
+		
+		<div style="float:left; width:250px;" id = "pagingLinks" align = "center">
+			' . $this->drawPagingLinks($params) . '
+		</div>
+		
+		<div style="float:left; width:175px;" id = "recordsPerPage" align = "right">
+			' . $this->drawRecordsPerPage($params) . '
+		</div>';
+		$this->buildUrl($params);
+		
+		return $html;
+	}
+	
 	function buildPagingLinks($params) {
 		$html = '';
 		
@@ -159,7 +176,7 @@ class ListModel extends Model{
 			$uri2 = $this->uri->segment(2);
 			$uri3 = $this->uri->segment(3);
 		} else {
-			$uri2 = '';//$this->uri->segment(2);
+			$uri2 = $this->uri->segment(2);
 			$uri3 = '';//$this->uri->segment(3);
 		}
 		$url = '/' . $uri1 . ($uri2 ? '/' . $uri2 : '') . ($uri3 ? '/' . $uri3 : '');
@@ -351,6 +368,93 @@ class ListModel extends Model{
 			'	<div style="float:left; width:600px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;">No results found. Please retry with some other filter options.</div>' . 
 			'</div>'
 			;
+		return $html;
+	}
+	
+	function buildSupplierList($suppliers, $producerName) {
+		$html = '';
+		if ($suppliers['param']['numResults'] > 0) {
+			foreach($suppliers['results'] as $key => $supplier) {
+				
+				
+				$html .=
+				'<div style="overflow:auto; padding-bottom:10px;">' . "\n" .
+				'	<div class = "listing-supplier-header">' . "\n";
+				
+				if ($supplier->customUrl) {
+					$html .= '	<a href="/' . $supplier->supplierType . '/' . $supplier->customUrl . '" style="font-size:13px;text-decoration:none;">'. $supplier->supplierName .'</a>' . "\n";
+				} else {
+					$html .= '	<a href="/' . $supplier->supplierType . '/view/' . $supplier->supplierReferenceId . '" style="font-size:13px;text-decoration:none;">'. $supplier->supplierName .'</a>' . "\n";
+				}
+				$html .=
+				'		<div class = "clear"></div>' . "\n" .
+				'	</div>' . "\n" .
+				'	<div class = "clear"></div>' . "\n";
+					
+				$html .= 
+				'	<div class = "listing-supplier-information">' . "\n";
+				$html .= '<b>Type:</b> '. $supplier->supplierType;
+				$html .= 
+				'	</div>' . "\n" . 
+				'	<div class = "listing-address-title">' . "\n".
+				'		<b>Address:</b>' . "\n".
+				'	</div>' . "\n" .
+				'	<div class = "listing-address">' . "\n";
+				
+				//$.each(supplier.addresses, function(j, address) {
+				foreach ($supplier->addresses as $j => $address) {
+					if ($j == 0) {
+						$html .= $address->displayAddress ;
+					} else {
+						$html .= "<br /><br />" . $address->displayAddress ;
+					}
+				};
+				
+				$html .= 
+				'	</div>' . "\n";
+				$html .=
+				'</div>' . "\n" .
+				'<div class = "clear"></div>' . "\n"
+				;
+			}
+		} else {
+			$html = $this->addZeroInfoResult('supplier', $producerName);
+		}
+		return $html;
+	}
+	
+	function addZeroInfoResult($type, $producerName) {
+		$html =
+		'	<div class = "zero-result-box">';
+		
+		$html .= 'We are currently working on adding ';
+		
+		if ($type == 'supplier') {
+			$html .= 'suppliers';
+		} else if ($type == 'menu') {
+			$html .= 'products';
+		} else if ($type == 'comment') {
+			$html .= 'comments';
+		} else if ($type == 'photo') {
+			$html .= 'photos';
+		}
+		
+		$html .= ' for "' . $producerName . '". All viewers of the site may also update data like Wikipedia. Feel free to add ';
+		
+		if ($type == 'supplier') {
+			$html .= '<a href="#" id = "addSupplier2" style="font-size:13px;text-decoration:none;">suppliers</a>';
+		} else if ($type == 'menu') {
+			$html .= '<a href="#" id = "addMenu2" style="font-size:13px;text-decoration:none;">products</a>';
+		} else if ($type == 'comment') {
+			$html .= 'comments';
+		} else if ($type == 'photo') {
+			$html .= 'photos';
+		}
+		
+		$html .=
+		'	</div>'.
+		'	<div class = "clear"></div>';
+		
 		return $html;
 	}
 }
