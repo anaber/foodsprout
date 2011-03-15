@@ -5,6 +5,8 @@
 	
 	$module = $this->uri->segment(1);
 	$producer = $this->uri->segment(2);
+	
+	$uri = $this->uri->uri_string();
 ?>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/info/restaurant_info.js" type="text/javascript"></script>
@@ -24,6 +26,10 @@
 	var userGroup = "<?php echo $userGroup; ?>";
 	var userId = "<?php echo $userId; ?>";
 	
+	var param = <?php echo $PARAMS; ?>;
+	var geocode = <?php echo $GEOCODE; ?>;
+	var uri = '<?php echo $uri; ?>';
+	
 	var jsonData;
 	var currentContent;
 	
@@ -35,8 +41,9 @@
 	$(document).ready(function() {
 		
 		loadMapOnStartUp(38.41055825094609, -98, 3);
+		var data = '';
 		
-		$('#bottomPaging').hide();
+		//$('#bottomPaging').hide();
 		
 		/**
 		 * If users try to load url with HASH segment from address bar
@@ -142,6 +149,14 @@
 			}
 			
 		} else {
+			
+			currentContent = 'supplier';
+			jsonData = data;
+			redrawContent(data, 'supplier');
+			reinitializeTabs();
+			reinitializeMap(map, data, 8, true);
+			
+			
 			/*
 			$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId },
 			
@@ -337,9 +352,17 @@
 		<div class = "clear"></div>
 		
 		<div style="overflow:auto; padding:5px; font-size:10px;" id = "bottomPaging">
+			<?php
+				if (isset($PAGING_HTML_2) ) {
+					echo $PAGING_HTML_2;
+				} else {
+			?>
 			<div style="float:left; width:150px;" id = 'numRecords2'></div>
 			<div style="float:left; width:250px;" id = 'pagingLinks2' align = "center"></div>
 			<div style="float:left; width:175px;" id = 'recordsPerPage2' align = "right"></div>
+			<?php
+				}
+			?>
 			<div class="clear"></div>
 		</div>
 		<div class = "clear"></div>
