@@ -20,6 +20,7 @@ ini_set('track_errors', 1);
 
 ob_start();
 
+
 // 1. Define the constants we need to get going.
 define('DS', '/');
 define('PATH_ROOT', dirname(__FILE__));
