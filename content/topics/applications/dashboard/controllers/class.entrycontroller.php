@@ -74,7 +74,7 @@ class EntryController extends Gdn_Controller {
       $Target = $this->Target();
 
       $this->Form->AddHidden('Target', $Target);
-
+      
       // Import authenticator data source
       switch ($Authenticator->DataSourceType()) {
          case Gdn_Authenticator::DATA_FORM:
@@ -89,10 +89,10 @@ class EntryController extends Gdn_Controller {
       
       // By default, just render the view
       $Reaction = Gdn_Authenticator::REACT_RENDER;
-
+      
       // Where are we in the process? Still need to gather (render view) or are we validating?
       $AuthenticationStep = $Authenticator->CurrentStep();
-
+      
       switch ($AuthenticationStep) {
       
          // User is already logged in
@@ -120,9 +120,8 @@ class EntryController extends Gdn_Controller {
                   'UserID'    => Gdn::Session()->UserID,
                   'Payload'   => GetValue('HandshakeResponse', $Authenticator, FALSE)
                ),$UserInfo);
-
+               
                Gdn::Authenticator()->Trigger($AuthenticationResponse, $UserEventData);
-
                switch ($AuthenticationResponse) {
                   case Gdn_Authenticator::AUTH_PERMISSION:
                      $this->Form->AddError('ErrorPermission');
@@ -163,7 +162,7 @@ class EntryController extends Gdn_Controller {
             $Reaction = Gdn_Authenticator::REACT_REDIRECT;
          break;
       }
-    
+      
       // AddActivity($AuthenticatedUserID, 'SignIn');
       switch ($Reaction) {
       
