@@ -49,6 +49,7 @@ function reinitializeTabs() {
 	
 	$("#menu").click(function(e) {
 		e.preventDefault();
+		
 		$.validationEngine.closePrompt('.formError',true);
 		//$("#divAddSupplier").hide( { duration: toggleDuration } );
 		$('#divAddSupplier').stop(true, false).fadeOut(200);
@@ -841,22 +842,43 @@ function reinitializeSubmitCommentForm(data) {
 			$.post(formAction, postArray,function(response) {
 				
 				if( !isNaN(response) ) {
-					if (data.param.numResults == 0) {
-						postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
+					if (data) {
+						if (data.param.numResults == 0) {
+							postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'comment');
+						} else {
+							
+							var formAction;
+							formAction = '/common/ajaxGetCommentFromId';
+							postArray = { q:response };
+							
+							$.post(formAction, postArray,function(jsonData) {	
+								drawNewComment(jsonData);
+								if(window.resetCommentForm) {
+									resetCommentForm();
+								}
+							},
+							"json");
+						}
+						
 					} else {
-						
-						var formAction;
-						formAction = '/common/ajaxGetCommentFromId';
-						postArray = { q:response };
-						
-						$.post(formAction, postArray,function(jsonData) {	
-							drawNewComment(jsonData);
-							if(window.resetCommentForm) {
-								resetCommentForm();
-							}
-						},
-						"json");
+						if (param.numResults == 0) {
+							postAndRedrawContent(param.firstPage, param.perPage, '', '', param.q, param.filter, 'comment');
+						} else {
+							
+							var formAction;
+							formAction = '/common/ajaxGetCommentFromId';
+							postArray = { q:response };
+							
+							$.post(formAction, postArray,function(jsonData) {	
+								drawNewComment(jsonData);
+								if(window.resetCommentForm) {
+									resetCommentForm();
+								}
+							},
+							"json");
+						}
 					}
+					
 				} else if(response == 'duplicate') {
 					var $alert = $('#alert');
 					displayProcessingMessage($alert, "Duplicate Comment...");

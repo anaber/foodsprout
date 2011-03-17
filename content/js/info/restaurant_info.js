@@ -76,9 +76,11 @@ function redrawContent(data, type) {
 		if (type == 'comment') {
 			resultTableHtml += addCommentForm();
 		}
+		
 		if (type == 'photo') {
 			resultTableHtml += addPhotoForm();
 		}
+		
 		
 		$('#resultTableContainer').html(resultTableHtml);
 		$('#pagingDiv').html(data.pagingHtml);
@@ -124,13 +126,12 @@ function redrawContent(data, type) {
 	if (type == 'photo') {
 		resultTableHtml += addPhotoForm();
 	}
-	*/
 	
 	//$('#resultTableContainer').append(resultTableHtml);
 	
-	//$('#messageContainer').hide();
-	//$('#resultsContainer').show();
-	
+	$('#messageContainer').hide();
+	$('#resultsContainer').show();
+	*/
 	changeSelectedTab();
 	
 	// Move scroll to top of window.
@@ -260,7 +261,7 @@ function addSupplierResult(supplier, count) {
 	return html;
 }
 */
-
+/*
 function addMenuResult(menu, count) {
 	var html = '';
 	
@@ -282,4 +283,4 @@ function addMenuResult(menu, count) {
 	;
 	return html;
 }
-
+*/

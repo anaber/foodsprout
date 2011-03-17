@@ -254,6 +254,93 @@ class Farm extends Controller {
 						);
 		}
 		
+		/** ------------------------------
+		 *  AJAX stuff starts from here
+		 *  ------------------------------ 
+		 */
+		$q = $farmId;
+		$producerName = $farm->farmName;
+		
+		$this->load->model('ListModel', '', TRUE);
+		
+		$tab = $this->input->get('tab'); 
+		if (!$tab || $tab == 'supplier') {
+			$this->load->model('SupplierModel');
+			$suppliees = $this->SupplierModel->getSupplieeForSupplierJson($q);
+			$params = $suppliees['param'];
+		} else if ($tab == 'menu') {
+			$this->load->model('RestaurantModel', '', TRUE);
+			$menus = $this->RestaurantModel->getRestaurantMenusJson($q);
+			$params = $menus['param'];
+		} else if ($tab == 'comment') {
+			$this->load->model('CommentModel', '', TRUE);
+			$comments = $this->CommentModel->getCommentsJson('restaurant', $q);
+			$params = $comments['param'];
+		} else if ($tab == 'photo') {
+			$this->load->model('PhotoModel', '', TRUE);
+			$photos = $this->PhotoModel->getPhotosJson('restaurant', $q);
+			$params = $photos['param'];
+		}
+		
+		/**
+		 * Set tab on INFO pages only
+		 */
+		$this->ListModel->tab = 'supplier';
+		$supplierTabLink = $this->ListModel->buildUrl($params);
+		
+		$this->ListModel->tab = 'menu';
+		$menuTabLink = $this->ListModel->buildUrl($params);
+		
+		$this->ListModel->tab = 'comment';
+		$commentTabLink = $this->ListModel->buildUrl($params);
+		
+		$this->ListModel->tab = 'photo';
+		$photoTabLink = $this->ListModel->buildUrl($params);
+		
+		if (!$tab || $tab == 'supplier') {
+			$this->ListModel->tab = 'supplier';
+			$listHtml = $this->ListModel->buildSupplieeList($suppliees, $producerName);
+		} else if ($tab == 'menu') {
+			$this->ListModel->tab = 'menu';
+			$listHtml = $this->ListModel->buildMenuList($menus, $producerName);
+		} else if ($tab == 'comment') {
+			$this->ListModel->tab = 'comment';
+			$listHtml = $this->ListModel->buildCommentList($comments, $producerName);
+		} else if ($tab == 'photo') {
+			$this->ListModel->tab = 'photo';
+			$listHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+		}
+		$data['data']['center']['info']['LIST_DATA'] = $listHtml;
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($params);
+		$data['data']['center']['info']['PAGING_HTML'] = $pagingHtml;
+		
+		if ($params['numResults'] > 0) {
+			$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($params, '2');
+			$data['data']['center']['info']['PAGING_HTML_2'] = $pagingHtml2;
+		}
+		
+		if (! $params['filter']) {
+			$params['filter'] = '';
+		}
+		$jsonParams = json_encode($params);
+		
+		$data['data']['center']['info']['PARAMS'] = $jsonParams;
+		/*
+		if ( isset($suppliees) ) {
+			$geocode = json_encode($suppliees['geocode']);
+			$data['data']['center']['info']['GEOCODE'] = $geocode;
+		}
+		*/
+		
+		$data['data']['left']['filter']['PARAMS'] = $params;
+		
+		$data['data']['center']['info']['SUPPLIER_TAB_LINK'] = $supplierTabLink;
+		$data['data']['center']['info']['MENU_TAB_LINK'] = $menuTabLink;
+		$data['data']['center']['info']['COMMENT_TAB_LINK'] = $commentTabLink;
+		$data['data']['center']['info']['PHOTO_TAB_LINK'] = $photoTabLink;
+		$data['data']['center']['info']['CURRENT_TAB'] = $this->ListModel->tab;
+		
 		$this->load->view('templates/left_center_detail_template', $data);
 	}
 	
@@ -277,12 +364,36 @@ class Farm extends Controller {
 	 * Verified By: 	Deepak
 	 */
 	function ajaxSearchFarmSuppliee() {
-		$q = $this->input->post('q');
-		//$q = 176022;
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
 		$this->load->model('SupplierModel');
-		$suppliee = $this->SupplierModel->getSupplieeForSupplierJson($q);
-
-		echo json_encode($suppliee);
+		$suppliees = $this->SupplierModel->getSupplieeForSupplierJson($q);
+		
+		$this->load->model('FarmModel');
+		$farm = $this->FarmModel->getFarmFromId($q);
+		$producerName = $farm->farmName;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$supplieeListHtml = $this->ListModel->buildSupplieeList($suppliees, $producerName);
+		$this->ListModel->tab = 'supplier';
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($suppliees['param']);
+		
+		$array = array(
+			'listHtml' => $supplieeListHtml,
+			'pagingHtml' => $pagingHtml,
+			'param' => $suppliees['param'],
+			//'geocode' => $suppliees['geocode'],
+		);
+		
+		if ($suppliees['param']['numResults'] > 0) {
+			$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($suppliees['param'], '2');
+			$array['pagingHtml2'] = $pagingHtml2;
+		}
+		
+		echo json_encode($array);
 	}
 	
 	/**
@@ -295,7 +406,32 @@ class Farm extends Controller {
 	function ajaxSearchFarmComments() {
 		$this->load->model('CommentModel', '', TRUE);
 		$comments = $this->CommentModel->getCommentsJson('farm');
-		echo json_encode($comments);
+		
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+		
+		$this->load->model('FarmModel');
+		$farm = $this->FarmModel->getFarmFromId($q);
+		$producerName = $farm->farmName;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName);
+		$this->ListModel->tab = 'comment';
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($comments['param']);
+		//$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($comments['param'], '2');
+		
+		$array = array(
+			'listHtml' => $menuListHtml,
+			'pagingHtml' => $pagingHtml,
+			//'pagingHtml2' => $pagingHtml2,
+			'param' => $comments['param'],
+			//'geocode' => $suppliers['geocode'],
+		);
+		
+		echo json_encode($array);
 	}
 	
 	/**
@@ -307,8 +443,33 @@ class Farm extends Controller {
 	 */
 	function ajaxSearchFarmPhotos() {
 		$this->load->model('PhotoModel', '', TRUE);
-		$comments = $this->PhotoModel->getPhotosJson('farm');
-		echo json_encode($comments);
+		$photos = $this->PhotoModel->getPhotosJson('farm');
+		
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+		
+		$this->load->model('FarmModel');
+		$farm = $this->FarmModel->getFarmFromId($q);
+		$producerName = $farm->farmName;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+		$this->ListModel->tab = 'photo';
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($photos['param']);
+		//$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($photos['param'], '2');
+		
+		$array = array(
+			'listHtml' => $photoListHtml,
+			'pagingHtml' => $pagingHtml,
+			//'pagingHtml2' => $pagingHtml2,
+			'param' => $photos['param'],
+			//'geocode' => $suppliers['geocode'],
+		);
+		
+		echo json_encode($array);
 	}
 }
 

@@ -5,6 +5,8 @@
 
 	$module = $this->uri->segment(1);
 	$producer = $this->uri->segment(2);
+	
+	$uri = $this->uri->uri_string();
 ?>
 <script src="<?php echo base_url()?>js/popup.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/info/restaurant_chain_info.js" type="text/javascript"></script>
@@ -24,6 +26,11 @@
 	var userGroup = "<?php echo $userGroup; ?>";
 	var userId = "<?php echo $userId; ?>";
 	
+	var param = <?php echo $PARAMS; ?>;
+	var geocode = <?php echo $GEOCODE; ?>;
+	var currentTab = '<?php echo $CURRENT_TAB; ?>';
+	var uri = '<?php echo $uri; ?>';
+	
 	var jsonData;
 	var currentContent;
 	
@@ -34,7 +41,9 @@
 	var isLoginMessageVisible = false;
 	
 	$(document).ready(function() {
-		$('#bottomPaging').hide();
+		var data = '';
+		
+		//$('#bottomPaging').hide();
 		
 		/**
 		 * If users try to load url with HASH segment from address bar
@@ -45,7 +54,7 @@
 			str = str.substr(2);
 			arr = str.split('&');
 			postArray = {};
-			var tab = p = pp = sort = order = q = f = city = '';		
+			var tab = p = pp = sort = order = q = f = tab = '';		
 			for(i = 0; i < arr.length; i++) {
 				queryString = arr[i];
 				arr2 = queryString.split('=');
@@ -75,8 +84,8 @@
 					f = arr2[1];
 				} else if (arr2[0] == 'q') {
 					q = arr2[1];
-				} else if (arr2[0] == 'city') {
-					city = arr2[1];
+				} else if (arr2[0] == 'tab') {
+					tab = arr2[1];
 				} 
 			}
 			
@@ -88,7 +97,6 @@
 					jsonData = data;
 					redrawContent(data, 'supplier');
 					reinitializeTabs();
-					reinitializeMap(map, data, 8, true);
 				},
 				"json");
 			} else if (tab == 'menu') {
@@ -124,6 +132,22 @@
 			}
 			
 		} else {
+			jsonData = data;
+			
+			if (currentTab != "") {
+				if (currentTab != "supplier") {
+					var $map = $('#map');
+					$map.hide(800);
+				}
+				currentContent = currentTab;
+				redrawContent(data, currentTab);
+			} else {
+				currentContent = 'supplier';
+				redrawContent(data, 'supplier');
+			}
+			reinitializeTabs();
+			
+			/*
 			$.post("/chain/ajaxSearchRestaurantChainSuppliers", { q: restaurantChainId },
 			function(data){
 				currentContent = 'supplier';
@@ -132,6 +156,7 @@
 				reinitializeTabs();
 			},
 			"json");
+			*/
 		}
 		
 	});
@@ -142,10 +167,10 @@
 <!-- center tabs -->
 	<div id="resultsContainer">
 		<div id="menu-bar"> 
-			<div id="suppliers" class = "non-selected"><a href = "<?php echo $module . '/' . $producer;?>?tab=supplier" id = "linkSupplier">Suppliers</a></div>
-			<div id="menu" class = "non-selected"><a href = "<?php echo $module . '/' . $producer;?>?tab=menu" id = "linkMenu">Menu</a></div>
-			<div id="comments" class = "non-selected"><a href = "<?php echo $module . '/' . $producer;?>?tab=comment" id = "linkComment">Comments</a></div>
-			<div id="photos" class = "non-selected"><a href = "<?php echo $module . '/' . $producer;?>?tab=photo" id = "linkPhoto">Photos</a></div>
+			<div id="suppliers" class = "non-selected"><a href = "<?php echo $SUPPLIER_TAB_LINK; ?>" id = "linkSupplier">Suppliers</a></div>
+			<div id="menu" class = "non-selected"><a href = "<?php echo $MENU_TAB_LINK; ?>" id = "linkMenu">Menu</a></div>
+			<div id="comments" class = "non-selected"><a href = "<?php echo $COMMENT_TAB_LINK; ?>" id = "linkComment">Comments</a></div>
+			<div id="photos" class = "non-selected"><a href = "<?php echo $PHOTO_TAB_LINK; ?>" id = "linkPhoto">Photos</a></div>
 			<div id="addItem" class = "addItem">&nbsp;+ Supplier</div>
 			<div class="clear"></div>
 			
@@ -224,9 +249,17 @@
 		<div class = "clear"></div>
 		
 		<div style="overflow:auto; padding:5px; font-size:10px;" id = "bottomPaging">
+			<?php
+				if (isset($PAGING_HTML_2) ) {
+					echo $PAGING_HTML_2;
+				} else {
+			?>
 			<div style="float:left; width:150px;" id = 'numRecords2'></div>
 			<div style="float:left; width:250px;" id = 'pagingLinks2' align = "center"></div>
 			<div style="float:left; width:175px;" id = 'recordsPerPage2' align = "right"></div>
+			<?php
+				}
+			?>
 			<div class="clear"></div>
 		</div>
 		<div class = "clear"></div>
