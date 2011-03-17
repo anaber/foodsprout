@@ -177,7 +177,7 @@ class Chain extends Controller {
 			$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 			$params = $suppliers['param'];
 		} else if ($tab == 'menu') {
-			$this->load->model('RestaurantModel', '', TRUE);
+			$this->load->model('RestaurantChainModel', '', TRUE);
 			$menus = $this->RestaurantChainModel->getRestaurantChainMenusJson($q);
 			$params = $menus['param'];
 		} else if ($tab == 'comment') {

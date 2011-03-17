@@ -231,9 +231,9 @@
 <!-- center tabs -->
 	<div id="resultsContainer">
 		<div id="menu-bar"> 
-			<div id="suppliers" class = "non-selected"><a href = "<?php echo $SUPPLIER_TAB_LINK; ?>" id = "linkSupplier">Farms at Market</a></div>
-			<div id="comments" class = "non-selected"><a href = "<?php echo $COMMENT_TAB_LINK; ?>" id = "linkComment">Comments</a></div>
-			<div id="photos" class = "non-selected"><a href = "<?php echo $PHOTO_TAB_LINK; ?>" id = "linkPhoto">Photos</a></div>
+			<div id="suppliers" class = "<?php echo ($CURRENT_TAB == 'supplier' ? 'selected' : 'non-selected') ?>"><a href = "<?php echo $SUPPLIER_TAB_LINK; ?>" id = "linkSupplier">Farms at Market</a></div>
+			<div id="comments" class = "<?php echo ($CURRENT_TAB == 'comment' ? 'selected' : 'non-selected') ?>"><a href = "<?php echo $COMMENT_TAB_LINK; ?>" id = "linkComment">Comments</a></div>
+			<div id="photos" class = "<?php echo ($CURRENT_TAB == 'photo' ? 'selected' : 'non-selected') ?>"><a href = "<?php echo $PHOTO_TAB_LINK; ?>" id = "linkPhoto">Photos</a></div>
 			<div id="addItem" class = "addItem">&nbsp;+ Farm</div>
 			<div class = "clear"></div>
 			<div id="divAddSupplier" class="supplier">
