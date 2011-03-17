@@ -9,19 +9,38 @@ class PhotoModel extends Model{
 	 * Verified: 		Yes
 	 * Verified By: 	Deepak
 	 */
-	function getPhotosJson($type) {
+	function getPhotosJson($type, $producerId = null) {
 		global $PER_PAGE;
 		
-		$p = $this->input->post('p'); // Page
-		$pp = $this->input->post('pp'); // Per Page
+		$p = $this->input->post('p'); 
+		if (!$p) {
+			$p = $this->input->get('p');
+		}
+		$pp = $this->input->post('pp'); 
+		if (!$pp) {
+			$pp = $this->input->get('pp');
+		}
 		$sort = $this->input->post('sort');
+		if (!$sort) {
+			$sort = $this->input->get('sort');
+		}
 		$order = $this->input->post('order');
+		if (!$order) {
+			$order = $this->input->get('order');
+		}
 		
-		$q = $this->input->post('q');
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
 		//$q = '174538';
 		if ($q == '0') {
 			$q = '';
 		}
+		if (!$q) {
+			$q = $producerId;
+		}
+		
 		
 		$CI =& get_instance();
 		

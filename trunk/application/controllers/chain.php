@@ -161,6 +161,94 @@ class Chain extends Controller {
 			'floating_messages'
 		);
 		
+		
+		/** ------------------------------
+		 *  AJAX stuff starts from here
+		 *  ------------------------------ 
+		 */
+		$q = $restaurantChainId;
+		$producerName = $restaurantChain->restaurantChain;
+		
+		$this->load->model('ListModel', '', TRUE);
+		
+		$tab = $this->input->get('tab'); 
+		if (!$tab || $tab == 'supplier') {
+			$this->load->model('SupplierModel');
+			$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
+			$params = $suppliers['param'];
+		} else if ($tab == 'menu') {
+			$this->load->model('RestaurantModel', '', TRUE);
+			$menus = $this->RestaurantChainModel->getRestaurantChainMenusJson($q);
+			$params = $menus['param'];
+		} else if ($tab == 'comment') {
+			$this->load->model('CommentModel', '', TRUE);
+			$comments = $this->CommentModel->getCommentsJson('restaurant_chain', $q);
+			$params = $comments['param'];
+		} else if ($tab == 'photo') {
+			$this->load->model('PhotoModel', '', TRUE);
+			$photos = $this->PhotoModel->getPhotosJson('restaurant_chain', $q);
+			$params = $photos['param'];
+		}
+		
+		/**
+		 * Set tab on INFO pages only
+		 */
+		$this->ListModel->tab = 'supplier';
+		$supplierTabLink = $this->ListModel->buildUrl($params);
+		
+		$this->ListModel->tab = 'menu';
+		$menuTabLink = $this->ListModel->buildUrl($params);
+		
+		$this->ListModel->tab = 'comment';
+		$commentTabLink = $this->ListModel->buildUrl($params);
+		
+		$this->ListModel->tab = 'photo';
+		$photoTabLink = $this->ListModel->buildUrl($params);
+		
+		if (!$tab || $tab == 'supplier') {
+			$this->ListModel->tab = 'supplier';
+			$listHtml = $this->ListModel->buildSupplierList($suppliers, $producerName);
+		} else if ($tab == 'menu') {
+			$this->ListModel->tab = 'menu';
+			$listHtml = $this->ListModel->buildMenuList($menus, $producerName);
+		} else if ($tab == 'comment') {
+			$this->ListModel->tab = 'comment';
+			$listHtml = $this->ListModel->buildCommentList($comments, $producerName);
+		} else if ($tab == 'photo') {
+			$this->ListModel->tab = 'photo';
+			$listHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+		}
+		
+		$data['data']['center']['info']['LIST_DATA'] = $listHtml;
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($params);
+		$data['data']['center']['info']['PAGING_HTML'] = $pagingHtml;
+		
+		if ($params['numResults'] > 0) {
+			$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($params, '2');
+			$data['data']['center']['info']['PAGING_HTML_2'] = $pagingHtml2;
+		}
+		
+		if (! $params['filter']) {
+			$params['filter'] = '';
+		}
+		$jsonParams = json_encode($params);
+		
+		$data['data']['center']['info']['PARAMS'] = $jsonParams;
+		
+		if ( isset($suppliers) ) {
+			$geocode = json_encode($suppliers['geocode']);
+			$data['data']['center']['info']['GEOCODE'] = $geocode;
+		}
+		
+		$data['data']['left']['filter']['PARAMS'] = $params;
+		
+		$data['data']['center']['info']['SUPPLIER_TAB_LINK'] = $supplierTabLink;
+		$data['data']['center']['info']['MENU_TAB_LINK'] = $menuTabLink;
+		$data['data']['center']['info']['COMMENT_TAB_LINK'] = $commentTabLink;
+		$data['data']['center']['info']['PHOTO_TAB_LINK'] = $photoTabLink;
+		$data['data']['center']['info']['CURRENT_TAB'] = $this->ListModel->tab;
+		
 		$this->load->view('templates/left_center_right_template', $data);
 	}
 
@@ -172,30 +260,133 @@ class Chain extends Controller {
 
 	function ajaxSearchRestaurantChainMenus() {
 		$this->load->model('RestaurantChainModel', '', TRUE);
-		$restaurants = $this->RestaurantChainModel->getRestaurantChainMenusJson();
-		echo json_encode($restaurants);
+		$menus = $this->RestaurantChainModel->getRestaurantChainMenusJson();
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+		
+		$this->load->model('RestaurantModel');
+		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($q);
+		$producerName = $restaurantChain->restaurantChain;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$menuListHtml = $this->ListModel->buildMenuList($menus, $producerName);
+		$this->ListModel->tab = 'menu';
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($menus['param']);
+		
+		$array = array(
+			'listHtml' => $menuListHtml,
+			'pagingHtml' => $pagingHtml,
+			'param' => $menus['param'],
+			//'geocode' => $menus['geocode'],
+		);
+		
+		if ($menus['param']['numResults'] > 0) {
+			$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($menus['param'], '2');
+			$array['pagingHtml2'] = $pagingHtml2;
+		}
+		
+		echo json_encode($array);
 	}
 
 	function ajaxSearchRestaurantChainSuppliers() {
-		$q = $this->input->post('q');
-		$q = 181176;
+		
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
 		$addressId = $this->input->post('addressId');
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
-		echo json_encode($suppliers);
+		$this->load->model('RestaurantModel');
+		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($q);
+		$producerName = $restaurantChain->restaurantChain;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName);
+		$this->ListModel->tab = 'supplier';
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($suppliers['param']);
+		
+		$array = array(
+			'listHtml' => $supplierListHtml,
+			'pagingHtml' => $pagingHtml,
+			'param' => $suppliers['param'],
+			'geocode' => $suppliers['geocode'],
+		);
+		
+		if ($suppliers['param']['numResults'] > 0) {
+			$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($suppliers['param'], '2');
+			$array['pagingHtml2'] = $pagingHtml2;
+		}
+		
+		echo json_encode($array);
 	}
 	
 	function ajaxSearchRestaurantChainComments() {
+		
 		$this->load->model('CommentModel', '', TRUE);
 		$comments = $this->CommentModel->getCommentsJson('restaurant_chain');
-		echo json_encode($comments);
+		
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+		
+		$this->load->model('RestaurantModel');
+		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($q);
+		$producerName = $restaurantChain->restaurantChain;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName);
+		$this->ListModel->tab = 'comment';
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($comments['param']);
+		//$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($comments['param'], '2');
+		
+		$array = array(
+			'listHtml' => $menuListHtml,
+			'pagingHtml' => $pagingHtml,
+			//'pagingHtml2' => $pagingHtml2,
+			'param' => $comments['param'],
+			//'geocode' => $suppliers['geocode'],
+		);
+		
+		echo json_encode($array);
 	}
 	
 	function ajaxSearchRestaurantChainPhotos() {
 		$this->load->model('PhotoModel', '', TRUE);
-		$comments = $this->PhotoModel->getPhotosJson('restaurant_chain');
-		echo json_encode($comments);
+		$photos = $this->PhotoModel->getPhotosJson('restaurant_chain');
+		
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+		
+		$this->load->model('RestaurantModel');
+		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($q);
+		$producerName = $restaurantChain->restaurantChain;
+		
+		$this->load->model('ListModel', '', TRUE);
+		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+		$this->ListModel->tab = 'photo';
+		
+		$pagingHtml = $this->ListModel->buildInfoPagingLinks($photos['param']);
+		//$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($photos['param'], '2');
+		
+		$array = array(
+			'listHtml' => $photoListHtml,
+			'pagingHtml' => $pagingHtml,
+			//'pagingHtml2' => $pagingHtml2,
+			'param' => $photos['param'],
+			//'geocode' => $suppliers['geocode'],
+		);
+		
+		echo json_encode($array);
 	}
 	
 	function customUrl($customUrl){

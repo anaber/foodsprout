@@ -1028,7 +1028,7 @@ class RestaurantModel extends Model{
 		return $menu;
 	}
 
-	function getRestaurantMenusJson() {
+	function getRestaurantMenusJson($producerId = null) {
 		global $PER_PAGE;
 
 		$p = $this->input->post('p'); 
@@ -1056,7 +1056,10 @@ class RestaurantModel extends Model{
 		if ($q == '0') {
 			$q = '';
 		}
-
+		if (!$q) {
+			$q = $producerId;
+		}
+		
 		$CI =& get_instance();
 
 		$CI->load->model('RestaurantModel');

@@ -1,7 +1,8 @@
 <?php
 
 class ListModel extends Model{
-
+	public $tab;
+	
 	function buildRestaurantList($restaurants) {
 		$html = '';
 		if ($restaurants['param']['numResults'] > 0) {
@@ -172,7 +173,7 @@ class ListModel extends Model{
 		return $str;
 	}
 	
-	function buildUrl($params, $qs = null, $value = null) {
+	function buildUrl($params, $qs = null, $value = null, $tab = null) {
 		$uri1 = $this->uri->segment(1);
 		if ($uri1 == 'sustainable') {
 			$uri2 = $this->uri->segment(2);
@@ -186,10 +187,12 @@ class ListModel extends Model{
 		$queryString = $this->buildQueryString($params, $qs, $value);
 		
 		$url .= ($queryString ? '?' . $queryString : '') ;
+		//echo $url . "<br />";
 		return $url;
 	}
 	
 	function buildQueryString($params, $qs = null, $value = null) {
+		$tab = $this->tab;
 		
 		$queryString = '';
 		
@@ -249,10 +252,14 @@ class ListModel extends Model{
 			$queryString .= '&q=';
 		}
 		
-		if (isset($params['city']) ) {
-			$queryString .= '&city=' . $params['city'];
+		if ($tab) {
+			$queryString .= '&tab=' . $tab;
 		} else {
-			$queryString .= '&city=';
+			if (isset($params['city']) ) {
+				$queryString .= '&city=' . $params['city'];
+			} else {
+				$queryString .= '&city=';
+			}
 		}
 		
 		return $queryString;
@@ -403,7 +410,6 @@ class ListModel extends Model{
 				'	</div>' . "\n" .
 				'	<div class = "listing-address">' . "\n";
 				
-				//$.each(supplier.addresses, function(j, address) {
 				foreach ($supplier->addresses as $j => $address) {
 					if ($j == 0) {
 						$html .= $address->displayAddress ;
@@ -417,6 +423,57 @@ class ListModel extends Model{
 				$html .=
 				'</div>' . "\n" .
 				'<div class = "clear"></div>' . "\n"
+				;
+			}
+		} else {
+			$html = $this->addZeroInfoResult('supplier', $producerName);
+		}
+		return $html;
+	}
+	
+	function buildSupplieeList($suppliees, $producerName) {
+		$html = '';
+		if ($suppliees['param']['numResults'] > 0) {
+			foreach($suppliees['results'] as $key => $company) {
+				
+				
+				$html .=
+				'<div style="overflow:auto; padding-bottom:10px;">' .
+				'	<div class = "listing-supplier-header">';
+				
+				if ($company->customUrl) {
+					$html .= '	<a href="/' . $company->type . '/' . $company->customUrl . '" style="font-size:13px;text-decoration:none;">'. $company->companyName .'</a>';
+				} else {
+					$html .= '	<a href="/' . $company->type . '/view/' . $company->companyId . '" style="font-size:13px;text-decoration:none;">'. $company->companyName .'</a>';
+				}
+				$html .=
+				'		<div class = "clear"></div>'.
+				'	</div>' .
+				'	<div class = "clear"></div>';
+					
+				$html .= 
+				'	<div class = "listing-supplier-information">';
+				$html .= '<b>Type:</b> '. $company->type;
+				$html .= 
+				'	</div>' .
+				'	<div class = "listing-address-title">'.
+				'		<b>Address:</b>'.
+				'	</div>' .
+				'	<div class = "listing-address">';
+				
+				foreach ($company->addresses as $j => $address) {
+					if ($j == 0) {
+						$html .= $address->displayAddress ;
+					} else {
+						$html .= "<br /><br />" . $address->displayAddress ;
+					}
+				};
+				
+				$html .= 
+				'	</div>';
+				$html .=
+				'</div>' .
+				'<div class = "clear"></div>'
 				;
 			}
 		} else {
@@ -504,6 +561,7 @@ class ListModel extends Model{
 				'	<hr size = "1" class = "listing-dash-line">' . 
 				'	<div class = "clear"></div>';
 			}
+			$html .= '<div id="divNewComment"></div>'; 
 		} else {
 			$html = $this->addZeroInfoResult('comment', $producerName);
 		}
@@ -512,6 +570,7 @@ class ListModel extends Model{
 	
 	function buildPhotoList($photos, $producerName) {
 		$html = '';
+		$html .= '<div id="gallery">'; 
 		if ($photos['param']['numResults'] > 0) {
 			$i = 0;
 			foreach($photos['results'] as $key => $photo) {
@@ -532,7 +591,7 @@ class ListModel extends Model{
 				'	        <img src="' . $photo->thumbPhoto . '" width="137" height="92" alt="" border = "0" /> ' .
 				'	    </a>' .
 				'	</div> ' .
-				'	<div class="porffoilo_content" style = "font-size:11px;">' + 
+				'	<div class="porffoilo_content" style = "font-size:11px;">' .
 						($photo->title ? $photo->title . '<br />' : '') . 'By: <b>' . $photo->firstName . '</b><br />on ' . $photo->addedOn .
 				'	</div>' .
 				'</div>';
@@ -541,6 +600,9 @@ class ListModel extends Model{
 		} else {
 			$html = $this->addZeroInfoResult('photo', $producerName);
 		}
+		$html .= '</div>';
+		$html .= '<hr size = "1" class = "flt listing-dash-line">'; 
+		$html .= '<div class = "clear"></div>';
 		return $html;
 	}
 	

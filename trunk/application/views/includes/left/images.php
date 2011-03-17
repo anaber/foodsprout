@@ -6,6 +6,7 @@
 <div id="rest-main-img"><div id="main_image"></div></div>
 <script src="<?php echo base_url()?>js/jquery.galleria.pack.js" type="text/javascript"></script>
 <script type="text/javascript">
+	
 	jQuery(function($) {
 		
 		$('.gallery_demo_unstyled').addClass('gallery_demo'); // adds new class name to maintain degradability
@@ -42,6 +43,45 @@
 		});
 	});
 	
+	/*
+	$(document).ready(function() {
+		$('.gallery_demo_unstyled').addClass('gallery_demo'); // adds new class name to maintain degradability
+		startGallery();
+	});
+	
+	function startGallery() {
+		$('ul.gallery_demo').galleria({
+			history   : false, // activates the history object for bookmarking, back-button etc.
+			
+			show_counter: false,
+			show_imagenav: true,
+			debug: true,
+			clickNext : true, // helper for making the image clickable
+			insert    : '#main_image', // the containing selector for our main image
+			onImage   : function(image,caption,thumb) { // let's add some image effects for demonstration purposes
+				
+				// fade in the image & caption
+				if(! ($.browser.mozilla && navigator.appVersion.indexOf("Win")!=-1) ) { // FF/Win fades large images terribly slow
+					image.css('display','none').fadeIn(1000);
+				}
+				caption.css('display','none').fadeIn(1000);
+				
+				// fetch the thumbnail container
+				var _li = thumb.parents('li');
+				
+				// fade out inactive thumbnail
+				_li.siblings().children('img.selected').fadeTo(500,0.3);
+				
+				// fade in active thumbnail
+				thumb.fadeTo('fast',1).addClass('selected');
+				
+				// add a title for the clickable image
+				image.attr('title','next >>');
+			}
+			
+		});
+	}
+	*/
 	</script> 
 	<style media="screen,projection" type="text/css"> 
 		#main_image img{height:133px;width:201px;}

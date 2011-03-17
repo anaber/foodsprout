@@ -781,18 +781,33 @@ class ManufactureModel extends Model{
 		return $products;
 	}
 	
-	function getManufactureMenusJson() {
+	function getManufactureMenusJson($producerId = null) {
 		global $PER_PAGE;
 		
-		$p = $this->input->post('p'); // Page
-		$pp = $this->input->post('pp'); // Per Page
+		$p = $this->input->post('p'); 
+		if (!$p) {
+			$p = $this->input->get('p');
+		}
+		$pp = $this->input->post('pp'); 
+		if (!$pp) {
+			$pp = $this->input->get('pp');
+		}
 		$sort = $this->input->post('sort');
+		if (!$sort) {
+			$sort = $this->input->get('sort');
+		}
 		$order = $this->input->post('order');
+		if (!$order) {
+			$order = $this->input->get('order');
+		}
 		
 		$q = $this->input->post('q');
 		
 		if ($q == '0') {
 			$q = '';
+		}
+		if (!$q) {
+			$q = $producerId;
 		}
 		
 		$start = 0;

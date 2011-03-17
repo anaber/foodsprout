@@ -9,7 +9,7 @@ class CommentModel extends Model{
 	 * Verified: 		Yes
 	 * Verified By: 	Deepak
 	 */
-	function getCommentsJson($type) {
+	function getCommentsJson($type, $producerId = null) {
 		global $PER_PAGE;
 		
 		$p = $this->input->post('p'); 
@@ -36,6 +36,10 @@ class CommentModel extends Model{
 		//$q = '174538';
 		if ($q == '0') {
 			$q = '';
+		}
+		
+		if (!$q) {
+			$q = $producerId;
 		}
 		
 		$CI =& get_instance();
