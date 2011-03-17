@@ -9,10 +9,10 @@ $Configuration['Cache']['Filecache']['Store'] = '/Users/anaber/Sites/food/web/tr
 $Configuration['Conversations']['Version'] = '2.0.17.8';
 
 // Database
-$Configuration['Database']['Name'] = 'foodlive-new';
-$Configuration['Database']['Host'] = 'localhost';
-$Configuration['Database']['User'] = 'root';
-$Configuration['Database']['Password'] = 'root';
+$Configuration['Database']['Name'] = '468258_livetest5';
+$Configuration['Database']['Host'] = 'mysql50-91.wc1.dfw1.stabletransit.com';
+$Configuration['Database']['User'] = '468258_testuser5';
+$Configuration['Database']['Password'] = 'Realf00d';
 $Configuration['Database']['Engine'] = 'MySQL';
 $Configuration['Database']['ConnectionOptions']['12'] = FALSE;
 $Configuration['Database']['ConnectionOptions']['1000'] = TRUE;
@@ -27,13 +27,15 @@ $Configuration['EnabledApplications']['Conversations'] = 'conversations';
 $Configuration['EnabledApplications']['Vanilla'] = 'vanilla';
 
 // EnabledPlugins
-$Configuration['EnabledPlugins']['GettingStarted'] = 'GettingStarted';
 $Configuration['EnabledPlugins']['HtmLawed'] = 'HtmLawed';
+$Configuration['EnabledPlugins']['ProxyConnectManual'] = 'ProxyConnectManualPlugin';
+$Configuration['EnabledPlugins']['ProxyConnectWordpress'] = 'ProxyConnectWordpressPlugin';
+$Configuration['EnabledPlugins']['ProxyConnect'] = 'ProxyConnect';
 
 // Garden
 $Configuration['Garden']['Title'] = 'Food Sprout';
 $Configuration['Garden']['Cookie']['Salt'] = '5V1OGT4DE1';
-$Configuration['Garden']['Cookie']['Domain'] = '';
+$Configuration['Garden']['Cookie']['Domain'] = '.foodsprout.com';
 $Configuration['Garden']['Cookie']['Name'] = 'Vanilla';
 $Configuration['Garden']['Cookie']['Path'] = '/';
 $Configuration['Garden']['Cookie']['HashMethod'] = 'md5';
@@ -48,17 +50,18 @@ $Configuration['Garden']['StripWebRoot'] = FALSE;
 $Configuration['Garden']['Debug'] = FALSE;
 $Configuration['Garden']['RewriteUrls'] = TRUE;
 $Configuration['Garden']['Session']['Length'] = '15 minutes';
-$Configuration['Garden']['Authenticator']['DefaultScheme'] = 'password';
 $Configuration['Garden']['Authenticator']['RegisterUrl'] = '/entry/register?Target=%2$s';
 $Configuration['Garden']['Authenticator']['SignInUrl'] = '/entry/signin?Target=%2$s';
 $Configuration['Garden']['Authenticator']['SignOutUrl'] = '/entry/signout/{Session_TransientKey}?Target=%2$s';
-$Configuration['Garden']['Authenticator']['EnabledSchemes'] = array('password');
+$Configuration['Garden']['Authenticator']['EnabledSchemes'] = 'a:2:{i:0;s:8:"password";i:1;s:5:"proxy";}';
 $Configuration['Garden']['Authenticator']['SyncScreen'] = 'smart';
+$Configuration['Garden']['Authenticator']['DefaultScheme'] = 'proxy';
 $Configuration['Garden']['Authenticators']['password']['Name'] = 'Password';
+$Configuration['Garden']['Authenticators']['proxy']['Name'] = 'ProxyConnect';
+$Configuration['Garden']['Authenticators']['proxy']['CookieName'] = 'VanillaProxy';
 $Configuration['Garden']['Errors']['LogEnabled'] = FALSE;
 $Configuration['Garden']['Errors']['LogFile'] = '';
 $Configuration['Garden']['Errors']['MasterView'] = 'error.master.php';
-$Configuration['Garden']['SignIn']['Popup'] = TRUE;
 $Configuration['Garden']['UserAccount']['AllowEdit'] = TRUE;
 $Configuration['Garden']['Registration']['Method'] = 'Captcha';
 $Configuration['Garden']['Registration']['DefaultRoles'] = array('8');
@@ -111,6 +114,7 @@ $Configuration['Garden']['Format']['YouTube'] = TRUE;
 $Configuration['Garden']['Format']['Vimeo'] = TRUE;
 $Configuration['Garden']['Format']['EmbedSize'] = 'normal';
 $Configuration['Garden']['Version'] = '2.0.17.8';
+$Configuration['Garden']['SignIn']['Popup'] = FALSE;
 
 // Modules
 $Configuration['Modules']['Garden']['Panel'] = array('UserPhotoModule', 'UserInfoModule', 'GuestModule', 'Ads');
@@ -119,6 +123,15 @@ $Configuration['Modules']['Vanilla']['Panel'] = array('NewDiscussionModule', 'Si
 $Configuration['Modules']['Vanilla']['Content'] = array('MessageModule', 'Notices', 'NewConversationModule', 'NewDiscussionModule', 'Content', 'Ads');
 $Configuration['Modules']['Conversations']['Panel'] = array('NewConversationModule', 'SignedInModule', 'GuestModule', 'Ads');
 $Configuration['Modules']['Conversations']['Content'] = array('MessageModule', 'Notices', 'NewConversationModule', 'NewDiscussionModule', 'Content', 'Ads');
+
+// Plugin
+$Configuration['Plugin']['ProxyConnect']['IntegrationManager'] = 'proxyconnectmanual';
+
+// Plugins
+$Configuration['Plugins']['GettingStarted']['Dashboard'] = '1';
+$Configuration['Plugins']['GettingStarted']['Plugins'] = '1';
+$Configuration['Plugins']['GettingStarted']['Categories'] = '1';
+$Configuration['Plugins']['ProxyConnect']['Enabled'] = TRUE;
 
 // Preferences
 $Configuration['Preferences']['Email']['ConversationMessage'] = '1';
@@ -139,4 +152,4 @@ $Configuration['Routes']['UpdateMode'] = 'dashboard/home/updatemode';
 // Vanilla
 $Configuration['Vanilla']['Version'] = '2.0.17.8';
 
-// Last edited by Unknown (::1)2011-02-14 15:33:09
+// Last edited by admin (127.0.0.1)2011-03-17 15:54:06
