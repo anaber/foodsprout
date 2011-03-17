@@ -284,7 +284,7 @@ class Restaurant extends Controller {
 			$geocode = json_encode($suppliers['geocode']);
 			$data['data']['center']['info']['GEOCODE'] = $geocode;
 		}
-		print_r_pre($params);
+		
 		$data['data']['left']['filter']['PARAMS'] = $params;
 		
 		$data['data']['left']['img']['PHOTO_TAB_LINK'] = $photoTabLink;
