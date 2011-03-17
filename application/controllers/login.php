@@ -2,13 +2,13 @@
 
 class Login extends Controller {
 
+
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
 	}
 
 	function index() {
-
 		if ($this->session->userdata('isAuthenticated') == 1 ) {
 			redirect('/home');
 		} else {
@@ -17,6 +17,7 @@ class Login extends Controller {
 			$this->load->model('SeoModel');
 			$seo = $this->SeoModel->getSeoDetailsFromPage('index');
 			$data['SEO'] = $seo;
+			$data['VANILLA'] = $this->input->get('vanilla');
 			 
 			$this->load->view('login', $data);
 		}
@@ -57,13 +58,37 @@ class Login extends Controller {
 				
 				$this->load->view('login', $data);
 			} else {
-					
+				$baseUrl = base_url();
+				$url = parse_url ($baseUrl);
+				$cookie = array(
+								   'name'   => 'Vanilla',
+								   'value'  => $this->input->post('login_email'),
+								   'expire' => time() + 3600,
+								   'domain' => $url['host'],
+								   'path'   => '/'
+							   );
+				
+				set_cookie($cookie);
+
 				if ($return) {
 					redirect($return);
 				} else {
-					redirect('/');
+					if($this->input->get('vanilla') == 1)
+						redirect('/topics');
+					else
+						redirect('/');
 				}
 			}
+		}
+	}
+	
+	// Used by Vanilla For Log In
+	function auth() {
+		$this->output->set_header("Content-Type: text/plain");
+		if ($this->session->userdata('isAuthenticated') == 1 ) {
+			printf('UniqueID='.$this->session->userdata('userId')."\n");
+			printf('Name='.$this->session->userdata('firstName')."\n");
+			printf('Email='.$this->session->userdata('email')."\n");
 		}
 	}
 
@@ -79,6 +104,16 @@ class Login extends Controller {
                'path'   => '/',
                'prefix' => '',
 		);
+		set_cookie($cookie);
+
+		$cookie = array(
+						   'name'   => 'Vanilla',
+						   'value'  => $this->input->post('login_email'),
+						   'expire' => time() - 3600,
+						   'domain' => $url['host'],
+						   'path'   => '/'
+					   );
+		
 		set_cookie($cookie);
 		$this->session->sess_destroy();
 		redirect('/');
