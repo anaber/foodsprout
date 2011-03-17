@@ -94,7 +94,7 @@
 			
 			if (tab == 'supplier') {
 								
-				$.post("/farmersmarket/ajaxSearchFarmersMarketSuppliers", { q: farmersMarketId, addressId:addressId },
+				$.post("/farmersmarket/ajaxSearchFarmersMarketSuppliers", { q: farmersMarketId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'supplier';
@@ -109,7 +109,7 @@
 				var $map = $('#map');
 				$map.hide(800);
 				
-				$.post("/farmersmarket/ajaxSearchFarmersMarketComments", { q: farmersMarketId, addressId:addressId },
+				$.post("/farmersmarket/ajaxSearchFarmersMarketComments", { q: farmersMarketId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'comment';
@@ -124,7 +124,7 @@
 				var $map = $('#map');
 				$map.hide(800);
 				
-				$.post("/farmersmarket/ajaxSearchFarmersMarketPhotos", { q: farmersMarketId, addressId:addressId },
+				$.post("/farmersmarket/ajaxSearchFarmersMarketPhotos", { q: farmersMarketId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'photo';

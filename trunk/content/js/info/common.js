@@ -175,6 +175,48 @@ function reinitializeTabs() {
 		window.location.hash = '!'+hashUrl;
 	});
 	
+	$("#photos2").click(function(e) {
+		e.preventDefault();
+		$.validationEngine.closePrompt('.formError',true);
+		//$("#divAddSupplier").hide( { duration: toggleDuration } );
+		$('#divAddSupplier').stop(true, false).fadeOut(200);
+		isSupplierFormVisible = false;
+		if(window.resetSupplierForm) {
+			resetSupplierForm();
+		}
+		
+		//$("#divAddMenu").hide( { duration: toggleDuration } );
+		$('#divAddMenu').stop(true, false).fadeOut(200);
+		isMenuFormVisible = false;
+		if(window.resetMenuForm) {
+			resetMenuForm();
+		}
+		
+		//$("#divAddComment").hide( { duration: toggleDuration } );
+		$('#divAddComment').stop(true, false).fadeOut(200);
+		isCommentFormVisible = false;
+		if(window.resetCommentForm) {
+			resetCommentForm();
+		}
+		
+		$('#divLoginMessage').stop(true, false).fadeOut(200);
+		isLoginMessageVisible = false;
+		
+		$('#bottomPaging').hide();
+		
+		var $map = $('#map');
+		$map.hide(800);
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'photo');
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, '', '', data.param.q, data.param.filter, 'photo');
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, '', '', param.q, param.filter, 'photo');
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, '', '', param.q, param.filter, 'photo');
+		}
+		window.location.hash = '!'+hashUrl;
+	});
+	
 	$("#linkSupplier").click(function(e) {
 		e.preventDefault();
 	});

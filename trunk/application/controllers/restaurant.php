@@ -122,7 +122,7 @@ class Restaurant extends Controller {
 		if($restaurantId == ""){
 			$restaurantId = $this->uri->segment(3);
 		}
-
+		
 		$this->load->model('PhotoModel');
 		$thumbPhotos = $this->PhotoModel->getThumbPhotos('producer', $restaurantId);
 
@@ -144,7 +144,7 @@ class Restaurant extends Controller {
 
 		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
 		$data['SEO'] = $seo;
-
+		
 		// SEO ENDS here
 
 		// List of views to be included, these are files that are pulled from different views in the view folders
@@ -174,7 +174,7 @@ class Restaurant extends Controller {
 		$data['data']['center']['info']['RESTAURANT_ID'] = $restaurant->restaurantId;
 		$data['data']['center']['info']['ADDRESS_ID'] = $addressId;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
-
+		
 		// Left -> Map
 		$data['data']['left']['map']['width'] = '220';
 		$data['data']['left']['map']['height'] = '225';
@@ -252,16 +252,16 @@ class Restaurant extends Controller {
 		
 		if (!$tab || $tab == 'supplier') {
 			$this->ListModel->tab = 'supplier';
-			$listHtml = $this->ListModel->buildSupplierList($suppliers, $producerName);
+			$listHtml = $this->ListModel->buildSupplierList($suppliers, $producerName, 'restaurant');
 		} else if ($tab == 'menu') {
 			$this->ListModel->tab = 'menu';
-			$listHtml = $this->ListModel->buildMenuList($menus, $producerName);
+			$listHtml = $this->ListModel->buildMenuList($menus, $producerName, 'restaurant');
 		} else if ($tab == 'comment') {
 			$this->ListModel->tab = 'comment';
-			$listHtml = $this->ListModel->buildCommentList($comments, $producerName);
+			$listHtml = $this->ListModel->buildCommentList($comments, $producerName, 'restaurant');
 		} else if ($tab == 'photo') {
 			$this->ListModel->tab = 'photo';
-			$listHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+			$listHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'restaurant');
 		}
 		$data['data']['center']['info']['LIST_DATA'] = $listHtml;
 		
@@ -287,6 +287,7 @@ class Restaurant extends Controller {
 		
 		$data['data']['left']['filter']['PARAMS'] = $params;
 		
+		$data['data']['left']['img']['PHOTO_TAB_LINK'] = $photoTabLink;
 		$data['data']['center']['info']['SUPPLIER_TAB_LINK'] = $supplierTabLink;
 		$data['data']['center']['info']['MENU_TAB_LINK'] = $menuTabLink;
 		$data['data']['center']['info']['COMMENT_TAB_LINK'] = $commentTabLink;
@@ -355,6 +356,7 @@ class Restaurant extends Controller {
 	}
 
 	function ajaxSearchRestaurantSuppliers() {
+		
 		$q = $this->input->post('q'); 
 		if (!$q) {
 			$q = $this->input->get('q');
@@ -368,7 +370,7 @@ class Restaurant extends Controller {
 		$producerName = $restaurant->restaurantName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName);
+		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName, 'restaurant');
 		$this->ListModel->tab = 'supplier';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($suppliers['param']);
@@ -401,7 +403,7 @@ class Restaurant extends Controller {
 		$producerName = $restaurant->restaurantName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$menuListHtml = $this->ListModel->buildMenuList($menus, $producerName);
+		$menuListHtml = $this->ListModel->buildMenuList($menus, $producerName, 'restaurant');
 		$this->ListModel->tab = 'menu';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($menus['param']);
@@ -518,7 +520,7 @@ class Restaurant extends Controller {
 		$producerName = $restaurant->restaurantName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName);
+		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName, 'restaurant');
 		$this->ListModel->tab = 'comment';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($comments['param']);
@@ -549,7 +551,7 @@ class Restaurant extends Controller {
 		$producerName = $restaurant->restaurantName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'restaurant');
 		$this->ListModel->tab = 'photo';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($photos['param']);

@@ -299,16 +299,16 @@ class Farm extends Controller {
 		
 		if (!$tab || $tab == 'supplier') {
 			$this->ListModel->tab = 'supplier';
-			$listHtml = $this->ListModel->buildSupplieeList($suppliees, $producerName);
+			$listHtml = $this->ListModel->buildSupplieeList($suppliees, $producerName, 'farm');
 		} else if ($tab == 'menu') {
 			$this->ListModel->tab = 'menu';
-			$listHtml = $this->ListModel->buildMenuList($menus, $producerName);
+			$listHtml = $this->ListModel->buildMenuList($menus, $producerName, 'farm');
 		} else if ($tab == 'comment') {
 			$this->ListModel->tab = 'comment';
-			$listHtml = $this->ListModel->buildCommentList($comments, $producerName);
+			$listHtml = $this->ListModel->buildCommentList($comments, $producerName, 'farm');
 		} else if ($tab == 'photo') {
 			$this->ListModel->tab = 'photo';
-			$listHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+			$listHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'farm');
 		}
 		$data['data']['center']['info']['LIST_DATA'] = $listHtml;
 		
@@ -335,6 +335,7 @@ class Farm extends Controller {
 		
 		$data['data']['left']['filter']['PARAMS'] = $params;
 		
+		$data['data']['left']['img']['PHOTO_TAB_LINK'] = $photoTabLink;
 		$data['data']['center']['info']['SUPPLIER_TAB_LINK'] = $supplierTabLink;
 		$data['data']['center']['info']['MENU_TAB_LINK'] = $menuTabLink;
 		$data['data']['center']['info']['COMMENT_TAB_LINK'] = $commentTabLink;
@@ -376,7 +377,7 @@ class Farm extends Controller {
 		$producerName = $farm->farmName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$supplieeListHtml = $this->ListModel->buildSupplieeList($suppliees, $producerName);
+		$supplieeListHtml = $this->ListModel->buildSupplieeList($suppliees, $producerName, 'farm');
 		$this->ListModel->tab = 'supplier';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($suppliees['param']);
@@ -417,7 +418,7 @@ class Farm extends Controller {
 		$producerName = $farm->farmName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName);
+		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName, 'farm');
 		$this->ListModel->tab = 'comment';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($comments['param']);
@@ -455,7 +456,7 @@ class Farm extends Controller {
 		$producerName = $farm->farmName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'farm');
 		$this->ListModel->tab = 'photo';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($photos['param']);

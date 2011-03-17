@@ -254,16 +254,16 @@ class Manufacture extends Controller {
 		
 		if (!$tab || $tab == 'supplier') {
 			$this->ListModel->tab = 'supplier';
-			$listHtml = $this->ListModel->buildSupplierList($suppliers, $producerName);
+			$listHtml = $this->ListModel->buildSupplierList($suppliers, $producerName, 'manufacture');
 		} else if ($tab == 'menu') {
 			$this->ListModel->tab = 'menu';
-			$listHtml = $this->ListModel->buildMenuList($menus, $producerName);
+			$listHtml = $this->ListModel->buildMenuList($menus, $producerName, 'manufacture');
 		} else if ($tab == 'comment') {
 			$this->ListModel->tab = 'comment';
-			$listHtml = $this->ListModel->buildCommentList($comments, $producerName);
+			$listHtml = $this->ListModel->buildCommentList($comments, $producerName, 'manufacture');
 		} else if ($tab == 'photo') {
 			$this->ListModel->tab = 'photo';
-			$listHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+			$listHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'manufacture');
 		}
 		$data['data']['center']['info']['LIST_DATA'] = $listHtml;
 		
@@ -289,6 +289,7 @@ class Manufacture extends Controller {
 		
 		$data['data']['left']['filter']['PARAMS'] = $params;
 		
+		$data['data']['left']['img']['PHOTO_TAB_LINK'] = $photoTabLink;
 		$data['data']['center']['info']['SUPPLIER_TAB_LINK'] = $supplierTabLink;
 		$data['data']['center']['info']['MENU_TAB_LINK'] = $menuTabLink;
 		$data['data']['center']['info']['COMMENT_TAB_LINK'] = $commentTabLink;
@@ -314,7 +315,7 @@ class Manufacture extends Controller {
 		$producerName = $manufacture->manufactureName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName);
+		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName, 'manufacture');
 		$this->ListModel->tab = 'supplier';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($suppliers['param']);
@@ -348,7 +349,7 @@ class Manufacture extends Controller {
 		$producerName = $manufacture->manufactureName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$menuListHtml = $this->ListModel->buildMenuList($menus, $producerName);
+		$menuListHtml = $this->ListModel->buildMenuList($menus, $producerName, 'manufacture');
 		$this->ListModel->tab = 'menu';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($menus['param']);
@@ -382,7 +383,7 @@ class Manufacture extends Controller {
 		$producerName = $manufacture->manufactureName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName);
+		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName, 'manufacture');
 		$this->ListModel->tab = 'comment';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($comments['param']);
@@ -413,7 +414,7 @@ class Manufacture extends Controller {
 		$producerName = $manufacture->manufactureName;
 		
 		$this->load->model('ListModel', '', TRUE);
-		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName);
+		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'manufacture');
 		$this->ListModel->tab = 'photo';
 		
 		$pagingHtml = $this->ListModel->buildInfoPagingLinks($photos['param']);

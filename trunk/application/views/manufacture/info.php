@@ -94,7 +94,7 @@
 			}
 			
 			if (tab == 'supplier') {
-				$.post("/manufacture/ajaxSearchManufactureSuppliers", { q: manufactureId, addressId:addressId },
+				$.post("/manufacture/ajaxSearchManufactureSuppliers", { q: manufactureId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'supplier';
@@ -108,7 +108,7 @@
 				var $map = $('#map');
 				$map.hide(800);
 				
-				$.post("/manufacture/ajaxSearchManufactureMenus", { q: manufactureId, addressId:addressId },
+				$.post("/manufacture/ajaxSearchManufactureMenus", { q: manufactureId, addressId:addressId, producerUrl:uri },
 				
 				function(data){
 					currentContent = 'menu';
@@ -122,7 +122,7 @@
 				var $map = $('#map');
 				$map.hide(800);
 				
-				$.post("/manufacture/ajaxSearchManufactureComments", { q: manufactureId, addressId:addressId },
+				$.post("/manufacture/ajaxSearchManufactureComments", { q: manufactureId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'comment';
@@ -136,7 +136,7 @@
 				var $map = $('#map');
 				$map.hide(800);
 				
-				$.post("/manufacture/ajaxSearchManufacturePhotos", { q: manufactureId, addressId:addressId },
+				$.post("/manufacture/ajaxSearchManufacturePhotos", { q: manufactureId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'photo';

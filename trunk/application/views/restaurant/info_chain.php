@@ -90,7 +90,7 @@
 			}
 			
 			if (tab == 'supplier') {
-				$.post("/chain/ajaxSearchRestaurantChainSuppliers", { q: restaurantChainId },
+				$.post("/chain/ajaxSearchRestaurantChainSuppliers", { q: restaurantChainId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'supplier';
@@ -100,7 +100,7 @@
 				},
 				"json");
 			} else if (tab == 'menu') {
-				$.post("/chain/ajaxSearchRestaurantChainMenus", { q: restaurantChainId },
+				$.post("/chain/ajaxSearchRestaurantChainMenus", { q: restaurantChainId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'menu';
@@ -110,7 +110,7 @@
 				},
 				"json");
 			} else if (tab == 'comment') {
-				$.post("/chain/ajaxSearchRestaurantChainComments", { q: restaurantChainId },
+				$.post("/chain/ajaxSearchRestaurantChainComments", { q: restaurantChainId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'comment';
@@ -120,7 +120,7 @@
 				},
 				"json");
 			} else if (tab == 'photo') {
-				$.post("/chain/ajaxSearchRestaurantChainPhotos", { q: restaurantChainId },
+				$.post("/chain/ajaxSearchRestaurantChainPhotos", { q: restaurantChainId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'photo';

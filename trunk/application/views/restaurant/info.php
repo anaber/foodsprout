@@ -92,7 +92,7 @@
 			
 			if (tab == 'supplier') {
 								
-				$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId },
+				$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'supplier';
@@ -107,7 +107,7 @@
 				var $map = $('#map');
 				$map.hide(800);
 				
-				$.post("/restaurant/ajaxSearchRestaurantMenus", { q: restaurantId, addressId:addressId },
+				$.post("/restaurant/ajaxSearchRestaurantMenus", { q: restaurantId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'menu';
@@ -122,7 +122,7 @@
 				var $map = $('#map');
 				$map.hide(800);
 				
-				$.post("/restaurant/ajaxSearchRestaurantComments", { q: restaurantId, addressId:addressId },
+				$.post("/restaurant/ajaxSearchRestaurantComments", { q: restaurantId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'comment';
@@ -137,7 +137,7 @@
 				var $map = $('#map');
 				$map.hide(800);
 				
-				$.post("/restaurant/ajaxSearchRestaurantPhotos", { q: restaurantId, addressId:addressId },
+				$.post("/restaurant/ajaxSearchRestaurantPhotos", { q: restaurantId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'photo';
