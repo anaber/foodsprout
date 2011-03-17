@@ -42,8 +42,8 @@ $config['index_page'] = "";
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
 */
-//$config['uri_protocol']	= "AUTO";
-$config['uri_protocol']	= "PATH_INFO";
+$config['uri_protocol']	= "AUTO";
+
 
 /*
 |--------------------------------------------------------------------------
@@ -150,7 +150,7 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 | use segment based URLs.
 |
 */
-$config['enable_query_strings'] = true;
+$config['enable_query_strings'] = TRUE;
 $config['controller_trigger'] 	= 'c';
 $config['function_trigger'] 	= 'm';
 $config['directory_trigger'] 	= 'd'; // experimental not currently in use
