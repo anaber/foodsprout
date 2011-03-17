@@ -222,36 +222,37 @@ class ListModel extends Model{
 			$queryString .= '&pp=';
 		}
 		
-		if ($params['sort'] ) {
-			if ($qs == 'sort') {
-				$queryString .= '&sort=' . $value;
+		if ($tab == '') {
+			if ($params['sort'] ) {
+				if ($qs == 'sort') {
+					$queryString .= '&sort=' . $value;
+				} else {
+					$queryString .= '&sort=' . $params['sort'];
+				}
 			} else {
-				$queryString .= '&sort=' . $params['sort'];
+				$queryString .= '&sort=';
 			}
-		} else {
-			$queryString .= '&sort=';
-		}
-		
-		if ($params['order'] ) {
-			if ($qs == 'order') {
-				$queryString .= '&order=' . $value;
+			
+			if ($params['order'] ) {
+				if ($qs == 'order') {
+					$queryString .= '&order=' . $value;
+				} else {
+					$queryString .= '&order=' . $params['order'];
+				}
 			} else {
-				$queryString .= '&order=' . $params['order'];
+				$queryString .= '&order=';
 			}
-		} else {
-			$queryString .= '&order=';
-		}
 		
-		if ($params['filter'] ) {
-			if ($qs == 'f') {
-				$queryString .= '&f=' . $value;
+			if ($params['filter'] ) {
+				if ($qs == 'f') {
+					$queryString .= '&f=' . $value;
+				} else {
+					$queryString .= '&f=' . $params['filter'];
+				}
 			} else {
-				$queryString .= '&f=' . $params['filter'];
+				$queryString .= '&f=';
 			}
-		} else {
-			$queryString .= '&f=';
 		}
-		
 		if ($params['q'] ) {
 			$queryString .= '&q=' . $params['q'];
 		} else {

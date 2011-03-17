@@ -169,7 +169,7 @@ class CityModel extends Model{
 		
 		$totalPages = ceil($numResults/$PER_PAGE);
 		$first = 0;
-		$last = $totalPages - 1;		
+		$last = $totalPages - 1;
 		
 		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
 		$arr = array(

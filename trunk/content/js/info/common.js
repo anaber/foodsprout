@@ -1183,6 +1183,7 @@ function buildHashUrl(tab) {
 }
 */
 function buildHashUrl(p, pp, sort, order, q, filter, tab) {
-	str = 'p='+p+'&pp='+pp+'&sort='+sort+'&order='+order+'&f='+filter+'&q='+q+'&tab='+tab;
+	//str = 'p='+p+'&pp='+pp+'&sort='+sort+'&order='+order+'&f='+filter+'&q='+q+'&tab='+tab;
+	str = 'p='+p+'&pp='+pp+'&q='+q+'&tab='+tab;
 	return str;
 }
