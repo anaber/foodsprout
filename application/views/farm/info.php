@@ -93,7 +93,7 @@
 			}
 			
 			if (tab == 'supplier') {
-				$.post("/farm/ajaxSearchFarmSuppliee", { q: farmId, addressId:addressId },
+				$.post("/farm/ajaxSearchFarmSuppliee", { q: farmId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'supplier';
@@ -103,7 +103,7 @@
 				},
 				"json");
 			} else if (tab == 'comment') {
-				$.post("/farm/ajaxSearchFarmComments", { q: farmId, addressId:addressId },
+				$.post("/farm/ajaxSearchFarmComments", { q: farmId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'comment';
@@ -113,7 +113,7 @@
 				},
 				"json");
 			} else if (tab == 'photo') {
-				$.post("/farm/ajaxSearchFarmPhotos", { q: farmId, addressId:addressId },
+				$.post("/farm/ajaxSearchFarmPhotos", { q: farmId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'photo';

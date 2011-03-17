@@ -174,15 +174,21 @@ class ListModel extends Model{
 	}
 	
 	function buildUrl($params, $qs = null, $value = null, $tab = null) {
-		$uri1 = $this->uri->segment(1);
-		if ($uri1 == 'sustainable') {
-			$uri2 = $this->uri->segment(2);
-			$uri3 = $this->uri->segment(3);
+		$producerUrl = $this->input->post('producerUrl');
+		
+		if ($producerUrl) {
+			$url = $producerUrl;
 		} else {
-			$uri2 = $this->uri->segment(2);
-			$uri3 = '';//$this->uri->segment(3);
+			$uri1 = $this->uri->segment(1);
+			if ($uri1 == 'sustainable') {
+				$uri2 = $this->uri->segment(2);
+				$uri3 = $this->uri->segment(3);
+			} else {
+				$uri2 = $this->uri->segment(2);
+				$uri3 = '';//$this->uri->segment(3);
+			}
+			$url = '/' . $uri1 . ($uri2 ? '/' . $uri2 : '') . ($uri3 ? '/' . $uri3 : '');
 		}
-		$url = '/' . $uri1 . ($uri2 ? '/' . $uri2 : '') . ($uri3 ? '/' . $uri3 : '');
 		
 		$queryString = $this->buildQueryString($params, $qs, $value);
 		
@@ -380,7 +386,7 @@ class ListModel extends Model{
 		return $html;
 	}
 	
-	function buildSupplierList($suppliers, $producerName) {
+	function buildSupplierList($suppliers, $producerName, $producerType) {
 		$html = '';
 		if ($suppliers['param']['numResults'] > 0) {
 			foreach($suppliers['results'] as $key => $supplier) {
@@ -426,12 +432,12 @@ class ListModel extends Model{
 				;
 			}
 		} else {
-			$html = $this->addZeroInfoResult('supplier', $producerName);
+			$html = $this->addZeroInfoResult('supplier', $producerName, $producerType);
 		}
 		return $html;
 	}
 	
-	function buildSupplieeList($suppliees, $producerName) {
+	function buildSupplieeList($suppliees, $producerName, $producerType) {
 		$html = '';
 		if ($suppliees['param']['numResults'] > 0) {
 			foreach($suppliees['results'] as $key => $company) {
@@ -477,19 +483,23 @@ class ListModel extends Model{
 				;
 			}
 		} else {
-			$html = $this->addZeroInfoResult('supplier', $producerName);
+			$html = $this->addZeroInfoResult('supplier', $producerName, $producerType);
 		}
 		return $html;
 	}
 	
-	function addZeroInfoResult($type, $producerName) {
+	function addZeroInfoResult($type, $producerName, $producerType = null) {
 		$html =
 		'	<div class = "zero-result-box">';
 		
 		$html .= 'We are currently working on adding ';
 		
 		if ($type == 'supplier') {
-			$html .= 'suppliers';
+			if ($producerType == 'farmers_market') {
+				$html .= 'farms';	
+			} else {
+				$html .= 'suppliers';
+			}
 		} else if ($type == 'menu') {
 			$html .= 'products';
 		} else if ($type == 'comment') {
@@ -501,7 +511,13 @@ class ListModel extends Model{
 		$html .= ' for "' . $producerName . '". All viewers of the site may also update data like Wikipedia. Feel free to add ';
 		
 		if ($type == 'supplier') {
-			$html .= '<a href="#" id = "addSupplier2" style="font-size:13px;text-decoration:none;">suppliers</a>';
+			$html .= '<a href="#" id = "addSupplier2" style="font-size:13px;text-decoration:none;">';
+			if ($producerType == 'farmers_market') {
+				$html .= 'farms';	
+			} else {
+				$html .= 'suppliers';
+			}
+			$html .= '</a>';
 		} else if ($type == 'menu') {
 			$html .= '<a href="#" id = "addMenu2" style="font-size:13px;text-decoration:none;">products</a>';
 		} else if ($type == 'comment') {
@@ -517,7 +533,7 @@ class ListModel extends Model{
 		return $html;
 	}
 	
-	function buildMenuList($menus, $producerName) {
+	function buildMenuList($menus, $producerName, $producerType) {
 		$html = '';
 		if ($menus['param']['numResults'] > 0) {
 			foreach($menus['results'] as $key => $menu) {
@@ -541,12 +557,12 @@ class ListModel extends Model{
 				;
 			}
 		} else {
-			$html = $this->addZeroInfoResult('menu', $producerName);
+			$html = $this->addZeroInfoResult('menu', $producerName, $producerType);
 		}
 		return $html;
 	}
 	
-	function buildCommentList($comments, $producerName) {
+	function buildCommentList($comments, $producerName, $producerType) {
 		$html = '';
 		if ($comments['param']['numResults'] > 0) {
 			foreach($comments['results'] as $key => $comment) {
@@ -563,12 +579,12 @@ class ListModel extends Model{
 			}
 			$html .= '<div id="divNewComment"></div>'; 
 		} else {
-			$html = $this->addZeroInfoResult('comment', $producerName);
+			$html = $this->addZeroInfoResult('comment', $producerName, $producerType);
 		}
 		return $html;
 	}
 	
-	function buildPhotoList($photos, $producerName) {
+	function buildPhotoList($photos, $producerName, $producerType) {
 		$html = '';
 		$html .= '<div id="gallery">'; 
 		if ($photos['param']['numResults'] > 0) {
@@ -595,13 +611,16 @@ class ListModel extends Model{
 						($photo->title ? $photo->title . '<br />' : '') . 'By: <b>' . $photo->firstName . '</b><br />on ' . $photo->addedOn .
 				'	</div>' .
 				'</div>';
-				
 			}
+			$html .=
+			'<div class = "clear"></div>' . 
+			'<hr size = "1" class = "flt listing-dash-line">' .
+			'<div class = "clear"></div>';
+			
 		} else {
-			$html = $this->addZeroInfoResult('photo', $producerName);
+			$html = $this->addZeroInfoResult('photo', $producerName, $producerType);
 		}
 		$html .= '</div>';
-		$html .= '<hr size = "1" class = "flt listing-dash-line">'; 
 		$html .= '<div class = "clear"></div>';
 		return $html;
 	}
