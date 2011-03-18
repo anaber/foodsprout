@@ -35,7 +35,7 @@ $Configuration['EnabledPlugins']['ProxyConnect'] = 'ProxyConnect';
 // Garden
 $Configuration['Garden']['Title'] = 'Food Sprout';
 $Configuration['Garden']['Cookie']['Salt'] = '5V1OGT4DE1';
-$Configuration['Garden']['Cookie']['Domain'] = 'www.sproutchain.com';
+$Configuration['Garden']['Cookie']['Domain'] = '.sproutchain.com';
 $Configuration['Garden']['Cookie']['Name'] = 'Vanilla';
 $Configuration['Garden']['Cookie']['Path'] = '/';
 $Configuration['Garden']['Cookie']['HashMethod'] = 'md5';
