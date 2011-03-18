@@ -310,9 +310,9 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
 		$Response = ProxyRequest($ForeignIdentityUrl,5);
 		$Response =  urldecode($Response);
 		$Response = explode('text/plain',$Response);
-		print_r($Response)."<br>";
+
 		$Result = @parse_ini_string($Response[1]);
-		print_r($Result);exit;
+
 //		$Result = @parse_ini_string(file_get_contents($ForeignIdentityUrl));
 //		print_r($Result);
 
