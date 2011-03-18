@@ -84,8 +84,8 @@ class Login extends Controller {
 	
 	// Used by Vanilla For Log In
 	function auth() {
+		$this->output->set_header("Content-Type: text/plain");
 		if ($this->session->userdata('isAuthenticated') == 1 ) {
-			$this->output->set_header("Content-Type: text/plain");
 			printf('UniqueID='.$this->session->userdata('userId')."\n");
 			printf('Name='.$this->session->userdata('firstName')."\n");
 			printf('Email='.$this->session->userdata('email')."\n");
