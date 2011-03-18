@@ -29,6 +29,9 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
       // Which cookie signals the presence of an authentication package?
       $this->_CookieName = Gdn::Config('Garden.Authenticators.proxy.CookieName', 'VanillaProxy');
 
+	  // Sign-in the user automatically
+	  $this->Authenticate();
+
       // Initialize built-in authenticator functionality
       parent::__construct();
    }
