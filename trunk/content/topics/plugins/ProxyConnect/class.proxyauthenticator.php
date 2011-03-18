@@ -309,7 +309,9 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
 */
 		$Response = ProxyRequest($ForeignIdentityUrl,5);
 		$Response =  urldecode($Response);
-
+		
+		echo $Response."<br>";
+		
 		if( strpos($Response, 'Email') !== FALSE )
 			$Response = explode('text/plain',$Response);
 
