@@ -60,14 +60,15 @@ class Login extends Controller {
 			} else {
 				$baseUrl = base_url();
 				$url = parse_url ($baseUrl);
+				$civ = base64_encode($this->session->userdata('userId'))."|".base64_encode($this->session->userdata('firstName'))."|".base64_encode($this->session->userdata('email'));
 				$cookie = array(
-								   'name'   => 'Vanilla',
-								   'value'  => $this->input->post('login_email'),
+								   'name'   => 'ci_v',
+								   'value'  => $civ,
 								   'expire' => time() + 3600,
 								   'domain' => $url['host'],
 								   'path'   => '/'
 							   );
-				
+
 				set_cookie($cookie);
 
 				if ($return) {
@@ -85,11 +86,9 @@ class Login extends Controller {
 	// Used by Vanilla For Log In
 	function auth() {
 		$this->output->set_header("Content-Type: text/plain");
-		if ($this->session->userdata('isAuthenticated') == 1 ) {
-			printf('UniqueID='.$this->session->userdata('userId')."\n");
-			printf('Name='.$this->session->userdata('firstName')."\n");
-			printf('Email='.$this->session->userdata('email')."\n");
-		}
+		printf('UniqueID=1'."\n");
+		printf('Name=name'."\n");
+		printf('Email=email@email.com'."\n");
 	}
 
 	// End a users session
@@ -107,7 +106,7 @@ class Login extends Controller {
 		set_cookie($cookie);
 
 		$cookie = array(
-						   'name'   => 'Vanilla',
+						   'name'   => 'ci_v',
 						   'value'  => $this->input->post('login_email'),
 						   'expire' => time() - 3600,
 						   'domain' => $url['host'],
@@ -115,6 +114,7 @@ class Login extends Controller {
 					   );
 		
 		set_cookie($cookie);
+
 		$this->session->sess_destroy();
 		redirect('/');
 	}
