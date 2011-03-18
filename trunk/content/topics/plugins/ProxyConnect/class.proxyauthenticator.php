@@ -307,32 +307,36 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
                throw new Exception("Unexpected value '$ReadMode' for 'Garden.Authenticators.proxy.RemoteFormat'");
          }
 */
-		$Response = ProxyRequest($ForeignIdentityUrl,5);
+
+/*		$Response = ProxyRequest($ForeignIdentityUrl);
 		$Response =  urldecode($Response);
 		
-		echo $Response."<br>";
-		
-		if( strpos($Response, 'Email') !== FALSE )
-			$Response = explode('text/plain',$Response);
+		if( strpos($Response, 'UniqueID') !== FALSE ) {
+			$Response = explode('UniqueID',$Response);
+			$Response[1] = "UniqueID".$Response[1];
+			$Result = @parse_ini_string($Response[1]);
+		}
 
-		print_r($Response);echo "<br>";
-		$Result = @parse_ini_string($Response[1]);
+		$Result = @parse_ini_string(file_get_contents($ForeignIdentityUrl));
+*/
 
-//		$Result = @parse_ini_string(file_get_contents($ForeignIdentityUrl));
+		$civ = $_COOKIE['ci_v'];
+		list($uid, $name, $email) = explode('|',$civ);
+		$uid = base64_decode($uid);
+		$name = base64_decode($name);
+		$email = base64_decode($email);
 
-		print_r($Result);
-
-         if ( isset($Result['Email']) && !empty($Result['Email']) ) {
-		 	echo "In";
+         if ( !empty($uid) ) {
             $ReturnArray = array(
-               'Email'        => ArrayValue('Email', $Result),
-               'Name'         => ArrayValue('Name', $Result),
-               'UniqueID'     => ArrayValue('UniqueID', $Result),
-               'TransientKey' => ArrayValue('TransientKey', $Result, NULL)
+               'Email'        => $email,
+               'Name'         => $name,
+               'UniqueID'     => $uid
+//               'TransientKey' => ArrayValue('TransientKey', $Result, NULL)
             );
+
             return $ReturnArray;
          }
-		 exit;
+
 //      }
       return FALSE;
    }
