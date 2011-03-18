@@ -314,9 +314,10 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
 		$Result = @parse_ini_string($Response[1]);
 
 //		$Result = @parse_ini_string(file_get_contents($ForeignIdentityUrl));
-//		print_r($Result);
+		print_r($Result);
 
-         if ($Result) {
+         if ( isset($Result['Email']) && !empty($Result['Email']) ) {
+		 	echo "In";
             $ReturnArray = array(
                'Email'        => ArrayValue('Email', $Result),
                'Name'         => ArrayValue('Name', $Result),
@@ -325,6 +326,7 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
             );
             return $ReturnArray;
          }
+		 exit;
 //      }
       return FALSE;
    }
