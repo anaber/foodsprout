@@ -19,6 +19,7 @@
 #leafimg #mainimg #resultsContainer #menu-bar a:hover{text-decoration:none;color:#F05A25;}
 
 #leafimg #mainimg #resultsContainer #menu-bar .non-selected:hover{background:#FFF;color:#F05A25;cursor:pointer;}
+#leafimg #mainimg #resultsContainer #menu-bar .non-selected:hover a{color:#F05A25;}
 #leafimg #mainimg #resultsContainer #menu-bar .selected{padding-right:9px;padding-left:9px;float:left;height:22px;margin-top:3px;margin-right:2px;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px;text-align:center;background-color:#fff;color:#F05A25;line-height:19px;}
 #leafimg #mainimg #resultsContainer #menu-bar .add-item-selected{float:right;margin-right:5px;padding-right:9px;padding-left:9px;height:22px;margin-top:3px;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:14px;text-align:center;/*background-color:#e5e5e5;*/
 background-color:#E5E5E5;color:#90171E;line-height:19px;}
