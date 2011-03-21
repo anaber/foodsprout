@@ -1,18 +1,15 @@
-body{margin:0;padding:0;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:14px;/* or 1em */
-color:#000;/* background:#E2E4E1;*/
-background:#EEEEEE;}
+body{margin:0;padding:0;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:14px;/* or 1em */color:#000;background:#EEEEEE;}
 .home_table{border-spacing:20px;}
 .home_td{border:solid 1px #000;}
 .greentxt{color:#0A7414;font-weight:bold;font-size:14px;margin:0px;}
 #rbox{-moz-border-radius:4px;-webkit-border-radius:4px;background:#0A7414;color:#FFF;-moz-box-shadow:0 1px 0 #CCCCCC;-webkit-box-shadow:0 1px 0 #CCCCCC;padding:10px;}
-#main-container{}
 .header-wide{background:#FFF;border-bottom:#CCC 1px solid;margin:0;}
-#header{background:#FFF;position:relative;height:90px;width:982px;margin:0 auto;text-align:left;}
+#header{background:#FFF;position:relative;height:70px;width:98%;margin:0 auto;text-align:left;}
 #header #logo{position:absolute;left:0px;top:15px;width:303px;height:70px;}
 #header #account{position:absolute;right:0px;top:0px;width:600px;height:20px;text-align:right;font-size:12px;}
 #header #search{position:absolute;right:0px;top:35px;width:600px;height:40px;text-align:left;}
 .nav-wide{background:#E4E4C9;border-bottom:#CCC 1px solid;}
-#main-content{text-align:left;width:964px;-moz-border-radius:5px;-webkit-border-radius:5px;background:#FFF;color:#000;-moz-box-shadow:0 0 .5em #CCC;-webkit-box-shadow:0 0 .5em #CCC;padding:10px;}
+#main-content{text-align:left;width:96%;-moz-border-radius:5px;-webkit-border-radius:5px;background:#FFF;color:#000;-moz-box-shadow:0 0 .5em #CCC;-webkit-box-shadow:0 0 .5em #CCC;padding:10px;}
 #footer{position:relative;height:15px;width:982px;margin:0 auto;text-align:left;font-size:11px;padding-top:5px;padding-left:3px;}
 .leftmenu{font-size:13px;font-family:arial;padding:5px;}
 input[type=submit],form a{border:none;margin-right:1em;padding:2px;text-decoration:none;font-size:12px;-moz-border-radius:2px;-webkit-border-radius:2px;background:#348075;color:white;-moz-box-shadow:0 1px 0 white;-webkit-box-shadow:0 1px 0 white;}
@@ -30,7 +27,7 @@ tr.d1 td{background-color:#E9E9E9;color:black;}
 #suggestion_box{height:18px;font-size:12px;}
 /* dropdown menu */
 #jsddm{margin:0;padding:0;}
-#jsddm li{float:left;width:108px;list-style:none;font:12px Tahoma,Arial}
+#jsddm li{float:left;list-style:none;font:12px Tahoma,Arial}
 #jsddm li a{display:block;background:#D2E4C9;padding:5px 12px;text-decoration:none;border-right:1px solid white;color:#0F0BCE;white-space:nowrap}
 #jsddm li a:hover{background:#D2E4C9}
 #jsddm li ul{margin:0;padding:0;position:absolute;visibility:hidden;border-top:1px solid white}

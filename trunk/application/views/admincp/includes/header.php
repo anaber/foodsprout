@@ -17,13 +17,12 @@
 	<div class="header-wide">
 		<div id="header">
 			<div id="logo">
-				<a href="/admincp/dashboard">Food Project</a>
+				<a href="/admincp/dashboard"><img src="/img/logo-sig.gif" border="0"></a>
 			</div>
 		</div>
 	</div>
-	<br />
 	<div align="center">
-		<div style="width:980px;">
+		<div style="background:#D2E4C9;height:28px;">
 			<?php $this->load->view('admincp/includes/navigation')?>
 		</div>
 	</div>
