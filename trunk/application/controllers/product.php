@@ -109,16 +109,7 @@ class Product extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 		
 	}
-	
-	function addeaten(){
-		
-		print_r($_POST);
-		
-		echo '<p>Thank you for your submission!</p>
-				<p><a href="#" onclick="window.parent.tb_remove(); return false">Continue</a>';
-		
-	}
-	
+
 	function customUrl($customUrl = ''){
 		
 		$this->load->model('CustomUrlModel');
@@ -174,6 +165,11 @@ class Product extends Controller {
 		
 		$data = array();
 		
+		//form secure
+		$rand_number = rand(132354,932356);
+		$this->session->set_userdata('secure_string', $rand_number);
+		$data['unique_form_id'] = md5($rand_number); 
+		
 		//TODO - move this query to model
 		
 		//get producer type
@@ -188,13 +184,88 @@ class Product extends Controller {
 			
 			//load address list
 			$this->load->model('ProductModel');
-
+			
 			$data['addressList'] = $this->ProductModel->getAddressByProductId($productId);
 			
 		}
-		
+		$data['product_id'] = $productId;
 		$this->load->view('product/ateadd', $data); 
 		
+	}
+		
+	function addeaten(){
+		
+		$auth = $this->session->userdata('isAuthenticated'); 
+		
+		if($auth != 1){
+			
+			exit('Auth error!');
+			
+		}
+		
+		//if session and form values match 
+		if($this->input->post('form_id') == md5($this->session->userdata('secure_string'))){
+
+			//remove session to not be used again 
+			$this->session->unset_userdata('some_name');	
+			
+			$params = array(); 
+			
+			if(isset($_POST['product_id']) && $_POST['product_id'] != ''){
+				$params['product_id'] = $this->input->post('product_id', true);
+			}else{
+				$params['product_id'] = "";
+			}
+			
+			$params['rating_date'] = date("Y-m-d H:i:s", time());
+			
+			if(isset($_POST['rating']) && $_POST['rating'] != ''){
+				$params['rating'] = $this->input->post('rating', true);
+			}else{
+				$params['rating'] = "";
+			}
+			
+			if(isset($_POST['comment']) && $_POST['comment'] != ''){
+				$params['comment'] = $this->input->post('comment', true);
+			}else{
+				$params['comment'] = "";
+			}
+			
+			if(isset($_POST['consumed_date']) && $_POST['consumed_date'] != ''){
+				$params['consumed_date'] = $this->input->post('consumed_date', true);
+			}else{
+				$params['consumed_date'] = "";
+			}
+			
+			
+			if(isset($_POST['address_id']) && $_POST['address_id'] != ''){
+				$params['address_id'] = $this->input->post('address_id', true);
+			}else{
+				$params['address_id'] = "";
+			}
+			
+			$params['user_id'] = $this->session->userdata('userId'); 
+			
+			try{
+				
+				if(sizeof($params) > 0 ){
+					
+					$this->db->insert('product_consumed', $params); 
+					
+				}
+			}catch(Exception $e){
+				
+				echo 'Caught exception: ',  $e->getMessage(), "\n";
+				
+			}
+			
+			echo '<p>Thank you for your submission!</p>
+				<p><a href="#" onclick="window.parent.tb_remove(); return false">Continue</a>';
+		
+			
+		}else{
+			die('Form id error!'); 
+		}
 	}
 	
 	
