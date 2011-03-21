@@ -30,6 +30,7 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
       $this->_CookieName = Gdn::Config('Garden.Authenticators.proxy.CookieName', 'VanillaProxy');
 
 	  // Sign-in the user automatically
+	  // Comment this if you need to access via Password and uncomment if you want to enable the ProxyConnection Authentication.
 	  $this->Authenticate();
 
       // Initialize built-in authenticator functionality
