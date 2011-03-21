@@ -40,6 +40,7 @@ function reinitializeMap(mapObject, data, zoomLevel, showLines) {
 			longitude = -98;
 		} else {
 			var j = 0;
+		
 			$.each(data.geocode, function(i, o) {
 				if (j == 0) {
 					latitude = o.latitude;
@@ -94,53 +95,58 @@ function reinitializeMap(mapObject, data, zoomLevel, showLines) {
 			longitude = -98;
 		} else {
 			var j = 0;
-			$.each(geocode, function(i, o) {
-				if (j == 0) {
-					latitude = o.latitude;
-					longitude = o.longitude;
-				}
-				
-				var point = new google.maps.LatLng(o.latitude, o.longitude);
-				
-				//html = getMarkerHtml(o);
-				if (divId == 'small_map_canvas') {
-					html = getMarkerHtml2(o);
-					htmls2[o.id] = html;
-				} else {
-					html = getMarkerHtml(o);
-					htmls[o.id] = html;
-				}
-				
-		        
-		        if (divId == 'small_map_canvas') {
-		        	var nMarker = createMarker(mapObject, o, point, html);
-		        	gmarkers2[o.id] = nMarker;
-		        } else {
-		        	if (showLines == true && j == 0) {
-		        		var nMarker = createMarker(mapObject, o, point, html, 'king');
-		        	} else {
-		        		var nMarker = createMarker(mapObject, o, point, html);
-		        	}
-		        	gmarkers[o.id] = nMarker;
-		        }
-		        
-		        if (showLines == true) {
-			        var linesCoordinates = [
-					    new google.maps.LatLng(latitude, longitude),
-					    new google.maps.LatLng(o.latitude, o.longitude)
-					  ];
-				  	var linePath = new google.maps.Polyline({
-					    path: linesCoordinates,
-					    strokeColor: "#F05A25",
-					    strokeOpacity: 1.0,
-					    strokeWeight: 1
-				  	});
-		  			linePath.setMap(mapObject);
-		  			lines[o.id] = linePath;
-	  			}
-	  			
-				j++;
-			});
+		
+			if (geocode.length > 0) {
+			
+				$.each(geocode, function(i, o) {
+					if (j == 0) {
+						latitude = o.latitude;
+						longitude = o.longitude;
+					}
+					
+					var point = new google.maps.LatLng(o.latitude, o.longitude);
+					
+					//html = getMarkerHtml(o);
+					if (divId == 'small_map_canvas') {
+						html = getMarkerHtml2(o);
+						htmls2[o.id] = html;
+					} else {
+						html = getMarkerHtml(o);
+						htmls[o.id] = html;
+					}
+					
+			        
+			        if (divId == 'small_map_canvas') {
+			        	var nMarker = createMarker(mapObject, o, point, html);
+			        	gmarkers2[o.id] = nMarker;
+			        } else {
+			        	if (showLines == true && j == 0) {
+			        		var nMarker = createMarker(mapObject, o, point, html, 'king');
+			        	} else {
+			        		var nMarker = createMarker(mapObject, o, point, html);
+			        	}
+			        	gmarkers[o.id] = nMarker;
+			        }
+			        
+			        if (showLines == true) {
+				        var linesCoordinates = [
+						    new google.maps.LatLng(latitude, longitude),
+						    new google.maps.LatLng(o.latitude, o.longitude)
+						  ];
+					  	var linePath = new google.maps.Polyline({
+						    path: linesCoordinates,
+						    strokeColor: "#F05A25",
+						    strokeOpacity: 1.0,
+						    strokeWeight: 1
+					  	});
+			  			linePath.setMap(mapObject);
+			  			lines[o.id] = linePath;
+		  			}
+		  			
+					j++;
+				});
+			}
+			
 		}
 	}
 	var point = new google.maps.LatLng(latitude, longitude);

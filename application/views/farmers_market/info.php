@@ -104,6 +104,9 @@
 		
 				function(data){
 					currentContent = 'supplier';
+					var $map = $('#map');
+					$map.show();
+					
 					jsonData = data;
 					redrawContent(data, 'supplier');
 					reinitializeTabs();
@@ -113,7 +116,7 @@
 			} else if (tab == 'comment') {
 				
 				var $map = $('#map');
-				$map.hide(800);
+				$map.hide();
 				
 				$.post("/farmersmarket/ajaxSearchFarmersMarketComments", { q: farmersMarketId, addressId:addressId, producerUrl:uri },
 		
@@ -122,13 +125,13 @@
 					jsonData = data;
 					redrawContent(data, 'comment');
 					reinitializeTabs();
-					reinitializeMap(map, data, 8, true);
+					//reinitializeMap(map, data, 8, true);
 				},
 				"json");
 			} else if (tab == 'photo') {
 				
 				var $map = $('#map');
-				$map.hide(800);
+				$map.hide();
 				
 				$.post("/farmersmarket/ajaxSearchFarmersMarketPhotos", { q: farmersMarketId, addressId:addressId, producerUrl:uri },
 		
@@ -137,7 +140,7 @@
 					jsonData = data;
 					redrawContent(data, 'photo');
 					reinitializeTabs();
-					reinitializeMap(map, data, 8, true);
+					//reinitializeMap(map, data, 8, true);
 				},
 				"json");
 			}
@@ -146,9 +149,9 @@
 			jsonData = data;
 			
 			if (currentTab != "") {
-				if (currentTab != "supplier") {
+				if (currentTab == "supplier") {
 					var $map = $('#map');
-					$map.hide(800);
+					$map.show();
 				}
 				currentContent = currentTab;
 				redrawContent(data, currentTab);
@@ -157,19 +160,10 @@
 				redrawContent(data, 'supplier');
 			}
 			reinitializeTabs();
-			reinitializeMap(map, data, 8, true);
-			
-			/*
-			$.post("/farmersmarket/ajaxSearchFarmersMarketSuppliers", { q: farmersMarketId, addressId:addressId },
-			function(data){
-				currentContent = 'supplier';
-				jsonData = data;
-				redrawContent(data, 'supplier');
-				reinitializeTabs();
+			if (currentTab == "supplier") {
 				reinitializeMap(map, data, 8, true);
-			},
-			"json");
-			*/
+			}
+			
 		}
 		
 		loadSmallMapOnStartUp(38.41055825094609, -98, 3);

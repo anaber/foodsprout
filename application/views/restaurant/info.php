@@ -46,7 +46,6 @@
 	var isLoginMessageVisible = false;
 	
 	$(document).ready(function() {
-		
 		loadMapOnStartUp(38.41055825094609, -98, 3);
 		var data = '';
 		
@@ -97,11 +96,14 @@
 			}
 			
 			if (tab == 'supplier') {
-								
 				$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
 					currentContent = 'supplier';
+					
+					var $map = $('#map');
+					$map.show();
+					
 					jsonData = data;
 					redrawContent(data, 'supplier');
 					reinitializeTabs();
@@ -111,7 +113,7 @@
 			} else if (tab == 'menu') {
 				
 				var $map = $('#map');
-				$map.hide(800);
+				$map.hide();
 				
 				$.post("/restaurant/ajaxSearchRestaurantMenus", { q: restaurantId, addressId:addressId, producerUrl:uri },
 		
@@ -120,13 +122,13 @@
 					jsonData = data;
 					redrawContent(data, 'menu');
 					reinitializeTabs();
-					reinitializeMap(map, data, 8, true);
+					//reinitializeMap(map, data, 8, true);
 				},
 				"json");
 			} else if (tab == 'comment') {
 				
 				var $map = $('#map');
-				$map.hide(800);
+				$map.hide();
 				
 				$.post("/restaurant/ajaxSearchRestaurantComments", { q: restaurantId, addressId:addressId, producerUrl:uri },
 		
@@ -135,13 +137,13 @@
 					jsonData = data;
 					redrawContent(data, 'comment');
 					reinitializeTabs();
-					reinitializeMap(map, data, 8, true);
+					//reinitializeMap(map, data, 8, true);
 				},
 				"json");
 			} else if (tab == 'photo') {
 				
 				var $map = $('#map');
-				$map.hide(800);
+				$map.hide();
 				
 				$.post("/restaurant/ajaxSearchRestaurantPhotos", { q: restaurantId, addressId:addressId, producerUrl:uri },
 		
@@ -150,7 +152,7 @@
 					jsonData = data;
 					redrawContent(data, 'photo');
 					reinitializeTabs();
-					reinitializeMap(map, data, 8, true);
+					//reinitializeMap(map, data, 8, true);
 				},
 				"json");
 			}
@@ -160,9 +162,9 @@
 			jsonData = data;
 			
 			if (currentTab != "") {
-				if (currentTab != "supplier") {
+				if (currentTab == "supplier") {
 					var $map = $('#map');
-					$map.hide(800);
+					$map.show();
 				}
 				currentContent = currentTab;
 				redrawContent(data, currentTab);
@@ -171,21 +173,10 @@
 				redrawContent(data, 'supplier');
 			}
 			reinitializeTabs();
-			reinitializeMap(map, data, 8, true);
-			
-			
-			/*
-			$.post("/restaurant/ajaxSearchRestaurantSuppliers", { q: restaurantId, addressId:addressId },
-			
-			function(data){
-				currentContent = 'supplier';
-				jsonData = data;
-				redrawContent(data, 'supplier');
-				reinitializeTabs();
+			if (currentTab == "supplier") {
 				reinitializeMap(map, data, 8, true);
-			},
-			"json");
-			*/
+			}
+			
 		}
 		
 		
@@ -325,6 +316,7 @@
 			?>
 			<div class = "clear"></div>
 		</div>
+		
 		<div class="clear"></div>
 		<div style="overflow:auto;height:5px;"></div>
 		<div class="clear"></div>

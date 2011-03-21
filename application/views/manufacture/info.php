@@ -28,13 +28,7 @@
 	var userId = "<?php echo $userId; ?>";
 	
 	var param = <?php echo $PARAMS; ?>;
-	<?php
-		if (isset($GEOCODE) ) {
-	?>
-	var geocode = <?php echo $GEOCODE; ?>;
-	<?php
-		}
-	?>
+	
 	var currentTab = '<?php echo $CURRENT_TAB; ?>';
 	var uri = '<?php echo $uri; ?>';
 	
@@ -111,9 +105,6 @@
 				"json");
 			} else if (tab == 'menu') {
 				
-				var $map = $('#map');
-				$map.hide(800);
-				
 				$.post("/manufacture/ajaxSearchManufactureMenus", { q: manufactureId, addressId:addressId, producerUrl:uri },
 				
 				function(data){
@@ -125,9 +116,6 @@
 				"json");
 			} else if (tab == 'comment') {
 				
-				var $map = $('#map');
-				$map.hide(800);
-				
 				$.post("/manufacture/ajaxSearchManufactureComments", { q: manufactureId, addressId:addressId, producerUrl:uri },
 		
 				function(data){
@@ -138,9 +126,6 @@
 				},
 				"json");
 			} else if (tab == 'photo') {
-				
-				var $map = $('#map');
-				$map.hide(800);
 				
 				$.post("/manufacture/ajaxSearchManufacturePhotos", { q: manufactureId, addressId:addressId, producerUrl:uri },
 		
@@ -157,10 +142,7 @@
 			jsonData = data;
 			
 			if (currentTab != "") {
-				if (currentTab != "supplier") {
-					var $map = $('#map');
-					$map.hide(800);
-				}
+				
 				currentContent = currentTab;
 				redrawContent(data, currentTab);
 			} else {
@@ -169,16 +151,6 @@
 			}
 			reinitializeTabs();
 			
-			/*
-			$.post("/manufacture/ajaxSearchManufactureSuppliers", { q: manufactureId, addressId:addressId },
-			function(data){
-				currentContent = 'supplier';
-				jsonData = data;
-				redrawContent(data, 'supplier');
-				reinitializeTabs();
-			},
-			"json");
-			*/
 		}
 		
 		
