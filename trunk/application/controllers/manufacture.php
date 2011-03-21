@@ -331,7 +331,7 @@ class Manufacture extends Controller {
 			'geocode' => $suppliers['geocode'],
 		);
 		
-		if ($suppliers['params']['numResults'] > 0) {
+		if ($suppliers['param']['numResults'] > 0) {
 			$pagingHtml2 = $this->ListModel->buildInfoPagingLinks($suppliers['param'], '2');
 			$array['pagingHtml2'] = $pagingHtml2;
 		}

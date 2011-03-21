@@ -27,13 +27,7 @@
 	var userId = "<?php echo $userId; ?>";
 	
 	var param = <?php echo $PARAMS; ?>;
-	<?php
-		if (isset($GEOCODE) ) {
-	?>
-	var geocode = <?php echo $GEOCODE; ?>;
-	<?php
-		}
-	?>
+	
 	var currentTab = '<?php echo $CURRENT_TAB; ?>';
 	var uri = '<?php echo $uri; ?>';
 	
@@ -141,10 +135,7 @@
 			jsonData = data;
 			
 			if (currentTab != "") {
-				if (currentTab != "supplier") {
-					var $map = $('#map');
-					$map.hide(800);
-				}
+				
 				currentContent = currentTab;
 				redrawContent(data, currentTab);
 			} else {
@@ -152,17 +143,6 @@
 				redrawContent(data, 'supplier');
 			}
 			reinitializeTabs();
-			
-			/*
-			$.post("/chain/ajaxSearchRestaurantChainSuppliers", { q: restaurantChainId },
-			function(data){
-				currentContent = 'supplier';
-				jsonData = data;
-				redrawContent(data, 'supplier');
-				reinitializeTabs();
-			},
-			"json");
-			*/
 		}
 		
 	});
