@@ -18,7 +18,7 @@ for($i = 0; $i < count($CENTER); $i++ ) {
 ?>
 <div id="main-content">
 
-	<table width = "980" border = "0" cellpadding = "0" cellspacing = "0">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 			<td valign = "top">
 				<?php
