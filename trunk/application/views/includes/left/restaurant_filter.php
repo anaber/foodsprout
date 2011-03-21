@@ -39,7 +39,8 @@
 			$browser_compatible_rec_city = implode('-', explode (' ', strtolower($rec_city)) );
 			echo '<a href="/sustainable/' . $browser_compatible_rec_city . '" style="font-size:13px;text-decoration:none;">'. ( ($browser_compatible_rec_city == $city) ? '<b>'.$rec_city.'</b>' : $rec_city ) . '</a><br/>';
 		}
-	?>
+	?><br>
+	<a href="/cities">More Cities...</a>
 </div><br />
 
 	<div class="filterh">Restaurant Type</div>
