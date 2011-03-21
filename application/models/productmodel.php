@@ -492,7 +492,7 @@ class ProductModel extends Model {
 		$result = $this->db->query($query);
 
 		$products = array();
-
+		$CI =& get_instance();
 		$geocodeArray = array();
 		foreach ($result->result() as $row) {
 
@@ -504,12 +504,36 @@ class ProductModel extends Model {
 			$this->productLib->producerId = $row->producer_id;
 
 			if ($row->is_manufacture) {
-				$this->productLib->manufactureName = $row->producer;
+				//$this->productLib->manufactureName = $row->producer;
+				$this->productLib->producerType = 'manufacture';
 			} else if ($row->is_restaurant) {
-				$this->productLib->restaurantName = $row->producer;
+				//$this->productLib->restaurantName = $row->producer;
+				$this->productLib->producerType = 'restaurant';
 			} else if ($row->is_restaurant_chain) {
-				$this->productLib->restaurantChain = $row->producer;
+				//$this->productLib->restaurantChain = $row->producer;
+				$this->productLib->producerType = 'chain';
 			}
+			
+			$this->productLib->producerName = $row->producer;
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id);
+			//$this->ManufactureLib->addresses = $addresses;
+			
+			$this->productLib->customUrl = '';
+			$firstAddressId = '';
+			
+			foreach ($addresses as $key => $address) {
+				$firstAddressId = $address->addressId;
+				break;
+			}
+			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row->producer_id, $firstAddressId);
+				$this->productLib->customUrl = $customUrl;
+			}
+			
 
 			$this->productLib->productTypeId = $row->product_type_id;
 			$this->productLib->productType = $row->product_type;

@@ -64,13 +64,20 @@ function addResult(product, count) {
 	//'	<div style="float:left; padding:3px; clear:left; width:605px; background:#e5e5e5; font-weight:bold;"><a href="/product/view/' + product.productId + '" id = "'+ product.productId +'" style="text-decoration:none;">'+ product.productName +'</a></div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Type:</b> '+ product.productType + '<br /><b>Brand:</b> ' + product.brand + '</div>';
 	'	<div style="float:left; padding:3px; clear:left; width:605px; background:#e5e5e5; font-weight:bold;">'+ product.productName +'</div><div style="float:left; width:300px; clear:left;padding-left:3px; padding-right:10px;font-size:13px;"><b>Type:</b> '+ product.productType + '<br /><b>Brand:</b> ' + product.brand + '</div>';
 
+	html += '<div style="float:left; width:75px;font-size:13px;"><b>';
+	if (product.producerType == 'restaurant') {
+		html += 'Restaurant:';
+	} else if (product.producerType == 'chain') {
+		html += 'Chain:';
+	} else if (product.producerType == 'manufacture') {
+		html += 'Manufacture:';
+	}
+	html += '</b></div>';
 	
-	if (product.restaurantName) {
-		html += '<div style="float:left; width:75px;font-size:13px;"><b>Restaurant:</b></div><div style="float:left; width:220px;font-size:13px;"><a href="/restaurant/view/' + product.producerId + '" style="font-size:13px;text-decoration:none;">' + product.restaurantName + '</a>';
-	} else if (product.restaurantChain) {
-		html += '<div style="float:left; width:115px;font-size:13px;"><b>Restaurant:</b></div><div style="float:left; width:180px;font-size:13px;"><a href = "/chain/view/'+product.producerId+'" style="font-size:13px;text-decoration:none;">' + product.restaurantChain + '</a>';
-	} else if (product.manufactureName) {
-		html += '<div style="float:left; width:85px;font-size:13px;"><b>Manufacture:</b></div><div style="float:left; width:215px;font-size:13px;"><a href="/manufacture/view/' + product.producerId + '" style="font-size:13px;text-decoration:none;">' + product.manufactureName + '</a>';
+	if (product.customUrl) {
+		html += '<div style="float:left; width:215px;font-size:13px;"><a href="/' + product.producerType + '/' + product.customUrl + '" style="font-size:13px;text-decoration:none;">' + product.producerName + '</a>'
+	} else {
+		html += '<div style="float:left; width:215px;font-size:13px;"><a href="/' + product.producerType + '/view/' + product.customUrl + '" style="font-size:13px;text-decoration:none;">' + product.producerName + '</a>'		
 	}
 	
 	html +=
