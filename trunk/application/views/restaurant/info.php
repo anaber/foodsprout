@@ -27,7 +27,13 @@
 	var userId = "<?php echo $userId; ?>";
 	
 	var param = <?php echo $PARAMS; ?>;
+	<?php
+		if (isset($GEOCODE) ) {
+	?>
 	var geocode = <?php echo $GEOCODE; ?>;
+	<?php
+		}
+	?>
 	var currentTab = '<?php echo $CURRENT_TAB; ?>';
 	var uri = '<?php echo $uri; ?>';
 	

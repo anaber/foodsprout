@@ -173,11 +173,13 @@ function createMarker(mapObject, o, point, html, king) {
   	});
     
     if (divId == 'small_map_canvas') {
+    	/*
     	google.maps.event.addListener(marker, 'click', function() {
 		    clearInfoWindow(mapObject);
 		    infowindow.open(mapObject, marker);
 		    infowindows2[0] = infowindow;
 		});
+		*/
     } else {
     	google.maps.event.addListener(marker, 'click', function() {
 		    clearInfoWindow(mapObject);
@@ -196,6 +198,7 @@ function viewMarker(mapObject, record_id, viewBubble) {
 	divId = a.id;
 	
 	if (divId == 'small_map_canvas') {
+		/*
 		var marker = gmarkers2[record_id];
 	
 		var infowindow = new google.maps.InfoWindow({ 
@@ -206,6 +209,7 @@ function viewMarker(mapObject, record_id, viewBubble) {
 	    infowindow.open(mapObject, marker);
 	    
 	    infowindows2[0] = infowindow;
+	    */
 	} else {
 		var marker = gmarkers[record_id];
 	
