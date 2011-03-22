@@ -46,6 +46,10 @@ class Chain extends Controller {
 		
 		$this->load->model('RestaurantChainModel');
 		$chains = $this->RestaurantChainModel->getRestaurantChains($page, $perpage);
+
+		// If entered page is greater than retrieved totalPages, redirect to last page
+		if( $urlpage > $chains['param']['totalPages'] )
+			redirect("/chain/page".$chains['param']['totalPages']."?pp=".$chains['param']['perPage']);
 		
 		// Views to include in the data array
 		$data['CENTER'] = array(
