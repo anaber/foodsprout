@@ -381,11 +381,38 @@ class Product extends Controller {
 	function fructose() {
 		$data = array();
 		
+		// validate the data in the URL to make sure we don't have SQL injection
+		$urlpage = substr($this->uri->segment(3),4,5);
+
+
+		if(is_numeric($urlpage))
+			$page = $urlpage-1;
+		else
+			$page = 0;
+		
+		if($this->input->get('pp')) {
+			$number_perpage = $this->input->get('pp');
+			
+			if($number_perpage > 40)
+				$perpage = 20;
+			else
+				$perpage = $number_perpage;
+		} else
+			$perpage = 10;
+		
 		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('fructose_list');
 		$data['SEO'] = $seo;
-		
+
+		// GET PRODUCT WITH FRUCTOSE
+		$this->load->model('ProductModel', '', TRUE);
+		$products = $this->ProductModel->getProductWithFructose($page, $perpage);
+
+		// If entered page is greater than retrieved totalPages, redirect to last page
+		if( $urlpage > $products['param']['totalPages'] )
+			redirect("/product/fructose/page".$products['param']['totalPages']."?pp=".$products['param']['perPage']);
+
 		// Views to include in the data array
 		$data['CENTER'] = array(
 				'list' => '/product/product_list',
@@ -397,6 +424,7 @@ class Product extends Controller {
 		
 		// Center -> List
 		$data['data']['center']['list']['FRUCTOSE'] = true;
+		$data['data']['center']['list']['PRODUCTS'] = $products;
 		
 		$this->load->view('templates/left_center_template', $data);
 	}
