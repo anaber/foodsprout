@@ -31,4 +31,11 @@ $tab = $this->uri->segment(1);
 		}
 		echo anchor('farmersmarket', 'Farmers Market', $marketclass);
 	?>
+	<?php
+		$discussclass=NULL;
+		if($tab == "topics") { 
+			$discussclass = 'class="tabon"';
+		}
+		echo anchor('/topics', 'Discuss', $discussclass);
+	?>
 </div>

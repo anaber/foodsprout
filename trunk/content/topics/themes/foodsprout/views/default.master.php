@@ -32,7 +32,7 @@
 	    <!-- main tabs -->
 
 	<div id="navigation">
-		<a href="http://www.sproutchain.com/restaurant">Restaurants</a>	<a href="http://www.sproutchain.com/manufacture">Products</a>	<a href="http://www.sproutchain.com/farm">Farms</a>	<a href="http://www.sproutchain.com/farmersmarket" class="tabon">Farmers Market</a></div>    <!-- end main tabs -->
+		<a href="http://www.sproutchain.com/restaurant">Restaurants</a>	<a href="http://www.sproutchain.com/manufacture">Products</a>	<a href="http://www.sproutchain.com/farm">Farms</a>	<a href="http://www.sproutchain.com/farmersmarket">Farmers Market</a><a href="http://www.sproutchain.com/topics" class="tabon">Discuss</a></div>    <!-- end main tabs -->
 	  </div>
 
 	</div>
@@ -53,7 +53,7 @@
       <div id="Body">
          <div id="Content"><?php $this->RenderAsset('Content'); ?></div>
          <div id="Panel">
-			<div class="Menu">
+			<div class="Box BoxCategories">
 	            <?php
 				      $Session = Gdn::Session();
 						if ($this->Menu) {
