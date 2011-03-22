@@ -23,16 +23,24 @@
 
 	    <span id="signup">
 		<div id="membername">
-			<strong>Andrew</strong> | 
-			<a href="http://www.sproutchain.com/user/dashboard" style="font-size:13px;text-decoration:none;">Dashboard</a> | 
-			<a href="http://www.sproutchain.com/user/settings" style="font-size:13px;text-decoration:none;">Settings</a> | 
-			<a href="http://www.sproutchain.com/admincp/dashboard" style="font-size:13px;text-decoration:none;">Admin</a> | 		<a href="http://www.sproutchain.com/login/signout" style="font-size:13px;text-decoration:none;">Sign Out</a>	</div>
-
+			<?php
+			$Session = Gdn::Session();
+			if ($Session->IsValid()) {
+				$Name = $Session->User->Name;
+			?>
+			<strong><?php echo $Name; ?></strong> | 
+			<a href="/user/dashboard" style="font-size:13px;text-decoration:none;">Dashboard</a> | 
+			<a href="/user/settings" style="font-size:13px;text-decoration:none;">Settings</a> | 
+			<a href="/login/signout" style="font-size:13px;text-decoration:none;">Sign Out</a>
+			<?php } else {?>
+				<a href="/login" style="font-size:13px;text-decoration:none;">Sign In</a> | <a href="/login" style="font-size:13px;text-decoration:none;">Create Account</a>
+			<?php } ?>
+			</div>
 	</span>	<!-- end login -->
 	    <!-- main tabs -->
 
 	<div id="navigation">
-		<a href="http://www.sproutchain.com/restaurant">Restaurants</a>	<a href="http://www.sproutchain.com/manufacture">Products</a>	<a href="http://www.sproutchain.com/farm">Farms</a>	<a href="http://www.sproutchain.com/farmersmarket">Farmers Market</a><a href="http://www.sproutchain.com/topics" class="tabon">Discuss</a></div>    <!-- end main tabs -->
+		<a href="/restaurant">Restaurants</a>	<a href="/manufacture">Products</a>	<a href="/farm">Farms</a>	<a href="/farmersmarket">Farmers Market</a><a href="/topics" class="tabon">Discuss</a></div>    <!-- end main tabs -->
 	  </div>
 
 	</div>
@@ -46,16 +54,13 @@
 	<div id="mainimg">
 
 	
-   <div id="Frame">
-      <!-- div id="Head">
-         
-      </div -->
+   
       <div id="Body">
          <div id="Content"><?php $this->RenderAsset('Content'); ?></div>
          <div id="Panel">
 			<div class="Box BoxCategories">
 	            <?php
-				      $Session = Gdn::Session();
+				      
 						if ($this->Menu) {
 							$this->Menu->AddLink('Dashboard', T('Dashboard'), '/dashboard/settings', array('Garden.Settings.Manage'));
 							// $this->Menu->AddLink('Dashboard', T('Users'), '/user/browse', array('Garden.Users.Add', 'Garden.Users.Edit', 'Garden.Users.Delete'));
@@ -89,7 +94,7 @@
 						echo 
 							$Form->Open(array('action' => Url('/search'), 'method' => 'get')),
 							$Form->TextBox('Search'),
-							$Form->Button('Go', array('Name' => '')),
+							$Form->Button('Search', array('Name' => '')),
 							$Form->Close();
 					?></div>
 	         </div>
@@ -101,10 +106,10 @@
       <div id="Foot">
 			<?php
 				$this->RenderAsset('Foot');
-				echo Wrap(Anchor(T('Powered by Vanilla'), C('Garden.VanillaUrl')), 'div');
+				//echo Wrap(Anchor(T('Powered by Vanilla'), C('Garden.VanillaUrl')), 'div');
 			?>
 		</div>
-   </div>
+   
 	<?php $this->FireEvent('AfterBody'); ?>
 	
 	</div>

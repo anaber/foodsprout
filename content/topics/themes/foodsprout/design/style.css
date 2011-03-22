@@ -78,14 +78,14 @@ body {
    font-size: small;
 }
 #Body {
-   width: 960px;
+   width: 980px;
    text-align: left;
-   margin: 15px auto 0;
+	margin-top: 15px;
 }
 #Content {
    float: left;
-   width: 680px;
-   margin: 0 0 40px;
+   width: 700px;
+   margin: 0 0px 40px;
 }
 .Hidden {
    display: none;
@@ -202,7 +202,7 @@ input.Button {
 }
 .Button:hover {
    color: #111;
-   border: 1px solid #666;
+   /*border: 1px solid #666;*/
 }
 .Button:focus {
    background: #eee;
@@ -463,7 +463,7 @@ body #Head h1 {
    border: 0;
    width: 38px;
    height: 26px;
-   background: #cfecff;
+   background: #e5e5e5#e5e5e5;
    color: #1e79a7;
    padding: 3px 0 4px;
    margin: 0;
@@ -706,10 +706,10 @@ ul#Menu {
    float: right;
 }
 div.Box {
-   border-radius: 1px;
-   -moz-border-radius: 1px;
-   -webkit-border-radius: 1px;
-   background: #cfecff;
+   border-radius: 2px;
+   -moz-border-radius: 2px;
+   -webkit-border-radius: 2px;
+   background: #e5e5e5;
    color: #888;
    padding: 6px 10px;
    margin: 0 0 10px;
@@ -743,12 +743,12 @@ div.Box p {
    color: #555;
 }
 ul.PanelActivity {
-   border-top: 1px solid #abdafb;
+   border-top: 1px solid #dedede;
 	border-bottom: 0;
 }
 ul.PanelActivity li {
-   background: #e3f4ff;
-   border-bottom: 1px solid #abdafb;
+   background: #efefef;
+   border-bottom: 1px solid #dedede;
    padding: 2px 4px;
 	color: #555;
 	font-size: 11px;
@@ -777,8 +777,8 @@ ul.PanelActivity li div.Story {
 	font-size: 85%;
 }
 ul.PanelInfo li {
-   background: #e3f4ff;
-   border-bottom: 1px solid #abdafb;
+   background: #efefef;
+   border-bottom: 1px solid #dedede;
    padding: 2px 4px;
    text-align: right;
 }
@@ -788,7 +788,7 @@ ul.PanelInfo li.Heading {
    font-weight: bold;
 }
 ul.PanelInfo {
-   border-top: 1px solid #abdafb;
+   border-top: 1px solid #dedede;
 	border-bottom: 0;
 }
 ul.PanelInfo li strong {
@@ -835,7 +835,7 @@ ul.PanelInfo li.Parent {
 }
 ul.PanelInfo li.Active {
    background: #fff;
-   border-bottom: 1px solid #a3e6ff;
+   border-bottom: 1px solid #333;
 }
 ul.PanelInfo li.Active a {
    color: #1e79a7;
@@ -851,7 +851,7 @@ ul.PanelInfo li.ShowAll {
 	margin-bottom: 10px;
 }
 body.Profile ul.PanelInfo {
-   border-bottom: 1px solid #abdafb;
+   border-bottom: 1px solid #dedede;
 }
 body.Profile ul.PanelInfo li {
 	border-bottom: 0;
@@ -1246,7 +1246,7 @@ ul.MessageList div.Comment div.Meta div.CommentInfo span {
 
 div.Preview {
 	text-align: left;
-	background: #E3F4FF;
+	background: #efefef;
 	padding: 1px 8px;
 	margin: 4px 0 8px;
 }
@@ -1336,9 +1336,9 @@ div.Message div.ImageResized {
 /* The "Foot" is at the bottom of the #Content section. Used for more results
 links, sign in buttons, etc */
 .Foot {
-	border-bottom: 1px solid #abdafb;
+	border-bottom: 1px solid #dedede;
    padding: 6px;
-   background: #cfecff;
+   background: #e5e5e5;
    text-align: right;
    border-bottom-right-radius: 2px;
    border-bottom-left-radius: 2px;
@@ -1419,7 +1419,7 @@ ul.SideMenu li ul li a {
 }
 ul.SideMenu li ul li a:hover {
    text-decoration: none;
-   background: #cfecff;
+   background: #e5e5e5;
 }
 div.User {
    line-height: 150%;
@@ -1441,7 +1441,7 @@ div.User h1 {
    -moz-border-radius-topright: 2px;
    -webkit-border-top-left-radius: 2px;
    -webkit-border-top-right-radius: 2px;
-   background: #cfecff;
+   background: #e5e5e5;
    margin: 0;
    padding: 8px 8px 0;
    color: #999;
@@ -1471,7 +1471,7 @@ div.User form {
    -moz-border-radius-topright: 2px;
    -webkit-border-top-left-radius: 2px;
    -webkit-border-top-right-radius: 2px;
-   background: #cfecff;
+   background: #e5e5e5;
    padding: 8px 8px 0;
 }
 div.User form input.InputBox {
@@ -1534,7 +1534,7 @@ form.Activity textarea {
 #Form_Invitation table.AltRows tr.Alt td,
 #Form_Invitation table.AltColumns th.Alt,
 #Form_Invitation table.AltColumns td.Alt {
-   background: #cfecff;
+   background: #e5e5e5;
 }
 #Form_Invitation table.AltColumns tr.Alt {
    background: none;
@@ -1553,10 +1553,10 @@ div.MessageForm,
 div.Tabs,
 div.Headings {
 	display: block;
-   border-bottom: 1px solid #abdafb;
+   border-bottom: 1px solid #dedede;
    padding: 5px 8px;
    margin: 0;
-   background: #cfecff;
+   background: #e5e5e5;
 }
 div.MessageForm div.Tabs {
 	padding: 0;
@@ -1587,7 +1587,7 @@ div.Tabs li a:hover,
 div.Tabs li a:active,
 div.Tabs li a:visited {
    margin: 0;
-   border: 1px solid #abdafb;
+   border: 1px solid #dedede;
    border-radius: 3px;
    -moz-border-radius: 3px;
    -webkit-border-radius: 3px;
@@ -1962,7 +1962,7 @@ ul.PanelDiscussions li strong {
   + Mine: the user created the discussion
   + New: there are new comments since the last viewed the discussion
 */
-.Mine { background: #e3f4ff; }
+.Mine { background: #efefef; }
 
 ul.DataList div.Meta a.Category {
    background: #fafafa;
@@ -2049,7 +2049,7 @@ ul.Discussions div.ItemContent a.Title {
 
 /* =============================================== Discussion & Comment Forms */
 li.Editing {
-	background: #E3F4FF;
+	background: #efefef;
 }
 div.CommentForm textarea {
    width: 99%;
@@ -2192,8 +2192,9 @@ div.AddPeople h4 {
 }
 #Panel input.InputBox,
 div.AddPeople textarea.MultiComplete {
-  width: 228px;
+  width: 150px;
   margin-bottom: 2px;
+  margin-right: 5px;
 }
 div.AddPeople form div {
 	text-align: right;
