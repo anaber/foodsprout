@@ -58,19 +58,12 @@ class Login extends Controller {
 				
 				$this->load->view('login', $data);
 			} else {
-				$baseUrl = base_url();
-				$url = parse_url ($baseUrl);
-				$civ = base64_encode($this->session->userdata('userId'))."|".base64_encode($this->session->userdata('firstName'))."|".base64_encode($this->session->userdata('email'));
-				$cookie = array(
-								   'name'   => 'ci_v',
-								   'value'  => $civ,
-								   'expire' => time() + 3600,
-								   'domain' => $url['host'],
-								   'path'   => '/'
-							   );
-
-				set_cookie($cookie);
-
+				
+				$this->_CreateVanillaCookie();
+				
+				// Temporary redirect for auto signin on vanilla.
+				redirect('topics/entry/signin?Target=discussions');
+				
 				if ($return) {
 					redirect($return);
 				} else {
@@ -105,16 +98,8 @@ class Login extends Controller {
 		);
 		set_cookie($cookie);
 
-		$cookie = array(
-						   'name'   => 'ci_v',
-						   'value'  => $this->input->post('login_email'),
-						   'expire' => time() - 3600,
-						   'domain' => $url['host'],
-						   'path'   => '/'
-					   );
+		$this->_DeleteVanillaCookie();
 		
-		set_cookie($cookie);
-
 		$this->session->sess_destroy();
 		redirect('/');
 	}
@@ -220,7 +205,9 @@ class Login extends Controller {
 				$_SESSION['ERROR'] = 'registration_success';
 				
 				//echo $this->email->print_debugger();
-					
+
+				$this->_CreateVanillaCookie();
+
 				redirect('/');
 					
 			} else {
@@ -242,6 +229,40 @@ class Login extends Controller {
 
 		}
 
+	}
+	
+	private function _CreateVanillaCookie() {
+		$baseUrl = base_url();
+		$url = parse_url ($baseUrl);
+		$civ = base64_encode($this->session->userdata('userId'))."|".base64_encode($this->session->userdata('firstName'))."|".base64_encode($this->session->userdata('email'));
+		$cookie = array(
+						   'name'   => 'ci_v',
+						   'value'  => $civ,
+						   'expire' => time() + 3600,
+						   'domain' => $url['host'],
+						   'path'   => '/'
+					   );
+
+		set_cookie($cookie);	
+	}
+	
+	// DELETE ALL COOKIES USED BY VANILLA
+	private function _DeleteVanillaCookie() {
+		$baseUrl = base_url();
+		$url = parse_url ($baseUrl);
+		$cookie = array(
+						   'name'   => 'ci_v',
+						   'value'  => '',
+						   'expire' => time() - 3600,
+						   'domain' => $url['host'],
+						   'path'   => '/'
+					   );
+		
+		set_cookie($cookie);
+
+		delete_cookie('Vanilla');
+		delete_cookie('VanillaProxy');
+		delete_cookie('Vanilla-Volatile');
 	}
 	
 	function forgotpassword(){
