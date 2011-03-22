@@ -399,6 +399,182 @@ class ProductModel extends Model {
 	 * Verified: 		Yes
 	 * Verified By: 	Deepak
 	 */
+	function getProductWithFructose($page, $perpage) {
+		global $PER_PAGE;
+
+		$p = $page; // Page
+		$pp = $perpage; // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		$filter = 1;
+
+		if ($filter == false) {
+			$filter = '';
+		}
+			
+		$q = $this->input->post('q');
+
+		if ($q == '0') {
+			$q = '';
+		}
+		//$filter = 8;
+		//$q = 1;
+
+		$start = 0;
+		$page = 0;
+
+		$base_query = 'SELECT product.*, product_type.product_type, ' .
+        		' producer.producer, producer.is_restaurant, producer.is_restaurant_chain, producer.is_manufacture' .
+				' FROM product';
+
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM product';
+
+		$where = ' LEFT JOIN product_type ON (product.product_type_id =  product_type.product_type_id)  ' .
+				' LEFT JOIN producer ON (product.producer_id =  producer.producer_id) ' .
+				' WHERE  ';
+
+		if (!empty($filter) ) {
+			$where .= ' product.has_fructose =  1 AND ';
+		}
+
+		$where .= ' product.status = \'live\' ';
+
+		if (!empty($q) ) {
+			$where .= ' AND ('
+			. '	product.product_id = ' . $q
+			. ' )';
+		}
+
+		$base_query_count = $base_query_count . $where;
+
+		$query = $base_query_count;
+
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+
+		$query = $base_query . $where;
+
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY product_name';
+			$sort = 'product_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+
+		log_message('debug', "ProductModel.getProductWithFructose : " . $query);
+		$result = $this->db->query($query);
+
+		$products = array();
+		$CI =& get_instance();
+		$geocodeArray = array();
+		foreach ($result->result() as $row) {
+
+			$this->load->library('ProductLib');
+			unset($this->productLib);
+
+			$this->productLib->productId = $row->product_id;
+			$this->productLib->productName = $row->product_name;
+			$this->productLib->producerId = $row->producer_id;
+
+			if ($row->is_manufacture) {
+				//$this->productLib->manufactureName = $row->producer;
+				$this->productLib->producerType = 'manufacture';
+			} else if ($row->is_restaurant) {
+				//$this->productLib->restaurantName = $row->producer;
+				$this->productLib->producerType = 'restaurant';
+			} else if ($row->is_restaurant_chain) {
+				//$this->productLib->restaurantChain = $row->producer;
+				$this->productLib->producerType = 'chain';
+			}
+			
+			$this->productLib->producerName = $row->producer;
+			
+			$CI->load->model('AddressModel','',true);
+			$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id);
+			//$this->ManufactureLib->addresses = $addresses;
+			
+			$this->productLib->customUrl = '';
+			$firstAddressId = '';
+			
+			foreach ($addresses as $key => $address) {
+				$firstAddressId = $address->addressId;
+				break;
+			}
+			
+			if ($firstAddressId != '') {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrl = $CI->CustomUrlModel->getCustomUrlForProducerAddress($row->producer_id, $firstAddressId);
+				$this->productLib->customUrl = $customUrl;
+			}
+			
+
+			$this->productLib->productTypeId = $row->product_type_id;
+			$this->productLib->productType = $row->product_type;
+			$this->productLib->ingredient = $row->ingredient_text;
+			$this->productLib->brand = $row->brand;
+			$this->productLib->upc = $row->upc;
+
+			$products[] = $this->productLib;
+			unset($this->productLib);
+		}
+
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		if ($totalPages > 0) {
+			$last = $totalPages - 1;
+		} else {
+			$last = 0;
+		}
+
+
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, $filter, '');
+		$arr = array(
+			'results'    => $products,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+		);
+		 
+		return $arr;
+	}
+
+	/**
+	 * Migration: 		Working
+	 * Migrated by: 	Deepak
+	 *
+	 * Verified: 		Yes
+	 * Verified By: 	Deepak
+	 */
 	function getProductJson() {
 		global $PER_PAGE;
 
