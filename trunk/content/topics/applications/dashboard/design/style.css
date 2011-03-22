@@ -706,10 +706,10 @@ ul#Menu {
    float: right;
 }
 div.Box {
-   border-radius: 1px;
-   -moz-border-radius: 1px;
-   -webkit-border-radius: 1px;
-   background: #cfecff;
+   border-radius: 2px;
+   -moz-border-radius: 2px;
+   -webkit-border-radius: 2px;
+   background: #E5E5E5;
    color: #888;
    padding: 6px 10px;
    margin: 0 0 10px;
@@ -2192,7 +2192,7 @@ div.AddPeople h4 {
 }
 #Panel input.InputBox,
 div.AddPeople textarea.MultiComplete {
-  width: 228px;
+  width: 180px;
   margin-bottom: 2px;
 }
 div.AddPeople form div {

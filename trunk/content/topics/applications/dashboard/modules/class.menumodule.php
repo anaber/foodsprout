@@ -202,7 +202,10 @@ if (!class_exists('MenuModule', FALSE)) {
                   $Menu .= $Group . "</li>\r\n";
             }
             if ($Menu != '')
-               $Menu = '<ul id="'.$this->HtmlId.'"'.($this->CssClass != '' ? ' class="'.$this->CssClass.'"' : '').'>'.$Menu.'</ul>';
+				// [anaber] I am unable to figure out how to pass the CSS value here to the menu from the default.master.php file.  ID should be ignored and only class should be used.
+               //$Menu = '<ul id="'.$this->HtmlId.'"'.($this->CssClass != '' ? ' class="'.$this->CssClass.'"' : '').'>'.$Menu.'</ul>';
+
+				$Menu = '<ul '.($this->CssClass != '' ? ' class="'.$this->CssClass.'"' : '').'>'.$Menu.'</ul>';
          }
          return $Menu;
       }
