@@ -20,7 +20,6 @@ class Manufacture extends Controller {
 		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('manufacture_list');
-		$data['SEO'] = $seo;
 		
 		// validate the data in the URL to make sure we don't have SQL injection
 		$urlpage = substr($this->uri->segment(2),4,5);
@@ -53,6 +52,20 @@ class Manufacture extends Controller {
 		// If entered page is greater than retrieved totalPages, redirect to last page
 		if( $urlpage > $manufactures['param']['totalPages'] )
 			redirect("/manufacture/page".$manufactures['param']['totalPages']."?pp=".$manufactures['param']['perPage']);
+
+		// SET TITLE TAG
+
+		if( !empty($manufactures) ) {
+			//convert std class to array
+			$t_tag = " , ".$manufactures['results'][0]->manufactureName;
+			$mcnt = count($manufactures['results'])-1;
+			$t_tag .= "-".$manufactures['results'][$mcnt]->manufactureName;
+
+			$seo->titleTag .= $t_tag;
+		}
+		
+		// SET SEO
+		$data['SEO'] = $seo;
 
 		// Views to include in the data array
 		$data['CENTER'] = array(
