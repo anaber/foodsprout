@@ -31,7 +31,7 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
 
       // Initialize built-in authenticator functionality
       parent::__construct();
-
+//$this->Authenticate();
    }
    
    public function Authenticate() {      
@@ -87,6 +87,7 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
    }
    
    public function Finalize($UserKey, $UserID, $ProviderKey, $TokenKey, $CookiePayload) {
+   
       // Associate the local UserID with the foreign UserKey
       Gdn::Authenticator()->AssociateUser($ProviderKey, $UserKey,  $UserID);
       
@@ -157,6 +158,7 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
          
          $TokenType = 'request';
          $AuthReturn = Gdn_Authenticator::AUTH_PARTIAL;
+
       }
       
       $Token = $this->LookupToken($ProviderKey, $UserKey, $TokenType);
@@ -174,10 +176,12 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
    }
    
    public function Remember($Key, $SerializedCookiePayload) {
+   
       Gdn_CookieIdentity::SetCookie($this->_CookieName, $Key, array(1, 0, $SerializedCookiePayload), 0);
    }
    
    public function GetHandshake() {
+
       $HaveHandshake = Gdn_CookieIdentity::CheckCookie($this->_CookieName);
       
       if ($HaveHandshake) {
@@ -202,6 +206,7 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
    }
    
    public function GetUserKeyFromHandshake($Handshake) {
+   
       return ArrayValue('UserKey', $Handshake, FALSE);
    }
    
@@ -233,6 +238,7 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
    
    // What to do if entry/auth/* is called while the user is logged out. Should normally be REACT_RENDER
    public function LoginResponse() {
+   
       return Gdn::Authenticator()->RemoteSignInUrl();
    }
    
@@ -371,14 +377,14 @@ class Gdn_ProxyAuthenticator extends Gdn_Authenticator implements Gdn_IHandshake
          return;
       
       $CurrentStep = $this->CurrentStep();
-      
+
       // Shortcircuit to prevent pointless work when the access token has already been handled and we already have a session 
       if ($CurrentStep == Gdn_Authenticator::MODE_REPEAT)
          return;
          
       // Don't try to wakeup when we've already tried once this session
-      if ($CurrentStep == Gdn_Authenticator::MODE_NOAUTH)
-         return;
+//      if ($CurrentStep == Gdn_Authenticator::MODE_NOAUTH)
+//         return;
       
       // Passed all shortcircuits. Try to log in via proxy.
       $this->Authenticate();

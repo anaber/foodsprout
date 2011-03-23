@@ -52,7 +52,7 @@
 				 	<div class="skip-link screen-reader-text" role="navigation"><a href="#headerNav" title="Skip to content">Skip to content</a> 
 				</div> 
 				<div id="login-form">
-					<form action="/login/validate<?php echo ( !empty($VANILLA) && $VANILLA == 1 ? "?vanilla=1" : "" ); ?>" method="post" name="frmLogin" id="frmLogin">
+					<form action="/login/validate<?php echo ( $this->input->get('redirect') <> "" ? "?frm=".$this->input->get('redirect') : "" ); ?>" method="post" name="frmLogin" id="frmLogin">
 							<input type="checkbox" id="remember" name = "remember"/>
 							<span>Remember me</span>
 							<span> | </span>
