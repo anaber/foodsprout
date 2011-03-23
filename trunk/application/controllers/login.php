@@ -17,7 +17,6 @@ class Login extends Controller {
 			$this->load->model('SeoModel');
 			$seo = $this->SeoModel->getSeoDetailsFromPage('index');
 			$data['SEO'] = $seo;
-			$data['VANILLA'] = $this->input->get('vanilla');
 			 
 			$this->load->view('login', $data);
 		}
@@ -60,15 +59,12 @@ class Login extends Controller {
 			} else {
 				
 				$this->_CreateVanillaCookie();
-				
-				// Temporary redirect for auto signin on vanilla.
-				redirect('topics/entry/signin?Target=discussions');
-				
+
 				if ($return) {
 					redirect($return);
 				} else {
-					if($this->input->get('vanilla') == 1)
-						redirect('/topics');
+					if($this->input->get('frm') <> "")
+						redirect($this->input->get('frm'));
 					else
 						redirect('/');
 				}
