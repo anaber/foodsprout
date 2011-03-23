@@ -6,9 +6,6 @@ class Login extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
-
-		echo $preview_page_viewed = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "/";
-		$this->session->set_userdata('preview_page_viewed', $preview_page_viewed);
 	}
 
 	function index() {
