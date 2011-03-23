@@ -38,6 +38,17 @@ echo anchor('/about/contact', 'Contact', $contactclass);
 ?><br>
 
 <?php
+$faqclass=NULL;
+if($tab == "faq") { 
+	$faqclass = 'class="abouton"';
+}
+else{
+	$bizclass = 'class="aboutoff"';
+}
+echo anchor('/about/faq', 'FAQ', $faqclass);
+?><br>
+
+<?php
 $bizclass=NULL;
 if($tab == "business") { 
 	$bizclass = 'class="abouton"';
