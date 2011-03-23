@@ -33,7 +33,7 @@
 			<a href="/user/settings" style="font-size:13px;text-decoration:none;">Settings</a> | 
 			<a href="/login/signout" style="font-size:13px;text-decoration:none;">Sign Out</a>
 			<?php } else {?>
-				<a href="/login" style="font-size:13px;text-decoration:none;">Sign In</a> | <a href="/login" style="font-size:13px;text-decoration:none;">Create Account</a>
+				<a href="/login<?php echo "?frm=".$_SERVER['REQUEST_URI']; ?>" style="font-size:13px;text-decoration:none;">Sign In</a> | <a href="/login<?php echo "?frm=".$_SERVER['REQUEST_URI']; ?>" style="font-size:13px;text-decoration:none;">Create Account</a>
 			<?php } ?>
 			</div>
 	</span>	<!-- end login -->
