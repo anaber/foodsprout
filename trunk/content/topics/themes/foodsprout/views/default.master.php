@@ -5,7 +5,7 @@
    <?php $this->RenderAsset('Head'); ?>
 
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="http://www.sproutchain.com/css/mainstyle.css" type="text/css" />
+	<link rel="stylesheet" href="/css/mainstyle.css" type="text/css" />
 	
 	<script type="text/javascript">
 	var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_trackPageview']);
@@ -121,7 +121,7 @@
 
 	<!-- footer -->
 	<div id="footerbg">
-	  <div id="footertext"><a href="http://www.sproutchain.com/about">About</a> | <a href="http://www.sproutchain.com/about/contact">Contact</a> | <a href="http://blog.foodsprout.com">Blog</a> | <a href="http://www.sproutchain.com/about/business">Businesses</a> | <a href="http://www.sproutchain.com/about/terms">Terms</a> | <a href="http://www.sproutchain.com/about/privacy">Privacy</a></div>
+	  <div id="footertext"><a href="/about">About</a> | <a href="/about/contact">Contact</a> | <a href="http://blog.foodsprout.com">Blog</a> | <a href="/about/business">Businesses</a> | <a href="/about/terms">Terms</a> | <a href="/about/privacy">Privacy</a></div>
 
 	</div>
 	<br /><br />

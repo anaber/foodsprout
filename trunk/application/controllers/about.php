@@ -162,6 +162,32 @@ class About extends Controller {
         $this->load->view('/templates/left_center_template', $data);
     }
 
+	// The FAQ page
+    function faq() {
+		// SEO
+		$this->load->model('SeoModel');
+		$seo = $this->SeoModel->getSeoDetailsFromPage('about_faq');
+		$data['SEO'] = $seo;
+	
+        // List of views to be included
+        $data['LEFT'] = array(
+            'navigation' => 'about/left_nav',
+        );
+
+        $data['CENTER'] = array(
+            'content' => 'about/faq',
+        );
+
+        // Data to send to the views
+        $data['BREADCRUMB'] = array(
+							'About' => '/about',
+							'FAQ' => '',
+						);
+						
+        $this->load->view('/templates/left_center_template', $data);
+    }
+
+
     // The first page that loads on the beta
     function privatebeta($userData = null) {
         $data = array();
