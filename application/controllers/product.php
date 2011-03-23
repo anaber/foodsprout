@@ -403,7 +403,7 @@ class Product extends Controller {
 		// SEO
 		$this->load->model('SeoModel');
 		$seo = $this->SeoModel->getSeoDetailsFromPage('fructose_list');
-		$data['SEO'] = $seo;
+
 
 		// GET PRODUCT WITH FRUCTOSE
 		$this->load->model('ProductModel', '', TRUE);
@@ -412,6 +412,21 @@ class Product extends Controller {
 		// If entered page is greater than retrieved totalPages, redirect to last page
 		if( $urlpage > $products['param']['totalPages'] )
 			redirect("/product/fructose/page".$products['param']['totalPages']."?pp=".$products['param']['perPage']);
+
+
+		// SET TITLE TAG
+
+		if( !empty($products) ) {
+			//convert std class to array
+			$t_tag = $products['results'][0]->productName;
+			$pcnt = count($products['results'])-1;
+			$t_tag .= " - ".$products['results'][$pcnt]->productName;
+
+			$seo->titleTag = $t_tag." | ".$seo->titleTag;
+		}
+		
+		// SET SEO
+		$data['SEO'] = $seo;
 
 		// Views to include in the data array
 		$data['CENTER'] = array(

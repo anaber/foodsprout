@@ -57,11 +57,11 @@ class Manufacture extends Controller {
 
 		if( !empty($manufactures) ) {
 			//convert std class to array
-			$t_tag = " , ".$manufactures['results'][0]->manufactureName;
+			$t_tag = $manufactures['results'][0]->manufactureName;
 			$mcnt = count($manufactures['results'])-1;
-			$t_tag .= "-".$manufactures['results'][$mcnt]->manufactureName;
+			$t_tag .= " - ".$manufactures['results'][$mcnt]->manufactureName;
 
-			$seo->titleTag .= $t_tag;
+			$seo->titleTag = $t_tag." | ".$seo->titleTag;
 		}
 		
 		// SET SEO
