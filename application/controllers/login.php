@@ -249,19 +249,19 @@ class Login extends Controller {
 	private function _DeleteVanillaCookie() {
 		$baseUrl = base_url();
 		$url = parse_url ($baseUrl);
-		$cookie = array(
-						   'name'   => 'ci_v',
-						   'value'  => '',
-						   'expire' => time() - 3600,
-						   'domain' => $url['host'],
-						   'path'   => '/'
-					   );
 		
-		set_cookie($cookie);
-
-		delete_cookie('Vanilla');
-		delete_cookie('VanillaProxy');
-		delete_cookie('Vanilla-Volatile');
+		$vanilla_cookies = array('ci_v', 'Vanilla', 'Vanilla-Volatile', 'VanillaProxy');
+		
+		foreach($vanilla_cookies as $cookies){
+			$cookie = array(
+							   'name'   => $cookies,
+							   'value'  => '',
+							   'expire' => time() - 3600,
+							   'domain' => ".".$url['host'],
+							   'path'   => '/'
+						   );
+			set_cookie($cookie);
+		}
 	}
 	
 	function forgotpassword(){
