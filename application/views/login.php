@@ -52,7 +52,7 @@
 				 	<div class="skip-link screen-reader-text" role="navigation"><a href="#headerNav" title="Skip to content">Skip to content</a> 
 				</div> 
 				<div id="login-form">
-					<form action="/login/validate<?php echo ( $this->input->get('redirect') <> "" ? "?frm=".$this->input->get('redirect') : "" ); ?>" method="post" name="frmLogin" id="frmLogin">
+					<form action="/login/validate<?php echo ( $this->input->get('frm') <> "" ? "?frm=".$this->input->get('frm') : "" ); ?>" method="post" name="frmLogin" id="frmLogin">
 							<input type="checkbox" id="remember" name = "remember"/>
 							<span>Remember me</span>
 							<span> | </span>
@@ -151,7 +151,7 @@
 						<div id="signup-form">
 							<h2 id="signup-title"> </h2>
 							<h3>Join today for <b>free</b> and get started exploring your food.</h3>
-							<form action="/login/create_user" method="post" name="frmAccount" id="frmAccount">								
+							<form action="/login/create_user<?php echo ( $this->input->get('frm') <> "" ? "?frm=".$this->input->get('frm') : "" ); ?>" method="post" name="frmAccount" id="frmAccount">								
 								Full Name: <input type="text" name="firstname" id="firstname" class="validate[required]" value="<?php echo set_value('firstname', 'Full Name'); ?>" onFocus="if(this.value=='Full Name')this.value='';" onBlur="if(this.value=='')this.value='Full Name';"><br/>
 								Email: <input type="text" name="email" id="email" class="validate[required,custom[email]]" value="<?php echo set_value('email', 'Email'); ?>" onFocus="if(this.value=='Email')this.value='';" onBlur="if(this.value=='')this.value='Email';"><br/>
 								Password: <input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="<?php echo set_value('password', 'Password'); ?>" onFocus="if(this.value=='Password')this.value='';" onBlur="if(this.value=='')this.value='Password';"><br/>
