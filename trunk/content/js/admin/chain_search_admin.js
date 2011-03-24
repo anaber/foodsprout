@@ -49,20 +49,20 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'restaurant_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'restaurant_id', order, data.param.q);
+		order = getOrder(data, 'producer_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_id', order, data.param.q);
 	});
 	
 	$("#heading_restaurant").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'restaurant_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'restaurant_name', order, data.param.q);
+		order = getOrder(data, 'producer');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
 	});
 	
-	$("#heading_creation_date").click(function(e) {
+	$("#restaurant_type").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'creation_date');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'creation_date', order, data.param.q);
+		order = getOrder(data, 'producer_category');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_category', order, data.param.q);
 	});
 }
 
@@ -110,7 +110,7 @@ function getResultTableHeader() {
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Restaurant Id</a></th>' +
 	'		<th id = "heading_restaurant"><a href = "#" style = "color:#FFFFFF">Restaurant Name</a></th>' +
-	'		<th id = "heading_creation_date"><a href = "#" style = "color:#FFFFFF">Restaurant Type</a></th>' +
+	'		<th id = "restaurant_type"><a href = "#" style = "color:#FFFFFF">Restaurant Type</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
 	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Menu</a></th>' +
 	'	</tr>' +

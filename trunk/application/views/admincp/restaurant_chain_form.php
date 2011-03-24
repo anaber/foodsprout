@@ -55,7 +55,7 @@ $(document).ready(function() {
 				postArray = {
 							  restaurantChainId:$('#restaurantChainId').val(),
 							  restaurantChain:$('#restaurantChain').val(),
-							  matchString:$('#matchString').val(),
+//							  matchString:$('#matchString').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
 							  status:$('#status').val()
 							};
@@ -64,7 +64,7 @@ $(document).ready(function() {
 				formAction = '/admincp/restaurantchain/save_add';
 				postArray = { 
 							  restaurantChain:$('#restaurantChain').val(),
-							  matchString:$('#matchString').val(),
+//							  matchString:$('#matchString').val(),
 							  restaurantTypeId:$('#restaurantTypeId').val(),
 							  status:$('#status').val()				  
 							};
@@ -138,13 +138,13 @@ $(document).ready(function() {
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantChain : '') ?>" class="validate[required]" type="text" name="restaurantChain" id="restaurantChain"/><br />
 		</td>
 	</tr>
-	<tr>
+<!--	<tr>
 		<td width = "25%" nowrap>Match String</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($RESTAURANT) ? $RESTAURANT->matchString : '') ?>" class="validate[required]" type="text" name="matchString" id="matchString"/><br />
 		</td>
 	</tr>
-	
+-->
 	<tr>
 		<td width = "25%">Restaurant Type</td>
 		<td width = "75%">
@@ -152,7 +152,7 @@ $(document).ready(function() {
 			<option value = ''>--Restaurant Type--</option>
 			<?php
 				foreach($RESTAURANT_TYPES as $key => $value) {
-					echo '<option value="'.$value->restaurantTypeId.'"' . (  ( isset($RESTAURANT) && ( $value->restaurantTypeId == $RESTAURANT->restaurantTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->restaurantTypeName.'</option>';
+					echo '<option value="'.$value->restaurantProductCategoryId.'"' . (  ( isset($RESTAURANT) && ( $value->restaurantProductCategoryId == $RESTAURANT->restaurantTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->restaurantTypeName.'</option>';
 				}
 			?>
 			</select>

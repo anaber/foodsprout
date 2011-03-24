@@ -34,19 +34,21 @@ class RestaurantChainModel extends Model{
 		$start = 0;
 		$page = 0;
 		
-		$base_query = 'SELECT restaurant_chain.*, restaurant_type.restaurant_type' .
-				' FROM restaurant_chain, restaurant_type';
+		$base_query = 'SELECT producer.*,producer_category.producer_category,producer_category.producer_category_id FROM producer
+				LEFT JOIN producer_category_member ON producer.producer_id=producer_category_member.producer_id
+				LEFT JOIN producer_category ON producer_category_member.producer_category_id=producer_category.producer_category_id';
+				 
+		$base_query_count = 'SELECT count(*) AS num_records FROM producer';
 		
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM restaurant_chain, restaurant_type';
+		$where = ' WHERE is_restaurant_chain = 1';
 		
-		$where = ' WHERE restaurant_chain.restaurant_type_id = restaurant_type.restaurant_type_id';
-		
-		$where .= ' AND (' 
-				. '	restaurant_chain.restaurant_chain like "%' .$q . '%"'
-				. ' OR restaurant_chain.restaurant_chain_id like "%' . $q . '%"'
-				. ' OR restaurant_type.restaurant_type like "%' . $q . '%"';		
-		$where .= ' )';
+		if ( !empty($q) ) {
+
+			$where  .= ' AND (producer.producer like "%' .$q . '%"'
+			. ' OR producer.producer_id like "%' . $q . '%"';
+			$where .= ' )';
+
+		}
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -59,8 +61,8 @@ class RestaurantChainModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY restaurant_chain';
-			$sort = 'restaurant_chain';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -103,13 +105,13 @@ class RestaurantChainModel extends Model{
 			$this->load->library('RestaurantLib');
 			unset($this->RestaurantLib);
 			
-			$this->RestaurantLib->restaurantChainId = $row['restaurant_chain_id'];
-			$this->RestaurantLib->restaurantChain = $row['restaurant_chain'];
-			$this->RestaurantLib->restaurantTypeId = $row['restaurant_type_id'];
-			$this->RestaurantLib->restaurantType = $row['restaurant_type'];
+			$this->RestaurantLib->restaurantChainId = $row['producer_id'];
+			$this->RestaurantLib->restaurantChain = $row['producer'];
+			$this->RestaurantLib->restaurantTypeId = $row['producer_category_id'];
+			$this->RestaurantLib->restaurantType = $row['producer_category'];
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['restaurant_chain_id'], '');
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', '', '', $row['producer_id'], '');
 			$this->RestaurantLib->suppliers = $suppliers;
 			
 			$restaurantChains[] = $this->RestaurantLib;
@@ -141,10 +143,16 @@ class RestaurantChainModel extends Model{
 	
 	function getRestaurantChainFromId($restaurantChainId) {
 		
-		$query = "SELECT restaurant_chain.*, restaurant_type.restaurant_type" .
-				" FROM restaurant_chain, restaurant_type" .
-				" WHERE restaurant_chain.restaurant_chain_id = " . $restaurantChainId . 
-				" AND restaurant_chain.restaurant_type_id = restaurant_type.restaurant_type_id";
+		$query = "SELECT 
+					producer.*, producer_category.producer_category, producer_category.producer_category_id
+				FROM 
+					producer
+				LEFT JOIN producer_category_member 
+					ON producer.producer_id = producer_category_member.producer_id 
+				LEFT JOIN producer_category
+					ON producer_category_member.producer_category_id = producer_category.producer_category_id
+				WHERE 
+					producer.producer_id = " . $restaurantChainId;
 		
 		log_message('debug', "RestaurantChainModel.getRestaurantChainFromId : " . $query);
 		$result = $this->db->query($query);
@@ -153,11 +161,11 @@ class RestaurantChainModel extends Model{
 		
 		$row = $result->row();
 		
-		$this->restaurantChainLib->restaurantChainId = $row->restaurant_chain_id;
-		$this->restaurantChainLib->restaurantChain = $row->restaurant_chain;
+		$this->restaurantChainLib->restaurantChainId = $row->producer_id;
+		$this->restaurantChainLib->restaurantChain = $row->producer;
 		
-		$this->restaurantChainLib->matchString = $row->match_string;
-		$this->restaurantChainLib->restaurantTypeId = $row->restaurant_type_id;
+//		$this->restaurantChainLib->matchString = $row->match_string;
+		$this->restaurantChainLib->restaurantTypeId = $row->producer_category_id;
 		$this->restaurantChainLib->status = $row->status;
 		
 		return $this->restaurantChainLib;
@@ -167,20 +175,30 @@ class RestaurantChainModel extends Model{
 		
 		$return = true;
 		
-		$query = "SELECT * FROM restaurant_chain WHERE restaurant_chain = \"" . $this->input->post('restaurantChain') . "\" ";
+		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('restaurantChain') . "\" AND is_restaurant_chain = 1";
 		log_message('debug', 'RestaurantChainModel.addRestaurantChain : Try to get duplicate Chain record : ' . $query);
 		
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
-			$query = "INSERT INTO restaurant (restaurant_chain_id, restaurant_chain, restaurant_type_id, match_string, status, track_ip, user_id)" .
-					" values (NULL, \"" . $this->input->post('restaurantChain') . "\", " . $this->input->post('restaurantTypeId') . ", \"" . $this->input->post('matchString') . "\", '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ")";
+			$query = "INSERT INTO producer (producer_id, producer, creation_date, status, track_ip, user_id, is_restaurant_chain)" .
+					" values (NULL, \"" . $this->input->post('restaurantChain') . "\", NOW(), '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", 1)";
 			
 			log_message('debug', 'RestaurantChainModel.addRestaurantChain : Insert Restaurant Chain : ' . $query);
 			$return = true;
 			
 			if ( $this->db->query($query) ) {
 				$newRestaurantChainId = $this->db->insert_id();
+				
+				//SAVE RESTAURANT TYPE
+				$restaurantTypeId = $this->input->post('restaurantTypeId');
+				if ($restaurantTypeId) {
+					$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
+					" values (NULL, " . $restaurantTypeId . ", " . $newRestaurantChainId . ", NULL )";
+
+					$this->db->query($query);
+				}
+				
 				$return = true;
 			} else {
 				$return = false;
@@ -197,8 +215,8 @@ class RestaurantChainModel extends Model{
 	function updateRestaurantChain() {
 		
 		$return = true;
-		
-		$query = "SELECT * FROM restaurant_chain WHERE restaurant_chain = \"" . $this->input->post('restaurantName') . "\" AND restaurant_chain_id <> " . $this->input->post('restaurantChainId');
+
+		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('restaurantChain') . "\" AND producer_id <> " . $this->input->post('restaurantChainId'). " AND is_restaurant_chain = 1";
 		log_message('debug', 'RestaurantChainModel.updateRestaurantChain : Try to get Duplicate record : ' . $query);
 			
 		$result = $this->db->query($query);
@@ -206,17 +224,21 @@ class RestaurantChainModel extends Model{
 		if ($result->num_rows() == 0) {
 			$restaurantChainId = $this->input->post('restaurantChainId');
 			$data = array(
-						'restaurant_chain' => $this->input->post('restaurantChain'), 
-						'match_string' => $this->input->post('matchString'),
-						'restaurant_type_id' => $this->input->post('restaurantTypeId'),
+						'producer' => $this->input->post('restaurantChain'), 
+//						'match_string' => $this->input->post('matchString'),
+//						'restaurant_type_id' => $this->input->post('restaurantTypeId'),
 						'status' => $this->input->post('status'),
 					);
-			$where = "restaurant_chain_id = " . $this->input->post('restaurantChainId');
-			$query = $this->db->update_string('restaurant_chain', $data, $where);
+			$where = "producer_id = " . $this->input->post('restaurantChainId');
+			$query = $this->db->update_string('producer', $data, $where);
 			
 			log_message('debug', 'RestaurantChainModel.updateRestaurantChain : ' . $query);
 			if ( $this->db->query($query) ) {
 				$return = true;
+				
+				//update restaurant type
+				$this->updateRestaurantType($this->input->post('restaurantChainId'), $this->input->post('restaurantTypeId'));
+
 			} else {
 				$return = false;
 			}
@@ -227,6 +249,35 @@ class RestaurantChainModel extends Model{
 		}
 				
 		return $return;
+	}
+	
+	function updateRestaurantType($restaurantId, $restaurantTypeId) {
+	
+		$query = "SELECT producer_category_id FROM producer_category WHERE producer_category_id IN (SELECT producer_category_id 
+				FROM producer_category_member WHERE producer_id=$restaurantId) AND restaurant_type_id IS NOT NULL";
+		log_message('debug', 'RestaurantModel.updateCuisines : get existing cuisines : ' . $query);
+
+		$result = $this->db->query($query)->result_array();
+
+		if( !empty($result) ) {
+			$oldRestaurantTypeId = $result[0]['producer_category_id'];
+	
+			$where = "producer_id = " . $restaurantId;
+
+			if( !empty($oldRestaurantTypeId) )
+				$where .= " AND producer_category_id=".$oldRestaurantTypeId;
+		
+			$this->db->update('producer_category_member', array('producer_category_id'=>$restaurantTypeId), $where);
+		}else{
+		
+			$data = array(
+						'producer_category_id' => $restaurantTypeId,
+						'producer_id' => $restaurantId
+						);
+		
+			$this->db->insert('producer_category_member', $data);
+		
+		}
 	}
 	
 	function getRestaurantChainsJson() {

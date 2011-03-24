@@ -48,7 +48,7 @@ class FarmModel extends Model{
 			$GLOBALS['error'] = 'no_name';
 			$return = false;
 		} else {
-			if ( empty($companyId) ) {
+/*			if ( empty($companyId) ) {
 				// Enter manufacture into company
 				//$CI->load->model('CompanyModel','',true);
 				//$companyId = $CI->CompanyModel->addCompany($this->input->post('farmName'));
@@ -60,8 +60,8 @@ class FarmModel extends Model{
 					//$farmName = $company->companyName;
 				}
 			}
-			
-			$query = "SELECT * FROM producer WHERE producer = \"" . $farmName . "\"";
+*/			
+			$query = "SELECT * FROM producer WHERE producer = \"" . $farmName . "\" AND is_farm = 1";
 			log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
 			
 			$result = $this->db->query($query);
@@ -76,17 +76,13 @@ class FarmModel extends Model{
 				if ( $this->db->query($query) ) {
 					$newFarmId = $this->db->insert_id();
 
-					// SOME CODE HERE FOR FARMER TYPE...
-
 					//SAVE FARM TYPE
 					$farmTypeId = $this->input->post('farmTypeId');
 					if ($farmTypeId) {
 						$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
 						" values (NULL, " . $farmTypeId . ", " . $newFarmId . ", NULL )";
 	
-						if ( $this->db->query($query) ) {
-							$farmTypeId = mysql_insert_id();
-						}
+						$this->db->query($query);
 					}
 					
 					$CI->load->model('AddressModel','',true);
@@ -189,7 +185,7 @@ class FarmModel extends Model{
 	function updateFarm() {
 		$return = true;
 		
-		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('farmName') . "\" AND producer_id <> " . $this->input->post('farmId');
+		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('farmName') . "\" AND producer_id <> " . $this->input->post('farmId')." AND is_farm = 1";
 		log_message('debug', 'FarmModel.updateFarm : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -236,11 +232,24 @@ class FarmModel extends Model{
 		log_message('debug', 'FarmModel.updateFarmType : get existing cuisines : ' . $query);
 
 		$result = $this->db->query($query)->result_array();
-		$oldFarmTypeId = $result[0]['producer_category_id'];
+
+		if( !empty($result) ) {
+				$oldFarmTypeId = $result[0]['producer_category_id'];
+		
+			$where = "producer_id = " . $farmId;
 	
-		$where = "producer_id = " . $farmId ." AND producer_category_id=".$oldFarmTypeId;
-	
-		$this->db->update('producer_category_member', array('producer_category_id'=>$farmTypeId), $where);
+			if( !empty($oldFarmTypeId) )
+				$where .= " AND producer_category_id=".$oldFarmTypeId;
+		
+			$this->db->update('producer_category_member', array('producer_category_id'=>$farmTypeId), $where);
+		}else{
+			$data = array(
+						'producer_category_id' => $farmTypeId,
+						'producer_id' => $farmId
+						);
+		
+			$this->db->insert('producer_category_member', $data);
+		}
 	}
 	
 	function addFarmWithNameOnly($farmName) {

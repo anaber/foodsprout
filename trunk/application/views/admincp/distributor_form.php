@@ -76,7 +76,7 @@ $(document).ready(function() {
 	
 	
 	$("#distributorForm").submit(function() {
-		
+
 		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
 		
 		if (formValidated == false) {
@@ -98,11 +98,11 @@ $(document).ready(function() {
 				cityName = cityId;
 				cityId = '';
 			}
-			
+
 			if ($('#distributorId').val() != '' ) {
 				var formAction = '/admincp/distributor/save_update';
 				postArray = {
-							  companyId:$('#companyId').val(),
+//							  companyId:$('#companyId').val(),
 							  distributorName:$('#distributorName').val(),
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
@@ -116,7 +116,7 @@ $(document).ready(function() {
 			} else {
 				formAction = '/admincp/distributor/save_add';
 				postArray = { 
-							  companyId:$('#companyId').val(),
+//							  companyId:$('#companyId').val(),
 							  distributorName:$('#distributorName').val(),
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
@@ -136,7 +136,7 @@ $(document).ready(function() {
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				
+
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -158,14 +158,14 @@ $(document).ready(function() {
 					//start fading the messagebox 
 					$("#msgbox").fadeTo(200,0.1,function() {
 						//add message and change the class of the box and start fading
-						$(this).html('Either select company or enter distributor name...').addClass('messageboxerror').fadeTo(900,1);
+						$(this).html('Enter distributor name...').addClass('messageboxerror').fadeTo(900,1);
 						
 					});
 				} else if(data == 'duplicate_company') {
 					//start fading the messagebox 
 					$("#msgbox").fadeTo(200,0.1,function() {
 						//add message and change the class of the box and start fading
-						$(this).html('Duplicate Company...').addClass('messageboxerror').fadeTo(900,1);
+						$(this).html('Duplicate Distributor...').addClass('messageboxerror').fadeTo(900,1);
 						
 					});
 				} else if(data == 'duplicate') {
@@ -210,19 +210,20 @@ $(document).ready(function() {
 
 <form id="distributorForm" method="post" <?php echo (isset($DISTRIBUTOR)) ? 'action="/admincp/distributor/save_update"' : 'action="/admincp/distributor/save_add"' ?>>
 <table class="formTable">
-	<tr>
+<!--	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->companyName : '') ?>" style="width: 200px;" />
 		</td>
 	</tr>
+-->
 	<tr>
 		<td width = "25%" nowrap>Distributor Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->distributorName : '') ?>" class="validate[optional]" type="text" name="distributorName" id="distributorName"/><br />
 		</td>
 	</tr>
-	<tr>
+<!--	<tr>
 		<td colspan = "2" style = "font-size:10px;">
 			<ul>
 				<li>Existing companies selected and name entered, distributor will be treated as the subsidery of selected company but with overridden name.</li>
@@ -231,7 +232,7 @@ $(document).ready(function() {
 			</ul>
 		</td>
 	</tr>
-	
+-->	
 	<tr>
 		<td width = "25%" nowrap>Custom URL</td>
 		<td width = "75%">
@@ -330,7 +331,7 @@ $(document).ready(function() {
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($DISTRIBUTOR)) ? 'Update Distributor' : 'Add Distributor' ?>">
 			<input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->distributorId : '') ?>">
-			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->companyId : '') ?>">
+<!--			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($DISTRIBUTOR) ? $DISTRIBUTOR->companyId : '') ?>">-->
 			<input type = "hidden" name = "companyId" id = "cityId" value = "">
 		</td>
 	</tr>

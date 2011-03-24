@@ -8,16 +8,16 @@ class DistributorModel extends Model{
 		
 		$return = true;
 		
-		$companyId = $this->input->post('companyId');
+//		$companyId = $this->input->post('companyId');
 		$distributorName = $this->input->post('distributorName');
 		
 		$CI =& get_instance();
 		
-		if (empty($companyId) && empty($distributorName) ) {
+		if ( empty($distributorName) ) {
 			$GLOBALS['error'] = 'no_name';
 			$return = false;
 		} else {
-			if ( empty($companyId) ) {
+/*			if ( empty($companyId) ) {
 				// Enter distributor into company
 				$CI->load->model('CompanyModel','',true);
 				$companyId = $CI->CompanyModel->addCompany($this->input->post('distributorName'));
@@ -29,24 +29,30 @@ class DistributorModel extends Model{
 					$distributorName = $company->companyName;
 				}
 			}
-			
-			$query = "SELECT * FROM distributor WHERE distributor_name = \"" . $distributorName . "\"";
+*/			
+			$query = "SELECT * FROM producer WHERE producer = \"" . $distributorName . "\" AND is_distributor = 1";
 			log_message('debug', 'DistributorModel.addDistributor : Try to get duplicate Distributor record : ' . $query);
 			
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO distributor (distributor_id, company_id, distributor_name, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
-						" values (NULL, ".$companyId.", \"" . $distributorName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
+				$query = "INSERT INTO producer (producer_id, producer, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter, is_distributor)" .
+						" values (NULL, \"" . $distributorName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1)";
 				
 				log_message('debug', 'DistributorModel.addDistributor : Insert Distributor : ' . $query);
 				$return = true;
 				
 				if ( $this->db->query($query) ) {
 					$newDistributorId = $this->db->insert_id();
-					
+
 					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress('', '', '', $newDistributorId, '', $companyId);
+					$addressId = $CI->AddressModel->addAddress($newDistributorId);
+					
+					if ($addressId) {
+						$CI->load->model('CustomUrlModel','',true);
+						$customUrlId = $CI->CustomUrlModel->generateCustomUrl($addressId);
+					}
+
 				} else {
 					$return = false;
 				}
@@ -64,11 +70,11 @@ class DistributorModel extends Model{
 	// Get all the information about one specific Distributor from an ID
 	function getDistributorFromId($distributorId) {
 		
-		$query = "SELECT distributor.*, company.company_name " .
-				" FROM distributor, company " .
-				" WHERE distributor.distributor_id = " . $distributorId . 
-				" AND distributor.company_id = company.company_id";
-				
+		$query = "SELECT * " .
+				" FROM producer " .
+				" WHERE producer_id = " . $distributorId . 
+				" AND is_distributor = 1";
+
 		log_message('debug', "DistributorModel.getDistributorFromId : " . $query);
 		$result = $this->db->query($query);
 		
@@ -79,10 +85,10 @@ class DistributorModel extends Model{
 		if ($row) {
 			$geocodeArray = array();
 				
-			$this->DistributorLib->distributorId = $row->distributor_id;
-			$this->DistributorLib->companyId = $row->company_id;
-			$this->DistributorLib->companyName = $row->company_name;
-			$this->DistributorLib->distributorName = $row->distributor_name;
+			$this->DistributorLib->distributorId = $row->producer_id;
+//			$this->DistributorLib->companyId = $row->company_id;
+//			$this->DistributorLib->companyName = $row->company_name;
+			$this->DistributorLib->distributorName = $row->producer;
 			$this->DistributorLib->customUrl = $row->custom_url;
 			$this->DistributorLib->url = $row->url;
 			$this->DistributorLib->facebook = $row->facebook;
@@ -92,7 +98,7 @@ class DistributorModel extends Model{
 			$CI =& get_instance();
 				
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row->distributor_id, '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row->producer_id, '', '', '', '');
 			$this->DistributorLib->addresses = $addresses;
 			
 			foreach ($addresses as $key => $address) {
@@ -122,37 +128,38 @@ class DistributorModel extends Model{
 	function updateDistributor() {
 		$return = true;
 		
-		$query = "SELECT * FROM distributor WHERE distributor_name = \"" . $this->input->post('distributorName') . "\" AND distributor_id <> " . $this->input->post('distributorId');
+		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('distributorName') . "\" AND producer_id <> " . $this->input->post('distributorId')."  AND is_distributor = 1";
 		log_message('debug', 'DistributorModel.updateDistributor : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
-		
+
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'company_id' => $this->input->post('companyId'), 
-						'distributor_name' => $this->input->post('distributorName'),
+//						'company_id' => $this->input->post('companyId'), 
+						'producer' => $this->input->post('distributorName'),
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
 						'facebook' => $this->input->post('facebook'),
 						'twitter' => $this->input->post('twitter'),
-						'status' => $this->input->post('status'),
+						'status' => $this->input->post('status')
 					);
-			$where = "distributor_id = " . $this->input->post('distributorId');
-			$query = $this->db->update_string('distributor', $data, $where);
-			
+			$where = "producer_id = " . $this->input->post('distributorId');
+
+			$query = $this->db->update_string('producer', $data, $where);
+
 			log_message('debug', 'DistributorModel.updateDistributor : ' . $query);
 			if ( $this->db->query($query) ) {
 				$return = true;
 			} else {
 				$return = false;
 			}
-			
+
 		} else {
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
-		
+				
 		return $return;
 	}
 	
@@ -227,17 +234,20 @@ class DistributorModel extends Model{
 		
 				
 		$base_query = 'SELECT *' .
-				' FROM distributor';
+				' FROM producer';
 		
 		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM distributor';
+				' FROM producer';
 		
-		$where = ' WHERE ';
+		$where = ' WHERE is_distributor = 1';
 		
-		$where .= ' (' 
-				. '	distributor.distributor_name like "' .$q . '%"'
-				. ' OR distributor.distributor_id like "' . $q . '%"';
-		$where .= ' )';
+		if ( !empty($q) ) {
+
+			$where  .= ' AND (producer.producer like "%' .$q . '%"'
+			. ' OR producer.producer_id like "%' . $q . '%"';
+			$where .= ' )';
+
+		}
 		
 		$base_query_count = $base_query_count . $where;
 		
@@ -250,8 +260,8 @@ class DistributorModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY distributor_name';
-			$sort = 'distributor_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -294,8 +304,8 @@ class DistributorModel extends Model{
 			$this->load->library('DistributorLib');
 			unset($this->DistributorLib);
 			
-			$this->DistributorLib->distributorId = $row['distributor_id'];
-			$this->DistributorLib->distributorName = $row['distributor_name'];
+			$this->DistributorLib->distributorId = $row['producer_id'];
+			$this->DistributorLib->distributorName = $row['producer'];
 			
 			$distributors[] = $this->DistributorLib;
 			unset($this->DistributorLib);

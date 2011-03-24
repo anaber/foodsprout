@@ -4,6 +4,7 @@ class ProductLib {
 	
 	var $productId;
 	var $productName;
+	var $producerId;
 	var $companyId;
 	var $companyName;
 	var $restaurantId;
@@ -28,6 +29,7 @@ class ProductLib {
 	function ProductLib() {
 		$this->productId = '';
 		$this->productName = '';
+		$this->producerId = '';
 		$this->companyId = '';
 		$this->companyName = '';
 		$this->restaurantId = '';

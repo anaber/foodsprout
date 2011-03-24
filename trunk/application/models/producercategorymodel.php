@@ -18,7 +18,7 @@ class ProducerCategoryModel extends Model{
 		} else {
 			$query = "SELECT * FROM producer_category WHERE category_group1 = " . $PRODUCER_CATEGORY_GROUP[$categotyType] . " ORDER BY producer_category";
 		}
-		
+
 		log_message('debug', "ProducerCategoryModel.listProducerCategory : " . $query);
 		$result = $this->db->query($query);
 		
@@ -55,7 +55,14 @@ class ProducerCategoryModel extends Model{
 				$producerCategories[] = $this->farmTypeLib;
 				unset($this->farmTypeLib);
 			} else if ($categotyType == 'MANUFACTURE') {
+				$this->load->library('ManufactureTypeLib');
+				unset($this->manufactureTypeLib);
+
+				$this->manufactureTypeLib->manufactureTypeId = $row['producer_category_id'];
+				$this->manufactureTypeLib->manufactureType = $row['producer_category'];
 				
+				$producerCategories[] = $this->manufactureTypeLib;
+				unset($this->farmTypeLib);
 			}
 		}
 		return $producerCategories;

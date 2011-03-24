@@ -183,7 +183,33 @@ class ProductModel extends Model {
 		if ( $result->num_rows() > 0) {
 			
 			$results = $result->result();
-			return $results[0];
+
+			$product = array();
+	
+			foreach ($result->result_array() as $row) {
+	
+				$this->load->library('ProductLib');
+				unset($this->productLib);
+
+				$this->productLib->productId = $row['product_id'];
+				$this->productLib->productName = $row['product_name'];
+				$this->productLib->producerId = $row['producer_id'];
+				$this->productLib->productTypeId = $row['product_type_id'];
+				$this->productLib->productType = $row['product_type'];
+				$this->productLib->ingredient = $row['ingredient_text'];
+				$this->productLib->brand = $row['brand'];
+				$this->productLib->upc = $row['upc'];
+				$this->productLib->status = $row['status'];
+				$this->productLib->hasFructose = $row['has_fructose'];
+				$this->productLib->userId = $row['user_id'];
+				$this->productLib->creationDate = $row['creation_date'];
+				$this->productLib->modifyDate = $row['modify_date'];
+				$this->productLib->customURL = $row['url'];
+	
+				$product[] = $this->productLib;
+				unset($this->productLib);
+			}
+			return $product[0];
 			
 		} else {
 			return 0;
@@ -294,9 +320,9 @@ class ProductModel extends Model {
 		if (!empty($restaurantId)) {
 			$query .= "producer_id = " . $restaurantId;
 		} elseif (!empty($restaurantChainId)) {
-			$query .= "restaurant_chain_id = " . $restaurantChainId;
+			$query .= "producer_id = " . $restaurantChainId;
 		} elseif (!empty($manufactureId)) {
-			$query .= "manufacture_id = " . $manufactureId;
+			$query .= "producer_id = " . $manufactureId;
 		}
 
 		$query .= " AND product.product_type_id = product_type.product_type_id" .
@@ -345,13 +371,8 @@ class ProductModel extends Model {
                 ' WHERE' .
                 ' product_name = "' . $this->input->post('productName') . '"' .
                 ' AND ';
-		if (!empty($restaurantId)) {
-			$query .= 'producer_id';
-		} else if (!empty($restaurantChainId)) {
-			$query .= 'restaurant_chain_id';
-		} else if (!empty($manufactureId)) {
-			$query .= 'manufacture_id';
-		}
+		$query .= 'producer_id';
+		
 		$query .= ' = ';
 		if (!empty($restaurantId)) {
 			$query .= $restaurantId;

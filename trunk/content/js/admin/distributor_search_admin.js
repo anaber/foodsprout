@@ -50,14 +50,14 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'distributor_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'distributor_id', order, data.param.q);
+		order = getOrder(data, 'producer_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_id', order, data.param.q);
 	});
 	
 	$("#heading_distributor").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'distributor_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'distributor_name', order, data.param.q);
+		order = getOrder(data, 'producer');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
 	});
 }
 

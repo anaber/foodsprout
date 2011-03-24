@@ -10,7 +10,7 @@ var documentLocation = '';
 <?php
 	if ( isset($MANUFACTURE_ID) ) {
 ?>
-		documentLocation = '/admincp/manufacture/add_supplier/<?php echo $MANUFACTURE_ID; ?>';
+		documentLocation = '/admincp/manufacture/add_supplier/<?php echo !empty($TRID) ? $TRID : $MANUFACTURE_ID; ?>';
 <?php
 	} else if ( isset($FARM_ID) ) {
 ?>
@@ -22,15 +22,15 @@ var documentLocation = '';
 <?php
 	} else if ( isset($DISTRIBUTOR_ID) ) {
 ?>
-		documentLocation = '/admincp/distributor/add_supplier/<?php echo $DISTRIBUTOR_ID; ?>';
+		documentLocation = '/admincp/distributor/add_supplier/<?php echo !empty($TRID) ? $TRID : $DISTRIBUTOR_ID; ?>';
 <?php
 	} else if ( isset($RESTAURANT_CHAIN_ID) ) {
 ?>
-		documentLocation = '/admincp/restaurantchain/add_supplier/<?php echo $RESTAURANT_CHAIN_ID; ?>';
+		documentLocation = '/admincp/restaurantchain/add_supplier/<?php echo !empty($TRID) ? $TRID : $RESTAURANT_CHAIN_ID; ?>';
 <?php
 	} else if ( isset($FARMERS_MARKET_ID) ) {
 ?>
-		documentLocation = '/admincp/farmersmarket/add_supplier/<?php echo $FARMERS_MARKET_ID; ?>';
+		documentLocation = '/admincp/farmersmarket/add_supplier/<?php echo !empty($TRID) ? $TRID : $FARMERS_MARKET_ID; ?>';
 <?php
 	}
 ?>

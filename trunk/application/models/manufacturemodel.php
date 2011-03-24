@@ -54,16 +54,16 @@ class ManufactureModel extends Model{
 		
 		$return = true;
 		
-		$companyId = $this->input->post('companyId');
+//		$companyId = $this->input->post('companyId');
 		$manufactureName = $this->input->post('manufactureName');
 		
 		$CI =& get_instance();
 		
-		if (empty($companyId) && empty($manufactureName) ) {
+		if ( empty($manufactureName) ) {
 			$GLOBALS['error'] = 'no_name';
 			$return = false;
 		} else {
-			if ( empty($companyId) ) {
+/*			if ( empty($companyId) ) {
 				// Enter manufacture into company
 				$CI->load->model('CompanyModel','',true);
 				$companyId = $CI->CompanyModel->addCompany($this->input->post('manufactureName'));
@@ -75,24 +75,41 @@ class ManufactureModel extends Model{
 					$manufactureName = $company->companyName;
 				}
 			}
-			
-			$query = "SELECT * FROM manufacture WHERE manufacture_name = \"" . $manufactureName . "\" AND company_id = '" . $companyId . "'";
+*/			
+			$query = "SELECT * FROM producer WHERE producer = \"" . $manufactureName . "\" AND is_manufacture = 1";
 			log_message('debug', 'ManufactureModel.addManufacture : Try to get duplicate Manufacture record : ' . $query);
 			
 			$result = $this->db->query($query);
 			
 			if ($result->num_rows() == 0) {
-				$query = "INSERT INTO manufacture (manufacture_id, company_id, manufacture_type_id, manufacture_name, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter)" .
-						" values (NULL, ".$companyId.", " . $this->input->post('manufactureTypeId') . ", \"" . $manufactureName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "' )";
-				
+				$query = "INSERT INTO producer (producer_id, producer, creation_date, custom_url, url, status, track_ip, user_id, facebook, twitter, is_manufacture)" .
+						" values (NULL, \"" . $manufactureName . "\", NOW(), '" . $this->input->post('customUrl') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
+//				$this->input->post('manufactureTypeId')
 				log_message('debug', 'ManufactureModel.addManufacture : Insert Manufacture : ' . $query);
 				$return = true;
 				
 				if ( $this->db->query($query) ) {
 					$newManufactureId = $this->db->insert_id();
 					
+					// SAVE MANUFACTURE TYPE
+					$manufactureTypeId = $this->input->post('manufactureTypeId');
+					if ($manufactureTypeId) {
+						
+						$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
+						" values (NULL, " . $manufactureTypeId . ", " . $newManufactureId . ", NULL )";
+						
+						$this->db->query($query);
+					}
+					
+					
+					// SAVE ADDRESS
 					$CI->load->model('AddressModel','',true);
-					$address = $CI->AddressModel->addAddress('', '', $newManufactureId, '', '', $companyId);
+					$addressId = $CI->AddressModel->addAddress($newManufactureId);
+					
+					if ($addressId) {
+						$CI->load->model('CustomUrlModel','',true);
+						$customUrlId = $CI->CustomUrlModel->generateCustomUrl($addressId);
+					}
 				} else {
 					$return = false;
 				}
@@ -110,9 +127,16 @@ class ManufactureModel extends Model{
 	// Get all the information about one specific manufacture from an ID
 	function getManufactureFromId($producerId, $addressId ='') {
 		
-		$query = "SELECT producer.* " .
-				" FROM producer" .
-				" WHERE producer.producer_id = " . $producerId;
+		$query = "SELECT 
+					producer.*, producer_category.producer_category, producer_category.producer_category_id
+				FROM 
+					producer
+				LEFT JOIN producer_category_member 
+					ON producer.producer_id = producer_category_member.producer_id 
+				LEFT JOIN producer_category
+					ON producer_category_member.producer_category_id = producer_category.producer_category_id
+				WHERE 
+					producer.producer_id = " . $producerId;
 				
 		log_message('debug', "ManufactureModel.getManufactureFromId : " . $query);
 		$result = $this->db->query($query);
@@ -126,6 +150,7 @@ class ManufactureModel extends Model{
 			
 			$this->manufactureLib->manufactureId = $row->producer_id;
 			$this->manufactureLib->manufactureName = $row->producer;
+			$this->manufactureLib->manufactureTypeId = $row->producer_category_id;
 			$this->manufactureLib->customUrl = $row->custom_url;
 			$this->manufactureLib->url = $row->url;
 			$this->manufactureLib->facebook = $row->facebook;
@@ -174,7 +199,7 @@ class ManufactureModel extends Model{
 	function updateManufacture() {
 		$return = true;
 		
-		$query = "SELECT * FROM manufacture WHERE manufacture_name = \"" . $this->input->post('manufactureName') . "\" AND manufacture_id <> " . $this->input->post('manufactureId');
+		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('manufactureName') . "\" AND producer_id <> " . $this->input->post('manufactureId')."  AND is_manufacture = 1";
 		log_message('debug', 'ManufactureModel.updateManufacture : Try to get Duplicate record : ' . $query);
 		
 		$result = $this->db->query($query);
@@ -182,20 +207,24 @@ class ManufactureModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'company_id' => $this->input->post('companyId'), 
-						'manufacture_name' => $this->input->post('manufactureName'),
+//						'company_id' => $this->input->post('companyId'), 
+						'producer' => $this->input->post('manufactureName'),
 						'custom_url' => $this->input->post('customUrl'),
 						'url' => $this->input->post('url'),
-						'manufacture_type_id' => $this->input->post('manufactureTypeId'),
+//						'manufacture_type_id' => $this->input->post('manufactureTypeId'),
 						'facebook' => $this->input->post('facebook'),
 						'twitter' => $this->input->post('twitter'),
 						'status' => $this->input->post('status'),
 					);
-			$where = "manufacture_id = " . $this->input->post('manufactureId');
-			$query = $this->db->update_string('manufacture', $data, $where);
+			$where = "producer_id = " . $this->input->post('manufactureId');
+			$query = $this->db->update_string('producer', $data, $where);
 			
 			log_message('debug', 'ManufactureModel.updateManufacture : ' . $query);
 			if ( $this->db->query($query) ) {
+
+				//UPDATE MANUFACTURE TYPE
+				$this->updateManufactureType($this->input->post('manufactureId'), $this->input->post('manufactureTypeId'));
+			
 				$return = true;
 			} else {
 				$return = false;
@@ -207,6 +236,33 @@ class ManufactureModel extends Model{
 		}
 		
 		return $return;
+	}
+	
+	function updateManufactureType($manufactureId, $manufactureTypeId) {
+	
+		$query = "SELECT producer_category_id FROM producer_category WHERE producer_category_id IN (SELECT producer_category_id 
+				FROM producer_category_member WHERE producer_id=$manufactureId) AND manufacture_type_id IS NOT NULL";
+		log_message('debug', 'ManufactureModel.updateManufactureType : get existing cuisines : ' . $query);
+
+		$result = $this->db->query($query)->result_array();
+
+		if( !empty($result) ) {
+				$oldManufactureTypeId = $result[0]['producer_category_id'];
+		
+			$where = "producer_id = " . $manufactureId;
+	
+			if( !empty($oldManufactureTypeId) )
+			 $where .= " AND producer_category_id=".$oldManufactureTypeId;
+		
+			$this->db->update('producer_category_member', array('producer_category_id'=>$manufactureTypeId), $where);
+		}else{
+			$data = array(
+						'producer_category_id' => $manufactureTypeId,
+						'producer_id' => $manufactureId
+						);
+		
+			$this->db->insert('producer_category_member', $data);
+		}
 	}
 	
 	function addManufactureWithNameOnly($manufactureName) {
@@ -277,20 +333,20 @@ class ManufactureModel extends Model{
 		$start = 0;
 		$page = 0;
 		
-		$base_query = 'SELECT manufacture.*, manufacture_type.manufacture_type' .
-				' FROM manufacture, manufacture_type';
+		$base_query = 'SELECT producer.*,producer_category.producer_category,producer_category.producer_category_id FROM producer
+				LEFT JOIN producer_category_member ON producer.producer_id=producer_category_member.producer_id
+				LEFT JOIN producer_category ON producer_category_member.producer_category_id=producer_category.producer_category_id';
+				 
+		$base_query_count = 'SELECT count(*) AS num_records FROM producer';
 		
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM manufacture, manufacture_type';
+		$where = ' WHERE is_manufacture = 1';
 		
-		$where = ' WHERE manufacture.manufacture_type_id = manufacture_type.manufacture_type_id';
-		
-		if (! empty ($q) ) {
-		$where .= ' AND (' 
-				. '	manufacture.manufacture_name like "%' .$q . '%"'
-				. ' OR manufacture.manufacture_id like "%' . $q . '%"'
-				. ' OR manufacture_type.manufacture_type like "%' . $q . '%"'		
-				. ' )';
+		if ( !empty($q) ) {
+
+			$where  .= ' AND (producer.producer like "%' .$q . '%"'
+			. ' OR producer.producer_id like "%' . $q . '%"';
+			$where .= ' )';
+
 		}
 		
 		$base_query_count = $base_query_count . $where;
@@ -304,8 +360,8 @@ class ManufactureModel extends Model{
 		$query = $base_query . $where;
 		
 		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY manufacture_name';
-			$sort = 'manufacture_name';
+			$sort_query = ' ORDER BY producer';
+			$sort = 'producer';
 		} else {
 			$sort_query = ' ORDER BY ' . $sort;
 		}
@@ -348,17 +404,17 @@ class ManufactureModel extends Model{
 			$this->load->library('ManufactureLib');
 			unset($this->ManufactureLib);
 			
-			$this->ManufactureLib->manufactureId = $row['manufacture_id'];
-			$this->ManufactureLib->manufactureName = $row['manufacture_name'];
-			$this->ManufactureLib->manufactureTypeId = $row['manufacture_type_id'];
-			$this->ManufactureLib->manufactureType = $row['manufacture_type'];
+			$this->ManufactureLib->manufactureId = $row['producer_id'];
+			$this->ManufactureLib->manufactureName = $row['producer'];
+			$this->ManufactureLib->manufactureTypeId = $row['producer_category_id'];
+			$this->ManufactureLib->manufactureType = $row['producer_category'];
 			
 			$CI->load->model('SupplierModel','',true);
-			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['manufacture_id'], '', '', '');
+			$suppliers = $CI->SupplierModel->getSupplierForCompany( '', '', $row['producer_id'], '', '', '');
 			$this->ManufactureLib->suppliers = $suppliers;
 			
 			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['manufacture_id'], '', '', '', '', '');
+			$addresses = $CI->AddressModel->getAddressForCompany( '', '', $row['producer_id'], '', '', '', '', '');
 			$this->ManufactureLib->addresses = $addresses;
 			
 			$manufactures[] = $this->ManufactureLib;

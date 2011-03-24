@@ -213,19 +213,20 @@ $(document).ready(function() {
 
 <form id="manufactureForm" method="post" <?php echo (isset($MANUFACTURE)) ? 'action="/admincp/manufacture/save_update"' : 'action="/admincp/manufacture/save_add"' ?>>
 <table class="formTable">
-	<tr>
+<!--	<tr>
 		<td width = "25%" nowrap>Company</td>
 		<td width = "75%">
 			<input type="text" id="companyAjax" value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->companyName : '') ?>" style="width: 200px;" /> 
 		</td>
 	</tr>
+-->
 	<tr>
 		<td width = "25%" nowrap>Manufacture Name</td>
 		<td width = "75%">
 			<input value="<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureName : '') ?>" class="validate[optional]" type="text" name="manufactureName" id="manufactureName"/><br />
 		</td>
 	</tr>
-	<tr>
+<!--	<tr>
 		<td colspan = "2" style = "font-size:10px;">
 			<ul>
 				<li>Existing companies selected and name entered, manufacture will be treated as the subsidery of selected company but with overridden name.</li>
@@ -234,6 +235,7 @@ $(document).ready(function() {
 			</ul>
 		</td>
 	</tr>
+-->
 	<tr>
 		<td width = "25%">Manufacture Type</td>
 		<td width = "75%">
@@ -241,7 +243,7 @@ $(document).ready(function() {
 			<option value = ''>--Manufacture Type--</option>
 			<?php
 				foreach($MANUFACTURE_TYPES as $key => $value) {
-					echo '<option value="'.$value->manufactureTypeId.'"' . (  ( isset($MANUFACTURE) && ( $value->manufactureTypeId == $MANUFACTURE->manufactureTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->manufactureType.'</option>';
+					echo '<option value="'.$value->manufactureTypeId.'"' . (  ( isset($MANUFACTURE) && ( $value->manufactureTypeId == $MANUFACTURE->manufactureTypeId )  ) ? ' SELECTED="SELECTED"' : '' ) . '>'.$value->manufactureType.'</option>';
 				}
 			?>
 			</select>
@@ -345,7 +347,7 @@ $(document).ready(function() {
 		<td width = "25%" colspan = "2">
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MANUFACTURE)) ? 'Update Manufacture' : 'Add Manufacture' ?>">
 			<input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->manufactureId : '') ?>">
-			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->companyId : '') ?>">
+<!--			<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($MANUFACTURE) ? $MANUFACTURE->companyId : '') ?>">-->
 			<input type = "hidden" name = "companyId" id = "cityId" value = "">
 		</td>
 	</tr>
