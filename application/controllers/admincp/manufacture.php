@@ -38,8 +38,8 @@ class Manufacture extends Controller {
 		$this->load->model('CountryModel');
 		$countries = $this->CountryModel->listCountry();
 		
-		$this->load->model('ManufactureTypeModel');
-		$manufactureTypes = $this->ManufactureTypeModel->listManufactureType();
+		$this->load->model('ProducerCategoryModel');
+		$manufactureTypes = $this->ProducerCategoryModel->listProducerCategory('MANUFACTURE', '');
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -64,10 +64,9 @@ class Manufacture extends Controller {
 		
 		$this->load->model('ManufactureModel');
 		$manufacture = $this->ManufactureModel->getManufactureFromId($id);
-		
-		$this->load->model('ManufactureTypeModel');
-		$manufactureTypes = $this->ManufactureTypeModel->listManufactureType();
-		
+
+		$this->load->model('ProducerCategoryModel');
+		$manufactureTypes = $this->ProducerCategoryModel->listProducerCategory('MANUFACTURE', '');
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -82,6 +81,7 @@ class Manufacture extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Manufacture";
 		$data['data']['center']['form']['MANUFACTURE_TYPES'] = $manufactureTypes;
@@ -155,7 +155,8 @@ class Manufacture extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $id;
-		
+		$data['data']['left']['navigation']['TRID'] = $id;
+
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($manufacture->manufactureName, '', 'supplier', 'add');
 		$data['data']['center']['list']['MANUFACTURE'] = $manufacture;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
@@ -171,7 +172,7 @@ class Manufacture extends Controller {
 		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
-	function update_supplier($id)
+	function update_supplier($id, $trid)
 	{
 		global $SUPPLIER_TYPES_2;
 		$data = array();
@@ -179,10 +180,11 @@ class Manufacture extends Controller {
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'manufacture');
 		
-		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', $supplier->manufactureId, '', '', '');
-		
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', '', $trid, '', '', '');
+
+	
 		$this->load->model('ManufactureModel');
-		$manufacture = $this->ManufactureModel->getManufactureFromId($supplier->manufactureId);
+		$manufacture = $this->ManufactureModel->getManufactureFromId($supplier->supplierId);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -196,8 +198,10 @@ class Manufacture extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $supplier->manufactureId;
-		
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $supplier->supplierId;
+		$data['data']['left']['navigation']['SUPPLIER_ID'] = $supplier->supplierId;
+		$data['data']['left']['navigation']['TRID'] = $trid;
+
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($manufacture->manufactureName, $id, 'supplier', 'update');
 		$data['data']['center']['list']['SUPPLIER'] = $supplier;
 		$data['data']['center']['list']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
@@ -206,8 +210,8 @@ class Manufacture extends Controller {
 		
 		$data['BREADCRUMB'] = array(
 				'Manufacture' => '/admincp/manufacture',
-				$manufacture->manufactureName => '/admincp/manufacture/update/' . $supplier->manufactureId,
-				'Supplier #' . $supplier->supplierId => '/admincp/manufacture/update_supplier/' . $supplier->supplierId,
+				$manufacture->manufactureName => '/admincp/manufacture/add_supplier/' .$trid,
+				'Supplier #' . $supplier->supplierId => '/admincp/manufacture/update_supplier/' . $supplier->supplierId.'/'.$trid
 			);
 		
 		$this->load->view('admincp/templates/left_center_template', $data);
@@ -278,6 +282,7 @@ class Manufacture extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($manufacture->manufactureName, '', 'address', 'add');
 		$data['data']['center']['list']['STATES'] = $states;
@@ -306,10 +311,10 @@ class Manufacture extends Controller {
 		$this->load->model('AddressModel');
 		$address = $this->AddressModel->getAddressFromId($id);
 		
-		$addresses = $this->AddressModel->getAddressForCompany( '', '', $address->manufactureId, '', '', '', '', '');
+		$addresses = $this->AddressModel->getAddressForCompany( '', '', $address->producerId, '', '', '', '', '');
 		
 		$this->load->model('ManufactureModel');
-		$manufacture = $this->ManufactureModel->getManufactureFromId($address->manufactureId);
+		$manufacture = $this->ManufactureModel->getManufactureFromId($address->producerId);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -323,18 +328,19 @@ class Manufacture extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $address->manufactureId;
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $address->producerId;
+		$data['data']['left']['navigation']['TRID'] = $address->producerId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = prepareHeading($manufacture->manufactureName, $id, 'address', 'update');
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['ADDRESS'] = $address;
-		$data['data']['center']['form']['MANUFACTURE_ID'] = $address->manufactureId;
+		$data['data']['center']['form']['MANUFACTURE_ID'] = $address->producerId;
 		$data['data']['center']['form']['ADDRESSES'] = $addresses;
 		
 		$data['BREADCRUMB'] = array(
 				'Manufacture' => '/admincp/manufacture',
-				$manufacture->manufactureName => '/admincp/manufacture/update/' . $address->manufactureId,
+				$manufacture->manufactureName => '/admincp/manufacture/update/' . $address->producerId,
 				'Address #' . $address->addressId => '/admincp/manufacture/update_address/' . $address->addressId,
 			);
 		
@@ -380,7 +386,7 @@ class Manufacture extends Controller {
 		
 		$this->load->model('ProductTypeModel');
 		$productTypes = $this->ProductTypeModel->listProductType();
-		
+
 		$this->load->model('ProductModel','',true);
 		$products = $this->ProductModel->getProductForCompany('', '', $id, '');
 		
@@ -403,6 +409,7 @@ class Manufacture extends Controller {
 		
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['BREADCRUMB'] = array(
 				'Manufacture' => '/admincp/manufacture',
@@ -414,7 +421,8 @@ class Manufacture extends Controller {
 	}
 	
 	
-	function update_menu_item($id) {
+	function update_menu_item($id, $trid) {
+
 		$data = array();
 		
 		$this->load->model('ProductTypeModel');
@@ -422,11 +430,11 @@ class Manufacture extends Controller {
 		
 		$this->load->model('ProductModel');
 		$product = $this->ProductModel->getProductFromId($id);
-		
-		$products = $this->ProductModel->getProductForCompany('', '', $product->manufactureId, '');
-		
+
+		$products = $this->ProductModel->getProductForCompany('', '', $trid, '');
+
 		$this->load->model('ManufactureModel');
-		$manufacture = $this->ManufactureModel->getManufactureFromId($product->manufactureId);
+		$manufacture = $this->ManufactureModel->getManufactureFromId($trid);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -437,20 +445,21 @@ class Manufacture extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'admincp/menu_form',
 			);
-		
+
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
-		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $product->manufactureId;
+		$data['data']['left']['navigation']['MANUFACTURE_ID'] = $trid;
+		$data['data']['left']['navigation']['TRID'] = $trid;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($manufacture->manufactureName, $id, 'menu item', 'update');
+		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($product->productName, $id, 'menu item', 'update');
 		$data['data']['center']['list']['PRODUCT_TYPES'] = $productTypes;
 		$data['data']['center']['list']['PRODUCT'] = $product;
 		$data['data']['center']['list']['PRODUCTS'] = $products;
 		
 		$data['BREADCRUMB'] = array(
 				'Manufacture' => '/admincp/manufacture',
-				$manufacture->manufactureName => '/admincp/manufacture/update/' . $product->manufactureId,
-				'Product #' . $product->productId => '/admincp/manufacture/update_menu_item/' . $product->productId,
+				$manufacture->manufactureName => '/admincp/manufacture/add_menu_item/' . $trid,
+				'Product #' . $product->productId => '/admincp/manufacture/update_menu_item/' . $product->productId.'/'. $trid
 			);
 		
 		$this->load->view('admincp/templates/left_center_template', $data);

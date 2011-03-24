@@ -797,7 +797,7 @@ class RestaurantModel extends Model{
 	function updateRestaurant() {
 		$return = true;
 
-		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('restaurantName') . "\" AND producer_id <> " . $this->input->post('restaurantId');
+		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('restaurantName') . "\" AND producer_id <> " . $this->input->post('restaurantId')."  AND is_restaurant = 1";
 		log_message('debug', 'RestaurantModel.updateRestaurant : Try to get Duplicate record : ' . $query);
 
 		$result = $this->db->query($query);
@@ -856,11 +856,26 @@ class RestaurantModel extends Model{
 		log_message('debug', 'RestaurantModel.updateCuisines : get existing cuisines : ' . $query);
 
 		$result = $this->db->query($query)->result_array();
-		$oldRestaurantTypeId = $result[0]['producer_category_id'];
+
+		if( !empty($result) ) {
+			$oldRestaurantTypeId = $result[0]['producer_category_id'];
 	
-		$where = "producer_id = " . $restaurantId." AND producer_category_id=".$oldRestaurantTypeId;
-	
-		$this->db->update('producer_category_member', array('producer_category_id'=>$restaurantTypeId), $where);
+			$where = "producer_id = " . $restaurantId;
+
+			if( !empty($oldRestaurantTypeId) )
+				$where .= " AND producer_category_id=".$oldRestaurantTypeId;
+		
+			$this->db->update('producer_category_member', array('producer_category_id'=>$restaurantTypeId), $where);
+		}else{
+		
+			$data = array(
+						'producer_category_id' => $restaurantTypeId,
+						'producer_id' => $restaurantId
+						);
+		
+			$this->db->insert('producer_category_member', $data);
+		
+		}
 	}
 
 	function updateCuisines($restaurantId, $cuisineIds) {

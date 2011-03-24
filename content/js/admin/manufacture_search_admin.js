@@ -50,20 +50,20 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 function reinitializeTableHeadingEvent(data) {
 	$("#heading_id").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'manufacture_id');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'manufacture_id', order, data.param.q);
+		order = getOrder(data, 'producer_id');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_id', order, data.param.q);
 	});
 	
 	$("#heading_manufacture").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'manufacture_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'manufacture_name', order, data.param.q);
+		order = getOrder(data, 'producer');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
 	});
 	
 	$("#heading_manufacture_type").click(function(e) {
 		e.preventDefault();
-		order = getOrder(data, 'manufacture_type');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'manufacture_type', order, data.param.q);
+		order = getOrder(data, 'producer_category');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_category', order, data.param.q);
 	});
 }
 

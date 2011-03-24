@@ -82,6 +82,7 @@ class Farm extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['FARM_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Farm";
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
@@ -156,6 +157,7 @@ class Farm extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['FARM_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($farm->farmName, '', 'supplier', 'add');
 		$data['data']['center']['list']['FARM'] = $farm;
@@ -180,12 +182,11 @@ class Farm extends Controller {
 		$this->load->model('SupplierModel');
 		$supplier = $this->SupplierModel->getSupplierFromId($id, 'farm');
 		
-		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $supplier->supplierId, '', '', '', '');
-		
-		$this->load->model('FarmModel');
-		$farm = $this->FarmModel->getFarmFromId($supplier->supplierId);
+		$suppliers = $this->SupplierModel->getSupplierForCompany( '', $trid, '', '', '', '');
 
-		$p_farm = $this->FarmModel->getFarmFromId($trid);
+	
+		$this->load->model('FarmModel');
+		$farm = $this->FarmModel->getFarmFromId($trid);
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -211,8 +212,8 @@ class Farm extends Controller {
 		
 
 		$data['BREADCRUMB'] = array(
-				'Restaurants' => '/admincp/farm',
-				$p_farm->farmName." Suppliers" => '/admincp/farm/add_supplier/' .$trid,
+				'Farms' => '/admincp/farm',
+				$farm->farmName." Suppliers" => '/admincp/farm/add_supplier/' .$trid,
 				'Supplier #' . $supplier->supplierId => '/admincp/farm/update_supplier/' . $supplier->supplierId.'/'.$trid
 			);
 			
@@ -248,6 +249,7 @@ class Farm extends Controller {
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['FARM_ID'] = $id;
+		$data['data']['left']['navigation']['TRID'] = $id;
 		
 		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($farm->farmName, '', 'address', 'add');
 		$data['data']['center']['list']['STATES'] = $states;
@@ -296,6 +298,7 @@ class Farm extends Controller {
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['FARM_ID'] = $address->producerId;
 		$data['data']['left']['navigation']['ADDRESS_ID'] = $address->addressId;
+		$data['data']['left']['navigation']['TRID'] = $address->producerId;
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = prepareHeading($farm->farmName, $id, 'address', 'update');
 		$data['data']['center']['form']['STATES'] = $states;
