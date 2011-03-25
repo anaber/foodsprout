@@ -968,6 +968,41 @@ class FarmersMarketModel extends Model{
 	    return $arr;
 		
 	}
+
+	// Used to build the sitemap.  Returns all the slugs
+	function getFarmersMarketCount() {
+		$query = "SELECT count(*) as total FROM producer WHERE is_farmers_market = 1";
+		$result = $this->db->query($query);
+		
+		$row = $result->row(); 
+		return $row->total;
+	}
+	
+	// Used to build the sitemap.  Returns all the slugs
+	function getFarmersMarketSitemap($start,$end) {
+		$query = "SELECT creation_date,custom_url.custom_url
+					FROM producer, custom_url WHERE is_farmers_market = 1 AND producer.producer_id=custom_url.producer_id LIMIT ".$start.", ".$end;
+
+		log_message('debug', "FarmersMarketModel.getFarmersMarketSitemap : " . $query);
+		$result = $this->db->query($query);
+
+		$farmersMarket = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('FarmersMarketLib');
+			unset($this->FarmersMarketLib);
+
+			$this->FarmersMarketLib->customURL = $row['custom_url'];
+			$this->FarmersMarketLib->creationDate = $row['creation_date'];
+
+			$farmersMarket[] = $this->FarmersMarketLib;
+			unset($this->FarmersMarketLib);
+		}
+
+		return $farmersMarket;	
+	}
+
 }
 
 ?>
