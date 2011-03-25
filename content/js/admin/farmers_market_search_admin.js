@@ -36,7 +36,7 @@ function postAndRedrawContent(page, perPage, s, o, query) {
 	$('#messageContainer').show();
 	$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
 	
-	var formAction = '/admincp/farmersMarket/ajaxSearchFarmersMarket';
+	var formAction = '/admincp/farmersmarket/ajaxSearchFarmersMarket';
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:query};
 	
