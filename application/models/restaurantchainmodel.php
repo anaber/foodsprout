@@ -659,6 +659,40 @@ class RestaurantChainModel extends Model{
 	    return $arr;
 	}
 	
+	// Used to build the sitemap.  Returns all the slugs
+	function getRestaurantChainCount() {
+		$query = "SELECT count(*) as total FROM producer WHERE is_restaurant_chain = 1";
+		$result = $this->db->query($query);
+		
+		$row = $result->row(); 
+		return $row->total;
+	}
+	
+	// Used to build the sitemap.  Returns all the slugs
+	function getRestaurantChainSitemap($start,$end) {
+		$query = "SELECT creation_date,custom_url.custom_url
+					FROM producer, custom_url WHERE is_restaurant_chain = 1 AND producer.producer_id=custom_url.producer_id LIMIT ".$start.", ".$end;
+
+		log_message('debug', "RestaurantChainModel.getRestaurantChainSitemap : " . $query);
+		$result = $this->db->query($query);
+
+		$restaurantChain = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('RestaurantChainLib');
+			unset($this->RestaurantChainLib);
+
+			$this->RestaurantChainLib->customURL = $row['custom_url'];
+			$this->RestaurantChainLib->creationDate = $row['creation_date'];
+
+			$restaurantChain[] = $this->RestaurantChainLib;
+			unset($this->RestaurantChainLib);
+		}
+
+		return $restaurantChain;	
+	}
+	
 }
 
 

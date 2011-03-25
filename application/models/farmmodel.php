@@ -841,6 +841,40 @@ class FarmModel extends Model{
 		
 	}
 	
+	// Used to build the sitemap.  Returns all the slugs
+	function getFarmCount() {
+		$query = "SELECT count(*) as total FROM producer WHERE is_farm = 1";
+		$result = $this->db->query($query);
+		
+		$row = $result->row(); 
+		return $row->total;
+	}
+	
+	// Used to build the sitemap.  Returns all the slugs
+	function getFarmSitemap($start,$end) {
+		$query = "SELECT creation_date,custom_url.custom_url
+					FROM producer, custom_url WHERE is_farm = 1 AND producer.producer_id=custom_url.producer_id LIMIT ".$start.", ".$end;
+
+		log_message('debug', "FarmModel.getFarmSitemap : " . $query);
+		$result = $this->db->query($query);
+
+		$farms = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('FarmLib');
+			unset($this->FarmLib);
+
+			$this->FarmLib->customURL = $row['custom_url'];
+			$this->FarmLib->creationDate = $row['creation_date'];
+
+			$farms[] = $this->FarmLib;
+			unset($this->FarmLib);
+		}
+
+		return $farms;	
+	}
+
 }
 
 ?>

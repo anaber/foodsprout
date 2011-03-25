@@ -1097,6 +1097,40 @@ class ManufactureModel extends Model{
 	    return $arr;
 	}
 	
+	// Used to build the sitemap.  Returns all the slugs
+	function getManufactureCount() {
+		$query = "SELECT count(*) as total FROM producer WHERE is_manufacture = 1";
+		$result = $this->db->query($query);
+		
+		$row = $result->row(); 
+		return $row->total;
+	}
+	
+	// Used to build the sitemap.  Returns all the slugs
+	function getManufactureSitemap($start,$end) {
+		$query = "SELECT creation_date,custom_url.custom_url
+					FROM producer, custom_url WHERE is_manufacture = 1 AND producer.producer_id=custom_url.producer_id LIMIT ".$start.", ".$end;
+
+		log_message('debug', "ManufactureModel.getManufactureSitemap : " . $query);
+		$result = $this->db->query($query);
+
+		$manufacture = array();
+		$CI =& get_instance();
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('ManufactureLib');
+			unset($this->ManufactureLib);
+
+			$this->ManufactureLib->customURL = $row['custom_url'];
+			$this->ManufactureLib->creationDate = $row['creation_date'];
+
+			$manufacture[] = $this->ManufactureLib;
+			unset($this->ManufactureLib);
+		}
+
+		return $manufacture;	
+	}
+	
 }
 
 ?>
