@@ -7,6 +7,70 @@ class Sitemap extends Controller
         parent::Controller();
     }
     
+	function run() {
+
+        $this->load->library('sitemaps');
+
+		$rs = $this->db->query('SELECT count(*) AS num_row FROM custom_url')->result_array();
+		$url_count = $rs[0]['num_row'];
+		
+		$limit_per_file = 30000;
+		$files = ceil($url_count / $limit_per_file);
+		$i = 1;
+
+		while($i <= $files){
+			
+			if($i == 1)
+				$start = 0;
+			else
+				$start = (($i-1)*($limit_per_file))+1;
+			
+			$urls = $this->db->query('SELECT * FROM custom_url LIMIT '.$start.','.$limit_per_file)->result_array();
+
+			foreach($urls as $url) {
+				$producer = $this->db->query('SELECT creation_date,is_farm,is_restaurant,is_restaurant_chain,is_manufacture,is_distributor,is_farmers_market FROM producer WHERE producer_id='.$url['producer_id'])->result_array();
+				$producer = $producer[0];
+
+            	$prod_type = "restaurant";
+
+				if($producer['is_farm'] == 1) {
+	            	$prod_type = "farm";
+				} elseif($producer['is_restaurant'] == 1) {
+	            	$prod_type = "restaurant";
+				} elseif($producer['is_restaurant_chain'] == 1) {
+	            	$prod_type = "chain";
+				} elseif($producer['is_manufacture'] == 1) {
+	            	$prod_type = "manufacture";
+				} elseif($producer['is_distributor'] == 1) {
+	            	$prod_type = "distributor";
+				} elseif($producer['is_farmers_market'] == 1) {
+	            	$prod_type = "farmersmarket";
+				}
+				
+            	$item = array(
+                "loc" => site_url($prod_type."/" . $url['custom_url']),
+                // ISO 8601 format - date("c") requires PHP5
+                "lastmod" => date("c", strtotime($producer['creation_date'])),
+                "changefreq" => "monthly",
+                "priority" => "0.4"
+            	);
+				
+            	$this->sitemaps->add_item($item);
+				unset($item);
+				unset($producer);
+				
+			}
+			
+			unset($urls);
+			
+			// file name may change due to compression
+	        $file_name = $this->sitemaps->build("producer_$i.xml");
+			unset($file_name);
+			$i++;
+		}
+		echo "SUCCESS!";
+	}
+	
     function restaurants()
     {
         $this->load->model('RestaurantModel');
