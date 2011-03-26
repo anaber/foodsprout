@@ -47,10 +47,11 @@ class UserModel extends Model{
 		$return = true;
 		
 		$email = $this->input->post('email');
+		$username = $this->input->post('username');
 		
 		if (!empty($email) ) {
 		
-			$query = "SELECT * FROM user WHERE email = \"" . $email . "\"";
+			$query = "SELECT * FROM user WHERE email = \"" . $email . "\" OR screen_name = \"" . $username . "\"";
 			log_message('debug', 'UserModel.createUser : Try to get duplicate User record : ' . $query);
 			
 			$result = $this->db->query($query);
@@ -58,7 +59,7 @@ class UserModel extends Model{
 			if ($result->num_rows() == 0) {
 				
 				$new_user_insert_data = array(
-					'first_name' => $this->input->post('firstname'),
+					'screen_name' => $this->input->post('username'),
 					'email' => $email,
 					'zipcode' => $this->input->post('zipcode'),
 					'password' => md5($this->input->post('password')),
@@ -90,7 +91,7 @@ class UserModel extends Model{
 					$this->userLib->userId = $userId;
 					$this->userLib->email = $this->input->post('email');
 					$this->userLib->zipcode = $this->input->post('zipcode');
-					$this->userLib->firstName = $this->input->post('firstname');
+					$this->userLib->username = $this->input->post('username');
 					$this->userLib->isActive = 1;
 					//$this->user->screenName = $row->screen_name;
 					$this->userLib->isAuthenticated = 1;

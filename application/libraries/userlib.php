@@ -12,6 +12,7 @@ class UserLib {
 	var $isAuthenticated;
 	var $userGroup;
 	var $joinDate;
+	var $username;
 		
 	function UserLib() {
 		$user->userId = "";
@@ -24,6 +25,7 @@ class UserLib {
 		$this->isAuthenticated = 0;		
 		$user->userGroup = "";
 		$user->joinDate = "";
+		$user->username = "";
 	}
 }
 ?>

@@ -111,7 +111,7 @@ class Login extends Controller {
 		$this->load->library('form_validation');
 
 		// field name, error message, validation rules
-		$this->form_validation->set_rules('firstname', 'Name', 'trim|required');
+		$this->form_validation->set_rules('username', 'Username', 'trim|required');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 		$this->form_validation->set_rules('zipcode', 'Zip Code', 'trim|required|numeric');
 		$this->form_validation->set_rules('password', 'Password', 'min_length[8]|max_length[30]|required');
@@ -122,10 +122,10 @@ class Login extends Controller {
 		$validation_error = FALSE;
 		$params = array();
 				
-		//full name
-		if($this->input->post('firstname') == "Full Name"){
+		//Username
+		if($this->input->post('username') == "Username"){
 			   
-			$params[] = 'Please fill the "Full Name" field!';
+			$params[] = 'Please complete the "Username" field!';
 			$data['flashdata'] = $params;
 			$validation_error = TRUE;
 			
@@ -133,7 +133,7 @@ class Login extends Controller {
 		//email
 		if($this->input->post('email') == "Email"){
 			   
-			$params[] = 'Please fill the "Email" field!';
+			$params[] = 'Please fill in the "Email" field!';
 			$data['flashdata'] = $params;
 			$validation_error = TRUE;
 			
@@ -142,7 +142,7 @@ class Login extends Controller {
 		//password
 		if($this->input->post('password') == "Password"){
 			   
-			$params[] = 'Please fill the "Password" field!';
+			$params[] = 'Please complete the "Password" field!';
 			$data['flashdata'] = $params;
 			$validation_error = TRUE;
 			
@@ -151,7 +151,7 @@ class Login extends Controller {
 		//password
 		if($this->input->post('zipcode') == "Zip Code"){
 			   
-			$params[] = 'Please fill the "Zip Code" field!';
+			$params[] = 'Please fill in the "Zip Code" field!';
 			$data['flashdata'] = $params;
 			$validation_error = TRUE;
 			
@@ -162,7 +162,7 @@ class Login extends Controller {
 			$data['CENTER'] = array(
 					'list' => 'login',
 			);				
-			$data['FIRST_NAME'] = $this->input->post('firstname');
+			$data['USERNAME'] = $this->input->post('username');
 			$data['EMAIL'] = $this->input->post('email');
 			$data['PASSWORD'] = '';
 			$data['ZIPCODE'] = $this->input->post('zipcode');
@@ -217,7 +217,7 @@ class Login extends Controller {
 					
 				$data['ERROR'] = $this->UserModel->get_error('create_user');
 
-				$data['FIRST_NAME'] = $this->input->post('firstname');
+				$data['USERNAME'] = $this->input->post('username');
 				$data['EMAIL'] = $this->input->post('email');
 				$data['PASSWORD'] = '';
 				$data['ZIPCODE'] = $this->input->post('zipcode');

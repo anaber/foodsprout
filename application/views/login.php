@@ -53,14 +53,13 @@
 				</div> 
 				<div id="login-form">
 					<form action="/login/validate<?php echo ( $this->input->get('frm') <> "" ? "?frm=".$this->input->get('frm') : "" ); ?>" method="post" name="frmLogin" id="frmLogin">
-							<input type="checkbox" id="remember" name = "remember"/>
-							<span>Remember me</span>
-							<span> | </span>
-							<span><a href="<?php echo base_url();?>login/forgotpassword" title="Forgot" >Forgot Password?</a></span>
-						<br/>						
-						<input type="text" name="login_email" id="login_email" class="validate[required]" value="<?php if($this->input->post('login_email') != '' ){echo $this->input->post('login_email');}else{echo 'Email';} ?>" onFocus="if(this.value == 'Email')this.value='';" onBlur="if(this.value=='')this.value='Email';" /> <input type="password" name="login_password" id="login_password" class="validate[required]" value="Password" onFocus="if(this.value=='Password')this.value='';" onBlur="if(this.value=='')this.value='Password';" />
+						<div style="float:left;width:142px;color:#ccc;">Email:</div><div style="float:left;width:150px;clear:right;color:#ccc;">Password:</div><br/>							
+						<input type="text" name="login_email" id="login_email" class="validate[required]" value="<?php if($this->input->post('login_email') != '' ){echo $this->input->post('login_email');}else{echo '';} ?>" onFocus="if(this.value == 'Email')this.value='';" onBlur="if(this.value=='')this.value='Email';" /> <input type="password" name="login_password" id="login_password" class="validate[required]" value="" onFocus="if(this.value=='Password')this.value='';" onBlur="if(this.value=='')this.value='Password';" />
 						<input type = "hidden" name = "return" value = "<?php echo $return; ?>">
-						<input type="submit" name="submit" value="Login" />
+						<input type="submit" name="submit" value="Login" style="font-size:12px;"/><br/>
+						<input type="checkbox" id="remember" name = "remember"/><span style="font-size:12px;color:#ccc;">Remember Me | 
+						<a href="<?php echo base_url();?>login/forgotpassword" title="Forgot" style="color:#449A2B;">Forgot Password?</a></span>
+					
 					</form>
 				</div>
 	</div><!-- #wrapper --> 
@@ -152,10 +151,10 @@
 							<h2 id="signup-title"> </h2>
 							<h3>Join today for <b>free</b> and get started exploring your food.</h3>
 							<form action="/login/create_user<?php echo ( $this->input->get('frm') <> "" ? "?frm=".$this->input->get('frm') : "" ); ?>" method="post" name="frmAccount" id="frmAccount">								
-								Full Name: <input type="text" name="firstname" id="firstname" class="validate[required]" value="<?php echo set_value('firstname', 'Full Name'); ?>" onFocus="if(this.value=='Full Name')this.value='';" onBlur="if(this.value=='')this.value='Full Name';"><br/>
-								Email: <input type="text" name="email" id="email" class="validate[required,custom[email]]" value="<?php echo set_value('email', 'Email'); ?>" onFocus="if(this.value=='Email')this.value='';" onBlur="if(this.value=='')this.value='Email';"><br/>
-								Password: <input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="<?php echo set_value('password', 'Password'); ?>" onFocus="if(this.value=='Password')this.value='';" onBlur="if(this.value=='')this.value='Password';"><br/>
-								Zip Code: <input type="text" name="zipcode" id="zipcode" class="validate[required]" value="<?php echo set_value('zipcode', 'Zip Code'); ?>" onFocus="if(this.value=='Zip Code')this.value='';" onBlur="if(this.value=='')this.value='Zip Code';"><br/>
+								Username: <input type="text" name="username" id="username" class="validate[required]" value="<?php echo set_value('username'); ?>" AUTOCOMPLETE="OFF"><br/>
+								Email: <input type="text" name="email" id="email" class="validate[required,custom[email]]" value="<?php echo set_value('email'); ?>" AUTOCOMPLETE="OFF"><br/>
+								Password: <input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="<?php echo set_value('password'); ?>" AUTOCOMPLETE="OFF"><br/>
+								Zip Code: <input type="text" name="zipcode" id="zipcode" class="validate[required]" value="<?php echo set_value('zipcode'); ?>" AUTOCOMPLETE="OFF"><br/>
 								<input type="submit" name="submit" value="Create Account">
 							</form>
 						</div>
