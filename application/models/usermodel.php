@@ -94,6 +94,7 @@ class UserModel extends Model{
 					$this->userLib->email = $this->input->post('email');
 					$this->userLib->zipcode = $this->input->post('zipcode');
 					$this->userLib->username = $this->input->post('username');
+					$this->userLib->firstName = $this->input->post('username');
 					$this->userLib->isActive = 1;
 					$this->userLib->isAuthenticated = 1;
 					

@@ -232,7 +232,7 @@ class Login extends Controller {
 	private function _CreateVanillaCookie() {
 		$baseUrl = base_url();
 		$url = parse_url ($baseUrl);
-		$civ = base64_encode($this->session->userdata('userId'))."|".base64_encode($this->session->userdata('firstName'))."|".base64_encode($this->session->userdata('email'));
+		$civ = base64_encode($this->session->userdata('userId'))."|".base64_encode($this->session->userdata('username'))."|".base64_encode($this->session->userdata('email'));
 		$cookie = array(
 						   'name'   => 'ci_v',
 						   'value'  => $civ,
