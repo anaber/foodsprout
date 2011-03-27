@@ -84,7 +84,7 @@ body {
 }
 #Content {
    float: left;
-   width: 700px;
+   width: 670px;
    margin: 0 0px 40px;
 }
 .Hidden {
@@ -143,7 +143,7 @@ input.SmallInput,
 textarea {
    font-family: 'lucida grande','Lucida Sans Unicode', tahoma, sans-serif;
    color: #333;
-   font-size: 15px;
+   font-size: 12px;
    padding: 3px;
    margin: 0;
    width: 250px;
@@ -162,7 +162,7 @@ textarea.TextBox {
 }
 input.SmallInput,
 input.InputBox {
-   padding: 6px 3px;
+   padding: 4px 2px;
 }
 input.SmallInput:focus,
 input.InputBox:focus,
@@ -184,7 +184,7 @@ a.Button,
    cursor: pointer;
    margin: 0;
    font-size: 11px;
-   padding: 4px;
+   padding: 2px;
    background: url('images/buttonbg.png') repeat-x center left #f8f8f8;
    color: #02475A;
 	text-shadow: 0 1px 0 #fff;
@@ -192,12 +192,12 @@ a.Button,
    border-radius: 3px;
    -moz-border-radius: 3px;
    -webkit-border-radius: 3px;
-	box-shadow: 0px 0px 2px #999;
+	/*box-shadow: 0px 0px 2px #999;
 	-moz-box-shadow: 0px 0px 2px #999;
-	-webkit-box-shadow: 0px 0px 2px #999;  
+	-webkit-box-shadow: 0px 0px 2px #999;  */
    }
 input.Button {
-	font-size: 14px;
+	font-size: 11px;
    font-weight: bold;
 }
 .Button:hover {
@@ -702,7 +702,7 @@ ul#Menu {
 
 /* ======================================================== Panels / Sidebars */
 #Panel {
-   width: 250px;
+   width: 300px;
    float: right;
 }
 div.Box {
@@ -952,7 +952,7 @@ div.Empty {
 }
 ul.DataList li.Item {
    margin: 0;
-   padding: 4px 0;
+   padding: 4px;
    border-bottom: 1px solid #bec8cc;
 }
 ul.DataList li.Item li.Item {
@@ -1388,13 +1388,13 @@ ul.CategoryList li.CategoryHeading {
 /* ============================================================= Profile Page */
 body.Profile #Content {
    width: auto;
-   margin: 0 0 40px 20px;
-   width: 690px;
+   margin: 0 0 40px 0;
+   width: 665px;
 	float: right;
 }
 body.Profile #Panel {
    float: left;
-   width: 250px;
+   width: 300px;
 }
 ul.SideMenu {
    border-radius: 0;
@@ -2192,7 +2192,7 @@ div.AddPeople h4 {
 }
 #Panel input.InputBox,
 div.AddPeople textarea.MultiComplete {
-  width: 150px;
+  width: 170px;
   margin-bottom: 2px;
   margin-right: 5px;
 }
@@ -2711,3 +2711,4 @@ div.SignInPopup .ExistingUsername {
 	color: #000;
 	display: block;
 }
+.Highlight{font-weight:bold;}

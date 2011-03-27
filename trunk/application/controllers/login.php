@@ -216,7 +216,6 @@ class Login extends Controller {
 				);
 					
 				$data['ERROR'] = $this->UserModel->get_error('create_user');
-
 				$data['USERNAME'] = $this->input->post('username');
 				$data['EMAIL'] = $this->input->post('email');
 				$data['PASSWORD'] = '';

@@ -51,7 +51,7 @@ class UserModel extends Model{
 		
 		if (!empty($email) ) {
 		
-			$query = "SELECT * FROM user WHERE email = \"" . $email . "\" OR screen_name = \"" . $username . "\"";
+			$query = "SELECT * FROM user WHERE email = \"" . $email . "\" OR username = \"" . $username . "\"";
 			log_message('debug', 'UserModel.createUser : Try to get duplicate User record : ' . $query);
 			
 			$result = $this->db->query($query);
@@ -59,7 +59,9 @@ class UserModel extends Model{
 			if ($result->num_rows() == 0) {
 				
 				$new_user_insert_data = array(
-					'screen_name' => $this->input->post('username'),
+					'username' => $this->input->post('username'),
+					// We insert the username as the first name because the user can later update their name field
+					'first_name' => $this->input->post('username'),
 					'email' => $email,
 					'zipcode' => $this->input->post('zipcode'),
 					'password' => md5($this->input->post('password')),
@@ -93,9 +95,7 @@ class UserModel extends Model{
 					$this->userLib->zipcode = $this->input->post('zipcode');
 					$this->userLib->username = $this->input->post('username');
 					$this->userLib->isActive = 1;
-					//$this->user->screenName = $row->screen_name;
 					$this->userLib->isAuthenticated = 1;
-					//$this->user->userGroup = $row->user_group;
 					
 					$this->session->set_userdata($this->userLib );
 					
@@ -168,7 +168,7 @@ class UserModel extends Model{
 			$this->UserLib->userId = $row->user_id;
 			$this->UserLib->email = $row->email;
 			$this->UserLib->firstName = $row->first_name;
-			$this->UserLib->screenName = $row->screen_name;
+			$this->UserLib->username = $row->username;
 			$this->UserLib->userGroup = $row->user_group;
 			$this->UserLib->zipcode = $row->zipcode;
 			$this->UserLib->userGroupId = $row->user_group_id;
@@ -191,7 +191,7 @@ class UserModel extends Model{
 			
 			$data = array(
 						'email' => $this->input->post('email'), 
-						'screen_name' => $this->input->post('screenName'),
+						'username' => $this->input->post('username'),
 						'first_name' => $this->input->post('firstName'),
 						'zipcode' => $this->input->post('zipcode'),
 					);

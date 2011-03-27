@@ -1,18 +1,5 @@
-<?php $this->load->view('dashboard/includes/header'); ?>
+<?php $this->load->view('includes/header'); ?>
 
-<?php
-/* END RESULT - We can remove table if we get divs in place
-for($i = 0; $i < count($CENTER); $i++ ) {
- 	$this->load->view($CENTER[$i]);
- 	echo "<br /><br />";
-}
-
-for($i = 0; $i < count($RIGHT); $i++ ) {
- 	$this->load->view($RIGHT[$i]);
- 	echo "<br /><br />";
-}
-*/
-?>
 <?php
 	if (isset($BREADCRUMB) ) {
 		

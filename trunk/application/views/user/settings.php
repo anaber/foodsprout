@@ -37,7 +37,7 @@ $(document).ready(function() {
 			var formAction = '/user/updateSettings';
 			postArray = {
 						  email:$('#email').val(),
-						  screenName:$('#screen_name').val(),
+						  username:$('#username').val(),
 						  firstName:$('#first_name').val(),
 						  zipcode:$('#zipcode').val()
 						};
@@ -104,10 +104,10 @@ echo form_open('user/updateSettings', $attributes);
 	</tr>
 	<tr>
 		<td width="150" style="font-size:13px;text-decoration:none;">
-			Screen Name
+			Userame
 		</td>
 		<td width="450">
-			<input type="text" value="<?php echo (isset($USER) ? $USER->screenName : '') ?>" id = "screen_name" class="validate[optional]" maxlength="100">
+			<?php echo (isset($USER) ? $USER->username : '') ?>
 		</td>
 	</tr>
 	

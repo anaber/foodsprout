@@ -7,7 +7,6 @@ class UserLib {
 	var $zipcode;
 	var $firstName;
 	var $lastName;
-	var $screenName;
 	var $isActive;
 	var $isAuthenticated;
 	var $userGroup;
@@ -20,7 +19,6 @@ class UserLib {
 		$user->zipcode = "";
 		$user->firstName = "";
 		$user->lastName = "";
-		$user->screenName = "";
 		$this->isActive = 0;
 		$this->isAuthenticated = 0;		
 		$user->userGroup = "";
