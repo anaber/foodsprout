@@ -90,7 +90,7 @@ CREATE  TABLE IF NOT EXISTS `user` (
   `email` VARCHAR(45) NOT NULL ,
   `zipcode` INT NOT NULL ,
   `first_name` VARCHAR(45) NOT NULL ,
-  `screen_name` VARCHAR(45) NULL ,
+  `username` VARCHAR(45) NULL ,
   `password` VARCHAR(32) NOT NULL ,
   `register_ipaddress` VARCHAR(18) NOT NULL ,
   `isActive` INT(2) NOT NULL ,

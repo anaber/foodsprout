@@ -536,3 +536,61 @@ CREATE TABLE IF NOT EXISTS `product_consumed` (
   `comment` text NOT NULL,
   PRIMARY KEY (`product_consumed_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- Alter screen_name to username and apply username to all users
+
+ALTER TABLE `user` CHANGE COLUMN `screen_name` `username` VARCHAR(45) NULL DEFAULT NULL;
+UPDATE user SET username=first_name WHERE username IS NULL;
+
+UPDATE `user` SET `username`='01' WHERE `user_id`='331';
+UPDATE `user` SET `username`='02' WHERE `user_id`='407';
+UPDATE `user` SET `username`='03' WHERE `user_id`='411';
+UPDATE `user` SET `username`='cristi' WHERE `user_id`='428';
+UPDATE `user` SET `username`='AndrewC' WHERE `user_id`='7';
+UPDATE `user` SET `username`='AndrewD' WHERE `user_id`='9';
+UPDATE `user` SET `username`='AndrewM' WHERE `user_id`='10';
+UPDATE `user` SET `username`='Andrew5' WHERE `user_id`='65';
+UPDATE `user` SET `username`='AndrewT' WHERE `user_id`='95';
+UPDATE `user` SET `username`='AndrewS' WHERE `user_id`='96';
+UPDATE `user` SET `username`='AndrewA' WHERE `user_id`='113';
+UPDATE `user` SET `username`='AndrewSA' WHERE `user_id`='159';
+UPDATE `user` SET `username`='Andrew52' WHERE `user_id`='363';
+UPDATE `user` SET `username`='AndrewFS' WHERE `user_id`='430';
+UPDATE `user` SET `username`='Andy51' WHERE `user_id`='27';
+UPDATE `user` SET `username`='Andy52' WHERE `user_id`='28';
+UPDATE `user` SET `username`='ChrisL' WHERE `user_id`='12';
+UPDATE `user` SET `username`='DavidP' WHERE `user_id`='308';
+UPDATE `user` SET `username`='Deepak1' WHERE `user_id`='4';
+UPDATE `user` SET `username`='Deepak2' WHERE `user_id`='109';
+UPDATE `user` SET `username`='Deepak3' WHERE `user_id`='174';
+UPDATE `user` SET `username`='Deepak4' WHERE `user_id`='175';
+UPDATE `user` SET `username`='Deepak5' WHERE `user_id`='405';
+UPDATE `user` SET `username`='Deepak6' WHERE `user_id`='406';
+UPDATE `user` SET `username`='Denae Frederick2' WHERE `user_id`='209';
+UPDATE `user` SET `username`='Full Name2' WHERE `user_id`='67';
+UPDATE `user` SET `username`='Jeff2' WHERE `user_id`='75';
+UPDATE `user` SET `username`='Jeff3' WHERE `user_id`='91';
+UPDATE `user` SET `username`='Jessica2' WHERE `user_id`='79';
+UPDATE `user` SET `username`='Jessica3' WHERE `user_id`='242';
+UPDATE `user` SET `username`='Jessica4' WHERE `user_id`='416';
+UPDATE `user` SET `username`='Kate2' WHERE `user_id`='163';
+UPDATE `user` SET `username`='Kate3' WHERE `user_id`='227';
+UPDATE `user` SET `username`='Katie4' WHERE `user_id`='59';
+UPDATE `user` SET `username`='Lisa2' WHERE `user_id`='299';
+UPDATE `user` SET `username`='Lisa3' WHERE `user_id`='300';
+UPDATE `user` SET `username`='Rj Bautista2' WHERE `user_id`='431';
+UPDATE `user` SET `username`='ANDREAL' WHERE `user_id`='37';
+UPDATE `user` SET `username`='Caitlyn KingFS' WHERE `user_id`='234';
+UPDATE `user` SET `username`='Cindy2' WHERE `user_id`='84';
+UPDATE `user` SET `username`='Heather2' WHERE `user_id`='57';
+UPDATE `user` SET `username`='LisaZ' WHERE `user_id`='72';
+UPDATE `user` SET `username`='matt baumels' WHERE `user_id`='260';
+UPDATE `user` SET `username`='roger2' WHERE `user_id`='36';
+
+-- debug script for finding dupicates
+--SELECT username FROM user GROUP BY username HAVING COUNT(*)>1;
+
+ALTER TABLE `user` CHANGE COLUMN `username` `username` VARCHAR(45) NOT NULL;
+ALTER TABLE `user` ADD UNIQUE INDEX `username_UNIQUE` (`username` ASC) ;
+
+ALTER TABLE `user_group_member` DROP FOREIGN KEY `user_group_member_ibfk_1` , DROP FOREIGN KEY `user_group_member_ibfk_2`;

@@ -32,7 +32,7 @@ class LoginModel extends Model{
 				//Currently we do not require lastname
 				//$this->user->lastName = $row->last_name;
 				$this->user->isActive = $row->isActive;
-				$this->user->screenName = $row->screen_name;
+				$this->user->username = $row->username;
 				$this->user->isAuthenticated = 1;
 				$this->user->userGroup = $row->user_group;
 				
@@ -90,7 +90,7 @@ class LoginModel extends Model{
 				$this->user->zipcode = $row->zipcode;
 				$this->user->firstName = $row->first_name;
 				$this->user->isActive = $row->isActive;
-				$this->user->screenName = $row->screen_name;
+				$this->user->username = $row->username;
 				$this->user->isAuthenticated = 1;
 				$this->user->userGroup = $row->user_group;
 				

@@ -1,8 +1,8 @@
 <?php
 	if (isset($SEO) ) {
-		$this->load->view('dashboard/includes/header', array('SEO' => $SEO));
+		$this->load->view('includes/header', array('SEO' => $SEO));
 	} else {
-		$this->load->view('dashboard/includes/header');
+		$this->load->view('includes/header');
 	}
 ?>
 <?php
