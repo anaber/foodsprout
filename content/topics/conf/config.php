@@ -3,16 +3,16 @@
 // Cache
 $Configuration['Cache']['Enabled'] = TRUE;
 $Configuration['Cache']['Method'] = 'dirtycache';
-$Configuration['Cache']['Filecache']['Store'] = '/Users/anaber/Sites/food/web/trunk/content/topics/cache/Filecache';
+$Configuration['Cache']['Filecache']['Store'] = '/mnt/stor2-wc1-dfw1/404946/492717/www.foodsprout.com/web/content/topics/cache';
 
 // Conversations
 $Configuration['Conversations']['Version'] = '2.0.17.8';
 
 // Database
-$Configuration['Database']['Name'] = '468258_livetest5';
+$Configuration['Database']['Name'] = '492717_version2';
 $Configuration['Database']['Host'] = 'mysql50-91.wc1.dfw1.stabletransit.com';
-$Configuration['Database']['User'] = '468258_testuser5';
-$Configuration['Database']['Password'] = 'Realf00d';
+$Configuration['Database']['User'] = '492717_v2user';
+$Configuration['Database']['Password'] = 'R3alF00dPlease';
 $Configuration['Database']['Engine'] = 'MySQL';
 $Configuration['Database']['ConnectionOptions']['12'] = FALSE;
 $Configuration['Database']['ConnectionOptions']['1000'] = TRUE;
@@ -35,7 +35,7 @@ $Configuration['EnabledPlugins']['ProxyConnect'] = 'ProxyConnect';
 // Garden
 $Configuration['Garden']['Title'] = 'Food Sprout';
 $Configuration['Garden']['Cookie']['Salt'] = '5V1OGT4DE1';
-$Configuration['Garden']['Cookie']['Domain'] = '.sproutchain.com';
+$Configuration['Garden']['Cookie']['Domain'] = '.foodsprout.com';
 $Configuration['Garden']['Cookie']['Name'] = 'Vanilla';
 $Configuration['Garden']['Cookie']['Path'] = '/';
 $Configuration['Garden']['Cookie']['HashMethod'] = 'md5';
@@ -99,7 +99,7 @@ $Configuration['Garden']['Menu']['Sort'] = array('Dashboard', 'Discussions', 'Qu
 $Configuration['Garden']['InputFormatter'] = 'Html';
 $Configuration['Garden']['Html']['SafeStyles'] = TRUE;
 $Configuration['Garden']['Search']['Mode'] = 'matchboolean';
-$Configuration['Garden']['Theme'] = 'default';
+$Configuration['Garden']['Theme'] = 'foodsprout';
 $Configuration['Garden']['MobileTheme'] = 'mobile';
 $Configuration['Garden']['Roles']['Manage'] = TRUE;
 $Configuration['Garden']['VanillaUrl'] = 'http://vanillaforums.org';
