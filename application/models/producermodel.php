@@ -254,6 +254,26 @@ class ProducerModel extends Model{
 	    
 	}
 	
+	function getProducerFromId($producerId) {
+		$query = 'SELECT producer.* ' .
+				' FROM producer' .
+				' WHERE producer.producer_id = ' . $producerId;
+		
+		log_message('debug', "ProducerModel.getProducerFromIdAndAddressId : " . $query);
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$this->load->library('ProducerLib');		
+		if ($row) {
+			
+			$this->ProducerLib->producerId = $row->producer_id;
+			$this->ProducerLib->producer = $row->producer;
+			
+			return $this->ProducerLib;
+		} else {
+			return false;
+		}
+	}
+	
 }
 
 

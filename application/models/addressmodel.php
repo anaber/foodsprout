@@ -239,6 +239,7 @@ class AddressModel extends Model{
 	
 	function addAddress($producerId) {
 		global $ACTIVITY_LEVEL_DB;
+		
 		$return = true;
 		$CI =& get_instance();
 		
@@ -283,6 +284,12 @@ class AddressModel extends Model{
 			}
 			*/
 			$return = $addressId;
+			
+			if ($addressId) {
+				$CI->load->model('CustomUrlModel','',true);
+				$customUrlId = $CI->CustomUrlModel->generateCustomUrl($addressId, $producerId);
+			}
+			
 		} else {
 			$return = false;
 		}
