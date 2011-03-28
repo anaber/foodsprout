@@ -56,14 +56,23 @@ class CustomUrlModel extends Model{
 		}
 	}
 	
-	function generateCustomUrl($addressId) {
+	function generateCustomUrl($addressId, $producerId = '') {
+		$CI =& get_instance();
 		$producer = $this->input->post('restaurantName');
+		if (empty($producer)) {
+			
+			if ($producerId) {
+				$CI->load->model('ProducerModel','',true);
+				$producer = $CI->ProducerModel->getProducerFromId($producerId);				
+				$producer = $producer->producer;
+			} 
+		}
 		
 		$producer_without_spaces = trimWhiteSpaces(trim($producer));
 		$producer_slug = strtolower(str_replace(' ', '-', str_replace("'", '',$producer_without_spaces)));
 		$producer_with_city = $producer_without_spaces;
 		
-		$CI =& get_instance();
+		
 		$CI->load->model('AddressModel','',true);
 		$address = $CI->AddressModel->getAddressFromId($addressId);
 		
@@ -71,7 +80,7 @@ class CustomUrlModel extends Model{
 		
 		$slug = $producer_with_city;
 		$slug = strtolower(str_replace(' ', '-', str_replace("'", '',$slug))); 
-		//echo $slug;
+		//echo $slug;die;
 		
 		$query = 'SELECT * FROM custom_url ' .
 				' WHERE custom_url = "' . $slug . '"' .
