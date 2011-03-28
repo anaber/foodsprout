@@ -305,31 +305,18 @@ class AddressModel extends Model{
 		$CI =& get_instance();
 		
 		if ( !empty($restaurantId) ) {
-			$CI->load->model('RestaurantModel','',true);
-			$restaurant = $CI->RestaurantModel->getRestaurantFromId($restaurantId);
-			//$companyId = $restaurant->companyId;
-			
+			$producerId = $restaurantId;
 		} else if ( !empty($farmId) ) {
-			$CI->load->model('FarmModel','',true);
-			$farm = $CI->FarmModel->getFarmFromId($farmId);
-			$companyId = $farm->companyId;
-			
+			$producerId = $farmId;
 		} else if ( !empty($manufactureId) ) {
-			$CI->load->model('ManufactureModel','',true);
-			
-			$manufature = $CI->ManufactureModel->getManufactureFromId($manufactureId);
-			$companyId = $manufature->companyId;
+			$producerId = $manufactureId;
 		} else if ( !empty($distributorId) ) {
-			$CI->load->model('DistributorModel','',true);
-			$distributor = $CI->DistributorModel->getDistributorFromId($distributorId);
-			$companyId = $distributor->companyId;
+			$producerId = $distributorId;
 		} else if ( !empty($farmersMarketId) ) {
-			//$CI->load->model('FarmersMarketModel','',true);
-			//$farmersMarket = $CI->FarmersMarketModel->getDistributorFromId($distributorId);
-			$companyId = '';
+			$producerId = $farmersMarketId;
 		}
 		
-		if ($this->addAddress($restaurantId, $farmId, $manufactureId, $distributorId, $farmersMarketId, $companyId) ) {
+		if ($this->addAddress($producerId) ) {
 			$return = true;
 		} else {
 			$return = false;
