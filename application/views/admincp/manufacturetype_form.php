@@ -34,23 +34,25 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
-			if ($('#manufactureTypeId').val() != '' ) {
-				var formAction = '/admincp/manufacturetype/save_update';
+			if ($('#producerCategoryId').val() != '' ) {
+				var formAction = '/admincp/producercategory/save_update';
 				postArray = {
-							  manufactureType:$('#manufactureType').val(),
-							  manufacturetypeId:$('#manufactureTypeId').val()
+							  producerCategory:$('#producerCategory').val(),
+							  producerCategoryId:$('#producerCategoryId').val(),
+							  producerCategoryGroup:$('#producerCategoryGroup').val()
 							};
 				act = 'update';		
 			} else {
-				formAction = '/admincp/manufacturetype/save_add';
-				postArray = { 
-							  manufactureType:$('#manufactureType').val()
+				formAction = '/admincp/producercategory/save_add';
+				postArray = {
+							  producerCategory:$('#producerCategory').val(),
+							  producerCategoryGroup:$('#producerCategoryGroup').val()
 							};
 				act = 'add';
 			}
 			
 			$.post(formAction, postArray,function(data) {
-				alert(data);
+				//alert(data);
 				if(data=='yes') {
 					//start fading the messagebox
 					$("#msgbox").fadeTo(200,0.1,function() {
@@ -58,12 +60,12 @@ $(document).ready(function() {
 						if (act == 'add') {
 							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/manufacturetype';
+								document.location='/admincp/producercategory';
 							});	
 						} else if (act == 'update') {
 							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/manufacturetype';
+								document.location='/admincp/producercategory';
 							});
 						}
 
@@ -72,7 +74,7 @@ $(document).ready(function() {
 					//start fading the messagebox 
 					$("#msgbox").fadeTo(200,0.1,function() {
 						//add message and change the class of the box and start fading
-						$(this).html('Duplicate Manufacture Type...').addClass('messageboxerror').fadeTo(900,1);
+						$(this).html('Duplicate Producer Category...').addClass('messageboxerror').fadeTo(900,1);
 						
 					});
 				} else {
@@ -107,22 +109,32 @@ $(document).ready(function() {
 </script>
 
 
-<?php echo anchor('admincp/manufacturetype', 'List Manufacture Types'); ?><br /><br />
+<?php echo anchor('admincp/producercategory', 'List Producer Categories'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
-<form id="manufacturetypeForm" method="post" <?php echo (isset($MANUFACTURETYPE)) ? 'action="/admincp/manufacturetype/save_update"' : 'action="/admincp/manufacturetype/save_add"' ?>>
+<form id="manufacturetypeForm" method="post" <?php echo (isset($PRODUCER_CATEGORY)) ? 'action="/admincp/producercategory/save_update"' : 'action="/admincp/producercategory/save_add"' ?>>
 <table class="formTable">
 	<tr>
-		<td width = "25%" nowrap>Manufacture Type</td>
+		<td width = "25%" nowrap>Producer Category Group</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($MANUFACTURETYPE) ? $MANUFACTURETYPE->manufactureType : '') ?>" class="validate[required]" type="text" name="manufactureType" id="manufactureType"/><br />
+			<select name="producerCategoryGroup" id="producerCategoryGroup">
+            	<?php foreach($PRODUCER_CATEGORY_GROUPS as $g): ?>
+					<option value="<?php echo $g->producerCategoryGroupId; ?>" <?php echo @$PRODUCER_CATEGORY->producerCategoryGroupId == $g->producerCategoryGroupId ? 'selected="selected"' : "" ?>><?php echo $g->producerCategoryGroup; ?></option>
+                <?php endforeach; ?>
+            </select>
+		</td>
+	</tr>
+	<tr>
+		<td width = "25%" nowrap>Producer Category</td>
+		<td width = "75%">
+			<input value="<?php echo (isset($PRODUCER_CATEGORY) ? $PRODUCER_CATEGORY->producerCategory : '') ?>" class="validate[required]" type="text" name="producerCategory" id="producerCategory"/><br />
 		</td>
 	</tr>
 	<tr>
 		<td width = "25%" colspan = "2">
-			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($MANUFACTURETYPE)) ? 'Update Manufacture Type' : 'Add Manufacture Type' ?>">
-			<input type = "hidden" name = "manufactureTypeId" id = "manufactureTypeId" value = "<?php echo (isset($MANUFACTURETYPE) ? $MANUFACTURETYPE->manufactureTypeId : '') ?>">
+			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($PRODUCER_CATEGORY)) ? 'Update Producer Category' : 'Add Producer Category' ?>">
+			<input type = "hidden" name = "producerCategoryId" id = "producerCategoryId" value = "<?php echo (isset($PRODUCER_CATEGORY) ? $PRODUCER_CATEGORY->producerCategoryId : '') ?>">
 		</td>
 	</tr>
 </table>

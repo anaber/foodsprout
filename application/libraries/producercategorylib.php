@@ -2,12 +2,14 @@
 
 class ProducerCategoryLib {
 	
-	var $farmTypeId;
-	var $farmType;
-		
+	var $producerCategoryId;
+	var $producerCategory;
+	var $producerCategoryGroup;
+
 	function ProducerCategoryLib() {
 		$this->producerCategoryId = '';
 		$this->producerCategory = '';
+		$this->producerCategoryGroup = '';
 	}
 }
 ?>

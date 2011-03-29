@@ -25,7 +25,7 @@ class ProducerCategory extends Controller {
 		
 		$this->load->model('ProducerCategoryModel');
 		$producerCategory = $this->ProducerCategoryModel->listProducerCategoryAdmin();
-		
+
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'admincp/manufacturetype',
@@ -33,7 +33,7 @@ class ProducerCategory extends Controller {
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Producer Categories";
-		$data['data']['center']['list']['MANUFACTURETYPES'] = $producerCategory;
+		$data['data']['center']['list']['PRODUCER_CATEGORIES'] = $producerCategory;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
@@ -42,6 +42,9 @@ class ProducerCategory extends Controller {
 	function add()
 	{
 		$data = array();
+
+		$this->load->model('ProducerCategoryGroupModel');
+		$producercategorygroups = $this->ProducerCategoryGroupModel->listProducerCategoryGroupAdmin();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -49,17 +52,40 @@ class ProducerCategory extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Manufacture Type";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Producer Category";
+		$data['data']['center']['list']['PRODUCER_CATEGORY_GROUPS'] = $producercategorygroups;
+		
+		$this->load->view('admincp/templates/center_template', $data);
+	}
+	
+	function update($id)
+	{
+		$data = array();
+		
+		$this->load->model('ProducerCategoryModel');
+		$this->load->model('ProducerCategoryGroupModel');
+		$producercategory = $this->ProducerCategoryModel->getProducerCategoryFromId($id);
+		$producercategorygroups = $this->ProducerCategoryGroupModel->listProducerCategoryGroupAdmin();
+
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/manufacturetype_form',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['center']['list']['VIEW_HEADER'] = "Update Producer Category";
+		$data['data']['center']['list']['PRODUCER_CATEGORY'] = $producercategory;
+		$data['data']['center']['list']['PRODUCER_CATEGORY_GROUPS'] = $producercategorygroups;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function save_add() {
 		
-		$this->load->model('ManufacturetypeModel', '', TRUE);
+		$this->load->model('ProducerCategoryModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->ManufacturetypeModel->addManufactureType() ) {
+		if ( $this->ProducerCategoryModel->addProducerCategory() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
@@ -70,32 +96,13 @@ class ProducerCategory extends Controller {
 		}
 	}
 	
-	// Update the facility type
-	function update($id)
-	{
-		$data = array();
-		
-		$this->load->model('ManufacturetypeModel');
-		$manufacturetype = $this->ManufacturetypeModel->getManufactureTypeFromId($id);
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'admincp/manufacturetype_form',
-			);
-		
-		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Update Manufacture Type";
-		$data['data']['center']['list']['MANUFACTURETYPE'] = $manufacturetype;
-		
-		$this->load->view('admincp/templates/center_template', $data);
-	}
-	
+
 	function save_update() {
 		
-		$this->load->model('ManufacturetypeModel', '', TRUE);
+		$this->load->model('ProducerCategoryModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->ManufacturetypeModel->updateManufacturetype() ) {
+		if ( $this->ProducerCategoryModel->updateProducerCategory() ) {
 			echo "yes";
 		} else {
 			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {

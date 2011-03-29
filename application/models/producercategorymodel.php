@@ -67,18 +67,164 @@ class ProducerCategoryModel extends Model{
 		}
 		return $producerCategories;
 	}
-	
-	function listProducerCategoryAdmin() {
-		
-		$query = "SELECT * FROM producer_category ORDER BY producer_category";
-		
-		log_message('debug', "ProducerCategoryModel.listProducerCategoryAdmin : " . $query);
-		$result = $this->db->query($query);
+
+	function getProducerCategoryFromId($id) {
+
+		$this->db->select("producer_category.*, producer_category_group.producer_category_group");
+		$this->db->from('producer_category');
+		$this->db->join('producer_category_group', 'producer_category.category_group1 = producer_category_group.producer_category_group_id');
+		$this->db->where('producer_category_id', $id);
+		$this->db->group_by('producer_category.producer_category_id');
+		$this->db->order_by('category_group1, producer_category');
+		$result = $this->db->get();
+		log_message('debug', "ProducerCategoryModel.listProducerCategoryAdmin : " . $this->db->last_query());
 		
 		$producerCategories = array();
 		
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('ProducerCategoryLib');
+
+			$this->ProducerCategoryLib->producerCategoryId = $row['producer_category_id'];
+			$this->ProducerCategoryLib->producerCategory = $row['producer_category'];
+			$this->ProducerCategoryLib->producerCategoryGroup = $row['producer_category_group'];
+			$this->ProducerCategoryLib->producerCategoryGroupId = $row['category_group1'];
+			
+			if( !empty($row['cuisine_id']) )
+				$this->ProducerCategoryLib->producerCategoryType = 'cuisine';
+			elseif( !empty($row['restaurant_type_id']) )
+				$this->ProducerCategoryLib->producerCategoryType = 'restaurant';
+			elseif( !empty($row['farm_type_id']) )
+				$this->ProducerCategoryLib->producerCategoryType = 'farm';
+			elseif( !empty($row['manufacture_type_id']) )
+				$this->ProducerCategoryLib->producerCategoryType = 'manufacture';
+
+			$producerCategories[] = $this->ProducerCategoryLib;
+			unset($this->ProducerCategoryLib);
+		}
+		
+		return $producerCategories[0];
+	}
+	
+	function listProducerCategoryAdmin() {
+
+		$this->db->select("producer_category.*, producer_category_group.producer_category_group");
+		$this->db->from('producer_category');
+		$this->db->join('producer_category_group', 'producer_category.category_group1 = producer_category_group.producer_category_group_id');
+		$this->db->group_by('producer_category.producer_category_id');
+		$this->db->order_by('category_group1, producer_category');
+		$result = $this->db->get();
+		log_message('debug', "ProducerCategoryModel.listProducerCategoryAdmin : " . $this->db->last_query());
+		
+		$producerCategories = array();
+		
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('ProducerCategoryLib');
+
+			$this->ProducerCategoryLib->producerCategoryId = $row['producer_category_id'];
+			$this->ProducerCategoryLib->producerCategory = $row['producer_category'];
+			$this->ProducerCategoryLib->producerCategoryGroup = $row['producer_category_group'];
+			$this->ProducerCategoryLib->producerCategoryGroupId = $row['category_group1'];
+			
+			if( !empty($row['cuisine_id']) )
+				$this->ProducerCategoryLib->producerCategoryType = 'cuisine';
+			elseif( !empty($row['restaurant_type_id']) )
+				$this->ProducerCategoryLib->producerCategoryType = 'restaurant';
+			elseif( !empty($row['farm_type_id']) )
+				$this->ProducerCategoryLib->producerCategoryType = 'farm';
+			elseif( !empty($row['manufacture_type_id']) )
+				$this->ProducerCategoryLib->producerCategoryType = 'manufacture';
+
+
+			$producerCategories[] = $this->ProducerCategoryLib;
+			unset($this->ProducerCategoryLib);
+		}
+		
 		return $producerCategories;
 	}
+	
+	function addProducerCategory() {
+		$rs = $this->db->get_where('producer_category', array("producer_category"=>$this->input->post('producerCategory')))->result_array();
+
+		if( empty($rs) ) {
+			log_message('debug', "ProducerCategoryModel.addProducerCategory, try to get duplicate : " . $this->db->last_query());
+			
+			$this->db->where('category_group1', $this->input->post('producerCategoryGroup'));
+			$this->db->from('producer_category');
+			$t_count = $this->db->count_all_results() + 1;
+
+			if( $this->input->post('producerCategoryGroup') == 1 )		// CUISINE
+				$data['cuisine_id'] = $t_count;
+			elseif( $this->input->post('producerCategoryGroup') == 2 )	// RESTAURANT
+				$data['restaurant_type_id'] = $t_count;
+			elseif( $this->input->post('producerCategoryGroup') == 3 )	// FARM
+				$data['farm_type_id'] = $t_count;
+			elseif( $this->input->post('producerCategoryGroup') == 4 )	// MANUFACTURE
+				$data['manufacture_type_id'] = $t_count;
+
+			$data['producer_category'] = $this->input->post('producerCategory');
+			$data['category_group1'] = $this->input->post('producerCategoryGroup');
+
+			
+			if( $this->db->insert('producer_category', $data) )
+				$return = true;
+
+		}else{
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
+		}
+
+		return $return;
+	}
+	
+	function updateProducerCategory() {
+		$rs = $this->db->get_where('producer_category', array("producer_category"=>$this->input->post('producerCategory'), "producer_category_id != "=>$this->input->post('producerCategoryId')))->result_array();
+
+		if( empty($rs) ) {
+			log_message('debug', "ProducerCategoryModel.addProducerCategory, try to get duplicate : " . $this->db->last_query());
+			
+			$producer_cat = $this->getProducerCategoryFromId($this->input->post('producerCategoryId'));			
+			
+			$this->db->where('category_group1', $this->input->post('producerCategoryGroup'));
+			$this->db->from('producer_category');
+			$t_count = $producer_cat->producerCategoryGroupId <> $this->input->post('producerCategoryGroup') ? $this->db->count_all_results() + 1 : $this->db->count_all_results();
+
+			if( $producer_cat->producerCategoryType == 'cuisine' )			// CUISINE
+				$data['cuisine_id'] = NULL;
+			elseif( $producer_cat->producerCategoryType == 'restaurant' )	// RESTAURANT
+				$data['restaurant_type_id'] = NULL;
+			elseif( $producer_cat->producerCategoryType == 'farm' )			// FARM
+				$data['farm_type_id'] = NULL;
+			elseif( $producer_cat->producerCategoryType == 'manufacture' )	// MANUFACTURE
+				$data['manufacture_type_id'] = NULL;
+
+			 
+			if( $this->input->post('producerCategoryGroup') == 1 )		// CUISINE
+				$data['cuisine_id'] = $t_count;
+			elseif( $this->input->post('producerCategoryGroup') == 2 )	// RESTAURANT
+				$data['restaurant_type_id'] = $t_count;
+			elseif( $this->input->post('producerCategoryGroup') == 3 )	// FARM
+				$data['farm_type_id'] = $t_count;
+			elseif( $this->input->post('producerCategoryGroup') == 4 )	// MANUFACTURE
+				$data['manufacture_type_id'] = $t_count;
+
+			$data['producer_category'] = $this->input->post('producerCategory');
+			$data['category_group1'] = $this->input->post('producerCategoryGroup');
+
+			$this->db->where(array('producer_category_id'=>$this->input->post('producerCategoryId')));
+
+			if( $this->db->update('producer_category', $data) )
+				$return = true;
+
+
+		}else{
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
+		}
+
+		return $return;
+	}	
 	
 	function getCuisinesForRestaurant($producerId) {
 		$query = "SELECT 
