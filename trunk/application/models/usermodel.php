@@ -332,6 +332,8 @@ class UserModel extends Model{
 			$this->UserLib->userId = $row['user_id'];
 			$this->UserLib->email = $row['email'];
 			$this->UserLib->joinDate = $row['join_date'];
+			$this->UserLib->firstName = $row['first_name'];
+			$this->UserLib->zipcode = $row['zipcode'];
 			
 			$users[] = $this->UserLib;
 			unset($this->UserLib);

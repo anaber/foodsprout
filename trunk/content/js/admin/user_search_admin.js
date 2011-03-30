@@ -60,6 +60,18 @@ function reinitializeTableHeadingEvent(data) {
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'email', order, data.param.q);
 	});
 	
+	$("#heading_firstName").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'first_name');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'first_name', order, data.param.q);
+	});
+	
+	$("#heading_zipcode").click(function(e) {
+		e.preventDefault();
+		order = getOrder(data, 'zipcode');
+		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'zipcode', order, data.param.q);
+	});
+	
 	$("#heading_join_date").click(function(e) {
 		e.preventDefault();
 		order = getOrder(data, 'join_date');
@@ -72,6 +84,8 @@ function addResult(user, i) {
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/user/update/'+ user.userId +'">'+ user.userId +'</a></td>' +
 	'	<td valign="top"><a href="/admincp/user/update/'+ user.userId +'">'+ user.email +'</a></td>' +
+	'	<td valign="top">'+ user.firstName +'</a></td>' +
+	'	<td valign="top">'+ user.zipcode +'</a></td>' +
 	'	<td valign="top">'+ user.joinDate +'</td>';
 	
 	html +=
@@ -87,6 +101,8 @@ function getResultTableHeader() {
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 	'		<th id = "heading_user"><a href = "#" style = "color:#FFFFFF">Email</a></th>' +
+	'		<th id = "heading_firstName"><a href = "#" style = "color:#FFFFFF">First Name</a></th>' +
+	'		<th id = "heading_zipcode"><a href = "#" style = "color:#FFFFFF">Zipcode</a></th>' +
 	'		<th id = "heading_user_type"><a href = "#" style = "color:#FFFFFF">Join Date</a></th>' +
 	'	</tr>' +
 	'	</thead>' +

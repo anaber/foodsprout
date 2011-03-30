@@ -127,6 +127,17 @@ $route['^chain/view/(:num)'] 							= "chain/view/$1";
 $route['^chain/page(:num)']								= "chain/index/$1";
 $route['^chain/(:any)']									= "chain/customUrl/$1";
 
+// Distributor
+$route['^distributor/ajaxSearchDistributorComments'] 	= "distributor/ajaxSearchDistributorComments";
+$route['^distributor/ajaxSearchDistributorInfo'] 		= "distributor/ajaxSearchDistributorInfo";
+$route['^distributor/ajaxSearchDistributorMenus'] 		= "distributor/ajaxSearchDistributorMenus";
+$route['^distributor/ajaxSearchDistributorPhotos'] 		= "distributor/ajaxSearchDistributorPhotos";
+$route['^distributor/ajaxSearchDistributors'] 			= "distributor/ajaxSearchDistributors";
+$route['^distributor/ajaxSearchDistributorSuppliers'] 	= "distributor/ajaxSearchDistributorSuppliers";
+$route['^distributor/ajaxSearchDistributors'] 			= "distributor/ajaxSearchDistributors";
+$route['^distributor/(:any)']							= "distributor/customUrl/$1";
+
+
 // Product
 $route['^product/']										= "product/index";
 $route['^product/search']								= "product/search";

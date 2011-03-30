@@ -537,6 +537,12 @@ CREATE TABLE IF NOT EXISTS `product_consumed` (
   PRIMARY KEY (`product_consumed_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Changes related to Business account
+--
+ALTER TABLE `user` CHANGE COLUMN `zipcode` `zipcode` VARCHAR(6) NOT NULL  ;
+UPDATE `user` SET zipcode = CONCAT('0', zipcode) WHERE CHAR_LENGTH( `zipcode` ) = 4;
+
 -- Alter screen_name to username and apply username to all users
 
 ALTER TABLE `user` CHANGE COLUMN `screen_name` `username` VARCHAR(45) NULL DEFAULT NULL;
@@ -594,3 +600,5 @@ ALTER TABLE `user` CHANGE COLUMN `username` `username` VARCHAR(45) NOT NULL;
 ALTER TABLE `user` ADD UNIQUE INDEX `username_UNIQUE` (`username` ASC) ;
 
 ALTER TABLE `user_group_member` DROP FOREIGN KEY `user_group_member_ibfk_1` , DROP FOREIGN KEY `user_group_member_ibfk_2`;
+
+

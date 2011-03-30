@@ -67,64 +67,6 @@ class DistributorModel extends Model{
 		return $return;	
 	}
 	
-	// Get all the information about one specific Distributor from an ID
-	function getDistributorFromId($distributorId) {
-		
-		$query = "SELECT * " .
-				" FROM producer " .
-				" WHERE producer_id = " . $distributorId . 
-				" AND is_distributor = 1";
-
-		log_message('debug', "DistributorModel.getDistributorFromId : " . $query);
-		$result = $this->db->query($query);
-		
-		$this->load->library('DistributorLib');
-		
-		$row = $result->row();
-		
-		if ($row) {
-			$geocodeArray = array();
-				
-			$this->DistributorLib->distributorId = $row->producer_id;
-//			$this->DistributorLib->companyId = $row->company_id;
-//			$this->DistributorLib->companyName = $row->company_name;
-			$this->DistributorLib->distributorName = $row->producer;
-			$this->DistributorLib->customUrl = $row->custom_url;
-			$this->DistributorLib->url = $row->url;
-			$this->DistributorLib->facebook = $row->facebook;
-			$this->DistributorLib->twitter = $row->twitter;
-			$this->DistributorLib->status = $row->status;
-			
-			$CI =& get_instance();
-				
-			$CI->load->model('AddressModel','',true);
-			$addresses = $CI->AddressModel->getAddressForCompany( '', '', '', $row->producer_id, '', '', '', '');
-			$this->DistributorLib->addresses = $addresses;
-			
-			foreach ($addresses as $key => $address) {
-				$arrLatLng = array();
-				
-				$arrLatLng['latitude'] = $address->latitude;
-				$arrLatLng['longitude'] = $address->longitude;
-				$arrLatLng['address'] = $address->completeAddress;
-				
-				$arrLatLng['addressLine1'] = $address->address;
-				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
-				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
-				
-				$arrLatLng['distributorName'] = $this->DistributorLib->distributorName;
-				$arrLatLng['id'] = $address->addressId;
-				$geocodeArray[] = $arrLatLng;
-			}
-			$this->DistributorLib->param->numResults = 2;
-			$this->DistributorLib->geocode = $geocodeArray;
-			
-			return $this->DistributorLib;
-		} else {
-			return false;
-		}
-	}
-	
 	function updateDistributor() {
 		$return = true;
 		
@@ -333,113 +275,6 @@ class DistributorModel extends Model{
 	    return $arr;
 	}
 	
-	function getDistributorsJson() {
-		global $PER_PAGE_2;
-		
-		$p = $this->input->post('p'); // Page
-		$pp = $this->input->post('pp'); // Per Page
-		$sort = $this->input->post('sort');
-		$order = $this->input->post('order');
-		
-		$q = $this->input->post('q');
-		
-		if ($q == '0') {
-			$q = '';
-		}
-		
-		$start = 0;
-		$page = 0;
-		
-		$base_query = 'SELECT *' .
-				' FROM distributor';
-		
-		$base_query_count = 'SELECT count(*) AS num_records' .
-				' FROM distributor';
-		
-		$where = ' WHERE distributor.status = \'live\' ';
-		
-		$base_query_count = $base_query_count . $where;
-		
-		$query = $base_query_count;
-		
-		$result = $this->db->query($query);
-		$row = $result->row();
-		$numResults = $row->num_records;
-		
-		$query = $base_query . $where;
-		
-		if ( empty($sort) ) {
-			$sort_query = ' ORDER BY distributor_name';
-			$sort = 'distributor_name';
-		} else {
-			$sort_query = ' ORDER BY ' . $sort;
-		}
-		
-		if ( empty($order) ) {
-			$order = 'ASC';
-		}
-		
-		$query = $query . ' ' . $sort_query . ' ' . $order;
-		
-		if (!empty($pp) && $pp != 'all' ) {
-			$PER_PAGE_2 = $pp;
-		}
-		
-		if (!empty($pp) && $pp == 'all') {
-			// NO NEED TO LIMIT THE CONTENT
-		} else {
-			
-			if (!empty($p) || $p != 0) {
-				$page = $p;
-				$p = $p * $PER_PAGE_2;
-				$query .= " LIMIT $p, " . $PER_PAGE_2;
-				$start = $p;
-				
-			} else {
-				$query .= " LIMIT 0, " . $PER_PAGE_2;
-			}
-		}
-		
-		log_message('debug', "DistributorModel.getDistributorsJson : " . $query);
-		$result = $this->db->query($query);
-		
-		$restaurantChains = array();
-		
-		foreach ($result->result_array() as $row) {
-			
-			$this->load->library('DistributorLib');
-			unset($this->DistributorLib);
-			
-			$this->DistributorLib->distributorId = $row['distributor_id'];
-			$this->DistributorLib->distributorName = $row['distributor_name'];
-			
-			$restaurantChains[] = $this->DistributorLib;
-			unset($this->DistributorLib);
-		}
-		
-		if (!empty($pp) && $pp == 'all') {
-			$PER_PAGE_2 = $numResults;
-		}
-		
-		$totalPages = ceil($numResults/$PER_PAGE_2);
-		$first = 0;
-		if ($totalPages > 0) {
-			$last = $totalPages - 1;
-		} else {
-			$last = 0;
-		}
-		
-		
-		$params = requestToParams2($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
-		$arr = array(
-			'results'    => $restaurantChains,
-			'param'      => $params,
-			
-	    );
-	    
-	    return $arr;
-	}
-	
 	function getQueueDistributorJson() {
 		global $PER_PAGE;
 		
@@ -594,6 +429,316 @@ class DistributorModel extends Model{
 
 		return $distributor;	
 	}
+	
+	// Pulls the data from the database for a specific distributor
+	function getDistributorFromId($producerId, $addressId='') {
+
+		$query = "SELECT 
+					producer.*, producer_category.producer_category, producer_category.producer_category_id
+				FROM 
+					producer
+				LEFT JOIN producer_category_member 
+					ON producer.producer_id = producer_category_member.producer_id 
+				LEFT JOIN producer_category
+					ON producer_category_member.producer_category_id = producer_category.producer_category_id
+				WHERE 
+					producer.producer_id = " . $producerId;
+		
+		log_message('debug', "DistributorModel.getDistributorFromId : " . $query);
+		$result = $this->db->query($query);
+
+		$distributor = array();
+
+		$this->load->library('DistributorLib');
+
+		$row = $result->row();
+
+
+		$city = '';
+		$q = '';
+
+		if ($row) {
+			$geocodeArray = array();
+			
+			$this->distributorLib->distributorId = $row->producer_id;
+			$this->distributorLib->distributorName = $row->producer;
+			$this->distributorLib->distributorTypeId = $row->producer_category_id;
+			$this->distributorLib->customUrl = $row->custom_url;
+			$this->distributorLib->url = $row->url;
+			$this->distributorLib->facebook = $row->facebook;
+			$this->distributorLib->twitter = $row->twitter;
+			$this->distributorLib->status = $row->status;
+			
+			
+			$CI =& get_instance();
+				
+			$CI->load->model('AddressModel','',true);
+			
+			if(isset($addressId) && $addressId !=''){
+				
+				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '', $addressId);
+				
+			}else{
+				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '');
+			}
+			$this->distributorLib->addresses = $addresses;
+			
+			foreach ($addresses as $key => $address) {
+				$arrLatLng = array();
+				
+				$arrLatLng['latitude'] = $address->latitude;
+				$arrLatLng['longitude'] = $address->longitude;
+				$arrLatLng['address'] = $address->completeAddress;
+				
+				$arrLatLng['addressLine1'] = $address->address;
+				$arrLatLng['addressLine2'] = $address->city . ' ' . $address->state;
+				$arrLatLng['addressLine3'] = $address->country . ' ' . $address->zipcode;
+				
+				$arrLatLng['distributorName'] = $this->distributorLib->distributorName;
+				$arrLatLng['id'] = $address->addressId;
+				$geocodeArray[] = $arrLatLng;
+			}
+			$this->distributorLib->param->numResults = 2;
+			$this->distributorLib->geocode = $geocodeArray;
+			
+			return $this->distributorLib;
+		} else {
+			return;
+		}
+	}
+	
+	function getDistributorsJson() {
+		global $PER_PAGE_2;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		$base_query = 'SELECT *' .
+				' FROM distributor';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM distributor';
+		
+		$where = ' WHERE distributor.status = \'live\' ';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY distributor_name';
+			$sort = 'distributor_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE_2 = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE_2;
+				$query .= " LIMIT $p, " . $PER_PAGE_2;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE_2;
+			}
+		}
+		
+		log_message('debug', "DistributorModel.getDistributorsJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$distributors = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('DistributorLib');
+			unset($this->DistributorLib);
+			
+			$this->DistributorLib->distributorId = $row['distributor_id'];
+			$this->DistributorLib->distributorName = $row['distributor_name'];
+			
+			$distributors[] = $this->DistributorLib;
+			unset($this->DistributorLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE_2 = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE_2);
+		$first = 0;
+		if ($totalPages > 0) {
+			$last = $totalPages - 1;
+		} else {
+			$last = 0;
+		}
+		
+		
+		$params = requestToParams2($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $distributors,
+			'param'      => $params,
+			
+	    );
+	    
+	    return $arr;
+	}
+	
+	function getDistributorMenusJson($producerId = null) {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); 
+		if (!$p) {
+			$p = $this->input->get('p');
+		}
+		$pp = $this->input->post('pp'); 
+		if (!$pp) {
+			$pp = $this->input->get('pp');
+		}
+		$sort = $this->input->post('sort');
+		if (!$sort) {
+			$sort = $this->input->get('sort');
+		}
+		$order = $this->input->post('order');
+		if (!$order) {
+			$order = $this->input->get('order');
+		}
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		if (!$q) {
+			$q = $producerId;
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		$base_query = 'SELECT *' .
+				' FROM product';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM product';
+		
+		$where = ' WHERE producer_id  = ' . $q . 
+				 ' AND product.status = \'live\'';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY product_name';
+			$sort = 'product_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "DistributorModel.getDistributorMenusJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$menu = array();
+		
+		$CI =& get_instance();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('ProductLib');
+			unset($this->productLib);
+			
+			$this->productLib->productId = $row['product_id'];
+			$this->productLib->productName = $row['product_name'];
+			$this->productLib->ingredient = $row['ingredient_text'];
+			$this->productLib->image = '';
+			
+			$menu[] = $this->productLib;
+			unset($this->productLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		if ($totalPages > 0) {
+			$last = $totalPages - 1;
+		} else {
+			$last = 0;
+		}
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $menu,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
 	
 }
 
