@@ -167,6 +167,7 @@ class CommentModel extends Model{
         $restaurantId = $this->input->post('restaurantId');
         $restaurantChainId = $this->input->post('restaurantChainId');
         $manufactureId = $this->input->post('manufactureId');
+        $distributorId = $this->input->post('distributorId');
         $farmId = $this->input->post('farmId');
         $farmersMarketId = $this->input->post('farmersMarketId');
         $userId = $this->session->userdata['userId'];
@@ -183,6 +184,8 @@ class CommentModel extends Model{
             $query .= 'producer_id ';
         } else if (!empty($manufactureId)) {
             $query .= 'producer_id ';
+        }  else if (!empty($distributorId)) {
+            $query .= 'producer_id ';
         } else if (!empty($farmId)) {
             $query .= 'producer_id ';
         } else if (!empty($farmersMarketId)) {
@@ -195,6 +198,8 @@ class CommentModel extends Model{
             $query .= $restaurantChainId;
         } else if (!empty($manufactureId)) {
             $query .= $manufactureId;
+        }  else if (!empty($distributorId)) {
+            $query .= $distributorId;
         } else if (!empty($farmId)) {
             $query .= $farmId;
         } else if (!empty($farmersMarketId)) {
@@ -214,6 +219,8 @@ class CommentModel extends Model{
                 $query .= 'producer_id';
             } else if (!empty($manufactureId)) {
                 $query .= 'producer_id';
+            } else if (!empty($distributorId)) {
+                $query .= 'producer_id';
             } else if (!empty($farmId)) {
                 $query .= 'producer_id';
             } else if (!empty($farmersMarketId)) {
@@ -229,6 +236,8 @@ class CommentModel extends Model{
                 $query .= $restaurantChainId;
             } else if (!empty($manufactureId)) {
                 $query .= $manufactureId;
+            } else if (!empty($distributorId)) {
+                $query .= $distributorId;
             } else if (!empty($farmId)) {
                 $query .= $farmId;
             } else if (!empty($farmersMarketId)) {

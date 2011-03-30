@@ -186,6 +186,7 @@ class PhotoModel extends Model{
 			$restaurantId = $this->input->post('restaurantId');
 			$restaurantChainId = $this->input->post('restaurantChainId');
 	        $manufactureId = $this->input->post('manufactureId');
+	        $distributorId = $this->input->post('distributorId');
 	        $farmId = $this->input->post('farmId');
 	        $farmersMarketId = $this->input->post('farmersMarketId');
 	        $productId = $this->input->post('productId');
@@ -199,6 +200,8 @@ class PhotoModel extends Model{
 	            $path = '/restaurant_chain/photo/' . $restaurantChainId . '/';
 	        } else if (!empty($manufactureId)) {
 	            $path = '/manufacture/photo/' . $manufactureId . '/';
+	        }  else if (!empty($distributorId)) {
+	            $path = '/distributor/photo/' . $distributorId . '/';
 	        } else if (!empty($farmId)) {
 	            $path = '/farm/photo/' . $farmId . '/';
 	        } else if (!empty($farmersMarketId)) {
@@ -259,6 +262,8 @@ class PhotoModel extends Model{
 		                $query .= 'producer_id';
 		            } else if (!empty($manufactureId)) {
 		                $query .= 'producer_id';
+		            } else if (!empty($distributorId)) {
+		                $query .= 'producer_id';
 		            } else if (!empty($farmId)) {
 		                $query .= 'producer_id';
 		            } else if (!empty($farmersMarketId)) {
@@ -276,6 +281,8 @@ class PhotoModel extends Model{
 		                $query .= $restaurantChainId;
 		            } else if (!empty($manufactureId)) {
 		                $query .= $manufactureId;
+		            } else if (!empty($distributorId)) {
+		                $query .= $distributorId;
 		            } else if (!empty($farmId)) {
 		                $query .= $farmId;
 		            } else if (!empty($farmersMarketId)) {

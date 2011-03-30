@@ -56,6 +56,7 @@ $(document).ready(function() {
                     productId: $('#productId').val(),
 						  
                     manufactureId: $('#manufactureId').val(),
+                    distributorId: $('#distributorId').val(),
                     restaurantId: $('#restaurantId').val(),
                     restaurantChainId: $('#restaurantChainId').val()
                 };
@@ -71,6 +72,7 @@ $(document).ready(function() {
                     ingredient:$('#ingredient').val(),
 						  
                     manufactureId: $('#manufactureId').val(),
+                    distributorId: $('#distributorId').val(),
                     restaurantId: $('#restaurantId').val(),
                     restaurantChainId: $('#restaurantChainId').val()
 				};
@@ -134,7 +136,7 @@ $(document).ready(function() {
         </td>
     </tr>
     <?php
-    	if ( isset( $MANUFACTURE_ID ) ) {
+    	if ( isset( $MANUFACTURE_ID ) || isset( $DISTRIBUTOR_ID ) ) {
     ?>
     <tr>
         <td width = "25%" nowrap style="font-size:13px;">Product Type</td>
@@ -178,6 +180,7 @@ $(document).ready(function() {
             <input type = "hidden" name = "productId" id = "productId" value = "<?php echo (isset($PRODUCT) ? $PRODUCT->productId : '') ?>">
 
             <input type = "hidden" name = "manufactureId" id = "manufactureId" value = "<?php echo (isset($MANUFACTURE_ID) ? $MANUFACTURE_ID : '') ?>">
+            <input type = "hidden" name = "distributorId" id = "distributorId" value = "<?php echo (isset($DISTRIBUTOR_ID) ? $DISTRIBUTOR_ID : '') ?>">
             <input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT_ID) ? $RESTAURANT_ID : '') ?>">
             <input type = "hidden" name = "restaurantChainId" id = "restaurantChainId" value = "<?php echo (isset($RESTAURANT_CHAIN_ID) ? $RESTAURANT_CHAIN_ID : '') ?>">
         </td>

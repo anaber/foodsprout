@@ -248,6 +248,7 @@ class ProductModel extends Model {
 		$restaurantId = $this->input->post('restaurantId');
 		$restaurantChainId = $this->input->post('restaurantChainId');
 		$manufactureId = $this->input->post('manufactureId');
+		$distributorId = $this->input->post('distributorId');
 
 		$CI = & get_instance();
 
@@ -259,6 +260,8 @@ class ProductModel extends Model {
 			$producerId = $restaurantChainId;
 		} else if (!empty($manufactureId)) {
 			$producerId = $manufactureId;
+		} else if (!empty($distributorId)) {
+			$producerId = $distributorId;
 		}
 
 		if ($this->addProduct($producerId) ) {

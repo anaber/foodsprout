@@ -252,6 +252,13 @@ class AddressModel extends Model{
 			$cityId = $CI->CityModel->addCity($cityName, $stateId);
 		}
 		
+		$city = $this->input->post('city');
+		if ($city) {
+			
+		} else {
+			$city = $cityName;
+		}
+		
 		$address = $this->prepareAddress($this->input->post('address'), $this->input->post('city'), $this->input->post('cityId'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
 		
 		$CI->load->model('GoogleMapModel','',true);
