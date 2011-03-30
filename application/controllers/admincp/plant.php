@@ -47,7 +47,7 @@ class Plant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/plant_form',
+				'list' => 'admincp/forms/plant_form',
 			);
 		
 		// Data to be passed to the views
@@ -85,7 +85,7 @@ class Plant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/plant_form',
+				'list' => 'admincp/forms/plant_form',
 			);
 		
 		// Data to be passed to the views

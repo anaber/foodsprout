@@ -37,7 +37,7 @@ class User extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/user_form',
+				'list' => 'admincp/forms/user_form',
 			);
 		
 		// Data to be passed to the views
@@ -56,7 +56,7 @@ class User extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/user_form',
+				'list' => 'admincp/forms/user_form',
 			);
 		
 		// Data to be passed to the views

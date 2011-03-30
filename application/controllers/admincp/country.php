@@ -32,7 +32,7 @@ class Country extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/country_form',
+				'form' => 'admincp/forms/country_form',
 			);
 		
 		// Data to be passed to the views
@@ -49,7 +49,7 @@ class Country extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/country_form',
+				'form' => 'admincp/forms/country_form',
 			);
 		
 		// Data to be passed to the views

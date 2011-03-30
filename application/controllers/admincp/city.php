@@ -40,7 +40,7 @@ class City extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/city_form',
+				'form' => 'admincp/forms/city_form',
 			);
 		
 		// Data to be passed to the views
@@ -61,7 +61,7 @@ class City extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/city_form',
+				'form' => 'admincp/forms/city_form',
 			);
 		
 		// Data to be passed to the views

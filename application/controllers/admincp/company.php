@@ -32,7 +32,7 @@ class Company extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/company_form',
+				'list' => 'admincp/forms/company_form',
 			);
 		
 		$data['RIGHT'] = array(
@@ -54,7 +54,7 @@ class Company extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/company_form',
+				'list' => 'admincp/forms/company_form',
 			);
 		
 			

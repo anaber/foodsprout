@@ -32,7 +32,7 @@ class Seo extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/seo_form',
+				'form' => 'admincp/forms/seo_form',
 			);
 		
 		// Data to be passed to the views
@@ -54,7 +54,7 @@ class Seo extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/seo_form',
+				'form' => 'admincp/forms/seo_form',
 			);
 		
 		// Data to be passed to the views

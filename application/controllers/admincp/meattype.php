@@ -44,7 +44,7 @@ class Meattype extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/meattype_form',
+				'list' => 'admincp/forms/meattype_form',
 			);
 		
 		// Data to be passed to the views
@@ -78,7 +78,7 @@ class Meattype extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/meattype_form',
+				'list' => 'admincp/forms/meattype_form',
 			);
 		
 		// Data to be passed to the views

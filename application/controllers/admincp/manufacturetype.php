@@ -45,7 +45,7 @@ class Manufacturetype extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/manufacturetype_form',
+				'list' => 'admincp/forms/manufacturetype_form',
 			);
 		
 		// Data to be passed to the views
@@ -80,7 +80,7 @@ class Manufacturetype extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/manufacturetype_form',
+				'list' => 'admincp/forms/manufacturetype_form',
 			);
 		
 		// Data to be passed to the views
