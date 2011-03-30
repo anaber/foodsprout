@@ -100,7 +100,7 @@ function drawAddItem() {
 	if (currentContent == 'supplier') {
 		html += '<div id = "addSupplier" class = "addItem">&nbsp;+ Supplier</div>';
 	} else if (currentContent == 'menu') {
-		html += '<div id = "addMenu" class = "addItem">&nbsp;+ Menu</div>';
+		html += '<div id = "addMenu" class = "addItem">&nbsp;+ Product</div>';
 	} /*else if (currentContent == 'comment') {
 		html += '<div id = "addComment" class = "addItem">&nbsp;+ Comment</div>';
 	} else if (currentContent == 'photo') {

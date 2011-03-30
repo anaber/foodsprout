@@ -247,7 +247,7 @@
 	<div id="resultsContainer">
 		<div id="menu-bar">
 			<div id="suppliers" class = "<?php echo ($CURRENT_TAB == 'supplier' ? 'selected' : 'non-selected') ?>"><a href = "<?php echo $SUPPLIER_TAB_LINK; ?>" id = "linkSupplier">Suppliers</a></div>
-			<div id="menu" class = "<?php echo ($CURRENT_TAB == 'menu' ? 'selected' : 'non-selected') ?>"><a href = "<?php echo $MENU_TAB_LINK; ?>" id = "linkMenu">Menu</a></div>
+			<div id="menu" class = "<?php echo ($CURRENT_TAB == 'menu' ? 'selected' : 'non-selected') ?>"><a href = "<?php echo $MENU_TAB_LINK; ?>" id = "linkMenu">Product</a></div>
 			<div id="comments" class = "<?php echo ($CURRENT_TAB == 'comment' ? 'selected' : 'non-selected') ?>"><a href = "<?php echo $COMMENT_TAB_LINK; ?>" id = "linkComment">Comments</a></div>
 			<div id="photos" class = "<?php echo ($CURRENT_TAB == 'photo' ? 'selected' : 'non-selected') ?>"><a href = "<?php echo $PHOTO_TAB_LINK; ?>" id = "linkPhoto">Photos</a></div>
 			<div id="addItem" class = "addItem">&nbsp;+ Supplier</div>
