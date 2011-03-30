@@ -15,9 +15,9 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 ?>
 <br />
 <div id="main-content">
-<table width = "980" border = "0" cellpadding = "5" cellspacing = "0">
+<table width = "100%" border = "0" cellpadding = "5" cellspacing = "0">
 	<tr>
-		<td width = "150" valign = "top">
+		<td width="150" valign="top">
 		<?php
 			foreach($LEFT as $key => $view) {
 				if (isset($data['left'][$key]['VIEW_HEADER']) ) {
@@ -34,7 +34,7 @@ for($i = 0; $i < count($RIGHT); $i++ ) {
 		?>
 		<td>
 			
-		<td width = "830" valign = "top">
+		<td valign="top">
 		
 		<?php
 			if (isset($BREADCRUMB) ) {

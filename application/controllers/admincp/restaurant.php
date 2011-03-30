@@ -15,15 +15,21 @@ class Restaurant extends Controller {
 	function index() {
 		$data = array();
 		$restaurants = array();
+		
 		// List of views to be included
+		$data['LEFT'] = array(
+				'menu' => 'admincp/menus/restaurants',
+			);
+		
 		$data['CENTER'] = array(
 				'list' => 'admincp/restaurant',
 			);
-		
+			
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Restaurants";
 		
-		$this->load->view('admincp/templates/center_template', $data);
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
 	function ajaxSearchRestaurants() {
