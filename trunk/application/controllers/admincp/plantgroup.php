@@ -45,7 +45,7 @@ class PlantGroup extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/plantgroup_form',
+				'list' => 'admincp/forms/plantgroup_form',
 			);
 		
 		// Data to be passed to the views
@@ -81,7 +81,7 @@ class PlantGroup extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/plantgroup_form',
+				'list' => 'admincp/forms/plantgroup_form',
 			);
 		
 		// Data to be passed to the views

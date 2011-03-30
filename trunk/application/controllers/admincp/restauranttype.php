@@ -44,7 +44,7 @@ class RestaurantType extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/restauranttype_form',
+				'list' => 'admincp/forms/restauranttype_form',
 			);
 		
 		// Data to be passed to the views
@@ -78,7 +78,7 @@ class RestaurantType extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/restauranttype_form',
+				'list' => 'admincp/forms/restauranttype_form',
 			);
 		
 		// Data to be passed to the views

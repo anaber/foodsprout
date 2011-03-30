@@ -55,7 +55,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/restaurant_form',
+				'form' => 'admincp/forms/restaurant_form',
 			);
 		
 		// Data to be passed to the views
@@ -88,7 +88,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/restaurant_form',
+				'form' => 'admincp/forms/restaurant_form',
 			);
 		
 		$data['LEFT'] = array(
@@ -175,7 +175,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/supplier_form',
+				'list' => 'admincp/forms/supplier_form',
 			);
 		
 		// Data to be passed to the views
@@ -220,7 +220,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/supplier_form',
+				'list' => 'admincp/forms/supplier_form',
 			);
 		
 		// Data to be passed to the views
@@ -267,7 +267,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/address_form',
+				'list' => 'admincp/forms/address_form',
 			);
 		
 		// Data to be passed to the views
@@ -314,7 +314,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/address_form',
+				'form' => 'admincp/forms/address_form',
 			);
 		
 		// Data to be passed to the views
@@ -354,7 +354,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/menu_form',
+				'form' => 'admincp/forms/menu_form',
 			);
 		
 		$data['LEFT'] = array(
@@ -402,7 +402,7 @@ class Restaurant extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/menu_form',
+				'list' => 'admincp/forms/menu_form',
 			);
 		
 		// Data to be passed to the views

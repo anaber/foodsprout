@@ -32,7 +32,7 @@ class Lottery extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/lottery_form',
+				'form' => 'admincp/forms/lottery_form',
 			);
 		
 		// Data to be passed to the views
@@ -56,7 +56,7 @@ class Lottery extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/lottery_form',
+				'form' => 'admincp/forms/lottery_form',
 			);
 		
 		// Data to be passed to the views
@@ -122,7 +122,7 @@ class Lottery extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/prize_form',
+				'list' => 'admincp/forms/prize_form',
 			);
 		$this->load->model('PrizeModel');
 		$prizes = $this->PrizeModel->getPrizesForLottery($id);
@@ -194,7 +194,7 @@ class Lottery extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/prize_form',
+				'list' => 'admincp/forms/prize_form',
 			);
 		
 		$prizes = $this->PrizeModel->getPrizesForLottery($prize->lotteryId);

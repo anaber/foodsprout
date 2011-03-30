@@ -45,7 +45,7 @@ class Ingredienttype extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/ingredienttype_form',
+				'list' => 'admincp/forms/ingredienttype_form',
 			);
 		
 		// Data to be passed to the views
@@ -81,7 +81,7 @@ class Ingredienttype extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/ingredienttype_form',
+				'list' => 'admincp/forms/ingredienttype_form',
 			);
 		
 		// Data to be passed to the views

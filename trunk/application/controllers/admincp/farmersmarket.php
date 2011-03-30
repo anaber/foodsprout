@@ -39,7 +39,7 @@ class FarmersMarket extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/farmers_market_form',
+				'form' => 'admincp/forms/farmers_market_form',
 			);
 		
 		// Data to be passed to the views
@@ -138,7 +138,7 @@ class FarmersMarket extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/supplier_form',
+				'list' => 'admincp/forms/supplier_form',
 			);
 		
 		// Data to be passed to the views
@@ -182,7 +182,7 @@ class FarmersMarket extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/supplier_form',
+				'list' => 'admincp/forms/supplier_form',
 			);
 		
 		// Data to be passed to the views
@@ -228,7 +228,7 @@ class FarmersMarket extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/address_form',
+				'list' => 'admincp/forms/address_form',
 			);
 		
 		// Data to be passed to the views
@@ -275,7 +275,7 @@ class FarmersMarket extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'form' => 'admincp/address_form',
+				'form' => 'admincp/forms/address_form',
 			);
 		
 		// Data to be passed to the views

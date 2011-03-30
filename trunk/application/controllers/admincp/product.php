@@ -49,7 +49,7 @@ class Product extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/product_form',
+				'list' => 'admincp/forms/product_form',
 			);
 			
 		// Data to be passed to the views
@@ -66,7 +66,7 @@ class Product extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/product_form',
+				'list' => 'admincp/forms/product_form',
 			);
 		
 		$data['RIGHT'] = array(

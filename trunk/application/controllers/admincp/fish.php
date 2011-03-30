@@ -44,7 +44,7 @@ class Fish extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/fish_form',
+				'list' => 'admincp/forms/fish_form',
 			);
 		
 		// Data to be passed to the views
@@ -78,7 +78,7 @@ class Fish extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/fish_form',
+				'list' => 'admincp/forms/fish_form',
 			);
 		
 		// Data to be passed to the views
