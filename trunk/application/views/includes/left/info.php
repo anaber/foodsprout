@@ -34,7 +34,7 @@ function makeNear2there(name,street,city,state) {
 	<?php
 			}
 	?>
-	<?php
+	<?php			
 			$name = '';
 			$streetAddress = '';
 			$city = '';
@@ -44,6 +44,7 @@ function makeNear2there(name,street,city,state) {
 			foreach($RESTAURANT->addresses as $key => $address) {
 				$streetAddress = $address->address;
 				$city = $address->city;
+				//$city = $address->cityName;
 				$state = $address->state;
 				break;
 			}
@@ -58,6 +59,14 @@ function makeNear2there(name,street,city,state) {
 		} else if (isset ($MANUFACTURE)) {
 			$name = $MANUFACTURE->manufactureName;
 			foreach($MANUFACTURE->addresses as $key => $address) {
+				$streetAddress = $address->address;
+				$city = $address->city;
+				$state = $address->state;
+				break;
+			}
+		} else if (isset ($DISTRIBUTOR)) {
+			$name = $DISTRIBUTOR->distributorName;
+			foreach($DISTRIBUTOR->addresses as $key => $address) {
 				$streetAddress = $address->address;
 				$city = $address->city;
 				$state = $address->state;
