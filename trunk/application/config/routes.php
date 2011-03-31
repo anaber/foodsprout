@@ -135,6 +135,7 @@ $route['^distributor/ajaxSearchDistributorPhotos'] 		= "distributor/ajaxSearchDi
 $route['^distributor/ajaxSearchDistributors'] 			= "distributor/ajaxSearchDistributors";
 $route['^distributor/ajaxSearchDistributorSuppliers'] 	= "distributor/ajaxSearchDistributorSuppliers";
 $route['^distributor/ajaxSearchDistributors'] 			= "distributor/ajaxSearchDistributors";
+$route['^distributor/view/(:num)'] 						= "distributor/view/$1";
 $route['^distributor/(:any)']							= "distributor/customUrl/$1";
 
 

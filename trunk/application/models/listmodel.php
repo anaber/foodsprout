@@ -400,7 +400,7 @@ class ListModel extends Model{
 				if ($supplier->customUrl) {
 					$html .= '	<a href="/' . $supplier->supplierType . '/' . $supplier->customUrl . '" style="font-size:13px;text-decoration:none;">'. $supplier->supplierName .'</a>' . "\n";
 				} else {
-					$html .= '	<a href="/' . $supplier->supplierType . '/view/' . $supplier->supplierReferenceId . '" style="font-size:13px;text-decoration:none;">'. $supplier->supplierName .'</a>' . "\n";
+					$html .= '	<a href="/' . $supplier->supplierType . '/view/' . $supplier->supplierId . '" style="font-size:13px;text-decoration:none;">'. $supplier->supplierName .'</a>' . "\n";
 				}
 				$html .=
 				'		<div class = "clear"></div>' . "\n" .

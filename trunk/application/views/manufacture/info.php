@@ -22,7 +22,13 @@
 <script>
 	
 	var manufactureId = <?php echo $MANUFACTURE->manufactureId; ?>;
-	var addressId = <?php echo $ADDRESS_ID; ?>;
+	<?php
+		if ($ADDRESS_ID) {
+			echo 'var addressId = ' . $ADDRESS_ID . ";";
+		} else {
+			echo 'var addressId = "";';
+		}
+	?>
 	var name = "<?php echo $MANUFACTURE->manufactureName; ?>";
 	var userGroup = "<?php echo $userGroup; ?>";
 	var userId = "<?php echo $userId; ?>";

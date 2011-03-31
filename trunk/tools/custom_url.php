@@ -31,7 +31,7 @@ class CustomUrl {
 		//$this->dumpDataToTempTable();
 		//$this->verifyNumRecords();
 		
-		// Fix proder id = 6704 - Change name from "Kentucky Fried Chicken - North" to "Kentucky Fried Chicken"
+		// Fix producer id = 6704 - Change name from "Kentucky Fried Chicken - North" to "Kentucky Fried Chicken"
 		//$query = "UPDATE `producer` SET `producer` = 'Kentucky Fried Chicken' WHERE `producer`.`producer_id` = 6704";
 		//mysql_query($query);
 		
@@ -57,7 +57,7 @@ class CustomUrl {
 		/** 
 		 * Triger again and again to generate URL for records which are not processed yet 
 		 */
-		$this->generateCustomUrlForCity();
+		//$this->generateCustomUrlForCity();
 	}
 	
 	function generateCustomUrlForCity() {
