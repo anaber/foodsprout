@@ -89,6 +89,8 @@ class User extends Controller {
 	// The settings for the user
 	function settings() {
 		global $LANDING_PAGE;
+        $this->load->helper('form');
+        
 		if ($this->session->userdata('isAuthenticated') != 1 ) {
 			redirect($LANDING_PAGE);
 		}
@@ -101,12 +103,14 @@ class User extends Controller {
 				'form' => 'user/settings',
 		);
 		$data['data']['center']['form']['USER'] = $user;
+
 		
 		$this->load->view('templates/center_template', $data);
 	}
 	
 	function updateSettings() {
 		global $LANDING_PAGE;
+        
 		if ($this->session->userdata('isAuthenticated') != 1 ) {
 			redirect($LANDING_PAGE);
 		}

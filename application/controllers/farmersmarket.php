@@ -21,6 +21,9 @@ class FarmersMarket extends Controller {
 
 		//$this->load->model('FarmersMarketModel', '', TRUE);
 		//$farmersMarket = $this->FarmersMarketModel->getFarmersMarketJson();
+
+        // get featured cities for sidebar
+        $this->getLeftFeaturedCities($data);
 		
 		if ( !empty($f) ) {
 			$data['CENTER'] = array(
@@ -442,6 +445,9 @@ class FarmersMarket extends Controller {
 		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
 		
 		$data['SEO'] = $seo;
+
+        // get featured cities for sidebar
+        $this->getLeftFeaturedCities($data);
 		
 		$q = $this->input->post('q');
 		$f = $this->input->post('f');
@@ -526,6 +532,15 @@ class FarmersMarket extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 		
 	}
+
+    private function getLeftFeaturedCities(array &$data)
+    {
+        // get left featured cities
+        $this->load->model('CityModel');
+        $featuredLeftCities = $this->CityModel->getLeftFeaturedCities();
+
+        $data['featureds'] = $featuredLeftCities;
+    }
 }
 
 /* End of file farm.php */

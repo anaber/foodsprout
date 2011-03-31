@@ -32,16 +32,21 @@
 	<?php
 	$city = $this->uri->segment(2);
 	?>
+
 <div class="filterh">Sustainable In:</div>
 <div id="" class="filterb">
 	<?php
-		foreach ($RECOMMENDED_CITIES as $rec_city) {
-			$browser_compatible_rec_city = implode('-', explode (' ', strtolower($rec_city)) );
-			echo '<a href="/sustainable/' . $browser_compatible_rec_city . '" style="font-size:13px;text-decoration:none;">'. ( ($browser_compatible_rec_city == $city) ? '<b>'.$rec_city.'</b>' : $rec_city ) . '</a><br/>';
-		}
+		if ( ! is_null($featureds)): foreach($featureds->result() as $city):
+            $fragment = urlencode(strtolower(str_replace(' ', '-', $city->city)));
+            echo anchor("sustainable/$fragment", $city->city) . '<br/>';
+        endforeach; else:
+            echo '<p>No featured cities listed</p>';
+        endif;
+        
 	?><br>
 	<a href="/cities">More Cities...</a>
 </div><br />
+    
 
 	<div class="filterh">Restaurant Type</div>
 	<div id="divRestaurantTypes" class="filterb"></div>

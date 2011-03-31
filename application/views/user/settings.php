@@ -37,9 +37,9 @@ $(document).ready(function() {
 			var formAction = '/user/updateSettings';
 			postArray = {
 						  email:$('#email').val(),
-						  username:$('#username').val(),
 						  firstName:$('#first_name').val(),
-						  zipcode:$('#zipcode').val()
+						  zipcode:$('#zipcode').val(),
+                          defaultcity : $('#defaultcity').val()
 						};
 		
 			$.post(formAction, postArray,function(data) {
@@ -110,7 +110,7 @@ echo form_open('user/updateSettings', $attributes);
 			<?php echo (isset($USER) ? $USER->username : '') ?>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td width="150" style="font-size:13px;text-decoration:none;">
 			First Name
@@ -128,15 +128,25 @@ echo form_open('user/updateSettings', $attributes);
 			<span style="font-size:11px">Providing your zip code will allow us to show you results near you by default</span>
 		</td>
 	</tr>
+
+    <tr>
+		<td width="150">
+            Default City
+		</td>
+		<td width="450">
+			<input type="text" value="<?php echo (isset($USER) ? $USER->defaultCity : '') ?>" id = "defaultcity" class="validate[required]"><br>
+		</td>
+	</tr>
+    
 	<tr>
 		<td width="150">
-			
+
 		</td>
 		<td width="450">
 			<?php echo form_submit('submit', 'Save'); ?>
 		</td>
 	</tr>
-</table> 
+</table>
 </form>
 
 <br>

@@ -125,8 +125,8 @@ a.button_img:hover span{background-position:left -29px;text-decoration:none;}
 /* margin set to zero uipb 168 ie 7 rendering issue */
 span.input_img:hover{background-position:right -29px;text-decoration:none;}
 span.input_img:hover input[type=submit]{background-position:left -29px;text-decoration:none;}
-.city{float:left;width:190px;font-size:120%;}
-.city a{font-size:18px;text-decoration:none;line-height:140%;}
+.city{float:left;width:190px;font-size:120%; margin-bottom: 20px;}
+.city a{font-size:16px;text-decoration:none;line-height:140%;}
 /* Border */
 .border-red-1{border:red 1px solid;}
 .border-blue-1{border:blue 1px solid;}

@@ -53,7 +53,21 @@ class StateModel extends Model{
 		
 		return $this->stateLib;
 	}
-	
+
+        function getStatesGrouped()
+        {
+            $query = $this->db->select('*')->order_by('state_name', 'asc')->get('state');
+
+            $states = array();
+            
+            foreach ($query->result() as $state)
+            {
+                $states[] = $state;
+            }
+
+            // group each state by 14s
+            return array_chunk($states, 14);
+        }
 }
 
 

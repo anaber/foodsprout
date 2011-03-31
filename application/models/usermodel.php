@@ -173,6 +173,7 @@ class UserModel extends Model{
 			$this->UserLib->userGroup = $row->user_group;
 			$this->UserLib->zipcode = $row->zipcode;
 			$this->UserLib->userGroupId = $row->user_group_id;
+            $this->UserLib->defaultCity = $row->default_city;
 			
 			return $this->UserLib;
 		} else {
@@ -191,10 +192,10 @@ class UserModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'email' => $this->input->post('email'), 
-						'username' => $this->input->post('username'),
+						'email' => $this->input->post('email'),
 						'first_name' => $this->input->post('firstName'),
 						'zipcode' => $this->input->post('zipcode'),
+                        'default_city' => $this->input->post('defaultcity')
 					);
 			$where = "user_id = " . $this->session->userdata('userId');
 			$query = $this->db->update_string('user', $data, $where);
@@ -385,8 +386,22 @@ class UserModel extends Model{
 		}
 		
 	}
+
+    function getDefaultCityByUserId($userId)
+    {
+        $q = $this->db->select('default_city')->from('user')->where('user_id', $userId)->get()->row();
+
+        return ($q) ? $q->default_city : null;
+    }
+
+    function updateUserDefaultCity($defaultCity, $userId)
+    {
+        if (ctype_digit($userId))
+        {
+            $data = array('default_city' => $defaultCity);
+
+            $this->db->update('user', $data, 'user_id = '.$userId);
+        }
+    }
 }
-
-
-
 ?>

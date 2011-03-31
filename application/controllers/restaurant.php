@@ -9,6 +9,12 @@ class Restaurant extends Controller {
 
 	function index() {
 		global $RECOMMENDED_CITIES;
+
+        // get left featured cities
+        $this->load->model('CityModel');
+        $featuredLeftCities = $this->CityModel->getLeftFeaturedCities();
+        
+        
 		$data = array();
 		//print_r_pre($this->session->userdata);
 		//setcookie('seachedZip', 98004, time()+60*60*24*30*365);
@@ -61,7 +67,7 @@ class Restaurant extends Controller {
 			$data['data']['center']['list']['hide_filters'] = 'no';
 		}
 
-		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
+        $data['data']['left']['filter']['featureds'] = $featuredLeftCities;
 		
 		$this->load->model('RestaurantModel', '', TRUE);
 		$restaurants = $this->RestaurantModel->getRestaurantsJson();
@@ -475,7 +481,12 @@ class Restaurant extends Controller {
 		}
 
 		$data['data']['left']['filter']['CITY'] = $city;
-		$data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;
+		// $data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;// get left featured cities
+
+        $this->load->model('CityModel');
+        $featuredLeftCities = $this->CityModel->getLeftFeaturedCities();
+        $data['data']['left']['filter']['featureds'] = $featuredLeftCities;
+
 
 		$data['CSS'] = array(
 						'listing'
@@ -588,7 +599,6 @@ class Restaurant extends Controller {
 		}
 		
 	}
-
 }
 
 /* End of file restaurant.php */
