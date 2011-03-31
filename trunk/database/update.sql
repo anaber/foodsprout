@@ -601,4 +601,9 @@ ALTER TABLE `user` ADD UNIQUE INDEX `username_UNIQUE` (`username` ASC) ;
 
 ALTER TABLE `user_group_member` DROP FOREIGN KEY `user_group_member_ibfk_1` , DROP FOREIGN KEY `user_group_member_ibfk_2`;
 
+--ALTER city tables and add
+ALTER TABLE `user` ADD COLUMN `default_city` VARCHAR(255) NOT NULL;
+ALTER TABLE `city` ADD COLUMN `main_city` TINYINT(1) UNSIGNED NULL DEFAULT NULL, ADD COLUMN `featured_left` TINYINT(1) UNSIGNED NULL DEFAULT NULL;
 
+-- UPDATE SEO table AND change meta keyword for restaurant_detail
+UPDATE `foodnew`.`seo_page` SET `meta_keywords` = '$restaurant_name' WHERE `seo_page`.`seo_page_id` = 3;

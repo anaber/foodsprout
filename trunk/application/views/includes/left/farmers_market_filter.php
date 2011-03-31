@@ -59,9 +59,11 @@ $(function() {
 ?>
 <div class="filterh">Markets by Cities:</div>
 <div id="" class="filterb">
-	<a href="/farmersmarket/city/san-francisco-ca" style="font-size:13px;text-decoration:none;"><?php echo ($city == 'san-francisco-ca') ? '<b>San Francisco</b>' : 'San Francisco' ?></a><br />
-	<a href="/farmersmarket/city/berkeley-ca" style="font-size:13px;text-decoration:none;"><?php echo ($city == 'berkeley-ca') ? '<b>Berkeley</b>' : 'Berkeley' ?></a><br />
-	<a href="/farmersmarket/city/new-york-ny" style="font-size:13px;text-decoration:none;"><?php echo ($city == 'new-york-ny') ? '<b>New York</b>' : 'New York' ?></a><br />
-	<br/>
+    <?php if ( isset($featureds) && ! is_null($featureds)): foreach($featureds->result() as $city):
+        echo anchor("farmersmarket/city/{$city->custom_url}", $city->city) . '<br/>';
+    endforeach; else:
+        echo '<p>No cities listed.</p>';
+    endif
+    ?>
 	<?php echo anchor('/cities/farmersmarket', 'More Cities'); ?>
 </div><br />

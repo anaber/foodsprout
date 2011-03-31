@@ -376,8 +376,77 @@ class CityModel extends Model{
 		
 		return $return;
 	}
-	
-	
+
+        /**
+         * Get all cities then insert in a group with 14 cities each group
+         *
+         * @return: array or null if query is empty
+         */
+        function getCitiesGrouped()
+        {
+            $q = $this->db->where('main_city', 1)->get('city');
+
+            if ($q->num_rows() > 0)
+            {
+                $cities = array();
+
+                foreach($q->result() as $city)
+                {
+                    $cities[] = $city;
+                }
+
+                return array_chunk($cities, 14);
+            }
+            
+            return null;
+        }
+
+        /**
+         * Get cities filtered by the state they are in
+         *
+         * @param string $state_name
+         * @return array or null if query is empty
+         */
+        function getCitiesInStateGrouped($state_name)
+        {
+            $q = $this->db->select('state_id')
+                    ->where('state_name', $state_name)
+                    ->from('state')
+                    ->get()
+                    ->row();
+
+            $state_id = ($q) ? $q->state_id : null;
+
+            if ( ! is_null ($state_id))
+            {
+                $q = $this->db->select('city_id, city')
+                    ->order_by('city', 'asc')
+                    ->where('state_id', $state_id)
+                    ->get('city');
+
+                if ($q->num_rows() > 0)
+                {
+                    $cities = array();
+
+                    foreach($q->result() as $city)
+                    {
+                        $cities[] = $city;
+                    }
+
+                    return array_chunk($cities, 14);
+                }
+            }
+            
+            return null;
+        }
+
+    function getLeftFeaturedCities()
+    {
+        $query = 'SELECT * FROM city WHERE featured_left = ? AND custom_url IS NOT NULL LIMIT 10';
+        $leftFeaturedCities = $this->db->query($query, array(1));
+
+        return ($leftFeaturedCities->num_rows() > 0) ? $leftFeaturedCities : null;
+    }
 }
 
 
