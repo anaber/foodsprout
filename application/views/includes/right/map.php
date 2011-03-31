@@ -20,6 +20,10 @@
 					foreach($MANUFACTURE->addresses as $key => $address) {
 						echo '<a href = "#" id = "map_'.$address->addressId.'" style="font-size:13px;text-decoration:none;">'.$address->displayAddress.'</a><br /><br />';
 					}
+				} else if (isset ($DISTRIBUTOR)) {
+					foreach($DISTRIBUTOR->addresses as $key => $address) {
+						echo '<a href = "#" id = "map_'.$address->addressId.'" style="font-size:13px;text-decoration:none;">'.$address->displayAddress.'</a><br /><br />';
+					}
 				} else if (isset ($FARMERS_MARKET)) {
 					foreach($FARMERS_MARKET->addresses as $key => $address) {
 						echo '<a href = "#" id = "map_'.$address->addressId.'" style="font-size:13px;text-decoration:none;">'.$address->displayAddress.'</a><br /><br />';

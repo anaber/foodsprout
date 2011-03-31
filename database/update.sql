@@ -606,4 +606,4 @@ ALTER TABLE `user` ADD COLUMN `default_city` VARCHAR(255) NOT NULL;
 ALTER TABLE `city` ADD COLUMN `main_city` TINYINT(1) UNSIGNED NULL DEFAULT NULL, ADD COLUMN `featured_left` TINYINT(1) UNSIGNED NULL DEFAULT NULL;
 
 -- UPDATE SEO table AND change meta keyword for restaurant_detail
-UPDATE `foodnew`.`seo_page` SET `meta_keywords` = '$restaurant_name' WHERE `seo_page`.`seo_page_id` = 3;
+UPDATE `seo_page` SET `meta_keywords` = '$restaurant_name' WHERE `seo_page`.`seo_page_id` = 3;

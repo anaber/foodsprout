@@ -242,21 +242,23 @@ class AddressModel extends Model{
 		
 		$return = true;
 		$CI =& get_instance();
+		$CI->load->model('CityModel','',true);
 		
 		$stateId = $this->input->post('stateId');
 		$cityId = $this->input->post('cityId');
 		$cityName = $this->input->post('cityName');
 		
 		if ( !empty ($cityName) && empty ($cityId)  ) {
-			$CI->load->model('CityModel','',true);
 			$cityId = $CI->CityModel->addCity($cityName, $stateId);
 		}
 		
 		$city = $this->input->post('city');
-		if ($city) {
-			
+		
+		if (empty($city)) {
+			$cityObj = $CI->CityModel->getCityFromId($cityId);
+			$city = $cityObj->city;
 		} else {
-			$city = $cityName;
+			
 		}
 		
 		$address = $this->prepareAddress($this->input->post('address'), $this->input->post('city'), $this->input->post('cityId'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
@@ -268,7 +270,7 @@ class AddressModel extends Model{
 		$claimsSustainable = $this->input->post('claimsSustainable');
 		
 		$query = "INSERT INTO address (address_id, producer_id, address, city, city_id, state_id, zipcode, country_id, latitude , longitude, geocoded, claims_sustainable, track_ip, user_id)" .
-				" values (NULL, " . $producerId . ", \"" . $this->input->post('address') . "\", \"" . $this->input->post('city') . "\", '" . $cityId . "', '" . $stateId . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "' ";
+				" values (NULL, " . $producerId . ", \"" . $this->input->post('address') . "\", \"" . $city . "\", '" . $cityId . "', '" . $stateId . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "' ";
 		
 		if ( isset($latLng['latitude']) && isset($latLng['longitude']) ) {
 			$query .= ", 1";

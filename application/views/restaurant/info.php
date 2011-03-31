@@ -21,7 +21,13 @@
 
 <script>
 	var restaurantId = <?php echo $RESTAURANT->restaurantId; ?>;
-	var addressId = <?php echo $ADDRESS_ID; ?>;
+	<?php
+		if ($ADDRESS_ID) {
+			echo 'var addressId = ' . $ADDRESS_ID . ";";
+		} else {
+			echo 'var addressId = "";';
+		}
+	?>
 	var name = "<?php echo $RESTAURANT->restaurantName; ?>";
 	var userGroup = "<?php echo $userGroup; ?>";
 	var userId = "<?php echo $userId; ?>";
