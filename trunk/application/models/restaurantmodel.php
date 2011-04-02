@@ -651,14 +651,6 @@ class RestaurantModel extends Model{
 	// Pulls the data from the database for a specific restaurant
 	function getRestaurantFromId($restaurantId, $addressId='') {
 
-//	$query  =	"SELECT restaurant.*, restaurant_chain.restaurant_chain, company.company_name" .
-//				" FROM restaurant" .
-//				" LEFT JOIN restaurant_chain" .
-//				" ON restaurant.restaurant_chain_id = restaurant_chain.restaurant_chain_id" .
-//				" LEFT JOIN company" .
-//				" ON restaurant.company_id = company.company_id" .
-//				" WHERE restaurant.restaurant_id = ".$restaurantId;
-
 		$query = "select * from producer WHERE producer.producer_id = ".$restaurantId;
 		
 		log_message('debug', "RestaurantModel.getRestaurantFromId : " . $query);
@@ -691,10 +683,6 @@ class RestaurantModel extends Model{
 			$geocodeArray = array();
 
 			$this->restaurantLib->restaurantId = $row->producer_id;
-			//$this->restaurantLib->companyId = $row->producer_id;
-			//$this->restaurantLib->companyName = $row->producer;
-			//$this->restaurantLib->restaurantChainId = $row->restaurant_chain_id;
-			//$this->restaurantLib->restaurantChain = $row->producer;
 			$this->restaurantLib->restaurantTypeId = $this->getRestaurantTypeId($row->producer_id);
 			$this->restaurantLib->restaurantName = $row->producer;
 			$this->restaurantLib->customURL = $row->custom_url;
@@ -714,13 +702,9 @@ class RestaurantModel extends Model{
 			$CI->load->model('AddressModel','',true);
 			
 			if(isset($addressId) && $addressId !=''){
-				
 				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, '', '', '', $addressId);
-				
-			}else{
-				
+			} else {
 				$addresses = $CI->AddressModel->getAddressForProducer($row->producer_id, $q, $city, '', $addressId);
-				
 			}
 			
 			$this->restaurantLib->addresses = $addresses;

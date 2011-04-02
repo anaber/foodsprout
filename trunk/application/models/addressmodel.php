@@ -5,7 +5,9 @@ class AddressModel extends Model{
 	function prepareAddress($address, $city, $city_id, $state_id, $country_id, $zipcode) {
 		$CI =& get_instance();
 		
-		if ( !empty($city_id) ) {
+		if ( ! empty($city)) {
+			
+		} else if ( !empty($city_id) ) {
 			$CI->load->model('CityModel','',true);
 			$objCity = $CI->CityModel->getCityFromId($city_id);
 			
@@ -26,7 +28,9 @@ class AddressModel extends Model{
 	function prepareAddressToDisplay($address, $city, $city_id, $state_id, $country_id, $zipcode) {
 		$CI =& get_instance();
 		
-		if ( !empty($city_id) ) {
+		if ( ! empty($city)) {
+			
+		} else if ( !empty($city_id) ) {
 			$CI->load->model('CityModel','',true);
 			$objCity = $CI->CityModel->getCityFromId($city_id);
 			
@@ -132,9 +136,7 @@ class AddressModel extends Model{
 		$query .= "address.producer_id = '".$producerId."' ";
 		
 		if(!empty($addressId)){
-			
 			$query.= " and address_id ='".$addressId."' ";
-			
 		}
 		 
 		if (!empty($zipcode) ) {
@@ -163,7 +165,18 @@ class AddressModel extends Model{
 			
 			$this->addressLib->addressId = $row['address_id'];
 			$this->addressLib->address = $row['address'];
-			$this->addressLib->city = $row['city'];
+			if ($row['city']) {
+				$this->addressLib->city = $row['city'];
+				$city = $row['city'];
+			} else {
+				$CI =& get_instance();
+				$CI->load->model('CityModel','',true);
+				$objCity = $CI->CityModel->getCityFromId($row['city_id']);
+				
+				$city = $objCity->city;
+				$this->addressLib->city = $city;
+			}
+			
 			$this->addressLib->cityId = $row['city_id'];
 			$this->addressLib->stateId = $row['state_id'];
 			$this->addressLib->state = $row['state_name'];
@@ -176,7 +189,7 @@ class AddressModel extends Model{
 			$this->addressLib->claimsSustainable = $row['claims_sustainable'];
 			
 			$this->addressLib->completeAddress = $this->prepareAddress($row['address'], $row['city'], $row['city_id'], $row['state_id'], $row['country_id'], $row['zipcode']);
-			$this->addressLib->displayAddress = $this->prepareAddressToDisplay($row['address'], $row['city'], $row['city_id'], $row['state_id'], $row['country_id'], $row['zipcode']);
+			$this->addressLib->displayAddress = $this->prepareAddressToDisplay($row['address'], $city, $row['city_id'], $row['state_id'], $row['country_id'], $row['zipcode']);
 			
 			$addresses[] = $this->addressLib;
 			unset($this->addressLib);

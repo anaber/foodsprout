@@ -135,6 +135,7 @@ class Restaurant extends Controller {
 		// Getting information from models
 		$this->load->model('RestaurantModel');
 		$restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantId, $addressId);
+		//print_r_pre($restaurant);
 		
 		$this->load->model('ProductTypeModel');
 		$productTypes = $this->ProductTypeModel->listProductType();
@@ -145,7 +146,7 @@ class Restaurant extends Controller {
 
 		$seo_data_array = array(
 			'restaurant_name' => $restaurant->restaurantName,
-		// need to add more info about the restaurant here
+			// need to add more info about the restaurant here
 		);
 
 		$seo = $this->SeoModel->parseSeoData($seo, $seo_data_array);
@@ -177,7 +178,6 @@ class Restaurant extends Controller {
 		$data['data']['center']['info']['SUPPLIER_TYPES_2'] = $SUPPLIER_TYPES_2;
 		$data['data']['center']['info']['PRODUCT_TYPES'] = $productTypes;
 		$data['data']['center']['info']['RESTAURANT_ID'] = $restaurant->restaurantId;
-		$data['data']['center']['info']['RESTAURANT_ID'] = $restaurant->restaurantId;
 		$data['data']['center']['info']['ADDRESS_ID'] = $addressId;
 		$data['data']['center']['info']['TABLE'] = 'restaurant_supplier';
 		
@@ -195,8 +195,6 @@ class Restaurant extends Controller {
 					'facebook' => $restaurant->facebook,
 					'twitter' => $restaurant->twitter,
 		);
-		$data['data']['left']['info']['INFO'] = $INFO;
-
 		$data['data']['left']['info']['INFO'] = $INFO;
 		$data['data']['left']['info']['RESTAURANT'] = $restaurant;
 
