@@ -1,15 +1,5 @@
 <p>Select a city below to view sustainable food for that area.</p>
 
-<?php if ( ! is_null($default_city)): ?>
-    <p>Your default city is <?php echo $default_city ?></p>
-    <?php
-        echo form_open("cities/index?return={$this->uri->uri_string()}"),
-            form_input('default_city', ''),
-            form_submit('', 'Replace Your Default City'),
-            form_close();
-    ?>
-<?php endif ?>
-<br/>
 <h2>USA</h2>
 
 <div class="city">
