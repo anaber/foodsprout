@@ -5,6 +5,7 @@ class Common extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
+		checkUserAgent();
 	}
 	
 	/**

@@ -5,6 +5,7 @@ class About extends Controller {
     function __construct() {
         parent::Controller();
 		checkUserLogin();
+		checkUserAgent();
     }
 
     // The default goes to the about page

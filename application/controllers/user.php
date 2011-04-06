@@ -6,6 +6,7 @@ class User extends Controller {
 		// Ensure the user is logged in before allowing access to any of these methods
 		parent::Controller();
 		checkUserLogin();
+		checkUserAgent();
 	}
 	
 	// The default for the user is the dashboard

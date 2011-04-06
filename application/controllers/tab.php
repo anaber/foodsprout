@@ -6,6 +6,7 @@ class Tab extends Controller {
         global $FB_APP_ID, $FB_SECRET_KEY;
         parent::Controller();
 		checkUserLogin();
+		checkUserAgent();
 		
 		$this->load->plugin('facebook');
 		

@@ -5,6 +5,7 @@ class City extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
+		checkUserAgent();
 	}
 	
 	function get_cities_based_on_state() {		
