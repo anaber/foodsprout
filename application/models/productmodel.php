@@ -831,7 +831,7 @@ class ProductModel extends Model {
 		$page = 0;
 
 		$base_query = 'SELECT product.*, product_type.product_type, ' .
-        		' producer.producer ' .
+        		' producer.producer, producer.is_restaurant, producer.is_restaurant_chain, producer.is_manufacture ' .
 				' FROM product';
 
 		$base_query_count = 'SELECT count(*) AS num_records' .
@@ -904,13 +904,21 @@ class ProductModel extends Model {
 
 			$this->productLib->productId = $row->product_id;
 			$this->productLib->productName = $row->product_name;
-			$this->productLib->producderId = $row->producer_id;
+			$this->productLib->producerId = $row->producer_id;
 			$this->productLib->producerName = $row->producer;
 			$this->productLib->productTypeId = $row->product_type_id;
 			$this->productLib->productType = $row->product_type;
 			$this->productLib->ingredient = $row->ingredient_text;
 			$this->productLib->brand = $row->brand;
 			$this->productLib->upc = $row->upc;
+			
+			if( $row->is_restaurant == 1 ) {
+				$this->productLib->producerType = "restaurant";
+			} elseif( $row->is_restaurant_chain == 1 ) {
+				$this->productLib->producerType = "restaurant_chain";
+			} elseif( $row->is_manufacture == 1 ) {
+				$this->productLib->producerType = "manufacture";
+			}
 
 			$products[] = $this->productLib;
 			unset($this->productLib);
