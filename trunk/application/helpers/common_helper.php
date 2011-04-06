@@ -305,4 +305,37 @@ function trimWhiteSpaces($string){
 	}
 }
 
+function checkUserAgent() {
+	$_CI =& get_instance();
+	$_CI->load->library('user_agent');
+	
+	if ($_CI->agent->is_mobile())
+		$agent = 'mobile';
+	elseif ($_CI->agent->is_robot())
+		$agent = 'robot';
+	elseif ($_CI->agent->is_browser())
+		$agent = 'browser';
+	else
+		$agent = 'Unidentified User Agent';
+
+	if( $agent == 'mobile' )
+		redirect('/mobile');
+}
+
+function getUserAgent() {
+	$_CI =& get_instance();
+	$_CI->load->library('user_agent');
+
+	if ($_CI->agent->is_mobile())
+		$agent = $_CI->agent->mobile();
+	elseif ($_CI->agent->is_robot())
+		$agent = $_CI->agent->robot();
+	elseif ($_CI->agent->is_browser())
+		$agent = $_CI->agent->browser().' '.$_CI->agent->version();
+	else
+		$agent = 'Unidentified User Agent';
+	
+	return $agent;
+}
+
 ?>

@@ -5,6 +5,7 @@ class Home extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
+		checkUserAgent();
 	}
 	
 	// Homepage

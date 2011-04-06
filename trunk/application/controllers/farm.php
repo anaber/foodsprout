@@ -6,6 +6,8 @@ class Farm extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
+		checkUserAgent();
+
 		$this->css = array(
 			'farm',
 		);

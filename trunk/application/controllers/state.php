@@ -5,6 +5,7 @@ class State extends Controller {
 	function __construct()
 	{
 		parent::Controller();
+		checkUserAgent();
 	}
 	
 	function ajaxSearchStates() {

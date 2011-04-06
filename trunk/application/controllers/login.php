@@ -6,6 +6,7 @@ class Login extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
+		checkUserAgent();
 	}
 
 	function index() {
