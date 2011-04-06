@@ -72,34 +72,36 @@ function reinitializeTableHeadingEvent(data) {
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'brand', order, data.param.q);
 	});
 	
-	$("#heading_upc").click(function(e) {
+/*	$("#heading_upc").click(function(e) {
 		e.preventDefault();
 		order = getOrder(data, 'upc');
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'upc', order, data.param.q);
-	});
+	});*/
 }
 
 function addResult(product, i) {
 	var html =
 	'<tr>' +
 	'	<td valign="top">';
-	if (product.restaurantName) {
-		html += '<a href = "/admincp/restaurant/update_menu_item/' + product.productId + '">' + product.productId + '</a>';
-	} else if (product.restaurantChain) {
-		html += '<a href = "/admincp/restaurantchain/update_menu_item/' + product.productId + '">' + product.productId + '</a>';
-	} else if (product.manufactureName) {
-		html += '<a href = "/admincp/manufacture/update_menu_item/' + product.productId + '">' + product.productId + '</a>';
+	if (product.producerType == 'restaurant') {
+		html += '<a href = "/admincp/restaurant/update_menu_item/' + product.productId + '/'+ product.producerId +'">' + product.productId + '</a>';
+	} else if (product.producerType == 'restaurant_chain') {
+		html += '<a href = "/admincp/restaurantchain/update_menu_item/' + product.productId + '/'+ product.producerId + '">' + product.productId + '</a>';
+	} else if (product.producerType == 'manufacture') {
+		html += '<a href = "/admincp/manufacture/update_menu_item/' + product.productId + '/'+ product.producerId +'">' + product.productId + '</a>';
 	}
+
 	html += 
 	'	</td>' +
 	'	<td valign="top">';
-	if (product.restaurantName) {
-		html += '<a href = "/admincp/restaurant/update_menu_item/' + product.productId + '">' + product.productName + '</a>';
-	} else if (product.restaurantChain) {
-		html += '<a href = "/admincp/restaurantchain/update_menu_item/' + product.productId + '">' + product.productName + '</a>';
-	} else if (product.manufactureName) {
-		html += '<a href = "/admincp/manufacture/update_menu_item/' + product.productId + '">' + product.productName + '</a>';
+	if (product.producerType == 'restaurant') {
+		html += '<a href = "/admincp/restaurant/update_menu_item/' + product.productId + '/'+ product.producerId +'">' + product.productName + '</a>';
+	} else if (product.producerType == 'restaurant_chain') {
+		html += '<a href = "/admincp/restaurantchain/update_menu_item/' + product.productId + '/'+ product.producerId + '">' + product.productName + '</a>';
+	} else if (product.producerType == 'manufacture') {
+		html += '<a href = "/admincp/manufacture/update_menu_item/' + product.productId + '/'+ product.producerId +'">' + product.productName + '</a>';
 	}
+	
 	html += 
 	'	</td>' +
 	'	<td valign="top">'+ product.productType +'</td>' +
@@ -115,8 +117,8 @@ function addResult(product, i) {
 	
 	html +=
 	'	</td>' +
-	'	<td valign="top">'+ product.brand +'</td>' +
-	'	<td valign="top">'+ (product.upc ? product.upc : '') +'</td>';
+	'	<td valign="top">'+ product.brand +'</td>';
+//	'	<td valign="top">'+ (product.upc ? product.upc : '') +'</td>';
 	html +=
 	'</tr>'
 	;
@@ -133,9 +135,9 @@ function getResultTableHeader() {
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 	'		<th id = "heading_product"><a href = "#" style = "color:#FFFFFF">Product Name</a></th>' +
 	'		<th id = "heading_product_type"><a href = "#" style = "color:#FFFFFF">Product Type</a></th>' +
-	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
+	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Producer</a></th>' +
 	'		<th id = "heading_brand"><a href = "#" style = "color:#FFFFFF">Brand</a></th>' +
-	'		<th id = "heading_upc"><a href = "#" style = "color:#FFFFFF">UPC</a></th>' +
+//	'		<th id = "heading_upc"><a href = "#" style = "color:#FFFFFF">UPC</a></th>' +
 	'	</tr>' +
 	'	</thead>' +
 	'	<tbody>';
