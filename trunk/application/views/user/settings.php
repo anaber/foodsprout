@@ -5,7 +5,9 @@
  * Author: Deepak Kumar
  */
 ?>
-<script>
+<script type="text/javascript" src="<?php echo base_url() ?>js/admin/city_search_admin.js"></script>
+
+<script type="text/javascript">
 
 formValidated = true;
 
@@ -16,7 +18,16 @@ $(document).ready(function() {
 		success :  function() {formValidated = true;},
 		failure : function() {formValidated = false; }
 	});
-	
+
+        $("#cityAjax").autocomplete("/city/get_cities_for_user_settings", {
+		width: 260,
+		selectFirst: false,
+		cacheLength:0
+	}).result(function(event,data){
+           if(data) {
+               $('#cityId').attr('value', data[1]);
+           }
+        });
 	
 	$("#frmAccount").submit(function() {
 		
@@ -36,11 +47,11 @@ $(document).ready(function() {
 			
 			var formAction = '/user/updateSettings';
 			postArray = {
-						  email:$('#email').val(),
-						  firstName:$('#first_name').val(),
-						  zipcode:$('#zipcode').val(),
-                          defaultcity : $('#defaultcity').val()
-						};
+                          email:$('#email').val(),
+                          firstName:$('#first_name').val(),
+                          zipcode:$('#zipcode').val(),
+                          defaultcity:$('#cityId').val()
+                        };
 		
 			$.post(formAction, postArray,function(data) {
 				
@@ -134,7 +145,8 @@ echo form_open('user/updateSettings', $attributes);
             Default City
 		</td>
 		<td width="450">
-			<input type="text" value="<?php echo (isset($USER) ? $USER->defaultCity : '') ?>" id = "defaultcity" class="validate[required]"><br>
+			<input type="text" value="<?php echo ($DEFAULT_CITY ? $DEFAULT_CITY : '' )?>" id="cityAjax" class="validate[required]"><br>
+                        <input type="hidden" value="<?php echo (isset($USER) ? $USER->defaultCity : '') ?>" id="cityId" />
 		</td>
 	</tr>
     

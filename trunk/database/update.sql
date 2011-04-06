@@ -606,4 +606,14 @@ ALTER TABLE `user` ADD COLUMN `default_city` VARCHAR(255) NOT NULL;
 ALTER TABLE `city` ADD COLUMN `main_city` TINYINT(1) UNSIGNED NULL DEFAULT NULL, ADD COLUMN `featured_left` TINYINT(1) UNSIGNED NULL DEFAULT NULL;
 
 -- UPDATE SEO table AND change meta keyword for restaurant_detail
-UPDATE `seo_page` SET `meta_keywords` = '$restaurant_name' WHERE `seo_page`.`seo_page_id` = 3;
+UPDATE `foodnew`.`seo_page` SET `meta_keywords` = '$restaurant_name' WHERE `seo_page`.`seo_page_id` = 3;
+
+-- ADD INDEX FOR default_city
+ALTER TABLE `user` ADD INDEX ( `default_city` )
+
+-- MODIFY default_city to be a foreign key
+ALTER TABLE `user` CHANGE `default_city` `default_city` INT NOT NULL
+
+-- MODIFY TABLE to add custom_url to products table and ADD INDEX to it
+ALTER TABLE `product` ADD `custom_url` VARCHAR( 100 ) NOT NULL ,
+ADD INDEX ( `custom_url` ) 

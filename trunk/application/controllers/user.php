@@ -89,7 +89,8 @@ class User extends Controller {
 	// The settings for the user
 	function settings() {
 		global $LANDING_PAGE;
-        $this->load->helper('form');
+                
+                $this->load->helper('form');
         
 		if ($this->session->userdata('isAuthenticated') != 1 ) {
 			redirect($LANDING_PAGE);
@@ -102,6 +103,13 @@ class User extends Controller {
 		$data['CENTER'] = array(
 				'form' => 'user/settings',
 		);
+
+                // get city name from user default city (which references city_id)
+                $this->load->model('CityModel');
+                $city = $this->CityModel->getCityFromId($user->defaultCity)->city;
+                
+                $data['data']['center']['form']['DEFAULT_CITY'] = $city;
+
 		$data['data']['center']['form']['USER'] = $user;
 
 		

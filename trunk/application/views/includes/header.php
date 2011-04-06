@@ -29,6 +29,8 @@ if (isset ($CSS) ) {
 <script src="<?php echo base_url()?>js/jquery.validationEngine-en.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/thickbox.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.datepick.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
+
 
 <script type="text/javascript">
 var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-135491-28']);_gaq.push(['_trackPageview']);

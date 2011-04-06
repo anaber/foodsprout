@@ -192,11 +192,12 @@ class UserModel extends Model{
 		if ($result->num_rows() == 0) {
 			
 			$data = array(
-						'email' => $this->input->post('email'),
-						'first_name' => $this->input->post('firstName'),
-						'zipcode' => $this->input->post('zipcode'),
-                        'default_city' => $this->input->post('defaultcity')
-					);
+                            'email' => $this->input->post('email'),
+                            'first_name' => $this->input->post('firstName'),
+                            'zipcode' => $this->input->post('zipcode'),
+                            'default_city' => $this->input->post('defaultcity')
+                        );
+                        
 			$where = "user_id = " . $this->session->userdata('userId');
 			$query = $this->db->update_string('user', $data, $where);
 			
