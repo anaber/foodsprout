@@ -153,6 +153,10 @@ $route['^product/(:any)']								= "product/customUrl/$1";
 // ADMINCP
 $route['^admincp'] 										= "admincp/dashboard";
 
+// ADMINCP
+$route['^business'] 									= "business/home";
+$route['^business/success-stories'] 					= "business/success";
+
 $route['scaffolding_trigger'] = "";
 
 /* End of file routes.php */
