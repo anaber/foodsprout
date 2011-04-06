@@ -35,13 +35,18 @@ $(document).ready(function() {
 			var act = '';
 			
 			if ($('#cityId').val() != '' ) {
+                            // parse checkboxes
+                            var featuredLeftVal = $('#featured_left').is(':checked') ? $('#featured_left').val() : 0;
+                            var mainCityVal = $('#main_city').is(':checked') ? $('#main_city').val() : 0;
+                            
 				var formAction = '/admincp/city/save_update';
 				postArray = {
 							  city:$('#city').val(),
 							  stateId:$('#stateId').val(),
 							  customUrl:$('#customUrl').val(),
-							  
-							  cityId: $('#cityId').val()
+							  cityId: $('#cityId').val(),
+                                                          mainCity: mainCityVal,
+                                                          featuredLeft: featuredLeftVal
 							};
 				act = 'update';		
 			} else {
@@ -50,6 +55,7 @@ $(document).ready(function() {
 							  city:$('#city').val(),
 							  stateId:$('#stateId').val(),
 							  customUrl:$('#customUrl').val()
+
 							};
 				act = 'add';
 			}
@@ -139,6 +145,23 @@ $(document).ready(function() {
 			<input value="<?php echo (isset($CITY) ? $CITY->customUrl : '') ?>" class="validate[optional]" size = "30" type="text" name="customUrl" id="customUrl"/><br />
 		</td>
 	</tr>
+
+        <tr>
+            <td width="25%" nowrap>Main City?</td>
+            <td width="75%">
+                <input type="checkbox" name="main_city" id="main_city" value="1"
+                       <?php echo (isset($CITY) && $CITY->mainCity) ? 'checked="checked"' : '' ?>/>
+            <td>
+        </tr>
+
+        <tr>
+            <td width="25%" nowrap>Left Featured?</td>
+            <td width="75%">
+                <input type="checkbox" name="featured_left" id="featured_left"value="1"
+                       <?php echo (isset($CITY) && $CITY->featuredLeft) ? 'checked="checked"' : '' ?>/>
+            <td>
+        </tr>
+
 	
 	<tr>
 		<td width = "25%" colspan = "2">

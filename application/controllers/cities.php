@@ -11,24 +11,6 @@ class Cities extends Controller {
 
     // The default listing of all major cities with a search
     function index() {
-        if ($_POST)
-        {
-            // this POST handles changing of default city in the cities view if a user is logged in
-            if (FALSE != ($userId = $this->session->userdata('userId')))
-            {
-                $defaultCity = trim($this->input->post('default_city'));
-
-                if ($defaultCity != '')
-                {
-                    $this->load->model('UserModel');
-                    $this->UserModel->updateUserDefaultCity($defaultCity, $userId);
-                }
-            }
-            
-            $redirect_to = ($this->input->get('return')) ? $this->input->get('return') : 'cities';
-            redirect($redirect_to);
-        }
-        
         // SEO
         $this->load->model('SeoModel');
         $seo = $this->SeoModel->getSeoDetailsFromPage('cities_index');
@@ -126,7 +108,11 @@ class Cities extends Controller {
         if (FALSE != ($userId = $this->session->userdata('userId')))
         {
             $this->load->model('UserModel');
-            $default_city = $this->UserModel->getDefaultCityByUserId($userId);
+            $user = $this->UserModel->getUserFromId($userId);
+                
+            // get city name from user default city (which references city_id)
+            $this->load->model('CityModel');
+            $default_city = $this->CityModel->getCityFromId($user->defaultCity)->city;
         }
 
         $data['default_city'] = isset($default_city) ? $default_city : null;

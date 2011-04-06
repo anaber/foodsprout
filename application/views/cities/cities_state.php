@@ -5,8 +5,7 @@
 <div class="city city-smaller">
     <?php
     foreach($group as $city):
-        $fragment = urlencode(strtolower(str_replace(' ', '-', $city->city)));
-        echo anchor("$listing_url/$fragment", $city->city). '<br/>';
+        echo anchor("$listing_url/$city->custom_url", $city->city). '<br/>';
     endforeach;
     ?>
 </div>

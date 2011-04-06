@@ -36,6 +36,17 @@ class City extends Controller {
 		}
 		echo $cities;
 	}
+
+        function get_cities_for_user_settings()
+        {
+            $this->load->model('CityModel');
+
+            $q = $this->input->get('q');
+
+            $cities = $this->CityModel->getCitiesForUser($q);
+
+            echo $cities;
+        }
 	
 }
 

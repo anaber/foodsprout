@@ -63,6 +63,8 @@ class CityModel extends Model{
 			$this->cityLib->stateId = $row->state_id;
 			$this->cityLib->city = $row->city;
 			$this->cityLib->customUrl = $row->custom_url;
+                        $this->cityLib->mainCity = $row->main_city;
+                        $this->cityLib->featuredLeft = $row->featured_left;
 			
 			return $this->cityLib;
 		} else {
@@ -322,6 +324,8 @@ class CityModel extends Model{
 		$customUrl = $this->input->post('customUrl');
 		$city = $this->input->post('city');
 		$stateId = $this->input->post('stateId');
+                $mainCity = $this->input->post('mainCity');
+                $leftFeatured = $this->input->post('featuredLeft');
 		
 		if (!$customUrl) {
 			$city_without_spaces = trimWhiteSpaces(trim($city));
@@ -355,6 +359,8 @@ class CityModel extends Model{
 							'city' => $city,
 							'state_id' => $stateId,  
 							'custom_url' => $customUrl,
+                                                        'main_city' => $mainCity,
+                                                        'featured_left' => $leftFeatured
 						);
 				$where = "city_id = " . $this->input->post('cityId');
 				$query = $this->db->update_string('city', $data, $where);
@@ -419,7 +425,7 @@ class CityModel extends Model{
 
             if ( ! is_null ($state_id))
             {
-                $q = $this->db->select('city_id, city')
+                $q = $this->db->select('city_id, city, custom_url')
                     ->order_by('city', 'asc')
                     ->where('state_id', $state_id)
                     ->get('city');
@@ -440,12 +446,55 @@ class CityModel extends Model{
             return null;
         }
 
+    /**
+     * query cities flagged with "left_featured" to be put in the sidebar
+     * 
+     * @return object query result object
+     */
     function getLeftFeaturedCities()
     {
         $query = 'SELECT * FROM city WHERE featured_left = ? AND custom_url IS NOT NULL LIMIT 10';
         $leftFeaturedCities = $this->db->query($query, array(1));
 
         return ($leftFeaturedCities->num_rows() > 0) ? $leftFeaturedCities : null;
+    }
+
+    /**
+     * query all cities filtered by a search term; this is used for
+     * the autocomplete in the user area
+     *
+     * @param string $q
+     * @return string
+     */
+    function getCitiesForUser($q)
+    {
+        $originalQ = $q;
+        $q = strtolower($q);
+        
+        $query = 'SELECT city_id, city
+                    FROM city
+                    WHERE city like "%'.$q.'%"
+                    ORDER BY city
+                    LIMIT 20';
+
+        $cities = '';
+
+        log_message('debug', "CityModel.getCitiesForUser : " . $query);
+        $result = $this->db->query($query);
+
+        if ($result->num_rows() > 0)
+        {
+            foreach ($result->result_array() as $row)
+            {
+                $cities .= $row['city']."|".$row['city_id']."\n";
+            }
+        } 
+        else
+        {
+            $cities .= 'Create "'.$originalQ.'"|' . $originalQ;
+        }
+
+        return $cities;
     }
 }
 
