@@ -36,9 +36,8 @@
 <div class="filterh">Sustainable In:</div>
 <div id="" class="filterb">
 	<?php
-		if ( ! is_null($featureds)): foreach($featureds->result() as $city):
-            $fragment = urlencode(strtolower(str_replace(' ', '-', $city->city)));
-            echo anchor("sustainable/$fragment", $city->city) . '<br/>';
+            if ( ! is_null($featureds)): foreach($featureds->result() as $city):
+            echo anchor("sustainable/$city->custom_url", $city->city) . '<br/>';
         endforeach; else:
             echo '<p>No featured cities listed</p>';
         endif;

@@ -42,13 +42,14 @@ class City extends Controller {
         {
             $this->load->model('CityModel');
 
-            $q = $this->input->get('q');
+            $q = explode(',', $this->input->get('q'));
+            
+            $q = trim($q[0]);
 
             $cities = $this->CityModel->getCitiesForUser($q);
 
             echo $cities;
         }
-	
 }
 
 /* End of file city.php */

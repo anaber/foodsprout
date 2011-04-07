@@ -6,93 +6,96 @@ class Restaurant extends Controller {
 		parent::Controller();
 		checkUserLogin();
 		checkUserAgent();
+
+                $this->load->helper('cookie');
+                $this->load->helper('url');
 	}
 
 	function index() {
-		global $RECOMMENDED_CITIES;
+            global $RECOMMENDED_CITIES;
 
-        // get left featured cities
-        $this->load->model('CityModel');
-        $featuredLeftCities = $this->CityModel->getLeftFeaturedCities();
+            // get left featured cities
+            $this->load->model('CityModel');
+            $featuredLeftCities = $this->CityModel->getLeftFeaturedCities();
         
         
-		$data = array();
-		//print_r_pre($this->session->userdata);
-		//setcookie('seachedZip', 98004, time()+60*60*24*30*365);
-		
-		// SEO
-		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_list');
-		$data['SEO'] = $seo;
+            $data = array();
+            //print_r_pre($this->session->userdata);
+            //setcookie('seachedZip', 98004, time()+60*60*24*30*365);
 
-		$q = $this->input->post('q');
-		$f = $this->input->post('f');
+            // SEO
+            $this->load->model('SeoModel');
+            $seo = $this->SeoModel->getSeoDetailsFromPage('restaurant_list');
+            $data['SEO'] = $seo;
 
-		if ( !empty($f) ) {
-			$data['CENTER'] = array(
-				'list' => '/restaurant/restaurant_list',
-			);
-		} else {
-			// List of views to be included
-			$data['CENTER'] = array(
-					'map' => 'includes/map',
-					'list' => '/restaurant/restaurant_list',
-			);
-		}
+            $q = $this->input->post('q');
+            $f = $this->input->post('f');
 
-		if ( !empty($f) ) {
-			// do nothing
-		} else {
-			$data['LEFT'] = array(
-					'filter' => 'includes/left/restaurant_filter',
-			);
-		}
+            if ( !empty($f) ) {
+                    $data['CENTER'] = array(
+                            'list' => '/restaurant/restaurant_list',
+                    );
+            } else {
+                    // List of views to be included
+                    $data['CENTER'] = array(
+                                    'map' => 'includes/map',
+                                    'list' => '/restaurant/restaurant_list',
+                    );
+            }
 
-		// Data to be passed to the views
-		if ( empty($f) ) {
-			// load nothing
-		}
+            if ( !empty($f) ) {
+                    // do nothing
+            } else {
+                    $data['LEFT'] = array(
+                                    'filter' => 'includes/left/restaurant_filter',
+                    );
+            }
 
-		if ( empty($f) ) {
-			$data['data']['center']['map']['width'] = '795';
-			$data['data']['center']['map']['height'] = '250';
-		}
+            // Data to be passed to the views
+            if ( empty($f) ) {
+                    // load nothing
+            }
 
-		$data['data']['center']['list']['q'] = $q;
-		$data['data']['center']['list']['f'] = $f;
-		if ( !empty($f) ) {
-			$data['data']['center']['list']['hide_map'] = 'yes';
-			$data['data']['center']['list']['hide_filters'] = 'yes';
-		} else {
-			$data['data']['center']['list']['hide_map'] = 'no';
-			$data['data']['center']['list']['hide_filters'] = 'no';
-		}
+            if ( empty($f) ) {
+                    $data['data']['center']['map']['width'] = '795';
+                    $data['data']['center']['map']['height'] = '250';
+            }
 
-        $data['data']['left']['filter']['featureds'] = $featuredLeftCities;
-		
-		$this->load->model('RestaurantModel', '', TRUE);
-		$restaurants = $this->RestaurantModel->getRestaurantsJson();
-		
-		$this->load->model('ListModel', '', TRUE);
-		$restaurantListHtml = $this->ListModel->buildRestaurantList($restaurants);
-		$data['data']['center']['list']['LIST_DATA'] = $restaurantListHtml;
+            $data['data']['center']['list']['q'] = $q;
+            $data['data']['center']['list']['f'] = $f;
+            if ( !empty($f) ) {
+                    $data['data']['center']['list']['hide_map'] = 'yes';
+                    $data['data']['center']['list']['hide_filters'] = 'yes';
+            } else {
+                    $data['data']['center']['list']['hide_map'] = 'no';
+                    $data['data']['center']['list']['hide_filters'] = 'no';
+            }
 
-		$pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
-		$data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
-		
-		if (! $restaurants['param']['filter']) {
-			$restaurants['param']['filter'] = '';
-		}
-		$params = json_encode($restaurants['param']);
-		
-		$data['data']['center']['list']['PARAMS'] = $params;
-		
-		$geocode = json_encode($restaurants['geocode']);
-		$data['data']['center']['list']['GEOCODE'] = $geocode;
-		
-		$data['data']['left']['filter']['PARAMS'] = $restaurants['param'];
-		
-		$this->load->view('templates/left_center_template', $data);
+            $data['data']['left']['filter']['featureds'] = $featuredLeftCities;
+
+            $this->load->model('RestaurantModel', '', TRUE);
+            $restaurants = $this->RestaurantModel->getRestaurantsJson();
+
+            $this->load->model('ListModel', '', TRUE);
+            $restaurantListHtml = $this->ListModel->buildRestaurantList($restaurants);
+            $data['data']['center']['list']['LIST_DATA'] = $restaurantListHtml;
+
+            $pagingHtml = $this->ListModel->buildPagingLinks($restaurants['param']);
+            $data['data']['center']['list']['PAGING_HTML'] = $pagingHtml;
+
+            if (! $restaurants['param']['filter']) {
+                    $restaurants['param']['filter'] = '';
+            }
+            $params = json_encode($restaurants['param']);
+
+            $data['data']['center']['list']['PARAMS'] = $params;
+
+            $geocode = json_encode($restaurants['geocode']);
+            $data['data']['center']['list']['GEOCODE'] = $geocode;
+
+            $data['data']['left']['filter']['PARAMS'] = $restaurants['param'];
+
+            $this->load->view('templates/left_center_template', $data);
 		
 	}
 
@@ -432,11 +435,9 @@ class Restaurant extends Controller {
 	function city($c) {
 		global $RECOMMENDED_CITIES;
 
-		$arr = explode ('-', $c);
-		$cityName = implode(' ', $arr);
-
 		$this->load->model('CityModel', '', TRUE);
-		$city = $this->CityModel->getCityFromName($cityName);
+                
+		$city = $this->CityModel->getCityFromCustomUrl($c);
 
 		$data = array();
 
@@ -482,9 +483,9 @@ class Restaurant extends Controller {
 		$data['data']['left']['filter']['CITY'] = $city;
 		// $data['data']['left']['filter']['RECOMMENDED_CITIES'] = $RECOMMENDED_CITIES;// get left featured cities
 
-        $this->load->model('CityModel');
-        $featuredLeftCities = $this->CityModel->getLeftFeaturedCities();
-        $data['data']['left']['filter']['featureds'] = $featuredLeftCities;
+                $this->load->model('CityModel');
+                $featuredLeftCities = $this->CityModel->getLeftFeaturedCities();
+                $data['data']['left']['filter']['featureds'] = $featuredLeftCities;
 
 
 		$data['CSS'] = array(
