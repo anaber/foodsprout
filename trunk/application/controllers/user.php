@@ -104,17 +104,19 @@ class User extends Controller {
 		$data['CENTER'] = array(
 				'form' => 'user/settings',
 		);
-
-                // get city name from user default city (which references city_id)
-                $this->load->model('CityModel');
-                $city = $this->CityModel->getCityFromId($user->defaultCity)->city;
-
-                // get state associated
-                $this->load->model('StateModel');
-
-                $state = $this->StateModel->getStateFromId($this->CityModel->getCityFromId($user->defaultCity)->stateId)->stateName;
                 
-                $data['data']['center']['form']['DEFAULT_CITY'] = $city . ', '. $state;
+                $this->load->model('CityModel');
+                $this->load->model('StateModel');
+                
+                $city = ($user->defaultCity) ?
+                        $this->CityModel->getCityFromId($user->defaultCity)->city:
+                        null;
+
+                $state = ($user->defaultCity) ? 
+                        $this->StateModel->getStateFromId($this->CityModel->getCityFromId($user->defaultCity)->stateId)->stateName :
+                        null;
+                
+                $data['data']['center']['form']['DEFAULT_CITY'] = ($city) ? $city . ', '. $state : null;
 
 		$data['data']['center']['form']['USER'] = $user;
 
