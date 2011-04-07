@@ -6,6 +6,8 @@ class Product extends Controller {
 		parent::Controller();
 		checkUserLogin();
 		checkUserAgent();
+
+                $this->load->helper('html');
 	}
 	
 
@@ -20,17 +22,13 @@ class Product extends Controller {
 				'search_view' => '/product/advanced_search',
 				'main_view' => '/product/top_list',
 			);
-		
-		$data['LEFT'] = array(
-				'filter' => 'includes/left/product_filter',
-			);
 			
 		$this->load->model('ProductModel', '', TRUE);
 		
 		$data['recentlyAddedProducts'] = $this->ProductModel->recentlyAddedProducts();
 		$data['recentlyEatenProducts'] = $this->ProductModel->recentlyEatenProducts();
 		
-		$this->load->view('templates/left_center_template', $data);
+		$this->load->view('templates/center_template', $data);
 		
 	}
 	
@@ -79,35 +77,36 @@ class Product extends Controller {
 			$searchTerm = $this->session->userdata('search_term')!= false ? $this->session->userdata('search_term') : "search keyword";
 			
 		}
-			//load product model
-			$this->load->model('ProductModel', '', TRUE);
-			
-			//load pagination library
-			$this->load->library('pagination');
-			
-			//disable query strings 
-			$this->config->set_item('enable_query_strings', 'false'); 
-			
-			
-			//pagination config
-			$config['base_url'] = base_url().'product/search/';
-			
-			$config['total_rows'] = $this->ProductModel->searchProductsByNameTotalRows($searchTerm);
+                
+                //load product model
+                $this->load->model('ProductModel', '', TRUE);
 
-			$config['per_page'] = '20';
-			
-			$config['num_links'] = '3';
-			
-			$config['uri_segment'] = '3';
-						
-			$this->pagination->initialize($config); 
+                //load pagination library
+                $this->load->library('pagination');
+
+                //disable query strings
+                $this->config->set_item('enable_query_strings', 'false');
+
+
+                //pagination config
+                $config['base_url'] = base_url().'product/search/';
+
+                $config['total_rows'] = $this->ProductModel->searchProductsByNameTotalRows($searchTerm);
+
+                $config['per_page'] = '20';
+
+                $config['num_links'] = '3';
+
+                $config['uri_segment'] = '3';
+
+                $this->pagination->initialize($config);
 			
 			
 		$data['searchResults'] = $this->ProductModel->searchProductsByName($searchTerm, $startPage, $config['per_page']);
 
 		$data['search_term'] = $searchTerm;
 		$data['totalRows'] = $config['total_rows'];
-		$this->load->view('templates/left_center_template', $data);
+		$this->load->view('templates/center_template', $data);
 		
 	}
 
@@ -470,9 +469,43 @@ class Product extends Controller {
 		
 		$this->load->model('ProductModel', '', TRUE);
 		$products = $this->ProductModel->searchProducts($q);
+                
 		echo $products;
 	}
-	
+
+        function show($product_slug)
+        {
+            $this->load->model('ProductModel');
+            
+            $product = $this->ProductModel->getProductBySlug($product_slug);
+
+            if ( ! is_null($product))
+            {
+                $data['BREADCRUMB'] = array();
+
+                $data['CENTER'] = array(
+                            'search_view' => '/product/advanced_search',
+                            'list' => '/product/product_details_test',
+			);
+                
+                $this->load->view('templates/center_template', $data);
+            }
+            else
+                show_404 ();
+        }
+
+        function mysearch()
+        {
+            $this->load->model('ProductModel');
+
+            $query = $this->ProductModel->getProductsBySearchTerm(array('sizzling', 'chicken'));
+
+            echo 'Total Rows: ' . $query->num_rows . '<br/>';
+            foreach($query->result() as $product)
+            {
+                echo $product->product_name . "<br/>";
+            }
+        }
 }
 
 /* End of file product.php */

@@ -471,10 +471,12 @@ class CityModel extends Model{
         $originalQ = $q;
         $q = strtolower($q);
         
-        $query = 'SELECT city_id, city
+        $query = 'SELECT city.city_id AS city_id, city.city AS city_name, state.state_name AS state
                     FROM city
-                    WHERE city like "%'.$q.'%"
-                    ORDER BY city
+                    JOIN state
+                    ON city.state_id = state.state_id
+                    WHERE city.city LIKE "%'.$q.'%"
+                    ORDER BY city.city
                     LIMIT 20';
 
         $cities = '';
@@ -486,7 +488,7 @@ class CityModel extends Model{
         {
             foreach ($result->result_array() as $row)
             {
-                $cities .= $row['city']."|".$row['city_id']."\n";
+                $cities .= $row['city_name'] . ', ' . $row['state'] ."|".$row['city_id']."\n";
             }
         } 
         else
