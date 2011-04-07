@@ -145,8 +145,8 @@ echo form_open('user/updateSettings', $attributes);
             Default City
 		</td>
 		<td width="450">
-			<input type="text" value="<?php echo ($DEFAULT_CITY ? $DEFAULT_CITY : '' )?>" id="cityAjax" class="validate[required]"><br>
-                        <input type="hidden" value="<?php echo (isset($USER) ? $USER->defaultCity : '') ?>" id="cityId" />
+			<input type="text" value="<?php echo $DEFAULT_CITY ? $DEFAULT_CITY : '' ?>" id="cityAjax" class="validate[required]"><br>
+                        <input type="hidden" value="<?php echo (isset($USER) && $USER) ? $USER->defaultCity : '' ?>" id="cityId" />
 		</td>
 	</tr>
     
