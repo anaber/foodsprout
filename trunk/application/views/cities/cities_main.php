@@ -1,5 +1,7 @@
 <p>Select a city below to view <?php echo $listing_url ?> food for that area.</p>
+<?php if($this->session->userdata('isAuthenticated')) : ?>
 <p>Your default city is <?php echo $default_city ? $default_city : 'San Francisco' ?></p>
+<?php endif ?>
 <h2>USA</h2>
 
 <div class="city">
