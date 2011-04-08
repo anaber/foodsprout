@@ -14,6 +14,12 @@ class Restaurant extends Controller {
 	function index() {
             global $RECOMMENDED_CITIES;
 
+            // any access to this action will delete stored links to farmers market
+            if ($this->session->userdata('farmersmarket'))
+            {
+                $this->session->unset_userdata('farmersmarket');
+            }
+
             // get left featured cities
             $this->load->model('CityModel');
             $featuredLeftCities = $this->CityModel->getLeftFeaturedCities();
@@ -435,10 +441,26 @@ class Restaurant extends Controller {
 	function city($c) {
 		global $RECOMMENDED_CITIES;
 
+                // any access to this action will delete stored links to farmers market
+                if ($this->session->userdata('farmersmarket'))
+                {
+                    $this->session->unset_userdata('farmersmarket');
+                }
+
 		$this->load->model('CityModel', '', TRUE);
                 
 		$city = $this->CityModel->getCityFromCustomUrl($c);
 
+                if ($city->cityId)
+                {
+                    $cookie = array(
+                        'value' => $city->cityId,
+                        'name' => 'LastCityCookie',
+                        'expire' => 60 * 60 * 24 *14 // 2 weeks
+                    );
+
+                    set_cookie($cookie);
+                }
 		$data = array();
 
 		// SEO

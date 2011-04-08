@@ -22,10 +22,21 @@ class Cities extends Controller {
         );
 
         // Data to send to the views
-        $data['BREADCRUMB'] = array(
-            'Food Sprout' => '/',
-            'Sustainable Food by Cities' => '',
-        );
+        if ($this->session->userdata('farmersmarket'))
+        {
+            $data['BREADCRUMB'] = array(
+                'Food Sprout' => '/',
+                'Farmers Markets' => '/farmersmarket',
+                'Farmers Markets in Cities' => '',
+            );
+        }
+        else
+        {
+            $data['BREADCRUMB'] = array(
+                'Food Sprout' => '/',
+                'Sustainable Food by Cities' => '',
+            );
+        }
 
         // get additional data on cities and states
         foreach($this->getCitiesViewData() as $key => $value)
@@ -40,24 +51,26 @@ class Cities extends Controller {
 
 	// The default listing of all major cities with a search
     function farmersMarket() {
-		// SEO
-		$this->load->model('SeoModel');
-		$seo = $this->SeoModel->getSeoDetailsFromPage('cities_farmersmrkt_index');
-		$data['SEO'] = $seo;
-		
-		$data['listing_url'] = 'farmersmarket/city';
+        // SEO
+        $this->load->model('SeoModel');
+        $seo = $this->SeoModel->getSeoDetailsFromPage('cities_farmersmrkt_index');
+        $data['SEO'] = $seo;
+
+        $data['listing_url'] = 'farmersmarket/city';
 	
         // List of views to be included
         $data['CENTER'] = array(
             'content' => 'cities/cities_main',
         );
 
-		// Data to send to the views
-		$data['BREADCRUMB'] = array(
-							'Food Sprout' => '/',
-							'Farmers Markets' => '/farmersmarkets',
-							'Farmers Markets by Cities' => '',
-						);
+        // Data to send to the views
+        $data['BREADCRUMB'] = array(
+            'Food Sprout' => '/',
+            'Farmers Markets' => '/farmersmarket',
+            'Farmers Markets by Cities' => '',
+        );
+
+        $this->session->set_userdata('farmersmarket', 1);
 
         // get additional data on cities and states
         foreach($this->getCitiesViewData() as $key => $value)
@@ -80,17 +93,29 @@ class Cities extends Controller {
             'content' => 'cities/cities_state'
         );
 
-        $data['listing_url'] = 'sustainable';
+        $data['listing_url'] = ($this->session->userdata('farmersmarket')) ? 'farmersmarket/city':'sustainable';
 
         $data['cities'] = $cities;
 
         $data['state'] = ($state == 'd.c.') ? 'D.C.' : ucwords($state);
 
-        $data['BREADCRUMB'] = array(
-            'Food Sprout' => '/',
-            'Cities' => '/cities/',
-            'Cities By State' => ''
-        );
+        if ($this->session->userdata('farmersmarket'))
+        {
+             $data['BREADCRUMB'] = array(
+                'Food Sprout' => '/',
+                'Farmers Markets' => '/farmersmarket',
+                'Farmers Market Cities' => '/cities/farmersmarket',
+                'Farmers Market Cities in ' . ucwords($state) => ''
+            );
+        }
+        else
+        {
+            $data['BREADCRUMB'] = array(
+                'Food Sprout' => '/',
+                'Sustainable Food By Cities' => '/cities/',
+                'Sustainable Food By Cities in ' . ucwords($state) => ''
+            );
+        }
 
         $this->load->view('templates/center_template', $data);
     }
