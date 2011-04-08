@@ -107,14 +107,13 @@ class User extends Controller {
                 
                 $this->load->model('CityModel');
                 $this->load->model('StateModel');
-                
-                $city = ($user->defaultCity) ?
-                        $this->CityModel->getCityFromId($user->defaultCity)->city:
-                        null;
 
-                $state = ($user->defaultCity) ? 
-                        $this->StateModel->getStateFromId($this->CityModel->getCityFromId($user->defaultCity)->stateId)->stateName :
-                        null;
+                // get mapped city ID
+                $defaultCity = ($user->defaultCity) ? $user->defaultCity : 41;
+                
+                $city = $this->CityModel->getCityFromId($defaultCity)->city;
+
+                $state = $this->StateModel->getStateFromId($this->CityModel->getCityFromId($defaultCity)->stateId)->stateName;
                 
                 $data['data']['center']['form']['DEFAULT_CITY'] = ($city) ? $city . ', '. $state : null;
 

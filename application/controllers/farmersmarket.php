@@ -429,7 +429,10 @@ class FarmersMarket extends Controller {
 	function city($c) {
 		global $FARMERS_MARKET_RADIUS, $FARMERS_MARKET_DEFAULT_RADIUS,
 				$RECOMMENDED_CITIES;
-		
+
+                // set the flag to determine URL for cities view
+                $this->session->set_userdata('farmersmarket', 1);
+                
 		$this->load->model('CityModel', '', TRUE);
 		$city = $this->CityModel->getCityFromCustomUrl($c);
 		
@@ -447,8 +450,8 @@ class FarmersMarket extends Controller {
 		
 		$data['SEO'] = $seo;
 
-        // get featured cities for sidebar
-        $this->getLeftFeaturedCities($data);
+            // get featured cities for sidebar
+            $this->getLeftFeaturedCities($data);
 		
 		$q = $this->input->post('q');
 		$f = $this->input->post('f');
