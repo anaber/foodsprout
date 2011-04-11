@@ -254,6 +254,34 @@ class Lottery extends Controller {
 		*/
 	}
 	
+	function entries($id) 
+	{
+		$data = array();
+		
+		$this->load->model('LotteryModel');
+		$lottery = $this->LotteryModel->getLotteryFromId($id);
+		$entries = $this->LotteryModel->getEntriesForLotteryById($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_lottery',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/temp/lottery_entries',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['LOTTERY_ID'] = $id;
+		
+		$data['data']['center']['list']['VIEW_HEADER'] = "Lottery Entries";
+		$data['data']['center']['list']['LOTTERY'] = $lottery;
+		$data['data']['center']['list']['ENTRIES'] = $entries;
+		
+		$this->load->view('admincp/templates/left_center_template', $data);
+	}
 	
 	
 	
