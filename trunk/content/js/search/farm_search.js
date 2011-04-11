@@ -87,6 +87,139 @@ function redrawTopFarmTypes(data) {
 	$('#divFarmTypes').html(resultHtml);
 }
 
+function redrawTopFarmCrops(data) {
+	$('#divFarmCrops').empty();
+	
+	var resultHtml = '';
+	//alert(selectedFarmTypeId);
+	if (selectedFarmCropId != "") {
+		
+		arrSelectedFarmCrops = new Array();
+		j = 0;
+		if (filters != '') {
+			arrFilter = selectedFarmCropId.split(',');
+			
+			for(i = 0; i < arrFilter.length; i++ ) {
+				arr = arrFilter[i].split('_');
+				if (arr[0] == 'f') {
+					arrSelectedFarmCrops[j] = arr[1];
+					j++;
+				}
+			}
+		}
+		
+		$.each(allFarmCrops, function(i, a) {
+			for(i = 0; i < arrSelectedFarmCrops.length; i++ ) {
+				if ( arrSelectedFarmCrops[i] ==  a.farmCropId) {
+					resultHtml += '-' + a.farmCrop + '<br />';
+					break;
+				}
+			}
+		});	
+		
+	} else {
+		
+		arrTopFilters = new Array();
+		j = 0;
+		if (filters != '') {
+			arrFilter = filters.split(',');
+			
+			for(i = 0; i < arrFilter.length; i++ ) {
+				arr = arrFilter[i].split('_');
+				if (arr[0] == 'f') {
+					arrTopFilters[j] = arr[1];
+					j++;
+				}
+			}
+		}
+		
+		$.each(topFarmTypes, function(i, a) {
+			resultHtml += '<input type="checkbox" value="f_'+ a.farmCropId + '" id = "farmCropId" name = "farmCropId"';
+			
+			for(i = 0; i < arrTopFilters.length; i++ ) {
+				if ( arrTopFilters[i] ==  a.farmCropId) {
+					resultHtml += ' CHECKED';
+					break;
+				} else {
+					
+				}
+			}
+			resultHtml += '>';
+			
+			resultHtml += a.farmCrop + '<br>';
+		});	
+	}
+	
+	$('#divFarmCrops').html(resultHtml);
+}
+
+function redrawTopFarmLivestock(data) {
+	$('#divFarmLivestock').empty();
+	
+	var resultHtml = '';
+	//alert(selectedFarmTypeId);
+	if (selectedFarmCropId != "") {
+		
+		arrSelectedFarmCrops = new Array();
+		j = 0;
+		if (filters != '') {
+			arrFilter = selectedFarmCropId.split(',');
+			
+			for(i = 0; i < arrFilter.length; i++ ) {
+				arr = arrFilter[i].split('_');
+				if (arr[0] == 'f') {
+					arrSelectedFarmCrops[j] = arr[1];
+					j++;
+				}
+			}
+		}
+		
+		$.each(allFarmCrops, function(i, a) {
+			for(i = 0; i < arrSelectedFarmCrops.length; i++ ) {
+				if ( arrSelectedFarmCrops[i] ==  a.farmCropId) {
+					resultHtml += '-' + a.farmCrop + '<br />';
+					break;
+				}
+			}
+		});	
+		
+	} else {
+		
+		arrTopFilters = new Array();
+		j = 0;
+		if (filters != '') {
+			arrFilter = filters.split(',');
+			
+			for(i = 0; i < arrFilter.length; i++ ) {
+				arr = arrFilter[i].split('_');
+				if (arr[0] == 'f') {
+					arrTopFilters[j] = arr[1];
+					j++;
+				}
+			}
+		}
+		
+		$.each(topFarmTypes, function(i, a) {
+			resultHtml += '<input type="checkbox" value="f_'+ a.farmCropId + '" id = "farmCropId" name = "farmCropId"';
+			
+			for(i = 0; i < arrTopFilters.length; i++ ) {
+				if ( arrTopFilters[i] ==  a.farmCropId) {
+					resultHtml += ' CHECKED';
+					break;
+				} else {
+					
+				}
+			}
+			resultHtml += '>';
+			
+			resultHtml += a.farmCrop + '<br>';
+		});	
+	}
+	
+	$('#divFarmCrops').html(resultHtml);
+}
+
+
 function redrawZipcodeBox() {
 	$('#divZipcode').empty();
 	formFilterContent = '<form id = "frmFilters">Zip Code <input type="text" size="6" maxlength="5" id = "q"></form>';

@@ -28,7 +28,7 @@ class ProducerCategory extends Controller {
 
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/manufacturetype',
+				'list' => 'admincp/producer_category',
 			);
 		
 		// Data to be passed to the views
@@ -63,9 +63,8 @@ class ProducerCategory extends Controller {
 		$data = array();
 		
 		$this->load->model('ProducerCategoryModel');
-		$this->load->model('ProducerCategoryGroupModel');
 		$producercategory = $this->ProducerCategoryModel->getProducerCategoryFromId($id);
-		$producercategorygroups = $this->ProducerCategoryGroupModel->listProducerCategoryGroupAdmin();
+		$producercategorygroups = $this->ProducerCategoryModel->listProducerCategoryGroupAdmin();
 
 		// List of views to be included
 		$data['CENTER'] = array(

@@ -71,7 +71,6 @@ document.onclick = jsddm_close;
 
 		<li><a href="#">Types</a>
 			<ul>
-				<li><?php echo anchor('admincp/farmtype', 'Farm Type'); ?></li>
 				<li><?php echo anchor('admincp/producercategory', 'Producer Category'); ?></li>
 				<li><?php echo anchor('admincp/producercategorygroup', 'Producer Category Group'); ?></li>
 				<li><a>---------------</a></li>

@@ -12,13 +12,13 @@ formValidated = true;
 $(document).ready(function() {
 	
 	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
-	$("#restauranttypeForm").validationEngine({
+	$("#producerCategoryGroupForm").validationEngine({
 		success :  function() {formValidated = true;},
 		failure : function() {formValidated = false; }
 	});
 	
 	
-	$("#restauranttypeForm").submit(function() {
+	$("#producerCategoryGroupForm").submit(function() {
 		
 		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
 		
@@ -34,17 +34,17 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
-			if ($('#restauranttypeId').val() != '' ) {
-				var formAction = '/admincp/restauranttype/save_update';
+			if ($('#producerCategoryGroupId').val() != '' ) {
+				var formAction = '/admincp/producercategorygroup/save_update';
 				postArray = {
-							  restauranttypeName:$('#restauranttypeName').val(),
-							  restauranttypeId:$('#restauranttypeId').val()
+							  producerCategoryGroup:$('#producerCategoryGroup').val(),
+							  producerCategoryGroupId:$('#producerCategoryGroupId').val()
 							};
 				act = 'update';		
 			} else {
-				formAction = '/admincp/restauranttype/save_add';
+				formAction = '/admincp/producercategorygroup/save_add';
 				postArray = { 
-							  restauranttypeName:$('#restauranttypeName').val()
+							  producerCategoryGroup:$('#producerCategoryGroup').val()
 							};
 				act = 'add';
 			}
@@ -58,12 +58,12 @@ $(document).ready(function() {
 						if (act == 'add') {
 							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/restauranttype';
+								document.location='/admincp/producercategorygroup';
 							});	
 						} else if (act == 'update') {
 							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/restauranttype';
+								document.location='/admincp/producercategorygroup';
 							});
 						}
 
@@ -72,7 +72,7 @@ $(document).ready(function() {
 					//start fading the messagebox 
 					$("#msgbox").fadeTo(200,0.1,function() {
 						//add message and change the class of the box and start fading
-						$(this).html('Duplicate Vegetable Type...').addClass('messageboxerror').fadeTo(900,1);
+						$(this).html('Duplicate Category Group...').addClass('messageboxerror').fadeTo(900,1);
 						
 					});
 				} else {
@@ -107,22 +107,22 @@ $(document).ready(function() {
 </script>
 
 
-<?php echo anchor('admincp/restauranttype', 'List Restaurant Types'); ?><br /><br />
+<?php echo anchor('admincp/producercategorygroup', 'List Producer Attributes Group'); ?><br /><br />
 
 <div align = "left"><div id="msgbox" style="display:none"></div></div><br /><br />
 
-<form id="restauranttypeForm" method="post" <?php echo (isset($RESTAURANTTYPE)) ? 'action="/admincp/restauranttype/save_update"' : 'action="/admincp/restauranttype/save_add"' ?>>
+<form id="producerCategoryGroupForm" method="post" <?php echo (isset($PRODUCER_CATEGORY_GROUPS)) ? 'action="/admincp/producercategorygroup/save_update"' : 'action="/admincp/producercategorygroup/save_add"' ?>>
 <table class="formTable">
 	<tr>
-		<td width = "25%" nowrap>Restaurant Type</td>
+		<td width = "25%" nowrap>Producer Category Group</td>
 		<td width = "75%">
-			<input value="<?php echo (isset($RESTAURANTTYPE) ? $RESTAURANTTYPE->restaurantType : '') ?>" class="validate[required]" type="text" name="restaurantType" id="restaurantType"/><br />
+			<input value="<?php echo (isset($PRODUCER_CATEGORY_GROUPS) ? $PRODUCER_CATEGORY_GROUPS->producerCategoryGroup : '') ?>" class="validate[required]" type="text" name="producerCategoryGroup" id="producerCategoryGroup"/><br />
 		</td>
 	</tr>
 	<tr>
 		<td width = "25%" colspan = "2">
-			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($RESTAURANTTYPE)) ? 'Update Restaurant Type' : 'Add Restaurant Type' ?>">
-			<input type = "hidden" name = "restaurantTypeId" id = "restaurantTypeId" value = "<?php echo (isset($RESTAURANTTYPE) ? $RESTAURANTTYPE->restaurantTypeId : '') ?>">
+			<input type="submit" name="btnSubmit" id="btnSubmit" value="<?php echo (isset($PRODUCER_CATEGORY_GROUPS)) ? 'Update Producer Category Group' : 'Add Producer Category Group' ?>">
+			<input type="hidden" name="producerCategoryGroupId" id="producerCategoryGroupId" value="<?php echo (isset($PRODUCER_CATEGORY_GROUPS) ? $PRODUCER_CATEGORY_GROUPS->producerCategoryGroupId : '') ?>">
 		</td>
 	</tr>
 </table>

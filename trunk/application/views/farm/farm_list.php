@@ -5,7 +5,6 @@
 <script>
 var showMap = true;
 var showFilters = true;
-//var topCuisines;
 var topFarmTypes;
 var farmsData;
 
@@ -43,6 +42,13 @@ var uri = '<?php echo $uri; ?>';
 			farmsData = data;
 			redrawContent(data);
 			reinitializeRadiusSearch();
+
+			var formAction = '/farm/ajaxGetAllFarmCrops';
+			postArray = { c:10 };
+			
+			$.post(formAction, postArray,function(farmCrops) {		
+				topFarmCrops = farmCrops;
+				redrawContent(data, '');
 			
 			/**
 			 * If users try to load url with HASH segment from address bar
@@ -84,7 +90,7 @@ var uri = '<?php echo $uri; ?>';
 				}
 				postAndRedrawContent(p, pp, sort, order, q, f, r);
 			}
-
+			}
 		},
 		"json");
 		

@@ -139,6 +139,13 @@ class Farm extends Controller {
 		echo json_encode($farmTypes);
 	}
 	
+	function ajaxGetAllFarmCrops() {
+		$c = $this->input->post('c');
+		$this->load->model('ProducerCategoryModel');
+		$farmCrops = $this->ProducerCategoryModel->listProducerCategory('FARMCROPS', $c);
+		echo json_encode($farmCrops);
+	}
+	
 	function ajaxSearchFarmInfo() {
 		$farmId = $this->input->post('farmId');
 		$addressId = $this->input->post('addressId');
