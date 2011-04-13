@@ -580,6 +580,39 @@ class LotteryModel extends Model{
 		return $cities;
 	}
 	
+	// get lottery entries -- Josef Cardinoza
+	function getEntriesForLotteryById($lottery_id)
+	{
+		$query = "SELECT lottery_entry.lottery_entry_id, user.first_name, user.email, lottery_entry.enrolled_on  
+				  FROM lottery_entry
+				  JOIN user
+				  ON user.user_id = lottery_entry.user_id
+				  WHERE lottery_id = ". $lottery_id."
+				  ORDER BY lottery_entry.enrolled_on DESC";
+		$result = $this->db->query($query);
+		
+		$entries = array();
+		if ($result->num_rows() > 0)
+		{
+			foreach($result->result_object() as $row)
+			{
+				$this->load->library('UserLib');
+				unset($this->UserLib);
+				
+				$this->UserLib->userId = $row->lottery_entry_id;
+				$this->UserLib->firstName = $row->first_name;
+				$this->UserLib->email = $row->email;
+				$this->UserLib->joinDate = date("m-d-Y", strtotime($row->enrolled_on));
+				
+				$entries[$row->lottery_entry_id] = $this->UserLib;
+				unset($this->UserLib);
+			}	
+		}		
+		
+		return $entries;
+	}
+	
+	
 	
 	
 }

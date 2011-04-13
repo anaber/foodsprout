@@ -269,18 +269,97 @@ class Lottery extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'admincp/temp/lottery_entries',
+				'list' => 'admincp/lottery/lottery_entries',
 			);
 		
 		// Data to be passed to the views
 		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
 		$data['data']['left']['navigation']['LOTTERY_ID'] = $id;
 		
-		$data['data']['center']['list']['VIEW_HEADER'] = "Lottery Entries";
+		$data['data']['center']['list']['VIEW_HEADER'] = prepareHeading($lottery->lotteryName, '', 'entries', '');
 		$data['data']['center']['list']['LOTTERY'] = $lottery;
 		$data['data']['center']['list']['ENTRIES'] = $entries;
 		
+		$data['BREADCRUMB'] = array(
+				'Lottery' => '/admincp/lottery',
+				$lottery->lotteryName => '/admincp/lottery/update/' . $lottery->lotteryId,
+				'Entries' => '/admincp/lottery/entries/' . $lottery->lotteryId,
+			);
+			
+					
 		$this->load->view('admincp/templates/left_center_template', $data);
+	}
+	
+	function draw($id)
+	{
+		$data = array();
+		
+		$this->load->model('LotteryModel');
+		$lottery = $this->LotteryModel->getLotteryFromId($id);
+		$entries = $this->LotteryModel->getEntriesForLotteryById($id);
+		
+		array_rand($entries); // get random index on the array
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_lottery',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/lottery/lottery_draw',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['LOTTERY_ID'] = $id;
+				
+		$data['data']['center']['list']['LOTTERY'] = $lottery;
+				
+		$data['BREADCRUMB'] = array(
+				'Lottery' => '/admincp/lottery',
+				$lottery->lotteryName => '/admincp/lottery/update/' . $lottery->lotteryId,
+				'Draw' => '/admincp/lottery/draw/' . $lottery->lotteryId
+			);
+			
+					
+		$this->load->view('admincp/templates/left_center_template', $data);		
+		
+	}
+	
+	function winners($id)
+	{
+		$data = array();
+		
+		$this->load->model('LotteryModel');
+		$lottery = $this->LotteryModel->getLotteryFromId($id);
+		$winners = $this->LotteryModel->getWinnersForLotteryById($id);
+		
+		// List of views to be included
+		$data['LEFT'] = array(
+				'navigation' => 'admincp/includes/left/nav_lottery',
+			);
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'admincp/lottery/lottery_winners',
+			);
+		
+		// Data to be passed to the views
+		$data['data']['left']['navigation']['VIEW_HEADER'] = "Options";
+		$data['data']['left']['navigation']['LOTTERY_ID'] = $id;
+				
+		$data['data']['center']['list']['LOTTERY'] = $lottery;
+		$data['data']['center']['list']['WINNERS'] = $winners;
+		
+		$data['BREADCRUMB'] = array(
+				'Lottery' => '/admincp/lottery',
+				$lottery->lotteryName => '/admincp/lottery/update/' . $lottery->lotteryId,
+				'Winners' => '/admincp/lottery/winners/' . $lottery->lotteryId
+			);
+			
+					
+		$this->load->view('admincp/templates/left_center_template', $data);		
 	}
 	
 	

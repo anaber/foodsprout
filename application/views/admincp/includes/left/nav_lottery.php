@@ -3,4 +3,5 @@
 <?php echo anchor('admincp/lottery/add_prize/' . $LOTTERY_ID, 'Prize'); ?><br />
 <?php echo anchor('admincp/lottery/draw/' . $LOTTERY_ID, 'Draw'); ?><br />
 <?php echo anchor('admincp/lottery/winners/' . $LOTTERY_ID, 'Winners'); ?><br />
+<?php echo anchor('admincp/lottery/entries/' . $LOTTERY_ID, 'View Entries'); ?><br />
 </div>
