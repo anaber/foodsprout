@@ -81,7 +81,8 @@ class User extends Controller {
 		
 		// Custom CSS
 		$data['CSS'] = array(
-						'dashboard'
+						'dashboard',
+						//'js/fancybox/jquery.fancybox-1.3.4'
 					);
 					
 		$this->load->view('/dashboard/templates/center_right_template', $data);
