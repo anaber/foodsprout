@@ -11,7 +11,7 @@
  * ======================================================
  */
 
-$ENV_PROPERTY_FILE = "env_properties/staging_server.php";
+$ENV_PROPERTY_FILE = "env_properties/staging.php"; 
 
 include($ENV_PROPERTY_FILE);
 
@@ -126,6 +126,7 @@ $FARMER_TYPES = array(
 
 $LANDING_PAGE = '/login';
 $ADMIN_LANDING_PAGE = '/admincp/login';
+$BUSINESS_LANDING_PAGE = '/business/login';
 
 $RECOMMENDED_CITIES = array (
 					'San Francisco',
@@ -141,6 +142,9 @@ $PRODUCER_CATEGORY_GROUP = array(
 					'RESTAURANT' 	=> 2,
 					'FARM' 			=> 3,
 					'MANUFACTURE' 	=> 4,
+					'FARM_CROP' 	=> 5,
+					'CERTIFICATION' => 7,
+					
 				);
 
 ?>

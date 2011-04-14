@@ -3,8 +3,7 @@
 class Login extends Controller {
 	
 	
-	function __construct()
-	{
+	function __construct() {
 		parent::Controller();
 		
 		if ($this->session->userdata('isAuthenticated') == 1 ) {
@@ -14,7 +13,6 @@ class Login extends Controller {
 				redirect('/');
 			}
 		}
-		
 	}
 	
 	function index() {
@@ -22,39 +20,18 @@ class Login extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				//'list' => 'business/login',
+				'list' => 'business/login',
 			);
 		
 		
 		// Custom CSS
 		$data['ASSETS']['CSS'] = array(
-						'restaurant',
-						);
-		
-		// Custom JS
-		$data['ASSETS']['JS'] = array(
-						'floating_messages',
+						'business',
 						);
 		
 		$this->load->view('business/templates/center_template', $data);
 	}
 	
-	// Check to see that the user is valid
-	function validate() {
-		
-		$this->load->model('LoginModel', '', TRUE);
-		$authenticated = $this->LoginModel->validateAdmin();
-		
-		if ($authenticated ==  false) {	
-			if($this->session->userdata('accessBlocked') == 'yes') {
-				echo 'blocked';
-			} else  {
-				echo 'no';
-			}
-		} else {
-			echo 'yes';
-		}
-	}
 }
 
 /* End of file login.php */

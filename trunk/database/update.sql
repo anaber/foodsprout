@@ -609,14 +609,14 @@ ALTER TABLE `city` ADD COLUMN `main_city` TINYINT(1) UNSIGNED NULL DEFAULT NULL,
 UPDATE `foodnew`.`seo_page` SET `meta_keywords` = '$restaurant_name' WHERE `seo_page`.`seo_page_id` = 3;
 
 -- ADD INDEX FOR default_city
-ALTER TABLE `user` ADD INDEX ( `default_city` )
+ALTER TABLE `user` ADD INDEX ( `default_city` );
 
 -- MODIFY default_city to be a foreign key
-ALTER TABLE `user` CHANGE `default_city` `default_city` INT NOT NULL
+ALTER TABLE `user` CHANGE `default_city` `default_city` INT NOT NULL;
 
 -- MODIFY TABLE to add custom_url to products table and ADD INDEX to it
 ALTER TABLE `product` ADD `custom_url` VARCHAR( 100 ) NOT NULL ,
-ADD INDEX ( `custom_url` ) 
+ADD INDEX ( `custom_url` );
 
 -- add two new values for category group and update one value
 UPDATE `producer_category_group` SET `producer_category_group`='Farm Livestock' WHERE `producer_category_group`.`producer_category_group_id`=3 LIMIT 1 ;

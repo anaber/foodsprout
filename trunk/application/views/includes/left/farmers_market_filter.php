@@ -59,9 +59,12 @@ $(function() {
 ?>
 <div class="filterh">Markets by Cities:</div>
 <div id="" class="filterb">
-    <?php if ( isset($featureds) && ! is_null($featureds)): foreach($featureds->result() as $city):
-        echo anchor("farmersmarket/city/{$city->custom_url}", $city->city) . '<br/>';
-    endforeach; else:
+    <?php 
+    if ( isset($featureds) && ! is_null($featureds)): 
+    	foreach($featureds->result() as $city):
+        	echo anchor("farmersmarket/city/{$city->custom_url}", $city->city) . '<br/>';
+    	endforeach; 
+    else:
         echo '<p>No cities listed.</p>';
     endif
     ?>

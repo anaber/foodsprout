@@ -154,3 +154,5 @@ input[type="submit"]:active,
 input[type="submit"].active{background:#229500;background:-moz-linear-gradient(top,#229500,#48B117);background:-webkit-gradient(linear,left top,left bottom,
 from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);background:linear-gradient(top,#229500,#48B117);color:#277200;text-shadow:none;}
 #signup-form input[type='submit']{font-size:28px;height:60px;width:788px;}
+.business_text{font-size:14px;line-height:1.6;text-align:justify;}
+ 

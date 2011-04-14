@@ -1,11 +1,18 @@
 var isMapVisible = 1;
 
 var selectedTopFarmTypeId = "";
+var selectedTopFarmCropId = "";
+var selectedTopCertificationId = "";
 
 var filters = '';
 
 var selectedFarmTypeId = "";
+var selectedFarmCropId = "";
+var selectedCertificationId = "";
+
 var allFarmTypes;
+var allFarmCrops;
+var allCertifications;
 
 function postAndRedrawContent(page, perPage, s, o, query, filter, radius) {
 	
@@ -21,8 +28,8 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, radius) {
 	
 }
 
-function redrawTopFarmTypes(data) {
-	$('#divFarmTypes').empty();
+function redrawTopFarmLivestock(data) {
+	$('#divFarmLivestocks').empty();
 	
 	var resultHtml = '';
 	//alert(selectedFarmTypeId);
@@ -84,14 +91,14 @@ function redrawTopFarmTypes(data) {
 		});	
 	}
 	
-	$('#divFarmTypes').html(resultHtml);
+	$('#divFarmLivestocks').html(resultHtml);
 }
 
 function redrawTopFarmCrops(data) {
 	$('#divFarmCrops').empty();
 	
 	var resultHtml = '';
-	//alert(selectedFarmTypeId);
+	
 	if (selectedFarmCropId != "") {
 		
 		arrSelectedFarmCrops = new Array();
@@ -101,7 +108,7 @@ function redrawTopFarmCrops(data) {
 			
 			for(i = 0; i < arrFilter.length; i++ ) {
 				arr = arrFilter[i].split('_');
-				if (arr[0] == 'f') {
+				if (arr[0] == 'fc') {
 					arrSelectedFarmCrops[j] = arr[1];
 					j++;
 				}
@@ -126,15 +133,15 @@ function redrawTopFarmCrops(data) {
 			
 			for(i = 0; i < arrFilter.length; i++ ) {
 				arr = arrFilter[i].split('_');
-				if (arr[0] == 'f') {
+				if (arr[0] == 'fc') {
 					arrTopFilters[j] = arr[1];
 					j++;
 				}
 			}
 		}
 		
-		$.each(topFarmTypes, function(i, a) {
-			resultHtml += '<input type="checkbox" value="f_'+ a.farmCropId + '" id = "farmCropId" name = "farmCropId"';
+		$.each(topFarmCrops, function(i, a) {
+			resultHtml += '<input type="checkbox" value="fc_'+ a.farmCropId + '" id = "farmCropId" name = "farmCropId"';
 			
 			for(i = 0; i < arrTopFilters.length; i++ ) {
 				if ( arrTopFilters[i] ==  a.farmCropId) {
@@ -149,35 +156,214 @@ function redrawTopFarmCrops(data) {
 			resultHtml += a.farmCrop + '<br>';
 		});	
 	}
+	resultHtml += '<br><a href = "#" id = "chooseMoreFarmCrop" name = "" style="font-size:13px;text-decoration:none;">Choose More...</a><br>';
 	
 	$('#divFarmCrops').html(resultHtml);
+	
+	reinitializeMoreFarmCrop(data);
 }
 
-function redrawTopFarmLivestock(data) {
-	$('#divFarmLivestock').empty();
+function reinitializeMoreFarmCrop(data) {
+	$("#chooseMoreFarmCrop").click(function(e){
+		e.preventDefault();
+		
+		var formAction = '/farm/ajaxGetAllFarmCrops';
+		
+		postArray = { };
+
+		$.post(formAction, postArray,function(farmCrops) {	
+			//centerPopup();
+			loadPopup();
+			allFarmCrops = farmCrops;
+			
+			redrawAllFarmCrops(data, farmCrops);
+			$('#popupContact').center();
+		},
+		"json");
+	});
+	
+	//CLOSING POPUP
+	//Click the x event!
+	$("#popupClose").click(function(){
+		disablePopup();
+	});
+	
+	/*
+	//Click out event!
+	$("#backgroundPopup").click(function(){
+		disablePopup();
+	});
+	
+	//Press Escape event!
+	$(document).keypress(function(e){
+		if(e.keyCode==27 && popupStatus==1){
+			disablePopup();
+		}
+	});
+	*/
+}
+
+function redrawAllFarmCrops(data, allFarmCrops) {
+	$('#divAllFarmCrops').empty();
+	
+	// TO-DO - work here
+	
+	arrSelectedFarmCrops = new Array();
+	j = 0;
+	
+	var strSelectedFarmCropId = '';
+	if (selectedFarmCropId != '') {
+		strSelectedFarmCropId = selectedFarmCropId;
+	} else {
+		strSelectedFarmCropId = selectedTopFarmCropId
+	}
+	
+	if (strSelectedFarmCropId != '') {
+		arrFilter = strSelectedFarmCropId.split(',');
+		
+		for(i = 0; i < arrFilter.length; i++ ) {
+			arr = arrFilter[i].split('_');
+			if (arr[0] == 'fc') {
+				arrSelectedFarmCrops[j] = arr[1];
+				j++;
+			}
+		}
+	}
 	
 	var resultHtml = '';
-	//alert(selectedFarmTypeId);
-	if (selectedFarmCropId != "") {
+	resultHtml = '<strong>Farm Crops</strong><br>';
+	
+	resultHtml += '<table cellpadding = "2" cellspacing = "0" border = "0" width = "500">';
+	
+	j = 0;
+	$.each(allFarmCrops, function(i, a) {
+		if (j == 0) {
+			resultHtml += '<tr>';
+		}
 		
-		arrSelectedFarmCrops = new Array();
+		resultHtml += '<td width = "133"><input type="checkbox" value="fc_'+ a.farmCropId + '" id = "farmCropId" name = "farmCropId"';
+		
+		for(i = 0; i < arrSelectedFarmCrops.length; i++ ) {
+			if ( arrSelectedFarmCrops[i] ==  a.farmCropId) {
+				resultHtml += ' CHECKED';
+				break;
+			}
+		}
+		
+		resultHtml += '>';
+		
+		resultHtml += a.farmCrop;
+		resultHtml += '</td>';
+		if (j == 2) {
+			resultHtml += '</tr>';
+		}
+		
+		j++;
+		if (j == 3) {
+			j = 0;
+		}
+	});
+	
+	if (j < 3 && j > 0) {
+		cellRequired = eval(3-j);
+		
+		for(i = 1; i<= cellRequired; i++) {
+			resultHtml += '<td>&nbsp;</td>';
+		}
+		resultHtml += '</tr>';
+	}
+	resultHtml += '<tr><td colspan = "3" align = "right"><a id = "cancelFarmCropFilter" href = "#" style="font-size:13px;text-decoration:none;">Cancel</a> &nbsp;&nbsp;&nbsp; <input type = "button" id = "btnApplyFarmCrops" value = "Apply Filters"></td></tr>';
+	resultHtml += '</table>';
+	
+	$('#divAllFarmCrops').html(resultHtml);
+	
+	//reinitializeMoreCuisine();
+	reinitializePopupFarmCropEvent(data, allFarmCrops);
+}
+
+function reinitializePopupFarmCropEvent (data, allFarmCrops) {
+	
+	//$(':checkbox').click(function () {
+	$('#btnApplyFarmCrops').click(function () {
+		var strRestaurantTypeId = '';	
+		var strFilters = '';
+		j = 0;
+		
+		$('#divAllFarmCrops :checked').each(function() {
+		   if (j == 0 ) {
+	        	strFarmCropId += $(this).val();
+	        } else {
+	        	strFarmCropId += ',' + $(this).val();
+	        }
+	        j++;
+		  }
+		);
+		/*
+		if (selectedTopCuisineId != '') {
+			if (strRestaurantTypeId != '') {
+				strFilters = strRestaurantTypeId + ',' + selectedTopCuisineId;
+			} else {
+				strFilters = selectedTopCuisineId;
+			}
+		} else if (selectedCuisineId != '') {
+			if (strRestaurantTypeId != '') {
+				strFilters = strRestaurantTypeId + ',' + selectedCuisineId;
+			} else {
+				strFilters = selectedCuisineId;
+			}
+		} else {
+			strFilters = strRestaurantTypeId;
+		}
+		*/
+		strFilters = strFarmCropId;
+		
+		selectedFarmCropId = strFarmCropId;
+		selectedTopFarmCropId = "";
+		disablePopup();
+		loadPopupFadeIn();
+		
+		if (data) {
+			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+			hashUrl = buildHashUrl(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
+		} else {
+			postAndRedrawContent(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
+			hashUrl = buildHashUrl(param.firstPage, param.perPage, param.sort, param.order, param.q, strFilters, param.city);
+		}
+		window.location.hash = '!'+hashUrl;
+	});
+	
+	$("#cancelFarmCropFilter").click(function(e){
+		e.preventDefault();
+		disablePopup();
+	});
+	
+}
+
+function redrawTopCertifications(data) {
+	$('#divCertifications').empty();
+	
+	var resultHtml = '';
+	
+	if (selectedCertificationId != "") {
+		
+		arrSelectedCertifications = new Array();
 		j = 0;
 		if (filters != '') {
-			arrFilter = selectedFarmCropId.split(',');
+			arrFilter = selectedCertificationId.split(',');
 			
 			for(i = 0; i < arrFilter.length; i++ ) {
 				arr = arrFilter[i].split('_');
-				if (arr[0] == 'f') {
-					arrSelectedFarmCrops[j] = arr[1];
+				if (arr[0] == 'c') {
+					arrSelectedCertifications[j] = arr[1];
 					j++;
 				}
 			}
 		}
 		
-		$.each(allFarmCrops, function(i, a) {
-			for(i = 0; i < arrSelectedFarmCrops.length; i++ ) {
-				if ( arrSelectedFarmCrops[i] ==  a.farmCropId) {
-					resultHtml += '-' + a.farmCrop + '<br />';
+		$.each(allCertifications, function(i, a) {
+			for(i = 0; i < arrSelectedCertifications.length; i++ ) {
+				if ( arrSelectedCertifications[i] ==  a.certificationId) {
+					resultHtml += '-' + a.certification + '<br />';
 					break;
 				}
 			}
@@ -192,18 +378,18 @@ function redrawTopFarmLivestock(data) {
 			
 			for(i = 0; i < arrFilter.length; i++ ) {
 				arr = arrFilter[i].split('_');
-				if (arr[0] == 'f') {
+				if (arr[0] == 'c') {
 					arrTopFilters[j] = arr[1];
 					j++;
 				}
 			}
 		}
 		
-		$.each(topFarmTypes, function(i, a) {
-			resultHtml += '<input type="checkbox" value="f_'+ a.farmCropId + '" id = "farmCropId" name = "farmCropId"';
+		$.each(topCertifications, function(i, a) {
+			resultHtml += '<input type="checkbox" value="c_'+ a.certificationId + '" id = "certificationId" name = "certificationId"';
 			
 			for(i = 0; i < arrTopFilters.length; i++ ) {
-				if ( arrTopFilters[i] ==  a.farmCropId) {
+				if ( arrTopFilters[i] ==  a.certificationId) {
 					resultHtml += ' CHECKED';
 					break;
 				} else {
@@ -212,13 +398,12 @@ function redrawTopFarmLivestock(data) {
 			}
 			resultHtml += '>';
 			
-			resultHtml += a.farmCrop + '<br>';
+			resultHtml += a.certification + '<br>';
 		});	
 	}
 	
-	$('#divFarmCrops').html(resultHtml);
+	$('#divCertifications').html(resultHtml);
 }
-
 
 function redrawZipcodeBox() {
 	$('#divZipcode').empty();
@@ -228,7 +413,9 @@ function redrawZipcodeBox() {
 
 function redrawContent(data) {
 	
-	redrawTopFarmTypes(data);
+	redrawTopFarmLivestock(data);
+	redrawTopFarmCrops(data);
+	redrawTopCertifications(data);
 	
 	/**
 	 * --------------------------------------
@@ -343,7 +530,7 @@ function reinitializeFilterEvent (data) {
 		
 		j = 0;
 		i = 0;
-		$('#divFarmTypes :checked').each(function() {
+		$('#divFarmLivestocks :checked').each(function() {
 		   
 		   if (j == 0 ) {
 	        	strFilters += $(this).val();
