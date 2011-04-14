@@ -70,6 +70,8 @@ $route['^mobile/restaurants/(:any)']					= "mobile/restaurants/customUrl/$1";
         
 // Farm
 $route['^farm/ajaxGetAllFarmType'] 						= "farm/ajaxGetAllFarmType";
+$route['^farm/ajaxGetAllFarmCrops'] 					= "farm/ajaxGetAllFarmCrops";
+$route['^farm/ajaxGetAllCertifications'] 				= "farm/ajaxGetAllCertifications";
 $route['^farm/ajaxGetDistinctUsedFarmType'] 			= "farm/ajaxGetDistinctUsedFarmType";
 $route['^farm/ajaxSearchFarmComments'] 					= "farm/ajaxSearchFarmComments";
 $route['^farm/ajaxSearchFarmCompanies'] 				= "farm/ajaxSearchFarmCompanies";

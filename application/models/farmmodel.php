@@ -615,12 +615,22 @@ class FarmModel extends Model{
 		$arr_filter = explode(',', $filter);
 		
 		$arrFarmTypeId = array();
+		$arrFarmCropId = array();
+		$arrCertificationId = array();
 		
 		foreach($arr_filter as $key => $value) {
 			$arr_value = explode('_', $value) ;
 			
 			if ($arr_value[0] == 'f') {
 				$arrFarmTypeId[] = $arr_value[1];
+			}
+			
+			if ($arr_value[0] == 'fc') {
+				$arrFarmCropId[] = $arr_value[1];
+			}
+			
+			if ($arr_value[0] == 'c') {
+				$arrCertificationId[] = $arr_value[1];
 			}
 		}
 		
@@ -685,7 +695,7 @@ class FarmModel extends Model{
 				 
 		$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM address, producer ';
-		if ( count($arrFarmTypeId) > 0 ) {
+		if ( count($arrFarmTypeId) > 0  || count($arrFarmCropId) > 0 || count($arrCertificationId) > 0 ) {
 			$base_query_count .= 
 				' LEFT JOIN producer_category_member ' .
 				'		ON producer.producer_id = producer_category_member.producer_id'.
@@ -699,11 +709,33 @@ class FarmModel extends Model{
 				 ' AND producer.is_farm = 1'.
 		         ' AND producer.status = \'live\' ';
 
-		if ( count($arrFarmTypeId) > 0 ) {
+		if ( count($arrFarmTypeId) > 0  || count($arrFarmCropId) > 0 || count($arrCertificationId) > 0 ) {
 			$where .= ' AND (';
 			
 			if(count($arrFarmTypeId) > 0 ) {
 				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrFarmTypeId) . ')';
+			}
+			
+			if(count($arrFarmCropId) > 0 ) {
+				// Cuisine
+				if(count($arrFarmTypeId) > 0 ) {
+					$where	.= ' OR ( ';
+				} else {
+					$where	.= ' ( ';
+				}
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrFarmCropId) . ')'
+				. '		)';
+			}
+			
+			if(count($arrCertificationId) > 0 ) {
+				// Cuisine
+				if( count($arrFarmTypeId) > 0 || count($arrFarmCropId) > 0 ) {
+					$where	.= ' OR ( ';
+				} else {
+					$where	.= ' ( ';
+				}
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrCertificationId) . ')'
+				. '		)';
 			}
 			
 			$where .= ' )';

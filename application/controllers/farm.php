@@ -142,8 +142,15 @@ class Farm extends Controller {
 	function ajaxGetAllFarmCrops() {
 		$c = $this->input->post('c');
 		$this->load->model('ProducerCategoryModel');
-		$farmCrops = $this->ProducerCategoryModel->listProducerCategory('FARMCROPS', $c);
+		$farmCrops = $this->ProducerCategoryModel->listProducerCategory('FARM_CROP', $c);
 		echo json_encode($farmCrops);
+	}
+	
+	function ajaxGetAllCertifications() {
+		$c = $this->input->post('c');
+		$this->load->model('ProducerCategoryModel');
+		$certifications = $this->ProducerCategoryModel->listProducerCategory('CERTIFICATION', $c);
+		echo json_encode($certifications);
 	}
 	
 	function ajaxSearchFarmInfo() {

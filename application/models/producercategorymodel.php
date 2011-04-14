@@ -63,12 +63,21 @@ class ProducerCategoryModel extends Model{
 				
 				$producerCategories[] = $this->manufactureTypeLib;
 				unset($this->manufactureTypeLib);
-			} else if ($categotyType == 'FARMCROP') {
+			} else if ($categotyType == 'FARM_CROP') {
 				$this->load->library('FarmTypeLib');
 				unset($this->farmTypeLib);
 
-				$this->farmTypeLib->farmTypeId = $row['producer_category_id'];
-				$this->farmTypeLib->farmType = $row['producer_category'];
+				$this->farmTypeLib->farmCropId = $row['producer_category_id'];
+				$this->farmTypeLib->farmCrop = $row['producer_category'];
+				
+				$producerCategories[] = $this->farmTypeLib;
+				unset($this->farmTypeLib);
+			} else if ($categotyType == 'CERTIFICATION') {
+				$this->load->library('FarmTypeLib');
+				unset($this->farmTypeLib);
+
+				$this->farmTypeLib->certificationId = $row['producer_category_id'];
+				$this->farmTypeLib->certification = $row['producer_category'];
 				
 				$producerCategories[] = $this->farmTypeLib;
 				unset($this->farmTypeLib);

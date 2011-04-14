@@ -52,7 +52,7 @@ $(function() {
 	<br />
 	
 	<div class="filterh">Certifications/Methods</div>
-	<div id="divFarmTypes" class="filterb"></div>
+	<div id="divCertifications" class="filterb"></div>
 	<br />
 	
 	<div class="filterh">Farm Crops</div>
@@ -60,7 +60,7 @@ $(function() {
 	<br />
 	
 	<div class="filterh">Farm Livestock</div>
-	<div id="divFarmLivestock" class="filterb"></div>
+	<div id="divFarmLivestocks" class="filterb"></div>
 	<br />
 	
 	<div id="removeFilters">
@@ -71,7 +71,7 @@ $(function() {
  
 <div id="popupContact"> 
 	<a id="popupClose">X</a> 
-	<div id="divAllFarmTypes"></div>
+	<div id="divAllFarmCrops"></div>
 </div> 
 <div id="backgroundPopup"></div>
 <div id="backgroundWhitePopup"></div> 
