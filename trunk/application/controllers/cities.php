@@ -137,7 +137,10 @@ class Cities extends Controller {
                 
             // get city name from user default city (which references city_id)
             $this->load->model('CityModel');
-            $default_city = $this->CityModel->getCityFromId($user->defaultCity)->city;
+
+            $tmpcity = ($user->defaultCity) ? $user->defaultCity : 41;
+            
+            $default_city = $this->CityModel->getCityFromId($tmpcity)->city;
         }
 
         $data['default_city'] = isset($default_city) ? $default_city : null;
