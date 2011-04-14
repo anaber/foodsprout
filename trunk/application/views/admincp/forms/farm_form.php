@@ -91,6 +91,17 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
+			var selectedCertifications = '';
+			var j = 0;
+		    $('#certificationId' + ' :selected').each(function(i, selected){
+			    if (j == 0) {
+			    	selectedCertifications += $(selected).val();
+			    } else {
+			    	selectedCertifications += ',' + $(selected).val();
+			    }
+			    j++;
+			});
+			
 			var cityId = $('#cityId').val();
 			var cityName;
 			
@@ -107,7 +118,9 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
 							  farmTypeId:$('#farmTypeId').val(),
-							  farmerType:$('#farmerType').val(),
+							  farmCropId:$('#farmCropId').val(),
+							  certificationId:selectedCertifications,
+							  
 							  status:$('#status').val(),
 							  facebook:$('#facebook').val(),
 							  twitter:$('#twitter').val(),
@@ -123,7 +136,9 @@ $(document).ready(function() {
 							  customUrl:$('#customUrl').val(),
 							  url:$('#url').val(),
 							  farmTypeId:$('#farmTypeId').val(),
-							  farmerType:$('#farmerType').val(),
+							  farmCropId:$('#farmCropId').val(),
+							  certificationId:selectedCertifications,
+							  
 							  status:$('#status').val(),
 							  facebook:$('#facebook').val(),
 							  twitter:$('#twitter').val(),
@@ -239,10 +254,10 @@ $(document).ready(function() {
 	</tr>
 -->
 	<tr>
-		<td width = "30%">Farm Type</td>
+		<td width = "30%" nowrap>Farm Livestock</td>
 		<td width = "70%">
 			<select name="farmTypeId" id="farmTypeId"  class="validate[required]">
-			<option value = ''>--Farm Type--</option>
+			<option value = ''>--Farm Livestock--</option>
 			<?php
 				foreach($FARM_TYPES as $key => $value) {
 					echo '<option value="'.$value->farmTypeId.'"' . (  ( isset($FARM) && ( $value->farmTypeId == $FARM->farmTypeId )  ) ? ' SELECTED' : '' ) . '>'.$value->farmType.'</option>';
@@ -251,6 +266,36 @@ $(document).ready(function() {
 			</select>
 		</td>
 	</tr>
+	
+	<tr>
+		<td width = "30%" nowrap>Certifications / Methods</td>
+		<td width = "70%">
+			
+			<select name="certificationId" id="certificationId"  class="validate[optional]" multiple size = "6">
+			<option value = ''>--Certifications / Methods--</option>
+			<?php
+				foreach($CERTIFICATIONS as $key => $value) {
+					echo '<option value="'.$value->certificationId.'"' . (  ( isset($FARM) && in_array($value->certificationId, $FARM->certifications) ) ? ' SELECTED' : '' ) . '>'.$value->certification.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td width = "30%">Farm Crops</td>
+		<td width = "70%">
+			<select name="farmCropId" id="farmCropId"  class="validate[optional]">
+			<option value = ''>--Farm Crop--</option>
+			<?php
+				foreach($FARM_CROPS as $key => $value) {
+					echo '<option value="'.$value->farmCropId.'"' . (  ( isset($FARM) && ( $value->farmCropId == $FARM->farmCropId )  ) ? ' SELECTED' : '' ) . '>'.$value->farmCrop.'</option>';
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+	
 <!--
 	<tr>
 		<td width = "30%">Farmer Type</td>
