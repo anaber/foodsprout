@@ -43,8 +43,8 @@ class ProducerCategory extends Controller {
 	{
 		$data = array();
 
-		$this->load->model('ProducerCategoryGroupModel');
-		$producercategorygroups = $this->ProducerCategoryGroupModel->listProducerCategoryGroupAdmin();
+		$this->load->model('ProducerCategoryModel');
+		$producercategorygroups = $this->ProducerCategoryModel->listProducerCategoryGroupAdmin();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -52,7 +52,7 @@ class ProducerCategory extends Controller {
 			);
 		
 		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Producer Category";
+		$data['data']['center']['list']['VIEW_HEADER'] = "Add Producer Attribute";
 		$data['data']['center']['list']['PRODUCER_CATEGORY_GROUPS'] = $producercategorygroups;
 		
 		$this->load->view('admincp/templates/center_template', $data);
