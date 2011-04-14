@@ -11,7 +11,7 @@
  * ======================================================
  */
 
-$ENV_PROPERTY_FILE = "env_properties/staging.php"; 
+$ENV_PROPERTY_FILE = "env_properties/staging_server.php"; 
 
 include($ENV_PROPERTY_FILE);
 
