@@ -39,8 +39,14 @@ class Farm extends Controller {
 		$this->load->model('CountryModel');
 		$countries = $this->CountryModel->listCountry();
 		
-		$this->load->model('FarmTypeModel');
-		$farmTypes = $this->FarmTypeModel->listFarmType('');
+		$this->load->model('ProducerCategoryModel');
+		$farmTypes = $this->ProducerCategoryModel->listProducerCategory('FARM', '');
+		
+		$this->load->model('ProducerCategoryModel');
+		$farmCrops = $this->ProducerCategoryModel->listProducerCategory('FARM_CROP', '');
+		
+		$this->load->model('ProducerCategoryModel');
+		$certifications = $this->ProducerCategoryModel->listProducerCategory('CERTIFICATION', '');
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -52,6 +58,9 @@ class Farm extends Controller {
 		$data['data']['center']['form']['COUNTRIES'] = $countries;
 		$data['data']['center']['form']['STATES'] = $states;
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
+		$data['data']['center']['form']['FARM_CROPS'] = $farmCrops;
+		$data['data']['center']['form']['CERTIFICATIONS'] = $certifications;
+		
 		$data['data']['center']['form']['FARMER_TYPES'] = $FARMER_TYPES;
 		$data['data']['center']['form']['STATUS'] = $STATUS;
 		
@@ -65,8 +74,14 @@ class Farm extends Controller {
 		$this->load->model('FarmModel');
 		$farm = $this->FarmModel->getFarmFromId($id);
 		
-		$this->load->model('FarmTypeModel');
-		$farmTypes = $this->FarmTypeModel->listFarmType('');
+		$this->load->model('ProducerCategoryModel');
+		$farmTypes = $this->ProducerCategoryModel->listProducerCategory('FARM', '');
+		
+		$this->load->model('ProducerCategoryModel');
+		$farmCrops = $this->ProducerCategoryModel->listProducerCategory('FARM_CROP', '');
+		
+		$this->load->model('ProducerCategoryModel');
+		$certifications = $this->ProducerCategoryModel->listProducerCategory('CERTIFICATION', '');
 		
 		
 		// List of views to be included
@@ -86,6 +101,8 @@ class Farm extends Controller {
 		
 		$data['data']['center']['form']['VIEW_HEADER'] = "Update Farm";
 		$data['data']['center']['form']['FARM_TYPES'] = $farmTypes;
+		$data['data']['center']['form']['FARM_CROPS'] = $farmCrops;
+		$data['data']['center']['form']['CERTIFICATIONS'] = $certifications;
 		$data['data']['center']['form']['FARM'] = $farm;
 		$data['data']['center']['form']['FARMER_TYPES'] = $FARMER_TYPES;
 		$data['data']['center']['form']['STATUS'] = $STATUS;

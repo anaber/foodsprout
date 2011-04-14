@@ -76,14 +76,23 @@ class FarmModel extends Model{
 				if ( $this->db->query($query) ) {
 					$newFarmId = $this->db->insert_id();
 
-					//SAVE FARM TYPE
-					$farmTypeId = $this->input->post('farmTypeId');
-					if ($farmTypeId) {
-						$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
-						" values (NULL, " . $farmTypeId . ", " . $newFarmId . ", NULL )";
-	
-						$this->db->query($query);
+					$CI->load->model('ProducerCategoryModel','',true);
+					
+					//ADD CERTFICATION
+					if(strpos($this->input->post('certificationId'),',') !== FALSE) {
+						$arrCertificationId = explode(',', $this->input->post('certificationId'));
+					} else {
+						$arrCertificationId[] = $this->input->post('certificationId');
 					}
+					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrCertificationId);
+					
+					//ADD FARM TYPE
+					$arrFarmTypeId[] = $this->input->post('farmTypeId');
+					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrFarmTypeId);
+					
+					//ADD FARM CROP
+					$arrFarmCropId[] = $this->input->post('farmCropId');
+					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrFarmCropId);
 					
 					$CI->load->model('AddressModel','',true);
 					$addressId = $CI->AddressModel->addAddress($newFarmId);
@@ -109,13 +118,8 @@ class FarmModel extends Model{
 	
 	// Get all the information about one specific farm from an ID
 	function getFarmFromId($farmId, $addressId='') {
+		
 		/*
-		$query = "SELECT producer.*, producer_category.producer_category, producer_category.producer_category_id " .
-				" FROM producer, producer_category, producer_category_member " .
-				" WHERE producer.producer_id = " . $farmId . 
-				" AND producer.producer_id = producer_category_member.producer_id " .
-		        " AND producer_category_member.producer_category_id = producer_category.producer_category_id";
-		*/
 		$query = "SELECT 
 					producer.*, producer_category.producer_category, producer_category.producer_category_id
 				FROM 
@@ -126,11 +130,20 @@ class FarmModel extends Model{
 					ON producer_category_member.producer_category_id = producer_category.producer_category_id
 				WHERE 
 					producer.producer_id = " . $farmId;
+		*/			
+		$query = "SELECT 
+					*
+				FROM 
+					producer
+				WHERE 
+					producer.producer_id = " . $farmId;
 					
 		log_message('debug', "FarmModel.getFarmFromId : " . $query);
 		$result = $this->db->query($query);
 		
 		$this->load->library('FarmLib');
+		
+		$CI =& get_instance();
 		
 		$row = $result->row();
 		
@@ -138,14 +151,35 @@ class FarmModel extends Model{
 			$geocodeArray = array();
 		
 			$this->FarmLib->farmId = $row->producer_id;
-			$this->FarmLib->farmTypeId = $row->producer_category_id;
-			$this->FarmLib->farmType = $row->producer_category;
 			$this->FarmLib->farmName = $row->producer;
 			$this->FarmLib->customUrl = $row->custom_url;
 			$this->FarmLib->url = $row->url;
 			$this->FarmLib->facebook = $row->facebook;
 			$this->FarmLib->twitter = $row->twitter;
 			$this->FarmLib->status = $row->status;
+			
+			$CI->load->model('ProducerCategoryModel','',true);
+			
+			$farmTypes = $CI->ProducerCategoryModel->getFarmTypesForFarm( $row->producer_id);
+			if ($farmTypes) {
+				$this->FarmLib->farmTypeId = $farmTypes[0]->farmTypeId;
+				$this->FarmLib->farmType = $farmTypes[0]->farmType;
+			} else {
+				$this->FarmLib->farmTypeId = '';
+				$this->FarmLib->farmType = '';
+			}
+			
+			$farmCrops = $CI->ProducerCategoryModel->getFarmCropsForFarm( $row->producer_id);
+			if ($farmCrops) {
+				$this->FarmLib->farmCropId = $farmCrops[0]->farmCropId;
+				$this->FarmLib->farmCrop = $farmCrops[0]->farmCrop;
+			} else {
+				$this->FarmLib->farmCropId = '';
+				$this->FarmLib->farmCrop = '';
+			}
+			
+			$certifications = $CI->ProducerCategoryModel->getCertificationIdsForFarm( $row->producer_id);
+			$this->FarmLib->certifications = $certifications;
 			
 			$CI =& get_instance();
 			
@@ -183,8 +217,9 @@ class FarmModel extends Model{
 	}
 	
 	function updateFarm() {
+		global $PRODUCER_CATEGORY_GROUP;
 		$return = true;
-		
+		$CI =& get_instance();
 		$query = "SELECT * FROM producer WHERE producer = \"" . $this->input->post('farmName') . "\" AND producer_id <> " . $this->input->post('farmId')." AND is_farm = 1";
 		log_message('debug', 'FarmModel.updateFarm : Try to get Duplicate record : ' . $query);
 		
@@ -209,8 +244,28 @@ class FarmModel extends Model{
 			log_message('debug', 'FarmModel.updateFarm : ' . $query);
 			if ( $this->db->query($query) ) {
 			
+				$CI->load->model('ProducerCategoryModel','',true);
+				
+				//UPDATE CERTFICATION
+				if(strpos($this->input->post('certificationId'),',') !== FALSE) {
+					$arrCertificationId = explode(',', $this->input->post('certificationId'));
+				} else {
+					$arrCertificationId[] = $this->input->post('certificationId');
+				}
+				$a = $CI->ProducerCategoryModel->updateProducerCategoryForProducer( $this->input->post('farmId'), $arrCertificationId, $PRODUCER_CATEGORY_GROUP['CERTIFICATION'], true );
+				
 				//UPDATE FARM TYPE
-				$this->updateFarmType($this->input->post('farmId'), $this->input->post('farmTypeId'));
+				$arrFarmTypeId[] = $this->input->post('farmTypeId');
+				$a = $CI->ProducerCategoryModel->updateProducerCategoryForProducer( $this->input->post('farmId'), $arrFarmTypeId, $PRODUCER_CATEGORY_GROUP['FARM']);
+				
+				//UPDATE FARM CROP
+				$arrFarmCropId[] = $this->input->post('farmCropId');
+				$a = $CI->ProducerCategoryModel->updateProducerCategoryForProducer( $this->input->post('farmId'), $arrFarmCropId, $PRODUCER_CATEGORY_GROUP['FARM_CROP']);
+				if ($a) {
+					$return = true;
+				} else {
+					$return = false;
+				}
 
 				$return = true;
 			} else {
@@ -225,6 +280,7 @@ class FarmModel extends Model{
 		return $return;
 	}
 	
+	/*
 	function updateFarmType($farmId, $farmTypeId) {
 	
 		$query = "SELECT producer_category_id FROM producer_category WHERE producer_category_id IN (SELECT producer_category_id 
@@ -234,7 +290,7 @@ class FarmModel extends Model{
 		$result = $this->db->query($query)->result_array();
 
 		if( !empty($result) ) {
-				$oldFarmTypeId = $result[0]['producer_category_id'];
+			$oldFarmTypeId = $result[0]['producer_category_id'];
 		
 			$where = "producer_id = " . $farmId;
 	
@@ -242,7 +298,7 @@ class FarmModel extends Model{
 				$where .= " AND producer_category_id=".$oldFarmTypeId;
 		
 			$this->db->update('producer_category_member', array('producer_category_id'=>$farmTypeId), $where);
-		}else{
+		} else {
 			$data = array(
 						'producer_category_id' => $farmTypeId,
 						'producer_id' => $farmId
@@ -251,6 +307,7 @@ class FarmModel extends Model{
 			$this->db->insert('producer_category_member', $data);
 		}
 	}
+	*/
 	
 	function addFarmWithNameOnly($farmName) {
 		$return = true;
@@ -392,9 +449,29 @@ class FarmModel extends Model{
 			
 			$this->FarmLib->farmId = $row['producer_id'];
 			$this->FarmLib->farmName = $row['producer'];
-			$this->FarmLib->farmTypeId = $row['producer_category_id'];
-			$this->FarmLib->farmType = $row['producer_category'];
-			//$this->FarmLib->farmerType = ( !empty($row['farmer_type']) ? $FARMER_TYPES[$row['farmer_type']] : '');
+			
+			$CI->load->model('ProducerCategoryModel','',true);
+			
+			$farmTypes = $CI->ProducerCategoryModel->getFarmTypesForFarm( $row['producer_id'] );
+			if ($farmTypes) {
+				$this->FarmLib->farmTypeId = $farmTypes[0]->farmTypeId;
+				$this->FarmLib->farmType = $farmTypes[0]->farmType;
+			} else {
+				$this->FarmLib->farmTypeId = '';
+				$this->FarmLib->farmType = '';
+			}
+			
+			$farmCrops = $CI->ProducerCategoryModel->getFarmCropsForFarm( $row['producer_id'] );
+			if ($farmCrops) {
+				$this->FarmLib->farmCropId = $farmCrops[0]->farmCropId;
+				$this->FarmLib->farmCrop = $farmCrops[0]->farmCrop;
+			} else {
+				$this->FarmLib->farmCropId = '';
+				$this->FarmLib->farmCrop = '';
+			}
+			
+			$certifications = $CI->ProducerCategoryModel->getCertificationsForFarm( $row['producer_id'] );
+			$this->FarmLib->certifications = $certifications;
 			
 			$farms[] = $this->FarmLib;
 			unset($this->FarmLib);

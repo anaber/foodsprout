@@ -220,7 +220,7 @@ class ProducerCategoryModel extends Model{
 				$return = true;
 
 
-		}else{
+		} else {
 			$GLOBALS['error'] = 'duplicate';
 			$return = false;
 		}
@@ -303,20 +303,21 @@ class ProducerCategoryModel extends Model{
 	}
 	
 	function getCuisinesForRestaurant($producerId) {
-		$query = "SELECT 
+		global $PRODUCER_CATEGORY_GROUP;
+		$query = 'SELECT 
 					producer_category.producer_category_id, 
 					producer_category.producer_category 
 				FROM 
 					producer_category, producer_category_member 
 				WHERE 
 					producer_category_member.producer_category_id = producer_category.producer_category_id 
-					AND producer_category.category_group1 = 1 
-					AND producer_category_member.producer_id = $producerId";
+					AND producer_category.category_group1 = '.$PRODUCER_CATEGORY_GROUP['CUISINE'].'
+					AND producer_category_member.producer_id = '. $producerId;
 		
 		log_message('debug', "ProducerCategoryModel.getCuisinesForRestaurant : " . $query);
 		$result = $this->db->query($query);
 
-		$cuisines = array();
+		$producerCategories = array();
 
 		foreach ($result->result_array() as $row) {
 
@@ -326,12 +327,275 @@ class ProducerCategoryModel extends Model{
 			$this->cuisineLib->cuisineId = $row['producer_category_id'];
 			$this->cuisineLib->cuisine = $row['producer_category'];
 
-			$cuisines[] = $this->cuisineLib;
+			$producerCategories[] = $this->cuisineLib;
 			unset($this->cuisineLib);
 		}
 
-		return $cuisines;
+		return $producerCategories;
 	}
+	
+	function getCuisineIdsForRestaurant($producerId) {
+		global $PRODUCER_CATEGORY_GROUP;
+		$query = 'SELECT 
+					producer_category.producer_category_id, 
+					producer_category.producer_category 
+				FROM 
+					producer_category, producer_category_member 
+				WHERE 
+					producer_category_member.producer_category_id = producer_category.producer_category_id 
+					AND producer_category.category_group1 = '.$PRODUCER_CATEGORY_GROUP['CUISINE'].'
+					AND producer_category_member.producer_id = '. $producerId;
+		
+		log_message('debug', "ProducerCategoryModel.getCuisinesForRestaurant : " . $query);
+		$result = $this->db->query($query);
+
+		$producerCategories = array();
+
+		foreach ($result->result_array() as $row) {
+			$producerCategories[] = $row['producer_category_id'];
+		}
+
+		return $producerCategories;
+	}
+	
+	function getFarmTypesForFarm($producerId) {
+		global $PRODUCER_CATEGORY_GROUP;
+		
+		$query = 'SELECT 
+					producer_category.producer_category_id, 
+					producer_category.producer_category 
+				FROM 
+					producer_category, producer_category_member 
+				WHERE 
+					producer_category_member.producer_category_id = producer_category.producer_category_id 
+					AND producer_category.category_group1 = '.$PRODUCER_CATEGORY_GROUP['FARM'].' 
+					AND producer_category_member.producer_id = ' . $producerId;
+		
+		log_message('debug', "ProducerCategoryModel.getCuisinesForRestaurant : " . $query);
+		$result = $this->db->query($query);
+
+		$producerCategories = array();
+
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('FarmTypeLib');
+			unset($this->farmTypeLib);
+
+			$this->farmTypeLib->farmTypeId = $row['producer_category_id'];
+			$this->farmTypeLib->farmType = $row['producer_category'];
+			
+			$producerCategories[] = $this->farmTypeLib;
+		}
+
+		return $producerCategories;
+	}
+	
+	function getFarmCropsForFarm($producerId) {
+		global $PRODUCER_CATEGORY_GROUP;
+		
+		$query = 'SELECT 
+					producer_category.producer_category_id, 
+					producer_category.producer_category 
+				FROM 
+					producer_category, producer_category_member 
+				WHERE 
+					producer_category_member.producer_category_id = producer_category.producer_category_id 
+					AND producer_category.category_group1 = '.$PRODUCER_CATEGORY_GROUP['FARM_CROP'].' 
+					AND producer_category_member.producer_id = ' . $producerId;
+		
+		log_message('debug', "ProducerCategoryModel.getCuisinesForRestaurant : " . $query);
+		$result = $this->db->query($query);
+
+		$producerCategories = array();
+
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('FarmTypeLib');
+			unset($this->farmTypeLib);
+
+			$this->farmTypeLib->farmCropId = $row['producer_category_id'];
+			$this->farmTypeLib->farmCrop = $row['producer_category'];
+			
+			$producerCategories[] = $this->farmTypeLib;
+		}
+
+		return $producerCategories;
+	}
+	
+	function getCertificationsForFarm($producerId) {
+		global $PRODUCER_CATEGORY_GROUP;
+		
+		$query = 'SELECT 
+					producer_category.producer_category_id, 
+					producer_category.producer_category 
+				FROM 
+					producer_category, producer_category_member 
+				WHERE 
+					producer_category_member.producer_category_id = producer_category.producer_category_id 
+					AND producer_category.category_group1 = '.$PRODUCER_CATEGORY_GROUP['CERTIFICATION'].' 
+					AND producer_category_member.producer_id = ' . $producerId;
+		
+		log_message('debug', "ProducerCategoryModel.getCuisinesForRestaurant : " . $query);
+		$result = $this->db->query($query);
+
+		$producerCategories = array();
+
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('FarmTypeLib');
+			unset($this->farmTypeLib);
+
+			$this->farmTypeLib->certificationId = $row['producer_category_id'];
+			$this->farmTypeLib->certification = $row['producer_category'];
+			
+			$producerCategories[] = $this->farmTypeLib;
+		}
+
+		return $producerCategories;
+	}
+	
+	function getCertificationIdsForFarm($producerId) {
+		global $PRODUCER_CATEGORY_GROUP;
+		
+		$query = 'SELECT 
+					producer_category.producer_category_id, 
+					producer_category.producer_category 
+				FROM 
+					producer_category, producer_category_member 
+				WHERE 
+					producer_category_member.producer_category_id = producer_category.producer_category_id 
+					AND producer_category.category_group1 = '.$PRODUCER_CATEGORY_GROUP['CERTIFICATION'].' 
+					AND producer_category_member.producer_id = ' . $producerId;
+		
+		log_message('debug', "ProducerCategoryModel.getCuisinesForRestaurant : " . $query);
+		$result = $this->db->query($query);
+
+		$producerCategories = array();
+
+		foreach ($result->result_array() as $row) {
+			$producerCategories[] = $row['producer_category_id'];
+		}
+
+		return $producerCategories;
+	}
+	
+	function updateProducerCategoryForProducer($producerId, $producerCategory, $producerCategoryGroupId, $isMultiple = false) {
+		
+		$return = true;
+		
+		$query = 'SELECT producer_category_member.producer_category_member_id, producer_category_member.producer_category_id' .
+				' FROM producer_category_member, producer_category' .
+				' WHERE producer_category_member.producer_id = ' . $producerId . 
+				' AND producer_category_member.producer_category_id = producer_category.producer_category_id' .
+				' AND producer_category.category_group1 = ' . $producerCategoryGroupId;
+		
+		$result = $this->db->query($query);
+		
+		if ($isMultiple) {
+			if ($result->num_rows() == 0) {
+				foreach($producerCategory as $key => $value) {
+					$query = 'INSERT INTO producer_category_member(producer_category_member_id, producer_category_id, producer_id, address_id) ' .
+						' VALUES (NULL, ' . $value . ', ' . $producerId . ', NULL) ';
+					log_message('debug', 'ProducerCategoryModel.updateProducerCategoryForProducer : Insert new producer category : ' . $query);
+					if ( $this->db->query($query) ) {
+						$return = true;
+					} else {
+						$return = false;
+					}
+				}
+			} else {
+				foreach ($result->result_array() as $row) {
+					$existingProducerCategories[] = $row['producer_category_id'];
+				}
+				
+				$action = array();
+				
+				foreach($producerCategory as $key => $value) {
+					
+					if(!empty($value)) {
+						if ( !(in_array($value, $existingProducerCategories) ) ) {
+							$query = "INSERT INTO producer_category_member (producer_category_member_id, producer_category_id, producer_id, address_id)" .
+								" VALUES (NULL, " . $value . ", " . $producerId . ", NULL )";
+							
+							log_message('debug', 'ProducerCategoryModel.updateProducerCategoryForProducer : Insert new producer category : ' . $query);
+							
+							if ( $this->db->query($query) ) {
+								$return = true;
+							} else {
+								$return = false;
+							}
+							
+						} else {
+							$action[$value] = 'update';
+						}
+					}
+				}
+				
+				foreach ($existingProducerCategories as $existingProducerCategoryId) {
+					if (array_key_exists ($existingProducerCategoryId, $action) ) {
+						// Do nothing...
+					} else {
+						$query = 'DELETE FROM producer_category_member WHERE producer_id = ' . $producerId . ' AND producer_category_id = ' . $existingProducerCategoryId;
+						
+						log_message('debug', 'ProducerCategoryModel.updateProducerCategoryForProducer : delete producer category : ' . $query);
+						
+						if ( $this->db->query($query) ) {
+							$return = true;
+						} else {
+							$return = false;
+						}
+						
+					}
+				}				
+			}
+			
+		} else {
+			
+			if ($result->num_rows() == 0) {
+				$query = 'INSERT INTO producer_category_member(producer_category_member_id, producer_category_id, producer_id, address_id) ' .
+						' VALUES (NULL, ' . $producerCategory[0] . ', ' . $producerId . ', NULL) ';
+				log_message('debug', 'ProducerCategoryModel.updateProducerCategoryForProducer : Insert new producer category : ' . $query);
+				if ( $this->db->query($query) ) {
+					$return = true;
+				} else {
+					$return = false;
+				}
+			} else {
+				$row = $result->row();
+				$data = array(
+					'producer_category_id' => $producerCategory[0], 
+				);
+				$where = "producer_category_member_id = " . $row->producer_category_member_id;
+				$query = $this->db->update_string('producer_category_member', $data, $where);
+				log_message('debug', 'ProducerCategoryModel.updateProducerCategoryForProducer : Update producer category : ' . $query);
+				if ( $this->db->query($query) ) {
+					$return = true;
+				} else {
+					$return = false;
+				}
+			}
+		}
+		
+		return $return;
+	}
+	
+	function addProducerCategoryForProducer($producerId, $producerCategory) {
+		$return = true;
+		
+		foreach($producerCategory as $key => $value) {
+			$query = 'INSERT INTO producer_category_member(producer_category_member_id, producer_category_id, producer_id, address_id) ' .
+				' VALUES (NULL, ' . $value . ', ' . $producerId . ', NULL) ';
+			log_message('debug', 'ProducerCategoryModel.addProducerCategoryForProducer : Insert new producer category : ' . $query);
+			if ( $this->db->query($query) ) {
+				$return = true;
+			} else {
+				$return = false;
+			}
+		}
+		
+		return $return;
+	}
+	
 	
 }
 

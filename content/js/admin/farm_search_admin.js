@@ -60,19 +60,13 @@ function reinitializeTableHeadingEvent(data) {
 		order = getOrder(data, 'producer');
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer', order, data.param.q);
 	});
-	
+	/*
 	$("#heading_farm_type").click(function(e) {
 		e.preventDefault();
 		order = getOrder(data, 'producer_category');
 		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'producer_category', order, data.param.q);
 	});
-	
-/*	$("#heading_farmer_type").click(function(e) {
-		e.preventDefault();
-		order = getOrder(data, 'farmer_name');
-		postAndRedrawContent(data.param.firstPage, data.param.perPage, 'farmer_name', order, data.param.q);
-	});
-*/
+	*/
 }
 
 function addResult(farm, i) {
@@ -80,8 +74,23 @@ function addResult(farm, i) {
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/farm/update/'+ farm.farmId +'">'+ farm.farmId +'</a></td>' +
 	'	<td valign="top"><a href="/admincp/farm/update/'+ farm.farmId +'">'+ farm.farmName +'</a></td>'+
-	'	<td valign="top">'+ farm.farmType +'</td>' ;
-//	'	<td valign="top">'+ farm.farmType +'</td>' +
+	'	<td valign="top">'+ farm.farmType +'</td>';
+	
+	html +=
+	'	<td valign="top">';
+	$.each(farm.certifications, function(j, certification) {
+		if (j == 0) {
+			html += certification.certification;
+		} else { 
+			html += ', ' + certification.certification;
+		}
+	});
+	html +=
+	'	</td>';
+	
+	html +=
+	'	<td valign="top">'+ farm.farmCrop +'</td>';
+	
 /*	'	<td valign="top">'+ farm.farmerType +'</td>' +
 	'	<td valign="top">';
 	
@@ -117,7 +126,9 @@ function getResultTableHeader() {
 	'	<tr>' +
 	'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 	'		<th id = "heading_farm"><a href = "#" style = "color:#FFFFFF">Farm Name</a></th>' +
-	'		<th id = "heading_farm_type"><a href = "#" style = "color:#FFFFFF">Farm Type</a></th>' +
+	'		<th id = "">Farm Livestock</th>' +
+	'		<th id = "">Certifications / Methods</th>' +
+	'		<th id = "">Farm Crops</th>' +
 //	'		<th id = "heading_farmer_type"><a href = "#" style = "color:#FFFFFF">Farmer Type</a></th>' +
 //	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Suppliers</a></th>' +
 //	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Location</a></th>' +

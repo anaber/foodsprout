@@ -662,7 +662,7 @@ class RestaurantModel extends Model{
 
 		$row = $result->row();
 
-
+		$CI =& get_instance();
 		$city = '';
 		$q = '';
 
@@ -694,9 +694,13 @@ class RestaurantModel extends Model{
 			$this->restaurantLib->twitter = $row->twitter;
 			$this->restaurantLib->status = $row->status;
 
-			$cuisines = $this->getCuisineIdsForRestaurant( $row->producer_id);
+			//$cuisines = $this->getCuisineIdsForRestaurant( $row->producer_id);
+			//$this->restaurantLib->cuisines = $cuisines;
+			
+			$CI->load->model('ProducerCategoryModel','',true);
+			$cuisines = $CI->ProducerCategoryModel->getCuisineIdsForRestaurant( $row->producer_id);
 			$this->restaurantLib->cuisines = $cuisines;
-
+			
 			$CI =& get_instance();
 
 			$CI->load->model('AddressModel','',true);
