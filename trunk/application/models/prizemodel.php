@@ -19,8 +19,16 @@ class PrizeModel extends Model{
 	}
 	
 	function getPrizesForLottery($id) {
-		$query = "SELECT * FROM lottery_prize WHERE lottery_id = " . $id .
-				" ORDER BY prize";
+		/*$query = "SELECT * FROM lottery_prize WHERE lottery_id = " . $id .
+				" ORDER BY prize";*/
+		$query = "SELECT lottery_prize_id, dollar_amount, first_name, winner, prize
+				  FROM lottery_prize
+				  LEFT JOIN lottery_entry
+				  ON lottery_entry.lottery_entry_id = lottery_prize.winner
+				  LEFT JOIN user 
+				  ON user.user_id = lottery_entry.user_id
+				  WHERE lottery_prize.lottery_id = ".$id."				  
+				  ORDER BY prize";
 		
 		log_message('debug', "PrizeModel.getPrizesForLottery : " . $query);
 		$result = $this->db->query($query);
@@ -34,7 +42,7 @@ class PrizeModel extends Model{
 			
 			$this->PrizeLib->lotteryPrizeId = $row['lottery_prize_id'];
 			$this->PrizeLib->dollarAmount = $row['dollar_amount'];
-			$this->PrizeLib->winner = $row['winner'];
+			$this->PrizeLib->winner = ($row['winner'] == null) ? "--" : $row['first_name'];
 			$this->PrizeLib->prize = $row['prize'];
 			
 			$lotteryPrizes[] = $this->PrizeLib;
