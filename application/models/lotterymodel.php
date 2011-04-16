@@ -583,7 +583,7 @@ class LotteryModel extends Model{
 	// get lottery entries -- Josef Cardinoza
 	function getEntriesForLotteryById($lottery_id)
 	{
-		$query = "SELECT lottery_entry.lottery_entry_id, user.first_name, user.email, lottery_entry.enrolled_on  
+		$query = "SELECT lottery_entry.lottery_entry_id, user.first_name, user.email,lottery_entry.enrolled_on  
 				  FROM lottery_entry
 				  JOIN user
 				  ON user.user_id = lottery_entry.user_id
@@ -594,7 +594,7 @@ class LotteryModel extends Model{
 		$entries = array();
 		if ($result->num_rows() > 0)
 		{
-			foreach($result->result_object() as $row)
+			foreach($result->result() as $row)
 			{
 				$this->load->library('UserLib');
 				unset($this->UserLib);
@@ -612,6 +612,68 @@ class LotteryModel extends Model{
 		return $entries;
 	}
 	
+	function getPrizesByLotteryId($lottery_id)
+	{
+		$this->db->select("lottery_prize_id, prize, winner");
+		$result = $this->db->get_where("lottery_prize", array("lottery_id" => $lottery_id));
+		
+		$lotteryPrizes = array();
+		if ($result->num_rows() > 0)
+		{
+			foreach($result->result() AS $row)
+			{
+				$this->load->library('PrizeLib');
+				unset($this->PrizeLib);
+				
+				$this->PrizeLib->lotteryPrizeId = $row->lottery_prize_id;
+				$this->PrizeLib->prize = $row->prize;
+				$this->PrizeLib->winner = ($row->winner == null) ? "<input type=\"button\" id=\"".$row->lottery_prize_id."\" value=\"Pick Winner\" class=\"pick-winner\" />": "Winner Already Chosen";
+				
+				$lotteryPrizes[] = $this->PrizeLib;
+				unset($this->PrizeLib);
+			}
+		}
+		
+		return $lotteryPrizes;
+	}
+	
+	function pickLotteryPrizeWinner()
+	{
+		$entries = $this->getEntriesForLotteryById($this->input->post('lottery_id'));
+		 $winner = array_rand($entries); // get random index (index = lottery_entry_id) on the array
+		 
+		 $this->db->where("lottery_prize_id", $this->input->post('pick'));
+		 $this->db->update("lottery_prize", array("winner" => $winner));
+		 
+		 return;
+	}
+	
+	function getWinnersForLotteryById($lottery_id)
+	{
+		$this->db->select("lottery_prize.lottery_prize_id, lottery_prize.prize, user.first_name");
+		$this->db->join("lottery_entry", "lottery_entry.lottery_entry_id =  lottery_prize.winner");
+		$this->db->join("user", "user.user_id =  lottery_entry.user_id");
+		$result = $this->db->get_where("lottery_prize", array("lottery_prize.lottery_id" => $lottery_id));
+		
+		$winners = array();
+		if ($result->num_rows() > 0)
+		{
+			foreach($result->result() as $row)
+			{
+				$this->load->library('PrizeLib');
+				unset($this->PrizeLib);
+				
+				$this->PrizeLib->lotteryPrizeId = $row->lottery_prize_id;
+				$this->PrizeLib->prize = $row->prize;
+				$this->PrizeLib->winner = $row->first_name;
+				
+				$winners[] = $this->PrizeLib;
+				unset($this->PrizeLib);
+			}	
+		}
+
+		return $winners;
+	}
 	
 	
 	

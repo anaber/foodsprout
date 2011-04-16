@@ -153,7 +153,7 @@ $(document).ready(function() {
 		echo '	<td>'.anchor('/admincp/lottery/update_prize/'.$prize->lotteryPrizeId, $prize->lotteryPrizeId).'</td>';
 		echo '	<td>'.anchor('/admincp/lottery/update_prize/'.$prize->lotteryPrizeId, $prize->prize) .'</td>';
 		echo '	<td>' . $prize->dollarAmount . '</td>';
-		echo '	<td>--</td>';
+		echo '	<td>' . $prize->winner .'</td>';
 		echo '</tr>';
  	endforeach;
  	

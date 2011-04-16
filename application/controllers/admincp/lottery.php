@@ -292,13 +292,17 @@ class Lottery extends Controller {
 	
 	function draw($id)
 	{
-		$data = array();
 		
 		$this->load->model('LotteryModel');
-		$lottery = $this->LotteryModel->getLotteryFromId($id);
-		$entries = $this->LotteryModel->getEntriesForLotteryById($id);
 		
-		array_rand($entries); // get random index on the array
+		if ($this->input->post('pick'))
+		{
+			$this->LotteryModel->pickLotteryPrizeWinner();
+		}
+		$data = array();
+			
+		$lottery = $this->LotteryModel->getLotteryFromId($id);
+		$prizes = $this->LotteryModel->getPrizesByLotteryId($id);	
 		
 		// List of views to be included
 		$data['LEFT'] = array(
@@ -315,6 +319,7 @@ class Lottery extends Controller {
 		$data['data']['left']['navigation']['LOTTERY_ID'] = $id;
 				
 		$data['data']['center']['list']['LOTTERY'] = $lottery;
+		$data['data']['center']['list']['PRIZES'] = $prizes;
 				
 		$data['BREADCRUMB'] = array(
 				'Lottery' => '/admincp/lottery',
