@@ -434,6 +434,12 @@ class Restaurant extends Controller {
 		echo $restaurants;
 	}
 	
+	function ajaxMenuItems($id) {
+		$this->load->model('ProductModel');
+		$products = $this->ProductModel->getMenuItemsJson($id, '', '');		
+		echo json_encode($products);
+	}
+	
 }
 
 /* End of file restaurant.php */

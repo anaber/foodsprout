@@ -331,6 +331,12 @@ class RestaurantChain extends Controller {
 		echo $restaurantChains;
 	}
 	
+	function ajaxMenuItems($id) {
+		$this->load->model('ProductModel');
+		$products = $this->ProductModel->getMenuItemsJson('', $id, '');		
+		echo json_encode($products);
+	}
+	
 }
 
 /* End of file restaurant.php */
