@@ -470,6 +470,12 @@ class Manufacture extends Controller {
 		$manufactures = $this->ManufactureModel->getManufactureJsonAdmin();
 		echo json_encode($manufactures);
 	}
+	
+	function ajaxMenuItems($id) {
+		$this->load->model('ProductModel');
+		$products = $this->ProductModel->getMenuItemsJson('', '', $id);		
+		echo json_encode($products);
+	}
 }
 
 /* End of file company.php */

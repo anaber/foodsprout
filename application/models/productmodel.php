@@ -312,6 +312,154 @@ class ProductModel extends Model {
 
 		return $return;
 	}
+	
+	function getMenuItemsJson($restaurantId, $restaurantChainId, $manufactureId)
+	{
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		$base_query = "SELECT product.*, product_type.product_type
+                 	   FROM product, product_type";
+		
+		/*$base_query = 'SELECT producer.*,producer_category.producer_category,producer_category.producer_category_id FROM producer
+				LEFT JOIN producer_category_member ON producer.producer_id=producer_category_member.producer_id
+				LEFT JOIN producer_category ON producer_category_member.producer_category_id=producer_category.producer_category_id';*/
+				 
+		$base_query_count = 'SELECT count(*) AS num_records FROM product, product_type';
+		
+		$where = " WHERE product.product_type_id = product_type.product_type_id AND";
+		if (!empty($restaurantId)) {
+			$where .= " producer_id = " . $restaurantId;
+		} elseif (!empty($restaurantChainId)) {
+			$where .= " producer_id = " . $restaurantChainId;
+		} elseif (!empty($manufactureId)) {
+			$where .= " producer_id = " . $manufactureId;
+		}
+		
+		//$where = ' WHERE is_restaurant_chain = 1';
+		/*$where = " WHERE producer_id = " . $id."
+                 	   AND product.product_type_id = product_type.product_type_id
+                	   ";*/
+		
+		if ( !empty($q) ) {
+
+			$where  .= ' AND (product.product_name like "%' .$q . '%"'
+			. ' OR product.product_id like "%' . $q . '%"';
+			$where .= ' )';
+
+		}
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY product_name';
+			$sort = 'product_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "getMenuItemsJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$products = array();
+		
+		$CI =& get_instance();
+		
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row) {
+
+			$this->load->library('ProductLib');
+			unset($this->productLib);
+
+			$this->productLib->productId = $row['product_id'];
+			//$this->productLib->companyId = $row['company_id'];
+			$this->productLib->restaurantId = $row['producer_id'];
+			//$this->productLib->restaurantChainId = $row['restaurant_chain_id'];
+			//$this->productLib->manufactureId = $row['manufacture_id'];
+			$this->productLib->productTypeId = $row['product_type_id'];
+			$this->productLib->productType = $row['product_type'];
+			$this->productLib->productName = $row['product_name'];
+			$this->productLib->ingredient = $row['ingredient_text'];
+			$this->productLib->brand = $row['brand'];
+			$this->productLib->upc = $row['upc'];
+			$this->productLib->status = $row['status'];
+			$this->productLib->fructose = $row['has_fructose'];
+			$this->productLib->userId = $row['user_id'];
+			$this->productLib->creationDate = $row['creation_date'];
+			$this->productLib->modifyDate = $row['modify_date'];
+
+			$products[] = $this->productLib;
+			unset($this->productLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		if ($totalPages > 0) {
+			$last = $totalPages - 1;
+		} else {
+			$last = 0;
+		}
+		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $products,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    
+	    return $arr;
+	}
 
 	function getProductForCompany($restaurantId, $restaurantChainId, $manufactureId, $companyId) {
 

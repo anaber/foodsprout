@@ -227,6 +227,85 @@ if (isset($MANUFACTURE_ID)) {
     </table>
 </form>
 
+
+<script src="<?php echo base_url()?>js/jquery.colorize.js" type="text/javascript"></script>
+
+<?php 
+	// excluded this part from the javascript to get $TRID value - Josef Gabriel Cardinoza 
+	$controller = $this->uri->segment(2);
+?>
+<script type="text/javascript">
+	$(document).ready(function() {
+		
+		$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
+		
+		$.post("/admincp/<?php echo $controller; ?>/ajaxMenuItems/<?php echo $TRID; ?>", { },
+			function(data){
+				$('#suggestion_box').val('');
+				
+				redrawContent(data);
+			},
+			"json");
+			
+		$("#suggestion_box").keyup(function() {
+			var query = $("#suggestion_box").val();
+			
+			if ( query.length >= 3 || query.length == 0 ) {
+				$('#resultsContainer').hide();
+				$('#messageContainer').show();
+				$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
+				
+				$.post("/admincp/<?php echo $controller; ?>/ajaxMenuItems/<?php echo $TRID; ?>", { q:query },
+				function(data){
+					redrawContent(data);
+		      	},
+		      	"json");
+	      	}
+	      	
+		});
+	
+	});
+	
+	function postAndRedrawContent(page, perPage, s, o, query) {
+		
+		$('#resultsContainer').hide();
+		$('#messageContainer').show();
+		$('#messageContainer').addClass('center').html('<img src="/img/loading_pink_bar.gif" />');
+		
+		var formAction = '/admincp/<?php echo $controller; ?>/ajaxMenuItems/<?php echo $TRID; ?>';
+	
+		postArray = { p:page, pp:perPage, sort:s, order:o, q:query};
+		
+		$.post(formAction, postArray,function(data) {		
+			redrawContent(data);
+		},
+		"json");
+	}
+
+
+	function addResult(menuItem, i) {
+		var html =
+		'<tr>' +
+		'	<td valign="top"><a href="/admincp/<?php echo $controller; ?>/update_menu_item/'+menuItem.productId+'/<?php echo $TRID; ?>">'+ menuItem.productId +'</a></td>' +
+		'	<td valign="top"><a href="/admincp/<?php echo $controller; ?>/update_menu_item/'+menuItem.productId+'/<?php echo $TRID; ?>">'+ menuItem.productName +'</a></td>' +
+		'	<td valign="top">'+ (menuItem.ingredient ? menuItem.ingredient : '' ) +'</td>' +
+		'</tr>'
+		;
+		
+		return html;
+	}
+</script>
+<?php // end of exclusion ?>
+
+<script src="<?php echo base_url()?>js/admin/menu_search_admin.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/admin/admin_ajax_page_common_content.js" type="text/javascript"></script>
+
+<?php $this->load->view('admincp/includes/ajax_paging'); ?>
+
+
+<?php 
+	// old code for menu items without pagination
+/*
 <table cellpadding="3" cellspacing="0" border="0" id="tbllist" width = "90%">
     <tr>
         <th>Id</th>
@@ -245,4 +324,5 @@ if (isset($MANUFACTURE_ID)) {
         echo '</tr>';
     endforeach;
 ?>
-</table>
+</table>*/
+?>
