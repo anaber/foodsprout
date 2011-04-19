@@ -333,7 +333,32 @@ class ProducerCategoryModel extends Model{
 
 		return $producerCategories;
 	}
-	
+
+
+        function getProducerCategoryIDFromName(array $categoryNames)
+        {
+            $this->db->select('producer_category_id');
+
+            foreach ($categoryNames as $category)
+            {
+                $this->db->or_where('producer_category', trim($category));
+            }
+
+            $query = $this->db->get('producer_category');
+
+            return ($query->num_rows > 0) ? $query->result() : null;
+        }
+        
+        function insertProducerCategoryMemberFromFile(array $member_data,$test=false)
+        {
+            $table = ($test) ? 'producer_category_member_bk':
+                'producer_category_member';
+            
+            $this->db->insert($table, $member_data);
+
+            return $this->db->insert_id();
+        }
+        
 	function getCuisineIdsForRestaurant($producerId) {
 		global $PRODUCER_CATEGORY_GROUP;
 		$query = 'SELECT 

@@ -452,6 +452,24 @@ class AddressModel extends Model{
 		
 		return $row->num_row;
 	}
+
+        function insertAddressFromFile(array $data, $test=false)
+        {
+            $table = ($test) ? 'address_bk' : 'address';
+            
+            $this->db->insert($table, $data);
+
+            return $this->db->insert_id();
+        }
+
+        function checkIfAddressExists($address, $producer_id, $test=false)
+        {
+            $table = ($test) ? 'address_bk' : 'address';
+            
+            $this->db->where('address', $address)->from($table);
+
+            return (bool)$this->db->count_all_results();
+        }
 	
 }
 

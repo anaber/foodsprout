@@ -68,6 +68,17 @@ class StateModel extends Model{
             // group each state by 14s
             return array_chunk($states, 14);
         }
+
+        function getIDFromCode($state)
+        {
+            $query = $this->db->select('state_id')
+                    ->from('state')
+                    ->where('state_code', $state)
+                    ->or_where('state_name', $state)
+                    ->get();
+
+            return ($query->num_rows()) ? $query->row()->state_id : 0;
+        }
 }
 
 
