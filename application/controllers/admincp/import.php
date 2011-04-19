@@ -53,9 +53,8 @@ class Import extends Controller {
             else
             {
                 $this->processFileAndImport($this->upload->data());
+                redirect('admincp/import/producer');
             }
-
-            redirect('admincp/import/producer');
         }
 
         $data['errors'] = $errors;
