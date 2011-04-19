@@ -297,12 +297,22 @@ class ProducerModel extends Model{
             $producer_table = ($test) ? 'producer_bk' : 'producer';
             $address_table = ($test) ? 'address_bk' : 'address';
             
-            $this->db->where('ad.state_id', $state_id)
-                    ->where('ad.city_id', $city_id)
-                    ->where('ad.address', $address)
-                    ->where('pd.producer', $producer)
-                    ->from("$address_table AS ad")
-                    ->join("$producer_table AS pd", 'pd.producer_id=ad.producer_id');
+            $this->db->where('pd.producer', $producer)->from("$producer_table AS pd");
+
+            if ($address)
+            {
+                $this->db->join("$address_table AS ad", 'pd.producer_id=ad.producer_id');
+
+                if ($city_id)
+                {
+                    $this->db->where('ad.city_id', $city_id);
+                }
+
+                if ($state_id)
+                {
+                    $this->db->where('ad.state_id', $state_id);
+                }
+            }
 
             return (bool)$this->db->count_all_results();
         }

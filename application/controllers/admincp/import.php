@@ -18,12 +18,12 @@ class Import extends Controller {
         $this->load->model('StateModel');
     }
     
-    public function index()
+    function index()
     {
         show_404();
     }
     
-    public function producer()
+    function producer()
     {
         $data = $errors = array();
         $this->load->helper(array('url', 'form'));
@@ -54,6 +54,8 @@ class Import extends Controller {
             {
                 $this->processFileAndImport($this->upload->data());
             }
+
+            redirect('admincp/import/producer');
         }
 
         $data['errors'] = $errors;
@@ -98,6 +100,12 @@ class Import extends Controller {
         return implode('-', $tmp_slug);
     }
 
+    /**
+     * determine if manufacturer, distributor, market, etc.
+     *
+     * @param string $type
+     * @return database flag
+     */
     private function determineType($type)
     {
         $type_data = array();
@@ -134,6 +142,12 @@ class Import extends Controller {
 
         return $type_data;
     }
+
+    /**
+     * process the file and do table updates, geocoding, etc.
+     *
+     * @param array $data  the upload data from CI upload lib
+     */
     private function processFileAndImport(array $data)
     {
         $this->load->model('ProducerCategoryModel');
@@ -223,19 +237,21 @@ class Import extends Controller {
                 // if producer exists, don't proceed with insert
                 if ( ! $this->ProducerModel->checkIfProducerExists($producer, $city_id, $state_id, $address))
                 {
+                    // update producer table
                     $producer_id = $this->ProducerModel
                         ->insertProducerFromFile($producer_data);
 
-                    if ($address!='' && $city!='' && $state!='')
-                    {
-                        $geoaddress = $this->AddressModel->prepareAddress(
-                            $address, $city, $city_id, $state_id, $country_id, $zip_code);
-
-                        $geo = @$this->GoogleMapModel->geoCodeAddressV3($geoaddress);
-                    }
-
                     if ($address != '')
                     {
+                        // geocode if address is complete
+                        if ($city!='' && $state!='')
+                        {
+                            $geoaddress = $this->AddressModel->prepareAddress(
+                                $address, $city, $city_id, $state_id, $country_id, $zip_code);
+
+                            @$geo = $this->GoogleMapModel->geoCodeAddressV3($geoaddress);
+                        }
+                        
                         // update address table
                         $address_data = array(
                             'producer_id' => $producer_id,
@@ -275,8 +291,12 @@ class Import extends Controller {
                                 $member_data = array(
                                     'producer_category_id' => $categories->producer_category_id,
                                     'producer_id' => $producer_id,
-                                    'address_id' => ($address_id) ? $address_id : 0
                                 );
+
+                                if ( ! empty($address_id))
+                                {
+                                    $member_data['address_id'] = $address_id;
+                                }
 
                                 $this->ProducerCategoryModel
                                     ->insertProducerCategoryMemberFromFile($member_data);
@@ -286,10 +306,18 @@ class Import extends Controller {
                 }
             }
 
-            # if ($row->getRowIndex() > 2) break;
+            # if ($row->getRowIndex() > 4) break;
         }
     }
 
+    /**
+     * check to see if a producer exists in the database and append a dash
+     * and an integer which is 1 + the number of existing producers with
+     * the same name
+     * 
+     * @param String $producerSlug
+     * @return String
+     */
     private function appendSlugSuffix($producerSlug)
     {
         $duplicateSlug = $this->ProducerModel->checkIfOtherBranchesExist($producerSlug);
