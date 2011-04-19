@@ -498,6 +498,16 @@ class CityModel extends Model{
 
         return $cities;
     }
+
+    function getIDFromSlug($slug)
+    {
+        $query = $this->db->select('city_id')
+                ->from('city')
+                ->where('custom_url',$slug)
+                ->get();
+        
+        return ($query->num_rows() > 0) ? $query->row()->city_id : 0;
+    }
 }
 
 

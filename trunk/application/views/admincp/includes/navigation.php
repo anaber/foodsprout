@@ -99,6 +99,15 @@ document.onclick = jsddm_close;
 			    
 			</ul>
 		</li>
+
+                <li>
+                    <a href="#">Import</a>
+                    <ul>
+                        <li><?php echo anchor('admincp/import/producer', 'Producer'); ?></li>
+
+                    </ul>
+                </li>
+                
 		<li><?php echo anchor('admincp/logout', 'Logout'); ?></li>
 		<li><?php echo anchor('/', 'Food Sprout Home'); ?></li>
 	</ul>

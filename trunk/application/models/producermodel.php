@@ -273,7 +273,39 @@ class ProducerModel extends Model{
 			return false;
 		}
 	}
-	
+
+        function insertProducerFromFile(array $data, $test=false)
+        {
+            $table = ($test) ? 'producer_bk' : 'producer';
+            
+            $this->db->insert($table,$data);
+
+            return $this->db->insert_id();
+        }
+
+        function checkIfOtherBranchesExist($producer_slug, $test=false)
+        {
+            $table = ($test) ? 'producer_bk' : 'producer';
+
+            $this->db->from($table)->where('custom_url', $producer_slug);
+
+            return $this->db->count_all_results();
+        }
+
+        function checkIfProducerExists($producer, $city_id, $state_id, $address, $test=false)
+        {
+            $producer_table = ($test) ? 'producer_bk' : 'producer';
+            $address_table = ($test) ? 'address_bk' : 'address';
+            
+            $this->db->where('ad.state_id', $state_id)
+                    ->where('ad.city_id', $city_id)
+                    ->where('ad.address', $address)
+                    ->where('pd.producer', $producer)
+                    ->from("$address_table AS ad")
+                    ->join("$producer_table AS pd", 'pd.producer_id=ad.producer_id');
+
+            return (bool)$this->db->count_all_results();
+        }
 }
 
 
