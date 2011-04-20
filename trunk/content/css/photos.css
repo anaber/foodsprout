@@ -1,0 +1,24 @@
+.gallery-header {
+	font-size: 11px;
+	}
+	.gallery-header .filter, .gallery-header .sort {
+		float: right;
+		margin: 0 5px;
+		vertical-align: top;
+		}		
+.img-container {
+	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+	float: left;
+	padding: 2px;
+	margin: 0 1px;
+	}
+	.img {
+		background:#eee;
+		border:1px solid #ccd;
+		padding:5px;
+		}
+	.desc {
+		font-size: 11px;
+		height:50px;
+		padding:5px 0px;
+		}
