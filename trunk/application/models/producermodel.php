@@ -316,6 +316,149 @@ class ProducerModel extends Model{
 
             return (bool)$this->db->count_all_results();
         }
+        
+	function getProducersWithNoAddressJson()
+	{
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q'); 
+		
+		if ($q == '0') {
+			$q = '';
+		}
+				
+		$query = 'SELECT count(*) AS num_records
+				  FROM producer
+				  LEFT JOIN address
+				  ON producer.producer_id = address.producer_id
+				  WHERE address.producer_id IS NULL';
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		
+		$base_query = 'SELECT producer.* 
+					   FROM producer
+					   LEFT JOIN address
+					   ON producer.producer_id = address.producer_id';
+		
+		$where = ' WHERE address.producer_id IS NULL'; 
+	
+		
+		$query = $base_query . $where;	
+		
+		$start = 0;
+		$page = 0;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY producer.producer_id';
+			
+			$sort = 'producer_id';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "ProducerModel.getProducersWithNoAddressJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$producers = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('ProducerLib');
+			unset($this->ProducerLib);
+			
+			$this->ProducerLib->producerId = $row['producer_id'];
+			$this->ProducerLib->producer = $row['producer'];
+			$this->ProducerLib->status = $row['status'];
+			
+			if ($row['is_restaurant_chain'] == 1)
+			{
+				$this->ProducerLib->restaurantURL = 'restaurantchain';
+			}
+			
+			if ($row['is_restaurant'] == 1)
+			{
+				$this->ProducerLib->restaurantURL = 'restaurant';
+			}
+			
+			if ($row['is_farm'] == 1)
+			{
+				$this->ProducerLib->restaurantURL = 'farm';
+			}
+			
+			if ($row['is_farmers_market'] == 1)
+			{
+				$this->ProducerLib->restaurantURL = 'farmersmarket';
+			}
+			
+			if ($row['is_manufacture'] == 1)
+			{
+				$this->ProducerLib->restaurantURL = 'manufacture';
+			}
+			
+		
+			if ($row['is_distributor'] == 1)
+			{
+				$this->ProducerLib->restaurantURL = 'distributor';
+			}
+			 	 	 	 	 	
+			
+			$producers[] = $this->ProducerLib;
+			unset($this->ProducerLib);
+		}
+		
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		if ($totalPages > 0) {
+			$last = $totalPages - 1;
+		} else {
+			$last = 0;
+		}
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $producers,
+			'param'      => $params,
+	    );
+	    return $arr;
+	}
 }
 
 
