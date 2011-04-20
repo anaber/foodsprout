@@ -295,29 +295,38 @@ class ListModel extends Model{
 				$html .=
 				'	<div class = "listing-information">' . "\n";
 				
+				$attributeHtml = '';
+				
 				if ($farm->farmType) {
-					$html .=
+					$attributeHtml .=
 					'		<b>Livestock:</b> ' . "\n";
-					$html .= $farm->farmType;
+					$attributeHtml .= $farm->farmType;
 				}
 				
 				if ($farm->farmCrop) {
-					$html .=
-					'		<br /><b>Crop:</b> ' . "\n";
-					$html .= $farm->farmCrop;
+					if ($attributeHtml != '') {
+						$attributeHtml .= '<br />';
+					}
+					$attributeHtml .=
+					'		<b>Crop:</b> ' . "\n";
+					$attributeHtml .= $farm->farmCrop;
 				}
 				
 				if ( count($farm->certifications) > 0 ) {
-					$html .=
-					'		<br /><b>Certification:</b> ' . "\n";
+					if ($attributeHtml != '') {
+						$attributeHtml .= '<br />';
+					}
+					$attributeHtml .=
+					'		<b>Certification:</b> ' . "\n";
 					foreach($farm->certifications as $j => $certification) {
 						if ($j == 0) {
-							$html .= $certification->certification;
+							$attributeHtml .= $certification->certification;
 						} else {
-							$html .= ', ' . $certification->certification;
+							$attributeHtml .= ', ' . $certification->certification;
 						}
 					}
 				}
+				$html .= $attributeHtml;
 				
 				$html .= 
 				'	</div>' . "\n" .
