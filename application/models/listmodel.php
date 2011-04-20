@@ -294,9 +294,27 @@ class ListModel extends Model{
 				'	<div class = "clear"></div>' . "\n";
 				$html .=
 				'	<div class = "listing-information">' . "\n" .
-				'		<b>Type:</b> ' . "\n";
+				'		<b>Livestock:</b> ' . "\n";
 				
 				$html .= $farm->farmType;
+				
+				if ($farm->farmCrop) {
+					$html .=
+					'		<br /><b>Crop:</b> ' . "\n";
+					$html .= $farm->farmCrop;
+				}
+				
+				if ( count($farm->certifications) > 0 ) {
+					$html .=
+					'		<br /><b>Certification:</b> ' . "\n";
+					foreach($farm->certifications as $j => $certification) {
+						if ($j == 0) {
+							$html .= $certification->certification;
+						} else {
+							$html .= ', ' . $certification->certification;
+						}
+					}
+				}
 				
 				$html .= 
 				'	</div>' . "\n" .
