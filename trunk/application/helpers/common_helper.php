@@ -255,35 +255,60 @@ function createThumb($name,$filename,$new_w,$new_h) {
 }
 */
 
+// modified createThumb for square result. - Yoying Apri192011
+function createThumb($source, $destination) {
+	global $IMAGEMAGICK_PATH;
+		
+	$width = 200; 
+    $height = 200;
+    
+    list($w,$h) = getimagesize($source);
+
+    $thumbRatio = $width/$height;
+    $inRatio = $w/$h;
+    $isLandscape = $inRatio > $thumbRatio;
+
+    $size = ($isLandscape ? '1000x'.$height : $width.'x1000');
+    $xoff = ($isLandscape ? floor((($inRatio*$height)-$width)/2) : 0);
+    $command = $IMAGEMAGICK_PATH." convert $source -resize $size -crop {$width}x{$height}+{$xoff}+0 ".
+        "-colorspace RGB -strip -quality 90 $destination";
+
+    system($command);
+    
+    return TRUE;
+}
+
+/*
 function createThumb($source,$destination,$new_w,$new_h, $old_x, $old_y) {
 	global $IMAGEMAGICK_PATH;
 	$return = true; 
 	
-	if ($old_x > $old_y) 
-	{
-		$thumb_w=$new_w;
-		$thumb_h=$old_y*($new_h/$old_x);
-	}
-	if ($old_x < $old_y) 
-	{
-		$thumb_w=$old_x*($new_w/$old_y);
-		$thumb_h=$new_h;
-	}
-	if ($old_x == $old_y) 
-	{
-		$thumb_w=$new_w;
-		$thumb_h=$new_h;
-	}
-	
-	$thumb_w = floor($thumb_w);
-	$thumb_h = floor($thumb_h);
+		if ($old_x > $old_y) 
+		{
+			$thumb_w=$new_w;
+			$thumb_h=$old_y*($new_h/$old_x);
+		}
+		if ($old_x < $old_y) 
+		{
+			$thumb_w=$old_x*($new_w/$old_y);
+			$thumb_h=$new_h;
+		}
+		if ($old_x == $old_y) 
+		{
+			$thumb_w=$new_w;
+			$thumb_h=$new_h;
+		}
 		
-	$command = $IMAGEMAGICK_PATH . " $source    -resize ".$thumb_w."x".$thumb_h."!  $destination";
-	//echo $command;
-	system($command);
+		$thumb_w = floor($thumb_w);
+		$thumb_h = floor($thumb_h);
+			
+		$command = $IMAGEMAGICK_PATH . " $source    -resize ".$thumb_w."x".$thumb_h."!  $destination";
+		//echo $command;
+		system($command);
 	
 	return $return;
 }
+*/
 
 function trimWhiteSpaces($string){
 	$string = str_replace(" - ", " ", $string);

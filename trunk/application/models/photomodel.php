@@ -164,6 +164,160 @@ class PhotoModel extends Model{
 	    return $arr;
 	}
 	
+	function getPhotosAdminJson($type) {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); 
+		if (!$p) {
+			$p = $this->input->get('p');
+		}
+		$pp = $this->input->post('pp'); 
+		if (!$pp) {
+			$pp = $this->input->get('pp');
+		}
+		$sort = $this->input->post('sort');
+		if (!$sort) {
+			$sort = $this->input->get('sort');
+		}
+		$order = $this->input->post('order');
+		if (!$order) {
+			$order = $this->input->get('order');
+		}
+		
+		if ($this->input->post('filter') && $this->input->post('filter') != "all") {
+			$filter = $this->input->post('filter');
+		} else {
+			$filter = '';
+		}
+		
+		
+		$q = $this->input->post('q'); 
+		if (!$q) {
+			$q = $this->input->get('q');
+		}
+				
+		
+		$CI =& get_instance();
+		
+		$start = 0;
+		$page = 0;
+		
+		$base_query = 'SELECT photo.*, user.email, user.first_name' .
+				' FROM photo, user';
+		
+		$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM photo, user';
+		
+		
+		$where = ' WHERE ';
+		
+		if ($filter != '')
+		{
+			$where .= ' status = "'.$filter.'" AND';
+		}
+		
+		$where .= ' photo.user_id = user.user_id ';
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			$sort_query = ' ORDER BY added_on';
+			$sort = 'added_on';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'DESC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "PhotoModel.getPhotosJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$menu = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('PhotoLib');
+			unset($this->PhotoLib);
+			$path = '/uploads' . $row['path'];
+			$this->PhotoLib->photoId = $row['photo_id'];
+			$this->PhotoLib->path = $path;
+			
+			$this->PhotoLib->thumbPhoto = $path . 'thumb/' . $row['thumb_photo_name'];
+			$this->PhotoLib->thumbHeight = $row['thumb_height'];
+			$this->PhotoLib->thumbWidth = $row['thumb_width'];
+			
+			$this->PhotoLib->photo = $path . 'main/' . $row['photo_name'];
+			$this->PhotoLib->height = $row['height'];
+			$this->PhotoLib->width = $row['width'];
+			
+			$this->PhotoLib->title = $row['title'];
+			$this->PhotoLib->description = $row['description'];
+			
+			$this->PhotoLib->userId = $row['user_id'];
+			$firstName = $row['first_name'];
+			$arrFirstName = explode(' ', $firstName);
+			$this->PhotoLib->firstName = $arrFirstName[0];
+			$this->PhotoLib->email = $row['email'];
+			$this->PhotoLib->ip = $row['track_ip'];
+			$this->PhotoLib->status = $row['status'];
+			$this->PhotoLib->addedOn = date('Y M, d H:i:s', strtotime ($row['added_on'] ) ) ;
+			
+			$menu[] = $this->PhotoLib;
+			unset($this->PhotoLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		if ($totalPages > 0) {
+			$last = $totalPages - 1;
+		} else {
+			$last = 0;
+		}
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $menu,
+			'param'      => $params,
+	    );
+	    
+	    return $arr;
+	}
+	
 	/**
 	 * Migration: 		Done
 	 * Migrated by: 	Deepak
@@ -241,9 +395,9 @@ class PhotoModel extends Model{
 			$height = $arr[1];
 			$mime = $arr['mime'];
 			
-			if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200', $width, $height) ) {
+			//if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200', $width, $height) ) {
 			//if ( copy($originalTargetFile, $thumbTargetFile) ) {
-			
+			if ( createThumb($originalTargetFile, $thumbTargetFile) ) {
 				$arr = getimagesize($thumbTargetFile);
 				$thumbWidth = $arr[0];
 				$thumbHeight = $arr[1];
@@ -536,9 +690,9 @@ class PhotoModel extends Model{
 			$height = $arr[1];
 			$mime = $arr['mime'];
 			
-			if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200', $width, $height) ) {
+			//if ( createThumb($originalTargetFile, $thumbTargetFile,'300', '200', $width, $height) ) {
 			//if ( copy($originalTargetFile, $thumbTargetFile) ) {
-				
+			if ( createThumb($originalTargetFile, $thumbTargetFile)) {
 				$arr = getimagesize($thumbTargetFile);
 				$thumbWidth = $arr[0];
 				$thumbHeight = $arr[1];
@@ -682,6 +836,46 @@ class PhotoModel extends Model{
 		return $lotteryPhotos;
     }
     
+    function getPhotoByPhotoId($photo_id)
+    {
+    	$this->db->select('photo_id, path, thumb_photo_name, photo_name, original_photo_name');
+    	$query = $this->db->get_where('photo', array('photo_id' => $photo_id));
+    	
+    	if ($query->num_rows() > 0)
+    	{
+    		return $query->row();
+    	}
+    	
+    	return FALSE;
+    }
+    
+    function deletePhoto($photo_id)
+    {
+    	global $UPLOAD_FOLDER;
+    	
+    	$photoInfo = $this->getPhotoByPhotoId($photo_id);
+    	
+    	if ($photoInfo) 
+    	{    		
+	    	$this->db->where("photo_id", $photo_id);
+	    	$this->db->delete("photo");
+	    	
+	    	unlink($UPLOAD_FOLDER.$photoInfo->path."thumb/".$photoInfo->thumb_photo_name);
+    		unlink($UPLOAD_FOLDER.$photoInfo->path."main/".$photoInfo->photo_name);
+    		unlink($UPLOAD_FOLDER.$photoInfo->path."original/".$photoInfo->original_photo_name);
+    	}
+    	
+    	return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
+    }
+    
+    function approvePhoto($photo_id)
+    {
+    	$this->db->where("photo_id", $photo_id);
+    	$this->db->set("status", "live");
+    	$this->db->update("photo");
+    	
+    	return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
+    }
     
 	
 }
