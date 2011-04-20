@@ -52,7 +52,8 @@ function reinitializeTableHeadingEvent(data) {
 	
 	$("#date").click(function(e) {
 		e.preventDefault();
-		if ($(".filter-selected") !== undefined) {
+		
+		if ($(".filter-selected")[0] != undefined) {
 			filter = $(".filter-selected")[0].id;			
 		} else {
 			filter = "all";
@@ -63,7 +64,7 @@ function reinitializeTableHeadingEvent(data) {
 	
 	$("#uploader").click(function(e) {
 		e.preventDefault();
-		if ($(".filter-selected") !== undefined) {
+		if ($(".filter-selected")[0] != undefined) {
 			filter = $(".filter-selected")[0].id;			
 		} else {
 			filter = "all";
