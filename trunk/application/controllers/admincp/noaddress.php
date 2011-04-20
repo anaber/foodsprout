@@ -27,8 +27,15 @@ class Noaddress extends Controller {
 	function ajaxSearchProducers()
 	{
 		$this->load->model('ProducerModel', '', TRUE);
-		$producers = $this->ProducerModel->getProducersWithNoAddressJson();		
-		echo json_encode($producers);
+		$producers = $this->ProducerModel->getProducersWithNoAddressJson();	
+		if (count($producers) > 0) 
+		{	
+			echo json_encode($producers);
+		}
+		else 
+		{
+			echo "No results available.";
+		}
 	}
 	
 	

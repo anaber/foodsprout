@@ -30,7 +30,9 @@ class Photos extends Controller {
 	{
 		$this->load->model('PhotoModel', '', TRUE);
 		$photos = $this->PhotoModel->getPhotosAdminJson('restaurant');		
+
 		echo json_encode($photos);
+
 	}	
 	
 	function photoAction()
