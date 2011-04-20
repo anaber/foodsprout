@@ -293,10 +293,13 @@ class ListModel extends Model{
 				'	</div>' . "\n" .
 				'	<div class = "clear"></div>' . "\n";
 				$html .=
-				'	<div class = "listing-information">' . "\n" .
-				'		<b>Livestock:</b> ' . "\n";
+				'	<div class = "listing-information">' . "\n";
 				
-				$html .= $farm->farmType;
+				if ($farm->farmType) {
+					$html .=
+					'		<b>Livestock:</b> ' . "\n";
+					$html .= $farm->farmType;
+				}
 				
 				if ($farm->farmCrop) {
 					$html .=
