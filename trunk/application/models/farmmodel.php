@@ -785,34 +785,14 @@ class FarmModel extends Model{
 		$where .= ' address.producer_id = producer.producer_id' .
 				 ' AND producer.is_farm = 1'.
 		         ' AND producer.status = \'live\' ';
-
+		
 		if ( count($arrFarmTypeId) > 0  || count($arrFarmCropId) > 0 || count($arrCertificationId) > 0 ) {
 			$where .= ' AND (';
 			
-			if(count($arrFarmTypeId) > 0 ) {
-				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrFarmTypeId) . ')';
-			}
+			$arr = array_merge($arrFarmTypeId, $arrFarmCropId, $arrCertificationId);
 			
-			if(count($arrFarmCropId) > 0 ) {
-				// Cuisine
-				if(count($arrFarmTypeId) > 0 ) {
-					$where	.= ' OR ( ';
-				} else {
-					$where	.= ' ( ';
-				}
-				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrFarmCropId) . ')'
-				. '		)';
-			}
-			
-			if(count($arrCertificationId) > 0 ) {
-				// Cuisine
-				if( count($arrFarmTypeId) > 0 || count($arrFarmCropId) > 0 ) {
-					$where	.= ' OR ( ';
-				} else {
-					$where	.= ' ( ';
-				}
-				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arrCertificationId) . ')'
-				. '		)';
+			if(count($arr) > 0 ) {
+				$where .= ' producer_category_member.producer_category_id IN (' . implode(',', $arr) . ')';
 			}
 			
 			$where .= ' )';
@@ -825,12 +805,13 @@ class FarmModel extends Model{
 			$whereCountQuery	.= ' AND ( 3959 * acos( cos( radians(' . $latLng['latitude'] . ') ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(' . $latLng['longitude'] . ') ) + sin( radians(' . $latLng['latitude'] . ') ) * sin( radians( latitude ) ) ) ) <= ' . $radius . ' ';
 		}
 		
-		$query = $base_query_count . $where . $whereCountQuery;
+		$query = $base_query_count . $where . $whereCountQuery;// . ' GROUP BY producer.producer_id ' ;
+		//echo $query . "<br /><br />";//die;
 		$result = $this->db->query($query);
 		$row = $result->row();
 		$numResults = $row->num_records;
 		
-		$query = $base_query . $where . $whereMainQuery;
+		$query = $base_query . $where . ' GROUP BY producer.producer_id ' . $whereMainQuery;
 		
 		//$query .= ' GROUP BY producer.producer_id ';
 		
@@ -865,9 +846,10 @@ class FarmModel extends Model{
 				$query .= " LIMIT 0, " . $PER_PAGE;
 			}
 		}
-		
+		//echo $query;die;
 		$CI->load->model('AddressModel','',true);
 		$CI->load->model('CustomUrlModel','',true);
+		$CI->load->model('ProducerCategoryModel','',true);
 		
 		log_message('debug', "FarmModel.getFarmsJson : " . $query);
 		$result = $this->db->query($query);
@@ -884,9 +866,31 @@ class FarmModel extends Model{
 			$this->FarmLib->farmId = $row['producer_id'];
 			
 			$this->FarmLib->farmName = $row['producer'];
-			$this->FarmLib->farmType = $row['producer_category'];
+			
+			//$this->FarmLib->farmType = $row['producer_category'];
 			
 			$this->FarmLib->creationDate = $row['creation_date'];
+			
+			$farmTypes = $CI->ProducerCategoryModel->getFarmTypesForFarm( $row['producer_id'] );
+			if ($farmTypes) {
+				$this->FarmLib->farmTypeId = $farmTypes[0]->farmTypeId;
+				$this->FarmLib->farmType = $farmTypes[0]->farmType;
+			} else {
+				$this->FarmLib->farmTypeId = '';
+				$this->FarmLib->farmType = '';
+			}
+			
+			$farmCrops = $CI->ProducerCategoryModel->getFarmCropsForFarm( $row['producer_id'] );
+			if ($farmCrops) {
+				$this->FarmLib->farmCropId = $farmCrops[0]->farmCropId;
+				$this->FarmLib->farmCrop = $farmCrops[0]->farmCrop;
+			} else {
+				$this->FarmLib->farmCropId = '';
+				$this->FarmLib->farmCrop = '';
+			}
+			
+			$certifications = $CI->ProducerCategoryModel->getCertificationsForFarm( $row['producer_id'] );
+			$this->FarmLib->certifications = $certifications;
 			
 			$addresses = $CI->AddressModel->getAddressForProducer($row['producer_id'], '', '', '');
 			$this->FarmLib->addresses = $addresses;

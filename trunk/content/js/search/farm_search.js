@@ -285,7 +285,7 @@ function reinitializePopupFarmCropEvent (data, allFarmCrops) {
 	
 	//$(':checkbox').click(function () {
 	$('#btnApplyFarmCrops').click(function () {
-		var strRestaurantTypeId = '';	
+		var strFarmCropId = '';	
 		var strFilters = '';
 		j = 0;
 		
@@ -298,29 +298,26 @@ function reinitializePopupFarmCropEvent (data, allFarmCrops) {
 	        j++;
 		  }
 		);
-		/*
-		if (selectedTopCuisineId != '') {
-			if (strRestaurantTypeId != '') {
-				strFilters = strRestaurantTypeId + ',' + selectedTopCuisineId;
+
+		if ( selectedTopFarmTypeId != '' || selectedTopCertificationId != '' ) {
+			if (strFarmCropId != '') {
+				strFilters = strFarmCropId + (selectedTopFarmTypeId != '' ? ',' + selectedTopFarmTypeId : '') + (selectedTopCertificationId != '' ? ',' + selectedTopCertificationId : '');
 			} else {
-				strFilters = selectedTopCuisineId;
+				strFilters = (selectedTopFarmTypeId != '' ? ',' + selectedTopFarmTypeId : '') + (selectedTopCertificationId != '' ? ',' + selectedTopCertificationId : '');
 			}
-		} else if (selectedCuisineId != '') {
-			if (strRestaurantTypeId != '') {
-				strFilters = strRestaurantTypeId + ',' + selectedCuisineId;
+		} else if ( selectedFarmTypeId != '' || selectedCertificationId != '' ) {
+			if (strFarmCropId != '') {
+				strFilters = strFarmCropId + (selectedFarmTypeId != '' ? ',' + selectedFarmTypeId : '') + (selectedCertificationId != '' ? ',' + selectedCertificationId : '');
 			} else {
-				strFilters = selectedCuisineId;
+				strFilters = (selectedFarmTypeId != '' ? ',' + selectedFarmTypeId : '') + (selectedCertificationId != '' ? ',' + selectedCertificationId : '');
 			}
 		} else {
-			strFilters = strRestaurantTypeId;
+			strFilters = strFarmCropId;
 		}
-		*/
-		strFilters = strFarmCropId;
 		
 		selectedFarmCropId = strFarmCropId;
 		selectedTopFarmCropId = "";
 		disablePopup();
-		loadPopupFadeIn();
 		
 		if (data) {
 			postAndRedrawContent(data.param.firstPage, data.param.perPage, data.param.sort, data.param.order, data.param.q, strFilters, data.param.city);
@@ -522,17 +519,22 @@ function reinitializeShowHideMap(data) {
 
 function reinitializeFilterEvent (data) {
 	
-	var strFilters = '';
-	var strCuisineFilters = '';
+	
 	var strFarmTypeFilters = '';
+	var strCertificationFilters = '';
+	var strFarmCropFilters = '';
+	
+	//alert("At Top : " + strFilters);
 	
 	$(':checkbox').click(function () {
+		
+		var strFilters = '';
 		
 		j = 0;
 		i = 0;
 		$('#divFarmLivestocks :checked').each(function() {
-		   
-		   if (j == 0 ) {
+			//alert("Condition 1");return false;
+		   	if (j == 0 ) {
 	        	strFilters += $(this).val();
 	        } else {
 	        	strFilters += ',' + $(this).val();
@@ -545,15 +547,62 @@ function reinitializeFilterEvent (data) {
 	        	strFarmTypeFilters += ',' + $(this).val();
 	        }
 	        i++;
-	        
-		  }
+	      }
 		);
+		
+		i = 0;
+		$('#divCertifications :checked').each(function() {
+			//alert("Condition 0 : " + strFilters);
+			if (j == 0 ) {
+	        	strFilters += $(this).val();
+	        } else {
+	        	strFilters += ',' + $(this).val();
+	        }
+	        j++;
+		  
+			if (i == 0 ) {
+	        	strCertificationFilters = $(this).val();
+	        } else {
+	        	strCertificationFilters += ',' + $(this).val();
+	        }
+	        i++;
+		});
+		//alert("Condition 1 : " + strFilters);
+		
+		i = 0;
+		$('#divFarmCrops :checked').each(function() {
+			//alert("Condition 3");return false;
+			if (j == 0 ) {
+	        	strFilters += $(this).val();
+	        } else {
+	        	strFilters += ',' + $(this).val();
+	        }
+	        j++;
+		  
+		  
+			if (i == 0 ) {
+	        	strFarmCropFilters = $(this).val();
+	        } else {
+	        	strFarmCropFilters += ',' + $(this).val();
+	        }
+	        i++;
+		});
+		//alert("Condition 2 : " + strFilters);
 		
 		if (strFarmTypeFilters != '') {
 			selectedTopFarmTypeId = strFarmTypeFilters;
 			selectedFarmTypeId = '';
 		}
 		
+		if (strCertificationFilters != '') {
+			selectedTopCertificationId = strCertificationFilters;
+			selectedCertificationId = '';
+		}
+		
+		if (strFarmCropFilters != '') {
+			selectedTopFarmCropId = strFarmCropFilters;
+			selectedFarmCropId = '';
+		}
 		
 		if (selectedFarmTypeId != '') {
 			if (strFilters != '') {
@@ -562,12 +611,28 @@ function reinitializeFilterEvent (data) {
 				strFilters = selectedFarmTypeId;
 			}
 		}
+		
+		if (selectedCertificationId != '') {
+			if (strFilters != '') {
+				strFilters = strFilters + ',' + selectedCertificationId;
+			} else {
+				strFilters = selectedCertificationId;
+			}
+		}
+		
+		if (selectedFarmCropId != '') {
+			if (strFilters != '') {
+				strFilters = strFilters + ',' + selectedFarmCropId;
+			} else {
+				strFilters = selectedFarmCropId;
+			}
+		}
 		//alert(strFilters );
 		
 		//if (strFilters != '') {
 			filters = strFilters;
 		//}
-		
+		//alert(strFilters);
 		//loadPopupFadeIn();
 		
 		if (data) {
