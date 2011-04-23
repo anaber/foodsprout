@@ -7,31 +7,9 @@
 	});
 </script>
 
-<div id="restaurantname">
-	<div style = "float:left;">
-		<img src = "/images/Number-1-icon.png">
-	</div>
-	<div style = "float:left;padding:10px 0 0 10px;width:200px;">
-		<h1 style="font-size: 18px;">Setup Account</h1>
-	</div>
-	
-	<div style = "float:left;">
-		<img src = "/images/Number-2-icon.png">
-	</div>
-	<div style = "float:left;padding:10px 0 0 10px;width:250px;">
-		<h1 style="font-size: 16px;">Confirm Connection to Business</h1>
-	</div>
-	
-	<div style = "float:left;">
-		<img src = "/images/Number-3-icon.png">
-	</div>
-	<div style = "float:left;padding:10px 0 0 10px;width:250px;">
-		<h1 style="font-size: 16px;">Access For Business Owners</h1>
-	</div>
-	
-	<div class = "clear"></div>
-</div>
-<div class = "clear"></div>
+<?php
+	$this->load->view('business/register/top_steps');
+?>
 
 <div style = "padding:10px 0 10px 0;">
 		
@@ -45,13 +23,12 @@
 					<h2 id="signup-title"> </h2>
 					<form action="/login/create_user<?php echo ( $this->input->get('frm') <> "" ? "?frm=".$this->input->get('frm') : "" ); ?>" method="post" name="frmAccount" id="frmAccount">								
 						
-						First Name: <input type="text" name="firstname" id="firstname" class="validate[required]" value="<?php echo set_value('username'); ?>" AUTOCOMPLETE="OFF"><br/>
+						First Name: <input type="text" name="firstname" id="firstname" class="validate[required]" value="<?php echo set_value('username'); ?>" AUTOCOMPLETE="OF"><br/>
 						Last Name: <input type="text" name="username" id="username" class="validate[required]" value="<?php echo set_value('username'); ?>" AUTOCOMPLETE="OFF"><br/>
 						
-						Username: <input type="text" name="username" id="username" class="validate[required]" value="<?php echo set_value('username'); ?>" AUTOCOMPLETE="OFF"><br/>
+						Phone: <input type="text" name="phone" id="phone" class="validate[required]" value="<?php echo set_value('phone'); ?>" AUTOCOMPLETE="OFF"><br/>
 						
 						Email: <input type="text" name="email" id="email" class="validate[required,custom[email]]" value="<?php echo set_value('email'); ?>" AUTOCOMPLETE="OFF"><br/>
-						Re-enter Email: <input type="text" name="email" id="email" class="validate[required,custom[email]]" value="<?php echo set_value('email'); ?>" AUTOCOMPLETE="OFF"><br/>
 						
 						Password: <input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="<?php echo set_value('password'); ?>" AUTOCOMPLETE="OFF"><br/>
 						Re-enter Password: <input type="password" name="password" id="password" class="validate[required,length[8,30]]" value="<?php echo set_value('password'); ?>" AUTOCOMPLETE="OFF"><br/>
@@ -115,16 +92,7 @@
 					<p>FoodSprout  We launched a beta version of Food Sprout.
 					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
 				</div>
-				<div class="news-item">
-					<h2><span class="news-date">July 4, 2010</span></h2>
-					<p>FoodSprout  We launched a beta version of Food Sprout.
-					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
-				</div>
-				<div class="news-item">
-					<h2><span class="news-date">July 4, 2010</span></h2>
-					<p>FoodSprout  We launched a beta version of Food Sprout.
-					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
-				</div>
+				
 			</div>
 		</div>
 		

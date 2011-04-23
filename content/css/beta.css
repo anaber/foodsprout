@@ -6,7 +6,7 @@ Version:1.0
 Tags:*/
 /* Reset default browser CSS. Based on work by Eric Meyer:http://meyerweb.com/eric/tools/css/reset/index.html
 -------------------------------------------------------------- */
-*{margin:0;padding:0;border:0;vertical-align:baseline;background:transparent;}
+/* *{margin:0;padding:0;border:0;vertical-align:baseline;background:transparent;}*/
 body{line-height:1;text-align:justify;}
 h1,h2,h3,h4,h5,h6{font-weight:normal;clear:both;}
 ol,ul{list-style:none;}
@@ -119,7 +119,7 @@ a:hover{text-decoration:underline;}
 -------------------------------------------------------------- */
 #signup-box{border:1px solid #1A1A1A;background:#EBEBEB;padding:2px;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
 #signup-box-wrapper{background:#ACACAC;width:420px;height:400px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;}
-#register-box-wrapper{background:#ACACAC;width:420px;height:510px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;}
+
 #login-wrapper{position:relative;right:20px;text-align:right;top:10px;}
 #login-form{width:400px;height:40px;position:absolute;right:0;text-align:left; top:12px;}
 #content #login-form h2{margin:0 0 5px 0;}

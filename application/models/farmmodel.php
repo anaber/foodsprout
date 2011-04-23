@@ -48,19 +48,7 @@ class FarmModel extends Model{
 			$GLOBALS['error'] = 'no_name';
 			$return = false;
 		} else {
-/*			if ( empty($companyId) ) {
-				// Enter manufacture into company
-				//$CI->load->model('CompanyModel','',true);
-				//$companyId = $CI->CompanyModel->addCompany($this->input->post('farmName'));
-			} else {
-				if (empty($farmName) ) {
-					// Consider company name as manufacture name
-					//$CI->load->model('CompanyModel','',true);
-					//$company = $CI->CompanyModel->getCompanyFromId($companyId);
-					//$farmName = $company->companyName;
-				}
-			}
-*/			
+		
 			$query = "SELECT * FROM producer WHERE producer = \"" . $farmName . "\" AND is_farm = 1";
 			log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
 			
@@ -68,7 +56,7 @@ class FarmModel extends Model{
 			
 			if ($result->num_rows() == 0) {
 				$query = "INSERT INTO producer ( producer, creation_date, custom_url, city_area_id, phone, fax, email, url, status, track_ip, user_id, facebook, twitter, is_farm)" .
-						" values ( \"" . $farmName . "\", NOW(), NULL, NULL, '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', 'queue', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
+						" values ( \"" . $farmName . "\", NOW(), NULL, NULL, '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
 				
 				log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
 				$return = true;
@@ -79,20 +67,29 @@ class FarmModel extends Model{
 					$CI->load->model('ProducerCategoryModel','',true);
 					
 					//ADD CERTFICATION
-					if(strpos($this->input->post('certificationId'),',') !== FALSE) {
-						$arrCertificationId = explode(',', $this->input->post('certificationId'));
-					} else {
-						$arrCertificationId[] = $this->input->post('certificationId');
+					$certification = $this->input->post('certificationId');
+					if ($certification != '') {
+						if(strpos($this->input->post('certificationId'),',') !== FALSE) {
+							$arrCertificationId = explode(',', $this->input->post('certificationId'));
+						} else {
+							$arrCertificationId[] = $this->input->post('certificationId');
+						}
+						$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrCertificationId);
 					}
-					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrCertificationId);
 					
 					//ADD FARM TYPE
-					$arrFarmTypeId[] = $this->input->post('farmTypeId');
-					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrFarmTypeId);
+					$farmType = $this->input->post('farmTypeId');
+					if ($farmType != '') {
+						$arrFarmTypeId[] = $this->input->post('farmTypeId');
+						$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrFarmTypeId);
+					}
 					
 					//ADD FARM CROP
-					$arrFarmCropId[] = $this->input->post('farmCropId');
-					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrFarmCropId);
+					$farmCrop = $this->input->post('farmCropId');
+					if ($farmCrop != '') {
+						$arrFarmCropId[] = $this->input->post('farmCropId');
+						$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrFarmCropId);
+					}
 					
 					$CI->load->model('AddressModel','',true);
 					$addressId = $CI->AddressModel->addAddress($newFarmId);

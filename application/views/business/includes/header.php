@@ -82,6 +82,7 @@ if (isset ($ASSETS['JS']) ) {
 		Business Services
 	</div>
   </div>
+  <div class = "clear"></div><div class = "clear"></div>
 </div>
 <!-- end header -->
 
@@ -89,7 +90,6 @@ if (isset ($ASSETS['JS']) ) {
 <!-- leaf bg -->
 <?php /* ?><div id="leafimg"><?php */ ?>
 <div id="leafimg">
-
 <!-- main active tab area -->
 <?php /* ?><div id="mainimg"><?php */ ?>
 <div id="mainimg">
