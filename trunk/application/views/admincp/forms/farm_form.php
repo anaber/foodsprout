@@ -256,7 +256,7 @@ $(document).ready(function() {
 	<tr>
 		<td width = "30%" nowrap>Farm Livestock</td>
 		<td width = "70%">
-			<select name="farmTypeId" id="farmTypeId"  class="validate[required]">
+			<select name="farmTypeId" id="farmTypeId"  class="validate[optional]">
 			<option value = ''>--Farm Livestock--</option>
 			<?php
 				foreach($FARM_TYPES as $key => $value) {

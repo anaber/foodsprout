@@ -1,1 +1,84 @@
 #business-form input[type='submit']{font-size:28px;height:60px;width:288px;}
+#register-box-wrapper{background:#ACACAC;width:420px;height:470px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;}
+
+.content {}
+.content ol {padding: 3px 0 3px 10px; margin-left:10px;}
+.content ol li {padding: 3px 0 3px 0; margin-left:5px; list-style-type:decimal;text-align:justify;}
+
+.content ul {padding: 3px 0 3px 10px; margin-left:10px;}
+.content ul li {padding: 3px 0 3px 0; margin-left:10px; list-style-type:disc;text-align:justify;}
+
+
+
+/* =Fonts
+-------------------------------------------------------------- */
+body,
+input,
+textarea{font-family:Helvetica,'Trebuchet MS',Arial,sans-serif;}
+pre{font-family:"Courier 10 Pitch",Courier,monospace;}
+code{font-family:Monaco,Consolas,"Andale Mono","DejaVu Sans Mono",monospace;}
+
+/* =Global Elements
+-------------------------------------------------------------- */
+/* Main global 'theme' and typographic styles */
+body,
+input,
+textarea{color:#666;font-size:14px;line-height:18px;}
+
+/* =signup
+-------------------------------------------------------------- */
+#signup-box{border:1px solid #1A1A1A;background:#EBEBEB;padding:2px;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
+#signup-box-wrapper{background:#ACACAC;width:420px;height:400px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;}
+
+#login-wrapper{position:relative;right:20px;text-align:right;top:10px;}
+#login-form{width:400px;height:40px;position:absolute;right:0;text-align:left; top:12px;}
+#content #login-form h2{margin:0 0 5px 0;}
+#login-form form{margin:2px;}
+#login-form input{margin-bottom:2px;width:130px;}
+#login-form input[type='submit']{width:60px;}
+#login-form input[type='checkbox']{width:20px;}
+.signup-box-shadow{background:url(/img/signup-box-shadow.png) 0 -14px no-repeat;width:420px;height:20px;overflow:hidden;}
+#signup-form{margin-top:10px;padding:0 10px; text-align:right;}
+#signup-form #signup-title{background:url(/img/signup-title.png) no-repeat;height:50px;text-indent:-9999px;width:220px;margin:0;}
+#signup-form input[type='text'],
+#signup-form input[type='password']{background:none repeat scroll 0 0 #EAEAEA;border:1px solid #666666;color:#666666;font-size:16px;margin:0 0 15px;padding:4px;width:260px;}
+#signup-form input[type='text']:hover,
+#signup-form input[type='password']:hover{background:#ddd;}
+#signup-form input[type='text']:focus,
+#signup-form input[type='password']:focus{background:#fafafa;}
+#signup-form input[type='submit']{font-size:28px;height:60px;width:399px;}
+
+#signup-form1{margin-top:10px;padding:0 10px;}
+#signup-form1 input[type='submit']{font-size:28px;height:60px;width:299px;}
+
+#signup-form2{margin-top:10px;padding:0 10px;}
+#signup-form2 input[type='submit']{font-size:28px;height:60px;width:399px;}
+
+/* =main
+-------------------------------------------------------------- */
+#content #news{background:#2B1B0C;background:rgba(43,27,12,.8);color:#9E7C52;font-size:12px;}
+#content #news-title{background:#2B1B0C url(/img/leaf-small.png) 10px 12px no-repeat;color:#9E7C52;height:20px;padding:10px 10px 10px 32px;}
+#content #news h2{color:#27AC00;font-size:12px;margin:0 0 3px;}
+#content #news #news-title h2{width:60px;float:left;font-size:18px;}
+#content #news #news-title .readmore{float:left;line-height:30px;}
+#content #news h3{color:#BE946D;}
+#content #news #newsbody{font-size:1em;line-height:1.2em;margin:0 0 8px;padding:10px;}
+#content #news .news-item{margin-bottom:10px;}
+#content #news p{font-size:.9em;margin:0 0 8px;}
+#social-icons{float:right;text-align:right;}
+#social-icons a{background:url(/img/social-icons.png) no-repeat;float:right;display:block;width:31px;height:30px;margin-left:5px;margin-top:-5px;}
+#social-icons a span{position:absolute;left:-9999px;display:block;}
+#social-icons a#fs-blog{background-position:0 0;}
+#social-icons a#fs-blog:hover{background-position:0 -39px;}
+#social-icons a#fs-facebook{background-position:-35px 0;}
+#social-icons a#fs-facebook:hover{background-position:-35px -39px;}
+#social-icons a#fs-twitter{background-position:-70px 0;}
+#social-icons a#fs-twitter:hover{background-position:-70px -39px;}
+.news-item .from-twitter{background:url(/img/news-twitter-bird.png) no-repeat;display:block;float:left;height:20px;width:20px;}
+#content #news a{color:#BE946D;}
+
+/* styles */
+
+.right{float:right;}
+.left{float:left;}
+

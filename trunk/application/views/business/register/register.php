@@ -9,17 +9,71 @@
 	</div>
 </div>
 
-<div>
-	<div style = "float:left;width:500px;border:1px solid #FF0000;">
+<div class = "content">
+	<div id="main-content" style = "padding-left:20px;float:left;">
+		
 		<ul>
-			<li>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</li>
-			<li>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</li>
-			<li>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</li>
-			<li>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</li>
+			<li>Lorem Ipsum is simply dummy text.</li>
+			<li>Lorem Ipsum is simply dummy text.</li>
+			<li>Lorem Ipsum is simply dummy text.</li>
+			<li>Lorem Ipsum is simply dummy text.</li>
 		</ul>
+		
 	</div>
-	<div style = "float:right;margin-right:20px;width:400px;border:1px solid #00FF00;">
-		Right
+	<div  id="content" style = "width:480px;padding-right:20px;float:right;">
+		
+		<div id="news">
+			<div id="news-title">
+				<h2>News</h2>
+				<a class="readmore" href="#">Read more ></a>
+				<div id="social-icons">
+					<a href="http://twitter.com/foodsprout" id="fs-twitter"><span>Twitter</span></a>
+					<a href="http://www.facebook.com/foodsprout" id="fs-facebook"><span>Facebook</span></a>
+					<a href="http://blog.foodsprout.com" id="fs-blog"><span>Blog</span></a>
+				</div>
+			</div>
+			<div class = "clear"></div>
+			<div id="newsbody">
+				<div class="news-item">
+					<h2><span class="from-twitter"></span><span class="news-date">August 3, 2010</span></h2>
+					<p>FoodSprout  We launched a beta version of Food Sprout.
+					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+				</div>
+				<div class="news-item">
+					<h2><span class="news-date">July 14, 2010</span></h2>
+					<p>FoodSprout  We launched a beta version of Food Sprout.
+					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+				</div>
+				<div class="news-item">
+					<h2><span class="news-date">July 4, 2010</span></h2>
+					<p>FoodSprout  We launched a beta version of Food Sprout.
+					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+				</div>
+				<div class="news-item">
+					<h2><span class="news-date">July 4, 2010</span></h2>
+					<p>FoodSprout  We launched a beta version of Food Sprout.
+					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+				</div>
+				<div class="news-item">
+					<h2><span class="news-date">July 4, 2010</span></h2>
+					<p>FoodSprout  We launched a beta version of Food Sprout.
+					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+				</div>
+				<div class="news-item">
+					<h2><span class="news-date">July 4, 2010</span></h2>
+					<p>FoodSprout  We launched a beta version of Food Sprout.
+					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+				</div>
+				<div class="news-item">
+					<h2><span class="news-date">July 4, 2010</span></h2>
+					<p>FoodSprout  We launched a beta version of Food Sprout.
+					Mapping the world's food chain, and what's really in your food, start exploring it with us</p>
+				</div>
+				
+			</div>
+		</div>
+		
+		
 	</div>
 	<div class = "clear"></div>
 </div>
