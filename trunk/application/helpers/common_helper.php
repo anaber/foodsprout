@@ -330,7 +330,7 @@ function trimWhiteSpaces($string){
 	}
 }
 
-function checkUserAgent() {
+function checkUserAgent($page = null, $id = null) {
 	$_CI =& get_instance();
 	$_CI->load->library('user_agent');
 	
@@ -343,8 +343,18 @@ function checkUserAgent() {
 	else
 		$agent = 'Unidentified User Agent';
 
-	if( $agent == 'mobile' )
-		redirect('/mobile');
+	if( $agent == 'mobile' ) 
+	{
+		
+		if ($page == null && $id == null)
+		{
+			redirect('/mobile');
+		}
+		else 
+		{				
+			redirect('/mobile/'.$page.'s/'.$id);		
+		}
+	}
 }
 
 function getUserAgent() {

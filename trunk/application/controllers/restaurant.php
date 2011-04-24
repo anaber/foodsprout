@@ -5,10 +5,10 @@ class Restaurant extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
-		checkUserAgent();
-
-                $this->load->helper('cookie');
-                $this->load->helper('url');
+		checkUserAgent($this->uri->segment(1), $this->uri->segment(2));
+//		echo current_url();
+        $this->load->helper('cookie');
+        $this->load->helper('url');
 	}
 
 	function index() {

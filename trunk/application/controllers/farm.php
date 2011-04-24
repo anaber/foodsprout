@@ -6,7 +6,7 @@ class Farm extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
-		checkUserAgent();
+		checkUserAgent($this->uri->segment(1), $this->uri->segment(2));
 
 		$this->css = array(
 			'farm',
