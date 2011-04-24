@@ -34,7 +34,9 @@ class Restaurants extends Controller {
 	function customUrl($customUrl){
 
 		$custom_url_data = $this->db->query("select * from custom_url where `custom_url` = '".$customUrl."' ")->result_array();
-		
+		/*echo "<pre>";
+		print_r($custom_url_data);
+		echo "</pre>";*/
 		if ($custom_url_data) {
 			
 			$this->_view($custom_url_data[0]['producer_id'],  $custom_url_data[0]['address_id']);

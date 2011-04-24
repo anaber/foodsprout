@@ -336,7 +336,7 @@ class ProducerModel extends Model{
 				  FROM producer
 				  LEFT JOIN address
 				  ON producer.producer_id = address.producer_id
-				  WHERE address.producer_id IS NULL';
+				  WHERE address.producer_id IS NULL AND is_restaurant_chain IS NULL';
 		
 		$result = $this->db->query($query);
 		$row = $result->row();
@@ -348,7 +348,7 @@ class ProducerModel extends Model{
 					   LEFT JOIN address
 					   ON producer.producer_id = address.producer_id';
 		
-		$where = ' WHERE address.producer_id IS NULL'; 
+		$where = ' WHERE address.producer_id IS NULL AND is_restaurant_chain IS NULL'; 
 	
 		
 		$query = $base_query . $where;	
@@ -402,12 +402,7 @@ class ProducerModel extends Model{
 			$this->ProducerLib->producerId = $row['producer_id'];
 			$this->ProducerLib->producer = $row['producer'];
 			$this->ProducerLib->status = $row['status'];
-			
-			if ($row['is_restaurant_chain'] == 1)
-			{
-				$this->ProducerLib->restaurantURL = 'restaurantchain';
-			}
-			
+					
 			if ($row['is_restaurant'] == 1)
 			{
 				$this->ProducerLib->restaurantURL = 'restaurant';

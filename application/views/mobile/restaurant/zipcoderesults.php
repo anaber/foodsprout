@@ -28,13 +28,21 @@
 			if(sizeof($search_results) >0){
 				echo '<ul  id="menu">';
 					foreach ($search_results as $result ){
-						
+						echo '<li>';
+							echo 	'<a href="'.base_url().'mobile/restaurants/'.$result['custom_url'].'">
+									'.$result['producer'].'<span>City: <strong>'.$result['city'].'</strong>, address: <strong>
+									'.$result['address'].', </strong>
+									cuisine: '.$result['cuisine'].'</span></a>';	
+						echo '</li>'; 
+						/* original code */
+						/* 
 						echo '<li>';
 							echo 	'<a href="'.base_url().'mobile/restaurants/view-'.$result['custom_url'].'">
 									'.$result['producer'].'<span>City: <strong>'.$result['city'].'</strong>, address: <strong>
 									'.$result['address'].', </strong>
 									cuisine: '.$result['cuisine'].'</span></a>';	
-						echo '</li>'; 	              
+						echo '</li>'; 	
+						*/              
 					}
 				echo '</ul>';
 			}else{

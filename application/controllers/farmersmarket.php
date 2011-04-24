@@ -5,7 +5,7 @@ class FarmersMarket extends Controller {
 	function __construct() {
 		parent::Controller();
 		checkUserLogin();
-		checkUserAgent();
+		checkUserAgent($this->uri->segment(1), $this->uri->segment(2));
 	}
 	
 	function index() {
