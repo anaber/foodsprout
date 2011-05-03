@@ -820,6 +820,7 @@ class PhotoModel extends Model{
 			$this->PhotoLib->photoId = $row['lottery_photo_id'];
 			$this->PhotoLib->path = $path;
 			
+			$this->PhotoLib->description = $row['description'];
 			$this->PhotoLib->thumbPhoto = $path . 'thumb/' . $row['thumb_photo_name'];
 			$this->PhotoLib->thumbHeight = $row['thumb_height'];
 			$this->PhotoLib->thumbWidth = $row['thumb_width'];
