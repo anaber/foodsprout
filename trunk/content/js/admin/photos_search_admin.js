@@ -160,14 +160,15 @@ function reinitializeTableHeadingEvent(data) {
 		
 	});
 	
-	
 }
 
 function addResult(photos, i) {
 	var html =
 	'<div id="photo-'+photos.photoId+'" class="img-container"> ' +
 	'	<div class="img">' +
-	'		<img src="'+ photos.thumbPhoto +'" height="132" width="132" />' +
+	' 		<a href="'+photos.photo+'" rel="lightbox" title="'+photos.description+'" style="text-decoration:none; color: transparent;">' +
+	'			<img src="'+ photos.thumbPhoto +'" height="132" width="132" />' +
+	' 		</a>' +
 	'	</div>' +
 	'	<div class="desc">' +
 	'		<div>By: '+ photos.firstName +'</div>' +
@@ -190,18 +191,19 @@ function addResult(photos, i) {
 
 function getResultTableHeader() {
 	var html = 
-	'<div id="tbllist" class="gallery-header">' +
+	'<div id="tbllist">' +
+	'	<div class="gallery-header">' +
 	'   <div class="filter">Filter:' +
-	'		<a id="all" href="#">All</a>' +
-	'		<a id ="live" href="#">Live</a>' +
+	'		<a id="all" href="#">All</a>,' +
+	'		<a id ="live" href="#">Live</a>,' +
 	'		<a id="queue" href="#">Queue</a>' +	
 	'	</div>' +
 	'   <div class="sort">Sort By:' +
-	'		<a id="date" href="#" >Added Date<a>' +
+	'		<a id="date" href="#" >Added Date<a>,' +
 	'		<a id="uploader" href="#">Uploader</a>' +
 	'	</div>' +
 	'	<div style="clear:both;"></div>' +
-	'</div>';
+	'	</div>';
 	
 
 	return html;
