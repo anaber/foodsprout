@@ -79,10 +79,6 @@ function getResultTableHeader() {
 		'	<tr>' +
 		'		<th id = "heading_id"><a href = "#" style = "color:#FFFFFF">Id</a></th>' +
 		'		<th id = "heading_producer"><a href = "#" style = "color:#FFFFFF">Producer Name</a></th>' +
-	//	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Chain</a></th>' +
-	//	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Company</a></th>' +
-	//	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Locations</a></th>' +
-	//	'		<th id = ""><a href = "#" style = "color:#FFFFFF">Menu</a></th>' +
 		'	</tr>' +
 		'	</thead>' +
 		'	<tbody>';
