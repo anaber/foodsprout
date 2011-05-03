@@ -70,7 +70,7 @@ class Company extends Controller {
 		$this->load->model('CompanyModel', '', TRUE);
 		
 		$GLOBALS = array();
-		if ( $this->CompanyModel->addCompany() ) {
+		if ( $this->CompanyModel->addCompany($this->input->post('companyName')) ) {
 			
 			// TO DO: IF THE USER DOES NOT HAVE JAVASCRIPT WE NEED TO USE SERVER SIDE REDIRECT.  BELOW CODE WILL DO THIS, HOWEVER THE echo 'yes' IS REQUIRED TO PASS TO THE JAVASCRIPT.  CONSIDER A BETTER WAY TO NOTIFY THE JQUERY JAVASCRIPT THAT THE EVENT WAS SUCCESSFUL SO AS TO ALLOW THE PROPER REDIRECT FOR NON JAVASCRIPT
 			// Added the new COMPANY successfully, send user to index

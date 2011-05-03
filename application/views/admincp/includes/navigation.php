@@ -92,6 +92,7 @@ document.onclick = jsddm_close;
 			    <li><?php echo anchor('admincp/seo', 'SEO'); ?></li>
 			    <li><?php echo anchor('admincp/lottery', 'Lottery'); ?></li>
 			    <li><?php echo anchor('admincp/photos', 'Photos'); ?></li>
+			    <li><?php echo anchor('admincp/newsfeed', 'News Feed'); ?></li>
 			</ul>
 		</li>
 		<li><a href="#">Users</a>
