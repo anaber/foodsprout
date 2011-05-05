@@ -311,6 +311,8 @@ $(document).ready(function() {
 <?php
 	}
 ?>
+            <th>Latitude</th>
+            <th>Longitude</th>
 	</tr>
 <?php
 	$controller = $this->uri->segment(2);
@@ -323,6 +325,9 @@ $(document).ready(function() {
 	if ( isset($RESTAURANT_ID) ) {
 		echo '	<td>'.anchor('/admincp/'.$controller.'/update_address/'.$address->addressId, ($address->claimsSustainable == 1 ? 'Yes' : 'No')   ).'</td>';
 	}
+            echo '<td>'.anchor("/admincp/$controller/update_address/{$address->addressId}", $address->latitude).'</td>';
+            echo '<td>'.anchor("/admincp/$controller/update_address/{$address->addressId}", $address->longitude).'</td>';
+            
 		echo '</tr>';
 
  	endforeach;
