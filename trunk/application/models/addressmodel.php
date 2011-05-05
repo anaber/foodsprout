@@ -52,7 +52,7 @@ class AddressModel extends Model{
 		
 		$addresses = array();
 		
-		$query = "SELECT address.*, state.state_code, state.state_name, country.country_name" .
+		$query = "SELECT address.*, state.state_code, state.state_name, country.country_name, address.latitude, address.longitude" .
 				" FROM address, state, country " .
 				" WHERE ";
 
