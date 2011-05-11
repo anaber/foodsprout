@@ -622,3 +622,22 @@ ADD INDEX ( `custom_url` );
 UPDATE `producer_category_group` SET `producer_category_group`='Farm Livestock' WHERE `producer_category_group`.`producer_category_group_id`=3 LIMIT 1 ;
 INSERT INTO `producer_category_group` VALUES(5, 'Farm Crops');
 INSERT INTO `producer_category_group` VALUES(7, 'Certifications/Methods');
+
+-- 11 May 2011, Alliance tables
+
+CREATE  TABLE IF NOT EXISTS `alliance` (
+  `alliance_id` INT NOT NULL AUTO_INCREMENT ,
+  `alliance_name` VARCHAR(95) NOT NULL ,
+  `alliance_info` TEXT NULL ,
+  `custom_url` VARCHAR(65) NOT NULL ,
+  PRIMARY KEY (`alliance_id`) )
+ENGINE = MyISAM
+
+CREATE  TABLE IF NOT EXISTS `alliance_producer` (
+  `alliance_producer_id` INT NOT NULL AUTO_INCREMENT ,
+  `alliance_id` INT NOT NULL ,
+  `producer_id` INT NOT NULL ,
+  PRIMARY KEY (`alliance_producer_id`) ,
+  INDEX `alliance_producer_alliance1` (`alliance_id` ASC) ,
+  INDEX `alliance_producer_producer1` (`producer_id` ASC) ,
+ENGINE = MyISAM
