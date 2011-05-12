@@ -339,9 +339,9 @@ class FarmersMarket extends Controller {
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
-		$this->load->model('FarmersMarketModel');
-		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($q, $addressId);
-		$producerName = $farmersMarket->farmersMarketName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName, 'farmers_market');
@@ -373,9 +373,9 @@ class FarmersMarket extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('FarmersMarketModel');
-		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($q);
-		$producerName = $farmersMarket->farmersMarketName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName, 'farmers_market');
@@ -404,9 +404,9 @@ class FarmersMarket extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('FarmersMarketModel');
-		$farmersMarket = $this->FarmersMarketModel->getFarmersMarketFromId($q);
-		$producerName = $farmersMarket->farmersMarketName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'farmers_market');

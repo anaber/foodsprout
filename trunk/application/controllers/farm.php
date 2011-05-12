@@ -388,9 +388,9 @@ class Farm extends Controller {
 		$this->load->model('SupplierModel');
 		$suppliees = $this->SupplierModel->getSupplieeForSupplierJson($q);
 		
-		$this->load->model('FarmModel');
-		$farm = $this->FarmModel->getFarmFromId($q);
-		$producerName = $farm->farmName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$supplieeListHtml = $this->ListModel->buildSupplieeList($suppliees, $producerName, 'farm');
@@ -429,9 +429,9 @@ class Farm extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('FarmModel');
-		$farm = $this->FarmModel->getFarmFromId($q);
-		$producerName = $farm->farmName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName, 'farm');
@@ -467,9 +467,9 @@ class Farm extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('FarmModel');
-		$farm = $this->FarmModel->getFarmFromId($q);
-		$producerName = $farm->farmName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'farm');

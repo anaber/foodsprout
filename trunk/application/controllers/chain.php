@@ -272,9 +272,9 @@ class Chain extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('RestaurantModel');
-		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($q);
-		$producerName = $restaurantChain->restaurantChain;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$menuListHtml = $this->ListModel->buildMenuList($menus, $producerName, 'chain');
@@ -307,9 +307,9 @@ class Chain extends Controller {
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
-		$this->load->model('RestaurantModel');
-		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($q);
-		$producerName = $restaurantChain->restaurantChain;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName, 'chain');
@@ -342,9 +342,9 @@ class Chain extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('RestaurantModel');
-		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($q);
-		$producerName = $restaurantChain->restaurantChain;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName, 'chain');
@@ -373,9 +373,9 @@ class Chain extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('RestaurantModel');
-		$restaurantChain = $this->RestaurantModel->getRestaurantChainFromId($q);
-		$producerName = $restaurantChain->restaurantChain;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'chain');
