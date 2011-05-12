@@ -455,7 +455,7 @@ class CityModel extends Model{
     {
         $query = 'SELECT * FROM city WHERE featured_left = ? AND custom_url IS NOT NULL LIMIT 10';
         $leftFeaturedCities = $this->db->query($query, array(1));
-
+        
         return ($leftFeaturedCities->num_rows() > 0) ? $leftFeaturedCities : null;
     }
 

@@ -701,8 +701,6 @@ class RestaurantModel extends Model{
 			$cuisines = $CI->ProducerCategoryModel->getCuisineIdsForRestaurant( $row->producer_id);
 			$this->restaurantLib->cuisines = $cuisines;
 			
-			$CI =& get_instance();
-
 			$CI->load->model('AddressModel','',true);
 			
 			if(isset($addressId) && $addressId !=''){
@@ -731,6 +729,50 @@ class RestaurantModel extends Model{
 			$this->restaurantLib->param->numResults = 2;
 			$this->restaurantLib->geocode = $geocodeArray;
 
+			return $this->restaurantLib;
+		} else {
+			return;
+		}
+	}
+	
+	// Pulls the data from the database for a specific restaurant
+	function getMinimumRestaurantInfoFromId($restaurantId) {
+
+		$query = "SELECT 
+					*
+				FROM 
+					producer
+				WHERE 
+					producer.producer_id = " . $restaurantId;
+					
+		$CI =& get_instance();
+		log_message('debug', "RestaurantModel.getMinimumRestaurantInfoFromId : " . $query);
+		$result = $this->db->query($query);
+
+		$row = $result->row();
+		if ($row) {
+			$this->load->library('RestaurantLib');
+			$geocodeArray = array();
+
+			$this->restaurantLib->restaurantId = $row->producer_id;
+			$this->restaurantLib->restaurantTypeId = $this->getRestaurantTypeId($row->producer_id);
+			$this->restaurantLib->restaurantName = $row->producer;
+			$this->restaurantLib->customURL = $row->custom_url;
+			$this->restaurantLib->phone = $row->phone;
+			$this->restaurantLib->fax = $row->fax;
+			$this->restaurantLib->email = $row->email;
+			$this->restaurantLib->url = $row->url;
+			$this->restaurantLib->facebook = $row->facebook;
+			$this->restaurantLib->twitter = $row->twitter;
+			$this->restaurantLib->status = $row->status;
+
+			//$cuisines = $this->getCuisineIdsForRestaurant( $row->producer_id);
+			//$this->restaurantLib->cuisines = $cuisines;
+			
+			$CI->load->model('ProducerCategoryModel','',true);
+			$cuisines = $CI->ProducerCategoryModel->getCuisineIdsForRestaurant( $row->producer_id);
+			$this->restaurantLib->cuisines = $cuisines;
+			
 			return $this->restaurantLib;
 		} else {
 			return;

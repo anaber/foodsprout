@@ -328,9 +328,9 @@ class Manufacture extends Controller {
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
-		$this->load->model('ManufactureModel');
-		$manufacture = $this->ManufactureModel->getManufactureFromId($q);
-		$producerName = $manufacture->manufactureName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$supplierListHtml = $this->ListModel->buildSupplierList($suppliers, $producerName, 'manufacture');
@@ -362,9 +362,9 @@ class Manufacture extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('ManufactureModel');
-		$manufacture = $this->ManufactureModel->getManufactureFromId($q);
-		$producerName = $manufacture->manufactureName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$menuListHtml = $this->ListModel->buildMenuList($menus, $producerName, 'manufacture');
@@ -396,9 +396,9 @@ class Manufacture extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('ManufactureModel');
-		$manufacture = $this->ManufactureModel->getManufactureFromId($q);
-		$producerName = $manufacture->manufactureName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$menuListHtml = $this->ListModel->buildCommentList($comments, $producerName, 'manufacture');
@@ -427,9 +427,9 @@ class Manufacture extends Controller {
 			$q = $this->input->get('q');
 		}
 		
-		$this->load->model('ManufactureModel');
-		$manufacture = $this->ManufactureModel->getManufactureFromId($q);
-		$producerName = $manufacture->manufactureName;
+		$this->load->model('ProducerModel');
+		$producer = $this->ProducerModel->getProducerFromId($q);
+		$producerName = $producer->producer;
 		
 		$this->load->model('ListModel', '', TRUE);
 		$photoListHtml = $this->ListModel->buildPhotoList($photos, $producerName, 'manufacture');

@@ -58,6 +58,11 @@ class User extends Controller {
 		$restaurantTypes = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
 		$cuisines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
 		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'user/dashboard',
@@ -85,7 +90,7 @@ class User extends Controller {
 						//'js/fancybox/jquery.fancybox-1.3.4'
 					);
 					
-		$this->load->view('/dashboard/templates/center_right_template', $data);
+		$this->load->view('/dashboard/templates/left_center_template', $data);
 	}
 	
 	// The settings for the user
