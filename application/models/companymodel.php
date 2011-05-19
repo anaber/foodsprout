@@ -219,17 +219,18 @@ class CompanyModel extends Model{
 				  FROM producer_conglomerate
 				  WHERE conglomerate_name like '$q%'
 				  ORDER BY conglomerate_name ";
-		$companies = '';
+		$companies = array();
 		log_message('debug', "CompanyModel.searchCompanies : " . $query);
 		$result = $this->db->query($query);
 		foreach ($result->result_array() as $row) {
 			//$companies .= $row['company_name']."|".$row['company_id']."\n";
-			$companies .= $row['conglomerate_name']."|".$row['producer_conglomerate_id']."\n";
+			$row['conglomerate_name'] = htmlentities(stripslashes($row['conglomerate_name']));
+			$companies[] = $row;
 		}
 		
 		return $companies;
 	}
-	
+		
 	function getCompaniesJsonAdmin() {
 		global $PER_PAGE;
 		
@@ -361,6 +362,168 @@ class CompanyModel extends Model{
 	    return $arr;
 	}
 	
+	function getProducerGroupsJsonAdmin() {
+		global $PER_PAGE;
+		
+		$p = $this->input->post('p'); // Page
+		$pp = $this->input->post('pp'); // Per Page
+		$sort = $this->input->post('sort');
+		$order = $this->input->post('order');
+		
+		$q = $this->input->post('q');
+		
+		if ($q == '0') {
+			$q = '';
+		}
+		
+		$start = 0;
+		$page = 0;
+		
+		
+		/*$base_query = 'SELECT *' .
+				' FROM company';*/
+		$base_query = 'SELECT * FROM producer_conglomerate
+					   JOIN producer_group
+					   ON producer_group.producer_conglomerate_id = producer_group.producer_conglomerate_id';
+		
+		/*$base_query_count = 'SELECT count(*) AS num_records' .
+				' FROM company';*/
+		$base_query_count = 'SELECT COUNT(*) AS num_records
+							 FROM producer_conglomerate
+							 JOIN producer_group
+					   		 ON producer_group.producer_conglomerate_id = producer_group.producer_conglomerate_id';
+		
+		$where = '';
+		if ($q != '')
+		{
+			$where = ' WHERE ';
+			
+			/*$where .= ' (' 
+					. '	company.company_name like "%' .$q . '%"'
+					. ' OR company.company_id like "%' . $q . '%"';
+			$where .= ' )';*/
+			
+			$where = '(
+						conglomerate_name LIKE "%' .$q . '%" 
+						OR producer_conglomerate_id LIKE "%' .$q . '%"
+					  )';
+		}
+		
+		$base_query_count = $base_query_count . $where;
+		
+		$query = $base_query_count;
+		
+		$result = $this->db->query($query);
+		$row = $result->row();
+		$numResults = $row->num_records;
+		
+		$query = $base_query . $where;
+		
+		if ( empty($sort) ) {
+			/*$sort_query = ' ORDER BY company_name';
+			$sort = 'company_name';*/
+			$sort_query = " ORDER BY conglomerate_name";
+			$sort = 'conglomerate_name';
+		} else {
+			$sort_query = ' ORDER BY ' . $sort;
+		}
+		
+		if ( empty($order) ) {
+			$order = 'ASC';
+		}
+		
+		$query = $query . ' ' . $sort_query . ' ' . $order;
+		
+		if (!empty($pp) && $pp != 'all' ) {
+			$PER_PAGE = $pp;
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			// NO NEED TO LIMIT THE CONTENT
+		} else {
+			
+			if (!empty($p) || $p != 0) {
+				$page = $p;
+				$p = $p * $PER_PAGE;
+				$query .= " LIMIT $p, " . $PER_PAGE;
+				$start = $p;
+				
+			} else {
+				$query .= " LIMIT 0, " . $PER_PAGE;
+			}
+		}
+		
+		log_message('debug', "CompanyModel.getCompaniesJsonAdmin : " . $query);
+		$result = $this->db->query($query);
+		
+		$companies = array();
+		
+		$CI =& get_instance();
+		
+		$geocodeArray = array();
+		foreach ($result->result_array() as $row)
+		{
+			
+			$this->load->library('CompanyLib');
+			unset($this->CompanyLib);
+			
+			$this->CompanyLib->companyId = $row['producer_conglomerate_id'];
+			$this->CompanyLib->companyName = $row['conglomerate_name'];
+			
+			$companies[] = $this->CompanyLib;
+			unset($this->CompanyLib);
+		}
+		
+		if (!empty($pp) && $pp == 'all') {
+			$PER_PAGE = $numResults;
+		}
+		
+		$totalPages = ceil($numResults/$PER_PAGE);
+		$first = 0;
+		if ($totalPages > 0) {
+			$last = $totalPages - 1;
+		} else {
+			$last = 0;
+		}
+		
+		
+		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
+		$arr = array(
+			'results'    => $companies,
+			'param'      => $params,
+			'geocode'	 => $geocodeArray,
+	    );
+	    
+	    return $arr;
+	}
+	
+ 	function getProducers($q)
+    {
+        $originalQ = $q;
+        $q = strtolower($q);
+        
+        $query = 'SELECT producer_id, producer
+				  FROM producer
+				  WHERE producer LIKE "%'.$q.'%"
+                  ORDER BY producer
+                  LIMIT 20';
+
+        $producers = array();
+
+        log_message('debug', "CompanyModel.getProducers : " . $query);
+        $result = $this->db->query($query);
+
+        if ($result->num_rows() > 0)
+        {
+            foreach ($result->result_array() as $row)
+            {
+            	$row['producer'] = htmlentities(stripslashes($row['producer']));            	
+            	$producers[] = $row;
+            }
+        } 
+
+        return $producers;
+    }
 }
 
 

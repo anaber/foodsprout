@@ -48,7 +48,7 @@ document.onclick = jsddm_close;
 				<li><?php echo anchor('admincp/restaurantchain', 'Restaurant Chain'); ?></li>
 				<li><a>---------------</a></li>
 				<li><?php echo anchor('admincp/company', 'Conglomerates'); ?></li>
-				<li><?php echo anchor('admincp/company', 'Producer Groups'); ?></li>
+				<li><?php echo anchor('admincp/producergroup', 'Producer Groups'); ?></li>
 				<li><a>---------------</a></li>
 				<li><?php echo anchor('admincp/noaddress', 'No Address'); ?></li>
 			</ul>
