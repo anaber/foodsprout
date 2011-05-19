@@ -34,7 +34,7 @@ $(document).ready(function() {
 	}).result(function (evt, data, formatted) {
 		if (data) 
 		{
-			$("#result")[0].add('<input type="hidden" id="producerId" name="producerId[]" value="+data+"/>');
+			$("#result").append('<input type="hidden" id="producerId" name="producerId[]" value="'+data[1]+'"/>');
 		}
 	});
 	
@@ -54,24 +54,26 @@ $(document).ready(function() {
 			var postArray = '';
 			var act = '';
 			
-			if ($('#producerGroupId').val() != '') {
+			/*if ($('#companyId').val() != '') {
 				var formAction = '/admincp/producergroup/save_update';
-				postArray = {
-							  producerGroup: $('#producerGroupId').val(),
-							  companyName:$('#companyName').val(),
+				postArray = {							  							
 							  companyId: $('#companyId').val(),
 							  producerId: $('#producerId').val(),
 							};
 				act = 'update';		
-			} else {
+			} else {*/
 				formAction = '/admincp/producergroup/save_add';
-				postArray = { 
-							  companyName:$('#companyName').val(),
+				var pId = document.getElementsByName('producerId[]');
+				var pIds = '';
+				for(i=0;i < pId.length; i++) {
+					pIds = pId[i].value+'|'+pIds;
+				}				
+				postArray = { 							
 							  companyId: $('#companyId').val(),
-							  producerId: $('#producerId').val(),
+							  producerId: pIds,
 							};
 				act = 'add';
-			}
+			//}
 			
 			$.post(formAction, postArray,function(data) {
 				
@@ -82,12 +84,12 @@ $(document).ready(function() {
 						if (act == 'add') {
 							$(this).html('Added...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/company';
+								document.location='/admincp/producergroup';
 							});	
 						} else if (act == 'update') {
 							$(this).html('Updated...').addClass('messageboxok').fadeTo(900,1, function(){
 								//redirect to secure page
-								document.location='/admincp/company';
+								document.location='/admincp/producergroup';
 							});
 						}
 
@@ -122,7 +124,7 @@ $(document).ready(function() {
 		//Cancel the link behavior
 		e.preventDefault();
 		
-		document.location='/producergroup';
+		document.location='/admincp/producergroup';
 	});
 
 });
@@ -151,8 +153,7 @@ $(document).ready(function() {
 	</tr>	
 	<tr>
 		<td width = "25%" colspan = "2">
-			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "Add Group">
-			<input type = "hidden" name = "producerGroupId" id = "producerGroupId" value = "<?php echo (isset($producergroup) ? $producergroup->producer_group_id : '') ?>">			
+			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "Add Group">						
 		</td>
 	</tr>
 </table>
