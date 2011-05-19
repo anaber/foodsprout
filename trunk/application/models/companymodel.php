@@ -382,16 +382,22 @@ class CompanyModel extends Model{
 		
 		/*$base_query = 'SELECT *' .
 				' FROM company';*/
-		$base_query = 'SELECT * FROM producer_conglomerate
+		$base_query = 'SELECT producer_conglomerate.producer_conglomerate_id, 
+							  producer_conglomerate.conglomerate_name
+					   FROM producer_conglomerate
 					   JOIN producer_group
-					   ON producer_group.producer_conglomerate_id = producer_group.producer_conglomerate_id';
+					   ON producer_group.producer_conglomerate_id = producer_group.producer_conglomerate_id
+					   JOIN producer
+					   ON producer.producer_id = producer_group.producer_id';
 		
 		/*$base_query_count = 'SELECT count(*) AS num_records' .
 				' FROM company';*/
 		$base_query_count = 'SELECT COUNT(*) AS num_records
 							 FROM producer_conglomerate
 							 JOIN producer_group
-					   		 ON producer_group.producer_conglomerate_id = producer_group.producer_conglomerate_id';
+					   		 ON producer_group.producer_conglomerate_id = producer_group.producer_conglomerate_id
+					   		 JOIN producer
+					   		 ON producer.producer_id = producer_group.producer_id';
 		
 		$where = '';
 		if ($q != '')
@@ -404,7 +410,8 @@ class CompanyModel extends Model{
 			$where .= ' )';*/
 			
 			$where = '(
-						conglomerate_name LIKE "%' .$q . '%" 
+						producer LIKE "%' .$q . '%"
+						OR conglomerate_name LIKE "%' .$q . '%" 
 						OR producer_conglomerate_id LIKE "%' .$q . '%"
 					  )';
 		}
@@ -425,14 +432,14 @@ class CompanyModel extends Model{
 			$sort_query = " ORDER BY conglomerate_name";
 			$sort = 'conglomerate_name';
 		} else {
-			$sort_query = ' ORDER BY ' . $sort;
+			$sort_query = ' ORDER BY producer_conglomerate.' . $sort;
 		}
 		
 		if ( empty($order) ) {
 			$order = 'ASC';
 		}
 		
-		$query = $query . ' ' . $sort_query . ' ' . $order;
+		$query = $query . ' ' . $sort_query . ' ' . $order . ', producer ASC';
 		
 		if (!empty($pp) && $pp != 'all' ) {
 			$PER_PAGE = $pp;
@@ -453,7 +460,7 @@ class CompanyModel extends Model{
 			}
 		}
 		
-		log_message('debug', "CompanyModel.getCompaniesJsonAdmin : " . $query);
+		log_message('debug', "CompanyModel.getProducerGroupsJsonAdmin : " . $query);
 		$result = $this->db->query($query);
 		
 		$companies = array();
@@ -470,7 +477,7 @@ class CompanyModel extends Model{
 			$this->CompanyLib->companyId = $row['producer_conglomerate_id'];
 			$this->CompanyLib->companyName = $row['conglomerate_name'];
 			
-			$companies[] = $this->CompanyLib;
+			$companies[$row['producer_conglomerate_id']] = $this->CompanyLib;
 			unset($this->CompanyLib);
 		}
 		
@@ -499,7 +506,7 @@ class CompanyModel extends Model{
 	
  	function getProducers($q)
     {
-        $originalQ = $q;
+        //$originalQ = $q;
         $q = strtolower($q);
         
         $query = 'SELECT producer_id, producer
@@ -523,6 +530,26 @@ class CompanyModel extends Model{
         } 
 
         return $producers;
+    }
+    
+    function add_group()
+    {
+    	$producer_ids = explode("|",$this->input->post('producerId'));
+    
+    	foreach ($producer_ids AS $producer_id) 
+    	{
+    		if ($producer_id != "") 
+    		{
+		    	$data = array(
+		    		'producer_conglomerate_id' => $this->input->post('companyId'),
+		    		'producer_id' => $producer_id
+		    	);
+		    	
+		    	$this->db->insert('producer_group', $data);
+    		}
+    	}
+    	
+    	return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
     }
 }
 

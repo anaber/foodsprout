@@ -72,6 +72,23 @@ class Producergroup extends Controller
 	    }
 	}
 	
+	function save_add()
+	{
+		if ($this->input->post('companyId')) 
+		{
+			$this->load->model('CompanyModel');
+			
+			if ($this->CompanyModel->add_group())
+			{
+				echo 'yes';
+			}
+		}
+		else
+		{
+			echo "Group adding error.";	
+		}
+	}
+	
 	function add_group()
 	{
 		$data = array();
