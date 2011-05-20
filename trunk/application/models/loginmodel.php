@@ -2,8 +2,7 @@
 
 class LoginModel extends Model{
 	
-	function validateAdmin()
-	{
+	function validateAdmin() {
 		$query = 'SELECT user.*, user_group.*, user_group_member.* '.
 				' FROM user, user_group, user_group_member' .
 				' WHERE user.email = \'' . trim($this->input->post('email')) . '\'' .
@@ -35,6 +34,7 @@ class LoginModel extends Model{
 				$this->user->username = $row->username;
 				$this->user->isAuthenticated = 1;
 				$this->user->userGroup = $row->user_group;
+				
 				
 				$this->session->set_userdata($this->user );			
 				
@@ -93,6 +93,7 @@ class LoginModel extends Model{
 				$this->user->username = $row->username;
 				$this->user->isAuthenticated = 1;
 				$this->user->userGroup = $row->user_group;
+				$this->user->userGroupId = $row->user_group_id;
 				
 				$remember = $this->input->post('remember');
 				if ($remember == 'on') {
