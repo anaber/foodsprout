@@ -373,4 +373,10 @@ function getUserAgent() {
 	return $agent;
 }
 
+function getUserGroupsArray() {
+	global $USER_GROUP;
+	
+	return $USER_GROUP;
+}
+
 ?>

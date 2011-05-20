@@ -641,3 +641,6 @@ CREATE  TABLE IF NOT EXISTS `alliance_producer` (
   INDEX `alliance_producer_alliance1` (`alliance_id` ASC) ,
   INDEX `alliance_producer_producer1` (`producer_id` ASC) ,
 ENGINE = MyISAM
+
+INSERT INTO `user_group` (`user_group_id`, `user_group`) VALUES ('7', 'Business Owner');
+

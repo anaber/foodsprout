@@ -147,4 +147,11 @@ $PRODUCER_CATEGORY_GROUP = array(
 					
 				);
 
+
+$USER_GROUP = array(
+					'ADMIN' 			=> 1,
+					'CONTRIBUTOR' 		=> 2,
+					'BUSINESS_OWNER' 	=> 7,
+				);
+
 ?>
