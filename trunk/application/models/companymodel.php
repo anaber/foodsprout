@@ -383,7 +383,15 @@ class CompanyModel extends Model{
 		/*$base_query = 'SELECT *' .
 				' FROM company';*/
 		$base_query = 'SELECT producer_conglomerate.producer_conglomerate_id, 
-							  producer_conglomerate.conglomerate_name
+							  producer_conglomerate.conglomerate_name,
+							  producer_group.producer_id,
+							  producer.producer,
+							  producer.is_restaurant_chain,
+							  producer.is_restaurant,
+							  producer.is_farm,
+							  producer.is_farmers_market,
+							  producer.is_manufacture,
+							  producer.is_distributor
 					   FROM producer_conglomerate
 					   JOIN producer_group
 					   ON producer_group.producer_conglomerate_id = producer_group.producer_conglomerate_id
@@ -468,17 +476,62 @@ class CompanyModel extends Model{
 		$CI =& get_instance();
 		
 		$geocodeArray = array();
+		$temp = array();
+		
+		$temp_id = 0;
 		foreach ($result->result_array() as $row)
-		{
+		{						
+			if ($temp_id != $row['producer_conglomerate_id'])
+			{
+				$temp[$row['producer_conglomerate_id']]['producers'] = "";
+			}
 			
-			$this->load->library('CompanyLib');
-			unset($this->CompanyLib);
+			$temp[$row['producer_conglomerate_id']]['conglomerate_id'] = $row['producer_conglomerate_id'];
+			$temp[$row['producer_conglomerate_id']]['conglomerate_name'] = $row['conglomerate_name'];
+			$temp[$row['producer_conglomerate_id']]['producers'] .= "<div><a href=\"/admincp/";
 			
-			$this->CompanyLib->companyId = $row['producer_conglomerate_id'];
-			$this->CompanyLib->companyName = $row['conglomerate_name'];
+			if ($row['is_restaurant'] == 1)
+			{
+				$temp[$row['producer_conglomerate_id']]['producers'] .= 'restaurant';
+			}
 			
-			$companies[$row['producer_conglomerate_id']] = $this->CompanyLib;
-			unset($this->CompanyLib);
+			if ($row['is_farm'] == 1)
+			{
+				$temp[$row['producer_conglomerate_id']]['producers'] .=  'farm';
+			}
+			
+			if ($row['is_farmers_market'] == 1)
+			{
+				$temp[$row['producer_conglomerate_id']]['producers'] .=  'farmersmarket';
+			}
+			
+			if ($row['is_manufacture'] == 1)
+			{
+				$temp[$row['producer_conglomerate_id']]['producers'] .=  'manufacture';
+			}			
+		
+			if ($row['is_distributor'] == 1)
+			{
+				$temp[$row['producer_conglomerate_id']]['producers'] .=  'distributor';
+			}
+			
+			$temp[$row['producer_conglomerate_id']]['producers'] .= "/update/".$row['producer_id']."\">".$row['producer']."</a></div>";
+			
+			$temp_id = $row['producer_conglomerate_id'];
+		}
+		
+		foreach ($temp as $row)
+		{			
+				
+			$this->load->library('ProducerGroupLib');
+			unset($this->ProducerGroupLib);			
+			
+			$this->ProducerGroupLib->companyId = $row['conglomerate_id'];
+			$this->ProducerGroupLib->companyName = $row['conglomerate_name'];
+			$this->ProducerGroupLib->producerName = $row['producers'];
+			
+			$companies[] = $this->ProducerGroupLib;
+			unset($this->ProducerGroupLib);
 		}
 		
 		if (!empty($pp) && $pp == 'all') {

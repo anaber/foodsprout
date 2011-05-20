@@ -62,8 +62,8 @@ function addResult(company, i) {
 	var html =
 	'<tr>' +
 	'	<td valign="top"><a href="/admincp/company/update/'+ company.companyId +'">'+ company.companyId +'</a></td>' +
-	'	<td valign="top"><a href="/admincp/company/update/'+ company.companyId +'">'+ company.companyName +'</a></td>';
-	'	<td valign="top"><a href="/admincp/company/update/'+ company.companyId +'">'+ company.companyName +'</a></td>';
+	'	<td valign="top"><a href="/admincp/company/update/'+ company.companyId +'">'+ company.companyName +'</a></td>' +
+	'	<td valign="top"><a href="/admincp/company/update/'+ company.producerId +'">'+ company.producerName +'</a></td>';
 	html +=
 	'</tr>'
 	;
