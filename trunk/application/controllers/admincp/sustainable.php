@@ -3,7 +3,7 @@ class Sustainable extends Controller {
 	function __construct() {
 		global $ADMIN_LANDING_PAGE;
 		parent::Controller();
-		if ($this->session->userdata('isAuthenticated') != 1 || $this->session->userdata('userGroup') != 'admin' )
+		if ($this->session->userdata('isAuthenticated') != 1 || $this->session->userdata('access') != 'admin' )
 		{
 			redirect($ADMIN_LANDING_PAGE);
 		}

@@ -6,7 +6,7 @@ class Import extends Controller {
         global $ADMIN_LANDING_PAGE;
         parent::Controller();
         if ($this->session->userdata('isAuthenticated') != 1 ||
-                $this->session->userdata('userGroup') != 'admin' )
+                $this->session->userdata('access') != 'admin' )
         {
             redirect($ADMIN_LANDING_PAGE);
         }

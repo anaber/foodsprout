@@ -244,9 +244,9 @@ class CommentModel extends Model{
                 $query .= $farmersMarketId;
             }
             
-            $userGroup = $this->session->userdata['userGroup'];
+            $access = $this->session->userdata['access'];
             
-            $query .= ',  "' . $this->input->post('comment') . '", "' . $this->session->userdata('userId') . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
+            $query .= ',  "' . $this->input->post('comment') . '", "' . $this->session->userdata('userId') . '", "' . ( ($access != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
             
             log_message('debug', 'CommentModel.addComemnt : Insert Comment : ' . $query);
 

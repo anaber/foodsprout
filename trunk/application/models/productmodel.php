@@ -290,9 +290,9 @@ class ProductModel extends Model {
 			$query = 'INSERT INTO product (product_id, producer_id, product_type_id, product_name, ingredient_text, brand, upc, status, has_fructose, user_id, creation_date, track_ip)' .
                     ' values (NULL, ' . $producerId;
 
-			$userGroup = $this->session->userdata['userGroup'];
+			$access = $this->session->userdata['access'];
 
-			if ( $userGroup != 'admin') {
+			if ( $access != 'admin') {
 				$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "queue", ' . $this->input->post('hasFructose') . ', ' . $this->session->userdata('userId') . ', NOW(), "' . getRealIpAddr() . '" )';
 			} else {
 				$query .= ',  ' . $this->input->post('productTypeId') . ', "' . $this->input->post('productName') . '", "' . $this->input->post('ingredient') . '", "' . $this->input->post('brand') . '", "' . $this->input->post('upc') . '", "live", ' . $this->input->post('hasFructose') . ', ' . $this->session->userdata('userId') . ', NOW(), "' . getRealIpAddr() . '" )';

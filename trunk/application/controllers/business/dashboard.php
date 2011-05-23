@@ -11,7 +11,7 @@ class Dashboard extends Controller {
 	{
 		global $BUSINESS_LANDING_PAGE;
 		parent::Controller();
-		if ($this->session->userdata('isAuthenticated') != 1 || $this->session->userdata('userGroup') != 'business' )
+		if ($this->session->userdata('isAuthenticated') != 1 || $this->session->userdata('access') != 'business' )
 		{
 			redirect($BUSINESS_LANDING_PAGE);
 		}

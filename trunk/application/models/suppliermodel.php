@@ -135,14 +135,14 @@ class SupplierModel extends Model{
 		$result = $this->db->query($query);
 		
 		if ($result->num_rows() == 0) {
-			$userGroup = $this->session->userdata['userGroup'];
+			$access = $this->session->userdata['access'];
 			
 			$query = 'INSERT INTO '. $tableName . '('.$idFieldName .', '.$supplierFieldName . ', '.$supplieeFieldName . ', user_id, status, track_ip )';
 			$query .= ' values (NULL, ' . $supplierId . ', ' . $supplieeFieldValue;
 			
 			$query .= ', ' . $this->session->userdata['userId'];
 			
-			if ( $userGroup != 'admin') {
+			if ( $access != 'admin') {
 				$query .= ', \'queue\'';
 			} else {
 				$query .= ', \'live\'';

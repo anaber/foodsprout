@@ -9,7 +9,7 @@ class UserLib {
 	var $lastName;
 	var $isActive;
 	var $isAuthenticated;
-	var $userGroup;
+	var $access;
 	var $joinDate;
 	var $username;
 		
@@ -21,7 +21,7 @@ class UserLib {
 		$user->lastName = "";
 		$this->isActive = 0;
 		$this->isAuthenticated = 0;		
-		$user->userGroup = "";
+		$user->access = "";
 		$user->joinDate = "";
 		$user->username = "";
 	}

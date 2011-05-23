@@ -77,14 +77,14 @@ class UserModel extends Model{
 				
 				if($insert) {
 					$userId = $this->db->insert_id();
-					$new_user_group_insert_data = array(
+					$new_user_access_insert_data = array(
 						'user_id' =>  $userId,
-						'user_group_id' => 2
+						'access_id' => 2
 					);
 					
-					log_message('debug', $new_user_group_insert_data);
+					log_message('debug', $new_user_access_insert_data);
 					
-					$insert = $this->db->insert('user_group_member', $new_user_group_insert_data);
+					$insert = $this->db->insert('user_access', $new_user_access_insert_data);
 					
 					$return = true;
 					
@@ -152,11 +152,11 @@ class UserModel extends Model{
 	
 	function getUserFromId($userId) {
 		
-		$query = "SELECT user.*, user_group.user_group, user_group.user_group_id " .
-				" FROM user, user_group, user_group_member " .
+		$query = "SELECT user.*, access.access, access.access_id " .
+				" FROM user, access, user_access " .
 				" WHERE user.user_id = " . $userId . 
-				" AND user.user_id = user_group_member.user_id" .
-				" AND user_group.user_group_id = user_group_member.user_group_id ";
+				" AND user.user_id = user_access.user_id" .
+				" AND access.access_id = user_access.access_id ";
 				
 		log_message('debug', "UserModel.getUserFromId : " . $query);
 		$result = $this->db->query($query);
@@ -170,9 +170,11 @@ class UserModel extends Model{
 			$this->UserLib->email = $row->email;
 			$this->UserLib->firstName = $row->first_name;
 			$this->UserLib->username = $row->username;
-			$this->UserLib->userGroup = $row->user_group;
+			//$this->UserLib->userGroup = $row->access;
+			$this->UserLib->access = $row->access;
 			$this->UserLib->zipcode = $row->zipcode;
-			$this->UserLib->userGroupId = $row->user_group_id;
+			//$this->UserLib->userGroupId = $row->access_id;
+			$this->UserLib->accessId = $row->access_id;
             $this->UserLib->defaultCity = $row->default_city;
 			
 			return $this->UserLib;

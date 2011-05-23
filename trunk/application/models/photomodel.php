@@ -330,7 +330,7 @@ class PhotoModel extends Model{
 		$return = true;
 		
 		$userId = $this->input->post('userId');
-		$userGroup = $this->input->post('userGroup');
+		$access = $this->input->post('access');
 		
 		$randomString = generateRandomString();
 		//$randomString = 't6jh91v8xzn4srpk';
@@ -445,7 +445,7 @@ class PhotoModel extends Model{
 		                $query .= $productId;
 		            }
 		            
-		            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($userGroup != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
+		            $query .= ',  NULL, NULL, "' . $path . '", "' . $thumbPhotoName . '", "' . $mainPhotoName . '", "' . $originalPhotoName . '", "' . $fileParts['extension'] . '", "' . $mime . '", "' . $thumbHeight . '", "' . $thumbWidth . '", "' . $height . '", "' . $width . '", "' . $userId . '", "' . ( ($access != 'admin') ? 'queue' : 'live' ) . '", "' . getRealIpAddr() . '", NOW() )';
 		            
 		            log_message('debug', 'PhotoModel.addPhoto : Insert Photo : ' . $query);
 		

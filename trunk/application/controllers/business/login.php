@@ -7,7 +7,7 @@ class Login extends Controller {
 		parent::Controller();
 		
 		if ($this->session->userdata('isAuthenticated') == 1 ) {
-			if ($this->session->userdata('userGroup') == 'business' ) {
+			if ($this->session->userdata('access') == 'business' ) {
 				redirect('/business/dashboard');
 			} else {
 				redirect('/');

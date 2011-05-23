@@ -3,13 +3,13 @@
 class LoginModel extends Model{
 	
 	function validateAdmin() {
-		$query = 'SELECT user.*, user_group.*, user_group_member.* '.
-				' FROM user, user_group, user_group_member' .
+		$query = 'SELECT user.*, access.*, user_access.* '.
+				' FROM user, access, user_access' .
 				' WHERE user.email = \'' . trim($this->input->post('email')) . '\'' .
 				' AND user.password = \'' . md5( trim($this->input->post('password')) ) . '\'' .
-				' AND user.user_id = user_group_member.user_id' .
-				' AND user_group_member.user_group_id = user_group.user_group_id' .
-				' AND user_group.user_group = \'admin\' ';
+				' AND user.user_id = user_access.user_id' .
+				' AND user_access.access_id = access.access_id' .
+				' AND access.access = \'admin\' ';
 		
 		log_message('debug', $query);
 		
@@ -33,7 +33,8 @@ class LoginModel extends Model{
 				$this->user->isActive = $row->isActive;
 				$this->user->username = $row->username;
 				$this->user->isAuthenticated = 1;
-				$this->user->userGroup = $row->user_group;
+				//$this->user->userGroup = $row->user_group;
+				$this->user->access = $row->access;
 				
 				
 				$this->session->set_userdata($this->user );			
@@ -65,12 +66,12 @@ class LoginModel extends Model{
 	// Validate a user from the regular login screen
 	function validateUser() {
 		
-		$query = 'SELECT user.*, user_group.*, user_group_member.* '.
-				' FROM user, user_group, user_group_member' .
+		$query = 'SELECT user.*, access.*, user_access.* '.
+				' FROM user, access, user_access' .
 				' WHERE user.email = \'' . trim($this->input->post('login_email')) . '\'' .
 				' AND user.password = \'' . md5( trim($this->input->post('login_password')) ) . '\'' .
-				' AND user.user_id = user_group_member.user_id' .
-				' AND user_group_member.user_group_id = user_group.user_group_id';
+				' AND user.user_id = user_access.user_id' .
+				' AND user_access.access_id = access.access_id';
 		
 		log_message('debug', $query);
 		
@@ -92,8 +93,10 @@ class LoginModel extends Model{
 				$this->user->isActive = $row->isActive;
 				$this->user->username = $row->username;
 				$this->user->isAuthenticated = 1;
-				$this->user->userGroup = $row->user_group;
-				$this->user->userGroupId = $row->user_group_id;
+				//$this->user->userGroup = $row->user_group;
+				//$this->user->userGroupId = $row->user_group_id;
+				$this->user->access = $row->access;
+				$this->user->accessId = $row->access_id;
 				
 				$remember = $this->input->post('remember');
 				if ($remember == 'on') {
