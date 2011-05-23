@@ -1038,7 +1038,7 @@ function reinitializeUploadPhotoForm() {
 							  	distributorId: $('#distributorId').val(),
 							  	restaurantChainId: $('#restaurantChainId').val(),
 							  	farmersMarketId: $('#farmersMarketId').val(),
-							  	userGroup: userGroup,
+							  	access: access,
 							  	userId: userId
 							},
 		'onError'		 : function(event, queueID, fileObj, errorObj) {

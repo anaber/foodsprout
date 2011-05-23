@@ -1,6 +1,6 @@
 <?php
 	$isAuthenticated = $this->session->userdata('isAuthenticated');
-	$userGroup = $this->session->userdata('userGroup');
+	$access = $this->session->userdata('access');
 	$userId = $this->session->userdata('userId');
 	
 	$module = $this->uri->segment(1);
@@ -29,7 +29,7 @@
 		}
 	?>
 	var name = "<?php echo $RESTAURANT->restaurantName; ?>";
-	var userGroup = "<?php echo $userGroup; ?>";
+	var access = "<?php echo $access; ?>";
 	var userId = "<?php echo $userId; ?>";
 	
 	var param = <?php echo $PARAMS; ?>;

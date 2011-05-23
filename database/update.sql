@@ -644,3 +644,50 @@ ENGINE = MyISAM
 
 INSERT INTO `user_group` (`user_group_id`, `user_group`) VALUES ('7', 'Business Owner');
 
+
+
+CREATE TABLE IF NOT EXISTS `access` (
+  `access_id` int(11) NOT NULL AUTO_INCREMENT,
+  `access` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`access_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `access`
+--
+
+INSERT INTO `access` (`access_id`, `access`) VALUES
+(1, 'admin'),
+(2, 'Contributor'),
+(3, 'Restaurant Owner - Paid 1'),
+(4, 'Restaurant Owner - Paid 2'),
+(5, 'Distributor'),
+(6, 'Distributor - Paid'),
+(7, 'Business Owner');
+
+
+CREATE TABLE IF NOT EXISTS `user_access` (
+  `user_access_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `access_id` int(11) NOT NULL,
+  PRIMARY KEY (`user_access_id`),
+  KEY `fk_user_access_user1` (`user_id`),
+  KEY `fk_user_access_user_group1` (`access_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_group_member`
+--
+
+INSERT INTO `user_access` (`user_access_id`, `user_id`, `access_id`) VALUES
+-- 
+-- THIS QUERY IS INCOMPLETE.
+-- EXPORT user_group_member table and chage first line of the INSERT query with the above mentioned line.
+--
+(426, 426, 2),
+(427, 427, 2);
+-- 
+-- //////////////////////////////////
+--
+DROP TABLE `user_group`, `user_group_member`;
+

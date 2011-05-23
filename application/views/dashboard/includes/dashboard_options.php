@@ -17,14 +17,14 @@
 		//print_r_pre($this->session->userdata);
 	?>
 	<?php
-		if ( $this->session->userdata['userGroupId'] !=  $USER_GROUP['BUSINESS_OWNER']) {
+		if ( $this->session->userdata['accessId'] !=  $USER_GROUP['BUSINESS_OWNER']) {
 	?>
 	<div class="filterh">Business Options</div>
 	<div id="divCuisines" class="filterb">
 		<a href = "/business">Learn More</a><br />
 	</div>
 	<?php
-		} else if ( $this->session->userdata['userGroupId'] ==  $USER_GROUP['BUSINESS_OWNER']) {
+		} else if ( $this->session->userdata['accessId'] ==  $USER_GROUP['BUSINESS_OWNER']) {
 	?>
 	<div class="filterh">Business Options</div>
 	<div id="divCuisines" class="filterb">
