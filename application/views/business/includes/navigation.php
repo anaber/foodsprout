@@ -1,34 +1,41 @@
 <?php
-$tab = $this->uri->segment(2);
+$tab = $this->uri->segment(1);
 ?>
 
 <div id="navigation">
 	<?php
-	 	$class=NULL;
-		if($tab == "home" || $tab == "") { 
-			$class = 'class="tabon"'; 
+	 	$restclass=NULL;
+		if($tab == "chain" || $tab == "restaurant" || $tab == "sustainable") { 
+			$restclass = 'class="tabon"'; 
 		} 
-		echo anchor('business/home', 'Home', $class);
+		echo anchor('restaurant', 'Restaurants', $restclass);
 	?>
 	<?php
-	 	$class=NULL;
-		if($tab == "success-stories") {
-			$class = 'class="tabon"';
+	 	$manuclass=NULL;
+		if($tab == "manufacture" || $tab == "product") { 
+			$manuclass = 'class="tabon"';
 		}
-		echo anchor('business/success-stories', 'Success Stories', $class);
+		echo anchor('manufacture', 'Products', $manuclass);
 	?>
 	<?php
-		$class=NULL;
-		if($tab == "why") { 
-			$class = 'class="tabon"';
+		$farmclass=NULL;
+		if($tab == "farm") { 
+			$farmclass = 'class="tabon"';
 		}
-		echo anchor('business/why', 'Why FoodSprout?', $class);
+		echo anchor('farm', 'Farms', $farmclass);
 	?>
 	<?php
-		$class=NULL;
-		if($tab == "services") { 
-			$class = 'class="tabon"';
+		$marketclass=NULL;
+		if($tab == "farmersmarket" || $tab == "city") { 
+			$marketclass = 'class="tabon"';
 		}
-		echo anchor('business/services', 'Services', $class);
+		echo anchor('farmersmarket', 'Farmers Market', $marketclass);
+	?>
+	<?php
+		$discussclass=NULL;
+		if($tab == "topics") { 
+			$discussclass = 'class="tabon"';
+		}
+		echo anchor('/topics', 'Discuss', $discussclass);
 	?>
 </div>

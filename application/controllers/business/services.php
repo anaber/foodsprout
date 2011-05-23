@@ -10,13 +10,25 @@ class Services extends Controller {
 	function index() {
 		$data = array();
 		
+		// Data to send to the views
+		$data['BREADCRUMB'] = array(
+							'Business' => '/business',
+							'Services' => '',
+						);
+		
 		// List of views to be included
-		$data['CENTER'] = array(
+        $data['NAV'] = array(
+            'navigation' => 'business/left_nav',
+        );
+		
+		$data['MAIN'] = array(
 				'list' => 'business/services',
 			);
 		
-		$this->load->view('business/templates/center_template', $data);
+		$this->load->view('business/templates/sales_front', $data);
 	}
+	
+	
 	
 	// Check to see that the user is valid
 	function validate() {

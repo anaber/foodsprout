@@ -10,31 +10,7 @@ body{font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;}
 #menu li a span{display:block;padding-top:4px;font-size:13px;line-height:1em;font-weight:normal;color:#333;}
 label{margin:0px 0px 0px 14px;}
 input[type="submit"]{font-size:16px;margin:1px 0px 15px 16px;width:180px;height:20px;}
-#nav{
-	margin: 0;
-	background-color:#fff;
-	
-}
-#nav ul, #nav li{
-	margin: 0px;
-	padding: 0px;
-	display: inline;
-	list-style-type: none;
-	
-}
-#nav a:link, #nav a:visited{
-	float: left;
-	line-height: 18px;
-	font-size:18px;
-	margin: 0 6px 0px 0px;
-	text-decoration: none;
-	color: #176EB1;
-	background:#fff;
-	padding:5px;
-}
-#nav a:link#current, #nav a:visited#current, #nav a:hover{
-	padding-bottom: 0px;
-	background: #fff;
-	color: #176EB1;
-	padding:5px;
-}
+#tabs {height:30px;background-color:#fff;}
+#tabs ul{margin:0;padding:0;}
+#tabs li{list-style:none;display:inline; margin:0;}
+#tabs a:link, #tabs a:visited{font-size:18px;text-decoration:none;color:#176EB1;background:#fff;padding-left:15px;}

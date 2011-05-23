@@ -14,18 +14,24 @@ class Home extends Controller {
 		$data['ASSETS']['CSS'] = array(
 					//	'restaurant',
 						);
-		
-		// Custom JS
-		$data['ASSETS']['JS'] = array(
-						'flowplayer/flowplayer-3.2.6.min',
-						);
+						
+		// List of views to be included
+        $data['NAV'] = array(
+            'navigation' => 'business/left_nav',
+        );
 		
 		// List of views to be included
-		$data['CENTER'] = array(
+		$data['MAIN'] = array(
 				'list' => 'business/home',
 			);
 		
-		$this->load->view('business/templates/center_template', $data);
+		// Data to send to the views
+		$data['BREADCRUMB'] = array(
+							'Business' => '/business',
+							'Food Sprout For Your Business' => '',
+						);
+
+        $this->load->view('/business/templates/sales_front', $data);
 	}
 	
 }

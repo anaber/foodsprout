@@ -1,4 +1,4 @@
-<div id="tabs-1" class="ui-tabs-hide">
+<div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
 	
 	<div>
 	<h2>View Sustainable Restaurants in Your City</h2>

@@ -17,14 +17,11 @@
 		//print_r_pre($this->session->userdata);
 	?>
 	<?php
-		if ($this->session->userdata['userGroupId'] ==  $USER_GROUP['ADMIN']) {
-				// Do not display UPGRADE links
-				//echo 'Condition 1';
-		} else if ( $this->session->userdata['userGroupId'] !=  $USER_GROUP['BUSINESS_OWNER']) {
+		if ( $this->session->userdata['userGroupId'] !=  $USER_GROUP['BUSINESS_OWNER']) {
 	?>
 	<div class="filterh">Business Options</div>
 	<div id="divCuisines" class="filterb">
-		<a href = "/user/upgrade">Upgrade</a><br />
+		<a href = "/business">Learn More</a><br />
 	</div>
 	<?php
 		} else if ( $this->session->userdata['userGroupId'] ==  $USER_GROUP['BUSINESS_OWNER']) {
@@ -34,8 +31,12 @@
 		<a href = "">My Restaurants</a><br />
 		<a href = "">My Farms</a><br />
 		<a href = "">My Markets</a><br />
+		
+		<?php /* these options should only be available for paying businesses?>
 		<a href = "">Search Suppliers</a><br />
 		<a href = "">Supplier Bids</a><br />
+		*/
+		?>
 	</div>
 	<?php
 		}
