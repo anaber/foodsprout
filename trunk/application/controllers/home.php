@@ -31,18 +31,6 @@ class Home extends Controller {
 		$newrestaurants = $this->RestaurantModel->listNewRestaurants();
 		
 		$data['NEWREST'] = $newrestaurants;
-		
-		// Get recent products
-		$this->load->model('ProductModel');
-		$newProducts = $this->ProductModel->listNewProducts();
-		
-		$data['NEWPRODUCTS'] = $newProducts;
-		
-		// Get new farms
-		$this->load->model('FarmModel');
-		$newFarms = $this->FarmModel->listNewFarms();
-		
-		$data['NEWFARMS'] = $newFarms;
 			
 		// Load the rssparse
 		// Get the latest blog posts

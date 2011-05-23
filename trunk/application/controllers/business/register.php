@@ -5,6 +5,7 @@ class Register extends Controller {
 	
 	function __construct() {
 		parent::Controller();
+		
 	}
 	
 	function index() {
@@ -14,6 +15,12 @@ class Register extends Controller {
 		$data['CENTER'] = array(
 				'list' => 'business/register/register',
 			);
+			
+		// Data to send to the views
+		$data['BREADCRUMB'] = array(
+							'Business' => '/business',
+							'Upgrade Your Account to Business' => '',
+						);
 		
 		// Custom CSS
 		$data['ASSETS']['CSS'] = array(
@@ -27,6 +34,7 @@ class Register extends Controller {
 	function step1() {
 		$data = array();
 		
+		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'business/register/step1',
@@ -38,7 +46,13 @@ class Register extends Controller {
 						//'beta',
 						'jquery.validationEngine',
 						);
-		
+		// Data to send to the views
+		$data['BREADCRUMB'] = array(
+			'Business' => '/business',
+			'Plans' => '/business/register',
+			'Step1: Create Account' =>'',
+			);		
+			
 		// Custom CSS
 		$data['ASSETS']['JS'] = array(
 						'jquery.validationEngine',
@@ -49,11 +63,20 @@ class Register extends Controller {
 	}
 	
 	function step2() {
+		checkUserLogin();
 		$data = array();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'business/register/step2',
+			);
+			
+		// Data to send to the views
+		$data['BREADCRUMB'] = array(
+			'Business' => '/business',
+			'Plans' => '/business/register',
+			'Step1: Create Account' =>'/business/register/step1',
+			'Step2: Payment' =>'',
 			);
 		
 		// Custom CSS
@@ -78,6 +101,12 @@ class Register extends Controller {
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'business/register/step3',
+			);
+			
+		// Data to send to the views
+		$data['BREADCRUMB'] = array(
+			'Business' => '/business',
+			'Confirmation' => '',
 			);
 		
 		// Custom CSS

@@ -8,55 +8,23 @@
 	});
 	
 </script>
-<script src="<?php echo base_url()?>js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-	$(function() {
-		$("#tabs").tabs({
-			
-		});
-	});
-	</script>
 
-<h1>Food Sprout - Your Sustainable Food Guide</h1>
-<hr size="1">
-	<div>
-		<div style="text-align:right;padding-right:15px;">
-			<img src="/img/icon_gift_certificate.jpg" alt="Sustainable Food Gift Certificates" width="59" height="50" style="float:left;clear:left;"><div style="-moz-border-radius: 4px; -webkit-border-radius: 4px; background: #e5e5e5; color: #000; -moz-box-shadow: 0 1px 0 #CCCCCC;-webkit-box-shadow: 0 1px 0 #CCCCCC; padding:5px;overflow:auto;width:680px;float:left;margin-top:10px;margin-left:2px;clear:right;"><a href="/tab">Enter</a> to win FREE gift certificates and other <a href="/tab">offers from Sustainable Restaurants</a> in your area.</div>
-		</div>
-	</div>
-<br/>
-<div id="tabs" style="clear:left;">
-<div id="homevtabs">
-	<br/><ul>
-		<li><a href="#tabs-1" style="text-decoration:none;">Near Me</a></li>
-		<li><a href="#tabs-2" style="text-decoration:none;">From the Grocery</a></li>
-		<li><a href="#tabs-3" style="text-decoration:none;">From the Source</a></li>
-		<!-- li><a href="#tabs-4">Recommendations</a></li -->
-		<li><a href="#tabs-5" style="text-decoration:none;">Resources</a></li>
-	</ul>
-</div>
 
-<div style="float:left; width:520px;" class="ui-tabs">
+
+<h1>Food Sprout - Your Sustainable Food Guide</h1><br/>
 	
+<div id="tabs" style="clear:left;">
+
+<div style="float:left; width:650px;" class="ui-tabs">
+<div style="float:left; width:650px;">
 		<?php		
 			$this->load->view('home/restaurant');
 		?>
-		<?php		
-			$this->load->view('home/products');
-		?>
-		<?php		
-			$this->load->view('home/farm');
-		?>
-		<?php		
-			//$this->load->view('home/recommendations');
-		?>
-		<?php		
-			$this->load->view('home/resources');
-		?>
-	
+</div>
 </div>
 
 </div>
+
 <div style="float:right; width:300px;">
 	<div style="padding:5px;">
 	<a href="/about"><img src="/img/home-banner.jpg" alt="Explore Your Food's Impact" width="300" height="250" border="0"></a>
