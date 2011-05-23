@@ -642,10 +642,6 @@ CREATE  TABLE IF NOT EXISTS `alliance_producer` (
   INDEX `alliance_producer_producer1` (`producer_id` ASC) ,
 ENGINE = MyISAM
 
-INSERT INTO `user_group` (`user_group_id`, `user_group`) VALUES ('7', 'Business Owner');
-
-
-
 CREATE TABLE IF NOT EXISTS `access` (
   `access_id` int(11) NOT NULL AUTO_INCREMENT,
   `access` varchar(45) DEFAULT NULL,
@@ -665,7 +661,6 @@ INSERT INTO `access` (`access_id`, `access`) VALUES
 (6, 'Distributor - Paid'),
 (7, 'Business Owner');
 
-
 CREATE TABLE IF NOT EXISTS `user_access` (
   `user_access_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -676,18 +671,8 @@ CREATE TABLE IF NOT EXISTS `user_access` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_group_member`
+-- Dumping data for table `user_access`
 --
+INSERT INTO user_access (user_id, access_id) SELECT user_id, user_group_id FROM user_group_member;
 
-INSERT INTO `user_access` (`user_access_id`, `user_id`, `access_id`) VALUES
--- 
--- THIS QUERY IS INCOMPLETE.
--- EXPORT user_group_member table and chage first line of the INSERT query with the above mentioned line.
---
-(426, 426, 2),
-(427, 427, 2);
--- 
--- //////////////////////////////////
---
 DROP TABLE `user_group`, `user_group_member`;
-
