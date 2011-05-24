@@ -1,4 +1,5 @@
-body{margin:0px;padding:0px;background:url(/img/bg.jpg) #E4D4B2;color:#000;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;}
+html{height:100%;}
+body{margin:0px;padding:0px;background:url(/img/bg.jpg) #E4D4B2;color:#000;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;height:100%;}
 a{text-decoration:none;}
 a,a:visited{color:#2076B9;}
 a:hover{color:#F05A25;text-decoration:underline;}
@@ -27,7 +28,7 @@ a:hover{color:#F05A25;text-decoration:underline;}
 #footerbg{position:absolute;
    bottom:0;left:0;
    width:100%;
-   height:60px;background:#413225; }
+   height:60px;background:#2C190F; }
 #footerbg #footertext{height:18px;color:#E3CAB0;line-height:11px;font-size:13px;text-align:center;margin-top:10px;}
 #footerbg #footertext a{color:#E3CAB0;font-size:11px;line-height:11px;padding:0 5px;text-decoration:none;}
 #footerbg #footertext a:hover{color:white;}
