@@ -839,7 +839,7 @@ class PhotoModel extends Model{
     
     function getPhotoByPhotoId($photo_id)
     {
-    	$this->db->select('photo_id, path, thumb_photo_name, photo_name, original_photo_name');
+    	$this->db->select('photo_id, path, thumb_photo_name, photo_name, original_photo_name,title,description');
     	$query = $this->db->get_where('photo', array('photo_id' => $photo_id));
     	
     	if ($query->num_rows() > 0)
@@ -878,9 +878,108 @@ class PhotoModel extends Model{
     	return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
     }
     
-	
+    function insertPhoto(array $data)
+    {
+        $this->db->insert('photo',$data);
+        
+        return $this->db->insert_id();
+    }
+    
+    function existsPhoto($type, $item_id, $filename)
+    {
+        $typeCol = (string)$type.'_id';
+        $this->db->where($typeCol, $item_id)
+            ->where('photo_name', $filename);
+        # echo (string)$this->db->last_query();
+        
+        return (bool)$this->db->count_all_results('photo');
+    }
+    
+    function getDataForAutoComplete($type, $q)
+    {
+        
+        switch($type)
+        {
+            case 'product':
+                $select = 'product_name AS item,product_id AS id';
+                $table = 'product';
+                $like = 'product_name';
+                break;
+                    
+            case 'producer':
+                $select = 'producer AS item, producer_id AS id';
+                $table = 'producer';
+                $like = 'producer';
+                break;
+            
+            default:
+                return False;
+        }
+        
+        $this->db->select($select)->from($table)->like($like, $q);
+        
+        $query = $this->db->limit(20)->get();
+        
+        $data = '';
+        
+        if ($query->num_rows() > 0)
+        {
+            foreach($query->result_array() as $row)
+            {
+                $data.= $row['item'].'|'.$row['id']."\n";
+            }
+        }
+        else
+        {
+            $data.='No data available';
+        }
+        
+        return $data;
+    }
+    
+    function getAssociatedData($itemType, $itemID)
+    {
+        $query = $this->db->where($itemType.'_id', $itemID)->get($itemType)->row();
+        
+        $obj = new stdClass;
+        $obj->type = $itemType;
+        $obj->id = $itemID;
+        
+        switch($itemType)
+        {
+            case 'producer':
+                $obj->value = $query->producer;
+                break;
+                
+            case 'product':
+                $obj->value = $query->product_name;
+                break;
+        }
+        
+        return $obj;
+    }
+    
+    /**
+     * returns what type of entity the photo is associated with
+     */
+    function checkAssociatedData($photoID)
+    {
+        $type = $this->db->select('address_id,product_id,producer_id')
+                ->get('photo')->row();
+        
+        if ( ! empty($type->address_id))
+                return array('address', $type->address_id);
+        
+        if ( ! empty($type->product_id))
+                return array('product', $type->product_id);
+        
+        if ( ! empty($type->producer_id))
+                return array('producer', $type->producer_id);
+    }
+    
+    function updatePhoto($id, $data)
+    {
+        $this->db->where('photo_id', $id);
+        $this->db->update('photo', $data);
+    }
 }
-
-
-
-?>

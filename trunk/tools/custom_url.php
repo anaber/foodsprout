@@ -8,9 +8,13 @@ if (file_exists($defines_file)) {
 	require_once($defines_file);
 } 
 
+require_once('symfony_inflector.php');
+
 $sustainable = new CustomUrl();
 
 $sustainable->index();
+
+ini_set('display_errors', 'On');
 
 
 class CustomUrl {
@@ -58,6 +62,8 @@ class CustomUrl {
 		 * Triger again and again to generate URL for records which are not processed yet 
 		 */
 		//$this->generateCustomUrlForCity();
+            
+                $this->generateProductCustomURL();
 	}
 	
 	function generateCustomUrlForCity() {
@@ -465,8 +471,67 @@ class CustomUrl {
 		mysql_query($query); 
 		echo "Data dumped from temp table to main table\n"; 
 	}
-	
-	
+        
+        public function generateProductCustomURL()
+        {
+            $query = "SELECT product_id, product_name FROM product";
+            
+            
+            $result = mysql_query($query);
+            
+            if ( ! $result)
+            {
+                die('Invalid Query: ' . mysql_error());
+            }
+            
+            while($row = mysql_fetch_object($result))
+            {
+                
+                $slug = Inflector::urlize($row->product_name);
+                
+                #if ( ! $this->checkSlugExists($slug))
+                #{
+                    #$sql = "INSERT INTO custom_url(custom_url, product_id) VALUES".
+                     #   ' ("%s",%d)';
+                
+                    $sql = "UPDATE custom_url SET custom_url='%s' WHERE product_id=%d";
+                    
+                    $query = sprintf($sql,mysql_real_escape_string($slug), $row->product_id);
+
+                    if ( ! mysql_query($query))
+                    {
+                        echo 'Invalid Query:' . mysql_error() , "\n";
+                    }
+                    else
+                    {
+                        echo "Inserted into custom_url table product #".$row->product_id.
+                            " with custom URL ".$slug."\n";
+                    }
+                #}
+                #else
+                #{
+                 #  echo "This slug exists, check object name\n";
+                #}
+            }
+        }
+        
+        private function checkSlugExists($slug)
+        {
+            $sql = "SELECT COUNT(*) AS numrows FROM custom_url WHERE custom_url='$slug'";
+            
+            $result = mysql_query($sql);
+            
+            var_dump($result);
+            
+            if ( ! $result)
+            {
+                die('Invalid Query: '.mysql_error());
+            }
+            
+            $obj = mysql_fetch_object($result);
+            
+            return (bool)$obj->numrows;
+        }
 }
 
 

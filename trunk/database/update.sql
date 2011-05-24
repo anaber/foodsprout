@@ -623,6 +623,10 @@ UPDATE `producer_category_group` SET `producer_category_group`='Farm Livestock' 
 INSERT INTO `producer_category_group` VALUES(5, 'Farm Crops');
 INSERT INTO `producer_category_group` VALUES(7, 'Certifications/Methods');
 
+-- add seo record for product details page
+INSERT INTO `foodsprout`.`seo_page` (`seo_page_id`, `page`, `title_tag`, `meta_description`, `meta_keywords`, `h1`, `url`) VALUES (NULL, NULL, '$productName - manufacture', '$productName risk factors, ingredients, supply charts and details.', '$productName', '$productName', 'http://www.foodsprout.com/product/$productSlug');=======
+INSERT INTO `producer_category_group` VALUES(7, 'Certifications/Methods');
+
 -- 11 May 2011, Alliance tables
 
 CREATE  TABLE IF NOT EXISTS `alliance` (

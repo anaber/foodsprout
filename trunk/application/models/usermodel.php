@@ -406,5 +406,37 @@ class UserModel extends Model{
             $this->db->update('user', $data, 'user_id = '.$userId);
         }
     }
+    
+    function getConsumedProducts($userID, $productID)
+    {
+        $query = $this->db->select('ad.address AS address,
+                    pt.product_name AS product_name,
+                    pd.producer AS producer_name,
+                    ad.address AS address,
+                    ad.state_id as state_id,
+                    ad.city AS city,
+                    ad.city_id AS city_id,
+                    ad.country_id AS country_id,
+                    ad.zipcode AS zipcode')
+                ->from('product_consumed AS pc')
+                ->join('user AS u', 'u.user_id=pc.user_id')
+                ->join('product AS pt', 'pt.product_id=pc.product_id')
+                ->join('producer AS pd', 'pd.producer_id=pt.producer_id')
+                ->join('address AS ad', 'pc.address_id=ad.address_id')
+                ->where('pc.user_id', $userID)
+                ->where('pc.product_id', $productID)
+                ->get();
+        
+        return ($query->num_rows() > 0) ? $query->result() : FALSE;
+     }
+     
+     function hasConsumedProduct($userID, $productID)
+     {
+         $this->db
+                 ->where('user_id',$userID)
+                 ->where('product_id', $productID);
+         
+         return (bool)$this->db->count_all_results('product_consumed');
+     }
 }
 ?>

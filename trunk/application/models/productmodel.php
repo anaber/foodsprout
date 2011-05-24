@@ -1397,6 +1397,195 @@ class ProductModel extends Model {
 		//print_r_pre($arr);die;
 		return $arr;
 	}
+        
+        
+        /**
+         * modified products search provided a custom search to accomodate
+         * searching by multiple terms and use the same query for getting
+         * rows and searching; TODO: amend changes with original
+         * 
+         * @param array $terms = search terms
+         */
+        function getProductsBySearchTerm(array $search_terms, array $filters, 
+                $limit=null, $offset=null)
+        {
+            
+            $this->db->select('p.product_name AS name,
+                    pd.producer AS producer,
+                    ph.path AS image_path,
+                    ph.thumb_photo_name AS thumb,
+                    ph.photo_name AS main,
+                    ph.original_photo_name AS original,
+                    ph.title AS photo_title,
+                    ph.description AS photo_description,
+                    pcu.custom_url AS product_url,
+                    pdcu.custom_url AS producer_url')
+                ->from('product AS p');
+            
+            foreach($search_terms as $search_term)
+            {
+                $this->db->or_like('product_name', $search_term);
+            }
 
+            $this->db->join('producer AS pd', 'p.producer_id = pd.producer_id')
+                ->join('photo AS ph', 'ph.product_id=p.product_id', 'left')
+                ->join('custom_url AS pcu', 'pcu.product_id=p.product_id', 'left')
+                ->join('custom_url AS pdcu', 'pdcu.producer_id=pd.producer_id', 'left');
+            
+            if (in_array('chain', $filters))
+            {
+                $this->db->where('pd.is_restaurant_chain', TRUE);
+            }
+
+            if ( ! is_null($limit)) $this->db->limit($limit);
+            if ( ! is_null($offset)) $this->db->offset($offset);
+            return $this->db->get();
+        }
+        
+        function countProductsBySearchTerm(array $search_terms, array $filters)
+        {
+            $this->db->select('p.product_name AS name,
+                    p.custom_url AS custom_url,
+                    pd.producer AS producer
+                    ')
+                ->from('product AS p');
+            
+            foreach($search_terms as $search_term)
+            {
+                $this->db->or_like('p.product_name', $search_term);
+            }
+            
+            $this->db->join('producer AS pd', 'p.product_id=pd.producer_id');
+            
+            // activate filters
+            if (in_array('chain', $filters))
+            {
+                $this->db->where('pd.is_restaurant_chain', TRUE);
+            }
+            
+            return $this->db->count_all_results('product');
+        }
+
+        /**
+         * @param string $slug product's custom URL
+         */
+        function getProductBySlug($slug)
+        {
+            $this->db->select('pt.custom_url AS custom_url,
+                        pt.product_name AS product_name,
+                        pd.producer AS producer_name,
+                        pd.producer_id AS producer_id,
+                        pt.product_id AS id,
+                        ph.path AS image_path,
+                        ph.thumb_photo_name AS thumb,
+                        ph.photo_name AS main,
+                        ph.original_photo_name AS original,
+                        ph.title AS photo_title,
+                        ph.description AS photo_description,
+                        pdcu.custom_url AS producer_url,
+                        ptcu.custom_url AS product_url
+                    ')
+                    ->from('product AS pt')
+                    ->join('producer AS pd', 'pd.producer_id=pt.producer_id')
+                    ->join('custom_url AS pdcu', 'pdcu.producer_id=pd.producer_id', 'left')
+                    ->join('custom_url AS ptcu', 'ptcu.product_id=pt.product_id', 'left')
+                    ->join('photo AS ph', 'ph.product_id=pt.product_id', 'left')
+                    ->group_by('pt.product_id')
+                    ->where('ptcu.custom_url', $slug);
+            
+            $query = $this->db->get('product');
+            
+           
+            return ($query->num_rows() > 0) ? $query->row() : null;
+        }
+
+
+        /**
+         * order products by creation_date
+         *
+         * @param int $limit record limit
+         * @return result object or null
+         */
+        function getRecentProducts($limit=5)
+        {
+            $query = $this->db->select('p.product_name AS name,
+                        p.custom_url AS custom_url,
+                        u.username AS consumer')
+                    ->from('product as p')
+                    ->join('product_consumed AS pc', 'pc.product_id = p.product_id', 'left')
+                    ->join('user AS u', 'u.user_id = pc.user_id', 'left')
+                    ->order_by('p.creation_date DESC')
+                    ->order_by('p.product_name')
+                    ->group_by('p.product_id')
+                    ->limit($limit)
+                    ->get();
+            
+            return ($query->num_rows() > 0) ? $query->result() : null;
+        }
+
+        /**
+         * join tables product_consumed, user and product
+         *
+         * @param int limit record limit
+         * @return result object or null
+         */
+        function getRecentConsumed($limit=5)
+        {
+            $derived_table = "SELECT product_id,user_id, consumed_date,rating
+                    FROM product_consumed
+                    GROUP BY product_id
+                    ORDER BY consumed_date ASC
+                    LIMIT $limit";
+
+            $query = $this->db->select('p.product_name AS name,p.custom_url AS custom_url,u.username AS consumer')
+                ->from('product AS p')
+                ->join("($derived_table) AS pc", 'pc.product_id = p.product_id')
+                ->join('user AS u', 'pc.user_id = u.user_id')
+                ->group_by('p.product_name')
+                ->get();
+
+            return ($query->num_rows() > 0) ? $query->result() : null;
+        }
+
+        /**
+         * get 5 products with the worst ratings; join user, product
+         * and product_consumed tables
+         *
+         * @return result object or null
+         */
+        function getWorstProducts($limit=5)
+        {
+            $derived_table = "SELECT product_id, user_id, consumed_date, MIN(rating) AS rating
+                    FROM product_consumed
+                    WHERE rating = 1
+                    OR rating = 2
+                    GROUP BY product_id
+                    ORDER BY rating ASC
+                    LIMIT $limit";
+
+            $query = $this->db->select('p.product_name AS name,p.custom_url AS custom_url,u.username AS consumer','pc.rating AS rating')
+                ->from('product AS p')
+                ->join("($derived_table) AS pc", 'pc.product_id = p.product_id')
+                ->join('user AS u', 'pc.user_id = u.user_id')
+                ->group_by('p.product_name')
+                ->get();
+
+            return ($query->num_rows() > 0) ? $query->result() : null;
+        }
+        
+        
+        function productExists($field, $value)
+        {
+            $this->db->where($field, $value);
+            
+            return (bool)$this->db->count_all_results('product');
+        }
+        
+        function tagEatenProduct(array $data)
+        {
+            $this->db->insert('product_consumed', $data);
+            
+            return $this->db->insert_id();
+        }
 }
 ?>
