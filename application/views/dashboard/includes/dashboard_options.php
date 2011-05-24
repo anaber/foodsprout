@@ -2,14 +2,13 @@
 	$USER_GROUP = getUserGroupsArray();	
 ?>
 	<div class="filterh">Personal Options</div>
-	<div id="divRestaurantTypes" class="filterb">
+	<div id="divRestaurantTypes" class="filterb" style="line-height:170%;">
 		<a href = "/dashboard">Dashboard</a><br />
-		<a href = "">My Food Log</a><br />
-		<a href = "">My Comments</a><br />
-		-----------------------------<br />
-		<a href = "/dashboard/restaurants">Added Restaurants</a><br />
-		<a href = "/dashboard/farms">Added Farms</a><br />
-		<a href = "/dashboard/markets">Added Markets</a><br />
+		<a href = "/dashboard/foodlog">My Food Log</a><br />
+		<a href = "/dashboard/comments">My Comments</a><br />
+		<hr size="1">
+		<a href = "/dashboard/data">Add Data</a><br />
+		<a href = "/dashboard/managedata">Manage Data</a><br />
 	</div>
 	<br>
 	

@@ -38,6 +38,94 @@ class Dashboard extends Controller {
 	}
 	
 	// The default for the user is the dashboard
+	function foodLog() {
+		global $LANDING_PAGE;
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/foodlog',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+					);
+		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
+	
+	// The default for the user is the dashboard
+	function comments() {
+		global $LANDING_PAGE;
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/comments',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+					);
+		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
+	
+	// The default for the user is the dashboard
+	function data() {
+		global $LANDING_PAGE;
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/data',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+					);
+		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
+	
+	// The default for the user is the dashboard
+	function manageData() {
+		global $LANDING_PAGE;
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/managedata',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+					);
+		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
+	
+	// The default for the user is the dashboard
 	function restaurants() {
 		global $LANDING_PAGE;
 		if ($this->session->userdata('isAuthenticated') != 1 ) {

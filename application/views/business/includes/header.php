@@ -59,7 +59,7 @@ if (isset ($ASSETS['JS']) ) {
 	
 ?>
 </script> 
-
+<div id="container">
 <!-- header -->
 <div id="header">
   <div id="headeritms">
