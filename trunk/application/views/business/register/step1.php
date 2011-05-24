@@ -17,10 +17,10 @@
 				</div>
 				<div id="signup-form">
 					<h2 id="signup-title"> </h2>
-					<form action="/login/create_user<?php echo ( $this->input->get('frm') <> "" ? "?frm=".$this->input->get('frm') : "" ); ?>" method="post" name="frmAccount" id="frmAccount">								
+					<form action="/login/validate<?php echo ( $this->input->get('frm') <> "" ? "?frm=".$this->input->get('frm') : "" ); ?>" method="post" name="frmAccount" id="frmAccount">								
 						
-						Email: <input type="text" name="firstname" id="firstname" class="validate[required]" value="<?php echo set_value('username'); ?>" AUTOCOMPLETE="OF"><br/>
-						Password: <input type="text" name="username" id="username" class="validate[required]" value="<?php echo set_value('username'); ?>" AUTOCOMPLETE="OFF"><br/>
+						Email: <input type="text" name="login_email" id="login_email" class="validate[required]" value="" AUTOCOMPLETE="OF"><br/>
+						Password: <input type="password" name="login_password" id="login_password" class="validate[required]" value="" AUTOCOMPLETE="OFF"><br/>
 						
 						<input type="submit" name="submit" value="Sign In">
 						

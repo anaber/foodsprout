@@ -40,19 +40,20 @@ class Register extends Controller {
 				'list' => 'business/register/step1',
 			);
 		
+		// Data to send to the views
+		$data['BREADCRUMB'] = array(
+			'Business' => '/business',
+			'Plans' => '/business/register',
+			'Step1: Create Account' =>'',
+			);
+			
 		// Custom CSS
 		$data['ASSETS']['CSS'] = array(
 						'business',
 						//'beta',
 						'jquery.validationEngine',
 						);
-		// Data to send to the views
-		$data['BREADCRUMB'] = array(
-			'Business' => '/business',
-			'Plans' => '/business/register',
-			'Step1: Create Account' =>'',
-			);		
-			
+		
 		// Custom CSS
 		$data['ASSETS']['JS'] = array(
 						'jquery.validationEngine',

@@ -680,3 +680,14 @@ CREATE TABLE IF NOT EXISTS `user_access` (
 INSERT INTO user_access (user_id, access_id) SELECT user_id, user_group_id FROM user_group_member;
 
 DROP TABLE `user_group`, `user_group_member`;
+
+CREATE  TABLE IF NOT EXISTS `portlet_position` (
+  `position_id` INT NOT NULL AUTO_INCREMENT ,
+  `page` VARCHAR(100) NOT NULL ,
+  `user_id` INT NULL ,
+  `column_1` VARCHAR(255) NULL ,
+  `column_2` VARCHAR(255) NULL ,
+  PRIMARY KEY (`position_id`) ,
+  INDEX `fk_portlet_position_user1` (`user_id` ASC)
+)
+ENGINE = InnoDB;

@@ -379,4 +379,10 @@ function getUserGroupsArray() {
 	return $USER_GROUP;
 }
 
+function getDefaultPortletPosition($page) {
+	global $PORTLET;
+	
+	return $PORTLET[$page];
+}
+
 ?>
