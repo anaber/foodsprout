@@ -470,6 +470,11 @@ class AddressModel extends Model{
 
             return (bool)$this->db->count_all_results();
         }
+        
+        function getAddressesByProducer($producerID)
+        {
+            return $this->db->where('producer_id', $producerID)->get('address')->result();
+        }
 	
 }
 

@@ -167,7 +167,7 @@ function addResult(photos, i) {
 	'<div id="photo-'+photos.photoId+'" class="img-container"> ' +
 	'	<div class="img">' +
 	' 		<a href="'+photos.photo+'" rel="lightbox" title="'+photos.description+'" style="text-decoration:none; color: transparent;">' +
-	'			<img src="'+ photos.thumbPhoto +'" height="132" width="132" />' +
+	'			<img src="'+ photos.photo +'" height="120" width="120" />' +
 	' 		</a>' +
 	'	</div>' +
 	'	<div class="desc">' +

@@ -142,15 +142,17 @@ $route['^distributor/(:any)']							= "distributor/customUrl/$1";
 
 
 // Product
-$route['^product/']										= "product/index";
-$route['^product/search']								= "product/search";
-$route['^product/fructose']								= "product/fructose";
+$route['^products']							= "product/index";
+$route['^product/search']						= "product/search";
+$route['^product/fructose']						= "product/fructose";
 $route['^product/fructose/page(:num)']					= "product/fructose/$1";
 $route['^product/ajaxSearchProducts']					= "product/ajaxSearchProducts";
-$route['^product/addeaten']								= "product/addeaten";
-$route['^product/eaten/(:any)']							= "product/eaten/$1";
-$route['^product/search/(:any)']						= "product/search/$1";
-$route['^product/(:any)']								= "product/customUrl/$1";
+$route['^product/addeaten']						= "product/addeaten";
+$route['^product/eaten/(:any)']						= "product/eaten/$1";
+$route['^product/search/page(:num)']                                    = "product/mysearch/$1";
+$route['^product/search']						= "product/mysearch";
+$route['^product/tag_ate/(:any)']                                       = "product/tag_ate/$1";
+$route['^product/(:any)']						= "product/show/$1";
  
 // ADMINCP
 $route['^admincp'] 										= "admincp/dashboard";

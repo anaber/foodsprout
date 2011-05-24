@@ -163,3 +163,83 @@ from(#229500),to(#48B117));background:-o-linear-gradient(top,#229500,#48B117);ba
 #signup-form input[type='submit']{font-size:28px;height:60px;width:788px;}
 .business_text{font-size:14px;line-height:1.6;text-align:justify;}
  
+
+/* CSS for new product layouts TODO: refactor if any previous rules are missed*/
+ul, dl dd {margin:0; padding:0;}
+.product_main_list {float:left; width:300px; padding-right:20px;}
+#recentlyEaten {}
+#worstFood {}
+#recentlyAdded{}
+
+ul.product_list {padding:0px; margin:0px; margin-top: 20px;}
+.product_list_item{width:300px; margin-bottom: 15px; padding-bottom:15px; border-bottom:1px solid #eee; font-size:14px;}
+.product_list img{float:left; width:80px; margin-right:10px;}
+
+#search_field{width:500px; margin: 0 auto;}
+#search_filters{width:800px; margin:0 auto; margin-top:15px;}
+#search_filters li {display:inline-block; margin:0 10px;}
+
+#product_search_result{}
+ul#product_result_list{margin:0; padding:0;}
+.product_result_item{margin-bottom:15px; padding-bottom: 15px; border-bottom: 1px solid #eee;}
+.product_result_item img{float:left; margin-right:20px;}
+.product_result_description{}
+.product_detail_button {float:right; display:inline-block;}
+
+/* product details */
+#product_details {margin-bottom:20px; font-size:12px;}
+#product_details img {float:left; margin-right:20px;}
+#product_ingredients {font-size:12px;}
+.product_details_list {float:left; width:800px;}
+.badge_ate {display:inline-block; float:right;}
+.details_list {float:left; width:300px; margin:0; padding:0;}
+#product_details_warning{float:left; width:500px; margin-top: 30px; height:20px; background: #eee; height:37px; padding:10px;}
+#ingredient_summary{width:350px; float:left; height:150px; background: #eee; margin-right:10px; padding:10px; }
+#ingredient_summary h1 {font-size: 14px;}
+#ingredient_summary ul li{margin:5px 0; background-image: url('/images/accept.png'); list-style-position: inside;padding-left:20px; background-repeat:no-repeat;}
+#ingredient_chart{width:600px; float:left; height:140px;}
+#ingredient_header{height:30px; padding:10px 0;}
+.product_source_header{float:left; display: inline-block;}
+.product_ate_where{float: right; display:inline-block;}
+#ingredient_details {margin-bottom: 30px;}
+ul.ingredient_list {float:left; width:490px;}
+ul.ingredient_list li {margin: 10px 0; background-image: url('/images/help.png'); list-style-position: inside; height:50px; padding-left:60px; background-repeat:no-repeat;}
+.ingredient_list li p{margin:0; }
+#product_risk h2{ margin-bottom:20px;}
+#risk_slider{width:980px; height: 80px; padding: 10px 0;}
+#risk_slider #risk_image{display:inline-block; float:left; width:32px; margin-right:10px;}
+#risk_slider_meter{width:930px; margin-bottom: 10px; float:left;}
+#risk_slider_value{float:left; width:930px;}
+#risk_description{width:370px; float:left; padding-right:10px}
+#risk_description p {padding:0; margin:0; margin-bottom:20px;}
+.risk_severity{background: #eee; padding: 10px 100px;}
+#risk_factors{float:left; width:600px;}
+.risk_factor_list {margin-bottom: 20px;}
+.risk_factor_list li {width:290px; float:left; font-size:12px; padding-right:10px; margin-bottom:10px;}
+.risk_factor_list li img {display:inline-block; float:left; width:50px; margin-right:10px;}
+ul.risk_stats {font-size: 14px;}
+ul.risk_stats li {margin:10px 0;}
+
+#ingredient_chart{height:168px; width:598px; border:1px solid #ccc;}
+
+
+
+/* pagination */
+div.pagination {padding: 5px 10px; margin:0 auto; width:630px;}
+a.pager_next_link{display:inline-block;}
+a.pager_prev_link{display:inline-block;}
+div.pagination_details {float:left; font-size: 10px;}
+div.pagination_tally {width:175px;}
+div.pagination_links {width:250px;}
+div.pagination_perlink{width:195px; text-align: right;}
+div.prevfirst{float:left; width:125px;}
+div.nextlast{float:right;width:125px; text-align: right;}
+
+/* tag form */
+.ajax_error {font-size:10px; color: red; }
+.ajax_success {font-size:10px; color: green;}
+
+/*clearfix */
+.clearfix:after {visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */

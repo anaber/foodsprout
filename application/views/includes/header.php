@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="<?php echo base_url()?>css/floating_messages.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo base_url()?>css/thickbox.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo base_url()?>css/jquery.datepick.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo base_url()?>js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" />
 <?php 
 if (isset ($CSS) ) {
 	foreach ($CSS as $key => $css_file) {
@@ -30,6 +31,8 @@ if (isset ($CSS) ) {
 <script src="<?php echo base_url()?>js/thickbox.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.datepick.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.autocomplete.frontend.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/fancybox/jquery.fancybox-1.3.4.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/script.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">

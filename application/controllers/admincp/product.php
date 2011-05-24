@@ -44,18 +44,23 @@ class Product extends Controller {
 	}
 	
 	function add()
-	{
-		$data = array();
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'admincp/forms/product_form',
-			);
-			
-		// Data to be passed to the views
-		$data['data']['center']['list']['VIEW_HEADER'] = "Add Product";
-		
-		$this->load->view('admincp/templates/center_template', $data);
+        {
+            if ($_POST)
+            {
+                
+            }
+            
+            $data = array();
+
+            // List of views to be included
+            $data['CENTER'] = array(
+                            'list' => 'admincp/forms/product_form',
+                    );
+
+            // Data to be passed to the views
+            $data['data']['center']['list']['VIEW_HEADER'] = "Add Product";
+
+            $this->load->view('admincp/templates/center_template', $data);
 	}
 	
 	function update($id) {

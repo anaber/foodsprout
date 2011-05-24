@@ -8,16 +8,16 @@ class Product extends Controller {
 		checkUserAgent();
 
                 $this->load->helper('html');
+                
+                // $this->output->enable_profiler(TRUE);
 	}
-	
-
 	
 	function index(){
 		
 		$data = array();
 		
 		// Views to include in the data array
-		$data['CENTER'] = array(
+		$data['CENTER'] = array(                    
 				'list' => '/product/center',
 				'search_view' => '/product/advanced_search',
 				'main_view' => '/product/top_list',
@@ -25,8 +25,14 @@ class Product extends Controller {
 			
 		$this->load->model('ProductModel', '', TRUE);
 		
-		$data['recentlyAddedProducts'] = $this->ProductModel->recentlyAddedProducts();
-		$data['recentlyEatenProducts'] = $this->ProductModel->recentlyEatenProducts();
+		// $data['recentlyAddedProducts'] = $this->ProductModel->recentlyAddedProducts();
+		// $data['recentlyEatenProducts'] = $this->ProductModel->recentlyEatenProducts();
+
+                $data['recent'] = $this->ProductModel->getRecentProducts();
+                $data['consumed'] = $this->ProductModel->getRecentConsumed();
+                $data['worst'] = $this->ProductModel->getWorstProducts();
+
+                $recent = $this->ProductModel->getRecentProducts();
 		
 		$this->load->view('templates/center_template', $data);
 		
@@ -320,55 +326,6 @@ class Product extends Controller {
 		$this->load->view('templates/left_center_template', $data);
 	}
 	
-//	function view($id) {
-//		global $GOOGLE_MAP_KEY;
-//		
-//		$data = array();
-//		
-//		// List of views to be included
-//		$data['CENTER'] = array(
-//				'ingredients' => 'ingredients',
-//				'map' => 'includes/map',
-//				'topics' => 'topics',
-//				'impact' => 'impact',
-//			);
-//		
-//		$data['RIGHT'] = array(
-//				'image' => 'includes/right/image',
-//				'ad' => 'includes/right/ad',
-//				'info' => 'includes/right/info',
-//				'nutrition' => 'includes/right/info',
-//			);
-//		
-//		$data['BREADCRUMB'] = array(
-//				'Home' => '/home',
-//				'McDonald' => '/company/detail/2',
-//				'Meat' => '',
-//			);
-//		
-//		// Data to be passed to the views
-//		// Center -> Ingredients		
-//		$data['data']['center']['ingredients']['INGREDIENTS'] = array('cheese', 'meat', 'pepper');
-//		
-//		// Center -> Map
-//		$data['data']['center']['map']['GOOGLE_MAP_KEY'] = $GOOGLE_MAP_KEY;
-//		$data['data']['center']['map']['VIEW_HEADER'] = "Map showing where ingredients, items came from";
-//		$data['data']['center']['map']['width'] = '650';
-//		$data['data']['center']['map']['height'] = '200';
-//		
-//		
-//		// Right -> Image
-//		$data['data']['right']['image']['src'] = '/img/products/burger.jpg';
-//		$data['data']['right']['image']['width'] = '300';
-//		$data['data']['right']['image']['height'] = '200';
-//		$data['data']['right']['image']['title'] = 'Burger Image';
-//		
-//		$data['data']['right']['info']['VIEW_HEADER'] = "Product Info";
-//		
-//		$data['data']['right']['nutrition']['VIEW_HEADER'] = "Nutritional Information";
-//		
-//		$this->load->view('templates/center_right_template', $data);
-//	}
 	
 	/**
 	 * Migration: 		Done
@@ -473,11 +430,38 @@ class Product extends Controller {
 		echo $products;
 	}
 
-        function show($product_slug)
+        function show($productSlug)
         {
             $this->load->model('ProductModel');
             
-            $product = $this->ProductModel->getProductBySlug($product_slug);
+            $product = $this->ProductModel->getProductBySlug($productSlug);
+            
+            $this->load->model('UserModel');
+            
+            $userID = $this->session->userdata('userId');
+                       
+            $products_consumed = $this->UserModel->getConsumedProducts($userID, $product->id);
+            
+            $consumed_address = array();
+            
+            if ($products_consumed)
+            {   
+                $this->load->model('AddressModel');
+                
+                foreach($products_consumed as $p)
+                {
+                    $consumed_address[$p->product_name] = $this->AddressModel
+                        ->prepareAddressToDisplay($p->address, $p->city, $p->city_id,
+                                $p->state_id, $p->country_id, $p->zipcode);
+                }
+            }
+            
+            // variables for use in SEO
+            $productName = $product->product_name;
+            
+            $this->load->model('SeoModel');
+            
+            $seo = $this->SeoModel->getSeoDetailsFromPage('product_detail');
 
             if ( ! is_null($product))
             {
@@ -485,8 +469,14 @@ class Product extends Controller {
 
                 $data['CENTER'] = array(
                             'search_view' => '/product/advanced_search',
-                            'list' => '/product/product_details_test',
+                            'list' => '/product/product_details',
 			);
+                
+                $data['product']  = $product;
+                $data['products_consumed'] = $products_consumed;
+                $data['consumed_address'] = $consumed_address;
+                $data['has_consumed'] = $this->UserModel
+                        ->hasConsumedProduct($userID, $product->id);
                 
                 $this->load->view('templates/center_template', $data);
             }
@@ -494,17 +484,183 @@ class Product extends Controller {
                 show_404 ();
         }
 
+        /**
+         * MODIFIED SEARCH FUNCTION: SUBJECT FOR REVIEW
+         */
         function mysearch()
         {
+            $data = array();
+            $query_string_fragments = array();
             $this->load->model('ProductModel');
+            
+            // extract page number from "page2"
+            $current_page = substr($this->uri->segment(3), 4, 5);
+            $current_page = (is_numeric($current_page)) ? $current_page : 1;
 
-            $query = $this->ProductModel->getProductsBySearchTerm(array('sizzling', 'chicken'));
+            // get search term
+            $q = $this->input->get('q');
+            $search_terms = explode(' ', $q);
+            $query_string_fragments['q'] = $q;
 
-            echo 'Total Rows: ' . $query->num_rows . '<br/>';
-            foreach($query->result() as $product)
+            // construct items per page
+            $items_per_page = ($this->input->get('pp')) ? $this->input->get('pp') : 10;
+
+            // filters
+            $filter_chain = ($this->input->get('filter_chain')) ?
+                $this->input->get('filter_chain'):null;
+            
+            $filters  = array();
+            
+            if ($this->input->get('filter_chain'))
             {
-                echo $product->product_name . "<br/>";
+                $filters[] = 'chain';
             }
+            
+            // construct query string
+            // don't modify to be compatible with multiple filters
+            $data_filters = array('chain');
+            foreach($data_filters as $filter)
+            {
+                $varname = 'filter_'.$filter;
+                if ( ! is_null($$varname))
+                {
+                    $data[$varname] = $$varname;
+                    $query_string_fragments[$varname] = $$varname;
+                }
+            }
+
+            // construct query string
+            $query_string = http_build_query($query_string_fragments);
+
+            // get total rows
+            $total_items = $this->ProductModel
+                ->countProductsBySearchTerm($search_terms,$filters);
+
+            // get pagination details
+            $config = array('total_items'=>$total_items, 'items_per_page'=>$items_per_page);
+            $paging = $this->calculate_pagination($config, $current_page);
+            
+            $search_results = $this->ProductModel
+                ->getProductsBySearchTerm($search_terms, $filters, $items_per_page, $paging['offset']);
+
+            // Views to include in the data array
+            $data['CENTER'] = array(
+                'search_view' => '/product/advanced_search',
+                'main_view' => '/product/search_results',
+            );
+            
+            $data['RESULTS'] = $search_results->result();
+            $data['Q'] = $q;
+            $data['PP'] = $items_per_page;
+            $data['TOTAL_ROWS'] = $total_items;
+            $data['CURRENT_PAGE'] = $current_page;
+            $data['PAGING'] = $paging;
+            $data['QUERY_STRING'] = $query_string;
+
+            $this->load->view('templates/center_template', $data);
+        }
+        
+        function tag_ate($productSlug)
+        {   
+            $this->load->model('ProductModel');
+            $this->load->model('AddressModel');
+            $this->load->model('UserModel');
+            
+            $product = $this->ProductModel->getProductBySlug($productSlug);
+            $addresses = $this->AddressModel->getAddressesByProducer($product->producer_id);
+            
+            if ( ! $this->session->userdata('userId'))
+                    show_404();
+            
+            $data['PROCESSED'] = $this->UserModel->hasConsumedProduct($this->session->userdata('userId'),$product->id);
+            
+            $data['ADDRESSES'] = $addresses;
+            $data['PRODUCT'] = $product;
+            
+            if($_POST)
+            {
+                $productID = $_POST['product_id'];
+                
+                $userID = $this->session->userdata('userId');
+                
+                $this->load->model('ProductModel');
+                
+                if (is_numeric($productID))
+                {
+                    $data = array(
+                        'product_id' => $productID,
+                        'user_id' => $userID,
+                        'rating' => (int)$_POST['rating'],
+                        'comment' => $_POST['comment'],
+                        'rating_date' => date('Y-m-d H:i:s'),
+                        'address_id' => $_POST['address_id'],
+                        'consumed_date'=>date('Y-m-d')
+                    );
+                    // check if product exists
+                    if ($this->ProductModel->productExists('product_id', $productID))
+                    {
+                        $this->ProductModel->tagEatenProduct($data);
+                        
+                        if ( ! (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                                $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'))
+                        {
+                            redirect("product/$productSlug");
+                        }   
+                    }
+                    else
+                        show_404();
+                }
+                else 
+                    show_404();
+            }
+            
+            
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+                    $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
+            {
+                $this->load->view('product/ateform', $data);
+            }
+            else
+            {
+                // Views to include in the data array
+                $data['CENTER'] = array(
+                    'search_view' => '/product/advanced_search',
+                    'main_view' => '/product/ateform',
+                );
+                
+                $this->load->view('templates/center_template', $data);
+            }
+        }
+        
+        private function calculate_pagination(array $config, $current_page)
+        {
+            $items_per_page     = (int)max(1, $config['items_per_page']);
+            $total_pages        = (int)ceil($config['total_items'] / $items_per_page);
+            $current_page       = (int)min(max(1, $current_page), max(1, $total_pages));
+            $total_items        = (int)max(0, $config['total_items']);
+            $offset             = (int)($current_page - 1) * $items_per_page;
+            $previouspage       = (int)($current_page > 1) ? $current_page - 1 :FALSE;
+            $nextpage           = (int)($current_page < $total_pages) ? $current_page + 1 : FALSE;
+            $current_page_first = (int)min((($current_page - 1) * $items_per_page) + 1, $total_items);
+            $current_page_last  = (int)min($current_page_first + $items_per_page -1, $total_items);
+            $firstpage          = ($current_page == 1) ? FALSE : 1;
+            $lastpage           = ($current_page >= $total_pages) ? FALSE : $total_pages;
+
+
+            return array(
+                'offset' => $offset,
+                'items_per_page' => $items_per_page,
+                'current_pages' => $current_page,
+                'total_items' => $total_items,
+                'current_page' => $current_page,
+                'previouspage' => $previouspage,
+                'nextpage' => $nextpage,
+                'current_page_first' => $current_page_first,
+                'current_page_last' => $current_page_last,
+                'firstpage' => $firstpage,
+                'lastpage' => $lastpage,
+                'total_pages' => $total_pages
+            );
         }
 }
 
