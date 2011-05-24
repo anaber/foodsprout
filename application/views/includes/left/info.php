@@ -39,47 +39,38 @@ function makeNear2there(name,street,city,state) {
 			$streetAddress = '';
 			$city = '';
 			$state = '';
+		
+		$producerId = '';
+		$addresses = array();
 		if (isset ($RESTAURANT)) {
 			$name = $RESTAURANT->restaurantName;
-			foreach($RESTAURANT->addresses as $key => $address) {
-				$streetAddress = $address->address;
-				$city = $address->city;
-				//$city = $address->cityName;
-				$state = $address->state;
-				break;
-			}
+			$producerId = $RESTAURANT->restaurantId;
+			$addresses = $RESTAURANT->addresses;
 		} else if (isset ($FARM)) {
 			$name = $FARM->farmName;
-			foreach($FARM->addresses as $key => $address) {
-				$streetAddress = $address->address;
-				$city = $address->city;
-				$state = $address->state;
-				break;
-			}
+			$producerId = $FARM->farmId;
+			$addresses = $FARM->addresses;
 		} else if (isset ($MANUFACTURE)) {
 			$name = $MANUFACTURE->manufactureName;
-			foreach($MANUFACTURE->addresses as $key => $address) {
-				$streetAddress = $address->address;
-				$city = $address->city;
-				$state = $address->state;
-				break;
-			}
+			$producerId = $MANUFACTURE->manufactureId;
+			$addresses = $MANUFACTURE->addresses;
 		} else if (isset ($DISTRIBUTOR)) {
 			$name = $DISTRIBUTOR->distributorName;
-			foreach($DISTRIBUTOR->addresses as $key => $address) {
-				$streetAddress = $address->address;
-				$city = $address->city;
-				$state = $address->state;
-				break;
-			}
+			$producerId = $DISTRIBUTOR->distributorId;
+			$addresses = $DISTRIBUTOR->addresses;
 		} else if (isset ($FARMERS_MARKET)) {
 			$name = $FARMERS_MARKET->farmersMarketName;
-			foreach($FARMERS_MARKET->addresses as $key => $address) {
-				$streetAddress = $address->address;
-				$city = $address->city;
-				$state = $address->state;
-				break;
-			}
+			$producerId = $FARMERS_MARKET->farmersMarketId;
+			$addresses = $FARMERS_MARKET->addresses;
+		}
+		
+		foreach($addresses as $key => $address) {
+			$streetAddress = $address->address;
+			$city = $address->city;
+			//$city = $address->cityName;
+			$state = $address->state;
+			$addressId = $address->addressId;
+			break;
 		}
 		
 	?>
@@ -88,7 +79,8 @@ function makeNear2there(name,street,city,state) {
 	<?php
 		
 	?>
-	
+				<br /><br />
+				<a href = "/business/claim/<?php echo $producerId . ( !empty($addressId) ? ',' . $addressId : ''); ?>" style = "font-size:13px;">Claim this business</a>
 			</div>
 	<?php
 		//}

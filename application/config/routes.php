@@ -161,6 +161,9 @@ $route['^admincp'] 										= "admincp/dashboard";
 $route['^business'] 									= "business/home";
 $route['^business/success-stories'] 					= "business/success";
 
+$route['^business/claim/(:num),(:num)'] 				= "business/claim/index/$1/$2";
+$route['^business/claim/(:num)'] 						= "business/claim/index/$1";
+
 $route['scaffolding_trigger'] = "";
 
 /* End of file routes.php */

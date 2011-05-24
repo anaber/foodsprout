@@ -17,7 +17,12 @@ class Dashboard extends Controller {
 		}
 		//	echo  $this->session->userdata('userId');
 		
-		$data['LEFT'] = array(
+		$userId = $this->session->userdata['userId'];
+		$page = 'dashboard';
+		$this->load->model('PortletModel', '', TRUE);
+        $portlet = $this->PortletModel->getPortletPositon($userId, $page);
+        
+        $data['LEFT'] = array(
 				'options' => 'dashboard/includes/dashboard_options',
 			);
 		
@@ -33,6 +38,9 @@ class Dashboard extends Controller {
 						'jquery-ui/jquery.ui.slider',
 						'jquery-ui/jquery.ui.theme',
 					);
+		
+		$data['data']['center']['list']['PORTLET'] = $portlet;
+		$data['data']['center']['list']['PAGE'] = $page;
 		
 		$this->load->view('/dashboard/templates/left_center_template', $data);
 	}

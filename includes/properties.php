@@ -126,7 +126,8 @@ $FARMER_TYPES = array(
 
 $LANDING_PAGE = '/login';
 $ADMIN_LANDING_PAGE = '/admincp/login';
-$BUSINESS_LANDING_PAGE = '/business/login';
+//$BUSINESS_LANDING_PAGE = '/business/login';
+$BUSINESS_LANDING_PAGE = '/business/register/step1';
 
 $RECOMMENDED_CITIES = array (
 					'San Francisco',
@@ -152,6 +153,21 @@ $USER_GROUP = array(
 					'ADMIN' 			=> 1,
 					'CONTRIBUTOR' 		=> 2,
 					'BUSINESS_OWNER' 	=> 7,
+				);
+
+$PORTLET = array(
+					'dashboard' => array(
+						'column_1' => array(
+							'recent_restaurants',
+							'my_favorites',
+							'recent_comments',
+						),
+						'column_2' => array(
+							'place_i_ate',
+							'carbon_chart',
+							'topics_following',
+						)
+					)
 				);
 
 ?>
