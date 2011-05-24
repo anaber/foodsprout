@@ -635,16 +635,16 @@ CREATE  TABLE IF NOT EXISTS `alliance` (
   `alliance_info` TEXT NULL ,
   `custom_url` VARCHAR(65) NOT NULL ,
   PRIMARY KEY (`alliance_id`) )
-ENGINE = MyISAM
+ENGINE = MyISAM;
 
-CREATE  TABLE IF NOT EXISTS `alliance_producer` (
+CREATE TABLE IF NOT EXISTS `alliance_producer` (
   `alliance_producer_id` INT NOT NULL AUTO_INCREMENT ,
   `alliance_id` INT NOT NULL ,
   `producer_id` INT NOT NULL ,
   PRIMARY KEY (`alliance_producer_id`) ,
-  INDEX `alliance_producer_alliance1` (`alliance_id` ASC) ,
-  INDEX `alliance_producer_producer1` (`producer_id` ASC) ,
-ENGINE = MyISAM
+  INDEX `alliance` (`alliance_id` ASC) ,
+  INDEX `producer` (`producer_id` ASC) ,
+) ENGINE = MyISAM;
 
 CREATE TABLE IF NOT EXISTS `access` (
   `access_id` int(11) NOT NULL AUTO_INCREMENT,

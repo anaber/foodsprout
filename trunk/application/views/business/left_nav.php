@@ -23,7 +23,7 @@ if($tab == "team") {
 else{
 	$teamclass = 'class="aboutoff"';
 }
-echo anchor('/business/Services', 'Services', $teamclass);
+echo anchor('/business/services', 'Services', $teamclass);
 ?><br>
 
 <?php
