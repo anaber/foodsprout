@@ -6,6 +6,8 @@
 		<a href = "/dashboard">Dashboard</a><br />
 		<a href = "/dashboard/foodlog">My Food Log</a><br />
 		<a href = "/dashboard/comments">My Comments</a><br />
+		<a href = "/dashboard/menu">My Menu</a><br />
+		<a href = "/dashboard/suppliers">My Suppliers</a><br />
 		<hr size="1">
 		<a href = "/dashboard/data">Add Data</a><br />
 		<a href = "/dashboard/managedata">Manage Data</a><br />

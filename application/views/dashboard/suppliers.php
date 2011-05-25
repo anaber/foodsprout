@@ -1,5 +1,5 @@
 <script src="<?php echo base_url()?>js/dashboard/common.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>js/dashboard/restaurant.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/dashboard/supplier.js" type="text/javascript"></script>
 
 <script>
 	
@@ -15,11 +15,11 @@
 	
 	$(document).ready(function() {
 		
-		$.post("/user/ajaxRestaurantsByUser", { q: userId },
+		$.post("/user/ajaxSuppliersByUser", { q: userId },
 		function(data){
-			currentContent = 'restaurants';
+			currentContent = 'supplier';
 			jsonData = data;
-			redrawContent(data, 'restaurants');
+			redrawContent(data, 'supplier');
 		},
 		"json");
 	});
@@ -30,7 +30,7 @@
 <!-- center tabs -->
 
 	<div>
-		<div style="float:left;width:530px;"><h1>My Restaurants</h1></div>
+		<div style="float:left;width:530px;"><h1>My Suppliers</h1></div>
 		<div class="clear"></div>
 		<hr size="1">
 		<div class="clear"></div>
