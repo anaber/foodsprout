@@ -19,6 +19,23 @@ $(document).ready(function() {
 		failure : function() {formValidated = false; }
 	});
 
+	$("#producer").autocomplete("/admincp/producergroup/ajaxSearchProducers", {		 	
+	  	mustMatch: true, 
+	 	matchContains: true,
+		autoFill: false
+	}).result(function (evt, data) {
+ 	    $("#producerId").val(data[1]);
+ 	});
+	
+	$("#product").autocomplete("/admincp/product/ajaxSearchProducts", {		 	
+		multiple: true,		 	
+		mustMatch: true, 
+		matchContains: true,
+		autoFill: false
+	}).result(function (evt, data, formatted) {
+		$("#productId").val(data[1]);
+	});
+
 	$("#newsfeedForm").submit(function() {
 		
 		$("#msgbox").removeClass().addClass('messagebox').text('Validating...').fadeIn(1000);
@@ -118,11 +135,17 @@ $(document).ready(function() {
 		</tr>
 		<tr>
 			<td class="header">Select Producer: </td>
-			<td><input type="text" class="validate[required]" name="producer" id="producer" size="45" /></td>
+			<td>
+				<input type="text" class="validate[required]" name="producer" id="producer" size="45" />
+				<input type="hidden" name="producer_id" id="producerId" />
+			</td>
 		</tr>
 		<tr>
 			<td class="header">Select Product: </td>
-			<td><input type="text" class="validate[required]" name="product" id="product" size="45" /></td>
+			<td>
+				<input type="text" class="validate[required]" name="product" id="product" size="45" />
+				<input type="hidden" name="product_id" id="productId" />
+			</td>
 		</tr>
 		<tr>
 			<td align="center" colspan="2"><input type="submit" name="save" value="Save" /></td>
