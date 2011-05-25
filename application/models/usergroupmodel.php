@@ -5,7 +5,7 @@ class UsergroupModel extends Model{
 	// List all the usergroup in the database
 	function list_usergroup()
 	{
-		$query = "SELECT * FROM user_group ORDER BY user_group";
+		$query = "SELECT * FROM access ORDER BY access";
 		
 		log_message('debug', "UsergroupModel.list_usergroup : " . $query);
 		$result = $this->db->query($query);
@@ -17,8 +17,8 @@ class UsergroupModel extends Model{
 			$this->load->library('UsergroupLib');
 			unset($this->usergroupLib);
 			
-			$this->usergroupLib->usergroupId = $row['user_group_id'];
-			$this->usergroupLib->usergroupName = $row['user_group'];
+			$this->usergroupLib->usergroupId = $row['access_id'];
+			$this->usergroupLib->usergroupName = $row['access'];
 			
 			$usergroups[] = $this->usergroupLib;
 			unset($this->usergroupLib);

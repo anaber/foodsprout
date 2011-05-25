@@ -52,7 +52,9 @@ class User extends Controller {
 		$data = array();
 		
 		$this->load->model('UserModel');
+		$this->load->model('UsergroupModel');
 		$user = $this->UserModel->getUserFromId($id);
+		$usergroups = $this->UsergroupModel->list_usergroup();
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -62,10 +64,29 @@ class User extends Controller {
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Update User";
 		$data['data']['center']['list']['USER'] = $user;
+		$data['data']['center']['list']['USERGROUPS'] = $usergroups;
 		
 		$this->load->view('admincp/templates/center_template', $data);
 	}
 	
+	function save_update()
+	{
+		
+		if ($this->input->post('btnSubmit'))
+		{
+			$this->load->model('UserModel');
+
+			if ($this->UserModel->updateUserDetails())
+			{
+				echo "yes";
+			}
+			else 
+			{			
+				echo "User update error.";			
+			}
+			
+		}
+	}
 }
 
 
