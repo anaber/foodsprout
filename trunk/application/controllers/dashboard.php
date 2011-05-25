@@ -211,6 +211,50 @@ class Dashboard extends Controller {
 		$this->load->view('/dashboard/templates/left_center_template', $data);
 	}
 	
+	// The default for the user is the dashboard
+	function menu() {
+		global $LANDING_PAGE;
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/menu',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+					);
+		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
+	
+	// The default for the user is the dashboard
+	function suppliers() {
+		global $LANDING_PAGE;
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/suppliers',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+					);
+		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
+	
 }
 
 ?>

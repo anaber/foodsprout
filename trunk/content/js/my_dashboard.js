@@ -83,10 +83,12 @@ function redrawContent(data, type) {
 	if (data.param.numResults == 0) {
 		
 		if (type == 'restaurants') {
+			/*
 			resultTableHtml += 
 			'<div id="signup-form">'+
 			'		<input type="submit" name="submit" value="Add Restaurant" id = "addRestaurantButton">'+
 			'</div>';
+			*/
 		}
 		resultTableHtml += addZeroResult(type);
 	} else {
@@ -103,10 +105,12 @@ function redrawContent(data, type) {
 				resultTableHtml += addCommentResult(a, i);
 			});
 		} else if (type == 'restaurants') {
+			/*
 			resultTableHtml += 
 			'<div id="signup-form">'+
-			'		<input type="submit" name="submit" value="Add Restaurant" id = "addRestaurantButton">'+
+			'	<input type="submit" name="submit" value="Add Restaurant" id = "addRestaurantButton">'+
 			'</div>';
+			*/
 			
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addRestaurantResult(a, i);
@@ -423,6 +427,7 @@ function reinitializeAddRestaurantSubmit() {
 	
 }
 */
+/* ----
 function changeSelectedTab() {
 	if (currentContent == 'supplier') {
 		$("#suppliers").removeClass().addClass('selected');
@@ -447,6 +452,7 @@ function changeSelectedTab() {
 	}
 	$("#add-item").removeClass().addClass('add-item');
 }
+*/
 
 function addSupplierResult(supplier, count) {
 	var html =
