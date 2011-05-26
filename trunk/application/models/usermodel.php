@@ -438,26 +438,34 @@ class UserModel extends Model{
          
          return (bool)$this->db->count_all_results('product_consumed');
      }
+
+    function hasAteAtRestaurant($userID, $restaurantID)
+    {
+        $this->db->where('user_id', $userID)
+            ->where('restaurant_id', $restaurantID);
+
+        return (bool)$this->db->count_all_results('restaurant_consumed');
+    }
      
      function updateUserDetails()
      {
-     	if ($this->input->post('userId')) 
-     	{
-     		$userId = $this->input->post('userId');
-     		
-     		$data = array(
-     			'username' => $this->input->post('username'),
-     			   'email' => $this->input->post('email'),
-     		  'fisrt_name' => $this->input->post('firstName'),
-     		     'zipcode' => $this->input->post('zipcode')
-     		);
-     		
-     		print_r($data);
-     		exit;
-     		$this->db->update('user', $data, 'user_id = '.$userId);
-     	}
-     	
-     	return ($this->db->affected_rows() > 0) ? TRUE: FALSE;
+        if ($this->input->post('userId'))
+        {
+            $userId = $this->input->post('userId');
+
+            $data = array(
+                'username' => $this->input->post('username'),
+                   'email' => $this->input->post('email'),
+              'fisrt_name' => $this->input->post('firstName'),
+                 'zipcode' => $this->input->post('zipcode')
+            );
+            
+            print_r($data);
+            exit;
+            $this->db->update('user', $data, 'user_id = '.$userId);
+        }
+
+        return ($this->db->affected_rows() > 0) ? TRUE: FALSE;
      }
 }
 ?>

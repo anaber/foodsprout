@@ -1,3 +1,5 @@
+<a href="/restaurant/tag/<?php echo $RESTAURANT->restaurantId ?>" id="tag_restaurant"
+   class="tagAte" style="font-size:13px;">I Ate Here</a>
 
 <script type="text/javascript">
 function makeNear2there(name,street,city,state) {
@@ -72,7 +74,7 @@ function makeNear2there(name,street,city,state) {
 			$addressId = $address->addressId;
 			break;
 		}
-		
+
 	?>
 			<a onclick="makeNear2there('<?php echo addslashes($name); ?>','<?php echo $streetAddress; ?>','<?php echo $city; ?>','<?php echo $state; ?>');" href="javascript:void(0);">
       		<img src="http://www.near2there.com/images/near2therebutton2.png" alt="near2there" border = "0"/></a>

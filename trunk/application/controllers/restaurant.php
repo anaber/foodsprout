@@ -621,6 +621,68 @@ class Restaurant extends Controller {
 		}
 		
 	}
+
+    function tag($restaurantID)
+    {
+        if ( ! $this->session->userdata['userId'])
+            show_404();
+
+        $this->load->model('AddressModel');
+        $this->load->model('UserModel');
+        $this->load->model('RestaurantModel');
+
+        if ($_POST)
+        {
+            $restaurantID = $_POST['restaurant_id'];
+            $userID = $this->session->userdata('userId');
+            $restaurantSlug = $_POST['restaurant_slug'];
+
+            if (is_numeric($restaurantID))
+            {
+                $data = array(
+                    'restaurant_id' => $restaurantID,
+                    'user_id' => $userID,
+                    'rating' => (int)$_POST['rating'],
+                    'comment' => $_POST['comment'],
+                    'rating_date' => date('Y-m-d H:i:s'),
+                    'address_id' => $_POST['address_id'],
+                    'consumed_date'=>date('Y-m-d')
+                );
+                // check if product exists
+                $this->RestaurantModel->tagRestaurant($data);
+
+                if ( ! (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                        $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'))
+                {
+                    redirect("restaurant/$restaurantSlug");
+                }
+            }
+            else
+                show_404();
+        }
+
+        $restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantID);
+        $addresses = $this->AddressModel->getAddressForProducer($restaurantID);
+        $userID = $this->session->userdata['userId'];
+
+        $processed = $this->UserModel->hasAteAtRestaurant($userID, $restaurantID);
+
+        $data['RESTAURANT'] = $restaurant;
+        $data['ADDRESSES'] = $addresses;
+        $data['USER_ID'] = $userID;
+        $data['PROCESSED'] = $processed;
+
+        if (Request::is_ajax())
+        {
+            $this->load->view('restaurant/ateform', $data);
+        }
+        else
+        {
+            $data['CENTER'] = array(
+
+            );
+        }
+    }
 }
 
 /* End of file restaurant.php */

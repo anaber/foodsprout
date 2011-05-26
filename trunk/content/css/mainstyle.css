@@ -178,7 +178,7 @@ ul.product_list {padding:0px; margin:0px; margin-top: 20px;}
 .product_list img{float:left; width:80px; margin-right:10px;}
 
 #search_field{width:500px; margin: 0 auto;}
-#search_filters{width:800px; margin:0 auto; margin-top:15px;}
+#search_filters{width:800px; margin:0 auto; margin-top:15px; text-align: center;}
 #search_filters li {display:inline-block; margin:0 10px;}
 
 #product_search_result{}
@@ -240,6 +240,7 @@ div.nextlast{float:right;width:125px; text-align: right;}
 /* tag form */
 .ajax_error {font-size:10px; color: red; }
 .ajax_success {font-size:10px; color: green;}
+a#tag_restaurant {display:block; float:left; width:180px; padding: 10px 0; }
 
 /*clearfix */
 .clearfix:after {visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
