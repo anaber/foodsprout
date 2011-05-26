@@ -1,7 +1,5 @@
 <script>
 
-formValidated = true;
-
 $(document).ready(function() {
 	
 	/* ----------------------------------------------------
@@ -34,19 +32,11 @@ $(document).ready(function() {
 		$(":input").unautocomplete();
 	});
 	
-	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
-	$("#farmForm").validationEngine({
-		success :  function() {formValidated = true;},
-		failure : function() {formValidated = false; }
-	});
-	
 	$("#farmForm").submit(function(e) {
 		e.preventDefault();
 		
 		
-		if (formValidated == false) {
-			
-		} else {
+		if ($("#farmForm").validationEngine('validate') ) {
 			
 			var formAction = '';
 			var postArray = '';
@@ -126,6 +116,11 @@ $(document).ready(function() {
 					displayProcessingMessage($alert, message);
 					displaySuccessMessage($alert, message);
 					hideMessage($alert, '/dashboard', '');
+				} else if(data == 'duplicate') {
+					message = 'Duplicate Farm';
+					displayProcessingMessage($alert, message);
+					displayFailedMessage($alert, message);
+					hideMessage($alert, '', '');
 				} else {
 					message = 'Farm cound not be added';
 					displayProcessingMessage($alert, message);
@@ -134,6 +129,8 @@ $(document).ready(function() {
 				}
 				
 			});
+		} else {
+			return false;
 		}
 		
 		return false; //not to post the  form physically
@@ -310,7 +307,7 @@ $(document).ready(function() {
 				</td>
 			</tr>
 		</table>
-		<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM) ? $FARM->farmId : '') ?>"></input>
+		<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM) ? $FARM->farmId : '') ?>">
 		<input type = "hidden" name = "cityId" id = "cityId" value = "">
 		</form>
 		

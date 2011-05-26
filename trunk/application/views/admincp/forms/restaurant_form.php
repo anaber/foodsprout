@@ -469,9 +469,9 @@ $(document).ready(function() {
 ?>
 	<tr>
 		<td width = "25%" colspan = "2">
-			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($RESTAURANT)) ? 'Update Restaurant' : 'Add Restaurant' ?>"></input>
-			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>"></input>
-			<input type = "hidden" name = "companyId" id = "cityId" value = ""></input>
+			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($RESTAURANT)) ? 'Update Restaurant' : 'Add Restaurant' ?>">
+			<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>">
+			<input type = "hidden" name = "companyId" id = "cityId" value = "">
 		</td>
 	</tr>
 </table>

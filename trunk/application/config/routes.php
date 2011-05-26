@@ -83,6 +83,7 @@ $route['^farm/ajaxSearchFarmSuppliee'] 					= "farm/ajaxSearchFarmSuppliee";
 $route['^farm/view/(:num)'] 							= "farm/view/$1";
 $route['^farm/save_add'] 								= "farm/save_add";
 $route['^farm/save_update'] 							= "farm/save_update";
+$route['^farm/(:any)']									= "farm/customUrl/$1";
 
 $route['^mobile/farms/findnearme']						= "mobile/farms/findnearme";
 $route['^mobile/farms/nearme']							= "mobile/farms/nearme";
@@ -90,7 +91,6 @@ $route['^mobile/farms/zipcode']							= "mobile/farms/zipcode";
 $route['^mobile/farms/bycity']							= "mobile/farms/bycity";
 $route['^mobile/farms/by_city/(:any)']					= "mobile/farms/by_city/$1";
 $route['^mobile/farms/(:any)'] 							= "mobile/farms/customUrl/$1";
-$route['^farm/(:any)']									= "farm/customUrl/$1";
 
 // Farmers Market
 $route['^farmersmarket/ajaxSearchFarmersMarket'] 				= "farmersmarket/ajaxSearchFarmersMarket";
@@ -100,7 +100,10 @@ $route['^farmersmarket/ajaxSearchFarmersMarketPhotos'] 			= "farmersmarket/ajaxS
 $route['^farmersmarket/ajaxSearchFarmersMarketSuppliers'] 		= "farmersmarket/ajaxSearchFarmersMarketSuppliers";
 $route['^farmersmarket/view/(:num)'] 							= "farmersmarket/view/$1";
 $route['^farmersmarket/city/(:any)'] 							= "farmersmarket/city/$1";
+$route['^farmersmarket/save_add'] 								= "farmersmarket/save_add";
+$route['^farmersmarket/save_update'] 							= "farmersmarket/save_update";
 $route['^farmersmarket/(:any)']									= "farmersmarket/customUrl/$1";
+
 $route['^mobile/farmersmarkets/findnearme']						= "mobile/farmersmarkets/findnearme";
 $route['^mobile/farmersmarkets/nearme']							= "mobile/farmersmarkets/nearme";
 $route['^mobile/farmersmarkets/zipcode']						= "mobile/farmersmarkets/zipcode";

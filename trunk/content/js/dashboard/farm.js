@@ -32,7 +32,7 @@ function addFarmResult(producer, count) {
 	'	</div>'+
 	'	<div class = "listing-address-title">' + producer.status + '</div>' +
 	'	<div class = "listing-address-title">&nbsp;</div>' +
-	'	<div class = "listing-address-title">' + producer.ip + '</div>' +
+	//'	<div class = "listing-address-title">' + producer.ip + '</div>' +
 	'	<div class = "clear"></div>';
 	
 	html +=

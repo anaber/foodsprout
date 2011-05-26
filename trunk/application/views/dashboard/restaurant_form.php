@@ -1,7 +1,5 @@
 <script>
 
-formValidated = true;
-
 $(document).ready(function() {
 	
 	/* ----------------------------------------------------
@@ -34,20 +32,10 @@ $(document).ready(function() {
 		$(":input").unautocomplete();
 	});
 	
-	// SUCCESS AJAX CALL, replace "success: false," by:     success : function() { callSuccessFunction() }, 
-	$("#restaurantForm").validationEngine({
-		success :  function() {formValidated = true;},
-		failure : function() {formValidated = false; }
-	});
-	
-	
 	$("#restaurantForm").submit(function(e) {
 		e.preventDefault();
 		
-		
-		if (formValidated == false) {
-			
-		} else {
+		if ($("#restaurantForm").validationEngine('validate') ) {
 			
 			var formAction = '';
 			var postArray = '';
@@ -128,6 +116,11 @@ $(document).ready(function() {
 					displayProcessingMessage($alert, message);
 					displaySuccessMessage($alert, message);
 					hideMessage($alert, '/dashboard', '');
+				} else if(data == 'duplicate') {
+					message = 'Duplicate Restaurant';
+					displayProcessingMessage($alert, message);
+					displayFailedMessage($alert, message);
+					hideMessage($alert, '', '');
 				} else {
 					message = 'Restaurant cound not be added';
 					displayProcessingMessage($alert, message);
@@ -135,6 +128,8 @@ $(document).ready(function() {
 					hideMessage($alert, '', '');
 				}
 			});
+		} else {
+			return false;
 		}
 		
 		return false; //not to post the  form physically
@@ -300,7 +295,7 @@ $(document).ready(function() {
 				</td>
 			</tr>
 		</table>
-		<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>"></input>
+		<input type = "hidden" name = "restaurantId" id = "restaurantId" value = "<?php echo (isset($RESTAURANT) ? $RESTAURANT->restaurantId : '') ?>">
 		<input type = "hidden" name = "cityId" id = "cityId" value = "">
 		</form>
 		

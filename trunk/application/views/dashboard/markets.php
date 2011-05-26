@@ -1,5 +1,5 @@
 <script src="<?php echo base_url()?>js/dashboard/common.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>js/dashboard/farm.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/dashboard/market.js" type="text/javascript"></script>
 
 <script>
 	
