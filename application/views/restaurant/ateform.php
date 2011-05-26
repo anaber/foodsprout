@@ -2,9 +2,10 @@
 <?php if ($PROCESSED): ?>
     <p>You have already tagged this restaurant.</p>
 <?php else: ?>
+    <div id="list_tag_addresses">
     <?php if($ADDRESSES):
         foreach($ADDRESSES as $ADDRESS):?>
-        <ul>
+        <ul class="list_tag_restaurants">
             <li><?php echo $RESTAURANT->restaurantName ?></li>
             <li><?php echo $ADDRESS->displayAddress ?></li>
 
@@ -39,13 +40,14 @@
                     </li>
 
                     <li>
-                        <br />
                         <input type="hidden" name="address_id" value="<?php echo $ADDRESS->addressId?>" />
                         <input type="hidden" name="restaurant_id" value="<?php echo $RESTAURANT->restaurantId?>" />
                         <input type="hidden" name="restaurant_slug" value="<?php echo $RESTAURANT->customURL?>"/>
-                        <input type="submit" value="Select this Location" />
+                        <input type="submit" class="tag_submit" value="Select this Location" />
                     </li>
+
                 </ul>
+                <?php echo form_close();?>
             </li>
         </ul>
         <?php endforeach;
@@ -53,6 +55,7 @@
         <p>There are no addresses for this producer in our records. You can
             check back later to tag this product.</p>
         <?php endif ?>
+    </div>
 
     <link rel="stylesheet" href="<?php echo base_url()?>js/rating/jquery.rating.css" />
     <script src="<?php echo base_url()?>js/rating/jquery.rating.pack.js"></script>
