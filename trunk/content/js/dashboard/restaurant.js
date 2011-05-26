@@ -3,8 +3,17 @@ function addRestaurantResult(producer, count) {
 	'<div style="overflow:auto; padding-bottom:10px;">'; 
 	
 	html += 
-	'	<div class = "listing-supplier-information">'+
-	'		<a href="/' + producer.type + '/' + producer.customUrl + '" style="font-size:13px;text-decoration:none;">'+ producer.producer +'</a>'+ 
+	'	<div class = "listing-supplier-information">';
+	
+	if (producer.customUrl != '') {
+		html += 
+		'		<a href="/' + producer.type + '/' + producer.customUrl + '" style="font-size:13px;text-decoration:none;">'+ producer.producer +'</a>';
+	} else {
+		html += 
+		'		<a href="/' + producer.type + '/view/' + producer.producerId + '" style="font-size:13px;text-decoration:none;">'+ producer.producer +'</a>';
+	} 
+	
+	html += 
 	'	</div>' + 
 	'	<div class = "listing-address-title">' + 
 	'		<b>Address</b>'+

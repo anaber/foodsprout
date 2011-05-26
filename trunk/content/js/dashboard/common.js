@@ -5,10 +5,14 @@ function postAndRedrawContent(page, perPage, s, o, query, filter, type) {
 		formAction = '/user/ajaxMenuByUser';
 	} else if (type == 'supplier') {
 		formAction = '/user/ajaxSuppliersByUser';
-	} else if (type == 'comment') {
-		formAction = '/user/ajaxCommentByUser';
+	} else if (type == 'comments') {
+		formAction = '/user/ajaxCommentsByUser';
 	} else if (type == 'restaurants') {
 		formAction = '/user/ajaxRestaurantsByUser';
+	} else if (type == 'farms') {
+		formAction = '/user/ajaxFarmsByUser';
+	} else if (type == 'farmers_market') {
+		formAction = '/user/ajaxFarmersMarketsByUser';
 	}
 	
 	postArray = { p:page, pp:perPage, sort:s, order:o, q:userId, f:filter };
@@ -35,6 +39,8 @@ function addZeroResult(type) {
 		html += 'products';
 	} else if (type == 'restaurants') {
 		html += 'restaurants';
+	} else if (type == 'farms') {
+		html += 'farms';
 	}
 	html += '.';
 	html +='</div>' + 
@@ -59,7 +65,7 @@ function redrawContent(data, type) {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addMenuResult(a, i);
 			});
-		} else if (type == 'comment') {
+		} else if (type == 'comments') {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addCommentResult(a, i);
 			});
@@ -69,9 +75,13 @@ function redrawContent(data, type) {
 				resultTableHtml += addRestaurantResult(a, i);
 			});
 		
-		} else if (type == 'farm') {
+		} else if (type == 'farms') {
 			$.each(data.results, function(i, a) {
 				resultTableHtml += addFarmResult(a, i);
+			});
+		} else if (type == 'farmers_market') {
+			$.each(data.results, function(i, a) {
+				resultTableHtml += addFarmersMarketResult(a, i);
 			});
 		}
 	}

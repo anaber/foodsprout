@@ -206,14 +206,13 @@ class User extends Controller {
 		
 		echo json_encode($menu);
 	}
-	/*
-	function ajaxCommentByUser() {
-		$this->load->model('SupplierModel');
-		$suppliers = $this->SupplierModel->getSuppliersByUserJson();
+	
+	function ajaxCommentsByUser() {
+		$this->load->model('CommentModel');
+		$comments = $this->CommentModel->getCommentsFromUserJson();
 		
-		echo json_encode($suppliers);
+		echo json_encode($comments);
 	}
-	*/
 	
 	function ajaxRestaurantsByUser() {
 		$this->load->model('ProducerModel');
@@ -222,6 +221,19 @@ class User extends Controller {
 		echo json_encode($restaurants);
 	}
 	
+	function ajaxFarmsByUser() {
+		$this->load->model('ProducerModel');
+		$farms = $this->ProducerModel->getProducersByUserJson('farm');
+		
+		echo json_encode($farms);
+	}
+	
+	function ajaxFarmersMarketsByUser() {
+		$this->load->model('ProducerModel');
+		$markets = $this->ProducerModel->getProducersByUserJson('farmers_market');
+		
+		echo json_encode($markets);
+	}
 }
 
 ?>

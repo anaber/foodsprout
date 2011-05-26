@@ -1,5 +1,5 @@
 <script src="<?php echo base_url()?>js/dashboard/common.js" type="text/javascript"></script>
-<script src="<?php echo base_url()?>js/dashboard/restaurant.js" type="text/javascript"></script>
+<script src="<?php echo base_url()?>js/dashboard/comment.js" type="text/javascript"></script>
 
 <script>
 	
@@ -15,11 +15,11 @@
 	
 	$(document).ready(function() {
 		
-		$.post("/user/ajaxCommentByUser", { q: userId },
+		$.post("/user/ajaxCommentsByUser", { q: userId },
 		function(data){
-			currentContent = 'restaurants';
+			currentContent = 'comments';
 			jsonData = data;
-			redrawContent(data, 'restaurants');
+			redrawContent(data, 'comments');
 		},
 		"json");
 	});

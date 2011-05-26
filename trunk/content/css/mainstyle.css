@@ -151,6 +151,7 @@ span.input_img:hover input[type=submit]{background-position:left -29px;text-deco
 .listing-supplier-information{float:left;font-size:13px;padding:3px 0 5px 3px;width:250px;}
 .listing-comment{width:577px;font-size:13px;padding:5px;text-align:justify;}
 .listing-dash-line{width:585px;border:none 0;border-top:1px dashed #ccc;height:1px;}
+.listing-dash-line1{border:none 0;border-top:1px dashed #ccc;height:1px;}
 .characters-remaining{width:320px;font-size:11px;float:left;padding-left:7px;}
 .non-logged-in-box{font-size:13px;border:#ccc 1px solid;width:583px;height:30px;padding-top:15px;margin-left:2px;text-align:center;}
 .zero-result-box{font-size:13px;border:#ccc 0px solid;width:565px;padding:15px 10px 15px 10px;margin-left:2px;text-align:center;}

@@ -200,7 +200,7 @@ class Dashboard extends Controller {
 		
 		// List of views to be included
 		$data['CENTER'] = array(
-				'list' => 'dashboard/farms',
+				'list' => 'dashboard/markets',
 			);
 		
 		// Custom CSS
