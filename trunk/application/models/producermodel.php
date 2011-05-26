@@ -454,6 +454,46 @@ class ProducerModel extends Model{
 	    );
 	    return $arr;
 	}
+	
+	function getRecentProducersByUser($userId, $limit) {
+		global $PER_PAGE;
+		
+		/** $base_query_count */
+		$query = 'SELECT *' 
+				. ' FROM producer' 
+				. ' WHERE user_id = '.$userId
+				. ' ORDER BY creation_date DESC '
+				. ' LIMIT 0, ' . $limit;
+		
+		$result = $this->db->query($query);
+		
+		log_message('debug', "ProducerModel.getProducersByUserJson : " . $query);
+		$result = $this->db->query($query);
+		
+		$producers = array();
+		$CI =& get_instance();
+		$CI->load->model('CustomUrlModel','',true);
+		//$CI->load->model('AddressModel','',true);
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('ProducerLib');
+			unset($this->ProducerLib);
+			
+			$this->ProducerLib->producerId = $row['producer_id'];
+			$this->ProducerLib->producer = $row['producer'];
+			$this->ProducerLib->userId = $row['user_id'];
+			$this->ProducerLib->email = $row['email'];
+			$this->ProducerLib->ip = $row['track_ip'];
+			$this->ProducerLib->dateAdded = date("F d, Y", strtotime($row['creation_date']));
+			$this->ProducerLib->status = $row['status'];
+			
+			$producers[] = $this->ProducerLib;
+			unset($this->ProducerLib);
+		}
+		
+	    return $producers;	    
+	}
 }
 
 
