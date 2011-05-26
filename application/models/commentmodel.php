@@ -399,7 +399,7 @@ class CommentModel extends Model{
 		log_message('debug', "CommentModel.getCommentsJson : " . $query);
 		$result = $this->db->query($query);
 		
-		$menu = array();
+		$comments = array();
 		
 		foreach ($result->result_array() as $row) {
 			
@@ -419,7 +419,7 @@ class CommentModel extends Model{
 			$this->CommentLib->status = $row['status'];
 			$this->CommentLib->addedOn = date('Y M, d H:i:s', strtotime ($row['added_on'] ) ) ;
 			
-			$menu[] = $this->CommentLib;
+			$comments[] = $this->CommentLib;
 			unset($this->CommentLib);
 		}
 		
@@ -437,11 +437,52 @@ class CommentModel extends Model{
 		
 		$params = requestToParams($numResults, $start, $totalPages, $first, $last, $page, $sort, $order, $q, '', '');
 		$arr = array(
-			'results'    => $menu,
+			'results'    => $comments,
 			'param'      => $params,
 	    );
 	    
 	    return $arr;
+	}
+	
+	function getRecentCommentsByUser($userId, $limit) {
+		global $PER_PAGE;
+		
+		/** $base_query_count */
+		$query = 'SELECT *' 
+				. ' FROM comment' 
+				. ' WHERE user_id = '.$userId
+				. ' ORDER BY added_on DESC '
+				. ' LIMIT 0, ' . $limit;
+		
+		$result = $this->db->query($query);
+		
+		log_message('debug', "CommentModel.getRecentCommentsByUser : " . $query);
+		$result = $this->db->query($query);
+		
+		$comments = array();
+		$CI =& get_instance();
+		$CI->load->model('CustomUrlModel','',true);
+		//$CI->load->model('AddressModel','',true);
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('CommentLib');
+			unset($this->CommentLib);
+			
+			$this->CommentLib->commentId = $row['comment_id'];
+			$this->CommentLib->comment = nl2br($row['comment']);
+			$this->CommentLib->userId = $row['user_id'];
+			
+			
+			$this->CommentLib->ip = $row['track_ip'];
+			$this->CommentLib->status = $row['status'];
+			$this->CommentLib->addedOn = date('Y M, d H:i:s', strtotime ($row['added_on'] ) ) ;
+			
+			$comments[] = $this->CommentLib;
+			unset($this->CommentLib);
+		}
+		
+	    return $comments;	    
 	}
 	
 }

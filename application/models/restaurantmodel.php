@@ -1754,6 +1754,46 @@ class RestaurantModel extends Model{
 
         return $this->db->insert_id();
     }
+    
+    function getRecentAteRestaurantsByUser($userId, $limit) {
+		global $PER_PAGE;
+		
+		/** $base_query_count */
+		$query = 'SELECT restaurant_consumed.*, producer.producer' 
+				. ' FROM restaurant_consumed, producer' 
+				. ' WHERE restaurant_consumed.user_id = '.$userId
+				. ' AND restaurant_consumed.restaurant_id = producer.producer_id'
+				. ' ORDER BY consumed_date DESC '
+				. ' LIMIT 0, ' . $limit;
+		
+		$result = $this->db->query($query);
+		
+		log_message('debug', "CommentModel.getRecentCommentsByUser : " . $query);
+		$result = $this->db->query($query);
+		
+		$comments = array();
+		
+		foreach ($result->result_array() as $row) {
+			
+			$this->load->library('CommentLib');
+			unset($this->CommentLib);
+			
+			$this->CommentLib->restaurantConsumedId = $row['restaurant_consumed_id'];
+			$this->CommentLib->comment = nl2br($row['comment']);
+			$this->CommentLib->userId = $row['user_id'];
+			$this->CommentLib->rating = $row['rating'];
+			
+			$this->CommentLib->producerId = $row['restaurant_id'];
+			$this->CommentLib->producer = $row['producer'];
+			
+			$this->CommentLib->consumedDate = date('Y M, d', strtotime ($row['consumed_date'] ) ) ;
+			
+			$comments[] = $this->CommentLib;
+			unset($this->CommentLib);
+		}
+		
+	    return $comments;	    
+	}
 
 }
 

@@ -22,10 +22,21 @@ class Dashboard extends Controller {
 		$this->load->model('PortletModel', '', TRUE);
         $portlet = $this->PortletModel->getPortletPositon($userId, $page);
         
+        $this->load->model('ProducerModel', '', TRUE);
+        $recentProducers = $this->ProducerModel->getRecentProducersByUser($userId, 5);
+        //$recentProducers = array();
+        
+        $this->load->model('CommentModel', '', TRUE);
+		$recentComments = $this->CommentModel->getRecentCommentsByUser($userId, 5);
+       	//$recentComments = array();
+       	
+       	$this->load->model('RestaurantModel', '', TRUE);
+		$recentAteRestaurants = $this->RestaurantModel->getRecentAteRestaurantsByUser($userId, 5);
+		//$recentAteRestaurants = array();
+       	
         $data['LEFT'] = array(
 				'options' => 'dashboard/includes/dashboard_options',
 			);
-		
 		
 		// List of views to be included
 		$data['CENTER'] = array(
@@ -41,6 +52,9 @@ class Dashboard extends Controller {
 		
 		$data['data']['center']['list']['PORTLET'] = $portlet;
 		$data['data']['center']['list']['PAGE'] = $page;
+		$data['data']['center']['list']['RECENT_PRODUCERS'] = $recentProducers;
+		$data['data']['center']['list']['RECENT_COMMENTS'] = $recentComments;
+		$data['data']['center']['list']['RECENT_ATE_RESTAURANTS'] = $recentAteRestaurants;
 		
 		$this->load->view('/dashboard/templates/left_center_template', $data);
 	}

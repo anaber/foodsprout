@@ -767,3 +767,6 @@ CREATE TABLE IF NOT EXISTS `restaurant_consumed` (
   PRIMARY KEY (`restaurant_consumed_id`),
   KEY `restaurant_id` (`restaurant_id`,`user_id`,`address_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+TRUNCATE TABLE `portlet_position`;
+

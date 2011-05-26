@@ -1,10 +1,10 @@
-<?php if (isset($this->session->userdata['userId'])): 
+<?php if (isset($this->session->userdata['userId'])){
 	if (isset($RESTAURANT)) {
 ?>
 <a href="/restaurant/tag/<?php echo $RESTAURANT->restaurantId ?>" id="tag_restaurant" class="tagAte" style="font-size:13px;">I Ate Here</a><br />
 <?php 
 	}
-endif 
+}
 ?>
 
 <script type="text/javascript">
