@@ -159,13 +159,13 @@ $PORTLET = array(
 					'dashboard' => array(
 						'column_1' => array(
 							'recent_restaurants',
-							'my_favorites',
+							//'my_favorites',
 							'recent_comments',
 						),
 						'column_2' => array(
 							'place_i_ate',
-							'carbon_chart',
-							'topics_following',
+							//'carbon_chart',
+							//'topics_following',
 						)
 					)
 				);
