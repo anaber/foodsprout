@@ -1,7 +1,8 @@
 function tagAte() {
     // apply fancybox to link
     $('.tagAte').fancybox({
-        'scrolling':'no'
+        'scrolling':'no',
+        width:500
     });
     
     // apply slider
@@ -38,7 +39,7 @@ function tagAteForm(){
 
 function removeProcessing(response, status){
     console.log(response.status);
-    $('form#id_form_ate').closest('ul').replaceWith('<p class="ajax_success" style="color:green; font-size:10px;">Submission is successful! This window will close in 5 seconds.');
+    $('form#id_form_ate').closest('div#list_tag_addresses').replaceWith('<p class="ajax_success" style="color:green; font-size:10px;">Submission is successful! This window will close in 5 seconds.');
     $.throbberHide();
     
     // set timeout
@@ -46,6 +47,6 @@ function removeProcessing(response, status){
 }
 
 function handleAjaxErrors(xhr, status, error){
-    $('form#id_form_ate').closest('ul').replaceWith('<p class="ajax_error" style="color:red; font-size:10px;">An error has occurred.Please try again later.</p>');
+    $('form#id_form_ate').closest('div#list_tag_addresses').replaceWith('<p class="ajax_error" style="color:red; font-size:10px;">An error has occurred.Please try again later.</p>');
     $.throbberHide();
 }
