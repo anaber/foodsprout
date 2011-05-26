@@ -766,4 +766,4 @@ CREATE TABLE IF NOT EXISTS `restaurant_consumed` (
   `comment` text NOT NULL,
   PRIMARY KEY (`restaurant_consumed_id`),
   KEY `restaurant_id` (`restaurant_id`,`user_id`,`address_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;

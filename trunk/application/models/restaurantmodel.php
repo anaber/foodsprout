@@ -588,11 +588,26 @@ class RestaurantModel extends Model{
 		log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
 		$result = $this->db->query($query);
 		
+		$access = $this->session->userdata('access');
+		
 		if ($result->num_rows() == 0) {
 
 			
 			$query = "INSERT INTO producer (producer_id, producer, creation_date, custom_url, city_area_id, phone, fax, email, url, status, track_ip, user_id, facebook, twitter, is_restaurant)" .
-					" values (NULL, \"" . $restaurantName . "\", NOW(), NULL, NULL, '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "', '" . $this->input->post('status') . "', '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
+					" values (NULL, \"" . $restaurantName . "\", NOW(), NULL, NULL, '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "'";
+			
+			if ($access != 'admin') {
+				$query .= ', "queue"';
+			} else {
+				if ($this->input->post('status')) {
+					$query .= ', "dd'.$this->input->post('status') .'"';
+				} else {
+					$query .= ', "live"';
+				}
+			}
+					 //'" . $this->input->post('status') . "',
+			 
+			$query .= ", '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
 			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 			$return = true;
 
