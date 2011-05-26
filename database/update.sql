@@ -627,7 +627,9 @@ INSERT INTO `producer_category_group` VALUES(7, 'Certifications/Methods');
 INSERT INTO `foodsprout`.`seo_page` (`seo_page_id`, `page`, `title_tag`, `meta_description`, `meta_keywords`, `h1`, `url`) VALUES (NULL, 'product_detail', '$productName - manufacture', '$productName risk factors, ingredients, supply charts and details.', '$productName', '$productName', 'http://www.foodsprout.com/product/$productSlug');=======
 INSERT INTO `producer_category_group` VALUES(7, 'Certifications/Methods');
 
+--
 -- 11 May 2011, Alliance tables
+--
 
 CREATE  TABLE IF NOT EXISTS `alliance` (
   `alliance_id` INT NOT NULL AUTO_INCREMENT ,
@@ -646,62 +648,16 @@ CREATE TABLE IF NOT EXISTS `alliance_producer` (
   INDEX `producer` (`producer_id` ASC) ,
 ) ENGINE = MyISAM;
 
-CREATE TABLE IF NOT EXISTS `access` (
-  `access_id` int(11) NOT NULL AUTO_INCREMENT,
-  `access` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`access_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `access`
+-- Table `access`
 --
-
-INSERT INTO `access` (`access_id`, `access`) VALUES
-(1, 'admin'),
-(2, 'Contributor'),
-(3, 'Restaurant Owner - Paid 1'),
-(4, 'Restaurant Owner - Paid 2'),
-(5, 'Distributor'),
-(6, 'Distributor - Paid'),
-(7, 'Business Owner');
-
-CREATE TABLE IF NOT EXISTS `user_access` (
-  `user_access_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `access_id` int(11) NOT NULL,
-  PRIMARY KEY (`user_access_id`),
-  KEY `fk_user_access_user1` (`user_id`),
-  KEY `fk_user_access_user_group1` (`access_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
----- 11 May 2011, Alliance tables
-
-CREATE  TABLE IF NOT EXISTS `alliance` (
-  `alliance_id` INT NOT NULL AUTO_INCREMENT ,
-  `alliance_name` VARCHAR(95) NOT NULL ,
-  `alliance_info` TEXT NULL ,
-  `custom_url` VARCHAR(65) NOT NULL ,
-  PRIMARY KEY (`alliance_id`) )
-ENGINE = MyISAM;
-
-CREATE TABLE IF NOT EXISTS `alliance_producer` (
-  `alliance_producer_id` INT NOT NULL AUTO_INCREMENT ,
-  `alliance_id` INT NOT NULL ,
-  `producer_id` INT NOT NULL ,
-  PRIMARY KEY (`alliance_producer_id`) ,
-  INDEX `alliance` (`alliance_id` ASC) ,
-  INDEX `producer` (`producer_id` ASC) ,
-) ENGINE = MyISAM;
 
 CREATE TABLE IF NOT EXISTS `access` (
   `access_id` int(11) NOT NULL AUTO_INCREMENT,
   `access` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`access_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `access`
---
 
 INSERT INTO `access` (`access_id`, `access`) VALUES
 (1, 'admin'),
@@ -726,13 +682,9 @@ CREATE TABLE IF NOT EXISTS `user_access` (
 --
 INSERT INTO user_access (user_id, access_id) SELECT user_id, user_group_id FROM user_group_member;
 
-DROP TABLE `user_group`, `user_group_member`;
-
--- Dumping data for table `user_access`
 --
-INSERT INTO user_access (user_id, access_id) SELECT user_id, user_group_id FROM user_group_member;
-
-DROP TABLE `user_group`, `user_group_member`;
+-- Table for dashboard settings
+--
 
 CREATE  TABLE IF NOT EXISTS `portlet_position` (
   `position_id` INT NOT NULL AUTO_INCREMENT ,
@@ -741,9 +693,13 @@ CREATE  TABLE IF NOT EXISTS `portlet_position` (
   `column_1` VARCHAR(255) NULL ,
   `column_2` VARCHAR(255) NULL ,
   PRIMARY KEY (`position_id`) ,
-  INDEX `fk_portlet_position_user1` (`user_id` ASC);
+  INDEX `fk_portlet_position_user1` (`user_id` ASC)
 )
 ENGINE = InnoDB;
+
+--
+-- Table for i ate here button
+--
 
 CREATE TABLE IF NOT EXISTS `restaurant_consumed` (
   `restaurant_consumed_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -757,6 +713,3 @@ CREATE TABLE IF NOT EXISTS `restaurant_consumed` (
   PRIMARY KEY (`restaurant_consumed_id`),
   KEY `restaurant_id` (`restaurant_id`,`user_id`,`address_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
-
-TRUNCATE TABLE `portlet_position`;
-

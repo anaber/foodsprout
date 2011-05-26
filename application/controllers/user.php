@@ -42,55 +42,9 @@ class User extends Controller {
 	
 	// The default page after login, the users dashboard
 	function dashboard() {
-		global $LANDING_PAGE;
-		if ($this->session->userdata('isAuthenticated') != 1 ) {
-			redirect($LANDING_PAGE);
-		}
-		//	echo  $this->session->userdata('userId');
 		
-		$this->load->model('StateModel');
-		$states = $this->StateModel->listState();
-		
-		$this->load->model('CountryModel');
-		$countries = $this->CountryModel->listCountry();
-		
-		$this->load->model('ProducerCategoryModel');
-		$restaurantTypes = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
-		$cuisines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
-		
-		$data['LEFT'] = array(
-				'options' => 'dashboard/includes/dashboard_options',
-			);
-		
-		
-		// List of views to be included
-		$data['CENTER'] = array(
-				'list' => 'user/dashboard',
-			);
-		
-		// Load all the views for the right column
-		$data['RIGHT'] = array(
-				'ad' => 'includes/banners/sky',
-			);
-		
-		//$this->load->model('RestaurantModel');
-		//$restaurant = $this->RestaurantModel->getRestaurantFromId(43);
-		
-		//$data['data']['center']['list']['VIEW_HEADER'] = "My Dashboard";
-		//$data['RESTAURANT'] = $restaurant;
-		
-		$data['data']['center']['list']['COUNTRIES'] = $countries;
-		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['RESTAURANT_TYPES'] = $restaurantTypes;
-		$data['data']['center']['list']['CUISINES'] = $cuisines;
-		
-		// Custom CSS
-		$data['CSS'] = array(
-						'dashboard',
-						//'js/fancybox/jquery.fancybox-1.3.4'
-					);
-					
-		$this->load->view('/dashboard/templates/left_center_template', $data);
+		// redirect the old /user/dashboard to dashboard in case someone bookmarked this
+		redirect('/dashboard');
 	}
 	
 	// The settings for the user

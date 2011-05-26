@@ -24,10 +24,10 @@ background-color:#E5E5E5;color:#90171E;line-height:19px;}
 #leafimg #mainimg #resultsContainer #menu-bar .add-item{float:right;padding-right:9px;padding-left:9px;margin-right:5px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#FFF;line-height:25px;}
 #leafimg #mainimg #resultsContainer #menu-bar .add-item a{background:#F05A25;}
 #leafimg #mainimg #resultsContainer #menu-bar .add-item a:hover{background:#F05A25;}
-#leafimg #mainimg #resultsContainer .menus{width:538px;float:left;padding-left:0px;}
+#leafimg #mainimg #resultsContainer .menus{width:700px;float:left;padding-left:0px;}
 #leafimg #mainimg #resultsContainer .menus .menuitem{float:left;/*height:112px;*/
-width:538px;margin-top:8px;border:1px solid #CCC;-moz-border-radius:3px;-webkit-border-radius:3px;}
+width:700px;margin-top:8px;border:1px solid #CCC;-moz-border-radius:3px;-webkit-border-radius:3px;}
 #leafimg #mainimg #resultsContainer .menus .menuitem .menuitemimg{height:107px;width:135px;float:right;padding-top:2px;padding-right:0px;}
 #leafimg #mainimg #resultsContainer .menus .menuitem .menuitemname{float:left;padding-top:15px;padding-left:10px;color:#666666;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;}
-#leafimg #mainimg #resultsContainer .menus .menuitem .menuitemdetails{float:left;width:350px;color:#666666;font-size:13px;font-family:Arial,Helvetica,sans-serif;padding-left:12px;padding-top:10px;text-align:justify;}
+#leafimg #mainimg #resultsContainer .menus .menuitem .menuitemdetails{float:left;width:670px;color:#666666;font-size:13px;font-family:Arial,Helvetica,sans-serif;padding-left:12px;padding-top:10px;text-align:justify;}
 .addform{width:530px;margin-bottom:10px;padding-bottom:5px;margin-left:3px;margin-right:5px;border-left:1px solid #90171E;border-right:1px solid #90171E;border-bottom:1px solid #90171E;background:#E5E5E5;}

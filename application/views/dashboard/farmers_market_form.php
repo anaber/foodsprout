@@ -130,7 +130,7 @@ $(document).ready(function() {
 <!-- center tabs -->
 
 	<div>
-		<div style="float:left;width:530px;"><h1>Add Market</h1></div>
+		<div style="float:left;width:530px;"><h1>Add Farmer's Market</h1></div>
 		<div class="clear"></div>
 		<hr size="1">
 		<div class="clear"></div>
@@ -146,7 +146,7 @@ $(document).ready(function() {
 				<td>
 					<table class="formTable" border = "0" width = "300">
 						<tr>
-							<td width = "25%" nowrap style = "font-size:13px;">Farm Name *</td>
+							<td width = "25%" nowrap style = "font-size:13px;">Farmer's Market Name *</td>
 							<td width = "25%">
 								<input value="<?php echo (isset($FARMERS_MARKET) ? $FARMERS_MARKET->farmersMarketName : '') ?>" class="validate[required]" type="text" name="farmersMarketName" id="farmersMarketName"/><br />
 							</td>
