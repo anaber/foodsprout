@@ -5,32 +5,6 @@ formValidated = true;
 $(document).ready(function() {
 	
 	/* ----------------------------------------------------
-	 * Company
-	 * ----------------------------------------------------*/
-	 
-	function findValueCallbackCompany(event, data, formatted) {
-		document.getElementById('companyId').value = data[1];
-	}
-	
-	$("#companyAjax").result(findValueCallbackCompany).next().click(function() {
-		$(this).prev().search();
-	});
-	
-	$("#companyAjax").autocomplete("/admincp/company/searchCompanies", {
-		width: 260,
-		selectFirst: false,
-		cacheLength:0,
-		extraParams: {
-	       stateId: function() { return $("#stateId").val(); }
-	   	}
-	});
-	
-	$("#companyAjax").result(function(event, data, formatted) {
-		if (data)
-			$(this).parent().next().find("input").val(data[1]);
-	});
-	
-	/* ----------------------------------------------------
 	 * City
 	 * ----------------------------------------------------*/
 	 
@@ -52,30 +26,6 @@ $(document).ready(function() {
 	});
 	
 	$("#cityAjax").result(function(event, data, formatted) {
-		if (data)
-			$(this).parent().next().find("input").val(data[1]);
-	});
-	
-	/* ----------------------------------------------------
-	 * Restaurant Chain
-	 * ----------------------------------------------------*/
-	
-	function findValueCallbackChain(event, data, formatted) {
-		document.getElementById('restaurantChainId').value = data[1];
-		//alert( "Chain : " + $('#restaurantChainId').val() );
-	}
-	
-	$("#restaurantChainAjax").result(findValueCallbackChain).next().click(function() {
-		$(this).prev().search();
-	});
-	
-	$("#restaurantChainAjax").autocomplete("/admincp/restaurantchain/searchRestaurantChains", {
-		width: 260,
-		selectFirst: false,
-		cacheLength:0,
-	});
-	
-	$("#restaurantChainAjax").result(function(event, data, formatted) {
 		if (data)
 			$(this).parent().next().find("input").val(data[1]);
 	});
@@ -125,7 +75,7 @@ $(document).ready(function() {
 			}
 			
 			if ($('#restaurantId').val() != '' ) {
-				var formAction = '/admincp/restaurant/save_update';
+				var formAction = '/restaurant/save_update';
 				postArray = {
 							  restaurantName:$('#restaurantName').val(),
 							  customUrl:$('#customUrl').val(),
@@ -181,7 +131,7 @@ $(document).ready(function() {
 				} else {
 					message = 'Restaurant cound not be added';
 					displayProcessingMessage($alert, message);
-					displaySuccessMessage($alert, message);
+					displayFailedMessage($alert, message);
 					hideMessage($alert, '', '');
 				}
 			});

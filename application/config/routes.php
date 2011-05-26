@@ -81,6 +81,9 @@ $route['^farm/ajaxSearchFarmPhotos'] 					= "farm/ajaxSearchFarmPhotos";
 $route['^farm/ajaxSearchFarms'] 						= "farm/ajaxSearchFarms";
 $route['^farm/ajaxSearchFarmSuppliee'] 					= "farm/ajaxSearchFarmSuppliee";
 $route['^farm/view/(:num)'] 							= "farm/view/$1";
+$route['^farm/save_add'] 								= "farm/save_add";
+$route['^farm/save_update'] 							= "farm/save_update";
+
 $route['^mobile/farms/findnearme']						= "mobile/farms/findnearme";
 $route['^mobile/farms/nearme']							= "mobile/farms/nearme";
 $route['^mobile/farms/zipcode']							= "mobile/farms/zipcode";

@@ -113,6 +113,97 @@ class FarmModel extends Model{
 		return $return;
 	}
 	
+	// Insert the new farm data into the database
+	/**
+	 * TO-DO: For Deepak
+	 * Previous method seems to have issues because it still uses company Id
+	 * Will need to merge both the method later
+	 */
+	function addFarm2() {
+		
+		$return = true;
+		
+		$farmName = $this->input->post('farmName');
+		
+		$CI =& get_instance();
+	
+		$query = "SELECT * FROM producer WHERE producer = \"" . $farmName . "\" AND is_farm = 1";
+		log_message('debug', 'FarmModel.addFarm : Try to get duplicate Farm record : ' . $query);
+		
+		$access = $this->session->userdata('access');
+		
+		$result = $this->db->query($query);
+		
+		if ($result->num_rows() == 0) {
+			$query = "INSERT INTO producer ( producer, creation_date, custom_url, city_area_id, phone, fax, email, url, status, track_ip, user_id, facebook, twitter, is_farm)" .
+					" values ( \"" . $farmName . "\", NOW(), NULL, NULL, '" . $this->input->post('phone') . "', '" . $this->input->post('fax') . "', '" . $this->input->post('email') . "', '" . $this->input->post('url') . "'";
+			
+			if ($access != 'admin') {
+				$query .= ', "queue"';
+			} else {
+				if ($this->input->post('status')) {
+					$query .= ', "'.$this->input->post('status') .'"';
+				} else {
+					$query .= ', "live"';
+				}
+			}
+			
+			$query .= ", '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
+			
+			log_message('debug', 'FarmModel.addFarm : Insert Farm : ' . $query);
+			$return = true;
+			
+			if ( $this->db->query($query) ) {
+				$newFarmId = $this->db->insert_id();
+
+				$CI->load->model('ProducerCategoryModel','',true);
+				
+				//ADD CERTFICATION
+				$certification = $this->input->post('certificationId');
+				if ($certification != '') {
+					if(strpos($this->input->post('certificationId'),',') !== FALSE) {
+						$arrCertificationId = explode(',', $this->input->post('certificationId'));
+					} else {
+						$arrCertificationId[] = $this->input->post('certificationId');
+					}
+					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrCertificationId);
+				}
+				
+				//ADD FARM TYPE
+				$farmType = $this->input->post('farmTypeId');
+				if ($farmType != '') {
+					$arrFarmTypeId[] = $this->input->post('farmTypeId');
+					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrFarmTypeId);
+				}
+				
+				//ADD FARM CROP
+				$farmCrop = $this->input->post('farmCropId');
+				if ($farmCrop != '') {
+					$arrFarmCropId[] = $this->input->post('farmCropId');
+					$a = $CI->ProducerCategoryModel->addProducerCategoryForProducer( $newFarmId, $arrFarmCropId);
+				}
+				
+				$CI->load->model('AddressModel','',true);
+				$addressId = $CI->AddressModel->addAddress($newFarmId);
+				
+				if ($addressId) {
+					$CI->load->model('CustomUrlModel','',true);
+					$customUrlId = $CI->CustomUrlModel->generateCustomUrl($addressId);
+				}
+
+			} else {
+				$return = false;
+			}
+			
+		} else {
+			$GLOBALS['error'] = 'duplicate';
+			$return = false;
+		}
+			
+			
+		return $return;
+	}
+	
 	// Get all the information about one specific farm from an ID
 	function getFarmFromId($farmId, $addressId='') {
 		
