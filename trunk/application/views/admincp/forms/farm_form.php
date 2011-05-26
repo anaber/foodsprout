@@ -412,7 +412,7 @@ $(document).ready(function() {
 			<input type = "Submit" name = "btnSubmit" id = "btnSubmit" value = "<?php echo (isset($FARM)) ? 'Update Farm' : 'Add Farm' ?>">
 			<input type = "hidden" name = "farmId" id = "farmId" value = "<?php echo (isset($FARM) ? $FARM->farmId : '') ?>">
 			<!--<input type = "hidden" name = "companyId" id = "companyId" value = "<?php echo (isset($FARM) ? $FARM->companyId : '') ?>">-->
-			<input type = "hidden" name = "companyId" id = "cityId" value = "">
+			<input type = "hidden" name = "cityId" id = "cityId" value = "">
 		</td>
 	</tr>
 </table>

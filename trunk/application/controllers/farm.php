@@ -7,7 +7,7 @@ class Farm extends Controller {
 		parent::Controller();
 		checkUserLogin();
 		checkUserAgent($this->uri->segment(1), $this->uri->segment(2));
-
+		
 		$this->css = array(
 			'farm',
 		);
@@ -487,6 +487,22 @@ class Farm extends Controller {
 		);
 		
 		echo json_encode($array);
+	}
+	
+	function save_add() {
+		
+		$this->load->model('FarmModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->FarmModel->addFarm2() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
 	}
 }
 

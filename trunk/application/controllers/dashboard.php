@@ -300,8 +300,13 @@ class Dashboard extends Controller {
 		$countries = $this->CountryModel->listCountry();
 		
 		$this->load->model('ProducerCategoryModel');
-		$restaurantTypes = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
-		$cuisines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
+		$farmTypes = $this->ProducerCategoryModel->listProducerCategory('FARM', '');
+		
+		$this->load->model('ProducerCategoryModel');
+		$farmCrops = $this->ProducerCategoryModel->listProducerCategory('FARM_CROP', '');
+		
+		$this->load->model('ProducerCategoryModel');
+		$certifications = $this->ProducerCategoryModel->listProducerCategory('CERTIFICATION', '');
 		
 		$data['LEFT'] = array(
 				'options' => 'dashboard/includes/dashboard_options',
@@ -321,8 +326,11 @@ class Dashboard extends Controller {
 		
 		$data['data']['center']['list']['COUNTRIES'] = $countries;
 		$data['data']['center']['list']['STATES'] = $states;
-		$data['data']['center']['list']['RESTAURANT_TYPES'] = $restaurantTypes;
-		$data['data']['center']['list']['CUISINES'] = $cuisines;
+		$data['data']['center']['list']['FARM_TYPES'] = $farmTypes;
+		$data['data']['center']['list']['FARM_CROPS'] = $farmCrops;
+		$data['data']['center']['list']['CERTIFICATIONS'] = $certifications;
+		
+		
 		
 		$this->load->view('/dashboard/templates/left_center_template', $data);
 	}

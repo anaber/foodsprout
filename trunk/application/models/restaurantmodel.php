@@ -600,13 +600,12 @@ class RestaurantModel extends Model{
 				$query .= ', "queue"';
 			} else {
 				if ($this->input->post('status')) {
-					$query .= ', "dd'.$this->input->post('status') .'"';
+					$query .= ', "'.$this->input->post('status') .'"';
 				} else {
 					$query .= ', "live"';
 				}
 			}
-					 //'" . $this->input->post('status') . "',
-			 
+			
 			$query .= ", '" . getRealIpAddr() . "', " . $this->session->userdata['userId'] . ", '" . $this->input->post('facebook') . "', '" . $this->input->post('twitter') . "', 1 )";
 			log_message('debug', 'RestaurantModel.addRestaurant : Insert Restaurant : ' . $query);
 			$return = true;
