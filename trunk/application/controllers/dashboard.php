@@ -46,8 +46,7 @@ class Dashboard extends Controller {
 		// Custom CSS
 		$data['CSS'] = array(
 						'dashboard',
-						'jquery-ui/jquery.ui.slider',
-						'jquery-ui/jquery.ui.theme',
+						'jquery-ui/jquery.ui.theme-dashboard',
 					);
 		
 		$data['data']['center']['list']['PORTLET'] = $portlet;
