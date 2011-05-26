@@ -3,14 +3,14 @@
     <p>You have already tagged this restaurant.</p>
 <?php else: ?>
     <div id="list_tag_addresses">
-    <?php if($ADDRESSES):
-        foreach($ADDRESSES as $ADDRESS):?>
+    <?php if($RESTAURANT->addresses):
+        foreach($RESTAURANT->addresses as $ADDRESS):?>
         <ul class="list_tag_restaurants">
             <li><?php echo $RESTAURANT->restaurantName ?></li>
             <li><?php echo $ADDRESS->displayAddress ?></li>
 
             <li>
-                <?php echo form_open("/restaurant/tag/$RESTAURANT->restaurantId",
+                <?php echo form_open("/restaurant/tag/$RESTAURANT->restaurantId/$ADDRESS_ID",
                         array('id'=>'id_form_ate')) ?>
                 <ul>
                     <li class="rating">

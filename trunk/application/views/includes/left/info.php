@@ -1,7 +1,8 @@
 <?php if (isset($this->session->userdata['userId'])){
-	if (isset($RESTAURANT)) {
+	if (isset($RESTAURANT) && empty($USER_ATE_HERE)) {
 ?>
-<a href="/restaurant/tag/<?php echo $RESTAURANT->restaurantId ?>" id="tag_restaurant" class="tagAte" style="font-size:13px;">I Ate Here</a><br />
+<a href="/restaurant/tag/<?php echo $RESTAURANT->restaurantId ?>/<?php echo $ADDRESS_ID?>"
+   id="tag_restaurant" class="tagAte" style="font-size:13px;">I Ate Here</a><br />
 <?php 
 	}
 }
