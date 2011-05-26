@@ -1,7 +1,11 @@
-<?php if (isset($this->session->userdata['userId'])): ?>
-<a href="/restaurant/tag/<?php echo $RESTAURANT->restaurantId ?>" id="tag_restaurant"
-   class="tagAte" style="font-size:13px;">I Ate Here</a>
-<?php endif ?>
+<?php if (isset($this->session->userdata['userId'])): 
+	if (isset($RESTAURANT)) {
+?>
+<a href="/restaurant/tag/<?php echo $RESTAURANT->restaurantId ?>" id="tag_restaurant" class="tagAte" style="font-size:13px;">I Ate Here</a><br />
+<?php 
+	}
+endif 
+?>
 
 <script type="text/javascript">
 function makeNear2there(name,street,city,state) {
@@ -83,8 +87,14 @@ function makeNear2there(name,street,city,state) {
 	<?php
 		
 	?>
-				<br /><br />
+				<br />
+				<?php
+				/*
+				?>
 				<a href = "/business/claim/<?php echo $producerId . ( !empty($addressId) ? ',' . $addressId : ''); ?>" style = "font-size:13px;">Claim this business</a>
+				<?php
+				*/
+				?>
 			</div>
 	<?php
 		//}
