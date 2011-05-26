@@ -1,5 +1,7 @@
+<?php if (isset($this->session->userdata['userId'])): ?>
 <a href="/restaurant/tag/<?php echo $RESTAURANT->restaurantId ?>" id="tag_restaurant"
    class="tagAte" style="font-size:13px;">I Ate Here</a>
+<?php endif ?>
 
 <script type="text/javascript">
 function makeNear2there(name,street,city,state) {
