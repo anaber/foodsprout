@@ -1734,6 +1734,13 @@ class RestaurantModel extends Model{
 
 	}
 
+    function tagRestaurant($data)
+    {
+        $this->db->insert('restaurant_consumed', $data);
+
+        return $this->db->insert_id();
+    }
+
 }
 
 

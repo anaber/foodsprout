@@ -57,6 +57,7 @@ $route['^restaurant/ajaxSearchRestaurantSuppliers'] 	= "restaurant/ajaxSearchRes
 $route['^restaurant/map'] 								= "restaurant/map";
 $route['^restaurant/save_add'] 							= "restaurant/save_add";
 $route['^restaurant/save_update'] 						= "restaurant/save_update";
+$route['^restaurant/tag/(:num)']                        = "restaurant/tag/$1";
 $route['^restaurant/view/(:num)'] 						= "restaurant/view/$1";
 $route['^restaurant'] 									= "restaurant/index";
 $route['^sustainable/(:any)'] 							= "restaurant/city/$1";
