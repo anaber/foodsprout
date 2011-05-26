@@ -396,7 +396,7 @@
 
 <script type="text/javascript">
 $(function(){
-    tagAte();
+    tagRestaurant();
 });
 </script>
 

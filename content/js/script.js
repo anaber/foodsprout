@@ -16,6 +16,12 @@ function tagAte() {
         + ' of ' + $('#risk_slider_meter').slider("option", 'max'));
 }
 
+function tagRestaurant(){
+    $('.tagAte').fancybox({
+        scrolling:'no'
+    })
+}
+
 function tagAteForm(){
     $('label[for*="rating_"]').hide();
     
