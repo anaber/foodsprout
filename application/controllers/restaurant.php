@@ -9,6 +9,8 @@ class Restaurant extends Controller {
 //		echo current_url();
         $this->load->helper('cookie');
         $this->load->helper('url');
+
+        // $this->output->enable_profiler();
 	}
 
 	function index() {
@@ -163,6 +165,17 @@ class Restaurant extends Controller {
 		$data['SEO'] = $seo;
 		
 		// SEO ENDS here
+
+        $data['ADDRESS_ID'] = $addressId;
+
+        // determine if this restaurant is already tagged by the user
+        if ( ! empty($this->session->userdata['userId']))
+        {
+            $this->load->model('UserModel');
+            $userId = $this->session->userdata['userId'];
+            $data['USER_ATE_HERE'] = $this->UserModel->hasAteAtRestaurant($userId,$restaurantId);
+        }
+
 
 		// List of views to be included, these are files that are pulled from different views in the view folders
 
@@ -622,12 +635,11 @@ class Restaurant extends Controller {
 		
 	}
 
-    function tag($restaurantID)
+    function tag($restaurantID, $addressID)
     {
         if ( ! $this->session->userdata['userId'])
             show_404();
-
-        $this->load->model('AddressModel');
+        
         $this->load->model('UserModel');
         $this->load->model('RestaurantModel');
 
@@ -661,16 +673,16 @@ class Restaurant extends Controller {
                 show_404();
         }
 
-        $restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantID);
-        $addresses = $this->AddressModel->getAddressForProducer($restaurantID);
+        $this->load->helper(array('utf8','debug'));
+        $restaurant = $this->RestaurantModel->getRestaurantFromId($restaurantID, $addressID);
         $userID = $this->session->userdata['userId'];
 
         $processed = $this->UserModel->hasAteAtRestaurant($userID, $restaurantID);
 
         $data['RESTAURANT'] = $restaurant;
-        $data['ADDRESSES'] = $addresses;
         $data['USER_ID'] = $userID;
         $data['PROCESSED'] = $processed;
+        $data['ADDRESS_ID'] = $addressID;
 
         if (Request::is_ajax())
         {
