@@ -4,12 +4,6 @@ function addMenuResult(product, count) {
 	html +=	'<div class="menuitem">';
 	//html +=	'	<div class="menuitemimg"><img src="/img/img1.jpg" width="132" height="107" alt="receipe" />';
 	
-	html +=	'	<div class="menuitemimg">';
-	if (product.image) {
-		html +=	'<img src="' + product.image + '" width="132" height="107" alt="receipe" />';
-	}
-	
-	html += '	</div>';
 	html +=	'	<div class="menuitemname">' + product.productName + '</div>';
 	html +=	'	<div class="menuitemdetails">' + product.ingredient + '</div>';
 	html +=	'	<div class="menuitemdetails">';

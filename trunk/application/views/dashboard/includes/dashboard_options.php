@@ -4,7 +4,7 @@
 	<div class="filterh">Personal Options</div>
 	<div id="divRestaurantTypes" class="filterb" style="line-height:170%;">
 		<a href = "/dashboard">Dashboard</a><br />
-		<a href = "/dashboard/foodlog">My Food Log</a><br />
+		<!-- a href = "/dashboard/foodlog">My Food Log</a><br / -->
 		<a href = "/dashboard/comments">My Comments</a><br />
 		<a href = "/dashboard/menu">My Menu</a><br />
 		<a href = "/dashboard/suppliers">My Suppliers</a><br />
@@ -15,6 +15,7 @@
 	<br>
 	
 	<?php
+		/*
 		//print_r_pre($this->session->userdata);
 	?>
 	<?php
@@ -36,11 +37,12 @@
 		<?php /* these options should only be available for paying businesses?>
 		<a href = "">Search Suppliers</a><br />
 		<a href = "">Supplier Bids</a><br />
-		*/
+		
 		?>
 	</div>
 	<?php
 		}
+		*/
 	?>
 	
 	

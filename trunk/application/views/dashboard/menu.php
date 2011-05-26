@@ -45,7 +45,7 @@
 		<div style="overflow:auto; padding:5px;">
 			<div style="float:left; width:110px; font-size:10px;border-style:solid;border-width:0px;border-color:#FF0000;" id = 'numRecords'>Records 0-0 of 0</div>
 			
-			<div style="float:left; width:500px; font-size:10px;border-style:solid;border-width:0px;border-color:#FF0000;" id = 'pagingLinks' align = "center">
+			<div style="float:left; width:700px; font-size:10px;border-style:solid;border-width:0px;border-color:#FF0000;" id = 'pagingLinks' align = "center">
 				<a href="#" id = "imgFirst">First</a> &nbsp;&nbsp;
 				<a href="#" id = "imgPrevious">Previous</a>
 				&nbsp;&nbsp;&nbsp; Page 1 of 1 &nbsp;&nbsp;&nbsp;
