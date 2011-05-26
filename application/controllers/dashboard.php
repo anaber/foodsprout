@@ -255,6 +255,77 @@ class Dashboard extends Controller {
 		$this->load->view('/dashboard/templates/left_center_template', $data);
 	}
 	
+	function addrestaurant() {
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('ProducerCategoryModel');
+		$restaurantTypes = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
+		$cuisines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/restaurant_form',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+						'jquery.validationEngine'
+					);
+		
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['RESTAURANT_TYPES'] = $restaurantTypes;
+		$data['data']['center']['list']['CUISINES'] = $cuisines;
+		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
+	
+	function addfarm() {
+		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$this->load->model('ProducerCategoryModel');
+		$restaurantTypes = $this->ProducerCategoryModel->listProducerCategory('RESTAURANT', '');
+		$cuisines = $this->ProducerCategoryModel->listProducerCategory('CUISINE', '');
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/farm_form',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+						'jquery.validationEngine'
+					);
+		
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		$data['data']['center']['list']['STATES'] = $states;
+		$data['data']['center']['list']['RESTAURANT_TYPES'] = $restaurantTypes;
+		$data['data']['center']['list']['CUISINES'] = $cuisines;
+		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
 }
 
 ?>
