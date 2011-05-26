@@ -330,7 +330,35 @@ class Dashboard extends Controller {
 		$data['data']['center']['list']['FARM_CROPS'] = $farmCrops;
 		$data['data']['center']['list']['CERTIFICATIONS'] = $certifications;
 		
+		$this->load->view('/dashboard/templates/left_center_template', $data);
+	}
+	
+	function addmarket() {
 		
+		$this->load->model('StateModel');
+		$states = $this->StateModel->listState();
+		
+		$this->load->model('CountryModel');
+		$countries = $this->CountryModel->listCountry();
+		
+		$data['LEFT'] = array(
+				'options' => 'dashboard/includes/dashboard_options',
+			);
+		
+		
+		// List of views to be included
+		$data['CENTER'] = array(
+				'list' => 'dashboard/farmers_market_form',
+			);
+		
+		// Custom CSS
+		$data['CSS'] = array(
+						'dashboard',
+						'jquery.validationEngine'
+					);
+		
+		$data['data']['center']['list']['COUNTRIES'] = $countries;
+		$data['data']['center']['list']['STATES'] = $states;
 		
 		$this->load->view('/dashboard/templates/left_center_template', $data);
 	}

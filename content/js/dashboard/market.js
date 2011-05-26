@@ -7,10 +7,10 @@ function addFarmersMarketResult(producer, count) {
 	
 	if (producer.customUrl != '') {
 		html += 
-		'		<a href="/' + producer.type + '/' + producer.customUrl + '" style="font-size:13px;text-decoration:none;">'+ producer.producer +'</a>';
+		'		<a href="/farmersmarket/' + producer.customUrl + '" style="font-size:13px;text-decoration:none;">'+ producer.producer +'</a>';
 	} else {
 		html += 
-		'		<a href="/' + producer.type + '/view/' + producer.producerId + '" style="font-size:13px;text-decoration:none;">'+ producer.producer +'</a>';
+		'		<a href="/farmersmarket/view/' + producer.producerId + '" style="font-size:13px;text-decoration:none;">'+ producer.producer +'</a>';
 	} 
 	
 	html += 
@@ -32,7 +32,7 @@ function addFarmersMarketResult(producer, count) {
 	'	</div>'+
 	'	<div class = "listing-address-title">' + producer.status + '</div>' +
 	'	<div class = "listing-address-title">&nbsp;</div>' +
-	'	<div class = "listing-address-title">' + producer.ip + '</div>' +
+	//'	<div class = "listing-address-title">' + producer.ip + '</div>' +
 	'	<div class = "clear"></div>';
 	
 	html +=

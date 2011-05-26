@@ -14,7 +14,7 @@ function addSupplierResult(supplier, count) {
 	'	</div>'+
 	'	<div class = "listing-address-title">' + supplier.status + '</div>' +
 	'	<div class = "listing-address-title">&nbsp;</div>' +
-	'	<div class = "listing-address-title">' + supplier.ip + '</div>' +
+	//'	<div class = "listing-address-title">' + supplier.ip + '</div>' +
 	'	<div class = "clear"></div>';
 	
 	html +=

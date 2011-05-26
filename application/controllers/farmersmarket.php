@@ -545,6 +545,23 @@ class FarmersMarket extends Controller {
 
         $data['featureds'] = $featuredLeftCities;
     }
+    
+    // Pass the form data to the model to be inserted into the database
+	function save_add() {
+		
+		$this->load->model('FarmersMarketModel', '', TRUE);
+		
+		$GLOBALS = array();
+		if ( $this->FarmersMarketModel->addFarmersMarket() ) {
+			echo 'yes';
+		} else {
+			if (isset($GLOBALS['error']) && !empty($GLOBALS['error']) ) {
+				echo $GLOBALS['error'];
+			} else {
+				echo 'no';
+			}
+		}
+	}
 }
 
 /* End of file farm.php */

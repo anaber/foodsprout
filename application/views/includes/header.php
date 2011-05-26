@@ -26,7 +26,25 @@ if (isset ($CSS) ) {
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.plugin.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/floating_messages.js" type="text/javascript"></script>
+<?php
+$module = $this->uri->segment(1);
+$page = $this->uri->segment(2);
+
+$arr = array(
+		'addrestaurant',
+		'addfarm',
+		'addmarket'
+		);
+if (in_array($page, $arr)) {
+?>
+<script src="<?php echo base_url()?>js/jquery.validationEngine-v2.js" type="text/javascript"></script>
+<?php
+} else {
+?>
 <script src="<?php echo base_url()?>js/jquery.validationEngine.js" type="text/javascript"></script>
+<?php
+}
+?>
 <script src="<?php echo base_url()?>js/jquery.validationEngine-en.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/thickbox.js" type="text/javascript"></script>
 <script src="<?php echo base_url()?>js/jquery.datepick.js" type="text/javascript"></script>
