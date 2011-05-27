@@ -54,6 +54,7 @@ $(document).ready(function() {
 			    j++;
 			});
 			
+			/*
 			var cityId = $('#cityId').val();
 			var cityName;
 			
@@ -61,6 +62,13 @@ $(document).ready(function() {
 				cityName = cityId;
 				cityId = '';
 			}
+			*/
+			
+			var cityId = $('#cityId').val();
+			var cityName = $('#cityAjax').val();
+			
+			alert(cityId);
+			alert(cityName);
 			
 			if ($('#restaurantId').val() != '' ) {
 				var formAction = '/restaurant/save_update';

@@ -578,11 +578,13 @@ class RestaurantModel extends Model{
 	// Input the data from the controller
 	function addRestaurant() {
 		$return = true;
-
+		
+		$CI =& get_instance();
+		
 		//$companyId = $this->input->post('companyId');
 		$restaurantName = $this->input->post('restaurantName');
 
-		$CI =& get_instance();
+		
 
 		$query = "SELECT * FROM producer WHERE producer = \"" . $restaurantName . "\" AND is_restaurant = 1";
 		log_message('debug', 'RestaurantModel.addRestaurant : Try to get duplicate Restaurant record : ' . $query);
