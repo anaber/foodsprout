@@ -392,7 +392,7 @@ class Restaurant extends Controller {
 		$this->load->model('SupplierModel');
 		$suppliers = $this->SupplierModel->getSupplierForProducerJson($q, $addressId);
 
-		$$this->load->model('ProducerModel');
+		$this->load->model('ProducerModel');
 		$producer = $this->ProducerModel->getProducerFromId($q);
 		$producerName = $producer->producer;
 		
