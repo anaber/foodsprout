@@ -261,10 +261,30 @@ class AddressModel extends Model{
 		$cityId = $this->input->post('cityId');
 		$cityName = $this->input->post('cityName');
 		
+		/*
 		if ( !empty ($cityName) && empty ($cityId)  ) {
 			$cityId = $CI->CityModel->addCity($cityName, $stateId);
 		}
+		*/
 		
+		$cityName = $cityName;
+		
+		if ($cityId) {
+			$city = $cityName;
+		} else {
+			$cityObj = $CI->CityModel->getCityFromNameAndState($cityName, $stateId);
+			if ($cityObj) {
+				$cityId = $cityObj->cityId;
+				$city = $cityObj->city;
+			} else {
+				$cityId = $CI->CityModel->addCity($cityName, $stateId);
+				$city = $cityName;
+			}
+		}
+		
+		/**
+		 * Commented by Deepak. Hope it does not break admincp.
+		 * 
 		$city = $this->input->post('city');
 		
 		if (empty($city)) {
@@ -273,6 +293,7 @@ class AddressModel extends Model{
 		} else {
 			
 		}
+		*/
 		
 		$address = $this->prepareAddress($this->input->post('address'), $this->input->post('city'), $this->input->post('cityId'), $this->input->post('stateId'), $this->input->post('countryId'), $this->input->post('zipcode') );
 		

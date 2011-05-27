@@ -4,10 +4,13 @@ class CityModel extends Model{
 	
 	public $custom_url = '';
 	
-	function getCityFromName($city) {
+	function getCityFromNameAndState($city, $stateId) {
 		
-		$query = 'SELECT * FROM city WHERE city = "'. $city . '"';
-		log_message('debug', "CityModel.getCityFromName : " . $query);
+		$query = 'SELECT * ' .
+				' FROM city ' .
+				' WHERE city = "'. $city . '"' .
+				' AND state_id = ' . $stateId;
+		log_message('debug', "CityModel.getCityFromNameAndState : " . $query);
 		$result = $this->db->query($query);
 		
 		$this->load->library('CityLib');
@@ -29,7 +32,7 @@ class CityModel extends Model{
 		$q = strtolower($q);
 		$query = 'SELECT city_id, city
 					FROM city
-					WHERE city like "%'.$q.'%"
+					WHERE city like "'.$q.'%"
 					AND state_id = ' . $stateId . '
 					ORDER BY city ';
 		
