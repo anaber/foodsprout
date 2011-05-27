@@ -1400,12 +1400,12 @@ class ProductModel extends Model {
         
         
         /**
-         * modified products search provided a custom search to accomodate
-         * searching by multiple terms and use the same query for getting
-         * rows and searching; TODO: amend changes with original
-         * 
-         * @param array $terms = search terms
-         */
+                 * modified products search provided a custom search to accomodate
+                 * searching by multiple terms and use the same query for getting
+                 * rows and searching; TODO: amend changes with original
+                 *
+                 * @param array $terms = search terms
+                 */
         function getProductsBySearchTerm(array $search_terms, array $filters, 
                 $limit=null, $offset=null)
         {
@@ -1467,8 +1467,8 @@ class ProductModel extends Model {
         }
 
         /**
-         * @param string $slug product's custom URL
-         */
+                 * @param string $slug product's custom URL
+                 */
         function getProductBySlug($slug)
         {
             $this->db->select('pt.custom_url AS custom_url,
@@ -1486,7 +1486,7 @@ class ProductModel extends Model {
                         ptcu.custom_url AS product_url
                     ')
                     ->from('product AS pt')
-                    ->join('producer AS pd', 'pd.producer_id=pt.producer_id')
+                    ->join('producer AS pd', 'pd.producer_id=pt.producer_id', 'left')
                     ->join('custom_url AS pdcu', 'pdcu.producer_id=pd.producer_id', 'left')
                     ->join('custom_url AS ptcu', 'ptcu.product_id=pt.product_id', 'left')
                     ->join('photo AS ph', 'ph.product_id=pt.product_id', 'left')
@@ -1501,19 +1501,24 @@ class ProductModel extends Model {
 
 
         /**
-         * order products by creation_date
-         *
-         * @param int $limit record limit
-         * @return result object or null
-         */
+                 * order products by creation_date
+                 *
+                 * @param int $limit record limit
+                 * @return result object or null
+                 */
         function getRecentProducts($limit=5)
         {
             $query = $this->db->select('p.product_name AS name,
                         p.custom_url AS custom_url,
-                        u.username AS consumer')
+                        u.username AS consumer,
+                        ph.thumb_photo_name AS thumb,
+                        ph.photo_name AS main,
+                        ph.original_photo_name AS original,
+                        ph.title AS image_title')
                     ->from('product as p')
                     ->join('product_consumed AS pc', 'pc.product_id = p.product_id', 'left')
                     ->join('user AS u', 'u.user_id = pc.user_id', 'left')
+                    ->join('photo AS ph', 'ph.product_id=p.product_id', 'left')
                     ->order_by('p.creation_date DESC')
                     ->order_by('p.product_name')
                     ->group_by('p.product_id')
@@ -1524,11 +1529,11 @@ class ProductModel extends Model {
         }
 
         /**
-         * join tables product_consumed, user and product
-         *
-         * @param int limit record limit
-         * @return result object or null
-         */
+                 * join tables product_consumed, user and product
+                 *
+                 * @param int limit record limit
+                 * @return result object or null
+                 */
         function getRecentConsumed($limit=5)
         {
             $derived_table = "SELECT product_id,user_id, consumed_date,rating
@@ -1537,10 +1542,17 @@ class ProductModel extends Model {
                     ORDER BY consumed_date ASC
                     LIMIT $limit";
 
-            $query = $this->db->select('p.product_name AS name,p.custom_url AS custom_url,u.username AS consumer')
+            $query = $this->db->select('p.product_name AS name,
+                p.custom_url AS custom_url,
+                u.username AS consumer,
+                ph.thumb_photo_name AS thumb,
+                ph.photo_name AS main,
+                ph.original_photo_name AS original,
+                ph.title AS image_title')
                 ->from('product AS p')
                 ->join("($derived_table) AS pc", 'pc.product_id = p.product_id')
                 ->join('user AS u', 'pc.user_id = u.user_id')
+                ->join('photo AS ph', 'ph.product_id=p.product_name', 'left')
                 ->group_by('p.product_name')
                 ->get();
 
@@ -1548,11 +1560,12 @@ class ProductModel extends Model {
         }
 
         /**
-         * get 5 products with the worst ratings; join user, product
-         * and product_consumed tables
-         *
-         * @return result object or null
-         */
+                 * get 5 products with the worst ratings; join user, product
+                 * and product_consumed tables
+                 *
+                 * @param $limit
+                 * @return result object or null
+                 */
         function getWorstProducts($limit=5)
         {
             $derived_table = "SELECT product_id, user_id, consumed_date, MIN(rating) AS rating
@@ -1563,10 +1576,18 @@ class ProductModel extends Model {
                     ORDER BY rating ASC
                     LIMIT $limit";
 
-            $query = $this->db->select('p.product_name AS name,p.custom_url AS custom_url,u.username AS consumer','pc.rating AS rating')
+            $query = $this->db->select('p.product_name AS name,
+                p.custom_url AS custom_url,
+                u.username AS consumer,
+                pc.rating AS rating,
+                ph.thumb_photo_name AS thumb,
+                ph.photo_name AS main,
+                ph.original_photo_name AS main,
+                ph.title AS image_title')
                 ->from('product AS p')
                 ->join("($derived_table) AS pc", 'pc.product_id = p.product_id')
                 ->join('user AS u', 'pc.user_id = u.user_id')
+                ->join('photo AS ph', 'ph.product_id=p.product_id', 'left')
                 ->group_by('p.product_name')
                 ->get();
 

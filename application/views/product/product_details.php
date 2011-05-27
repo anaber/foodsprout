@@ -1,7 +1,7 @@
 <div id="product_details" class="clearfix">
     <?php 
-    if ($product->main):
-        echo img('/uploads'.$product->image_path.'main/'.$product->main);
+    if ($PRODUCT->main):
+        echo img('/uploads'.$PRODUCT->image_path.'main/'.$PRODUCT->main);
     else:
         echo img('/img/standard/distributor-na-icon-120-120.jpg');
     endif;
@@ -9,14 +9,22 @@
 
     <div class="product_details_list">
         <ul class="details_list">
-            <li><?php echo $product->producer_name, ', ' , ucwords($product->product_name) ?></li>
-            <li>by <?php echo anchor('manufacture/'.$product->producer_url,$product->producer_name) ?></li>
+            <li>
+                <span class="header_product">
+                    <?php echo $PRODUCT->producer_name, ',' , ucwords($PRODUCT->product_name) ?>
+                </span>
+            </li>
+            <?php if($PRODUCT->producer_url): ?>
+                <li>by <?php echo anchor('manufacture/'.$PRODUCT->producer_url,$PRODUCT->producer_name) ?></li>
+            <?php else: ?>
+                <li>by <?php echo $PRODUCT->producer_name ?></li>
+            <?php endif ?>
         </ul>
 
-        <?php if ($this->session->userdata('userId') && ! $has_consumed): ?>
+        <?php if ($this->session->userdata('userId') && ! $HAS_CONSUMED): ?>
         <span class="badge_ate">
-            <a href="/product/tag_ate/<?php echo $product->custom_url ?>" class="tagAte" 
-               id="tagAte_<?php echo $product->id ?>">I Ate This</a>
+            <a href="/product/tag_ate/<?php echo $PRODUCT->custom_url ?>" class="tagAte tag_button gradiented"
+               id="tagAte_<?php echo $PRODUCT->id ?>">I Ate This</a>
         </span>
         <?php endif ?>
         
@@ -32,8 +40,8 @@
     <div id="ingredient_header" class="clearfix">
         <h1 class="product_source_header">Source The Ingredients</h1>
         <?php
-        if ($products_consumed):
-            foreach($products_consumed as $consumed): ?>
+        if ($PRODUCTS_CONSUMED):
+            foreach($PRODUCTS_CONSUMED as $consumed): ?>
             <span class="product_ate_where">
                 You ate at the: 
                 <?php echo $consumed->producer_name ?>on 
@@ -45,7 +53,7 @@
     </div>
 
     <div id="ingredient_summary">
-        <h1>What's in the <?php echo ucwords($product->product_name) ?></h1>
+        <h1>What's in the <?php echo ucwords($PRODUCT->product_name) ?></h1>
         <ul>
             <li>The Bun</li>
             <li>Cheese</li>

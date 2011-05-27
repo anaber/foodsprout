@@ -36,7 +36,7 @@ class Photos extends Controller {
             $targetPath = dirname($mainPath);
             if ( ! is_dir($targetPath))
             {
-                mkdir($targetPath, 0755, TRUE);
+                mkdir($targetPath, 0777, TRUE);
             }
             
             $main_config = array(
@@ -56,7 +56,7 @@ class Photos extends Controller {
             $targetPath = dirname($thumbPath);
             if ( ! is_dir($targetPath))
             {
-                mkdir($targetPath, 0755, TRUE);
+                mkdir($targetPath, 0777, TRUE);
             }
             
             $thumb_config = array(
@@ -311,12 +311,16 @@ class Photos extends Controller {
 		// List of views to be included
 		$data['CENTER'] = array(
 				'list' => 'admincp/photos',
-			);			
+			);
+
+        $data['LEFT'] = array(
+            'menu' => 'admincp/menus/photo'
+        );
 		
 		// Data to be passed to the views
 		$data['data']['center']['list']['VIEW_HEADER'] = "Photos";
 		
-		$this->load->view('admincp/templates/center_template', $data);
+		$this->load->view('admincp/templates/left_center_template', $data);
 	}
 	
 	function ajaxSearchPhotos()
@@ -384,7 +388,7 @@ class Photos extends Controller {
 
             if ( ! is_dir($origPath))
             {
-                mkdir($origPath, 0755, true);
+                mkdir($origPath, 0777, true);
             }
 
             $photoConfig = array(

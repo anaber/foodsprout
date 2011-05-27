@@ -2,6 +2,7 @@
 <?php if ($PROCESSED): ?>
     <p>You have already tagged this product.</p>
 <?php else: ?>
+    <div id="list_tag_addresses">
     <?php if($ADDRESSES): ?>
         <ul>
         <?php foreach ($ADDRESSES as $ADDRESS): ?>
@@ -45,13 +46,15 @@
                         <input type="submit" value="Select this Location" />
                     </li>
                 </ul>
+                <?php echo form_close() ?>
             </li>
         <?php endforeach ?>    
         </ul>
-        <?php else: ?>
-        <p>There are no addresses for this producer in our records. You can 
+    <?php else: ?>
+        <p>There are no addresses for this producer in our records. You can
             check back later to tag this product.</p>
-        <?php endif ?>
+    <?php endif ?>
+    </div>
 
     <link rel="stylesheet" href="<?php echo base_url()?>js/rating/jquery.rating.css" />
     <script src="<?php echo base_url()?>js/rating/jquery.rating.pack.js"></script>
