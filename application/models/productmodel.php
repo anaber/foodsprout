@@ -1509,15 +1509,16 @@ class ProductModel extends Model {
         function getRecentProducts($limit=5)
         {
             $query = $this->db->select('p.product_name AS name,
-                        p.custom_url AS custom_url,
                         u.username AS consumer,
                         ph.thumb_photo_name AS thumb,
                         ph.photo_name AS main,
                         ph.original_photo_name AS original,
-                        ph.title AS image_title')
+                        ph.title AS image_title,
+                        cu.custom_url AS custom_url')
                     ->from('product as p')
                     ->join('product_consumed AS pc', 'pc.product_id = p.product_id', 'left')
                     ->join('user AS u', 'u.user_id = pc.user_id', 'left')
+                    ->join('custom_url AS cu', 'cu.product_id=p.product_id', 'left')
                     ->join('photo AS ph', 'ph.product_id=p.product_id', 'left')
                     ->order_by('p.creation_date DESC')
                     ->order_by('p.product_name')
@@ -1543,16 +1544,17 @@ class ProductModel extends Model {
                     LIMIT $limit";
 
             $query = $this->db->select('p.product_name AS name,
-                p.custom_url AS custom_url,
                 u.username AS consumer,
                 ph.thumb_photo_name AS thumb,
                 ph.photo_name AS main,
                 ph.original_photo_name AS original,
-                ph.title AS image_title')
+                ph.title AS image_title,
+                cu.custom_url AS custom_url')
                 ->from('product AS p')
                 ->join("($derived_table) AS pc", 'pc.product_id = p.product_id')
                 ->join('user AS u', 'pc.user_id = u.user_id')
                 ->join('photo AS ph', 'ph.product_id=p.product_name', 'left')
+                ->join('custom_url AS cu', 'cu.product_id=p.product_id', 'left')
                 ->group_by('p.product_name')
                 ->get();
 
@@ -1577,17 +1579,18 @@ class ProductModel extends Model {
                     LIMIT $limit";
 
             $query = $this->db->select('p.product_name AS name,
-                p.custom_url AS custom_url,
                 u.username AS consumer,
                 pc.rating AS rating,
                 ph.thumb_photo_name AS thumb,
                 ph.photo_name AS main,
                 ph.original_photo_name AS main,
-                ph.title AS image_title')
+                ph.title AS image_title,
+                cu.custom_url AS custom_url')
                 ->from('product AS p')
                 ->join("($derived_table) AS pc", 'pc.product_id = p.product_id')
                 ->join('user AS u', 'pc.user_id = u.user_id')
                 ->join('photo AS ph', 'ph.product_id=p.product_id', 'left')
+                ->join('custom_url AS cu', 'cu.product_id=p.product_id', 'left')
                 ->group_by('p.product_name')
                 ->get();
 
