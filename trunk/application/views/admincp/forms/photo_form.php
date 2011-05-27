@@ -1,4 +1,4 @@
-<?php echo anchor('admincp/photo', 'List All Photos'); ?><br /><br />
+<?php echo anchor('admincp/photos', 'Back to List'); ?><br /><br />
 
 <?php echo validation_errors() ?>
 <?php if ( ! empty($UPLOAD_ERRORS)): ?>
@@ -36,7 +36,7 @@
             <td width="25%">Producer</td>
             <td width="75%">
                 <?php echo form_radio(array('name'=>'type','class'=>'radio_type'), 
-                        'producer', $checked);?>
+                        'producer', (isset($EDIT)) ? $checked : TRUE);?>
             </td>
         </tr>
                
@@ -65,14 +65,14 @@
             <td width="25%">Title</td>
             <td width="75%">
                 <input type="text" name="title" class="validate[required]"
-                       value="<?php echo set_value('title', $PHOTO->title) ?>"/>
+                       value="<?php echo set_value('title', (isset($EDIT)) ? $PHOTO->title: '') ?>"/>
             </td>
         </tr>
         
         <tr>
             <td width="25%">Description</td>
             <td width="75%">
-                <textarea name="description" cols="20" rows="5"><?php echo set_value('description', $PHOTO->description) ?></textarea>
+                <textarea name="description" cols="20" rows="5"><?php echo set_value('description', (isset($EDIT)) ? $PHOTO->description: '') ?></textarea>
             </td>
         </tr>
         

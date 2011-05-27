@@ -28,9 +28,9 @@ class Product extends Controller {
 		// $data['recentlyAddedProducts'] = $this->ProductModel->recentlyAddedProducts();
 		// $data['recentlyEatenProducts'] = $this->ProductModel->recentlyEatenProducts();
 
-                $data['recent'] = $this->ProductModel->getRecentProducts();
-                $data['consumed'] = $this->ProductModel->getRecentConsumed();
-                $data['worst'] = $this->ProductModel->getWorstProducts();
+        $data['recent'] = $this->ProductModel->getRecentProducts();
+        $data['consumed'] = $this->ProductModel->getRecentConsumed();
+        $data['worst'] = $this->ProductModel->getWorstProducts();
 
                 $recent = $this->ProductModel->getRecentProducts();
 		
@@ -440,17 +440,17 @@ class Product extends Controller {
             
             $userID = $this->session->userdata('userId');
                        
-            $products_consumed = $this->UserModel->getConsumedProducts($userID, $product->id);
+            $productsConsumed = $this->UserModel->getConsumedProducts($userID, $product->id);
             
-            $consumed_address = array();
+            $consumedAddress = array();
             
-            if ($products_consumed)
+            if ($productsConsumed)
             {   
                 $this->load->model('AddressModel');
                 
-                foreach($products_consumed as $p)
+                foreach($productsConsumed as $p)
                 {
-                    $consumed_address[$p->product_name] = $this->AddressModel
+                    $consumedAddress[$p->product_name] = $this->AddressModel
                         ->prepareAddressToDisplay($p->address, $p->city, $p->city_id,
                                 $p->state_id, $p->country_id, $p->zipcode);
                 }
@@ -462,6 +462,10 @@ class Product extends Controller {
             $this->load->model('SeoModel');
             
             $seo = $this->SeoModel->getSeoDetailsFromPage('product_detail');
+            $seoDataArray = array(
+                'PRODUCT_NAME'=>$productName
+            );
+            $seo = $this->SeoModel->parseSeoData($seo, $seoDataArray);
 
             if ( ! is_null($product))
             {
@@ -470,13 +474,14 @@ class Product extends Controller {
                 $data['CENTER'] = array(
                             'search_view' => '/product/advanced_search',
                             'list' => '/product/product_details',
-			);
+			    );
                 
-                $data['product']  = $product;
-                $data['products_consumed'] = $products_consumed;
-                $data['consumed_address'] = $consumed_address;
-                $data['has_consumed'] = $this->UserModel
+                $data['PRODUCT']  = $product;
+                $data['PRODUCTS_CONSUMED'] = $productsConsumed;
+                $data['CONSUMED_ADDRESS'] = $consumedAddress;
+                $data['HAS_CONSUMED'] = $this->UserModel
                         ->hasConsumedProduct($userID, $product->id);
+                $data['SEO'] = $seo;
                 
                 $this->load->view('templates/center_template', $data);
             }
@@ -490,20 +495,20 @@ class Product extends Controller {
         function mysearch()
         {
             $data = array();
-            $query_string_fragments = array();
+            $queryStringFragments = array();
             $this->load->model('ProductModel');
             
             // extract page number from "page2"
-            $current_page = substr($this->uri->segment(3), 4, 5);
-            $current_page = (is_numeric($current_page)) ? $current_page : 1;
+            $currentPage = substr($this->uri->segment(3), 4, 5);
+            $currentPage = (is_numeric($currentPage)) ? $currentPage : 1;
 
             // get search term
             $q = $this->input->get('q');
-            $search_terms = explode(' ', $q);
-            $query_string_fragments['q'] = $q;
+            $searchTerms = explode(' ', $q);
+            $queryStringFragments['q'] = $q;
 
             // construct items per page
-            $items_per_page = ($this->input->get('pp')) ? $this->input->get('pp') : 10;
+            $itemsPerPage = ($this->input->get('pp')) ? $this->input->get('pp') : 10;
 
             // filters
             $filter_chain = ($this->input->get('filter_chain')) ?
@@ -518,30 +523,30 @@ class Product extends Controller {
             
             // construct query string
             // don't modify to be compatible with multiple filters
-            $data_filters = array('chain');
-            foreach($data_filters as $filter)
+            $dataFilters = array('chain');
+            foreach($dataFilters as $filter)
             {
                 $varname = 'filter_'.$filter;
                 if ( ! is_null($$varname))
                 {
                     $data[$varname] = $$varname;
-                    $query_string_fragments[$varname] = $$varname;
+                    $queryStringFragments[$varname] = $$varname;
                 }
             }
 
             // construct query string
-            $query_string = http_build_query($query_string_fragments);
+            $queryString = http_build_query($queryStringFragments);
 
             // get total rows
-            $total_items = $this->ProductModel
-                ->countProductsBySearchTerm($search_terms,$filters);
+            $totalItems = $this->ProductModel
+                ->countProductsBySearchTerm($searchTerms,$filters);
 
             // get pagination details
-            $config = array('total_items'=>$total_items, 'items_per_page'=>$items_per_page);
-            $paging = $this->calculate_pagination($config, $current_page);
+            $config = array('total_items'=>$totalItems, 'items_per_page'=>$itemsPerPage);
+            $paging = $this->calculate_pagination($config, $currentPage);
             
-            $search_results = $this->ProductModel
-                ->getProductsBySearchTerm($search_terms, $filters, $items_per_page, $paging['offset']);
+            $searchResults = $this->ProductModel
+                ->getProductsBySearchTerm($searchTerms, $filters, $itemsPerPage, $paging['offset']);
 
             // Views to include in the data array
             $data['CENTER'] = array(
@@ -549,13 +554,13 @@ class Product extends Controller {
                 'main_view' => '/product/search_results',
             );
             
-            $data['RESULTS'] = $search_results->result();
+            $data['RESULTS'] = $searchResults->result();
             $data['Q'] = $q;
-            $data['PP'] = $items_per_page;
-            $data['TOTAL_ROWS'] = $total_items;
-            $data['CURRENT_PAGE'] = $current_page;
+            $data['PP'] = $itemsPerPage;
+            $data['TOTAL_ROWS'] = $totalItems;
+            $data['CURRENT_PAGE'] = $currentPage;
             $data['PAGING'] = $paging;
-            $data['QUERY_STRING'] = $query_string;
+            $data['QUERY_STRING'] = $queryString;
 
             $this->load->view('templates/center_template', $data);
         }

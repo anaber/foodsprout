@@ -193,9 +193,10 @@ ul#product_result_list{margin:0; padding:0;}
 #product_details img {float:left; margin-right:20px;}
 #product_ingredients {font-size:12px;}
 .product_details_list {float:left; width:800px;}
+.header_product {font-size:18px; text-transform: uppercase; font-weight: bold;}
 .badge_ate {display:inline-block; float:right;}
-.details_list {float:left; width:300px; margin:0; padding:0;}
-#product_details_warning{float:left; width:500px; margin-top: 30px; height:20px; background: #eee; height:37px; padding:10px;}
+.details_list {float:left; width:500px; margin:0; padding:0;}
+#product_details_warning{float:left; width:500px; margin-top: 20px; height:20px; background: #eee; height:37px; padding:10px;}
 #ingredient_summary{width:350px; float:left; height:150px; background: #eee; margin-right:10px; padding:10px; }
 #ingredient_summary h1 {font-size: 14px;}
 #ingredient_summary ul li{margin:5px 0; background-image: url('/images/accept.png'); list-style-position: inside;padding-left:20px; background-repeat:no-repeat;}
@@ -243,8 +244,41 @@ div.nextlast{float:right;width:125px; text-align: right;}
 a#tag_restaurant {display:block; float:left; width:180px; padding: 10px 0; }
 .list_tag_restaurants{margin-bottom: 20px;}
 input.tag_submit {margin-top: 5px; padding: 0;}
+.tag_button{display: inline-block; padding: 5px; -moz-border-radius:5px; -webkit-border-radius: 5px; border-radius: 5px; font-weight: bold; color:#000; border: 1px solid #eee;}
+.tag_button:hover{text-decoration: none; color: #fff; border: none;}
 
 /*clearfix */
 .clearfix:after {visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
 * html .clearfix             { zoom: 1; } /* IE6 */
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
+/* css3 specific */
+.gradiented{
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.48, rgb(230,230,230)),
+        color-stop(0.81, rgb(247,242,247))
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(230,230,230) 48%,
+        rgb(247,242,247) 81%
+    );
+}
+
+.gradiented:hover{
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.04, rgb(10,107,51)),
+        color-stop(0.65, rgb(69,154,43))
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        rgb(10,107,51) 4%,
+        rgb(69,154,43) 65%
+    );
+}

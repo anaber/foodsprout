@@ -5,7 +5,14 @@
         <ul class="product_list">
             <?php foreach($consumed as $product): ?>
             <li class="product_list_item clearfix">
-                <?php echo img('http://dummyimage.com/80x80/000/fff') ?>
+                <?php
+                    if ($product->thumb):
+                        echo img('/uploads'.$product->image_path.'thumb/'.$product->thumb,
+                            array('alt'=>$product->image_title  ));
+                    else:
+                        echo img('/img/standard/distributor-na-icon-120-120.jpg');
+                    endif;
+                ?>
 
                 <div class="product_description">
                     <ul>
@@ -31,7 +38,14 @@
         <ul class="product_list">
             <?php foreach($worst as $product): ?>
                 <li class="product_list_item clearfix">
-                    <?php echo img('http://dummyimage.com/80x80/000/fff') ?>
+                    <?php
+                    if ($product->thumb):
+                        echo img('/uploads'.$product->image_path.'thumb/'.$product->thumb,
+                            array('alt'=>$product->image_title));
+                    else:
+                        echo img('/img/standard/distributor-na-icon-120-120.jpg');
+                    endif;
+                    ?>
 
                     <div class="product_description">
                         <ul>
@@ -58,7 +72,14 @@
     <ul class="product_list">
         <?php foreach($recent as $product): ?>
         <li class="product_list_item clearfix">
-            <?php echo img('http://dummyimage.com/80x80/000/fff') ?>
+            <?php
+                if ($product->thumb):
+                    echo img('/uploads'.$product->image_path.'thumb/'.$product->thumb,
+                             array('alt'=>$product->image_title));
+                else:
+                    echo img('/img/standard/distributor-na-icon-120-120.jpg');
+                endif;
+            ?>
 
             <div class="product_description">
                 <ul>
