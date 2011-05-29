@@ -184,6 +184,7 @@ class Import extends Controller {
                 // build slug for address; combine city and state
                 $this->load->helper('symfony');
                 $slug = Symfony::urlize("$producer $city");
+                $slug = (strlen($slug) > 75) ? substr($slug, 0, 75) : $slug;
                 $slug = $this->appendSlugSuffix($slug);
 
                 // build slug to accurately locate city
