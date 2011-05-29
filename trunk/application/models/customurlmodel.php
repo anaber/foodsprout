@@ -103,6 +103,15 @@ class CustomUrlModel extends Model{
 		}
 		
 	}
+
+    function insertCustomURL(array $data, $test = FALSE)
+    {
+        $table = ($test) ? 'custom_url_bk' : 'custom_url';
+        
+        $this->db->insert($table, $data);
+
+        return $this->db->insert_id();
+    }
 	
 	
 }

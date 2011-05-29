@@ -16,6 +16,8 @@ class Import extends Controller {
         $this->load->model('ProducerModel');
         $this->load->model('CityModel');
         $this->load->model('StateModel');
+
+        // $this->output->enable_profiler();
     }
     
     function index()
@@ -34,11 +36,13 @@ class Import extends Controller {
             'allowed_types' => 'xl|xlsx|csv',
             'max_size' => '1000'
         );
-        # $this->output->enable_profiler(TRUE);
         
-        if ($_POST)
+        if ($_POST || $_FILES)
         {
             $input = array_merge($_POST, $_FILES);
+
+            die(Debug::vars($input));
+            
             $this->load->plugin('phpexcel');
 
             $tmpext = explode('.', $input['file']['name']);
@@ -53,7 +57,7 @@ class Import extends Controller {
             else
             {
                 $this->processFileAndImport($this->upload->data());
-                redirect('admincp/import/producer');
+                #redirect('admincp/import/producer');
             }
         }
 
@@ -73,38 +77,11 @@ class Import extends Controller {
     }
 
     /**
-     * 
-     * @param <type> $producer_name a string name to make a slug out of
-     * @return <type> the constructed slug
-     */
-    private function buildSlug($string)
-    {
-        $unwanted = array(':','<', '>', "'", '"',"\\", '/', '&');
-        
-        $string = str_replace($unwanted, '', $string);
-
-        $string = (strlen($string) > 75) ?
-                substr($string, 0, 75) : $string;
-
-        $tmp_slug = explode(' ', trim(strtolower($string)));
-
-        for ($i=0; $i<count($tmp_slug);$i++)
-        {
-            if ($tmp_slug[$i] == '')
-            {
-                unset($tmp_slug[$i]);
-            }
-        }
-
-        return implode('-', $tmp_slug);
-    }
-
-    /**
-     * determine if manufacturer, distributor, market, etc.
-     *
-     * @param string $type
-     * @return database flag
-     */
+         * determine if manufacturer, distributor, market, etc.
+         *
+         * @param string $type
+         * @return database flag
+         */
     private function determineType($type)
     {
         $type_data = array();
@@ -143,10 +120,10 @@ class Import extends Controller {
     }
 
     /**
-     * process the file and do table updates, geocoding, etc.
-     *
-     * @param array $data  the upload data from CI upload lib
-     */
+         * process the file and do table updates, geocoding, etc.
+         *
+         * @param array $data  the upload data from CI upload lib
+        */
     private function processFileAndImport(array $data)
     {
         $this->load->model('ProducerCategoryModel');
@@ -169,7 +146,7 @@ class Import extends Controller {
             {
                 foreach($cellIterator as $cell)
                 {
-                    if ( ! is_null($cell))$this->load->model('AddressModel');
+                    if ( ! is_null($cell))
                     {
                         $colIndex = PHPExcel_Cell::columnIndexFromString($cell->getColumn());
                         $headers[$colIndex] = $cell->getValue();
@@ -191,10 +168,11 @@ class Import extends Controller {
                         $values[$headers[$colIndex]] = $cell->getValue();
                     }
                 }
+
                 /*
-                 * assign headers to their respective variable names,
-                 * e.g. $producer = $headers['producer']
-                 */
+                                 * assign headers to their respective variable names,
+                                 * e.g. $producer = $headers['producer']
+                                 */
                 foreach(array_keys($values) as $key)
                 {
                     if ($key != '')
@@ -204,11 +182,12 @@ class Import extends Controller {
                 }
                 
                 // build slug for address; combine city and state
-                $slug = $this->buildSlug($producer.' '.$city);
+                $this->load->helper('symfony');
+                $slug = Symfony::urlize("$producer $city");
                 $slug = $this->appendSlugSuffix($slug);
 
                 // build slug to accurately locate city
-                $citySlug = $this->buildSlug("$city $state");
+                $citySlug = Symfony::urlize("$city $state");
 
                 //details
                 $state_id = ($state) ? $this->StateModel->getIDFromCode($state): 0;
@@ -221,12 +200,13 @@ class Import extends Controller {
                 // update producer table
                 $producer_data = array(
                     'producer' => $producer,
-                    'custom_url' => $slug,
                     'url' => $website,
                     'twitter' => $twitter,
                     'facebook' => $facebook,
                     'phone' => $phone,
-                    'creation_date' => date('Y-m-d')
+                    'creation_date' => date('Y-m-d'),
+                    'user_id' => $this->session->userdata['userId'],
+                    'track_ip' => $this->input->ip_address()
                 );
 
                 // combine the retrieved flag with insert data
@@ -237,42 +217,28 @@ class Import extends Controller {
                 if ( ! $this->ProducerModel->checkIfProducerExists($producer, $city_id, $state_id, $address))
                 {
                     // update producer table
-                    $producer_id = $this->ProducerModel
-                        ->insertProducerFromFile($producer_data);
+                    $producer_id = $this->ProducerModel->insertProducerFromFile($producer_data);
+
+                    // update custom_url table
+                    if ($producer_id)
+                    {
+                        $data = array('producer_id'=>$producer_id, 'custom_url'=>$slug);
+                        $this->load->model('CustomUrlModel');
+                        $this->CustomUrlModel->insertCustomURL($data);
+                    }
 
                     if ($address != '')
                     {
-                        // geocode if address is complete
-                        if ($city!='' && $state!='')
-                        {
-                            $geoaddress = $this->AddressModel->prepareAddress(
-                                $address, $city, $city_id, $state_id, $country_id, $zip_code);
+                        // reconstruct $_POST
+                        $_POST = array();
+                        $_POST['stateId'] = $state_id;
+                        $_POST['cityId'] = $city_id;
+                        $_POST['cityName'] = $city;
+                        $_POST['address'] = $address;
+                        $_POST['zipcode'] = $zip_code;
+                        $_POST['countryId'] = $country_id;
 
-                            @$geo = $this->GoogleMapModel->geoCodeAddressV3($geoaddress);
-                        }
-                        
-                        // update address table
-                        $address_data = array(
-                            'producer_id' => $producer_id,
-                            'city' => $city,
-                            'address' => $address,
-                            'zipcode' => $zip_code,
-                            'country_id' => $country_id,
-                            'latitude' => (empty($geo['latitude'])) ? '': $geo['latitude'] ,
-                            'longitude' => (empty($geo['longitude'])) ? '': $geo['longitude']
-                        );
-
-                        if ($city_id && is_numeric($city_id))
-                        {
-                            $address_data['city_id'] = $city_id;
-                        }
-
-                        if ($state_id && is_numeric($state_id))
-                        {
-                            $address_data['state_id'] = $state_id;
-                        }
-
-                        $address_id = $this->AddressModel->insertAddressFromFile($address_data);
+                        $this->AddressModel->addAddress($producer_id);
                     }
 
                     if ($category != '')
@@ -304,19 +270,17 @@ class Import extends Controller {
                     }
                 }
             }
-
-            # if ($row->getRowIndex() > 4) break;
         }
     }
 
     /**
-     * check to see if a producer exists in the database and append a dash
-     * and an integer which is 1 + the number of existing producers with
-     * the same name
-     * 
-     * @param String $producerSlug
-     * @return String
-     */
+         * check to see if a producer exists in the database and append a dash
+         * and an integer which is 1 + the number of existing producers with
+         * the same name
+         *
+         * @param String $producerSlug
+         * @return String
+        */
     private function appendSlugSuffix($producerSlug)
     {
         $duplicateSlug = $this->ProducerModel->checkIfOtherBranchesExist($producerSlug);
