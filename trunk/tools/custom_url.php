@@ -475,8 +475,7 @@ class CustomUrl {
         public function generateProductCustomURL()
         {
             $query = "SELECT product_id, product_name FROM product";
-            
-            
+             
             $result = mysql_query($query);
             
             if ( ! $result)
@@ -488,13 +487,15 @@ class CustomUrl {
             {
                 
                 $slug = Inflector::urlize($row->product_name);
+
+                $slug = (strlen($slug) > 75) ? substr($slug, 0, 75) : $slug;
                 
-                #if ( ! $this->checkSlugExists($slug))
-                #{
-                    #$sql = "INSERT INTO custom_url(custom_url, product_id) VALUES".
-                     #   ' ("%s",%d)';
+                if ( ! $this->checkSlugExists($slug))
+                {
+                    $sql = "INSERT INTO custom_url(custom_url, product_id) VALUES".
+                        ' ("%s",%d)';
                 
-                    $sql = "UPDATE custom_url SET custom_url='%s' WHERE product_id=%d";
+                    # $sql = "UPDATE custom_url SET custom_url='%s' WHERE product_id=%d";
                     
                     $query = sprintf($sql,mysql_real_escape_string($slug), $row->product_id);
 
@@ -507,11 +508,11 @@ class CustomUrl {
                         echo "Inserted into custom_url table product #".$row->product_id.
                             " with custom URL ".$slug."\n";
                     }
-                #}
-                #else
-                #{
-                 #  echo "This slug exists, check object name\n";
-                #}
+                }
+                else
+                {
+                   echo "This slug exists, check object name\n";
+                }
             }
         }
         
