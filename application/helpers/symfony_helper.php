@@ -1,5 +1,5 @@
 <?php
-class Text {
+class Symfony {
     /**
      * Check if a string has utf7 characters in it
      *

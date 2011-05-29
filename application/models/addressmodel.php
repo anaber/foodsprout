@@ -250,7 +250,7 @@ class AddressModel extends Model{
 		return $this->addressLib;
 	}
 	
-	function addAddress($producerId) {
+	function addAddress($producerId, $test=false) {
 		global $ACTIVITY_LEVEL_DB;
 		
 		$return = true;
@@ -302,8 +302,10 @@ class AddressModel extends Model{
 		$latLng = $CI->GoogleMapModel->geoCodeAddressV3($address);
 		
 		$claimsSustainable = $this->input->post('claimsSustainable');
-		
-		$query = "INSERT INTO address (address_id, producer_id, address, city, city_id, state_id, zipcode, country_id, latitude , longitude, geocoded, claims_sustainable, track_ip, user_id)" .
+
+        $table = ($test) ? 'address_bk' : 'address';
+        
+		$query = "INSERT INTO $table (address_id, producer_id, address, city, city_id, state_id, zipcode, country_id, latitude , longitude, geocoded, claims_sustainable, track_ip, user_id)" .
 				" values (NULL, " . $producerId . ", \"" . $this->input->post('address') . "\", \"" . $city . "\", '" . $cityId . "', '" . $stateId . "', '" . $this->input->post('zipcode') . "', '" . $this->input->post('countryId') . "', '" . ( isset($latLng['latitude']) ? $latLng['latitude']:'' ) . "', '" . ( isset($latLng['longitude']) ? $latLng['longitude']:'' ) . "' ";
 		
 		if ( isset($latLng['latitude']) && isset($latLng['longitude']) ) {
@@ -474,28 +476,28 @@ class AddressModel extends Model{
 		return $row->num_row;
 	}
 
-        function insertAddressFromFile(array $data, $test=false)
-        {
-            $table = ($test) ? 'address_bk' : 'address';
-            
-            $this->db->insert($table, $data);
+    function insertAddressFromFile(array $data, $test=false)
+    {
+        $table = ($test) ? 'address_bk' : 'address';
 
-            return $this->db->insert_id();
-        }
+        $this->db->insert($table, $data);
 
-        function checkIfAddressExists($address, $producer_id, $test=false)
-        {
-            $table = ($test) ? 'address_bk' : 'address';
-            
-            $this->db->where('address', $address)->from($table);
+        return $this->db->insert_id();
+    }
 
-            return (bool)$this->db->count_all_results();
-        }
-        
-        function getAddressesByProducer($producerID)
-        {
-            return $this->db->where('producer_id', $producerID)->get('address')->result();
-        }
+    function checkIfAddressExists($address, $producer_id, $test=false)
+    {
+        $table = ($test) ? 'address_bk' : 'address';
+
+        $this->db->where('address', $address)->from($table);
+
+        return (bool)$this->db->count_all_results();
+    }
+
+    function getAddressesByProducer($producerID)
+    {
+        return $this->db->where('producer_id', $producerID)->get('address')->result();
+    }
 	
 }
 
