@@ -418,6 +418,8 @@ class CityModel extends Model{
          */
         function getCitiesInStateGrouped($state_name)
         {
+            $state_name = str_replace('-', ' ', $state_name);
+            
             $q = $this->db->select('state_id')
                     ->where('state_name', $state_name)
                     ->from('state')
